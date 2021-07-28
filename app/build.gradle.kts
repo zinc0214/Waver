@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -41,7 +42,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
+        kotlinCompilerExtensionVersion = rootProject.extra["composeVersion"] as String
         kotlinCompilerVersion = "1.4.32"
     }
 }
@@ -56,13 +57,19 @@ dependencies {
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["compose_version"]}")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["composeVersion"]}")
 
     // compose
-    implementation("androidx.compose.ui:ui:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.ui:ui:${rootProject.extra["composeVersion"]}")
+    implementation("androidx.compose.material:material:${rootProject.extra["composeVersion"]}")
+    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeVersion"]}")
     implementation("androidx.activity:activity-compose:1.3.0-rc02")
-    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
+    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["composeVersion"]}")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
+    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
+    kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
+    implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
 
 }
