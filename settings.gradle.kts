@@ -8,3 +8,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "MyBury_2"
 include(":app")
+include(":domain")
+include(":data")
