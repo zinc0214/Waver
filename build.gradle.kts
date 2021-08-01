@@ -3,6 +3,7 @@ buildscript {
     val composeVersion by extra("1.0.0-beta09")
     val hiltVersion by extra("2.37")
     val androidXHiltVersion by extra("1.0.0")
+    val coroutinesVersion by extra("1.5.0")
 
     repositories {
         google()
@@ -10,8 +11,8 @@ buildscript {
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.0.0-beta02")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20")
-        classpath("com.google.dagger:hilt-android-gradle-plugin:2.28-alpha")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10")
+        classpath("com.google.dagger:hilt-android-gradle-plugin:2.38.1")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
