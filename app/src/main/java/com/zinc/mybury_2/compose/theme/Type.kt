@@ -1,4 +1,4 @@
-package com.zinc.mybury_2.ui.theme
+package com.zinc.mybury_2.compose.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
