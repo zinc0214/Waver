@@ -1,7 +1,9 @@
 plugins {
+    kotlin("plugin.serialization")
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -43,4 +45,21 @@ dependencies {
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    // Hilt
+    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
+    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
+    kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
+    implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
+
+    // retrofit2
+    implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofitVersion"]}")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${rootProject.extra["serialization"]}")
+    implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofitConverterVersion"]}")
+
+    // okhttp3
+    implementation("com.squareup.okhttp3:logging-interceptor:${rootProject.extra["okHttpVersion"]}")
+
+    // serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 }
