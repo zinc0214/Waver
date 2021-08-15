@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     kotlin("kapt")
 }
@@ -34,6 +34,8 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":domain"))
 
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")

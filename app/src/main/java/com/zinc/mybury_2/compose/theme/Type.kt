@@ -26,3 +26,7 @@ val Typography = Typography(
     )
     */
 )
+
+val BucketTyporaphy = Typography(
+
+)

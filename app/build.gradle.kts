@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -50,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["composeVersion"] as String
@@ -59,10 +61,14 @@ android {
 
 dependencies {
 
+    implementation(project(":domain"))
+    implementation(project(":data"))
+
     implementation("androidx.core:core-ktx:1.6.0")
     implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+    implementation(project(mapOf("path" to ":domain")))
 
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
