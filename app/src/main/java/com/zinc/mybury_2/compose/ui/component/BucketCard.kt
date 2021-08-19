@@ -24,8 +24,7 @@ fun BucketCard(
     titleColor: Color = Gray11,
     backgroundColor: Color = Gray1,
     borderColor: Color = Main3,
-    borderWidth: Dp = 2.dp,
-    showSuceessButton: Boolean = false
+    borderWidth: Dp = 2.dp
 ) {
     Row(
         modifier = Modifier

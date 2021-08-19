@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="transparent">#00000000</color>
+
     <color name="gray1">#FFFFFF</color>
     <color name="gray2">#FAFAFA</color>
     <color name="gray3">#F0F0F0</color>

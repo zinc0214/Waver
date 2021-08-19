@@ -1,4 +1,4 @@
-package com.zinc.mybury_2.compose.ui.component
+package com.zinc.mybury_2.compose.ui.my
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

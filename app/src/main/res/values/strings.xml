@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyBury_2</string>
+
+    <!--타이틀 디스크립션-->
+    <string name="titleLeftDesc">뒤로가기</string>
+    <string name="titleRightDesc">닫기</string>
 </resources>

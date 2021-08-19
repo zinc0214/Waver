@@ -24,7 +24,7 @@
     <style name="Theme.MyBury_2.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="BucketTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/gray11</item>
     </style>
 </resources>
