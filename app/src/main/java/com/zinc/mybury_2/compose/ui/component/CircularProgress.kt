@@ -47,10 +47,10 @@ fun BucketCircularProgressBar(
             .size(radius * 2)
             .clickable {
                 animationPlayed = true
+
             }
             .padding(3.5.dp)
     ) {
-
         Image(
             painter = painterResource(R.drawable.check),
             contentDescription = null,
