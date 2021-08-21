@@ -31,15 +31,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="마이버킷리스트" />
 
-        <com.zinc.mybury_2.compose.ui.component.BucketCircularProgressBarWidget
+        <include
             android:id="@+id/progressBar"
-            android:layout_width="39dp"
-            android:layout_height="39dp"
-            android:layout_margin="16dp"
+            layout="@layout/widget_bucket_progressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

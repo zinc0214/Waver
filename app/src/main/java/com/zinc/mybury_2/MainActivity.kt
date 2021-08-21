@@ -17,6 +17,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        binding.bucketDefault.progressBar.bucketCircularProgressBar.apply {
+            setOnClickListener {
+                binding.bucketDefault.progressBar.bucketCircularProgressBar.progress = 100
+            }
+
+        }
 
     }
 }

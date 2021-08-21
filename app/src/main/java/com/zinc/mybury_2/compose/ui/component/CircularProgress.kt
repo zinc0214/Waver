@@ -70,7 +70,7 @@ fun BucketCircularProgressBar(
         }
         if ((curPercentage.value * 100).toInt() == 100) {
             Image(
-                painter = painterResource(R.drawable.check_inside),
+                painter = painterResource(R.drawable.check_succeed),
                 contentDescription = null,
                 modifier = Modifier
                     .height(32.dp)
