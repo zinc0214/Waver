@@ -81,6 +81,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeVersion"]}")
     implementation("androidx.activity:activity-compose:1.3.0-rc02")
     implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["composeVersion"]}")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")

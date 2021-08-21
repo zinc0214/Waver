@@ -16,48 +16,40 @@ import androidx.compose.ui.unit.sp
 import com.zinc.mybury_2.compose.theme.BaseTheme
 import com.zinc.mybury_2.compose.theme.Gray1
 import com.zinc.mybury_2.compose.theme.Gray11
-import com.zinc.mybury_2.compose.theme.Main3
 
 @Composable
 fun BucketCard(
     title: String,
     titleColor: Color = Gray11,
     backgroundColor: Color = Gray1,
-    borderColor: Color = Main3,
+    borderColor: Color = Gray11,
     borderWidth: Dp = 2.dp
 ) {
     Row(
         modifier = Modifier
             .background(backgroundColor)
             .border(border = BorderStroke(borderWidth, borderColor))
-            .fillMaxWidth()
             .wrapContentHeight()
+            .fillMaxWidth()
+
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.wrapContentWidth()
         ) {
-            Spacer(
-                modifier = Modifier
-                    .height(21.dp)
-            )
             Text(
                 text = title,
                 color = titleColor,
                 fontSize = 14.sp,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-            Spacer(
-                modifier = Modifier
-                    .height(21.dp)
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 22.dp, bottom = 22.dp)
             )
         }
         Box(
             contentAlignment = Alignment.CenterEnd,
             modifier = Modifier
-                .padding(end = 16.dp)
                 .wrapContentWidth(Alignment.End)
-                .fillMaxWidth()
                 .wrapContentHeight()
+
         ) {
             BucketCircularProgressBar()
         }
@@ -69,7 +61,7 @@ fun BucketCard(
 private fun CardPreview() {
     BaseTheme {
         BucketCard(
-            title = "버킷버킷한 버킷리스트 버킷버킷한 버킷리스트 버킷버킷한 버킷리스트"
+            title = "버킷버킷한 버킷리스트"
         )
     }
 }
