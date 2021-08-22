@@ -4,6 +4,15 @@
     <!--타이틀 디스크립션-->
     <string name="titleLeftDesc">뒤로가기</string>
     <string name="titleRightDesc">닫기</string>
+
+
+    <!-- My -->
     <string name="followerText">팔로워</string>
     <string name="followingText">팔로잉</string>
+
+    <!-- My > All -->
+    <string name="proceedingText">진행중</string>
+    <string name="succeedText">완료</string>
+    <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
+    <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
 </resources>

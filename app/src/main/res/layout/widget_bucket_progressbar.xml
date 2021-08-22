@@ -8,8 +8,8 @@
 
         <ProgressBar
             android:id="@+id/bucketCircularProgressBar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:background="@drawable/bucket_circular_progressbar_background"
             android:indeterminateOnly="false"
             android:max="100"

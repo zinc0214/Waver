@@ -38,5 +38,8 @@
     <color name="sub_d3">#FFAD00</color>
     <color name="sub_d4">#8B6109</color>
 
+    <color name="_b0b0b0">#b0b0b0</color>
+    <color name="_e0e0e0">#e0e0e0</color>
+    <color name="_434343">#434343</color>
 
 </resources>

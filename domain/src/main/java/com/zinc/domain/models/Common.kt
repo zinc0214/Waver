@@ -1,14 +1,23 @@
 package com.zinc.domain.models
 
+
+data class BucketInfoSimple(
+        val id: String,
+        val title: String,
+        val currentCount: Int,
+        val goalCount: Int? = null,
+        val dDay: String? = null
+)
+
 data class BucketInfo(
-    val id: String,
-    val title: String,
-    val memo: String? = null,
-    val category: Category? = null,
-    val currentCount: Int,
-    val goalCount: Int? = null,
-    val dDay: String? = null,
-    val isOpen: Boolean,
+        val id: String,
+        val title: String,
+        val memo: String? = null,
+        val category: Category? = null,
+        val currentCount: Int,
+        val goalCount: Int? = null,
+        val dDay: String? = null,
+        val isOpen: Boolean,
     val imageList: List<String>? = null,
     val tag: List<String>? = null
 )

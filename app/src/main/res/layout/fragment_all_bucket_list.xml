@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="info"
+            type="com.zinc.mybury_2.model.AllBucketList" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/topLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/proceedingBucketTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/proceedingText"
+                android:textColor="@color/gray8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/proceedingBucketCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{info.proceedingBucketCount}"
+                android:textColor="@color/gray8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/proceedingBucketTextView"
+                app:layout_constraintTop_toTopOf="@id/proceedingBucketTextView"
+                tools:text="40" />
+
+            <ImageView
+                android:id="@+id/dividerImageView"
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="10dp"
+                android:importantForAccessibility="no"
+                android:src="@color/_b0b0b0"
+                app:layout_constraintBottom_toBottomOf="@id/proceedingBucketTextView"
+                app:layout_constraintStart_toEndOf="@id/proceedingBucketCountTextView"
+                app:layout_constraintTop_toTopOf="@id/proceedingBucketTextView" />
+
+            <TextView
+                android:id="@+id/succeedBucketTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/succeedText"
+                android:textColor="@color/gray8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/dividerImageView"
+                app:layout_constraintTop_toTopOf="@id/proceedingBucketTextView" />
+
+            <TextView
+                android:id="@+id/succeedBucketCountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="@{info.succeedBucketCount}"
+                android:textColor="@color/gray8"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@id/succeedBucketTextView"
+                app:layout_constraintTop_toTopOf="@id/proceedingBucketTextView"
+                tools:text="12" />
+
+            <ImageView
+                android:id="@+id/searchImageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:contentDescription="@string/allSearchImageViewDesc"
+                android:src="@drawable/btn_32_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/dividerImageView2"
+                android:layout_width="1dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="7.5dp"
+                android:importantForAccessibility="no"
+                android:src="@color/_e0e0e0"
+                app:layout_constraintBottom_toBottomOf="@id/searchImageView"
+                app:layout_constraintEnd_toStartOf="@id/searchImageView"
+                app:layout_constraintTop_toTopOf="@id/searchImageView" />
+
+            <ImageView
+                android:id="@+id/filterImageView"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="7.5dp"
+                android:contentDescription="@string/allFilterImageViewDesc"
+                android:src="@drawable/btn_32_filter"
+                app:layout_constraintEnd_toStartOf="@id/dividerImageView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/topLayout"
+            tools:listitem="@layout/widget_card_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
