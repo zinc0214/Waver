@@ -20,8 +20,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.compose.theme.Main3
-import kotlin.math.cos
-import kotlin.math.sin
 
 @Composable
 fun BucketCircularProgressBar(
@@ -44,19 +42,19 @@ fun BucketCircularProgressBar(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(radius * 2)
-            .clickable {
-                animationPlayed = true
+                .size(radius * 2)
+                .clickable {
+                    animationPlayed = true
 
-            }
-            .padding(3.5.dp)
+                }
+                .padding(3.5.dp)
     ) {
         Image(
             painter = painterResource(R.drawable.check),
             contentDescription = null,
             modifier = Modifier
-                .height(32.dp)
-                .width(32.dp)
+                    .height(32.dp)
+                    .width(32.dp)
         )
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
@@ -73,90 +71,13 @@ fun BucketCircularProgressBar(
                 painter = painterResource(R.drawable.check_succeed),
                 contentDescription = null,
                 modifier = Modifier
-                    .height(32.dp)
-                    .width(32.dp)
-                    .clip(shape = CircleShape),
+                        .height(32.dp)
+                        .width(32.dp)
+                        .clip(shape = CircleShape),
                 contentScale = ContentScale.Crop,
             )
         }
     }
-}
-
-
-@Composable
-fun ProfileImageView(percentage: Float) {
-    ProfileCircularProgressBar(percentage)
-}
-
-@Composable
-fun ProfileCircularProgressBar(
-    percentage: Float,
-    radius: Dp = 40.dp,
-    color: Color = Main3,
-    animDuration: Int = 1000,
-    animDelay: Int = 0
-) {
-    var animationPlayed by remember {
-        mutableStateOf(false)
-    }
-    val curPercentage = animateFloatAsState(
-        targetValue = if (animationPlayed) percentage else 0f,
-        animationSpec = tween(
-            durationMillis = animDuration,
-            delayMillis = animDelay
-        )
-    )
-    LaunchedEffect(key1 = true) {
-        animationPlayed = true
-    }
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.size(radius * 2)
-    ) {
-        Canvas(modifier = Modifier.size(radius * 2f)) {
-            drawArc(
-                color = color,
-                -90f,
-                360 * curPercentage.value,
-                useCenter = false,
-                style = Stroke(5.dp.toPx(), cap = StrokeCap.Round)
-            )
-        }
-        BadgeImage(radius.value, curPercentage.value)
-        ProfileCenterImage()
-    }
-}
-
-@Composable
-fun ProfileCenterImage() {
-    Image(
-        painterResource(R.drawable.kakao),
-        contentDescription = null,
-        modifier = Modifier
-            .height(50.dp)
-            .width(50.dp)
-            .clip(shape = CircleShape),
-        contentScale = ContentScale.Crop
-    )
-}
-
-@Composable
-fun BadgeImage(radius: Float, curPercentage: Float) {
-    val angle = (-90f) + 360 * curPercentage
-    val radian = angle * 0.017
-    val x = radius * cos(radian)
-    val y = radius * sin(radian)
-
-    Image(
-        painterResource(R.drawable.kakao),
-        contentDescription = null,
-        modifier = Modifier
-            .width(15.dp)
-            .height(15.dp)
-            .offset(x = x.dp, y = y.dp)
-
-    )
 }
 
 @Composable
@@ -198,17 +119,18 @@ fun CircularProgressBar(
             painterResource(R.drawable.appicon_m),
             contentDescription = null,
             modifier = Modifier
-                .width(15.dp)
-                .height(15.dp)
+                    .width(15.dp)
+                    .height(15.dp)
 
         )
+
         Image(
             painterResource(R.drawable.kakao),
             contentDescription = null,
             modifier = Modifier
-                .height(50.dp)
-                .width(50.dp)
-                .clip(shape = CircleShape),
+                    .height(50.dp)
+                    .width(50.dp)
+                    .clip(shape = CircleShape),
             contentScale = ContentScale.Crop
         )
         /*Text(

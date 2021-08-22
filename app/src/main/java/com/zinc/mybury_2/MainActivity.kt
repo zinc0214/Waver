@@ -5,14 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.core.animation.doOnEnd
 import androidx.databinding.DataBindingUtil
-import com.zinc.mybury_2.compose.ui.component.ProfileImageView
 import com.zinc.mybury_2.databinding.ActivityHomeBinding
 
 
@@ -48,21 +42,5 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-    }
-}
-
-@Composable
-fun BucketProgress() {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            //  BucketCircularProgressBar()
-            Spacer(Modifier.width(8.dp))
-            ProfileImageView(
-                percentage = 0.9f
-            )
-        }
     }
 }

@@ -89,4 +89,7 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
     implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
 
+    // Glide
+    implementation("com.github.skydoves:landscapist-glide:1.1.7")
+
 }
