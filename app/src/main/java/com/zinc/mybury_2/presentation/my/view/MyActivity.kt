@@ -9,9 +9,11 @@ import com.zinc.domain.models.BadgeType
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.mybury_2.databinding.ActivityMyBinding
-import com.zinc.mybury_2.ui.TabCustom
+import com.zinc.mybury_2.ui.MyTabCustom
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMyBinding
@@ -35,7 +37,8 @@ class MyActivity : AppCompatActivity() {
             val imageView = ProfileCircularProgressBarWidget("www.naver.com", 0.5f, this@MyActivity)
             profileImageLayout.addView(imageView)
 
-            TabCustom().wrapTabIndicatorToTitle(tabLayout, 3, 3)
+            val myTabView = MyTabCustom(this@MyActivity)
+            myTabView.setUpTabDesigns(tabLayout)
 
         }
     }
