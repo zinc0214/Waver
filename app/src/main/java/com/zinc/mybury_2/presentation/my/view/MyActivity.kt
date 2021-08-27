@@ -3,9 +3,9 @@ package com.zinc.mybury_2.presentation.my.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.zinc.data.models.BadgeType
 import com.zinc.data.models.MyProfileInfo
 import com.zinc.data.models.MyState
-import com.zinc.domain.models.BadgeType
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.mybury_2.databinding.ActivityMyBinding

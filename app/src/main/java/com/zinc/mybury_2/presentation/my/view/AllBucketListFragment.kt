@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import com.zinc.domain.models.BucketInfoSimple
+import com.zinc.data.models.BucketInfoSimple
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.databinding.FragmentAllBucketListBinding
 import com.zinc.mybury_2.model.AllBucketList

@@ -1,6 +1,6 @@
 package com.zinc.mybury_2.model
 
-import com.zinc.domain.models.BucketInfoSimple
+import com.zinc.data.models.BucketInfoSimple
 
 data class AllBucketList(
         val proceedingBucketCount: String,

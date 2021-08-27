@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.zinc.domain.models.BucketInfo
+import com.zinc.data.models.BucketInfo
 import com.zinc.mybury_2.compose.theme.BaseTheme
 
 @Composable
