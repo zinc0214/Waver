@@ -199,8 +199,8 @@
 
                 </com.google.android.material.tabs.TabLayout>
 
-                <com.zinc.mybury_2.ui.NonSwipeViewPager
-                    android:id="@+id/viewPager"
+                <FrameLayout
+                    android:id="@+id/frameLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

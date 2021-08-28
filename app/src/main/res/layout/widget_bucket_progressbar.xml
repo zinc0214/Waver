@@ -10,7 +10,7 @@
             android:id="@+id/bucketCircularProgressBar"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:background="@drawable/bucket_circular_progressbar_background"
+            android:background="@drawable/bucket_circular_progressbar_bg"
             android:indeterminateOnly="false"
             android:max="100"
             android:progress="0"

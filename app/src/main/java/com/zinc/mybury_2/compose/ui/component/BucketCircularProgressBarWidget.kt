@@ -5,23 +5,19 @@ import android.util.AttributeSet
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.AbstractComposeView
 import com.zinc.mybury_2.compose.theme.BaseTheme
+import com.zinc.mybury_2.model.BucketProgressState
 
 class BucketCircularProgressBarWidget @JvmOverloads constructor(
+    private var animFinishEvent: (BucketProgressState) -> Unit,
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ) : AbstractComposeView(context, attrs, defStyle) {
 
-    private lateinit var animFinishEvent: () -> Unit
-
-    fun setAnimFinishEvent(event: () -> Unit) {
-        animFinishEvent = event
-    }
-
     @Composable
     override fun Content() {
         BaseTheme {
-            BucketCircularProgressBar()
+            BucketCircularProgressBar(animFinishEvent)
         }
     }
 

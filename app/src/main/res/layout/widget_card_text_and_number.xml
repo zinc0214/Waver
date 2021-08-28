@@ -14,20 +14,15 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="6dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cardTextLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/card_text_and_number_bg"
             android:paddingTop="21dp"
-            android:paddingBottom="21dp"
-            tools:background="@drawable/card_text_and_number_press_bg">
+            android:paddingBottom="21dp">
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -40,19 +35,21 @@
                 android:textColor="@color/_434343"
                 android:textSize="14dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/progressBarLayout"
+                app:layout_constraintEnd_toStartOf="@id/numberTextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="마이버킷리스트" />
 
-            <FrameLayout
-                android:id="@+id/progressBarLayout"
+            <TextView
+                android:id="@+id/numberTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="20dp"
+                android:textColor="@color/_888888"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="22" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -51,7 +51,7 @@ fun BucketCard(
                 .wrapContentHeight()
 
         ) {
-            BucketCircularProgressBar()
+            //BucketCircularProgressBar()
         }
     }
 }
