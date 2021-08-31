@@ -13,7 +13,7 @@ class CardViewHolder(private val binding: WidgetCardTextBinding) :
 
     fun bind(info: BucketInfoSimple, animFinished: () -> Unit) {
         binding.apply {
-            titleTextView.text = info.title
+            this.info = info
             val progressBar = BucketCircularProgressBarWidget({ isFinished ->
                 progressFinished(animFinished, isFinished)
             }, binding.root.context)

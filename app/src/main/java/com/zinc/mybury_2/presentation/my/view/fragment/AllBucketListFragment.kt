@@ -53,7 +53,22 @@ class AllBucketListFragment : Fragment() {
             BucketInfoSimple(
                 id = "1",
                 title = "아이스크림을 먹을테야",
-                currentCount = 1
+                currentCount = 1,
+                goalCount = 5
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애222",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = 20
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
             )
         )
     )
