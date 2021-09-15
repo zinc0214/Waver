@@ -8,7 +8,7 @@ import com.zinc.mybury_2.compose.ui.component.BucketCircularProgressBarWidget
 import com.zinc.mybury_2.databinding.WidgetCardTextBinding
 import com.zinc.mybury_2.model.BucketProgressState
 
-class CardViewHolder(private val binding: WidgetCardTextBinding) :
+class CardTextViewHolder(private val binding: WidgetCardTextBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(info: BucketInfoSimple, animFinished: () -> Unit) {

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.zinc.data.models.BadgeType
 import com.zinc.data.models.MyProfileInfo
@@ -13,6 +12,7 @@ import com.zinc.mybury_2.R
 import com.zinc.mybury_2.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.mybury_2.databinding.ActivityMyBinding
 import com.zinc.mybury_2.presentation.my.view.fragment.AllBucketListFragment
+import com.zinc.mybury_2.presentation.my.view.fragment.CategoryListFragment
 import com.zinc.mybury_2.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,20 +44,18 @@ class MyActivity : AppCompatActivity() {
             val myTabView = MyTabCustom(this@MyActivity)
             myTabView.setUpTabDesigns(tabLayout)
 
-
             val allFragment = AllBucketListFragment.newInstance()
-            val allFragment2 = AllBucketListFragment.newInstance()
+            val categoryFragment = CategoryListFragment.newInstance()
 
             supportFragmentManager.beginTransaction().add(R.id.frameLayout, allFragment).commit()
 
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     Log.e("ayhan", "tabPosition : ${tab.position}")
-                    var currentFragment: Fragment
-                    currentFragment = if (tab.position == 1) {
+                    val currentFragment = if (tab.position == 0) {
                         allFragment
                     } else {
-                        allFragment2
+                        categoryFragment
                     }
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, currentFragment).commit()

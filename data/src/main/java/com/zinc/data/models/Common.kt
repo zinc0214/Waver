@@ -25,7 +25,7 @@ data class BucketInfo(
     val id: String,
     val title: String,
     val memo: String? = null,
-    val category: Category? = null,
+    val category: String? = null,
     val currentCount: Int,
     val goalCount: Int? = null,
     val dDay: String? = null,
@@ -38,7 +38,8 @@ data class BucketInfo(
 @Serializable
 data class Category(
     val id: Int,
-    val name: String
+    val name: String,
+    val count: String
 )
 
 data class CommentList(

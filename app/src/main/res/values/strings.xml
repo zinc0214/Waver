@@ -15,4 +15,8 @@
     <string name="succeedText">완료</string>
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
+
+    <!-- My > Category -->
+    <string name="recommendCategory">추천 카테고리</string>
+    <string name="categoryEdit">편집</string>
 </resources>

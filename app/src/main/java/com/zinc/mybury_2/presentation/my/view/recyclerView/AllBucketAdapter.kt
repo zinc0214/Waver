@@ -10,17 +10,17 @@ class AllBucketAdapter(
     private val list: List<BucketInfoSimple>,
     private val loadingFinished: () -> Unit
 ) :
-    RecyclerView.Adapter<CardViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        return CardViewHolder(
+    RecyclerView.Adapter<CardTextViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardTextViewHolder {
+        return CardTextViewHolder(
             WidgetCardTextBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        holder.bind(list[position], loadingFinished)
+    override fun onBindViewHolder(holderText: CardTextViewHolder, position: Int) {
+        holderText.bind(list[position], loadingFinished)
     }
 
     override fun getItemCount(): Int {
