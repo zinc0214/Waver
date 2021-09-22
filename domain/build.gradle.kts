@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = Versions.compileSdk
+    buildToolsVersion = Versions.buildTools
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 30
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,31 +32,31 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
 
     implementation(project(":data"))
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("com.google.android.material:material:1.4.0")
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    implementation(Dep.AndroidX.coreKtx)
+    implementation(Dep.AndroidX.appcompat)
+    implementation(Dep.AndroidX.UI.material)
+
+    testImplementation(Dep.Test.junit)
+    androidTestImplementation(Dep.Test.androidJunit)
+    androidTestImplementation(Dep.Test.espressoCore)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
-    kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
-    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-android-compiler:${rootProject.extra["hiltVersion"]}")
-
-    implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
+    implementation(Dep.Dagger.hiltAndroid)
+    kapt(Dep.Dagger.hiltCompiler)
 
     // coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.extra["coroutinesVersion"]}")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.extra["coroutinesVersion"]}")
+    implementation(Dep.Kotlin.coroutines.core)
+    implementation(Dep.Kotlin.coroutines.android)
+
 }
 
 kapt {
