@@ -7,5 +7,7 @@ data class TopProfile(
     val profileImg: String,
     val badgeType: BadgeType,
     val titlePosition: String,
-    val bio: String
+    val bio: String,
+    val followerCount: String,
+    val followingCount: String
 )
