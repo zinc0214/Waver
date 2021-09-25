@@ -54,6 +54,7 @@ android {
 }
 
 dependencies {
+    implementation(Dep.Kotlin.stdlibJvm)
 
     implementation(project(":domain"))
     implementation(project(":data"))
@@ -81,7 +82,7 @@ dependencies {
     // Hilt
     implementation(Dep.Dagger.hiltAndroid)
     kapt(Dep.Dagger.hiltCompiler)
-    //   kapt(Dep.AndroidX.Hilt.compiler)
+    // kapt(Dep.AndroidX.Hilt.compiler)
     //   implementation(Dep.AndroidX.Hilt.work)
 
     // Glide

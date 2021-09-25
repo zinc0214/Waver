@@ -8,8 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -24,18 +22,26 @@ abstract class DataModule {
     @InstallIn(SingletonComponent::class)
     @Module
     internal object ApiModule {
+//        @Provides
+//        @Singleton
+//        fun provideMyApi(
+//            okHttpClient: OkHttpClient,
+//            converterFactory: Converter.Factory
+//        ): MyApi {
+//            return Retrofit.Builder()
+//                .baseUrl("http://13.124.49.86/my")
+//                .addConverterFactory(converterFactory)
+//                .client(okHttpClient)
+//                .build()
+//                .create(MyApi::class.java)
+//        }
+
         @Provides
         @Singleton
         fun provideMyApi(
-            okHttpClient: OkHttpClient,
-            converterFactory: Converter.Factory
+            retrofit: Retrofit
         ): MyApi {
-            return Retrofit.Builder()
-                .baseUrl("http://13.124.49.86/my")
-                .addConverterFactory(converterFactory)
-                .client(okHttpClient)
-                .build()
-                .create(MyApi::class.java)
+            return retrofit.create(MyApi::class.java)
         }
     }
 }

@@ -7,11 +7,7 @@
 
         <variable
             name="profileInfo"
-            type="com.zinc.data.models.MyProfileInfo" />
-
-        <variable
-            name="status"
-            type="com.zinc.data.models.MyState" />
+            type="com.zinc.domain.models.TopProfile" />
 
     </data>
 
@@ -123,7 +119,7 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center"
                     android:minHeight="30dp"
-                    android:text="@{status.followerCount}"
+                    android:text="@{profileInfo.followerCount}"
                     android:textColor="@color/gray10"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -151,7 +147,7 @@
                     android:layout_marginEnd="110dp"
                     android:gravity="center"
                     android:minHeight="30dp"
-                    android:text="@{status.followerCount}"
+                    android:text="@{profileInfo.followerCount}"
                     android:textColor="@color/gray10"
                     android:textSize="20sp"
                     android:textStyle="bold"
