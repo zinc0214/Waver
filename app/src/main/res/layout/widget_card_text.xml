@@ -109,6 +109,7 @@
                     android:text="@{info.currentCountText()}"
                     android:textColor="@color/main2"
                     android:textSize="13sp"
+                    android:textStyle="bold"
                     tools:text="21" />
 
                 <TextView

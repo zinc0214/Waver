@@ -114,6 +114,7 @@
                     android:text="@{info.currentCountText()}"
                     android:textColor="@{type == BucketType.D_MINUS ? @color/sub_d2 : @color/gray6}"
                     android:textSize="13sp"
+                    android:textStyle="bold"
                     tools:text="21" />
 
                 <TextView
