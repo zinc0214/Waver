@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zinc.data.models.Category
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.databinding.FragmentCategoryListBinding
-import com.zinc.mybury_2.presentation.my.view.recyclerView.CategoryAdapter
+import com.zinc.mybury_2.presentation.my.view.recyclerView.adapter.CategoryAdapter
 
 class CategoryListFragment : Fragment() {
 

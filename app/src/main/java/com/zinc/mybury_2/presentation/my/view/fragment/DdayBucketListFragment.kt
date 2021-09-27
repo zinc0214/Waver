@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zinc.data.models.BucketInfoSimple
 import com.zinc.mybury_2.R
-import com.zinc.mybury_2.databinding.FragmentAllBucketListBinding
+import com.zinc.mybury_2.databinding.FragmentDdayBucketListBinding
 import com.zinc.mybury_2.model.AllBucketList
-import com.zinc.mybury_2.presentation.my.view.recyclerView.adapter.AllBucketAdapter
+import com.zinc.mybury_2.presentation.my.view.recyclerView.adapter.DdayBucketAdapter
 
-class AllBucketListFragment : Fragment() {
+class DdayBucketListFragment : Fragment() {
 
-    private lateinit var binding: FragmentAllBucketListBinding
+    private lateinit var binding: FragmentDdayBucketListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,11 +24,11 @@ class AllBucketListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_all_bucket_list, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_dday_bucket_list, container, false)
         val allInfo = loadAllBucket()
         binding.info = allInfo
 
-        val adapter = AllBucketAdapter(allInfo.bucketList) {
+        val adapter = DdayBucketAdapter(allInfo.bucketList) {
             Toast.makeText(requireContext(), "END", Toast.LENGTH_SHORT).show()
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
@@ -41,25 +41,16 @@ class AllBucketListFragment : Fragment() {
         succeedBucketCount = "20",
         bucketList = listOf(
             BucketInfoSimple(
-                id = "1",
-                title = "아이스크림을 먹을테야",
-                currentCount = 1
-            ),
-            BucketInfoSimple(
-                id = "2",
-                title = "제주도 여행을 갈거란 말이야",
-                currentCount = 1
-            ),
-            BucketInfoSimple(
-                id = "1",
-                title = "아이스크림을 먹을테야",
+                id = "3",
+                title = "Dday가 있는 애 1, 아이스크림 냠냠 후루룹쨥짭",
                 currentCount = 1,
-                goalCount = 5
+                goalCount = 10,
+                dDay = 0
             ),
             BucketInfoSimple(
                 id = "3",
                 title = "Dday가 있는 애222",
-                currentCount = 5,
+                currentCount = 2,
                 goalCount = 10,
                 dDay = 20
             ),
@@ -75,6 +66,6 @@ class AllBucketListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = AllBucketListFragment()
+        fun newInstance() = DdayBucketListFragment()
     }
 }

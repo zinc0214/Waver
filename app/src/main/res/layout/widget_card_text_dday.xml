@@ -9,10 +9,15 @@
             name="info"
             type="com.zinc.data.models.BucketInfoSimple" />
 
+        <variable
+            name="type"
+            type="com.zinc.mybury_2.model.BucketType" />
+
         <import type="com.zinc.mybury_2.R" />
 
         <import type="android.view.View" />
 
+        <import type="com.zinc.mybury_2.model.BucketType" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -68,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:background="@{info.dDay > 0 ? @drawable/bucket_card_dday_bg : @drawable/bucket_card_dday2_bg}"
+                android:background="@{type == BucketType.D_MINUS ? @drawable/bucket_card_dday_bg : @drawable/bucket_card_dday2_bg}"
                 android:text="@{info.dDatText}"
                 android:visibility="@{info.dDay != null ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +103,7 @@
                     android:layout_height="8dp"
                     android:max="@{info.goalCount}"
                     android:progress="@{info.currentCount}"
-                    android:progressDrawable="@drawable/count_progressbar"
+                    android:progressDrawable="@{type == BucketType.D_MINUS ? @drawable/count_progressbar_dday :  @drawable/count_progressbar_dday2}"
                     tools:max="10"
                     tools:progress="7" />
 
@@ -107,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
                     android:text="@{info.currentCountText()}"
-                    android:textColor="@color/main2"
+                    android:textColor="@{type == BucketType.D_MINUS ? @color/sub_d2 : @color/gray6}"
                     android:textSize="13sp"
                     tools:text="21" />
 

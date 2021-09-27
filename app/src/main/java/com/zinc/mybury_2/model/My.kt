@@ -11,3 +11,7 @@ data class AllBucketList(
 enum class BucketProgressState {
     STARTED, BACK
 }
+
+enum class BucketType {
+    BASIC, D_PLUS, D_MINUS
+}

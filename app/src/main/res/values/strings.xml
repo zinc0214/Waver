@@ -7,6 +7,8 @@
 
 
     <!-- My -->
+    <string name="alarm">알람</string>
+    <string name="more">더보기</string>
     <string name="followerText">팔로워</string>
     <string name="followingText">팔로잉</string>
 
@@ -19,4 +21,9 @@
     <!-- My > Category -->
     <string name="recommendCategory">추천 카테고리</string>
     <string name="categoryEdit">편집</string>
+
+    <!-- My > Dday -->
+    <string name="ddayComment">지난 Dday가 1개 있어요</string>
+    <string name="ddaySearchImageViewDesc">디데이 버킷리스트 검색</string>
+    <string name="ddayFilterImageViewDesc">디데이 버킷리스트 필터</string>
 </resources>

@@ -12,6 +12,7 @@ import com.zinc.mybury_2.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.mybury_2.databinding.ActivityMyBinding
 import com.zinc.mybury_2.presentation.my.view.fragment.AllBucketListFragment
 import com.zinc.mybury_2.presentation.my.view.fragment.CategoryListFragment
+import com.zinc.mybury_2.presentation.my.view.fragment.DdayBucketListFragment
 import com.zinc.mybury_2.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,16 +44,23 @@ class MyActivity : AppCompatActivity() {
 
             val allFragment = AllBucketListFragment.newInstance()
             val categoryFragment = CategoryListFragment.newInstance()
+            val ddayFragment = DdayBucketListFragment.newInstance()
 
             supportFragmentManager.beginTransaction().add(R.id.frameLayout, allFragment).commit()
 
             tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) {
                     Log.e("ayhan", "tabPosition : ${tab.position}")
-                    val currentFragment = if (tab.position == 0) {
-                        allFragment
-                    } else {
-                        categoryFragment
+                    val currentFragment = when (tab.position) {
+                        0 -> {
+                            allFragment
+                        }
+                        1 -> {
+                            categoryFragment
+                        }
+                        else -> {
+                            ddayFragment
+                        }
                     }
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, currentFragment).commit()

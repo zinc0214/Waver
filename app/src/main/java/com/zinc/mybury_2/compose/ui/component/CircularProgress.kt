@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
@@ -18,7 +17,9 @@ import androidx.compose.ui.unit.dp
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.compose.theme.Gray3
 import com.zinc.mybury_2.compose.theme.Main3
+import com.zinc.mybury_2.compose.theme.Sub_D2
 import com.zinc.mybury_2.model.BucketProgressState
+import com.zinc.mybury_2.model.BucketType
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -27,8 +28,8 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun BucketCircularProgressBar(
     progressState: (BucketProgressState) -> Unit,
+    bucketType: BucketType,
     radius: Dp = 16.dp,
-    color: Color = Main3,
     animDuration: Int = 1000,
     animDelay: Int = 0
 ) {
@@ -62,7 +63,7 @@ fun BucketCircularProgressBar(
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
-                color = color,
+                color = if (bucketType == BucketType.BASIC) Main3 else Sub_D2,
                 -90f,
                 360 * curPercentage.value,
                 useCenter = false,
@@ -80,7 +81,11 @@ fun BucketCircularProgressBar(
 
         if ((curPercentage.value * 100).toInt() == 100) {
             Image(
-                painter = painterResource(R.drawable.check_succeed),
+                painter =
+                if (bucketType == BucketType.BASIC)
+                    painterResource(R.drawable.check_succeed)
+                else
+                    painterResource(R.drawable.check_succeed_dday),
                 contentDescription = null,
                 modifier = Modifier
                     .height(32.dp)

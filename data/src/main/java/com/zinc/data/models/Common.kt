@@ -5,8 +5,8 @@ import kotlinx.serialization.Serializable
 data class BucketInfoSimple(
     val id: String,
     val title: String,
-    val currentCount: Int,
-    val goalCount: Int? = null,
+    var currentCount: Int = 0,
+    val goalCount: Int = 0,
     val dDay: Int? = null
 ) {
     val dDatText = dDay?.let {
@@ -16,8 +16,9 @@ data class BucketInfoSimple(
             else -> "D+$it"
         }
     }
-    val currentCountText = currentCount.toString()
-    val goalCountText = goalCount?.toString()
+
+    fun currentCountText() = currentCount.toString()
+    fun goalCountText() = goalCount.toString()
 }
 
 @Serializable
