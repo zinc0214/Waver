@@ -103,6 +103,7 @@
                     android:layout_height="8dp"
                     android:max="@{info.goalCount}"
                     android:progress="@{info.currentCount}"
+                    android:animateLayoutChanges="true"
                     android:progressDrawable="@{type == BucketType.D_MINUS ? @drawable/count_progressbar_dday :  @drawable/count_progressbar_dday2}"
                     tools:max="10"
                     tools:progress="7" />
