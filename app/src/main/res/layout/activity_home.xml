@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.zinc.mybury_2.presentation.my.view.HomeActivity" />
+
+        <variable
+            name="selectType"
+            type="com.zinc.mybury_2.model.AllType" />
+
+        <import type="com.zinc.mybury_2.model.AllType" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottomLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/bottomLayout"
+            android:layout_width="0dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bottom_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingStart="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/myImageView"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="@{selectType == AllType.MY ? @drawable/my_icon_enable :  @drawable/my_icon_disable}"
+                        android:onClick="@{() -> activity.setMyFragment()}"
+                        tools:background="@drawable/my_icon_enable" />
+
+                    <ImageView
+                        android:id="@+id/feedImageView"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="@{selectType == AllType.FEED ? @drawable/feed_icon_enable :  @drawable/feed_icon_disable}"
+                        android:onClick="@{() -> activity.setFeedFragment()}"
+                        tools:background="@drawable/feed_icon_enable" />
+
+                    <ImageView
+                        android:id="@+id/searchImageView"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="@{selectType == AllType.SEARCH ? @drawable/search_icon_enable :  @drawable/search_icon_disable}"
+                        tools:background="@drawable/search_icon_enable" />
+
+                    <ImageView
+                        android:id="@+id/moreImageView"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="@{selectType == AllType.MORE ? @drawable/more_icon_enable :  @drawable/more_icon_disable}"
+                        tools:background="@drawable/more_icon_enable" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/addImageView"
+                    android:layout_width="58dp"
+                    android:layout_height="54dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="18dp"
+                    android:padding="0dp"
+                    android:src="@drawable/add_bucket_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
