@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.data.models.BucketInfoSimple
 import com.zinc.mybury_2.databinding.WidgetCardTextDdayBinding
-import com.zinc.mybury_2.presentation.my.view.recyclerView.CardTextDdayViewHolder
+import com.zinc.mybury_2.presentation.my.view.recyclerView.viewHolder.CardTextDdayViewHolder
 
 class DdayBucketAdapter(
     private val list: List<BucketInfoSimple>,

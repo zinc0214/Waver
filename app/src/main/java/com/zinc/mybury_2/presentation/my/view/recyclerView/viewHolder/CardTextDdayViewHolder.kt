@@ -1,4 +1,4 @@
-package com.zinc.mybury_2.presentation.my.view.recyclerView
+package com.zinc.mybury_2.presentation.my.view.recyclerView.viewHolder
 
 import android.animation.ObjectAnimator
 import android.view.animation.DecelerateInterpolator

@@ -12,6 +12,7 @@ import com.zinc.data.models.Category
 import com.zinc.mybury_2.R
 import com.zinc.mybury_2.databinding.FragmentCategoryListBinding
 import com.zinc.mybury_2.presentation.my.view.recyclerView.adapter.CategoryAdapter
+import com.zinc.mybury_2.presentation.my.view.recyclerView.adapter.ClickListener
 
 class CategoryListFragment : Fragment() {
 
@@ -24,9 +25,16 @@ class CategoryListFragment : Fragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_category_list, container, false)
-        val adapter = CategoryAdapter(loadCategory()) {
-            Toast.makeText(requireContext(), "Click!!", Toast.LENGTH_SHORT).show()
-        }
+        val adapter = CategoryAdapter(loadCategory(), object : ClickListener {
+            override fun categorySelected() {
+                Toast.makeText(requireContext(), "Click!!", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun addCategoryClicked() {
+                // Go To Add Category
+            }
+
+        })
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
         return binding.root
