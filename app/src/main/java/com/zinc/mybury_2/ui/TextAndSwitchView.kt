@@ -1,0 +1,39 @@
+package com.zinc.mybury_2.ui
+
+import android.content.Context
+import android.content.res.TypedArray
+import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.widget.FrameLayout
+import com.zinc.mybury_2.R
+import com.zinc.mybury_2.databinding.WidgetTextAndSwitchBinding
+
+class TextAndSwitchView @JvmOverloads constructor(
+    context: Context,
+    val attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+    lateinit var binding: WidgetTextAndSwitchBinding
+    var text: String? = ""
+    var isOn = false
+
+    init {
+        setUpViews()
+    }
+
+    private fun setUpViews() {
+        binding = WidgetTextAndSwitchBinding.inflate(LayoutInflater.from(context), this, true)
+
+        val attributeArray: TypedArray = context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.textAndSwitchView, 0, 0
+        )
+        text = attributeArray.getString(R.styleable.textAndSwitchView_text)
+        isOn = attributeArray.getBoolean(R.styleable.textAndSwitchView_isOn, false)
+
+        binding.title = text
+        binding.switchButton.isChecked = isOn
+    }
+}
+
+

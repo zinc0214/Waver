@@ -1,4 +1,4 @@
-package com.zinc.mybury_2.presentation.my.view
+package com.zinc.mybury_2.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -33,6 +33,7 @@ class AllBucketListFragment : Fragment() {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+        binding.filterImageView.setOnClickListener { showFilterDialog() }
         return binding.root
     }
 
@@ -72,6 +73,13 @@ class AllBucketListFragment : Fragment() {
             )
         )
     )
+
+    private fun showFilterDialog() {
+        MyAllFilterBottomDialogFragment().show(
+            parentFragmentManager,
+            "MyAllFilterBottomDialogFragment"
+        )
+    }
 
     companion object {
         @JvmStatic

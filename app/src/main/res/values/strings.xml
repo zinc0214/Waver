@@ -18,6 +18,16 @@
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
 
+    <!-- My > All > Filter -->
+    <string name="showBucketList">표시할 버킷리스트</string>
+    <string name="proceedingBucketList">진행중인 버킷리스트</string>
+    <string name="succeedBucketList">완료된 버킷리스트</string>
+    <string name="sortStandard">정렬 기준</string>
+    <string name="sortByUpdate">업데이트 순</string>
+    <string name="sortByCreate">등록 순</string>
+    <string name="showContent">표시 항목</string>
+    <string name="showDday">디데이</string>
+
     <!-- My > Category -->
     <string name="recommendCategory">추천 카테고리</string>
     <string name="categoryEdit">편집</string>
