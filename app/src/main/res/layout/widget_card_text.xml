@@ -9,7 +9,7 @@
             name="info"
             type="com.zinc.data.models.BucketInfoSimple" />
 
-        <import type="com.zinc.mybury_2.R" />
+        <import type="com.zinc.berrybucket.R" />
 
         <import type="android.view.View" />
 

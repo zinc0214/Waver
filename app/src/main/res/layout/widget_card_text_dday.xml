@@ -11,13 +11,13 @@
 
         <variable
             name="type"
-            type="com.zinc.mybury_2.model.BucketType" />
+            type="com.zinc.berrybucket.model.BucketType" />
 
-        <import type="com.zinc.mybury_2.R" />
+        <import type="com.zinc.berrybucket.R" />
 
         <import type="android.view.View" />
 
-        <import type="com.zinc.mybury_2.model.BucketType" />
+        <import type="com.zinc.berrybucket.model.BucketType" />
     </data>
 
     <androidx.cardview.widget.CardView

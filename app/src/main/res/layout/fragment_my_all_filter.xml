@@ -30,14 +30,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/showBucketList" />
 
-            <com.zinc.mybury_2.ui.TextAndSwitchView
+            <com.zinc.berrybucket.ui.TextAndSwitchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 app:isOn="false"
                 app:text="@string/proceedingBucketList" />
 
-            <com.zinc.mybury_2.ui.TextAndSwitchView
+            <com.zinc.berrybucket.ui.TextAndSwitchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -101,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/showContent" />
 
-            <com.zinc.mybury_2.ui.TextAndSwitchView
+            <com.zinc.berrybucket.ui.TextAndSwitchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"

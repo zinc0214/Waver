@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyBury_2</string>
+    <string name="app_name">베리버킷</string>
 
     <!--타이틀 디스크립션-->
     <string name="titleLeftDesc">뒤로가기</string>

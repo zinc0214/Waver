@@ -9,7 +9,7 @@
             name="profileInfo"
             type="com.zinc.domain.models.TopProfile" />
 
-        <import type="com.zinc.mybury_2.model.AllType" />
+        <import type="com.zinc.berrybucket.model.AllType" />
 
     </data>
 

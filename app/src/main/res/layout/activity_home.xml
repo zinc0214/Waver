@@ -7,13 +7,13 @@
 
         <variable
             name="activity"
-            type="com.zinc.mybury_2.presentation.HomeActivity" />
+            type="com.zinc.berrybucket.presentation.HomeActivity" />
 
         <variable
             name="selectType"
-            type="com.zinc.mybury_2.model.AllType" />
+            type="com.zinc.berrybucket.model.AllType" />
 
-        <import type="com.zinc.mybury_2.model.AllType" />
+        <import type="com.zinc.berrybucket.model.AllType" />
 
     </data>
 
