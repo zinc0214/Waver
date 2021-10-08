@@ -29,9 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             app:isOn="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:text="@string/proceedingBucketList" />
 
         <com.zinc.mybury_2.ui.TextAndSwitchView
@@ -39,10 +36,51 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:isOn="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:text="@string/succeedBucketList" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="26dp"
+            android:importantForAccessibility="no" />
+
+        <TextView
+            style="@style/FilterTitleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="27dp"
+            android:text="@string/sortStandard" />
+
+        <RadioGroup
+            android:id="@+id/sortRadioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/updateRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:button="@null"
+                android:checked="true"
+                android:drawableEnd="@drawable/radio_background"
+                android:text="@string/sortByUpdate"
+                android:textColor="@color/radio_title"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/createRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="20dp"
+                android:button="@null"
+                android:checked="false"
+                android:drawableEnd="@drawable/radio_background"
+                android:text="@string/sortByCreate"
+                android:textColor="@color/radio_title"
+                android:textSize="16sp" />
+        </RadioGroup>
     </LinearLayout>
 </layout>
 
