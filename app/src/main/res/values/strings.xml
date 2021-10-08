@@ -5,6 +5,9 @@
     <string name="titleLeftDesc">뒤로가기</string>
     <string name="titleRightDesc">닫기</string>
 
+    <!-- Common -->
+    <string name="cancel">취소</string>
+    <string name="apply">적용</string>
 
     <!-- My -->
     <string name="alarm">알람</string>

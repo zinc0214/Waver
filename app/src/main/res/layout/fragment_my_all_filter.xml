@@ -13,74 +13,115 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_sheet_bg"
-        android:orientation="vertical"
-        android:paddingStart="28dp"
-        android:paddingTop="32dp"
-        android:paddingEnd="28dp">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/FilterTitleStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/showBucketList" />
+            android:orientation="vertical"
+            android:paddingStart="28dp"
+            android:paddingTop="32dp"
+            android:paddingEnd="28dp"
+            android:paddingBottom="40dp">
 
-        <com.zinc.mybury_2.ui.TextAndSwitchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            app:isOn="false"
-            app:text="@string/proceedingBucketList" />
+            <TextView
+                style="@style/FilterTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/showBucketList" />
 
-        <com.zinc.mybury_2.ui.TextAndSwitchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            app:isOn="true"
-            app:text="@string/succeedBucketList" />
+            <com.zinc.mybury_2.ui.TextAndSwitchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:isOn="false"
+                app:text="@string/proceedingBucketList" />
+
+            <com.zinc.mybury_2.ui.TextAndSwitchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:isOn="true"
+                app:text="@string/succeedBucketList" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="27dp"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                style="@style/FilterTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sortStandard" />
+
+            <RadioGroup
+                android:id="@+id/sortRadioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/updateRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="20dp"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableEnd="@drawable/radio_background"
+                    android:text="@string/sortByUpdate"
+                    android:textColor="@color/radio_title"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/createRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="20dp"
+                    android:button="@null"
+                    android:checked="false"
+                    android:drawableEnd="@drawable/radio_background"
+                    android:text="@string/sortByCreate"
+                    android:textColor="@color/radio_title"
+                    android:textSize="16sp" />
+            </RadioGroup>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="26dp"
+                android:layout_marginBottom="27dp"
+                android:importantForAccessibility="no" />
+
+            <TextView
+                style="@style/FilterTitleStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/showContent" />
+
+            <com.zinc.mybury_2.ui.TextAndSwitchView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:isOn="false"
+                app:text="@string/showDday" />
+
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="26dp"
+            android:layout_height="0.6dp"
+            android:background="@drawable/divider_bg"
             android:importantForAccessibility="no" />
 
-        <TextView
-            style="@style/FilterTitleStyle"
+        <include
+            layout="@layout/lqyout_filter_bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
-            android:text="@string/sortStandard" />
-
-        <RadioGroup
-            android:id="@+id/sortRadioGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/updateRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                android:button="@null"
-                android:checked="true"
-                android:drawableEnd="@drawable/radio_background"
-                android:text="@string/sortByUpdate"
-                android:textColor="@color/radio_title"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/createRadioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:layout_marginTop="20dp"
-                android:button="@null"
-                android:checked="false"
-                android:drawableEnd="@drawable/radio_background"
-                android:text="@string/sortByCreate"
-                android:textColor="@color/radio_title"
-                android:textSize="16sp" />
-        </RadioGroup>
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
 </layout>
 
