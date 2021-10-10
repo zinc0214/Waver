@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.databinding.FragmentMyAllFilterBinding
+import com.zinc.berrybucket.databinding.FragmentDdayFilterBinding
 
-class MyAllFilterBottomDialogFragment : BottomSheetDialogFragment() {
+class DdayFilterBottomSheetFragment : BottomSheetDialogFragment() {
 
-    private lateinit var binding: FragmentMyAllFilterBinding
+    private lateinit var binding: FragmentDdayFilterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MyAllFilterBottomDialogFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_my_all_filter, container, false)
+            DataBindingUtil.inflate(inflater, R.layout.fragment_dday_filter, container, false)
         return binding.root
     }
 

@@ -33,6 +33,8 @@ class DdayBucketListFragment : Fragment() {
         }
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
+
+        binding.filterImageView.setOnClickListener { showFilterDialog() }
         return binding.root
     }
 
@@ -63,6 +65,13 @@ class DdayBucketListFragment : Fragment() {
             )
         )
     )
+
+    private fun showFilterDialog() {
+        DdayFilterBottomSheetFragment().show(
+            parentFragmentManager,
+            "DdayFilterBottomSheetFragment"
+        )
+    }
 
     companion object {
         @JvmStatic
