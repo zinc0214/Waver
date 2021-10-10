@@ -7,14 +7,14 @@ import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
-import com.zinc.berrybucket.presentation.my.view.fragment.AllBucketListFragment
+import com.zinc.berrybucket.presentation.feed.view.fragment.FeedRecommendFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
     private val myFragment = MyFragment.newInstance()
-    private val allFragment = AllBucketListFragment.newInstance()
+    private val feedFragment = FeedRecommendFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,24 +23,23 @@ class HomeActivity : AppCompatActivity() {
         binding.activity = this
         setUpFragments()
         setMyFragment()
-
     }
 
     private fun setUpFragments() {
         fragmentManager.beginTransaction().add(R.id.frameLayout, myFragment).commit()
-        fragmentManager.beginTransaction().add(R.id.frameLayout, allFragment).commit()
+        fragmentManager.beginTransaction().add(R.id.frameLayout, feedFragment).commit()
 
     }
 
     fun setMyFragment() {
         binding.selectType = AllType.MY
         fragmentManager.beginTransaction().show(myFragment).commit()
-        fragmentManager.beginTransaction().hide(allFragment).commit()
+        fragmentManager.beginTransaction().hide(feedFragment).commit()
     }
 
     fun setFeedFragment() {
         binding.selectType = AllType.FEED
-        fragmentManager.beginTransaction().show(allFragment).commit()
+        fragmentManager.beginTransaction().show(feedFragment).commit()
         fragmentManager.beginTransaction().hide(myFragment).commit()
     }
 }

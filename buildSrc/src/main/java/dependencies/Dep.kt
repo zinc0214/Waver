@@ -123,6 +123,7 @@ object Dep {
     const val glide = "com.github.skydoves:landscapist-glide:1.1.7"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val timber = "com.jakewharton.timber:timber:4.7.1"
+    const val flexBox = "com.google.android:flexbox:2.0.1"
 
     object Test {
         const val junit = "junit:junit:4.13.2"

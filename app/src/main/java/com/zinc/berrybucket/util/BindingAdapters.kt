@@ -5,7 +5,7 @@ import androidx.databinding.BindingAdapter
 
 object BindingAdapters {
 
-    @JvmName("switchIsOn1")
+    @JvmName("switchIsOn")
     @BindingAdapter("app:switchIsOn")
     @JvmStatic
     fun switchIsOn(view: MotionLayout, isOn: Boolean) {

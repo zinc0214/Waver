@@ -95,4 +95,7 @@ dependencies {
     implementation(Dep.AndroidX.RecyclerView.core)
     implementation(Dep.AndroidX.RecyclerView.selection)
 
+    // FlexboxLayout
+    implementation(Dep.flexBox)
+
 }
