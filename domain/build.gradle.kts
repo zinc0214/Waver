@@ -25,16 +25,6 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
@@ -50,8 +40,9 @@ dependencies {
     androidTestImplementation(Dep.Test.espressoCore)
 
     // Hilt
-    implementation(Dep.Dagger.hiltAndroid)
-    kapt(Dep.Dagger.hiltCompiler)
+    implementation(Dep.Dagger.Hilt.android)
+    kapt(Dep.Dagger.Hilt.compiler)
+    implementation(Dep.Dagger.dagger)
 
     // coroutine
     implementation(Dep.Kotlin.coroutines.core)

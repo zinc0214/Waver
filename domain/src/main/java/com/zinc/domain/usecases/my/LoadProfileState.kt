@@ -6,5 +6,7 @@ import javax.inject.Inject
 class LoadProfileState @Inject constructor(
     private val myRepository: MyRepository
 ) {
-    suspend operator fun invoke() = myRepository.loadMyState()
+    suspend operator fun invoke() {
+        myRepository.loadMyState()
+    }
 }

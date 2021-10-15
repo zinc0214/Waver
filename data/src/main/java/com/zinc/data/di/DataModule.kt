@@ -15,27 +15,13 @@ import javax.inject.Singleton
 @Module(includes = [DataModule.ApiModule::class])
 abstract class DataModule {
     @Binds
-    abstract fun bindsMyRepository(
+    abstract fun bindMyRepository(
         repository: MyRepositoryImpl
     ): MyRepository
 
     @InstallIn(SingletonComponent::class)
     @Module
     internal object ApiModule {
-//        @Provides
-//        @Singleton
-//        fun provideMyApi(
-//            okHttpClient: OkHttpClient,
-//            converterFactory: Converter.Factory
-//        ): MyApi {
-//            return Retrofit.Builder()
-//                .baseUrl("http://13.124.49.86/my")
-//                .addConverterFactory(converterFactory)
-//                .client(okHttpClient)
-//                .build()
-//                .create(MyApi::class.java)
-//        }
-
         @Provides
         @Singleton
         fun provideMyApi(

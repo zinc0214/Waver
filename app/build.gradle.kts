@@ -36,8 +36,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
-        useIR = true
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildFeatures {
         compose = true
@@ -80,10 +79,8 @@ dependencies {
     implementation(Dep.AndroidX.Compose.constraintLayout)
 
     // Hilt
-    implementation(Dep.Dagger.hiltAndroid)
-    kapt(Dep.Dagger.hiltCompiler)
-    // kapt(Dep.AndroidX.Hilt.compiler)
-    //   implementation(Dep.AndroidX.Hilt.work)
+    implementation(Dep.Dagger.Hilt.android)
+    kapt(Dep.Dagger.Hilt.compiler)
 
     // Glide
     implementation(Dep.glide)

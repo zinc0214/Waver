@@ -1,18 +1,18 @@
 @file:Suppress("ClassName")
 
 object Versions {
-    const val compileSdk = 30
-    const val buildTools = "30.0.3"
+    const val compileSdk = 31
+    const val buildTools = "31.0.0"
 
     const val minSdk = 23
-    const val targetSdk = 30
+    const val targetSdk = 31
     const val versionCode = 1
     const val versionName = "1.0.0"
 }
 
 object Dep {
     object GradlePlugin {
-        const val androidStudioGradlePluginVersion = "7.1.0-alpha13"
+        const val androidStudioGradlePluginVersion = "7.0.3"
         const val android = "com.android.tools.build:gradle:$androidStudioGradlePluginVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val kotlinSerialization =
@@ -85,10 +85,18 @@ object Dep {
     }
 
     object Dagger {
-        const val version = "2.38.1"
+        const val version = "2.39.1"
         const val hiltAndroid = "com.google.dagger:hilt-android:$version"
         const val hiltCompiler = "com.google.dagger:hilt-compiler:$version"
         const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:version" // kapt
+
+        const val dagger = "com.google.dagger:dagger:$version"
+        const val compiler = "com.google.dagger:dagger-compiler:$version"
+
+        object Hilt {
+            const val android = "com.google.dagger:hilt-android:$version"
+            const val compiler = "com.google.dagger:hilt-compiler:$version"
+        }
     }
 
     object Kotlin {

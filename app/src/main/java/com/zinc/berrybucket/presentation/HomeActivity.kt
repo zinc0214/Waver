@@ -9,7 +9,9 @@ import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
 import com.zinc.berrybucket.presentation.feed.view.fragment.FeedFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager

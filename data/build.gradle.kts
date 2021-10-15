@@ -49,8 +49,8 @@ dependencies {
     androidTestImplementation(Dep.Test.espressoCore)
 
     // Hilt
-    implementation(Dep.Dagger.hiltAndroid)
-    kapt(Dep.Dagger.hiltCompiler)
+    implementation(Dep.Dagger.Hilt.android)
+    kapt(Dep.Dagger.Hilt.compiler)
 
     // retrofit2
     implementation(Dep.Retrofit.core)

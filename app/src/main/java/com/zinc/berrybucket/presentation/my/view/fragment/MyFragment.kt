@@ -7,16 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.berrybucket.databinding.FragmentMyBinding
+import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
 import com.zinc.data.models.BadgeType
 import com.zinc.domain.models.TopProfile
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyFragment : Fragment() {
     private lateinit var binding: FragmentMyBinding
+    private val viewModel by viewModels<MyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
