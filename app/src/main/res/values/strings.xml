@@ -8,6 +8,8 @@
     <!-- Common -->
     <string name="cancel">취소</string>
     <string name="apply">적용</string>
+    <string name="proceedingText">진행중</string>
+    <string name="succeedText">완료</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -16,8 +18,6 @@
     <string name="followingText">팔로잉</string>
 
     <!-- My > All -->
-    <string name="proceedingText">진행중</string>
-    <string name="succeedText">완료</string>
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
 
@@ -49,4 +49,8 @@
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
     <string name="recommendBucketList">버킷 추천받기</string>
+
+    <!-- Feed > Content -->
+    <string name="feedContentTitle">마이 피드</string>
+
 </resources>

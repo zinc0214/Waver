@@ -99,12 +99,12 @@ fun BadgeImage(radius: Float, curPercentage: Float) {
     val y = radius * sin(radian)
 
     Image(
-            painterResource(R.drawable.badge),
-            contentDescription = null,
-            modifier = Modifier
-                .width(32.dp)
-                .height(32.dp)
-                .offset(x = x.dp, y = y.dp)
+        painterResource(R.drawable.badge_large),
+        contentDescription = null,
+        modifier = Modifier
+            .width(32.dp)
+            .height(32.dp)
+            .offset(x = x.dp, y = y.dp)
 
     )
 }

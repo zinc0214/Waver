@@ -7,14 +7,14 @@ import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
-import com.zinc.berrybucket.presentation.feed.view.fragment.FeedRecommendFragment
+import com.zinc.berrybucket.presentation.feed.view.fragment.FeedFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
     private val myFragment = MyFragment.newInstance()
-    private val feedFragment = FeedRecommendFragment.newInstance()
+    private val feedFragment = FeedFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
