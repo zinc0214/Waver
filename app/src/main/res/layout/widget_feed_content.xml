@@ -172,17 +172,15 @@
                 app:layout_constraintTop_toTopOf="@id/commentImageView"
                 tools:text="100" />
 
-            <CheckBox
+            <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="14dp"
-                android:background="@drawable/feed_copy_button"
-                android:button="@null"
-                android:checked="@{feedInfo.copied}"
+                android:background="@{feedInfo.copied ? @drawable/btn_32_copy_on : @drawable/btn_32_copy_off}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/titleTextView"
-                tools:checked="true" />
+                tools:background="@drawable/btn_32_copy_on" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
