@@ -99,6 +99,7 @@ object Dep {
         }
     }
 
+
     object Kotlin {
         const val version = "1.5.21"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
@@ -115,7 +116,7 @@ object Dep {
     }
 
     object OkHttp {
-        private const val version = "4.9.1"
+        private const val version = "4.9.2"
         const val core = "com.squareup.okhttp3:okhttp:$version"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
     }
@@ -130,13 +131,10 @@ object Dep {
 
     const val glide = "com.github.skydoves:landscapist-glide:1.1.7"
     const val cardView = "androidx.cardview:cardview:1.0.0"
-    const val timber = "com.jakewharton.timber:timber:4.7.1"
     const val flexBox = "com.google.android:flexbox:2.0.1"
 
     object Test {
         const val junit = "junit:junit:4.13.2"
-        const val assertJ = "org.assertj:assertj-core:3.20.2"
-        const val mockito = "org.mockito:mockito-core:3.11.2"
         const val androidJunit = "androidx.test.ext:junit:1.1.3"
         const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"
         const val compose = "androidx.compose.ui:ui-test-junit4:${AndroidX.Compose.version}"

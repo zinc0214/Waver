@@ -81,6 +81,16 @@ dependencies {
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
     kapt(Dep.Dagger.Hilt.compiler)
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+
+    // retrofit2
+    implementation(Dep.Retrofit.core)
+    implementation(Dep.Retrofit.serialization)
+    implementation(Dep.Retrofit.converter)
+
+    // okhttp3
+    implementation(Dep.OkHttp.core)
+    implementation(Dep.OkHttp.loggingInterceptor)
 
     // Glide
     implementation(Dep.glide)
