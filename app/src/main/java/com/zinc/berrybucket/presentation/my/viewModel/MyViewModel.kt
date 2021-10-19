@@ -23,7 +23,7 @@ class MyViewModel @Inject constructor(
     private val _profileInfo = MutableLiveData<TopProfile>()
     val profileInfo: LiveData<TopProfile> get() = _profileInfo
 
-    fun loadProfile() {
+    fun loadProfile1() {
         val profileInfoFlow = flowOf(loadProfileInfo)
         val profileStateFlow = flowOf(loadProfileState)
         viewModelScope.launch {
@@ -51,4 +51,26 @@ class MyViewModel @Inject constructor(
             }
         }
     }
+
+    fun loadProfile() {
+        val topProfile = TopProfile(
+//                    nickName = profileInfo.nickName,
+//                    profileImg = profileInfo.profileImg,
+//                    badgeType = profileInfo.badgeType,
+//                    titlePosition = profileInfo.titlePosition,
+//                    bio = profileInfo.bio,
+//                    followingCount = stateInfo.followingCount,
+//                    followerCount = stateInfo.followerCount
+
+            nickName = "HANA",
+            profileImg = "ddd",
+            badgeType = BadgeType.TRIP1,
+            titlePosition = "안녕 반가우이",
+            bio = "나는 ESFP 한아라고 불러줘?",
+            followingCount = "20",
+            followerCount = "10"
+        )
+        _profileInfo.value = topProfile
+    }
+
 }

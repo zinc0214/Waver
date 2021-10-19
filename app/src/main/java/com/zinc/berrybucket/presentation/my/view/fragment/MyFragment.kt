@@ -14,8 +14,6 @@ import com.zinc.berrybucket.compose.ui.component.ProfileCircularProgressBarWidge
 import com.zinc.berrybucket.databinding.FragmentMyBinding
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
-import com.zinc.data.models.BadgeType
-import com.zinc.domain.models.TopProfile
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,31 +25,27 @@ class MyFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_my, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setUpViews()
         setUpTabLayout()
+        setUpObservers()
+        viewModel.loadProfile()
     }
 
-    private fun setUpViews() {
-        binding.apply {
-            profileInfo = TopProfile(
-                nickName = "Hana",
-                profileImg = "ddd",
-                badgeType = BadgeType.TRIP1,
-                titlePosition = "안녕 반가우이",
-                bio = "나는 ESFP 한아라고 불러줘?",
-                followerCount = "10",
-                followingCount = "15"
-            )
-            val imageView =
-                ProfileCircularProgressBarWidget("www.naver.com", 0.5f, requireContext())
-            profileImageLayout.addView(imageView)
+    private fun setUpObservers() {
+        viewModel.profileInfo.observe(viewLifecycleOwner) { profile ->
+            profile?.let {
+                binding.profileInfo = it
+                val imageView =
+                    ProfileCircularProgressBarWidget("www.naver.com", 0.5f, requireContext())
+                binding.profileImageLayout.addView(imageView)
+            }
+
         }
     }
 
