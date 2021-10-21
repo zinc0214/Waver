@@ -133,10 +133,19 @@ object Dep {
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val flexBox = "com.google.android:flexbox:2.0.1"
 
+
     object Test {
         const val junit = "junit:junit:4.13.2"
         const val androidJunit = "androidx.test.ext:junit:1.1.3"
         const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"
         const val compose = "androidx.compose.ui:ui-test-junit4:${AndroidX.Compose.version}"
+
+        object Mockito {
+            private const val version = "3.2.4"
+
+            const val core = "org.mockito:mockito-core:3.3.1"
+            const val inline = "org.mockito:mockito-inline:$version"
+            const val android = "org.mockito:mockito-android:$version"
+        }
     }
 }

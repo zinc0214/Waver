@@ -54,14 +54,6 @@ class MyViewModel @Inject constructor(
 
     fun loadProfile() {
         val topProfile = TopProfile(
-//                    nickName = profileInfo.nickName,
-//                    profileImg = profileInfo.profileImg,
-//                    badgeType = profileInfo.badgeType,
-//                    titlePosition = profileInfo.titlePosition,
-//                    bio = profileInfo.bio,
-//                    followingCount = stateInfo.followingCount,
-//                    followerCount = stateInfo.followerCount
-
             nickName = "HANA",
             profileImg = "ddd",
             badgeType = BadgeType.TRIP1,

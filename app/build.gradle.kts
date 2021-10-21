@@ -36,19 +36,28 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
         dataBinding = true
     }
-
     composeOptions {
         kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.version
     }
-
     kapt {
         correctErrorTypes = true
+    }
+    testOptions {
+        animationsDisabled = true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("**/attach_hotspot_windows.dll")
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
@@ -65,10 +74,20 @@ dependencies {
     implementation(Dep.AndroidX.fragment.ktx)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
-    testImplementation(Dep.Test.junit)
-    androidTestImplementation(Dep.Test.androidJunit)
-    androidTestImplementation(Dep.Test.espressoCore)
+    // test
+//    testImplementation(Dep.Test.junit)
+//    androidTestImplementation(Dep.Test.androidJunit)
+//    androidTestImplementation(Dep.Test.espressoCore)
     androidTestImplementation(Dep.Test.compose)
+
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+
+    // test - mockito
+    testImplementation(Dep.Test.Mockito.core)
+    testImplementation(Dep.Test.Mockito.inline)
+    androidTestImplementation(Dep.Test.Mockito.android)
 
     // compose
     implementation(Dep.AndroidX.Compose.ui)
