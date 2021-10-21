@@ -64,6 +64,7 @@ class FeedFragment : Fragment() {
             FeedInfo(
                 "멋쟁이 여행가",
                 "한아크크룽삐옹",
+                listOf("1", "2"),
                 true,
                 "제주도를 10번은 여행을 하고 말테양",
                 false,
@@ -74,6 +75,7 @@ class FeedFragment : Fragment() {
             FeedInfo(
                 "노래방에 미친",
                 "가수팝수 구텐탁",
+                listOf("1", "2"),
                 false,
                 "노래방에서 노래 불러서 100점을 맞아버릴것이다",
                 false,
@@ -84,6 +86,7 @@ class FeedFragment : Fragment() {
             FeedInfo(
                 "노래방에 미친",
                 "나는야 주스될거야 나는야 케첩될거야 나는야 춤을 출꺼야",
+                null,
                 true,
                 "멋쟁이 토마토, 토마토!",
                 true,
@@ -94,6 +97,7 @@ class FeedFragment : Fragment() {
             FeedInfo(
                 "노래방에 미친",
                 "나는야 주스될거야 나는야 케첩될거야 나는야 춤을 출꺼야",
+                null,
                 true,
                 "멋쟁이 토마토, 토마토!",
                 true,
@@ -104,6 +108,7 @@ class FeedFragment : Fragment() {
             FeedInfo(
                 "노래방에 미친",
                 "나는야 주스될거야 나는야 케첩될거야 나는야 춤을 출꺼야",
+                listOf("1", "2", "3", "4"),
                 true,
                 "멋쟁이 토마토, 토마토!",
                 true,

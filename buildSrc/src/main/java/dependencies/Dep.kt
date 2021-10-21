@@ -82,6 +82,8 @@ object Dep {
             const val core = "androidx.recyclerview:recyclerview:1.2.1"
             const val selection = "androidx.recyclerview:recyclerview-selection:1.1.0"
         }
+
+        const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
     }
 
     object Dagger {

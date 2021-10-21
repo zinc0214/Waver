@@ -52,5 +52,6 @@
 
     <!-- Feed > Content -->
     <string name="feedContentTitle">마이 피드</string>
+    <string name="feedImageView">피드 이미지</string>
 
 </resources>

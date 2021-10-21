@@ -67,22 +67,20 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    // android X
     implementation(Dep.AndroidX.coreKtx)
     implementation(Dep.AndroidX.appcompat)
     implementation(Dep.AndroidX.UI.material)
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.fragment.ktx)
+    implementation(Dep.AndroidX.viewPager2)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // test
-//    testImplementation(Dep.Test.junit)
-//    androidTestImplementation(Dep.Test.androidJunit)
-//    androidTestImplementation(Dep.Test.espressoCore)
+    testImplementation(Dep.Test.junit)
+    androidTestImplementation(Dep.Test.androidJunit)
+    androidTestImplementation(Dep.Test.espressoCore)
     androidTestImplementation(Dep.Test.compose)
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
     // test - mockito
     testImplementation(Dep.Test.Mockito.core)
@@ -100,7 +98,6 @@ dependencies {
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
     kapt(Dep.Dagger.Hilt.compiler)
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
 
     // retrofit2
     implementation(Dep.Retrofit.core)

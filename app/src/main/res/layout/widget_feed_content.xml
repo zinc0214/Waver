@@ -8,6 +8,8 @@
         <variable
             name="feedInfo"
             type="com.zinc.berrybucket.model.FeedInfo" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -125,17 +127,36 @@
                 app:layout_constraintTop_toBottomOf="@id/processImageView"
                 tools:text="새로운 버킷리스트 냠냠" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageSliderLayout"
+                android:layout_width="288dp"
+                android:layout_height="288dp"
+                android:layout_marginTop="20dp"
+                android:visibility="@{feedInfo.hasImage() ? View.VISIBLE : View.GONE}"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/imageViewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+
             <CheckBox
                 android:id="@+id/likeCheckBox"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="14dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/feed_like_button"
                 android:button="@null"
                 android:checked="@{feedInfo.liked}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+                app:layout_constraintTop_toBottomOf="@id/imageSliderLayout"
+                app:layout_goneMarginTop="28dp" />
 
             <TextView
                 android:id="@+id/likeCountTextView"
@@ -155,10 +176,9 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_marginStart="12dp"
-                android:layout_marginTop="28dp"
                 android:background="@drawable/btn_32_comment"
                 app:layout_constraintStart_toEndOf="@id/likeCountTextView"
-                app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+                app:layout_constraintTop_toTopOf="@id/likeCheckBox" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -175,11 +195,10 @@
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:layout_marginTop="28dp"
                 android:layout_marginEnd="14dp"
                 android:background="@{feedInfo.copied ? @drawable/btn_32_copy_on : @drawable/btn_32_copy_off}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleTextView"
+                app:layout_constraintTop_toTopOf="@id/likeCheckBox"
                 tools:background="@drawable/btn_32_copy_on" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
