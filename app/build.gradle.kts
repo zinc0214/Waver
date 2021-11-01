@@ -6,25 +6,15 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = Versions.compileSdk
+    buildToolsVersion = Versions.buildTools
 
     defaultConfig {
         applicationId = "com.zinc.mybury_2"
-        minSdk = 23
-        targetSdk = 30
-        versionCode = 1
-        versionName = "1.0"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf(
-                    "room.schemaLocation" to "$projectDir/schemas",
-                    "room.incremental" to "true",
-                    "room.expandProjection" to "true"
-                )
-            }
-        }
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
+        versionCode = Versions.versionCode
+        versionName = Versions.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -46,46 +36,89 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
-        useIR = true
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
         dataBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = rootProject.extra["composeVersion"] as String
-        kotlinCompilerVersion = "1.4.32"
+        kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.version
+    }
+    kapt {
+        correctErrorTypes = true
+    }
+    testOptions {
+        animationsDisabled = true
+    }
+    packagingOptions {
+        resources.excludes.add("META-INF/LICENSE.txt")
+        resources.excludes.add("META-INF/NOTICE.txt")
+        resources.excludes.add("**/attach_hotspot_windows.dll")
+        resources.excludes.add("META-INF/licenses/**")
+        resources.excludes.add("META-INF/AL2.0")
+        resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
 dependencies {
+    implementation(Dep.Kotlin.stdlibJvm)
 
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation(project(mapOf("path" to ":domain")))
+    // android X
+    implementation(Dep.AndroidX.coreKtx)
+    implementation(Dep.AndroidX.appcompat)
+    implementation(Dep.AndroidX.UI.material)
+    implementation(Dep.AndroidX.Lifecycle.runTime)
+    implementation(Dep.AndroidX.fragment.ktx)
+    implementation(Dep.AndroidX.viewPager2)
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${rootProject.extra["composeVersion"]}")
+    // test
+    testImplementation(Dep.Test.junit)
+    androidTestImplementation(Dep.Test.androidJunit)
+    androidTestImplementation(Dep.Test.espressoCore)
+    androidTestImplementation(Dep.Test.compose)
+
+    // test - mockito
+    testImplementation(Dep.Test.Mockito.core)
+    testImplementation(Dep.Test.Mockito.inline)
+    androidTestImplementation(Dep.Test.Mockito.android)
 
     // compose
-    implementation("androidx.compose.ui:ui:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.compose.material:material:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["composeVersion"]}")
-    implementation("androidx.activity:activity-compose:1.3.0-rc02")
-    implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["composeVersion"]}")
+    implementation(Dep.AndroidX.Compose.ui)
+    implementation(Dep.AndroidX.Compose.material)
+    implementation(Dep.AndroidX.Compose.tooling)
+    implementation(Dep.AndroidX.Compose.activity)
+    implementation(Dep.AndroidX.Compose.livedata)
+    implementation(Dep.AndroidX.Compose.constraintLayout)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
-    kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
-    implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
+    implementation(Dep.Dagger.Hilt.android)
+    kapt(Dep.Dagger.Hilt.compiler)
+
+    // retrofit2
+    implementation(Dep.Retrofit.core)
+    implementation(Dep.Retrofit.serialization)
+    implementation(Dep.Retrofit.converter)
+
+    // okhttp3
+    implementation(Dep.OkHttp.core)
+    implementation(Dep.OkHttp.loggingInterceptor)
+
+    // Glide
+    implementation(Dep.glide)
+
+    // CardView
+    implementation(Dep.cardView)
+
+    // RecyclerView
+    implementation(Dep.AndroidX.RecyclerView.core)
+    implementation(Dep.AndroidX.RecyclerView.selection)
+
+    // FlexboxLayout
+    implementation(Dep.flexBox)
 
 }

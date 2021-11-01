@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.zinc.mybury_2">
+    package="com.zinc.berrybucket">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name="com.zinc.berrybucket.MyBuryApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -10,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyBury_2">
         <activity
-            android:name=".MainActivity"
+            android:name="com.zinc.berrybucket.presentation.HomeActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyBury_2.NoActionBar">

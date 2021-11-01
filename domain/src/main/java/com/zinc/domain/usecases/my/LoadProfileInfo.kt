@@ -1,10 +1,12 @@
 package com.zinc.domain.usecases.my
 
-import com.zinc.domain.repositories.MyRepository
+import com.zinc.data.repository.MyRepository
 import javax.inject.Inject
 
 class LoadProfileInfo @Inject constructor(
     private val myRepository: MyRepository
 ) {
-    suspend operator fun invoke() = myRepository.loadMyProfileInfo()
+    suspend operator fun invoke() {
+        myRepository.loadMyProfileInfo()
+    }
 }

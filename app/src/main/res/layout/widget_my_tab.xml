@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tabTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="21dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/my_tab_title"
+        android:textSize="15dp"
+        tools:text="전체" />
+
+</layout>

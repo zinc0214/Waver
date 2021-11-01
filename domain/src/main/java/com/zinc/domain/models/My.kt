@@ -1,28 +1,13 @@
 package com.zinc.domain.models
 
-data class MyProfileInfo(
+import com.zinc.data.models.BadgeType
+
+data class TopProfile(
     val nickName: String,
     val profileImg: String,
     val badgeType: BadgeType,
     val titlePosition: String,
-    val bio: String
+    val bio: String,
+    val followerCount: String,
+    val followingCount: String
 )
-
-data class MyState(
-    val followerCount: Int,
-    val followingCount: Int,
-    val hasAlarm: Boolean
-)
-
-data class MyBucketList(
-    val list: List<BucketInfo>
-)
-
-data class DdayBucketList(
-    val list: List<BucketInfo>
-)
-
-enum class BadgeType {
-    TRIP1, TRIP2, TRIP3
-}
-

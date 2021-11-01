@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk = 30
-    buildToolsVersion = "30.0.3"
+    compileSdk = Versions.compileSdk
+    buildToolsVersion = Versions.buildTools
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 30
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -27,39 +27,40 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
+    }
+    kapt {
+        correctErrorTypes = true
     }
 }
 
 dependencies {
 
-    implementation(project(":domain"))
+    implementation(Dep.AndroidX.coreKtx)
+    implementation(Dep.AndroidX.appcompat)
+    implementation(Dep.AndroidX.UI.material)
 
-    implementation("androidx.core:core-ktx:1.6.0")
-    implementation("androidx.appcompat:appcompat:1.3.1")
-    implementation("com.google.android.material:material:1.4.0")
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    testImplementation(Dep.Test.junit)
+    androidTestImplementation(Dep.Test.androidJunit)
+    androidTestImplementation(Dep.Test.espressoCore)
 
     // Hilt
-    implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
-    kapt("com.google.dagger:hilt-compiler:${rootProject.extra["hiltVersion"]}")
-    kapt("androidx.hilt:hilt-compiler:${rootProject.extra["androidXHiltVersion"]}")
-    implementation("androidx.hilt:hilt-work:${rootProject.extra["androidXHiltVersion"]}")
+    implementation(Dep.Dagger.Hilt.android)
+    kapt(Dep.Dagger.Hilt.compiler)
 
     // retrofit2
-    implementation("com.squareup.retrofit2:retrofit:${rootProject.extra["retrofitVersion"]}")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${rootProject.extra["serialization"]}")
-    implementation("com.squareup.retrofit2:converter-gson:${rootProject.extra["retrofitConverterVersion"]}")
+    implementation(Dep.Retrofit.core)
+    implementation(Dep.Retrofit.serialization)
+    implementation(Dep.Retrofit.converter)
 
     // okhttp3
-    implementation("com.squareup.okhttp3:logging-interceptor:${rootProject.extra["okHttpVersion"]}")
+    implementation(Dep.OkHttp.core)
+    implementation(Dep.OkHttp.loggingInterceptor)
 
     // serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+    implementation(Dep.Kotlin.serialization)
 }

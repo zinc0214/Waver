@@ -1,6 +1,6 @@
 package com.zinc.domain.usecases.my
 
-import com.zinc.domain.repositories.MyRepository
+import com.zinc.data.repository.MyRepository
 import javax.inject.Inject
 
 class LoadDdayBucketList @Inject constructor(

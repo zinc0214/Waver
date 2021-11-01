@@ -4,6 +4,101 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/compose-model-1627477648184.xml" value="0.9" />
+        <entry key="../../../../layout/compose-model-1627749406929.xml" value="0.7003610108303249" />
+        <entry key="../../../../layout/compose-model-1627804929250.xml" value="0.25" />
+        <entry key="../../../../layout/compose-model-1627910612915.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1627910701400.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1627911976736.xml" value="0.17037037037037037" />
+        <entry key="../../../../layout/compose-model-1627912005210.xml" value="0.17037037037037037" />
+        <entry key="../../../../layout/compose-model-1627914706862.xml" value="0.33" />
+        <entry key="../../../../layout/compose-model-1627915382237.xml" value="0.3490740740740741" />
+        <entry key="../../../../layout/compose-model-1627918745672.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1628407141793.xml" value="0.15151515151515152" />
+        <entry key="../../../../layout/compose-model-1629010364947.xml" value="0.165" />
+        <entry key="../../../../layout/compose-model-1629010677895.xml" value="0.21666666666666667" />
+        <entry key="../../../../layout/compose-model-1629299020646.xml" value="0.4436026936026936" />
+        <entry key="../../../../layout/compose-model-1629299138000.xml" value="0.575925925925926" />
+        <entry key="../../../../layout/compose-model-1629300195516.xml" value="0.4562289562289562" />
+        <entry key="../../../../layout/compose-model-1629385048661.xml" value="0.335" />
+        <entry key="../../../../layout/compose-model-1629386854061.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1629537205033.xml" value="0.24074074074074073" />
+        <entry key="../../../../layout/compose-model-1629537221916.xml" value="0.29907407407407405" />
+        <entry key="../../../../layout/compose-model-1629537320294.xml" value="0.335" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/add_bucket_icon.xml" value="0.11" />
+        <entry key="app/src/main/res/drawable/bottom_background.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/bottom_sheet_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/btn40backw.xml" value="0.5572012257405515" />
+        <entry key="app/src/main/res/drawable/btn_32_filter.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/btn_main_fill_background.xml" value="0.5572012257405515" />
+        <entry key="app/src/main/res/drawable/bucket_card_dday2_bg.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/bucket_card_dday_bg.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/bucket_circular_progressbar.xml" value="0.225" />
+        <entry key="app/src/main/res/drawable/bucket_circular_progressbar_background.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/bucket_circular_progressbar_bg.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/card_background.xml" value="0.21208622016936104" />
+        <entry key="app/src/main/res/drawable/card_text_and_number_bg.xml" value="0.21208622016936104" />
+        <entry key="app/src/main/res/drawable/card_text_and_number_dday_press_bg.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/card_text_and_number_press_background.xml" value="0.21208622016936104" />
+        <entry key="app/src/main/res/drawable/card_text_and_number_press_bg.xml" value="0.25390625" />
+        <entry key="app/src/main/res/drawable/category_add_bg.xml" value="1.5714904785156252" />
+        <entry key="app/src/main/res/drawable/check.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/check_inside.xml" value="0.4192708333333333" />
+        <entry key="app/src/main/res/drawable/check_succeed.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/check_succeed_dday.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/count_progressbar.xml" value="0.1705" />
+        <entry key="app/src/main/res/drawable/count_progressbar_dday.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/count_progressbar_dday2.xml" value="0.1085" />
+        <entry key="app/src/main/res/drawable/divider_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/feed_icon_disable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/feed_icon_enable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/item_add_category.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/more_icon_disable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/more_icon_enable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/my_icon_disable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/my_icon_enable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/my_icon_search.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/radio_background.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/radio_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/radio_check.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/radio_transparent_check.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/recommend_button_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/recommend_checkbox_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/recommend_checkbox_off_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/recommend_checkbox_on_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/sarch_icon_disable.xml" value="0.2385" />
+        <entry key="app/src/main/res/drawable/switch_circle.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/switch_circle_on.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/switch_off_bg.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/switch_on_bg.xml" value="0.105" />
+        <entry key="app/src/main/res/drawable/switch_selector.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.18" />
+        <entry key="app/src/main/res/drawable/transparent_bg.xml" value="0.18" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_my.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/fragment_all_bucket_list.xml" value="0.29097222222222224" />
+        <entry key="app/src/main/res/layout/fragment_dday_bucket_list.xml" value="0.18611111111111112" />
+        <entry key="app/src/main/res/layout/fragment_dday_filter.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_feed_recommend.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/fragment_my.xml" value="0.26666666666666666" />
+        <entry key="app/src/main/res/layout/fragment_my_all_filter.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/layout_bottom.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/lqyout_filter_bottom.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/widget_add_category.xml" value="0.22777777777777777" />
+        <entry key="app/src/main/res/layout/widget_btn_main_fill.xml" value="0.5479166666666667" />
+        <entry key="app/src/main/res/layout/widget_bucket_default.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/widget_bucket_progressbar.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/widget_card_text.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/widget_card_text_and_number.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/widget_card_text_dday.xml" value="0.18611111111111112" />
+        <entry key="app/src/main/res/layout/widget_card_text_number.xml" value="0.18611111111111112" />
+        <entry key="app/src/main/res/layout/widget_feed_content.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/widget_feed_recommend.xml" value="0.33561440927011" />
+        <entry key="app/src/main/res/layout/widget_nav_title.xml" value="0.19707467282525018" />
+        <entry key="app/src/main/res/layout/widget_switch.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/widget_text_and_switch.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/widget_title.xml" value="0.5479166666666667" />
       </map>
     </option>
   </component>
@@ -12,5 +107,8 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="SuppressKotlinCodeStyleNotification">
+    <option name="disableForAll" value="true" />
   </component>
 </project>

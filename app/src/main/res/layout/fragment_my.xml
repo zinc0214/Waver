@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="profileInfo"
+            type="com.zinc.domain.models.TopProfile" />
+
+        <import type="com.zinc.berrybucket.model.AllType" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/gray1"
+                    android:paddingBottom="16dp"
+                    app:layout_scrollFlags="scroll|enterAlways">
+
+                    <ImageButton
+                        android:id="@+id/moreButton"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@drawable/more"
+                        android:contentDescription="@string/more"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageButton
+                        android:id="@+id/alarmButton"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/alarm"
+                        android:contentDescription="@string/alarm"
+                        app:layout_constraintEnd_toStartOf="@id/moreButton"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/profileImageLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="56dp"
+                        android:gravity="center"
+                        android:minWidth="110dp"
+                        android:minHeight="130dp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:background="@color/main4"
+                        tools:layout_height="86dp"
+                        tools:layout_width="86dp" />
+
+                    <TextView
+                        android:id="@+id/titlePositionTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center"
+                        android:text="@{profileInfo.titlePosition}"
+                        android:textColor="@color/main3"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/profileImageLayout"
+                        tools:text="여행을 좋아하는" />
+
+                    <TextView
+                        android:id="@+id/nickNameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="32dp"
+                        android:gravity="center"
+                        android:text="@{profileInfo.nickName}"
+                        android:textColor="@color/gray10"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/titlePositionTextView"
+                        tools:text="가나다라마바사가나다라마바사가나다라" />
+
+                    <TextView
+                        android:id="@+id/bioTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="32dp"
+                        android:gravity="center"
+                        android:text="@{profileInfo.bio}"
+                        android:textColor="@color/gray6"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/nickNameTextView"
+                        tools:text="바이오는 요렇게" />
+
+                    <TextView
+                        android:id="@+id/followerCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="110dp"
+                        android:layout_marginTop="24dp"
+                        android:gravity="center"
+                        android:minHeight="30dp"
+                        android:text="@{profileInfo.followerCount}"
+                        android:textColor="@color/gray10"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bioTextView"
+                        tools:text="300" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/followerText"
+                        android:textColor="@color/gray7"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/followerCountTextView"
+                        app:layout_constraintStart_toStartOf="@id/followerCountTextView"
+                        app:layout_constraintTop_toBottomOf="@id/followerCountTextView" />
+
+                    <TextView
+                        android:id="@+id/followingCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="110dp"
+                        android:gravity="center"
+                        android:minHeight="30dp"
+                        android:text="@{profileInfo.followerCount}"
+                        android:textColor="@color/gray10"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/bioTextView"
+                        tools:text="300" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:text="@string/followingText"
+                        android:textColor="@color/gray7"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="@+id/followingCountTextView"
+                        app:layout_constraintStart_toStartOf="@id/followingCountTextView"
+                        app:layout_constraintTop_toBottomOf="@id/followingCountTextView" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/gray2"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/myTabLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="57dp"
+                        android:clipToPadding="false"
+                        android:paddingTop="24dp"
+                        app:tabIndicatorColor="@color/gray10"
+                        app:tabIndicatorFullWidth="false"
+                        app:tabIndicatorHeight="3dp"
+                        app:tabMode="scrollable">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="전체" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="카테고리" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="디데이" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="챌린지" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <FrameLayout
+                        android:id="@+id/myFrameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>
+

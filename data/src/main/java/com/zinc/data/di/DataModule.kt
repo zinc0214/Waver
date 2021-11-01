@@ -1,5 +1,6 @@
 package com.zinc.data.di
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.zinc.data.api.MyApi
 import com.zinc.data.repository.MyRepository
 import com.zinc.data.repository.MyRepositoryImpl
@@ -8,7 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Converter
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -17,7 +19,7 @@ import javax.inject.Singleton
 @Module(includes = [DataModule.ApiModule::class])
 abstract class DataModule {
     @Binds
-    abstract fun bindsMyRepository(
+    abstract fun bindMyRepository(
         repository: MyRepositoryImpl
     ): MyRepository
 
@@ -26,16 +28,32 @@ abstract class DataModule {
     internal object ApiModule {
         @Provides
         @Singleton
-        fun provideMyApi(
-            okHttpClient: OkHttpClient,
-            converterFactory: Converter.Factory
-        ): MyApi {
-            return Retrofit.Builder()
-                .baseUrl("http://13.124.49.86/my")
-                .addConverterFactory(converterFactory)
-                .client(okHttpClient)
-                .build()
-                .create(MyApi::class.java)
+        fun provideConverter(): Converter.Factory {
+            return Json {
+                ignoreUnknownKeys = true
+            }.asConverterFactory("application/json".toMediaType())
         }
+
+        @Provides
+        @Singleton
+        fun provideMyApi(
+            retrofit: Retrofit
+        ): MyApi {
+            return retrofit.create(MyApi::class.java)
+        }
+
+//        @Provides
+//        @Singleton
+//        fun provideGithubApi(
+//            okHttpClient: OkHttpClient,
+//            converterFactory: Converter.Factory
+//        ): GithubApi {
+//            return Retrofit.Builder()
+//                .baseUrl("https://api.github.com/")
+//                .addConverterFactory(converterFactory)
+//                .client(okHttpClient)
+//                .build()
+//                .create(GithubApi::class.java)
+//        }
     }
 }

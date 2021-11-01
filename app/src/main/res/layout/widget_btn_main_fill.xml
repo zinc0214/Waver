@@ -18,7 +18,7 @@
             android:id="@+id/mainFillButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_main_fill_background"
+            android:background="@drawable/btn_main_fill_bg"
             android:gravity="center"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
