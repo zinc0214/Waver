@@ -40,10 +40,6 @@ android {
 
 dependencies {
 
-    implementation(Dep.AndroidX.coreKtx)
-    implementation(Dep.AndroidX.appcompat)
-    implementation(Dep.AndroidX.UI.material)
-
     testImplementation(Dep.Test.junit)
     androidTestImplementation(Dep.Test.androidJunit)
     androidTestImplementation(Dep.Test.espressoCore)
