@@ -5,6 +5,7 @@ import com.zinc.data.models.BadgeType
 data class TopProfile(
     val nickName: String,
     val profileImg: String,
+    val percent: Float,
     val badgeType: BadgeType,
     val titlePosition: String,
     val bio: String,

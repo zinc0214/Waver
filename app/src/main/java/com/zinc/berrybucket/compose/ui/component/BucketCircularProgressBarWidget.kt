@@ -22,5 +22,4 @@ class BucketCircularProgressBarWidget @JvmOverloads constructor(
             BucketCircularProgressBar(animFinishEvent, bucketType)
         }
     }
-
 }

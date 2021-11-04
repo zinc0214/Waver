@@ -5,13 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.component.ProfileCircularProgressBarWidget
 import com.zinc.berrybucket.databinding.FragmentMyBinding
+import com.zinc.berrybucket.presentation.my.view.MyTopLayer
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,18 +33,28 @@ class MyFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setUpViews()
         setUpTabLayout()
         setUpObservers()
         viewModel.loadProfile()
+    }
+
+    private fun setUpViews() {
+        binding.composeView.apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+        }
     }
 
     private fun setUpObservers() {
         viewModel.profileInfo.observe(viewLifecycleOwner) { profile ->
             profile?.let {
                 binding.profileInfo = it
-                val imageView =
-                    ProfileCircularProgressBarWidget("www.naver.com", 0.5f, requireContext())
-                binding.profileImageLayout.addView(imageView)
+
+                binding.composeView.setContent {
+                    MyTopLayer(profileInfo = profile)
+                }
             }
 
         }

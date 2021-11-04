@@ -17,6 +17,12 @@
     <string name="followerText">팔로워</string>
     <string name="followingText">팔로잉</string>
 
+    <!-- My > TabTitle -->
+    <string name="allTab">전체</string>
+    <string name="categoryTab">카테고리</string>
+    <string name="ddayTab">디데이</string>
+    <string name="challengeTab">챌린지</string>
+
     <!-- My > All -->
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>

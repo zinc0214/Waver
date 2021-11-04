@@ -25,46 +25,45 @@ import kotlin.math.sin
 
 @Composable
 fun ProfileCircularProgressBar(
-        percentage: Float,
-        radius: Dp = 43.dp,
-        color: Color = Main4,
-        animDuration: Int = 1000,
-        animDelay: Int = 0,
-        profileImageUrl: String
+    percentage: Float,
+    radius: Dp = 43.dp,
+    color: Color = Main4,
+    animDuration: Int = 1000,
+    animDelay: Int = 0,
+    profileImageUrl: String
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
     }
     val curPercentage = animateFloatAsState(
-            targetValue = if (animationPlayed) percentage else 0f,
-            animationSpec = tween(
-                    durationMillis = animDuration,
-                    delayMillis = animDelay
-            )
+        targetValue = if (animationPlayed) percentage else 0f,
+        animationSpec = tween(
+            durationMillis = animDuration,
+            delayMillis = animDelay
+        )
     )
     LaunchedEffect(key1 = true) {
         animationPlayed = true
     }
 
-    Box(contentAlignment = Alignment.Center, modifier = Modifier
-            .size(radius * 3)
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.size(radius * 3)
     ) {
         ProfileCenterImage(profileImageUrl)
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
-                    color = color,
-                    -90f,
-                    360 * curPercentage.value,
-                    useCenter = false,
-                    style = Stroke(3.dp.toPx(), cap = StrokeCap.Round)
+                color = color,
+                -90f,
+                360 * curPercentage.value,
+                useCenter = false,
+                style = Stroke(3.dp.toPx(), cap = StrokeCap.Round)
             )
         }
 
         BadgeImage(radius.value, curPercentage.value)
-
     }
-
 }
 
 @Composable
@@ -80,14 +79,14 @@ fun ProfileCenterImage(profileImageUrl: String) {
 //            .centerCrop(),
 //    )
     Image(
-            painterResource(R.drawable.kakao),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(3.dp)
-                .height(80.dp)
-                .width(80.dp)
-                .clip(shape = CircleShape),
-            contentScale = ContentScale.Crop
+        painterResource(R.drawable.kakao),
+        contentDescription = null,
+        modifier = Modifier
+            .padding(3.dp)
+            .height(80.dp)
+            .width(80.dp)
+            .clip(shape = CircleShape),
+        contentScale = ContentScale.Crop
     )
 }
 
