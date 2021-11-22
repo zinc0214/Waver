@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.FragmentAllBucketListBinding
 import com.zinc.berrybucket.model.AllBucketList
+import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.presentation.my.view.recyclerView.adapter.AllBucketAdapter
-import com.zinc.data.models.BucketInfoSimple
 
 class AllBucketListFragment : Fragment() {
 

@@ -5,9 +5,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.component.BucketCircularProgressBarWidget
 import com.zinc.berrybucket.databinding.WidgetCardTextBinding
+import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.BucketType
-import com.zinc.data.models.BucketInfoSimple
 
 class CardTextViewHolder(private val binding: WidgetCardTextBinding) :
     RecyclerView.ViewHolder(binding.root) {

@@ -48,7 +48,7 @@ object Dep {
         }
 
         object Compose {
-            const val version = "1.0.4"
+            const val version = "1.0.5"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -62,7 +62,7 @@ object Dep {
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
-                "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+                "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
         }
 

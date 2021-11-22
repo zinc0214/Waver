@@ -7,7 +7,7 @@
 
         <variable
             name="info"
-            type="com.zinc.data.models.BucketInfoSimple" />
+            type="com.zinc.berrybucket.model.BucketInfoSimple" />
 
         <variable
             name="type"
@@ -74,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:background="@{type == BucketType.D_MINUS ? @drawable/bucket_card_dday_bg : @drawable/bucket_card_dday2_bg}"
-                android:text="@{info.dDatText}"
+                android:text="@{info.dDayText}"
                 android:visibility="@{info.dDay != null ? View.VISIBLE : View.GONE}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

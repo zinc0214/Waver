@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.databinding.WidgetCardTextBinding
+import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.presentation.my.view.recyclerView.viewHolder.CardTextViewHolder
-import com.zinc.data.models.BucketInfoSimple
 
 class AllBucketAdapter(
     private val list: List<BucketInfoSimple>,
