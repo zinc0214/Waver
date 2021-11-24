@@ -2,7 +2,6 @@ package com.zinc.berrybucket.compose.ui.my
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,7 +15,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
-import com.zinc.berrybucket.compose.ui.CardTextView
+import com.zinc.berrybucket.compose.ui.component.CardTextView
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.BucketInfoSimple
@@ -26,8 +25,6 @@ import com.zinc.berrybucket.model.TabType
 @Composable
 fun AllBucketLayer(allBucketInfo: AllBucketList) {
     MaterialTheme {
-        val scrollState = rememberScrollState()
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
