@@ -11,6 +11,11 @@ data class AllBucketList(
     val bucketList: List<BucketInfoSimple>
 )
 
+data class DDayBucketList(
+    val bucketList: List<BucketInfoSimple>
+)
+
+
 data class BucketInfoSimple(
     val type: BucketType = BucketType.BASIC,
     val id: String,
@@ -47,7 +52,7 @@ enum class BucketProgressState {
 }
 
 enum class BucketType {
-    BASIC, D_PLUS, D_MINUS, CHALLENGE
+    BASIC, D_DAY, D_PLUS, D_MINUS, CHALLENGE
 }
 
 enum class TabType {
