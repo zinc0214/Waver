@@ -183,10 +183,11 @@ private fun HorizontalProgressBar(
 ) {
     var progress by remember { mutableStateOf(0f) }
     val indicatorProgress =
-        if (info.currentCount == 0) 0.0f else (info.currentCount / info.goalCount).toFloat()
+        if (info.currentCount == 0) 0.0f else (info.currentCount.toFloat() / info.goalCount.toFloat())
+    Log.e("ayhan", "indicatorProgress : $indicatorProgress")
     val progressAnimDuration = 1500
     val progressAnimation by animateFloatAsState(
-        targetValue = 0.5f,
+        targetValue = indicatorProgress,
         animationSpec = tween(durationMillis = progressAnimDuration, easing = FastOutSlowInEasing)
     )
     LinearProgressIndicator(
