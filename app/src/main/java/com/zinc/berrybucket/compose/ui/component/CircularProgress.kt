@@ -97,7 +97,7 @@ fun BucketCircularProgressBar(
                     launch {
                         animationPlayed = false
                         progressState.invoke(BucketProgressState.BACK)
-                        delay(500L)
+                        delay(500L) // TODO : Duration 을 주는 방법을 생각해야 함. (다른뷰에 영향을 미치는 상태라서)
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.compose.ui
+package com.zinc.berrybucket.compose.ui.component
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
@@ -9,7 +9,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.*
-import com.zinc.berrybucket.compose.ui.component.BucketCircularProgressBar
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.BucketType
@@ -31,7 +29,7 @@ fun CardTextView(
     animFinishEvent: (BucketProgressState) -> Unit,
 ) {
 
-    var currentCount by rememberSaveable { mutableStateOf(itemInfo.currentCount) }
+    var bucket by remember { mutableStateOf(itemInfo) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -56,8 +54,12 @@ fun CardTextView(
                 contentAlignment = Alignment.CenterEnd
             ) {
                 BucketCircularProgressBar(
-                    progressState = animFinishEvent,
-                    bucketType = BucketType.BASIC
+                    progressState = {
+                        if (it == BucketProgressState.BACK) {
+                            animFinishEvent.invoke(it)
+                        }
+                    },
+                    bucketType = bucketType
                 )
             }
 
@@ -82,31 +84,27 @@ fun CardTextView(
             ) {
 
                 // Dday
-                if (itemInfo.dDay != null) {
-                    DdayBadgeView(itemInfo)
+                if (bucket.dDay != null) {
+                    DdayBadgeView(bucket)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
-                TitleTextView(itemInfo.title)
+                TitleTextView(bucket.title)
 
                 // Progress
-                if (itemInfo.goalCount > 0) {
+                if (bucket.goalCount > 0) {
                     CountProgressView(
-                        info = itemInfo,
+                        info = bucket,
                         bucketType = bucketType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
-
-
             }
-
-
         }
     }
 }
@@ -184,7 +182,6 @@ private fun HorizontalProgressBar(
     var progress by remember { mutableStateOf(0f) }
     val indicatorProgress =
         if (info.currentCount == 0) 0.0f else (info.currentCount.toFloat() / info.goalCount.toFloat())
-    Log.e("ayhan", "indicatorProgress : $indicatorProgress")
     val progressAnimDuration = 1500
     val progressAnimation by animateFloatAsState(
         targetValue = indicatorProgress,
