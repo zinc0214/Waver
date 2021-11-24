@@ -4,53 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.databinding.DataBindingUtil
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.my.AllBucketLayer
-import com.zinc.berrybucket.databinding.FragmentAllBucketListBinding
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.BucketInfoSimple
 
 class AllBucketListFragment : Fragment() {
-
-    private lateinit var binding: FragmentAllBucketListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_all_bucket_list, container, false)
-
-
-//        val allInfo = loadAllBucket()
-//        binding.info = allInfo
-//
-//        val adapter = AllBucketAdapter(allInfo.bucketList) {
-//            Toast.makeText(requireContext(), "END", Toast.LENGTH_SHORT).show()
-//        }
-//        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        binding.recyclerView.adapter = adapter
-//        binding.filterImageView.setOnClickListener { showFilterDialog() }
-
-        setUpViews()
-        return binding.root
-    }
-
-    private fun setUpViews() {
-        binding.composeView.apply {
-            setViewCompositionStrategy(
-                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-            )
-        }
-        binding.composeView.setContent {
-            AllBucketLayer(loadAllBucket())
+        return ComposeView(requireContext()).apply {
+            setContent {
+                AllBucketLayer(loadAllBucket())
+            }
         }
     }
-
 
     private fun loadAllBucket() = AllBucketList(
         proceedingBucketCount = "11",

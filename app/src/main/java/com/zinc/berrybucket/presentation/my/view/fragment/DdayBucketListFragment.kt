@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.zinc.berrybucket.compose.ui.my.DdayBucketLayer
-import com.zinc.berrybucket.databinding.FragmentDdayBucketListBinding
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.DDayBucketList
 
 class DdayBucketListFragment : Fragment() {
-
-    private lateinit var binding: FragmentDdayBucketListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
