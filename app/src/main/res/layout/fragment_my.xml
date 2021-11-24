@@ -63,22 +63,22 @@
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="전체" />
+                            android:text="@string/allTab" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="카테고리" />
+                            android:text="@string/categoryTab" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="디데이" />
+                            android:text="@string/ddayTab" />
 
                         <com.google.android.material.tabs.TabItem
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="챌린지" />
+                            android:text="@string/challengeTab" />
 
                     </com.google.android.material.tabs.TabLayout>
                 </LinearLayout>
