@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.databinding.FragmentMyBinding
-import com.zinc.berrybucket.presentation.my.view.MyTopLayer
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint

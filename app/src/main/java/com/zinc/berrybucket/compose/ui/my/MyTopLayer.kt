@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.presentation.my.view
+package com.zinc.berrybucket.compose.ui.my
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState

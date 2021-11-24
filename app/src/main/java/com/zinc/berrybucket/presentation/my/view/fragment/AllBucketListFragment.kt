@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.ui.my.AllBucketLayer
 import com.zinc.berrybucket.databinding.FragmentAllBucketListBinding
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.BucketInfoSimple
-import com.zinc.berrybucket.presentation.my.view.recyclerView.adapter.AllBucketAdapter
 
 class AllBucketListFragment : Fragment() {
 
@@ -25,17 +24,33 @@ class AllBucketListFragment : Fragment() {
     ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_all_bucket_list, container, false)
-        val allInfo = loadAllBucket()
-        binding.info = allInfo
 
-        val adapter = AllBucketAdapter(allInfo.bucketList) {
-            Toast.makeText(requireContext(), "END", Toast.LENGTH_SHORT).show()
-        }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-        binding.filterImageView.setOnClickListener { showFilterDialog() }
+
+//        val allInfo = loadAllBucket()
+//        binding.info = allInfo
+//
+//        val adapter = AllBucketAdapter(allInfo.bucketList) {
+//            Toast.makeText(requireContext(), "END", Toast.LENGTH_SHORT).show()
+//        }
+//        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+//        binding.recyclerView.adapter = adapter
+//        binding.filterImageView.setOnClickListener { showFilterDialog() }
+
+        setUpViews()
         return binding.root
     }
+
+    private fun setUpViews() {
+        binding.composeView.apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+        }
+        binding.composeView.setContent {
+            AllBucketLayer(loadAllBucket())
+        }
+    }
+
 
     private fun loadAllBucket() = AllBucketList(
         proceedingBucketCount = "11",
@@ -63,6 +78,83 @@ class AllBucketListFragment : Fragment() {
                 currentCount = 5,
                 goalCount = 10,
                 dDay = 20
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
             ),
             BucketInfoSimple(
                 id = "3",

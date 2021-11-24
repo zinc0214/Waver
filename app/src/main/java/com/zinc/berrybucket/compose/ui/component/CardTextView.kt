@@ -86,17 +86,24 @@ fun CardTextView(
                     DdayBadgeView(itemInfo)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
-                    Spacer(modifier = Modifier.height(21.dp))
+                    Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
                 TitleTextView(itemInfo.title)
 
                 // Progress
-                CountProgressView(
-                    info = itemInfo,
-                    bucketType = bucketType
-                )
+                if (itemInfo.goalCount > 0) {
+                    CountProgressView(
+                        info = itemInfo,
+                        bucketType = bucketType
+                    )
+                    Spacer(modifier = Modifier.height(18.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(22.dp))
+                }
+
+
             }
 
 

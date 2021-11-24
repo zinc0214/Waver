@@ -49,3 +49,7 @@ enum class BucketProgressState {
 enum class BucketType {
     BASIC, D_PLUS, D_MINUS, CHALLENGE
 }
+
+enum class TabType {
+    ALL, D_DAY, CATEGORY, CHALLENGE
+}

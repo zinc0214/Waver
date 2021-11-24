@@ -10,6 +10,7 @@
     <string name="apply">적용</string>
     <string name="proceedingText">진행중</string>
     <string name="succeedText">완료</string>
+    <string name="blank"> </string>
 
     <!-- My -->
     <string name="alarm">알람</string>
