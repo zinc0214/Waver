@@ -15,7 +15,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
-import com.zinc.berrybucket.compose.ui.component.CardTextView
+import com.zinc.berrybucket.compose.ui.component.BucketCard
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.BucketInfoSimple
@@ -92,7 +92,7 @@ private fun BucketStateView(
 private fun AllBucketListView(bucketList: List<BucketInfoSimple>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         bucketList.forEach { bucket ->
-            CardTextView(
+            BucketCard(
                 itemInfo = bucket,
                 bucketType = BucketType.BASIC,
                 animFinishEvent = {}

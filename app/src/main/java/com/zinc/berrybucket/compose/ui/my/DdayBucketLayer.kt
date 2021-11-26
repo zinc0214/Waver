@@ -5,7 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.compose.ui.component.CardTextView
+import com.zinc.berrybucket.compose.ui.component.BucketCard
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.BucketType
@@ -42,7 +42,7 @@ private fun DdayFilterAndSearchImageView(modifier: Modifier = Modifier) {
 private fun DdayBucketListView(bucketList: List<BucketInfoSimple>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         bucketList.forEach { bucket ->
-            CardTextView(
+            BucketCard(
                 itemInfo = bucket,
                 bucketType = BucketType.D_DAY,
                 animFinishEvent = {}
