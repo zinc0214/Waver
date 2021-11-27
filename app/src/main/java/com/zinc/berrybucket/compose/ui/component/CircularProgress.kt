@@ -102,5 +102,9 @@ fun BucketCircularProgressBar(
                 }
             }
         }
+
+        if ((curPercentage.value * 100).toInt() == 0) {
+            progressState.invoke(BucketProgressState.FINISHED)
+        }
     }
 }

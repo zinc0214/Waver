@@ -3,6 +3,8 @@ package com.zinc.berrybucket.compose.ui.component
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -29,10 +31,14 @@ fun BucketCard(
     animFinishEvent: (BucketProgressState) -> Unit,
 ) {
 
-    var bucket by remember { mutableStateOf(itemInfo) }
+    val bucket = remember { mutableStateOf(itemInfo) }
+    val borderColor = remember { mutableStateOf(Color.Transparent) }
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(width = 1.dp, color = borderColor.value, shape = RoundedCornerShape(4.dp))
+            .clickable { },
         shape = RoundedCornerShape(4.dp),
         elevation = 2.dp
     ) {
@@ -46,16 +52,21 @@ fun BucketCard(
 
             // Right Content = SuccessButton
             Box(
-                modifier = Modifier.constrainAs(rightContent) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
+                modifier = Modifier
+                    .constrainAs(rightContent) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .clickable { },
                 contentAlignment = Alignment.CenterEnd
             ) {
                 BucketCircularProgressBar(
                     progressState = {
                         if (it == BucketProgressState.BACK) {
+                            borderColor.value = Main2
+                        } else if (it == BucketProgressState.FINISHED) {
+                            borderColor.value = Color.Transparent
                             animFinishEvent.invoke(it)
                         }
                     },
@@ -84,20 +95,20 @@ fun BucketCard(
             ) {
 
                 // Dday
-                if (bucket.dDay != null) {
-                    DdayBadgeView(bucket)
+                if (bucket.value.dDay != null) {
+                    DdayBadgeView(bucket.value)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
-                TitleTextView(bucket.title)
+                TitleTextView(bucket.value.title)
 
                 // Progress
-                if (bucket.goalCount > 0) {
+                if (bucket.value.goalCount > 0) {
                     CountProgressView(
-                        info = bucket,
+                        info = bucket.value,
                         bucketType = bucketType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
