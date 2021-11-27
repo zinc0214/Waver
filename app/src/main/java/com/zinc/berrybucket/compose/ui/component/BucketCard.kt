@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -221,26 +220,5 @@ private fun HorizontalProgressBar(
     )
     LaunchedEffect(indicatorProgress) {
         progress = indicatorProgress
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun Preview() {
-    BaseTheme {
-        BucketCard(
-            itemInfo = BucketInfoSimple(
-                id = "1234",
-                title = "버킷리스트 아이템 버킷리스트 아이템 버킷리스트 아이템 버킷리스트 아이템 버킷리스트 아이템 버킷리스트 아이템 버킷리스트 아이템",
-                currentCount = 5,
-                goalCount = 10,
-                dDay = 10
-            ),
-            BucketType.BASIC,
-            {
-
-            }
-        )
     }
 }
