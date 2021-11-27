@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray3
-import com.zinc.berrybucket.compose.theme.Main3
+import com.zinc.berrybucket.compose.theme.Main2
 import com.zinc.berrybucket.compose.theme.Sub_D2
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.BucketType
@@ -53,7 +53,6 @@ fun BucketCircularProgressBar(
             }
             .padding(3.dp)
     ) {
-
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawCircle(
                 color = Gray3,
@@ -63,7 +62,7 @@ fun BucketCircularProgressBar(
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
-                color = if (bucketType == BucketType.BASIC) Main3 else Sub_D2,
+                color = if (bucketType == BucketType.BASIC) Main2 else Sub_D2,
                 -90f,
                 360 * curPercentage.value,
                 useCenter = false,
@@ -103,7 +102,7 @@ fun BucketCircularProgressBar(
             }
         }
 
-        if ((curPercentage.value * 100).toInt() == 0) {
+        if ((curPercentage.value * 100).toInt() == 1) {
             progressState.invoke(BucketProgressState.FINISHED)
         }
     }

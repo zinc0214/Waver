@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.compose.ui.component
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -32,6 +33,7 @@ fun BucketCard(
 ) {
 
     val bucket = remember { mutableStateOf(itemInfo) }
+    var bucketCount = bucket.value.currentCount
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
     Card(
@@ -64,10 +66,16 @@ fun BucketCard(
                 BucketCircularProgressBar(
                     progressState = {
                         if (it == BucketProgressState.BACK) {
-                            borderColor.value = Main2
+                            if (bucketType == BucketType.BASIC) {
+                                borderColor.value = Main2
+                            } else {
+                                borderColor.value = Sub_D2
+                            }
                         } else if (it == BucketProgressState.FINISHED) {
                             borderColor.value = Color.Transparent
                             animFinishEvent.invoke(it)
+                            Log.e("ayhan", "BucketProgressState.FINISHED")
+                            bucketCount += 1
                         }
                     },
                     bucketType = bucketType
@@ -109,6 +117,7 @@ fun BucketCard(
                 if (bucket.value.goalCount > 0) {
                     CountProgressView(
                         info = bucket.value,
+                        bucketCount = bucketCount,
                         bucketType = bucketType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
@@ -150,6 +159,7 @@ private fun TitleTextView(title: String) {
 fun CountProgressView(
     modifier: Modifier = Modifier,
     info: BucketInfoSimple,
+    bucketCount: Int,
     bucketType: BucketType
 ) {
 
@@ -167,12 +177,13 @@ fun CountProgressView(
             Modifier
                 .align(Alignment.CenterVertically)
                 .height(8.dp),
-            info,
+            bucketCount,
+            info.goalCount,
             countProgressColor
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
-            text = info.currentCountText(),
+            text = bucketCount.toString(),
             color = countProgressColor,
             fontSize = 13.sp
         )
@@ -187,12 +198,13 @@ fun CountProgressView(
 @Composable
 private fun HorizontalProgressBar(
     modifier: Modifier = Modifier,
-    info: BucketInfoSimple,
+    currentCount: Int,
+    goalCount: Int,
     countProgressColor: Color
 ) {
     var progress by remember { mutableStateOf(0f) }
     val indicatorProgress =
-        if (info.currentCount == 0) 0.0f else (info.currentCount.toFloat() / info.goalCount.toFloat())
+        if (currentCount == 0) 0.0f else (currentCount.toFloat() / goalCount.toFloat())
     val progressAnimDuration = 1500
     val progressAnimation by animateFloatAsState(
         targetValue = indicatorProgress,
