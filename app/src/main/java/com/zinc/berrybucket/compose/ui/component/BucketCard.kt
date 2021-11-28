@@ -22,12 +22,26 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.BucketProgressState
-import com.zinc.berrybucket.model.BucketType
+import com.zinc.berrybucket.model.TabType
+
+@Composable
+fun BucketListView(bucketList: List<BucketInfoSimple>, tabType: TabType) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        bucketList.forEach { bucket ->
+            BucketCard(
+                itemInfo = bucket,
+                tabType = tabType,
+                animFinishEvent = {}
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }
+}
 
 @Composable
 fun BucketCard(
     itemInfo: BucketInfoSimple,
-    bucketType: BucketType,
+    tabType: TabType,
     animFinishEvent: (BucketProgressState) -> Unit,
 ) {
 
@@ -65,7 +79,7 @@ fun BucketCard(
                 BucketCircularProgressBar(
                     progressState = {
                         if (it == BucketProgressState.BACK) {
-                            if (bucketType == BucketType.BASIC) {
+                            if (tabType == TabType.ALL) {
                                 borderColor.value = Main2
                             } else {
                                 borderColor.value = Sub_D2
@@ -77,7 +91,7 @@ fun BucketCard(
                             bucketCount += 1
                         }
                     },
-                    bucketType = bucketType
+                    tabType = tabType
                 )
             }
 
@@ -117,7 +131,7 @@ fun BucketCard(
                     CountProgressView(
                         info = bucket.value,
                         bucketCount = bucketCount,
-                        bucketType = bucketType
+                        tabType = tabType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
                 } else {
@@ -159,11 +173,11 @@ fun CountProgressView(
     modifier: Modifier = Modifier,
     info: BucketInfoSimple,
     bucketCount: Int,
-    bucketType: BucketType
+    tabType: TabType
 ) {
 
     val countProgressColor =
-        if (bucketType == BucketType.BASIC) {
+        if (tabType == TabType.ALL) {
             Main2
         } else if (info.dDay != null && info.dDay > 0) {
             Error2

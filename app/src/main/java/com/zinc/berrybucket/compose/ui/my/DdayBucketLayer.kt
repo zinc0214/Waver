@@ -1,14 +1,15 @@
 package com.zinc.berrybucket.compose.ui.my
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.compose.ui.component.BucketCard
+import com.zinc.berrybucket.compose.ui.component.BucketListView
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
-import com.zinc.berrybucket.model.BucketInfoSimple
-import com.zinc.berrybucket.model.BucketType
 import com.zinc.berrybucket.model.DDayBucketList
 import com.zinc.berrybucket.model.TabType
 
@@ -22,7 +23,7 @@ fun DdayBucketLayer(dDayBucketList: DDayBucketList) {
         ) {
             DdayFilterAndSearchImageView()
             Spacer(modifier = Modifier.height(16.dp))
-            DdayBucketListView(dDayBucketList.bucketList)
+            BucketListView(dDayBucketList.bucketList, TabType.D_DAY)
         }
     }
 }
@@ -35,18 +36,4 @@ private fun DdayFilterAndSearchImageView(modifier: Modifier = Modifier) {
         clickEvent = {},
         tabType = TabType.ALL
     )
-}
-
-@Composable
-private fun DdayBucketListView(bucketList: List<BucketInfoSimple>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        bucketList.forEach { bucket ->
-            BucketCard(
-                itemInfo = bucket,
-                bucketType = BucketType.D_DAY,
-                animFinishEvent = {}
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-    }
 }

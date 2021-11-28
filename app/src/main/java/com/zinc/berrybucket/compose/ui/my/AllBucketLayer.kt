@@ -15,9 +15,11 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
-import com.zinc.berrybucket.compose.ui.component.BucketCard
+import com.zinc.berrybucket.compose.ui.component.BucketListView
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.AllBucketList
+import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.TabType
 
 @Composable
 fun AllBucketLayer(
@@ -35,7 +37,7 @@ fun AllBucketLayer(
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            AllBucketListView(allBucketInfo.bucketList)
+            BucketListView(allBucketInfo.bucketList, TabType.ALL)
         }
     }
 }
@@ -47,7 +49,7 @@ fun AllBucketTopView(
     clickEvent: (MyClickEvent) -> Unit
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Gray2)
     ) {
@@ -92,19 +94,5 @@ private fun BucketStateView(
                 .align(Alignment.CenterVertically)
         )
         Text(text = succeedingText, fontSize = 13.sp, color = Gray8)
-    }
-}
-
-@Composable
-private fun AllBucketListView(bucketList: List<BucketInfoSimple>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        bucketList.forEach { bucket ->
-            BucketCard(
-                itemInfo = bucket,
-                bucketType = BucketType.BASIC,
-                animFinishEvent = {}
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
     }
 }

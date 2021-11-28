@@ -80,7 +80,7 @@ private fun TopRightView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CategoryListView(categoryList: List<Category>) {
+fun CategoryListView(categoryList: List<Category>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         categoryList.forEach { category ->
             CategoryCard(
