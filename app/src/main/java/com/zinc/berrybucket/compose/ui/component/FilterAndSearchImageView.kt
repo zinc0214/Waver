@@ -12,13 +12,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray4
+import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 
 @Composable
 fun FilterAndSearchImageView(
     modifier: Modifier = Modifier,
-    filterClicked: () -> Unit,
-    searchClicked: () -> Unit,
+    clickEvent: (MyClickEvent) -> Unit,
     tabType: TabType
 ) {
     Row(
@@ -36,7 +36,9 @@ fun FilterAndSearchImageView(
             modifier = Modifier
                 .size(32.dp, 32.dp)
                 .padding(0.dp)
-                .clickable { },
+                .clickable {
+                    clickEvent(MyClickEvent.FilterClicked)
+                },
         )
         Divider(
             color = Gray4,
@@ -56,7 +58,9 @@ fun FilterAndSearchImageView(
             modifier = Modifier
                 .size(32.dp, 32.dp)
                 .padding(0.dp)
-                .clickable { },
+                .clickable {
+                    clickEvent(MyClickEvent.SearchClicked)
+                },
         )
     }
 }

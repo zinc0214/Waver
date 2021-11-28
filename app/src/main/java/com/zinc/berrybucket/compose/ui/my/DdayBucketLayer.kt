@@ -32,8 +32,7 @@ private fun DdayFilterAndSearchImageView(modifier: Modifier = Modifier) {
     FilterAndSearchImageView(
         modifier = modifier
             .fillMaxWidth(),
-        filterClicked = {},
-        searchClicked = {},
+        clickEvent = {},
         tabType = TabType.ALL
     )
 }

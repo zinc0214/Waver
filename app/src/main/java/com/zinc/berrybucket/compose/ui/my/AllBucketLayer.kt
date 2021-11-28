@@ -17,19 +17,23 @@ import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.ui.component.BucketCard
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
-import com.zinc.berrybucket.model.AllBucketList
-import com.zinc.berrybucket.model.BucketInfoSimple
-import com.zinc.berrybucket.model.BucketType
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.*
 
 @Composable
-fun AllBucketLayer(allBucketInfo: AllBucketList) {
+fun AllBucketLayer(
+    allBucketInfo: AllBucketList,
+    clickEvent: (MyClickEvent) -> Unit
+) {
     MaterialTheme {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AllBucketTopView(modifier = Modifier, allBucketInfo = allBucketInfo)
+            AllBucketTopView(
+                modifier = Modifier,
+                allBucketInfo = allBucketInfo,
+                clickEvent = clickEvent
+            )
             Spacer(modifier = Modifier.height(16.dp))
             AllBucketListView(allBucketInfo.bucketList)
         }
@@ -37,7 +41,11 @@ fun AllBucketLayer(allBucketInfo: AllBucketList) {
 }
 
 @Composable
-fun AllBucketTopView(modifier: Modifier = Modifier, allBucketInfo: AllBucketList) {
+fun AllBucketTopView(
+    modifier: Modifier = Modifier,
+    allBucketInfo: AllBucketList,
+    clickEvent: (MyClickEvent) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -55,8 +63,7 @@ fun AllBucketTopView(modifier: Modifier = Modifier, allBucketInfo: AllBucketList
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .fillMaxWidth(),
-            filterClicked = {},
-            searchClicked = {},
+            clickEvent = clickEvent,
             tabType = TabType.ALL
         )
     }

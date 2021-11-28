@@ -9,8 +9,12 @@ import androidx.fragment.app.Fragment
 import com.zinc.berrybucket.compose.ui.my.AllBucketLayer
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.TabType
 
 class AllBucketListFragment : Fragment() {
+
+    private lateinit var searchViewClicked: (TabType) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,10 +23,28 @@ class AllBucketListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                AllBucketLayer(loadAllBucket())
+                AllBucketLayer(loadAllBucket()) {
+                    if (it == MyClickEvent.FilterClicked) {
+                        showFilterDialog()
+                    } else {
+                        goToSearchFragment()
+                    }
+                }
             }
         }
     }
+
+    private fun goToSearchFragment() {
+        searchViewClicked.invoke(TabType.ALL)
+    }
+
+    private fun showFilterDialog() {
+        MyAllFilterBottomDialogFragment().show(
+            parentFragmentManager,
+            "MyAllFilterBottomDialogFragment"
+        )
+    }
+
 
     private fun loadAllBucket() = AllBucketList(
         proceedingBucketCount = "11",
@@ -138,15 +160,12 @@ class AllBucketListFragment : Fragment() {
         )
     )
 
-    private fun showFilterDialog() {
-        MyAllFilterBottomDialogFragment().show(
-            parentFragmentManager,
-            "MyAllFilterBottomDialogFragment"
-        )
-    }
 
     companion object {
         @JvmStatic
-        fun newInstance() = AllBucketListFragment()
+        fun newInstance(searchViewClicked: (TabType) -> Unit) =
+            AllBucketListFragment().apply {
+                this.searchViewClicked = searchViewClicked
+            }
     }
 }
