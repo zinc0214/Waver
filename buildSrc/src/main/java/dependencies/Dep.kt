@@ -39,8 +39,6 @@ object Dep {
         object Lifecycle {
             private const val lifecycleVersion = "2.3.1"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
-            const val viewModelCompose =
-                "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
             const val runTime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
         }
@@ -50,7 +48,7 @@ object Dep {
         }
 
         object Compose {
-            const val version = "1.0.1"
+            const val version = "1.0.5"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -64,18 +62,8 @@ object Dep {
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
-                "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+                "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
-        }
-
-        const val viewBinding =
-            "androidx.databinding:viewbinding:${GradlePlugin.androidStudioGradlePluginVersion}"
-
-        object Hilt {
-            private const val version = "1.0.0"
-
-            const val compiler = "androidx.hilt:hilt-compiler:${version}"
-            const val work = "androidx.hilt:hilt-work:${version}"
         }
 
         object RecyclerView {
@@ -88,10 +76,6 @@ object Dep {
 
     object Dagger {
         const val version = "2.39.1"
-        const val hiltAndroid = "com.google.dagger:hilt-android:$version"
-        const val hiltCompiler = "com.google.dagger:hilt-compiler:$version"
-        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:version" // kapt
-
         const val dagger = "com.google.dagger:dagger:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
 
@@ -103,18 +87,18 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.5.21"
+        const val version = "1.5.31"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {
-            private const val coroutinesVersion = "1.5.1"
+            private const val coroutinesVersion = "1.5.2"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
             const val android =
                 "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
             const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
         }
 
-        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2"
+        const val serialization = "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0"
     }
 
     object OkHttp {
@@ -140,6 +124,7 @@ object Dep {
         const val junit = "junit:junit:4.13.2"
         const val androidJunit = "androidx.test.ext:junit:1.1.3"
         const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"
+        const val fragment = "androidx.fragment:fragment-testing:1.3.6"
         const val compose = "androidx.compose.ui:ui-test-junit4:${AndroidX.Compose.version}"
 
         object Mockito {

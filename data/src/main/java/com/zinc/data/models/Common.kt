@@ -2,25 +2,6 @@ package com.zinc.data.models
 
 import kotlinx.serialization.Serializable
 
-data class BucketInfoSimple(
-    val id: String,
-    val title: String,
-    var currentCount: Int = 0,
-    val goalCount: Int = 0,
-    val dDay: Int? = null
-) {
-    val dDatText = dDay?.let {
-        when {
-            it == 0 -> "D-day"
-            it < 0 -> "D$it"
-            else -> "D+$it"
-        }
-    }
-
-    fun currentCountText() = currentCount.toString()
-    fun goalCountText() = goalCount.toString()
-}
-
 @Serializable
 data class BucketInfo(
     val id: String,

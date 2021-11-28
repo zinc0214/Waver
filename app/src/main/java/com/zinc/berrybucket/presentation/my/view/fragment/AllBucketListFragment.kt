@@ -4,38 +4,47 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.databinding.DataBindingUtil
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.zinc.berrybucket.R
-import com.zinc.berrybucket.databinding.FragmentAllBucketListBinding
+import com.zinc.berrybucket.compose.ui.my.AllBucketLayer
 import com.zinc.berrybucket.model.AllBucketList
-import com.zinc.berrybucket.presentation.my.view.recyclerView.adapter.AllBucketAdapter
-import com.zinc.data.models.BucketInfoSimple
+import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.TabType
 
 class AllBucketListFragment : Fragment() {
 
-    private lateinit var binding: FragmentAllBucketListBinding
+    private lateinit var searchViewClicked: (TabType) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_all_bucket_list, container, false)
-        val allInfo = loadAllBucket()
-        binding.info = allInfo
-
-        val adapter = AllBucketAdapter(allInfo.bucketList) {
-            Toast.makeText(requireContext(), "END", Toast.LENGTH_SHORT).show()
+        return ComposeView(requireContext()).apply {
+            setContent {
+                AllBucketLayer(loadAllBucket()) {
+                    if (it == MyClickEvent.FilterClicked) {
+                        showFilterDialog()
+                    } else {
+                        goToSearchFragment()
+                    }
+                }
+            }
         }
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
-        binding.filterImageView.setOnClickListener { showFilterDialog() }
-        return binding.root
     }
+
+    private fun goToSearchFragment() {
+        searchViewClicked.invoke(TabType.ALL)
+    }
+
+    private fun showFilterDialog() {
+        MyAllFilterBottomDialogFragment().show(
+            parentFragmentManager,
+            "MyAllFilterBottomDialogFragment"
+        )
+    }
+
 
     private fun loadAllBucket() = AllBucketList(
         proceedingBucketCount = "11",
@@ -70,19 +79,93 @@ class AllBucketListFragment : Fragment() {
                 currentCount = 5,
                 goalCount = 10,
                 dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
+            ),
+            BucketInfoSimple(
+                id = "3",
+                title = "Dday가 있는 애22233",
+                currentCount = 5,
+                goalCount = 10,
+                dDay = -10
             )
         )
     )
 
-    private fun showFilterDialog() {
-        MyAllFilterBottomDialogFragment().show(
-            parentFragmentManager,
-            "MyAllFilterBottomDialogFragment"
-        )
-    }
 
     companion object {
         @JvmStatic
-        fun newInstance() = AllBucketListFragment()
+        fun newInstance(searchViewClicked: (TabType) -> Unit) =
+            AllBucketListFragment().apply {
+                this.searchViewClicked = searchViewClicked
+            }
     }
 }

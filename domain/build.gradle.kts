@@ -28,12 +28,7 @@ android {
 }
 
 dependencies {
-
     implementation(project(":data"))
-
-    implementation(Dep.AndroidX.coreKtx)
-    implementation(Dep.AndroidX.appcompat)
-    implementation(Dep.AndroidX.UI.material)
 
     testImplementation(Dep.Test.junit)
     androidTestImplementation(Dep.Test.androidJunit)
@@ -47,7 +42,6 @@ dependencies {
     // coroutine
     implementation(Dep.Kotlin.coroutines.core)
     implementation(Dep.Kotlin.coroutines.android)
-
 }
 
 kapt {

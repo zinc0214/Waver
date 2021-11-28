@@ -1,23 +1,26 @@
 package com.zinc.berrybucket.presentation.my.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.component.ProfileCircularProgressBarWidget
+import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.databinding.FragmentMyBinding
+import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyFragment : Fragment() {
+
+    // private lateinit var searchClicked : (TabType) -> Unit
     private lateinit var binding: FragmentMyBinding
     private val viewModel by viewModels<MyViewModel>()
 
@@ -32,18 +35,28 @@ class MyFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setUpViews()
         setUpTabLayout()
         setUpObservers()
         viewModel.loadProfile()
+    }
+
+    private fun setUpViews() {
+        binding.composeView.apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+        }
     }
 
     private fun setUpObservers() {
         viewModel.profileInfo.observe(viewLifecycleOwner) { profile ->
             profile?.let {
                 binding.profileInfo = it
-                val imageView =
-                    ProfileCircularProgressBarWidget("www.naver.com", 0.5f, requireContext())
-                binding.profileImageLayout.addView(imageView)
+
+                binding.composeView.setContent {
+                    MyTopLayer(profileInfo = profile)
+                }
             }
 
         }
@@ -54,7 +67,11 @@ class MyFragment : Fragment() {
         val myTabView = MyTabCustom(requireContext())
         myTabView.setUpTabDesigns(binding.myTabLayout)
 
-        val allFragment = AllBucketListFragment.newInstance()
+        val allFragment = AllBucketListFragment.newInstance(
+            searchViewClicked = { type ->
+                showSearchFragment(type)
+            }
+        )
         val categoryFragment = CategoryListFragment.newInstance()
         val ddayFragment = DdayBucketListFragment.newInstance()
 
@@ -62,7 +79,6 @@ class MyFragment : Fragment() {
 
         binding.myTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-                Log.e("ayhan", "tabPosition : ${tab.position}")
                 val currentFragment = when (tab.position) {
                     0 -> {
                         allFragment
@@ -87,6 +103,10 @@ class MyFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun showSearchFragment(tabType: TabType) {
+        MySearchFragment.newInstance(tabType).show(parentFragmentManager, "MySearchFragment")
     }
 
     companion object {
