@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
-import com.zinc.berrybucket.compose.ui.my.CategoryListView
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType

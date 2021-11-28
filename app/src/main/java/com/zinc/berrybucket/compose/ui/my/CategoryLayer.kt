@@ -14,6 +14,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.theme.Main4
+import com.zinc.berrybucket.compose.ui.component.CategoryAddView
 import com.zinc.berrybucket.compose.ui.component.CategoryListView
 import com.zinc.berrybucket.compose.ui.component.EditButtonAndSearchImageView
 import com.zinc.data.models.Category
@@ -29,6 +30,7 @@ fun CategoryLayer(categoryList: List<Category>, recommendCategory: String) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory)
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(categoryList)
+            CategoryAddView()
         }
     }
 }
