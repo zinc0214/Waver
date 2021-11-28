@@ -6,19 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.viewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.component.SearchLayer
+import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MySearchFragment : BottomSheetDialogFragment() {
 
     lateinit var tabType: TabType
+    private val viewModel by viewModels<MyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +37,18 @@ class MySearchFragment : BottomSheetDialogFragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                SearchLayer(currentTabType = tabType)
+                SearchLayer(
+                    currentTabType = tabType,
+                    clickEvent = {
+                        if (it == MyClickEvent.CloseClicked) {
+                            dismiss()
+                        }
+                    },
+                    searchWord = { tabType, word ->
+                        viewModel.searchList(tabType, word)
+                    },
+                    result = viewModel.searchResult.observeAsState()
+                )
             }
         }
     }

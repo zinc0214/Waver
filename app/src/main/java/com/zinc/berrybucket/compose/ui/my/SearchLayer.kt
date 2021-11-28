@@ -1,10 +1,7 @@
 package com.zinc.berrybucket.compose.ui.component
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -25,28 +22,41 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
+import com.zinc.berrybucket.compose.ui.my.CategoryListView
+import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.model.TabType.Companion.getNameResource
+import com.zinc.data.models.Category
 
 @Composable
 fun SearchLayer(
-    currentTabType: TabType
+    currentTabType: TabType,
+    clickEvent: (MyClickEvent) -> Unit,
+    searchWord: (TabType, String) -> Unit,
+    result: State<Pair<TabType, List<*>>?>
 ) {
 
-    val tabType = remember { mutableStateOf(currentTabType) }
+    val selectTab = remember { mutableStateOf(currentTabType) }
+    val searchedTab = remember { mutableStateOf(currentTabType) }
 
     BaseTheme {
         Scaffold(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
                 .background(Gray1)
         ) {
             Column {
-                TopAppBar()
+                TopAppBar(clickEvent = clickEvent)
 
                 SearchEditView(
-                    type = tabType.value,
+                    type = selectTab.value,
+                    onImeAction = { word ->
+                        if (word.isNotEmpty()) {
+                            searchWord.invoke(selectTab.value, word)
+                            searchedTab.value = selectTab.value
+                        }
+                    }
                 )
 
                 Box(
@@ -65,23 +75,39 @@ fun SearchLayer(
                 ChipBodyContent(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     list = TabType.values().toList(),
-                    currentTab = tabType
+                    currentTab = selectTab
                 )
+
+                Box(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(top = 20.dp)
+                        .background(Gray2)
+                ) {
+                    result.value?.let {
+                        if (searchedTab.value == selectTab.value) {
+                            Spacer(modifier = Modifier.height(20.dp))
+                            SearchResultView(it)
+                        }
+                    }
+                }
             }
-
         }
-
     }
 }
 
 @Composable
-private fun TopAppBar() {
+private fun TopAppBar(clickEvent: (MyClickEvent) -> Unit) {
     TopAppBar(
         navigationIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.btn40close),
                 contentDescription = null,
-                modifier = Modifier.padding(start = 14.dp, top = 8.dp)
+                modifier = Modifier
+                    .padding(start = 14.dp, top = 8.dp)
+                    .clickable {
+                        clickEvent(MyClickEvent.CloseClicked)
+                    }
             )
         },
         title = {
@@ -95,7 +121,7 @@ private fun TopAppBar() {
 @Composable
 private fun SearchEditView(
     type: TabType,
-    onImeAction: () -> Unit = {}
+    onImeAction: (String) -> Unit
 ) {
 
     Row(
@@ -116,7 +142,7 @@ private fun SearchEditView(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchEditView(
-    onImeAction: () -> Unit
+    onImeAction: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.hint)
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -132,7 +158,7 @@ private fun SearchEditView(
         maxLines = 1,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            onImeAction()
+            onImeAction(searchText.text)
             keyboardController?.hide()
         }),
         decorationBox = { innerTextField ->
@@ -151,8 +177,9 @@ private fun SearchEditView(
 fun ChipBodyContent(
     modifier: Modifier = Modifier,
     list: List<TabType>,
-    currentTab: MutableState<TabType>
-) {
+    currentTab: MutableState<TabType>,
+
+    ) {
     Row(
         modifier = modifier
             .horizontalScroll(rememberScrollState())
@@ -189,5 +216,21 @@ fun Chip(modifier: Modifier = Modifier, text: String, isSelected: Boolean) {
             fontSize = 14.sp,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
         )
+    }
+}
+
+@Composable
+private fun SearchResultView(result: Pair<TabType, List<*>>) {
+
+    if (result.first == TabType.CATEGORY) {
+        if (result.second.all { item -> item is Category }) {
+            val items = result.second as List<Category>
+            CategoryListView(items)
+        }
+    } else {
+        if (result.second.all { item -> item is BucketInfoSimple }) {
+            val items = result.second as List<BucketInfoSimple>
+            BucketListView(items, result.first)
+        }
     }
 }

@@ -19,7 +19,7 @@ import com.zinc.berrybucket.compose.theme.Gray3
 import com.zinc.berrybucket.compose.theme.Main2
 import com.zinc.berrybucket.compose.theme.Sub_D2
 import com.zinc.berrybucket.model.BucketProgressState
-import com.zinc.berrybucket.model.BucketType
+import com.zinc.berrybucket.model.TabType
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,7 +28,7 @@ import kotlinx.coroutines.runBlocking
 @Composable
 fun BucketCircularProgressBar(
     progressState: (BucketProgressState) -> Unit,
-    bucketType: BucketType,
+    tabType: TabType,
     radius: Dp = 16.dp,
     animDuration: Int = 1000,
     animDelay: Int = 0
@@ -62,7 +62,7 @@ fun BucketCircularProgressBar(
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
-                color = if (bucketType == BucketType.BASIC) Main2 else Sub_D2,
+                color = if (tabType == TabType.ALL) Main2 else Sub_D2,
                 -90f,
                 360 * curPercentage.value,
                 useCenter = false,
@@ -81,7 +81,7 @@ fun BucketCircularProgressBar(
         if ((curPercentage.value * 100).toInt() == 100) {
             Image(
                 painter =
-                if (bucketType == BucketType.BASIC)
+                if (tabType == TabType.ALL)
                     painterResource(R.drawable.check_succeed)
                 else
                     painterResource(R.drawable.check_succeed_dday),
