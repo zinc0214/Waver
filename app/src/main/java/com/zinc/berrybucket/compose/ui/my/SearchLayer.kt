@@ -43,7 +43,8 @@ fun SearchLayer(
         Scaffold(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Gray1)
+                .fillMaxHeight()
+                .background(Gray2)
         ) {
             Column {
                 TopAppBar(clickEvent = clickEvent)
@@ -82,11 +83,14 @@ fun SearchLayer(
                         .verticalScroll(rememberScrollState())
                         .padding(top = 20.dp)
                         .background(Gray2)
+                        .fillMaxHeight()
                 ) {
                     result.value?.let {
                         if (searchedTab.value == selectTab.value) {
-                            Spacer(modifier = Modifier.height(20.dp))
-                            SearchResultView(it)
+                            Column {
+                                Spacer(modifier = Modifier.height(20.dp))
+                                SearchResultView(it)
+                            }
                         }
                     }
                 }
