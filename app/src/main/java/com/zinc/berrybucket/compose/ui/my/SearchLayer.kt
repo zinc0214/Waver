@@ -99,7 +99,7 @@ private fun SearchEditView(
 ) {
 
     Row(
-        modifier = Modifier.padding(start = 28.dp, end = 28.dp)
+        modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
     ) {
         Text(
             text = stringResource(id = getNameResource(type)),
