@@ -14,7 +14,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.theme.Main4
-import com.zinc.berrybucket.compose.ui.component.CategoryCard
+import com.zinc.berrybucket.compose.ui.component.CategoryListView
 import com.zinc.berrybucket.compose.ui.component.EditButtonAndSearchImageView
 import com.zinc.data.models.Category
 
@@ -77,17 +77,4 @@ private fun TopRightView(modifier: Modifier = Modifier) {
         editClicked = {},
         searchClicked = {}
     )
-}
-
-@Composable
-fun CategoryListView(categoryList: List<Category>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        categoryList.forEach { category ->
-            CategoryCard(
-                category = category,
-                clicked = {}
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-    }
 }

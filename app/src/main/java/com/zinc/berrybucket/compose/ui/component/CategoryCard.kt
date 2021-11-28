@@ -3,10 +3,7 @@ package com.zinc.berrybucket.compose.ui.component
 import android.view.MotionEvent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -25,6 +22,19 @@ import com.zinc.berrybucket.compose.theme.Gray7
 import com.zinc.berrybucket.compose.theme.Gray9
 import com.zinc.berrybucket.compose.theme.Main2
 import com.zinc.data.models.Category
+
+@Composable
+fun CategoryListView(categoryList: List<Category>) {
+    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+        categoryList.forEach { category ->
+            CategoryCard(
+                category = category,
+                clicked = {}
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -61,19 +71,17 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
             val (leftContent, rightContent) = createRefs()
 
             // Right Content = SuccessButton
-            Box(
+            CategoryRightView(
                 modifier = Modifier.constrainAs(rightContent) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                CategoryCountView(count = category.count)
-            }
+                count = category.count
+            )
 
             // Left Contents
-            Column(
+            CategoryLeftView(
                 modifier = Modifier
                     .constrainAs(leftContent) {
                         end.linkTo(rightContent.start)
@@ -89,13 +97,20 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
                         )
                     }
                     .fillMaxWidth(.8f),
-                horizontalAlignment = Alignment.Start
-            ) {
-                CategoryTextView(
-                    name = category.name
-                )
-            }
+                name = category.name
+            )
         }
+    }
+}
+
+
+@Composable
+private fun CategoryRightView(modifier: Modifier = Modifier, count: String) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.CenterEnd
+    ) {
+        CategoryCountView(count = count)
     }
 }
 
@@ -108,6 +123,19 @@ private fun CategoryCountView(modifier: Modifier = Modifier, count: String) {
         fontSize = 14.sp
     )
 }
+
+@Composable
+private fun CategoryLeftView(modifier: Modifier = Modifier, name: String) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.Start
+    ) {
+        CategoryTextView(
+            name = name
+        )
+    }
+}
+
 
 @Composable
 private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
