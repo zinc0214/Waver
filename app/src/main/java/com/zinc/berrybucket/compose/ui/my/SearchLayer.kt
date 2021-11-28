@@ -92,15 +92,11 @@ private fun TopAppBar() {
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchEditView(
     type: TabType,
-    text: String = stringResource(id = R.string.hint),
     onImeAction: () -> Unit = {}
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
     Row(
         modifier = Modifier.padding(start = 28.dp, end = 28.dp)
@@ -112,30 +108,42 @@ private fun SearchEditView(
         )
         Spacer(modifier = Modifier.width(12.dp))
 
-        BasicTextField(
-            value = searchText,
-            textStyle = TextStyle(
-                color = Gray10,
-                fontSize = 20.sp
-            ),
-            onValueChange = { searchText = it },
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                onImeAction()
-                keyboardController?.hide()
-            }),
-            decorationBox = { innerTextField ->
-                Row {
-                    if (searchText.text.isEmpty()) {
-                        Text(text = text, color = Gray6, fontSize = 20.sp)
-                    }
-                    innerTextField()  //<-- Add this
-                }
-            },
-        )
+        SearchEditView(onImeAction)
     }
 
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun SearchEditView(
+    onImeAction: () -> Unit
+) {
+    val hintText = stringResource(id = R.string.hint)
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var searchText by remember { mutableStateOf(TextFieldValue("")) }
+
+    BasicTextField(
+        value = searchText,
+        textStyle = TextStyle(
+            color = Gray10,
+            fontSize = 20.sp
+        ),
+        onValueChange = { searchText = it },
+        maxLines = 1,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = {
+            onImeAction()
+            keyboardController?.hide()
+        }),
+        decorationBox = { innerTextField ->
+            Row {
+                if (searchText.text.isEmpty()) {
+                    Text(text = hintText, color = Gray6, fontSize = 20.sp)
+                }
+                innerTextField()  //<-- Add this
+            }
+        },
+    )
 }
 
 
