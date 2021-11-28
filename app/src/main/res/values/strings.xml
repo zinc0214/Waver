@@ -55,6 +55,9 @@
     <string name="noDdayBucketList">디데이가 지나지 않은 버킷리스트</string>
     <string name="ddayPastBucketList">디데이가 지난 버킷리스트</string>
 
+    <!-- My > Search -->
+    <string name="hint">리스트를 검색하세요</string>
+
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
     <string name="recommendBucketList">버킷 추천받기</string>

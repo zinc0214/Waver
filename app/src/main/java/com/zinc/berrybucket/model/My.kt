@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.model
 
+import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.compose.theme.Main4
@@ -56,5 +57,24 @@ enum class BucketType {
 }
 
 enum class TabType {
-    ALL, D_DAY, CATEGORY, CHALLENGE
+    ALL, D_DAY, CATEGORY, CHALLENGE;
+
+    companion object {
+        fun getNameResource(type: TabType): Int {
+            return when (type) {
+                ALL -> {
+                    R.string.allTab
+                }
+                D_DAY -> {
+                    R.string.ddayTab
+                }
+                CATEGORY -> {
+                    R.string.categoryTab
+                }
+                else -> {
+                    R.string.challengeTab
+                }
+            }
+        }
+    }
 }
