@@ -78,3 +78,10 @@ enum class TabType {
         }
     }
 }
+
+
+sealed class MyClickEvent {
+    object SearchClicked : MyClickEvent()
+    object FilterClicked : MyClickEvent()
+    object CloseClicked : MyClickEvent()
+}
