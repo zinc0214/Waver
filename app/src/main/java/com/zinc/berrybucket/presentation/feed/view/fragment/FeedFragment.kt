@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
-import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.ui.feed.FeedKeywordsLayer
 import com.zinc.berrybucket.databinding.FragmentFeedBinding
 import com.zinc.berrybucket.model.FeedInfo
 import com.zinc.berrybucket.presentation.feed.view.recyclerView.adapter.FeedContentItemAdapter
@@ -21,18 +21,31 @@ class FeedFragment : Fragment() {
 
     private lateinit var binding: FragmentFeedBinding
 
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View {
+//        binding =
+//            DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
+//        setUpViews()
+//        setRecommendAdapter()
+//        setContentAdapter()
+//        return binding.root
+//    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
-        setUpViews()
-        setRecommendAdapter()
-        setContentAdapter()
-        return binding.root
+        return ComposeView(requireContext()).apply {
+            setContent {
+                FeedKeywordsLayer(keywords = listOf("여행", "제주도", "맛집탐방", "넷플릭스", "데이트", "뿅뿅짠짠"))
+            }
+        }
     }
+
 
     private fun setUpViews() {
         binding.recommendButton.setOnClickListener {
