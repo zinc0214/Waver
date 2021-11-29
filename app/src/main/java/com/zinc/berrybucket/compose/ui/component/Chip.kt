@@ -9,9 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.zinc.berrybucket.compose.theme.Gray4
-import com.zinc.berrybucket.compose.theme.Gray6
-import com.zinc.berrybucket.compose.theme.Main4
+import com.zinc.berrybucket.compose.theme.*
 
 @Composable
 fun RoundChip(modifier: Modifier = Modifier, text: String, isSelected: Boolean) {

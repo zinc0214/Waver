@@ -182,9 +182,8 @@ private fun SearchEditView(
 fun ChipBodyContent(
     modifier: Modifier = Modifier,
     list: List<TabType>,
-    currentTab: MutableState<TabType>,
-
-    ) {
+    currentTab: MutableState<TabType>
+) {
     Row(
         modifier = modifier
             .horizontalScroll(rememberScrollState())
@@ -203,7 +202,6 @@ fun ChipBodyContent(
                 isSelected = currentTab.value == tabType
             )
         }
-
     }
 }
 
