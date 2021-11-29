@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.component.SearchLayer
+import com.zinc.berrybucket.compose.ui.my.SearchLayer
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
