@@ -3,7 +3,6 @@ package com.zinc.berrybucket.compose.ui.component
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -188,7 +187,7 @@ fun ChipBodyContent(
             .horizontalScroll(rememberScrollState())
     ) {
         for (tabType in list) {
-            Chip(
+            RoundChip(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .selectable(
@@ -205,22 +204,6 @@ fun ChipBodyContent(
     }
 }
 
-@Composable
-fun Chip(modifier: Modifier = Modifier, text: String, isSelected: Boolean) {
-    Card(
-        modifier = modifier,
-        border = BorderStroke(color = if (isSelected) Main4 else Gray4, width = 1.dp),
-        shape = RoundedCornerShape(16.dp),
-        elevation = 0.dp
-    ) {
-        Text(
-            text = text,
-            color = if (isSelected) Main4 else Gray6,
-            fontSize = 14.sp,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-        )
-    }
-}
 
 @Composable
 private fun SearchResultView(result: Pair<TabType, List<*>>) {
