@@ -8,6 +8,7 @@
     <style name="NonClosableBottomSheetDialogStyle" parent="CustomBottomSheetDialogTheme">
         <item name="behavior_draggable">false</item>
         <item name="state_collapsed">true</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
