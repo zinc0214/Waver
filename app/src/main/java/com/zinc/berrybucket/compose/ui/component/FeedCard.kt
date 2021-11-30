@@ -24,6 +24,19 @@ import com.zinc.berrybucket.model.FeedInfo
 
 
 @Composable
+fun FeedListView(modifier: Modifier = Modifier, feedList: List<FeedInfo>) {
+    Column(modifier = modifier) {
+        feedList.forEach { feed ->
+            FeedCardView(
+                feedInfo = feed,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+    }
+}
+
+
+@Composable
 fun FeedCardView(feedInfo: FeedInfo) {
 
     Card(
@@ -59,7 +72,7 @@ fun FeedCardView(feedInfo: FeedInfo) {
             BottomStateView(
                 modifier = Modifier
                     .padding(horizontal = 14.dp)
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp, bottom = 20.dp)
                     .fillMaxWidth(),
                 feedInfo = feedInfo
             )

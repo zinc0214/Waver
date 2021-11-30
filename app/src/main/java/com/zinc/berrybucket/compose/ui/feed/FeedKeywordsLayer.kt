@@ -28,8 +28,7 @@ import com.zinc.berrybucket.compose.ui.component.BoxedChip
 
 
 @Composable
-fun FeedKeywordsLayer(keywords: List<String>) {
-
+fun FeedKeywordsLayer(keywords: List<String>, recommendClicked: () -> Unit) {
     Scaffold {
         Column(
             modifier = Modifier
@@ -51,10 +50,10 @@ fun FeedKeywordsLayer(keywords: List<String>) {
                     .padding(bottom = 28.dp)
                     .fillMaxWidth()
             ) {
-
                 BucketRecommendButton(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    recommendClicked
                 )
             }
         }
@@ -102,12 +101,14 @@ private fun ChipBodyContent(
 }
 
 @Composable
-private fun BucketRecommendButton(modifier: Modifier = Modifier) {
+private fun BucketRecommendButton(modifier: Modifier = Modifier, recommendClicked: () -> Unit) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(Main4)
-            .clickable { }
+            .clickable {
+                recommendClicked()
+            }
     ) {
         Text(
             text = stringResource(id = R.string.recommendBucketList),
