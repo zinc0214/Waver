@@ -3,6 +3,8 @@ package com.zinc.berrybucket.model
 import androidx.annotation.Nullable
 
 data class FeedInfo(
+    val profileImage: String,
+    val badgeImage: String,
     val titlePosition: String,
     val nickName: String,
     @Nullable val imageList: List<String>? = null,
