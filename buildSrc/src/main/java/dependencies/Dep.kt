@@ -53,17 +53,16 @@ object Dep {
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
             const val material = "androidx.compose.material:material:${version}"
-            const val materialAdapter =
-                "com.google.android.material:compose-theme-adapter:${version}"
             const val tooling = "androidx.compose.ui:ui-tooling:${version}"
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
-            const val animation = "androidx.compose.animation:animation:$version"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
                 "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
-            const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07"
+            const val viewPager =
+                "com.google.accompanist:accompanist-pager:0.20.0"
+
         }
 
         object RecyclerView {
