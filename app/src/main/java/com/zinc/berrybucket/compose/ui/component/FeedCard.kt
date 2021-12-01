@@ -134,12 +134,12 @@ private fun ProfileTextView(titlePosition: String, nickname: String) {
         Text(
             text = titlePosition,
             fontSize = 12.sp,
-            color = Gray9
+            color = Gray7
         )
         Text(
             text = nickname,
             fontSize = 12.sp,
-            color = Gray7
+            color = Gray9
         )
     }
 }
