@@ -24,6 +24,8 @@ class MyFragment : Fragment() {
     private lateinit var binding: FragmentMyBinding
     private val viewModel by viewModels<MyViewModel>()
 
+    private lateinit var goToBucketDetail: (String) -> Unit
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,6 +72,9 @@ class MyFragment : Fragment() {
         val allFragment = AllBucketListFragment.newInstance(
             searchViewClicked = { type ->
                 showSearchFragment(type)
+            },
+            goToBucketDetail = { id ->
+                goToBucketDetail.invoke(id)
             }
         )
         val categoryFragment = CategoryListFragment.newInstance()
@@ -111,6 +116,8 @@ class MyFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = MyFragment()
+        fun newInstance(goToBucketDetail: (String) -> Unit) = MyFragment().apply {
+            this.goToBucketDetail = goToBucketDetail
+        }
     }
 }

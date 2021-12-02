@@ -18,6 +18,7 @@ import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.ui.component.BucketListView
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
+import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 
@@ -37,7 +38,9 @@ fun AllBucketLayer(
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(allBucketInfo.bucketList, TabType.ALL)
+            BucketListView(allBucketInfo.bucketList, TabType.ALL, itemClicked = {
+                clickEvent.invoke(ItemClicked(it))
+            })
         }
     }
 }

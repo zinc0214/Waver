@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.SearchClicked
 import com.zinc.berrybucket.model.TabType
 
 @Composable
@@ -59,7 +60,7 @@ fun FilterAndSearchImageView(
                 .size(32.dp, 32.dp)
                 .padding(0.dp)
                 .clickable {
-                    clickEvent(MyClickEvent.SearchClicked)
+                    clickEvent(SearchClicked(tabType = tabType))
                 },
         )
     }

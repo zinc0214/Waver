@@ -11,29 +11,37 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.compose.ui.component.BucketListView
 import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
 import com.zinc.berrybucket.model.DDayBucketList
+import com.zinc.berrybucket.model.ItemClicked
+import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 
 
 @Composable
-fun DdayBucketLayer(dDayBucketList: DDayBucketList) {
+fun DdayBucketLayer(dDayBucketList: DDayBucketList, clickEvent: (MyClickEvent) -> Unit) {
     MaterialTheme {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            DdayFilterAndSearchImageView()
+            DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(dDayBucketList.bucketList, TabType.D_DAY)
+            BucketListView(dDayBucketList.bucketList, TabType.D_DAY,
+                itemClicked = {
+                    clickEvent.invoke(ItemClicked(it))
+                })
         }
     }
 }
 
 @Composable
-private fun DdayFilterAndSearchImageView(modifier: Modifier = Modifier) {
+private fun DdayFilterAndSearchImageView(
+    modifier: Modifier = Modifier,
+    clickEvent: (MyClickEvent) -> Unit
+) {
     FilterAndSearchImageView(
         modifier = modifier
             .fillMaxWidth(),
-        clickEvent = {},
+        clickEvent = { clickEvent.invoke(it) },
         tabType = TabType.ALL
     )
 }

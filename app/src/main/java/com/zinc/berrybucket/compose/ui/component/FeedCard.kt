@@ -180,7 +180,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
 
 @Composable
 private fun ImageView(modifier: Modifier = Modifier, imageList: List<String>) {
-    ImageViewPager(
+    ImageViewPagerOutSideIndicator(
         modifier = modifier,
         imageList = imageList
     )

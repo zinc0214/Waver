@@ -3,7 +3,8 @@
 
     <!--타이틀 디스크립션-->
     <string name="titleLeftDesc">뒤로가기</string>
-    <string name="titleRightDesc">닫기</string>
+    <string name="closeDesc">닫기</string>
+    <string name="moreDesc">더보기 버튼</string>
 
     <!-- Common -->
     <string name="cancel">취소</string>

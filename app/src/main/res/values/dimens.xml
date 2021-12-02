@@ -2,4 +2,7 @@
 <resources>
     <dimen name="_0">0dp</dimen>
     <dimen name="_17">17dp</dimen>
+
+    <!-- elevation for Plant Detail toolbar - used to convert to pixels when hiding/showing -->
+    <dimen name="toolbar_elevation">5dp</dimen>
 </resources>

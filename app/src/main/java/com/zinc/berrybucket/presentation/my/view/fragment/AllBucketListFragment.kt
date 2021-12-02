@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.zinc.berrybucket.compose.ui.my.AllBucketLayer
-import com.zinc.berrybucket.model.AllBucketList
-import com.zinc.berrybucket.model.BucketInfoSimple
-import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.*
 
 class AllBucketListFragment : Fragment() {
 
     private lateinit var searchViewClicked: (TabType) -> Unit
+    private lateinit var goToBucketDetail: (String) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,18 +22,31 @@ class AllBucketListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 AllBucketLayer(loadAllBucket()) {
-                    if (it == MyClickEvent.FilterClicked) {
-                        showFilterDialog()
-                    } else {
-                        goToSearchFragment()
+                    when (it) {
+                        is MyClickEvent.FilterClicked -> {
+                            showFilterDialog()
+                        }
+                        is ItemClicked -> {
+                            goToBucketDetail(it.id)
+                        }
+                        is SearchClicked -> {
+                            goToSearchFragment(it.tabType)
+                        }
+                        else -> {
+                            // Do Nothing
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun goToSearchFragment() {
-        searchViewClicked.invoke(TabType.ALL)
+    private fun goToSearchFragment(tabType: TabType) {
+        searchViewClicked.invoke(tabType)
+    }
+
+    private fun goToBucketDetail(id: String) {
+        goToBucketDetail.invoke(id)
     }
 
     private fun showFilterDialog() {
@@ -163,9 +174,10 @@ class AllBucketListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(searchViewClicked: (TabType) -> Unit) =
+        fun newInstance(searchViewClicked: (TabType) -> Unit, goToBucketDetail: (String) -> Unit) =
             AllBucketListFragment().apply {
                 this.searchViewClicked = searchViewClicked
+                this.goToBucketDetail = goToBucketDetail
             }
     }
 }

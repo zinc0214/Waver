@@ -81,7 +81,9 @@ enum class TabType {
 
 
 sealed class MyClickEvent {
-    object SearchClicked : MyClickEvent()
     object FilterClicked : MyClickEvent()
     object CloseClicked : MyClickEvent()
 }
+
+data class ItemClicked(val id: String) : MyClickEvent()
+data class SearchClicked(val tabType: TabType) : MyClickEvent()

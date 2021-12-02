@@ -25,6 +25,7 @@ import com.zinc.berrybucket.compose.ui.component.BucketListView
 import com.zinc.berrybucket.compose.ui.component.CategoryListView
 import com.zinc.berrybucket.compose.ui.component.RoundChip
 import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.model.TabType.Companion.getNameResource
@@ -91,7 +92,9 @@ fun SearchLayer(
                         if (searchedTab.value == selectTab.value) {
                             Column {
                                 Spacer(modifier = Modifier.height(20.dp))
-                                SearchResultView(it)
+                                SearchResultView(it, clickEvent = { event ->
+                                    clickEvent.invoke(event)
+                                })
                             }
                         }
                     }
@@ -207,7 +210,7 @@ fun ChipBodyContent(
 
 
 @Composable
-private fun SearchResultView(result: Pair<TabType, List<*>>) {
+private fun SearchResultView(result: Pair<TabType, List<*>>, clickEvent: (MyClickEvent) -> Unit) {
 
     if (result.first == TabType.CATEGORY) {
         if (result.second.all { item -> item is Category }) {
@@ -217,7 +220,9 @@ private fun SearchResultView(result: Pair<TabType, List<*>>) {
     } else {
         if (result.second.all { item -> item is BucketInfoSimple }) {
             val items = result.second as List<BucketInfoSimple>
-            BucketListView(items, result.first)
+            BucketListView(items, result.first, itemClicked = {
+                clickEvent.invoke(ItemClicked(it))
+            })
         }
     }
 }

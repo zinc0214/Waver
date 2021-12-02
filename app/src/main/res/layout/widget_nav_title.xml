@@ -53,7 +53,7 @@
             android:id="@+id/rightButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:contentDescription="@string/titleRightDesc"
+            android:contentDescription="@string/closeDesc"
             android:src="@drawable/btn40close"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

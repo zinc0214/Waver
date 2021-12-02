@@ -18,7 +18,7 @@ import com.zinc.berrybucket.R
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ImageViewPager(modifier: Modifier = Modifier, imageList: List<String>) {
+fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
     Column(
         modifier
             .fillMaxWidth()
@@ -59,4 +59,51 @@ fun ImageViewPager(modifier: Modifier = Modifier, imageList: List<String>) {
                 .padding(top = 4.dp),
         )
     }
+}
+
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
+    Box(
+        modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        content = {
+            val pagerState = rememberPagerState()
+
+            Card(
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .aspectRatio(1f),
+                shape = RoundedCornerShape(4.dp),
+                elevation = 0.dp,
+                content = {
+                    // Display 10 items
+                    HorizontalPager(
+                        count = imageList.size,
+                        state = pagerState,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) { page ->
+                        Image(
+                            painter = painterResource(id = R.drawable.kakao),
+                            contentDescription = "Test",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+            )
+
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 18.dp, end = 18.dp),
+            )
+        }
+    )
 }
