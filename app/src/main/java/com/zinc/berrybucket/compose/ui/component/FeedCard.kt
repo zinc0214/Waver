@@ -11,7 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,8 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.*
+import com.zinc.berrybucket.compose.theme.Gray1
+import com.zinc.berrybucket.compose.theme.Gray10
+import com.zinc.berrybucket.compose.theme.Main4
+import com.zinc.berrybucket.compose.theme.Main5
 import com.zinc.berrybucket.model.FeedInfo
+import com.zinc.berrybucket.model.profileInfo
 
 
 @Composable
@@ -47,7 +50,7 @@ fun FeedCardView(feedInfo: FeedInfo) {
         Column {
             ProfileView(
                 modifier = Modifier.padding(top = 20.dp),
-                feedInfo = feedInfo
+                profileInfo = feedInfo.profileInfo()
             )
             ProcessView(
                 modifier = Modifier.padding(top = 25.dp, start = 10.dp),
@@ -77,70 +80,6 @@ fun FeedCardView(feedInfo: FeedInfo) {
                 feedInfo = feedInfo
             )
         }
-    }
-}
-
-
-@Composable
-private fun ProfileView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-    ) {
-
-        ProfileImageView(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            feedInfo.profileImage,
-            feedInfo.badgeImage
-        )
-        ProfileTextView(feedInfo.titlePosition, feedInfo.nickName)
-
-    }
-}
-
-@Composable
-private fun ProfileImageView(modifier: Modifier = Modifier, profile: String, badge: String) {
-    Box(
-        modifier = modifier.size(36.dp),
-        content = {
-            Image(
-                painter = painterResource(id = R.drawable.kakao),
-                contentDescription = stringResource(
-                    id = R.string.feedProfileImage
-                ),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(32.dp, 32.dp)
-                    .aspectRatio(1f)
-                    .clip(shape = RoundedCornerShape(12.dp))
-                    .align(Alignment.TopStart)
-            )
-            Image(
-                painter = painterResource(id = R.drawable.badge_small),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .size(18.dp, 20.dp)
-                    .align(Alignment.BottomEnd),
-                alignment = Alignment.BottomEnd
-            )
-        })
-}
-
-@Composable
-private fun ProfileTextView(titlePosition: String, nickname: String) {
-    Column(modifier = Modifier.padding(start = 7.dp)) {
-        Text(
-            text = titlePosition,
-            fontSize = 12.sp,
-            color = Gray7
-        )
-        Text(
-            text = nickname,
-            fontSize = 12.sp,
-            color = Gray9
-        )
     }
 }
 

@@ -19,3 +19,12 @@ data class FeedInfo(
         return !imageList.isNullOrEmpty()
     }
 }
+
+fun FeedInfo.profileInfo(): ProfileInfo {
+    return ProfileInfo(
+        profileImage = this.profileImage,
+        badgeImage = this.badgeImage,
+        titlePosition = this.titlePosition,
+        nickName = this.nickName
+    )
+}
