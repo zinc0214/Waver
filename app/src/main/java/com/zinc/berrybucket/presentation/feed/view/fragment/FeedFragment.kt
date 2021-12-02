@@ -9,34 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.zinc.berrybucket.compose.ui.feed.FeedKeywordsLayer
 import com.zinc.berrybucket.compose.ui.feed.FeedLayer
-import com.zinc.berrybucket.databinding.FragmentFeedBinding
 import com.zinc.berrybucket.model.FeedInfo
-import com.zinc.berrybucket.presentation.feed.view.recyclerView.adapter.FeedContentItemAdapter
-import com.zinc.berrybucket.presentation.feed.view.recyclerView.adapter.RecommendItemAdapter
 
 class FeedFragment : Fragment() {
 
-    private lateinit var binding: FragmentFeedBinding
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View {
-//        binding =
-//            DataBindingUtil.inflate(inflater, R.layout.fragment_feed, container, false)
-//        setUpViews()
-//        setRecommendAdapter()
-//        setContentAdapter()
-//        return binding.root
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,30 +46,6 @@ class FeedFragment : Fragment() {
 
     }
 
-    private fun setUpViews() {
-        binding.recommendButton.setOnClickListener {
-            binding.feedContentLayout.visibility = View.VISIBLE
-            binding.recommendLayout.visibility = View.GONE
-        }
-    }
-
-    private fun setRecommendAdapter() {
-        FlexboxLayoutManager(requireContext()).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            justifyContent = JustifyContent.CENTER
-        }.apply {
-            val adapter = RecommendItemAdapter(listOf("여행", "제주도", "맛집탐방", "넷플릭스", "데이트", "뿅뿅짠짠"))
-            binding.recommendItemList.layoutManager = this
-            binding.recommendItemList.adapter = adapter
-        }
-    }
-
-    private fun setContentAdapter() {
-        val adapter = FeedContentItemAdapter(loadMockData())
-        binding.feedContentListView.layoutManager = LinearLayoutManager(requireContext())
-        binding.feedContentListView.adapter = adapter
-    }
 
     private fun loadMockData(): List<FeedInfo> {
         return listOf(
