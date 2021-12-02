@@ -14,6 +14,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.theme.Gray1
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -78,7 +79,7 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .aspectRatio(1f),
-                shape = RoundedCornerShape(4.dp),
+                shape = RoundedCornerShape(0.dp),
                 elevation = 0.dp,
                 content = {
                     // Display 10 items
@@ -100,6 +101,8 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
 
             HorizontalPagerIndicator(
                 pagerState = pagerState,
+                activeColor = Gray1,
+                inactiveColor = Gray1.copy(alpha = 0.5f),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 18.dp, end = 18.dp),

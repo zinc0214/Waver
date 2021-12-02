@@ -2,6 +2,8 @@ package com.zinc.berrybucket.presentation.detail
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
@@ -54,7 +56,10 @@ class DetailActivity : AppCompatActivity() {
                 )
                 setContent {
                     BaseTheme {
-                        ImageViewPagerInsideIndicator(imageList = listOf("A", "B", "C"))
+                        ImageViewPagerInsideIndicator(
+                            modifier = Modifier.fillMaxWidth(),
+                            imageList = listOf("A", "B", "C")
+                        )
                     }
                 }
             }
