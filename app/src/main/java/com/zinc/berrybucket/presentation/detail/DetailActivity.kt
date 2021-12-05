@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.presentation.detail
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
@@ -11,17 +12,19 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
+    private val viewModel by viewModels<DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_bucket_detail)
         setUpViews()
     }
-
 
     private fun setUpViews() {
 

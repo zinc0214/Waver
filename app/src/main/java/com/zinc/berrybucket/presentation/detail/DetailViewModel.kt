@@ -18,7 +18,7 @@ class DetailViewModel @Inject constructor(
     private val _bucketDetailInfo = MutableLiveData<DetailInfo>()
     val bucketDetailInfo: LiveData<DetailInfo> get() = _bucketDetailInfo
 
-    fun loadBucketDetail(id: String) {
+    fun getBucketDetail(id: String) {
         viewModelScope.launch {
             loadBucketDetail(id)
         }

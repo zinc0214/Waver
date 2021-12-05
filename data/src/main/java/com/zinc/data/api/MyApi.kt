@@ -20,5 +20,4 @@ interface MyApi {
     @GET("/bucketList")
     suspend fun loadMyState(): MyState
 
-
 }
