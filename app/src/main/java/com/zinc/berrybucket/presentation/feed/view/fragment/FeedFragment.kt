@@ -28,7 +28,6 @@ class FeedFragment : Fragment() {
         }
     }
 
-
     @Composable
     private fun ShowContent() {
         val recommendClicked = remember {
@@ -38,7 +37,12 @@ class FeedFragment : Fragment() {
             FeedLayer(feedList = loadMockData())
         } else {
             FeedKeywordsLayer(
-                keywords = listOf("여행", "제주도", "맛집탐방", "넷플릭스", "데이트", "뿅뿅짠짠"),
+                keywords = listOf(
+                    "여행", "제주도", "맛집탐방", "넷플릭스", "데이트", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠",
+                    "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠",
+                    "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠",
+                    "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠", "뿅뿅짠짠"
+                ),
                 recommendClicked = {
                     recommendClicked.value = true
                 })

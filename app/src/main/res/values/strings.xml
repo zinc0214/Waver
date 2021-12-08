@@ -61,6 +61,7 @@
 
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
+    <string name="feedRecommendSmallTitle">관심 키워드 선택</string>
     <string name="recommendBucketList">버킷 추천받기</string>
 
     <!-- Feed > Content -->
