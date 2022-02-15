@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Main4
-import kotlin.math.cos
-import kotlin.math.sin
 
 
 @Composable
@@ -62,7 +60,7 @@ fun ProfileCircularProgressBar(
             )
         }
 
-        BadgeImage(radius.value, curPercentage.value)
+        BadgeImage()
     }
 }
 
@@ -91,19 +89,21 @@ fun ProfileCenterImage(profileImageUrl: String) {
 }
 
 @Composable
-fun BadgeImage(radius: Float, curPercentage: Float) {
-    val angle = (-90f) + 360 * curPercentage
-    val radian = angle * 0.0175
-    val x = radius * cos(radian)
-    val y = radius * sin(radian)
+fun BadgeImage() {
+//    val angle = (-90f) + 360 * curPercentage
+//    val radian = angle * 0.0175
+//    val x = radius * cos(radian)
+//    val y = radius * sin(radian)
+//
 
     Image(
         painterResource(R.drawable.badge_large),
         contentDescription = null,
         modifier = Modifier
+            .padding(top = 80.dp)
             .width(32.dp)
             .height(32.dp)
-            .offset(x = x.dp, y = y.dp)
+        //.offset(x = x.dp, y = y.dp)
 
     )
 }

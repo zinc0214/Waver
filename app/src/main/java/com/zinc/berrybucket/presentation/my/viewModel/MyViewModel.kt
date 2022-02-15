@@ -48,7 +48,7 @@ class MyViewModel @Inject constructor(
 
                     nickName = "HANA",
                     profileImg = "ddd",
-                    percent = 0.6f,
+                    percent = 0.8f,
                     badgeType = BadgeType.TRIP1,
                     titlePosition = "안녕 반가우이",
                     bio = "나는 ESFP 한아라고 불러줘?",
@@ -66,7 +66,7 @@ class MyViewModel @Inject constructor(
             profileImg = "ddd",
             percent = 0.6f,
             badgeType = BadgeType.TRIP1,
-            titlePosition = "안녕 반가우이",
+            titlePosition = "안녕 반가우이잇",
             bio = "나는 ESFP 한아라고 불러줘?",
             followingCount = "20",
             followerCount = "10"
