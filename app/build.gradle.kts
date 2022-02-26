@@ -10,7 +10,7 @@ android {
     buildToolsVersion = Versions.buildTools
 
     defaultConfig {
-        applicationId = "com.zinc.mybury_2"
+        applicationId = "com.zinc.berrybucket"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
         versionCode = Versions.versionCode

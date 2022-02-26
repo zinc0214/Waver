@@ -6,7 +6,7 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "MyBury_2"
+rootProject.name = "BerryBucket"
 include(":app")
 include(":domain")
 include(":data")
