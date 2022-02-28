@@ -69,4 +69,7 @@
     <string name="feedImageView">피드 이미지</string>
     <string name="feedProfileImage">프로필 이미지</string>
 
+    <!-- Detail -->
+    <string name="successButtonText">달성 완료</string>
+
 </resources>

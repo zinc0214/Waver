@@ -15,7 +15,6 @@
         <activity
             android:name="com.zinc.berrybucket.presentation.HomeActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.BerryBucket.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

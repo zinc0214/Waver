@@ -58,12 +58,12 @@ class AllBucketListFragment : Fragment() {
 
 
     private fun loadAllBucket() = AllBucketList(
-        proceedingBucketCount = "11",
+        proceedingBucketCount = "15",
         succeedBucketCount = "20",
         bucketList = listOf(
             BucketInfoSimple(
                 id = "1",
-                title = "아이스크림을 먹을테야",
+                title = "아이스크림을 먹을테야 히힛",
                 currentCount = 1
             ),
             BucketInfoSimple(

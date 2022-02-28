@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,9 +24,14 @@ import com.zinc.berrybucket.model.ProfileInfo
 @Composable
 fun ProfileView(
     modifier: Modifier = Modifier,
-    profileSize: Dp = 36.dp,
+    imageSize: Dp = 36.dp,
+    profileSize: Dp = 32.dp,
+    profileRadius: Dp = 12.dp,
     badgeSize: Pair<Dp, Dp> = Pair(18.dp, 20.dp),
-    textSize: TextUnit = 12.sp,
+    nickNameTextSize: TextUnit = 12.sp,
+    titlePositionTextSize: TextUnit = 12.sp,
+    nickNameTextColor: Color = Gray9,
+    titlePositionTextColor: Color = Gray7,
     profileInfo: ProfileInfo
 ) {
     Row(
@@ -36,13 +42,18 @@ fun ProfileView(
 
         ProfileImageView(
             modifier = Modifier.align(Alignment.CenterVertically),
+            imageSize = imageSize,
             profileSize = profileSize,
             badgeSize = badgeSize,
+            profileRadius = profileRadius,
             profile = profileInfo.profileImage,
             badge = profileInfo.badgeImage
         )
         ProfileTextView(
-            textSize = textSize,
+            nickNameTextSize = nickNameTextSize,
+            titlePositionTextSize = titlePositionTextSize,
+            nickNameTextColor = nickNameTextColor,
+            titlePositionTextColor = titlePositionTextColor,
             titlePosition = profileInfo.titlePosition,
             nickname = profileInfo.nickName
         )
@@ -54,13 +65,15 @@ fun ProfileView(
 @Composable
 private fun ProfileImageView(
     modifier: Modifier = Modifier,
+    imageSize: Dp,
     profileSize: Dp,
+    profileRadius: Dp,
     badgeSize: Pair<Dp, Dp>,
     profile: String,
     badge: String
 ) {
     Box(
-        modifier = modifier.size(profileSize),
+        modifier = modifier.size(imageSize),
         content = {
             Image(
                 painter = painterResource(id = R.drawable.kakao),
@@ -69,9 +82,9 @@ private fun ProfileImageView(
                 ),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(32.dp, 32.dp)
+                    .size(profileSize, profileSize)
                     .aspectRatio(1f)
-                    .clip(shape = RoundedCornerShape(12.dp))
+                    .clip(shape = RoundedCornerShape(profileRadius))
                     .align(Alignment.TopStart)
             )
             Image(
@@ -87,17 +100,24 @@ private fun ProfileImageView(
 }
 
 @Composable
-private fun ProfileTextView(textSize: TextUnit, titlePosition: String, nickname: String) {
+private fun ProfileTextView(
+    nickNameTextSize: TextUnit,
+    titlePositionTextSize: TextUnit,
+    nickNameTextColor: Color,
+    titlePositionTextColor: Color,
+    titlePosition: String,
+    nickname: String
+) {
     Column(modifier = Modifier.padding(start = 7.dp)) {
         Text(
             text = titlePosition,
-            fontSize = textSize,
-            color = Gray7
+            fontSize = titlePositionTextSize,
+            color = titlePositionTextColor
         )
         Text(
             text = nickname,
-            fontSize = textSize,
-            color = Gray9
+            fontSize = nickNameTextSize,
+            color = nickNameTextColor
         )
     }
 }

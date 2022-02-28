@@ -22,8 +22,6 @@ fun BucketItemView(itemInfo: BucketInfo) {
         Text(
             text = itemInfo.title
         )
-
-
     }
 }
 
