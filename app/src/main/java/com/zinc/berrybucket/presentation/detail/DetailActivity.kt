@@ -1,8 +1,9 @@
 package com.zinc.berrybucket.presentation.detail
 
+import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
-import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +18,19 @@ import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.listview.DetailListViewAdapter
+import com.zinc.berrybucket.util.onTextChanged
+import com.zinc.berrybucket.util.setVisible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
-    private lateinit var detailListAdapter: DetailListViewAdapter
     private val viewModel by viewModels<DetailViewModel>()
+
+    private lateinit var detailListAdapter: DetailListViewAdapter
+    private lateinit var imm: InputMethodManager
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,53 +39,64 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpViews() {
-        binding.apply {
-            imageComposeView.apply {
-                setViewCompositionStrategy(
-                    ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-                )
-                setContent {
-                    BaseTheme {
-                        ImageViewPagerInsideIndicator(
-                            modifier = Modifier.fillMaxWidth(),
-                            imageList = listOf("A", "B", "C", "D")
-                        )
-                    }
+        imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        detailListAdapter = DetailListViewAdapter(detailList,
+            successClicked = {
+                // Success Button Clicked!
+            })
+
+        binding.detailListView.adapter = detailListAdapter
+        setUpImageView()
+        setUpScrollChangedListener()
+        setUpEditText()
+        setUpKeyBoard()
+    }
+
+    private fun setUpImageView() {
+        binding.imageComposeView.apply {
+            setViewCompositionStrategy(
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+            )
+            setContent {
+                BaseTheme {
+                    ImageViewPagerInsideIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        imageList = listOf("A", "B", "C", "D")
+                    )
                 }
             }
+        }
 
-            detailListAdapter = DetailListViewAdapter(detailList,
-                successClicked = {
-                    // Success Button Clicked!
-                })
+    }
 
-            detailListView.adapter = detailListAdapter
-            matchTabAndScrollPosition()
-
+    private fun setUpKeyBoard() {
+        val contentLayout = binding.contentLayout
+        contentLayout.viewTreeObserver.addOnGlobalLayoutListener {
+            val rect = Rect()
+            contentLayout.getWindowVisibleDisplayFrame(rect)
+            val screenHeight = contentLayout.rootView.height
+            val keypadHeight = screenHeight - rect.bottom
+            if (keypadHeight > screenHeight * 0.15) {
+                // Keyboard Show
+                binding.commentEditTextView.requestFocus()
+            } else {
+                // Keyboard Hide
+                binding.commentEditTextView.clearFocus()
+            }
         }
     }
 
-    private fun matchTabAndScrollPosition() {
+    private fun setUpScrollChangedListener() {
 
-        val itemLastIndex = detailList.lastIndex
         var isToolbarShown = false
 
         binding.apply {
 
             detailListView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
-
-                // User scrolled past image to height of toolbar and the title text is
-                // underneath the toolbar, so the toolbar should be shown.
                 val shouldShowToolbar = scrollY > toolbar.height
-
-                // The new state of the toolbar differs from the previous state; update
-                // appbar and toolbar attributes.
                 if (isToolbarShown != shouldShowToolbar) {
                     isToolbarShown = shouldShowToolbar
-
-                    // Use shadow animator to add elevation if toolbar is shown
                     appbar.isActivated = shouldShowToolbar
-
                 }
             }
 
@@ -87,28 +104,33 @@ class DetailActivity : AppCompatActivity() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-
-                    val first = layoutManager.findFirstVisibleItemPosition()
-                    val last = layoutManager.findLastVisibleItemPosition()
-                    val comFirst =
-                        layoutManager.findFirstCompletelyVisibleItemPosition()
-                    val comLast =
-                        layoutManager.findLastCompletelyVisibleItemPosition()
-
-                    Log.e("ayhan", "lastVisible 2 : $first $last $comFirst $comLast")
-
+                    val comFirst = layoutManager.findFirstCompletelyVisibleItemPosition()
                     // 현재 뷰에서 처음에 보이는 것이 완료버튼인 경우
-                    if (comFirst >= 1) {
-                        detailListAdapter.updateSuccessButton(true)
-                        successButton.visibility = View.GONE
-                        commentEditLayout.visibility = View.VISIBLE
-                    } else {
-                        detailListAdapter.updateSuccessButton(false)
-                        successButton.visibility = View.VISIBLE
-                        commentEditLayout.visibility = View.GONE
-                    }
+
+                    val successButtonShown = comFirst >= 1
+                    detailListAdapter.updateSuccessButton(successButtonShown)
+                    successButton.setVisible(!successButtonShown)
+                    commentEditLayout.setVisible(successButtonShown)
                 }
             })
+        }
+    }
+
+    private fun setUpEditText() {
+        binding.commentSendButton.isEnabled = false
+
+        binding.commentEditTextView.setOnFocusChangeListener { _, hasFocus ->
+            binding.commentSendButton.setVisible(hasFocus)
+            binding.commentEditTextView.maxLines = if (hasFocus) 3 else 1
+        }
+
+        binding.commentEditTextView.onTextChanged { text ->
+            binding.commentSendButton.isEnabled = text.isNotBlank()
+        }
+
+        binding.commentSendButton.setOnClickListener {
+            imm.hideSoftInputFromWindow(binding.commentEditTextView.windowToken, 0)
+            binding.commentEditTextView.clearFocus()
         }
     }
 
