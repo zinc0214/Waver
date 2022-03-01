@@ -71,5 +71,7 @@
 
     <!-- Detail -->
     <string name="successButtonText">달성 완료</string>
+    <string name="likeButtonDesc">좋아요 버튼</string>
+    <string name="commentHintText">댓글을 입력하세요</string>
 
 </resources>

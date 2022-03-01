@@ -24,6 +24,7 @@
         </activity>
         <activity
             android:name="com.zinc.berrybucket.presentation.detail.DetailActivity"
-            android:theme="@style/Theme.BerryBucket.NoActionBar" />
+            android:theme="@style/Theme.BerryBucket.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>

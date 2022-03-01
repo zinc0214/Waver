@@ -55,7 +55,8 @@ fun ProfileView(
             nickNameTextColor = nickNameTextColor,
             titlePositionTextColor = titlePositionTextColor,
             titlePosition = profileInfo.titlePosition,
-            nickname = profileInfo.nickName
+            nickname = profileInfo.nickName,
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
 
     }
@@ -106,9 +107,10 @@ private fun ProfileTextView(
     nickNameTextColor: Color,
     titlePositionTextColor: Color,
     titlePosition: String,
-    nickname: String
+    nickname: String,
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.padding(start = 7.dp)) {
+    Column(modifier = modifier.padding(start = 7.dp)) {
         Text(
             text = titlePosition,
             fontSize = titlePositionTextSize,

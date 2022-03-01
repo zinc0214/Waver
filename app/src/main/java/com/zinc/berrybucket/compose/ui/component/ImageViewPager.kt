@@ -90,7 +90,7 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                             .fillMaxWidth()
                     ) { page ->
                         Image(
-                            painter = painterResource(id = R.drawable.kakao),
+                            painter = painterResource(id = R.drawable.test_2),
                             contentDescription = "Test",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()

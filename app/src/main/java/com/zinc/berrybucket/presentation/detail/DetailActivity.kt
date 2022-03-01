@@ -1,12 +1,13 @@
 package com.zinc.berrybucket.presentation.detail
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import androidx.core.widget.NestedScrollView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,9 +15,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
-import com.zinc.berrybucket.model.DetailDescInfo
-import com.zinc.berrybucket.model.DetailType
-import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.listview.DetailListViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
+    private lateinit var detailListAdapter: DetailListViewAdapter
     private val viewModel by viewModels<DetailViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,32 +33,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpViews() {
-
-        var isToolbarShown = false
-
         binding.apply {
-            // scroll change listener begins at Y = 0 when image is fully collapsed
-            scrollView.setOnScrollChangeListener(
-                NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, _ ->
-
-                    // User scrolled past image to height of toolbar and the title text is
-                    // underneath the toolbar, so the toolbar should be shown.
-                    val shouldShowToolbar = scrollY > toolbar.height
-
-                    // The new state of the toolbar differs from the previous state; update
-                    // appbar and toolbar attributes.
-                    if (isToolbarShown != shouldShowToolbar) {
-                        isToolbarShown = shouldShowToolbar
-
-                        // Use shadow animator to add elevation if toolbar is shown
-                        appbar.isActivated = shouldShowToolbar
-
-                        // Show the plant name if toolbar is shown
-                        toolbarLayout.isTitleEnabled = shouldShowToolbar
-                    }
-                }
-            )
-
             imageComposeView.apply {
                 setViewCompositionStrategy(
                     ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
@@ -73,33 +48,65 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
 
-            detailListView.adapter = DetailListViewAdapter(
-                detailList,
+            detailListAdapter = DetailListViewAdapter(detailList,
                 successClicked = {
                     // Success Button Clicked!
-                }
-            )
+                })
 
+            detailListView.adapter = detailListAdapter
             matchTabAndScrollPosition()
 
         }
     }
 
     private fun matchTabAndScrollPosition() {
-        val layoutManager = binding.detailListView.layoutManager as LinearLayoutManager
+
         val itemLastIndex = detailList.lastIndex
+        var isToolbarShown = false
 
         binding.apply {
 
-            detailListView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                val firstPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
-                val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+            detailListView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
 
-                val matchPosition = when (lastPosition) {
-                    itemLastIndex -> {
-                        lastPosition
+                // User scrolled past image to height of toolbar and the title text is
+                // underneath the toolbar, so the toolbar should be shown.
+                val shouldShowToolbar = scrollY > toolbar.height
+
+                // The new state of the toolbar differs from the previous state; update
+                // appbar and toolbar attributes.
+                if (isToolbarShown != shouldShowToolbar) {
+                    isToolbarShown = shouldShowToolbar
+
+                    // Use shadow animator to add elevation if toolbar is shown
+                    appbar.isActivated = shouldShowToolbar
+
+                }
+            }
+
+            detailListView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+
+                    val first = layoutManager.findFirstVisibleItemPosition()
+                    val last = layoutManager.findLastVisibleItemPosition()
+                    val comFirst =
+                        layoutManager.findFirstCompletelyVisibleItemPosition()
+                    val comLast =
+                        layoutManager.findLastCompletelyVisibleItemPosition()
+
+                    Log.e("ayhan", "lastVisible 2 : $first $last $comFirst $comLast")
+
+                    // 현재 뷰에서 처음에 보이는 것이 완료버튼인 경우
+                    if (comFirst >= 1) {
+                        detailListAdapter.updateSuccessButton(true)
+                        successButton.visibility = View.GONE
+                        commentEditLayout.visibility = View.VISIBLE
+                    } else {
+                        detailListAdapter.updateSuccessButton(false)
+                        successButton.visibility = View.VISIBLE
+                        commentEditLayout.visibility = View.GONE
                     }
-                    else -> firstPosition
                 }
             })
         }
@@ -131,6 +138,20 @@ class DetailActivity : AppCompatActivity() {
                     "▶ 다섯째날\n" +
                     " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃"
         ),
-        DetailType.ButtonLayer
+        DetailType.ButtonLayer,
+        CommentInfo(
+            commentCount = "10",
+            listOf(
+                Commenter(
+                    "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
+                            "베리버킷 댓글입니다."
+                ),
+                Commenter(
+                    "B",
+                    "Contrary to popular belief",
+                    "Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, "
+                ),
+            )
+        )
     )
 }

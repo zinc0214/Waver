@@ -25,6 +25,10 @@ data class Commenter(
     val comment: String
 )
 
+data class DetailImageInfo(
+    val imageList: List<String>
+) : DetailType()
+
 sealed class DetailType {
     object ButtonLayer : DetailType()
 }

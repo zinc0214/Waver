@@ -2,7 +2,6 @@ package com.zinc.berrybucket.compose.ui.detail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,27 +20,26 @@ import com.zinc.berrybucket.model.DetailDescInfo
 
 @Composable
 fun DetailLayer(detailDescInfo: DetailDescInfo) {
-    Scaffold {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp)
-                .padding(top = 28.dp)
-        ) {
-            ProfileView(
-                imageSize = 48.dp,
-                profileSize = 44.dp,
-                profileRadius = 16.dp,
-                badgeSize = Pair(24.dp, 27.dp),
-                nickNameTextSize = 14.sp,
-                titlePositionTextSize = 13.sp,
-                nickNameTextColor = Gray10,
-                profileInfo = detailDescInfo.detailProfileInfo
-            )
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp)
+            .padding(top = 28.dp)
+    ) {
+        ProfileView(
+            imageSize = 48.dp,
+            profileSize = 44.dp,
+            profileRadius = 16.dp,
+            badgeSize = Pair(24.dp, 27.dp),
+            nickNameTextSize = 14.sp,
+            titlePositionTextSize = 13.sp,
+            nickNameTextColor = Gray10,
+            profileInfo = detailDescInfo.detailProfileInfo
+        )
 
-            DetailDescLayer(detailDescInfo = detailDescInfo)
-        }
+        DetailDescLayer(detailDescInfo = detailDescInfo)
     }
+
 }
 
 @Composable
