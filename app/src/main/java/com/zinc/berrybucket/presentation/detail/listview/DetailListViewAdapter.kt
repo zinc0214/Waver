@@ -13,7 +13,6 @@ class DetailListViewAdapter(
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var isVisible = true
-    private var buttonIndex = detailInfoList.indexOfFirst { it is DetailType.Button }
 
     override fun getItemViewType(position: Int): Int {
         return detailId(detailInfoList[position])

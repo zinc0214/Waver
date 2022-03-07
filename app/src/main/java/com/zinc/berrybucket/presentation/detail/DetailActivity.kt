@@ -3,7 +3,6 @@ package com.zinc.berrybucket.presentation.detail
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -107,21 +106,21 @@ class DetailActivity : AppCompatActivity() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    val comFirst = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    val another = layoutManager.findFirstVisibleItemPosition()
-                    val endA = layoutManager.findLastVisibleItemPosition()
+                    val firstCompleteVisible =
+                        layoutManager.findFirstCompletelyVisibleItemPosition()
+                    val firstVisible = layoutManager.findFirstVisibleItemPosition()
+                    val lastVisible = layoutManager.findLastVisibleItemPosition()
 
                     if (!isTitlePositionOver) {
-                        isTitlePositionOver = comFirst > 0
+                        isTitlePositionOver = firstCompleteVisible > 0
                     }
-                    // 현재 뷰에서 처음에 보이는 것이 완료버튼인 경우
-                    Log.e("ayhan", "comFirst : $comFirst, $another, $endA")
-                    val showEditLayout = isTitlePositionOver && endA >= lastIndex - 1
+                    // 하단 댓글 입력 버튼이 노출되는 경우
+                    val showEditLayout = isTitlePositionOver && lastVisible >= lastIndex - 1
                     detailListAdapter.updateSuccessButton(showEditLayout)
                     successButton.setVisible(!showEditLayout)
                     commentEditLayout.setVisible(showEditLayout)
 
-                    val showTitleAppBar = another > 1
+                    val showTitleAppBar = firstVisible > 1
                     if (showTitleAppBar) {
                         titleTextView.text = (detailList[1] as DetailDescInfo).title
                     } else {
