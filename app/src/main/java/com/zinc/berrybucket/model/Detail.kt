@@ -7,16 +7,18 @@ package com.zinc.berrybucket.model
 //)
 
 data class DetailDescInfo(
-    val detailProfileInfo: ProfileInfo,
     val dDay: String,
     val tagList: List<String>,
     val title: String,
-    val memo: String = ""
 ) : DetailType()
 
 data class CommentInfo(
     val commentCount: String,
     val commenterList: List<Commenter>
+) : DetailType()
+
+data class MemoInfo(
+    val memo: String
 ) : DetailType()
 
 data class Commenter(
@@ -25,15 +27,16 @@ data class Commenter(
     val comment: String
 )
 
-data class DetailImageInfo(
-    val imageList: List<String>
-) : DetailType()
-
 sealed class DetailType {
-    object ButtonLayer : DetailType()
+    object Button : DetailType()
 }
 
-//    object DetailLayer : DetailType()
-//    object ButtonLayer : DetailType()
-//    object CommentLayer : DetailType()
-//}
+fun detailId(descType: DetailType): Int {
+    return when (descType) {
+        is ProfileInfo -> 0
+        is DetailDescInfo -> 1
+        is MemoInfo -> 2
+        is CommentInfo -> 3
+        DetailType.Button -> 4
+    }
+}

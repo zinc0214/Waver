@@ -3,6 +3,7 @@ package com.zinc.berrybucket.presentation.detail
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -47,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
 
         binding.detailListView.adapter = detailListAdapter
         setUpImageView()
-        setUpScrollChangedListener()
+        setUpScrollChangedListener(detailList)
         setUpEditText()
         setUpKeyBoard()
     }
@@ -86,9 +87,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpScrollChangedListener() {
+    private fun setUpScrollChangedListener(detailList: List<DetailType>) {
 
         var isToolbarShown = false
+        var isTitlePositionOver = false
+        val lastIndex = detailList.lastIndex
 
         binding.apply {
 
@@ -105,12 +108,25 @@ class DetailActivity : AppCompatActivity() {
                     super.onScrollStateChanged(recyclerView, newState)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val comFirst = layoutManager.findFirstCompletelyVisibleItemPosition()
-                    // 현재 뷰에서 처음에 보이는 것이 완료버튼인 경우
+                    val another = layoutManager.findFirstVisibleItemPosition()
+                    val endA = layoutManager.findLastVisibleItemPosition()
 
-                    val successButtonShown = comFirst >= 1
-                    detailListAdapter.updateSuccessButton(successButtonShown)
-                    successButton.setVisible(!successButtonShown)
-                    commentEditLayout.setVisible(successButtonShown)
+                    if (!isTitlePositionOver) {
+                        isTitlePositionOver = comFirst > 0
+                    }
+                    // 현재 뷰에서 처음에 보이는 것이 완료버튼인 경우
+                    Log.e("ayhan", "comFirst : $comFirst, $another, $endA")
+                    val showEditLayout = isTitlePositionOver && endA >= lastIndex - 1
+                    detailListAdapter.updateSuccessButton(showEditLayout)
+                    successButton.setVisible(!showEditLayout)
+                    commentEditLayout.setVisible(showEditLayout)
+
+                    val showTitleAppBar = another > 1
+                    if (showTitleAppBar) {
+                        titleTextView.text = (detailList[1] as DetailDescInfo).title
+                    } else {
+                        titleTextView.text = ""
+                    }
                 }
             })
         }
@@ -135,17 +151,33 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private val detailList = listOf(
+        ProfileInfo(
+            profileImage = "",
+            badgeImage = "",
+            titlePosition = "멋쟁이 여행가",
+            nickName = "한아크크룽삐옹"
+        ),
         DetailDescInfo(
-            detailProfileInfo = ProfileInfo(
-                profileImage = "",
-                badgeImage = "",
-                titlePosition = "멋쟁이 여행가",
-                nickName = "한아크크룽삐옹"
-            ),
             dDay = "D+201",
             tagList = listOf("여행", "강남"),
             title = "가나다라마바사",
+        ),
+        MemoInfo(
             memo = "▶ 첫째날\n" +
+                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                    "\n" +
+                    "▶ 둘째날\n" +
+                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
+                    "\n" +
+                    "\u200B▶ 셋째날\n" +
+                    " 송당무끈모루 - 안돌오름(비밀의숲)\n" +
+                    "\u200B\n" +
+                    "▶ 넷째날\n" +
+                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃\n" +
+                    "\n" +
+                    "▶ 다섯째날\n" +
+                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃" +
+                    "▶ 첫째날\n" +
                     "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
                     "\n" +
                     "▶ 둘째날\n" +
@@ -160,7 +192,7 @@ class DetailActivity : AppCompatActivity() {
                     "▶ 다섯째날\n" +
                     " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃"
         ),
-        DetailType.ButtonLayer,
+        DetailType.Button,
         CommentInfo(
             commentCount = "10",
             listOf(

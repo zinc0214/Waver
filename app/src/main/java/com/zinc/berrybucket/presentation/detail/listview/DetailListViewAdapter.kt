@@ -5,10 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
-import com.zinc.berrybucket.model.CommentInfo
-import com.zinc.berrybucket.model.DetailDescInfo
-import com.zinc.berrybucket.model.DetailImageInfo
-import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.*
 
 class DetailListViewAdapter(
     private val detailInfoList: List<DetailType>,
@@ -16,31 +13,25 @@ class DetailListViewAdapter(
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var isVisible = true
+    private var buttonIndex = detailInfoList.indexOfFirst { it is DetailType.Button }
 
     override fun getItemViewType(position: Int): Int {
-        val type = when (detailInfoList[position]) {
-            is DetailImageInfo -> 0
-            is DetailDescInfo -> 1
-            is DetailType.ButtonLayer -> 2
-            is CommentInfo -> 3
-            else -> 4
-        }
-        return type
+        return detailId(detailInfoList[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> DetailImageViewHolder(
+            0 -> DetailProfileLayerViewHolder(
                 WidgetComposeViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
-            1 -> DetailLayerViewHolder(
+            1 -> DetailDescLayerViewHolder(
                 WidgetComposeViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
-            2 -> DetailSuccessButtonViewHolder(
+            2 -> DetailMemoLayerViewHolder(
                 WidgetComposeViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -50,7 +41,7 @@ class DetailListViewAdapter(
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
-            else -> DetailLayerViewHolder(
+            else -> DetailSuccessButtonViewHolder(
                 WidgetComposeViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -60,17 +51,20 @@ class DetailListViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is DetailImageViewHolder -> {
-                holder.bind(detailImageInfo = detailInfoList[position] as DetailImageInfo)
+            is DetailProfileLayerViewHolder -> {
+                holder.bind(profileInfo = detailInfoList[position] as ProfileInfo)
             }
-            is DetailLayerViewHolder -> {
+            is DetailDescLayerViewHolder -> {
                 holder.bind(detailDescInfo = detailInfoList[position] as DetailDescInfo)
             }
-            is DetailSuccessButtonViewHolder -> {
-                holder.bind(isVisible, successClicked)
+            is DetailMemoLayerViewHolder -> {
+                holder.bind(memoInfo = detailInfoList[position] as MemoInfo)
             }
             is DetailCommentViewHolder -> {
                 holder.bind(commentInfo = detailInfoList[position] as CommentInfo)
+            }
+            is DetailSuccessButtonViewHolder -> {
+                holder.bind(isVisible, successClicked)
             }
         }
     }

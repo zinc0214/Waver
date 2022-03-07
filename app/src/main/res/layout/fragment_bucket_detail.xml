@@ -17,7 +17,7 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/commentEditLayout"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginBottom="80dp"
+            app:layout_goneMarginBottom="68dp"
             tools:ignore="MergeRootFrame">
 
             <com.google.android.material.appbar.AppBarLayout
@@ -49,7 +49,7 @@
                         tools:background="@color/gray4"
                         tools:layout_height="360dp" />
 
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -60,20 +60,45 @@
                         app:layout_collapseMode="pin">
 
                         <ImageView
+                            android:id="@+id/closeButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/closeDesc"
-                            android:src="@drawable/btn40close" />
+                            android:src="@drawable/btn40close"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:gravity="center"
+                            android:id="@+id/titleTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/gray10"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/addButton"
+                            app:layout_constraintStart_toEndOf="@id/closeButton"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="가나다라마바사아자차카타파아아앙아아가가가가가ㅏ가가가ㅏㅏ아앙" />
 
                         <ImageView
+                            android:id="@+id/addButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/moreDesc"
-                            android:src="@drawable/ic_btn_32_more" />
-                    </RelativeLayout>
+                            android:src="@drawable/ic_btn_32_more"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -169,7 +194,6 @@
                     tools:visibility="visible" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         </LinearLayout>
 
