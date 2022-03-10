@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.presentation.detail.own.open
+package com.zinc.berrybucket.presentation.detail.my.open
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.listview.*
 
-class OwnOpenDetailListViewAdapter(
+class MyOpenDetailListViewAdapter(
     private val detailInfoList: List<DetailType>,
     private val successClicked: () -> Unit,
     private val commentLongClicked: (String) -> Unit

@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zinc.berrybucket.presentation.detail.own.open.OwnOpenDetailActivity"
+            android:name="com.zinc.berrybucket.presentation.detail.my.open.MyOpenDetailActivity"
             android:theme="@style/Theme.BerryBucket.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
     </application>

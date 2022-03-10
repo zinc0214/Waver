@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.presentation.detail.own.open
+package com.zinc.berrybucket.presentation.detail.my.open
 
 import android.content.Context
 import android.graphics.Rect
@@ -24,12 +24,12 @@ import com.zinc.berrybucket.util.setVisible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class OwnOpenDetailActivity : AppCompatActivity() {
+class MyOpenDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
 
-    private lateinit var detailListAdapter: OwnOpenDetailListViewAdapter
+    private lateinit var detailListAdapter: MyOpenDetailListViewAdapter
     private lateinit var imm: InputMethodManager
 
 
@@ -41,7 +41,7 @@ class OwnOpenDetailActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        detailListAdapter = OwnOpenDetailListViewAdapter(detailList,
+        detailListAdapter = MyOpenDetailListViewAdapter(detailList,
             successClicked = {
                 // Success Button Clicked!
             },
