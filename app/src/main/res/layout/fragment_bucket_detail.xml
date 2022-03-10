@@ -82,13 +82,13 @@
                             android:textColor="@color/gray10"
                             android:textSize="16sp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@id/addButton"
+                            app:layout_constraintEnd_toStartOf="@id/optionButton"
                             app:layout_constraintStart_toEndOf="@id/closeButton"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="가나다라마바사아자차카타파아아앙아아가가가가가ㅏ가가가ㅏㅏ아앙" />
 
                         <ImageView
-                            android:id="@+id/addButton"
+                            android:id="@+id/optionButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"

@@ -3,9 +3,12 @@ package com.zinc.berrybucket.presentation.detail.my.open
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -18,13 +21,15 @@ import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
+import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.util.onTextChanged
 import com.zinc.berrybucket.util.setVisible
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
-class MyOpenDetailActivity : AppCompatActivity() {
+class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
 
     private lateinit var binding: FragmentBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
@@ -50,6 +55,7 @@ class MyOpenDetailActivity : AppCompatActivity() {
             })
 
         binding.detailListView.adapter = detailListAdapter
+        binding.optionButton.setOnClickListener { showPopup(binding.optionButton) }
         setUpImageView()
         setUpScrollChangedListener(detailList)
         setUpEditText()
@@ -159,6 +165,10 @@ class MyOpenDetailActivity : AppCompatActivity() {
         }.show(supportFragmentManager, "CommentOptionDialog")
     }
 
+    private fun showPopup(v: View) {
+        DetailOptionDialogFragment().show(supportFragmentManager, "showPopup")
+    }
+
     private val detailList = listOf(
         ProfileInfo(
             profileImage = "",
@@ -194,4 +204,13 @@ class MyOpenDetailActivity : AppCompatActivity() {
             )
         )
     )
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
+            R.id.hide -> Toast.makeText(this, "hello world!", Toast.LENGTH_LONG).show()
+            R.id.report -> Toast.makeText(this, "the second world", Toast.LENGTH_LONG).show()
+        }
+
+        return item != null // 아이템이 null이 아닌 경우 true, null인 경우 false 리턴
+    }
 }

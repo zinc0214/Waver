@@ -54,13 +54,13 @@
             <TextView
                 android:id="@+id/commentHideTextView"
                 style="@style/PopupOptionTextStyle"
-                android:text="@string/commentHide" />
+                android:text="@string/hide" />
 
             <TextView
                 android:id="@+id/commentRepostTextView"
                 style="@style/PopupOptionTextStyle"
                 android:layout_marginTop="20dp"
-                android:text="@string/commentReport" />
+                android:text="@string/report" />
 
         </LinearLayout>
     </LinearLayout>
