@@ -10,14 +10,17 @@ import com.zinc.berrybucket.model.CommentInfo
 class DetailCommentViewHolder(private val binding: WidgetComposeViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(commentInfo: CommentInfo) {
+    fun bind(commentInfo: CommentInfo, commentLongClicked: (String) -> Unit) {
         binding.composeView.apply {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
                 BaseTheme {
-                    DetailCommentLayer(commentInfo = commentInfo)
+                    DetailCommentLayer(
+                        commentInfo = commentInfo,
+                        commentLongClicked = commentLongClicked
+                    )
                 }
             }
         }

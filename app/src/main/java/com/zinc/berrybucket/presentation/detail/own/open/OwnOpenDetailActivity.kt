@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.presentation.detail
+package com.zinc.berrybucket.presentation.detail.own.open
 
 import android.content.Context
 import android.graphics.Rect
@@ -17,18 +17,19 @@ import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
 import com.zinc.berrybucket.model.*
-import com.zinc.berrybucket.presentation.detail.listview.DetailListViewAdapter
+import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
+import com.zinc.berrybucket.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.util.onTextChanged
 import com.zinc.berrybucket.util.setVisible
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailActivity : AppCompatActivity() {
+class OwnOpenDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
 
-    private lateinit var detailListAdapter: DetailListViewAdapter
+    private lateinit var detailListAdapter: OwnOpenDetailListViewAdapter
     private lateinit var imm: InputMethodManager
 
 
@@ -40,9 +41,12 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        detailListAdapter = DetailListViewAdapter(detailList,
+        detailListAdapter = OwnOpenDetailListViewAdapter(detailList,
             successClicked = {
                 // Success Button Clicked!
+            },
+            commentLongClicked = {
+                showCommentOptionDialog(it)
             })
 
         binding.detailListView.adapter = detailListAdapter
@@ -108,14 +112,14 @@ class DetailActivity : AppCompatActivity() {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val firstCompleteVisible =
                         layoutManager.findFirstCompletelyVisibleItemPosition()
+                    val lastCompleteVisible = layoutManager.findLastCompletelyVisibleItemPosition()
                     val firstVisible = layoutManager.findFirstVisibleItemPosition()
                     val lastVisible = layoutManager.findLastVisibleItemPosition()
 
-                    if (!isTitlePositionOver) {
-                        isTitlePositionOver = firstCompleteVisible > 0
-                    }
-                    // 하단 댓글 입력 버튼이 노출되는 경우
-                    val showEditLayout = isTitlePositionOver && lastVisible >= lastIndex - 1
+                    isTitlePositionOver = firstCompleteVisible >= 0
+                    // 하단 댓글 입력 버튼이 노출되어야 하는 경우
+                    val showEditLayout =
+                        (isTitlePositionOver && lastCompleteVisible >= lastIndex - 1) || lastCompleteVisible == lastIndex
                     detailListAdapter.updateSuccessButton(showEditLayout)
                     successButton.setVisible(!showEditLayout)
                     commentEditLayout.setVisible(showEditLayout)
@@ -149,6 +153,12 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showCommentOptionDialog(commentId: String) {
+        CommentOptionDialogFragment().apply {
+            setCommentId(commentId)
+        }.show(supportFragmentManager, "CommentOptionDialog")
+    }
+
     private val detailList = listOf(
         ProfileInfo(
             profileImage = "",
@@ -166,41 +176,18 @@ class DetailActivity : AppCompatActivity() {
                     "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
                     "\n" +
                     "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
-                    "\n" +
-                    "\u200B▶ 셋째날\n" +
-                    " 송당무끈모루 - 안돌오름(비밀의숲)\n" +
-                    "\u200B\n" +
-                    "▶ 넷째날\n" +
-                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃\n" +
-                    "\n" +
-                    "▶ 다섯째날\n" +
-                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃" +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
-                    "\n" +
-                    "\u200B▶ 셋째날\n" +
-                    " 송당무끈모루 - 안돌오름(비밀의숲)\n" +
-                    "\u200B\n" +
-                    "▶ 넷째날\n" +
-                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃\n" +
-                    "\n" +
-                    "▶ 다섯째날\n" +
-                    " 하도미술관 - 세화해변 - 세화소품샵 - 보일꽃"
+                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
         ),
         DetailType.Button,
         CommentInfo(
             commentCount = "10",
             listOf(
                 Commenter(
-                    "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
+                    "1", "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
                             "베리버킷 댓글입니다."
                 ),
                 Commenter(
-                    "B",
+                    "2", "B",
                     "Contrary to popular belief",
                     "Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, "
                 ),

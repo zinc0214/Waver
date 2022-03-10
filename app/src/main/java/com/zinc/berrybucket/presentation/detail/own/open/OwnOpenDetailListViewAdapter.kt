@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.presentation.detail.listview
+package com.zinc.berrybucket.presentation.detail.own.open
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.presentation.detail.listview.*
 
-class DetailListViewAdapter(
+class OwnOpenDetailListViewAdapter(
     private val detailInfoList: List<DetailType>,
-    private val successClicked: () -> Unit
+    private val successClicked: () -> Unit,
+    private val commentLongClicked: (String) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     private var isVisible = true
@@ -60,7 +62,10 @@ class DetailListViewAdapter(
                 holder.bind(memoInfo = detailInfoList[position] as MemoInfo)
             }
             is DetailCommentViewHolder -> {
-                holder.bind(commentInfo = detailInfoList[position] as CommentInfo)
+                holder.bind(
+                    commentInfo = detailInfoList[position] as CommentInfo,
+                    commentLongClicked = commentLongClicked
+                )
             }
             is DetailSuccessButtonViewHolder -> {
                 holder.bind(isVisible, successClicked)
@@ -71,6 +76,8 @@ class DetailListViewAdapter(
     fun updateSuccessButton(isVisible: Boolean) {
         this.isVisible = isVisible
         notifyDataSetChanged()
+        //Log.e("ayhan", "succssButtonIndex :$succssButtonIndex")
+        //notifyItemChanged(succssButtonIndex)
     }
 
     override fun getItemCount(): Int {

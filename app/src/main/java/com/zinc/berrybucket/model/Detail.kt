@@ -22,6 +22,7 @@ data class MemoInfo(
 ) : DetailType()
 
 data class Commenter(
+    val commentId: String = "",
     val profileImage: String,
     val nickName: String,
     val comment: String

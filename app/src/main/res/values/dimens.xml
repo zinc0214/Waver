@@ -5,4 +5,5 @@
 
     <!-- elevation for Plant Detail toolbar - used to convert to pixels when hiding/showing -->
     <dimen name="toolbar_elevation">5dp</dimen>
+    <dimen name="popupWidth">260dp</dimen>
 </resources>

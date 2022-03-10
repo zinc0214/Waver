@@ -75,4 +75,11 @@
     <string name="commentSendButtonDesc">댓글 전송 버튼</string>
     <string name="commentHintText">댓글을 입력하세요</string>
 
+    <!-- Detail > Comment Option Dialog -->
+    <string name="commentOptionDialogTitle">댓글</string>
+    <string name="commentEdit">수정</string>
+    <string name="commentDelete">삭제</string>
+    <string name="commentHide">숨기기</string>
+    <string name="commentReport">신고</string>
+
 </resources>
