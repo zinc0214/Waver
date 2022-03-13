@@ -6,6 +6,10 @@ package com.zinc.berrybucket.model
 //    val commentInfo: CommentInfo
 //)
 
+data class ImageInfo(
+    val imageList: List<String>
+) : DetailType()
+
 data class DetailDescInfo(
     val dDay: String,
     val tagList: List<String>,
@@ -34,10 +38,11 @@ sealed class DetailType {
 
 fun detailId(descType: DetailType): Int {
     return when (descType) {
-        is ProfileInfo -> 0
-        is DetailDescInfo -> 1
-        is MemoInfo -> 2
-        is CommentInfo -> 3
-        DetailType.Button -> 4
+        is ImageInfo -> 0
+        is ProfileInfo -> 1
+        is DetailDescInfo -> 2
+        is MemoInfo -> 3
+        is CommentInfo -> 4
+        DetailType.Button -> 5
     }
 }

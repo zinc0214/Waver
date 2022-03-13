@@ -3,21 +3,14 @@ package com.zinc.berrybucket.presentation.detail.my.open
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.*
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
@@ -29,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListener {
+class MyOpenDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: FragmentBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
@@ -56,28 +49,24 @@ class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListe
 
         binding.detailListView.adapter = detailListAdapter
         binding.optionButton.setOnClickListener { showPopup(binding.optionButton) }
-        setUpImageView()
         setUpScrollChangedListener(detailList)
         setUpEditText()
         setUpKeyBoard()
     }
 
-    private fun setUpImageView() {
-        binding.imageComposeView.apply {
-            setViewCompositionStrategy(
-                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-            )
-            setContent {
-                BaseTheme {
-                    ImageViewPagerInsideIndicator(
-                        modifier = Modifier.fillMaxWidth(),
-                        imageList = listOf("A", "B", "C", "D")
-                    )
-                }
-            }
-        }
-
-    }
+//    private fun setUpImageView() {
+//        binding.imageComposeView.apply {
+//            setViewCompositionStrategy(
+//                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+//            )
+//            setContent {
+//                BaseTheme {
+//
+//                }
+//            }
+//        }
+//
+//    }
 
     private fun setUpKeyBoard() {
         val contentLayout = binding.contentLayout
@@ -122,17 +111,20 @@ class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListe
                     val firstVisible = layoutManager.findFirstVisibleItemPosition()
                     val lastVisible = layoutManager.findLastVisibleItemPosition()
 
-                    isTitlePositionOver = firstCompleteVisible >= 0
+
                     // 하단 댓글 입력 버튼이 노출되어야 하는 경우
+                    val buttonPosition = detailList.indexOfFirst { it is DetailType.Button }
                     val showEditLayout =
-                        (isTitlePositionOver && lastCompleteVisible >= lastIndex - 1) || lastCompleteVisible == lastIndex
+                        lastCompleteVisible >= lastIndex - 1 || lastVisible >= buttonPosition
                     detailListAdapter.updateSuccessButton(showEditLayout)
                     successButton.setVisible(!showEditLayout)
                     commentEditLayout.setVisible(showEditLayout)
 
-                    val showTitleAppBar = firstVisible > 1
+                    // 타이틀이 상단 appBar 에 노출되어야 하는 경우
+                    val titleInfoPosition = detailList.indexOfFirst { it is DetailDescInfo }
+                    val showTitleAppBar = firstVisible > titleInfoPosition
                     if (showTitleAppBar) {
-                        titleTextView.text = (detailList[1] as DetailDescInfo).title
+                        titleTextView.text = (detailList[titleInfoPosition] as DetailDescInfo).title
                     } else {
                         titleTextView.text = ""
                     }
@@ -170,6 +162,9 @@ class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListe
     }
 
     private val detailList = listOf(
+        ImageInfo(
+            imageList = listOf("A", "B", "C")
+        ),
         ProfileInfo(
             profileImage = "",
             badgeImage = "",
@@ -183,6 +178,20 @@ class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListe
         ),
         MemoInfo(
             memo = "▶ 첫째날\n" +
+                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                    "\n" +
+                    "▶ 둘째날\n" +
+                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
+                    "▶ 첫째날\n" +
+                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                    "\n" +
+                    "▶ 둘째날\n" +
+                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
+                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                    "\n" +
+                    "▶ 둘째날\n" +
+                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
+                    "▶ 첫째날\n" +
                     "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
                     "\n" +
                     "▶ 둘째날\n" +
@@ -204,13 +213,4 @@ class MyOpenDetailActivity : AppCompatActivity(), PopupMenu.OnMenuItemClickListe
             )
         )
     )
-
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        when (item?.itemId) { // 메뉴 아이템에 따라 동작 다르게 하기
-            R.id.hide -> Toast.makeText(this, "hello world!", Toast.LENGTH_LONG).show()
-            R.id.report -> Toast.makeText(this, "the second world", Toast.LENGTH_LONG).show()
-        }
-
-        return item != null // 아이템이 null이 아닌 경우 true, null인 경우 false 리턴
-    }
 }
