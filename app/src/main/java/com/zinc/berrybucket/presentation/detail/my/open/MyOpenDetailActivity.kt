@@ -3,6 +3,7 @@ package com.zinc.berrybucket.presentation.detail.my.open
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
@@ -88,11 +89,9 @@ class MyOpenDetailActivity : AppCompatActivity() {
     private fun setUpScrollChangedListener(detailList: List<DetailType>) {
 
         var isToolbarShown = false
-        var isTitlePositionOver = false
         val lastIndex = detailList.lastIndex
 
         binding.apply {
-
             detailListView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
                 val shouldShowToolbar = scrollY > toolbar.height
                 if (isToolbarShown != shouldShowToolbar) {
@@ -102,8 +101,8 @@ class MyOpenDetailActivity : AppCompatActivity() {
             }
 
             detailListView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val firstCompleteVisible =
                         layoutManager.findFirstCompletelyVisibleItemPosition()
@@ -111,14 +110,18 @@ class MyOpenDetailActivity : AppCompatActivity() {
                     val firstVisible = layoutManager.findFirstVisibleItemPosition()
                     val lastVisible = layoutManager.findLastVisibleItemPosition()
 
+                    Log.e("ayhan", "call 2 : $lastCompleteVisible , $lastIndex")
 
                     // 하단 댓글 입력 버튼이 노출되어야 하는 경우
                     val buttonPosition = detailList.indexOfFirst { it is DetailType.Button }
                     val showEditLayout =
                         lastCompleteVisible >= lastIndex - 1 || lastVisible >= buttonPosition
+
+                    Log.e("ayhan", "showEditLayout : $showEditLayout")
+
                     detailListAdapter.updateSuccessButton(showEditLayout)
-                    successButton.setVisible(!showEditLayout)
-                    commentEditLayout.setVisible(showEditLayout)
+                    binding.showEditView = showEditLayout
+
 
                     // 타이틀이 상단 appBar 에 노출되어야 하는 경우
                     val titleInfoPosition = detailList.indexOfFirst { it is DetailDescInfo }
@@ -147,6 +150,7 @@ class MyOpenDetailActivity : AppCompatActivity() {
 
         binding.commentSendButton.setOnClickListener {
             imm.hideSoftInputFromWindow(binding.commentEditTextView.windowToken, 0)
+            binding.commentEditTextView.setText("")
             binding.commentEditTextView.clearFocus()
         }
     }
@@ -162,9 +166,9 @@ class MyOpenDetailActivity : AppCompatActivity() {
     }
 
     private val detailList = listOf(
-        ImageInfo(
-            imageList = listOf("A", "B", "C")
-        ),
+//        ImageInfo(
+//            imageList = listOf("A", "B", "C")
+//        ),
         ProfileInfo(
             profileImage = "",
             badgeImage = "",
@@ -176,27 +180,27 @@ class MyOpenDetailActivity : AppCompatActivity() {
             tagList = listOf("여행", "강남"),
             title = "가나다라마바사",
         ),
-        MemoInfo(
-            memo = "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
-        ),
+//        MemoInfo(
+//            memo = "▶ 첫째날\n" +
+//                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+//                    "\n" +
+//                    "▶ 둘째날\n" +
+//                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
+//                    "▶ 첫째날\n" +
+//                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+//                    "\n" +
+//                    "▶ 둘째날\n" +
+//                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
+//                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+//                    "\n" +
+//                    "▶ 둘째날\n" +
+//                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
+//                    "▶ 첫째날\n" +
+//                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+//                    "\n" +
+//                    "▶ 둘째날\n" +
+//                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
+//        ),
         DetailType.Button,
         CommentInfo(
             commentCount = "10",

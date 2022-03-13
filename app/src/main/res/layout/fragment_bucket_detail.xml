@@ -4,6 +4,11 @@
 
     <data>
 
+        <variable
+            name="showEditView"
+            type="boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -117,7 +122,7 @@
             android:text="@string/successButtonText"
             android:textColor="@color/gray1"
             android:textSize="16sp"
-            android:visibility="gone"
+            android:visibility="@{showEditView ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
@@ -127,7 +132,7 @@
             android:background="@color/gray3"
             android:orientation="horizontal"
             android:paddingBottom="24dp"
-            android:visibility="gone"
+            android:visibility="@{showEditView ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:visibility="visible">
 
