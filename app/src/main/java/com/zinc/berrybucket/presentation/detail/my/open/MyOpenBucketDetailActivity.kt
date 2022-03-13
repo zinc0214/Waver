@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.databinding.FragmentBucketDetailBinding
+import com.zinc.berrybucket.databinding.ActivityMyOpenBucketDetailBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
@@ -22,9 +22,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MyOpenDetailActivity : AppCompatActivity() {
+class MyOpenBucketDetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: FragmentBucketDetailBinding
+    private lateinit var binding: ActivityMyOpenBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
 
     private lateinit var detailListAdapter: MyOpenDetailListViewAdapter
@@ -33,7 +33,7 @@ class MyOpenDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.fragment_bucket_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_my_open_bucket_detail)
         setUpViews()
     }
 

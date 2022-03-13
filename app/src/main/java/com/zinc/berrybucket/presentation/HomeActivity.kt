@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
-import com.zinc.berrybucket.presentation.detail.my.open.MyOpenDetailActivity
+import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
 import com.zinc.berrybucket.presentation.feed.view.fragment.FeedFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
     private fun init() {
 
         goToBucketDetail = {
-            startActivity(Intent(this, MyOpenDetailActivity::class.java))
+            startActivity(Intent(this, MyOpenBucketDetailActivity::class.java))
         }
 
         myFragment = MyFragment.newInstance(goToBucketDetail = { goToBucketDetail.invoke(it) })
