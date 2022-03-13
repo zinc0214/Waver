@@ -153,7 +153,7 @@ class MyOpenDetailActivity : AppCompatActivity() {
     }
 
     private val detailList = listOf(
-        ImageInfo(
+        OpenImageInfo(
             imageList = listOf("A", "B", "C")
         ),
         ProfileInfo(

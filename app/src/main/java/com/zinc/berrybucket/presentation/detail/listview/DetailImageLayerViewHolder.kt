@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
-import com.zinc.berrybucket.model.ImageInfo
+import com.zinc.berrybucket.model.OpenImageInfo
 
 class DetailImageLayerViewHolder(private val binding: WidgetComposeViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(imageInfo: ImageInfo) {
+    fun bind(openImageInfo: OpenImageInfo) {
         binding.composeView.apply {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
@@ -21,7 +21,7 @@ class DetailImageLayerViewHolder(private val binding: WidgetComposeViewBinding) 
                 BaseTheme {
                     ImageViewPagerInsideIndicator(
                         modifier = Modifier.fillMaxWidth(),
-                        imageList = imageInfo.imageList
+                        imageList = openImageInfo.imageList
                     )
                 }
             }

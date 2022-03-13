@@ -58,7 +58,7 @@ class MyOpenDetailListViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is DetailImageLayerViewHolder -> {
-                holder.bind(imageInfo = detailInfoList[position] as ImageInfo)
+                holder.bind(openImageInfo = detailInfoList[position] as OpenImageInfo)
             }
             is DetailProfileLayerViewHolder -> {
                 holder.bind(profileInfo = detailInfoList[position] as ProfileInfo)
