@@ -14,7 +14,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray1
 
 
 @OptIn(ExperimentalPagerApi::class)
@@ -90,7 +89,7 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                             .fillMaxWidth()
                     ) { page ->
                         Image(
-                            painter = painterResource(id = R.drawable.test_2),
+                            painter = painterResource(id = R.drawable.kakao),
                             contentDescription = "Test",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
@@ -99,13 +98,11 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                 }
             )
 
-            HorizontalPagerIndicator(
+            PageCountIndicator(
                 pagerState = pagerState,
-                activeColor = Gray1,
-                inactiveColor = Gray1.copy(alpha = 0.5f),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(bottom = 18.dp, end = 18.dp),
+                    .padding(bottom = 16.dp, end = 16.dp),
             )
         }
     )

@@ -153,9 +153,9 @@ class MyOpenDetailActivity : AppCompatActivity() {
     }
 
     private val detailList = listOf(
-//        ImageInfo(
-//            imageList = listOf("A", "B", "C")
-//        ),
+        ImageInfo(
+            imageList = listOf("A", "B", "C")
+        ),
         ProfileInfo(
             profileImage = "",
             badgeImage = "",
