@@ -17,7 +17,7 @@ data class DetailDescInfo(
 ) : DetailType()
 
 data class CommentInfo(
-    val commentCount: String,
+    val commentCount: Int,
     val commenterList: List<Commenter>
 ) : DetailType()
 

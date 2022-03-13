@@ -28,7 +28,14 @@ fun DetailCommentLayer(commentInfo: CommentInfo, commentLongClicked: (String) ->
     ) {
         CommentLine()
         CommentCountView(commentInfo.commentCount)
-        CommentListView(commentInfo.commenterList, commentLongClicked)
+
+        if (commentInfo.commentCount > 0) {
+            Spacer(modifier = Modifier.height(28.dp))
+            CommentListView(commentInfo.commenterList, commentLongClicked)
+        } else {
+            Spacer(modifier = Modifier.height(12.dp))
+            CommentBlankView()
+        }
     }
 }
 
@@ -38,9 +45,9 @@ private fun CommentLine() {
 }
 
 @Composable
-private fun CommentCountView(commentCount: String) {
+private fun CommentCountView(commentCount: Int) {
     Row(
-        modifier = Modifier.padding(vertical = 28.dp, horizontal = 20.dp)
+        modifier = Modifier.padding(top = 28.dp, start = 20.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.btn_32_comment),
@@ -52,7 +59,7 @@ private fun CommentCountView(commentCount: String) {
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = commentCount,
+            text = "$commentCount",
             color = Gray10,
             fontSize = 15.sp,
             modifier = Modifier
@@ -111,4 +118,16 @@ private fun CommentDescView(commenter: Commenter, commentLongClicked: (String) -
             )
         }
     }
+}
+
+@Composable
+private fun CommentBlankView() {
+    Text(
+        modifier = Modifier
+            .padding(horizontal = 28.dp)
+            .padding(bottom = 36.dp),
+        text = stringResource(R.string.commentBlankText),
+        fontSize = 14.sp,
+        color = Gray6
+    )
 }
