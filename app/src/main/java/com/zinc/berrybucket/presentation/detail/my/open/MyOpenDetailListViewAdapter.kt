@@ -22,7 +22,7 @@ class MyOpenDetailListViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return when (viewType) {
-            0 -> DetailImageLayerViewHolder(
+            0 -> DetailOpenImageLayerViewHolder(
                 WidgetComposeViewBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -57,14 +57,14 @@ class MyOpenDetailListViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is DetailImageLayerViewHolder -> {
-                holder.bind(openImageInfo = detailInfoList[position] as OpenImageInfo)
+            is DetailOpenImageLayerViewHolder -> {
+                holder.bind(imageInfo = detailInfoList[position] as ImageInfo)
             }
             is DetailProfileLayerViewHolder -> {
                 holder.bind(profileInfo = detailInfoList[position] as ProfileInfo)
             }
             is DetailDescLayerViewHolder -> {
-                holder.bind(detailDescInfo = detailInfoList[position] as DetailDescInfo)
+                holder.bind(commonDetailDescInfo = detailInfoList[position] as CommonDetailDescInfo)
             }
             is DetailMemoLayerViewHolder -> {
                 holder.bind(memoInfo = detailInfoList[position] as MemoInfo)

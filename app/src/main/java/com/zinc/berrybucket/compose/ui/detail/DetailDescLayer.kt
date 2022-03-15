@@ -14,10 +14,10 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Main3
-import com.zinc.berrybucket.model.DetailDescInfo
+import com.zinc.berrybucket.model.CommonDetailDescInfo
 
 @Composable
-fun DetailDescLayer(detailDescInfo: DetailDescInfo) {
+fun DetailDescLayer(commonDetailDescInfo: CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -26,17 +26,17 @@ fun DetailDescLayer(detailDescInfo: DetailDescInfo) {
         Column {
             DdayView(
                 modifier = Modifier.padding(top = 24.dp, start = 14.dp),
-                dday = detailDescInfo.dDay
+                dday = commonDetailDescInfo.dDay
             )
 
             TagListView(
                 modifier = Modifier.padding(top = 26.dp, start = 14.dp),
-                tagList = detailDescInfo.tagList
+                tagList = commonDetailDescInfo.tagList
             )
 
             TitleView(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                title = detailDescInfo.title
+                title = commonDetailDescInfo.title
             )
         }
     }

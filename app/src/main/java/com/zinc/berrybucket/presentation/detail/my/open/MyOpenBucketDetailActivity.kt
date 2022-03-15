@@ -89,7 +89,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
         var isToolbarShown = false
         val lastIndex = detailList.lastIndex
         val buttonPosition = detailList.indexOfFirst { it is DetailType.Button }
-        val titleInfoPosition = detailList.indexOfFirst { it is DetailDescInfo }
+        val titleInfoPosition = detailList.indexOfFirst { it is CommonDetailDescInfo }
 
         binding.apply {
             detailListView.setOnScrollChangeListener { _, _, scrollY, _, _ ->
@@ -117,7 +117,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
                     // 타이틀이 상단 appBar 에 노출되어야 하는 경우
                     val showTitleAppBar = firstVisible > titleInfoPosition
                     titleTextView.text =
-                        if (showTitleAppBar) (detailList[titleInfoPosition] as DetailDescInfo).title else ""
+                        if (showTitleAppBar) (detailList[titleInfoPosition] as CommonDetailDescInfo).title else ""
                 }
             })
         }
@@ -153,7 +153,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
     }
 
     private val detailList = listOf(
-        OpenImageInfo(
+        ImageInfo(
             imageList = listOf("A", "B", "C")
         ),
         ProfileInfo(
@@ -162,7 +162,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
             titlePosition = "멋쟁이 여행가",
             nickName = "한아크크룽삐옹"
         ),
-        DetailDescInfo(
+        CommonDetailDescInfo(
             dDay = "D+201",
             tagList = listOf("여행", "강남"),
             title = "가나다라마바사",

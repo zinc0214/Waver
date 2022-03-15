@@ -62,4 +62,46 @@
         <item name="android:statusBarColor">@color/main3</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="SuccessButtonStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Floating" parent="SuccessButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginBottom">28dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:background">@drawable/detail_success_button_background</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Flat" parent="SuccessButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">17dp</item>
+        <item name="android:paddingBottom">17dp</item>
+        <item name="android:background">@drawable/detail_success_button_full_background</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Floating.Count" parent="SuccessButtonStyle.Floating">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Flat.Count" parent="SuccessButtonStyle.Flat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:background">@drawable/detail_success_button_full_background</item>
+    </style>
 </resources>
