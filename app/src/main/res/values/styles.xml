@@ -71,6 +71,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="SuccessButtonStyle.Borderless" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="SuccessButtonStyle.Floating" parent="SuccessButtonStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

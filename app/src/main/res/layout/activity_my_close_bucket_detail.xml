@@ -32,7 +32,7 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/successButtonsLayout"
+            app:layout_constraintBottom_toTopOf="@id/successViewLayout"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MergeRootFrame">
 
@@ -122,53 +122,46 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/successButtonsLayout"
+            android:id="@+id/successViewLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:minHeight="84dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/successButtonsLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="@{isCountBucket ? View.GONE : View.VISIBLE}"
+                android:layout_marginStart="@{isScrollFinished ? @dimen/_0 : @dimen/_24}"
+                android:layout_marginEnd="@{isScrollFinished ? @dimen/_0 : @dimen/_24}"
+                android:layout_marginBottom="@{isScrollFinished ? @dimen/_0 : @dimen/_28}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="gone">
+                app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    style="@style/SuccessButtonStyle.Floating"
+                <TextView
+                    style="@style/SuccessButtonStyle.Borderless"
+                    android:paddingTop="@{isScrollFinished ? @dimen/_17 : @dimen/_15}"
+                    android:paddingBottom="@{isScrollFinished ? @dimen/_17 : @dimen/_15}"
                     android:text="@string/successButtonText"
-                    android:visibility="@{isScrollFinished ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{isCountBucket ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    style="@style/SuccessButtonStyle.Flat"
-                    android:text="@string/successButtonText"
-                    android:visibility="@{isScrollFinished ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:visibility="@{isCountBucket ? View.VISIBLE : View.GONE}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:visibility="visible">
-
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/SuccessButtonStyle.Floating.Count"
-                    android:visibility="@{isScrollFinished ? View.GONE : View.VISIBLE}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@{isScrollFinished ? @dimen/_38 : @dimen/_24}"
+                    android:paddingTop="@{isScrollFinished ? @dimen/_17 : @dimen/_15}"
+                    android:paddingEnd="@{isScrollFinished ? @dimen/_38 : @dimen/_24}"
+                    android:paddingBottom="@{isScrollFinished ? @dimen/_17 : @dimen/_15}"
+                    android:visibility="@{isCountBucket ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -182,26 +175,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:userCount="@{userCount}" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    style="@style/SuccessButtonStyle.Flat.Count"
-                    android:visibility="@{isScrollFinished ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:visibility="visible">
-
-                    <include
-                        layout="@layout/layout_success_count"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:goalCount="@{goalCount}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:userCount="@{userCount}" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -210,7 +184,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

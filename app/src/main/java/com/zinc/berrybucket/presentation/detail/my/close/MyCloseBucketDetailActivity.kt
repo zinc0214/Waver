@@ -49,6 +49,11 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
 
                     // 하단 댓글 입력 버튼이 노출되어야 하는 경우
                     val isScrollFinished = lastCompleteVisible >= lastIndex
+                    if (isScrollFinished) {
+                        binding.successButtonsLayout.setBackgroundResource(R.drawable.detail_success_button_full_background)
+                    } else {
+                        binding.successButtonsLayout.setBackgroundResource(R.drawable.detail_success_button_background)
+                    }
                     binding.isScrollFinished = isScrollFinished
                 }
             })
@@ -62,8 +67,8 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
                 tagList = listOf("여행", "강남"),
                 title = "가나다라마바사",
             ),
-            goalCount = 10,
-            userCount = 5
+            goalCount = 1,
+            userCount = 0
         ),
         ImageInfo(
             imageList = listOf("A", "B", "C")
