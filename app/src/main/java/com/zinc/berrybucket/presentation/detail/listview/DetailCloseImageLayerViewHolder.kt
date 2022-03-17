@@ -1,8 +1,10 @@
 package com.zinc.berrybucket.presentation.detail.listview
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerOutSideIndicator
@@ -20,7 +22,10 @@ class DetailCloseImageLayerViewHolder(private val binding: WidgetComposeViewBind
             setContent {
                 BaseTheme {
                     ImageViewPagerOutSideIndicator(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(28.dp),
+                        corner = 8.dp,
                         imageList = imageInfo.imageList
                     )
                 }

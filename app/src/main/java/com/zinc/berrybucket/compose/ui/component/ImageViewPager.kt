@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -18,7 +19,11 @@ import com.zinc.berrybucket.R
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
+fun ImageViewPagerOutSideIndicator(
+    modifier: Modifier = Modifier,
+    corner: Dp = 4.dp,
+    imageList: List<String>
+) {
     Column(
         modifier
             .fillMaxWidth()
@@ -32,12 +37,12 @@ fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: Lis
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .aspectRatio(1f),
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(corner),
             elevation = 0.dp,
             content = {
                 // Display 10 items
                 HorizontalPager(
-                    count = 10,
+                    count = imageList.size,
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -81,7 +86,6 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                 shape = RoundedCornerShape(0.dp),
                 elevation = 0.dp,
                 content = {
-                    // Display 10 items
                     HorizontalPager(
                         count = imageList.size,
                         state = pagerState,
