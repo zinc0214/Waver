@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 import com.zinc.berrybucket.model.*
-import com.zinc.berrybucket.presentation.detail.listview.*
+import com.zinc.berrybucket.presentation.detail.listview.DetailCloseImageLayerViewHolder
+import com.zinc.berrybucket.presentation.detail.listview.DetailDescLayerViewHolder
+import com.zinc.berrybucket.presentation.detail.listview.DetailMemoLayerViewHolder
 
 class MyCloseDetailListViewAdapter(
-    private val detailInfoList: List<DetailType>
+    private val detailInfoList: List<DetailDescType>
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {

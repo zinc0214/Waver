@@ -9,4 +9,4 @@ data class ProfileInfo(
     val badgeImage: String,
     val titlePosition: String,
     val nickName: String
-) : DetailType()
+) : DetailDescType()

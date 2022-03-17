@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityMyCloseBucketDetailBinding
 import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
 
@@ -37,7 +38,7 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
         binding.isCountBucket = isCountBucket
     }
 
-    private fun setUpScrollChangedListener(detailList: List<DetailType>) {
+    private fun setUpScrollChangedListener(detailList: List<DetailDescType>) {
         val lastIndex = detailList.lastIndex
 
         binding.apply {
@@ -58,6 +59,10 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    private fun showDetailOptionPopup() {
+        DetailOptionDialogFragment().show(supportFragmentManager, "showPopup")
     }
 
     private val detailList = listOf(

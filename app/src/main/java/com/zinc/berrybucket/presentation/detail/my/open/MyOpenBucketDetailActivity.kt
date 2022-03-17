@@ -3,7 +3,6 @@ package com.zinc.berrybucket.presentation.detail.my.open
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -48,7 +47,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
             })
 
         binding.detailListView.adapter = detailListAdapter
-        binding.optionButton.setOnClickListener { showPopup(binding.optionButton) }
+        binding.optionButton.setOnClickListener { showDetailOptionPopup() }
         setUpScrollChangedListener(detailList)
         setUpEditText()
         setUpKeyBoard()
@@ -85,10 +84,10 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpScrollChangedListener(detailList: List<DetailType>) {
+    private fun setUpScrollChangedListener(detailList: List<DetailDescType>) {
         var isToolbarShown = false
         val lastIndex = detailList.lastIndex
-        val buttonPosition = detailList.indexOfFirst { it is DetailType.Button }
+        val buttonPosition = detailList.indexOfFirst { it is DetailDescType.Button }
         val titleInfoPosition = detailList.indexOfFirst { it is CommonDetailDescInfo }
 
         binding.apply {
@@ -148,7 +147,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
         }.show(supportFragmentManager, "CommentOptionDialog")
     }
 
-    private fun showPopup(v: View) {
+    private fun showDetailOptionPopup() {
         DetailOptionDialogFragment().show(supportFragmentManager, "showPopup")
     }
 
@@ -188,7 +187,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
                     "▶ 둘째날\n" +
                     " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
         ),
-        DetailType.Button,
+        DetailDescType.Button,
         CommentInfo(
             commentCount = 0,
             listOf(

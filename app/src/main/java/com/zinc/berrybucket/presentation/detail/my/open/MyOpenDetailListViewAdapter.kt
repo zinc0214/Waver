@@ -9,7 +9,7 @@ import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.listview.*
 
 class MyOpenDetailListViewAdapter(
-    private val detailInfoList: List<DetailType>,
+    private val detailInfoList: List<DetailDescType>,
     private val successClicked: () -> Unit,
     private val commentLongClicked: (String) -> Unit
 ) : RecyclerView.Adapter<ViewHolder>() {
