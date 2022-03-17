@@ -8,7 +8,10 @@ import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
+import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.presentation.detail.my.close.MyCloseBucketDetailActivity
+import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
 import com.zinc.berrybucket.presentation.feed.view.fragment.FeedFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
-    private lateinit var goToBucketDetail: (String) -> Unit
+    private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
     private lateinit var myFragment: MyFragment
     private lateinit var feedFragment: FeedFragment
 
@@ -34,7 +37,11 @@ class HomeActivity : AppCompatActivity() {
     private fun init() {
 
         goToBucketDetail = {
-            startActivity(Intent(this, MyCloseBucketDetailActivity::class.java))
+            if (it.detailType == DetailType.MY_CLOSE) {
+                startActivity(Intent(this, MyCloseBucketDetailActivity::class.java))
+            } else if (it.detailType == DetailType.MY_OPEN) {
+                startActivity(Intent(this, MyOpenBucketDetailActivity::class.java))
+            }
         }
 
         myFragment = MyFragment.newInstance(goToBucketDetail = { goToBucketDetail.invoke(it) })

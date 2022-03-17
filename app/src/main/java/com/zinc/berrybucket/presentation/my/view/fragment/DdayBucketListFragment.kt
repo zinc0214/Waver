@@ -8,11 +8,13 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.zinc.berrybucket.compose.ui.my.DdayBucketLayer
 import com.zinc.berrybucket.model.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DdayBucketListFragment : Fragment() {
 
     private lateinit var searchViewClicked: (TabType) -> Unit
-    private lateinit var goToBucketDetail: (String) -> Unit
+    private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +29,7 @@ class DdayBucketListFragment : Fragment() {
                             showFilterDialog()
                         }
                         is ItemClicked -> {
-                            goToBucketDetail(it.id)
+                            goToBucketDetail(it.info)
                         }
                         is SearchClicked -> {
                             goToSearchFragment(it.tabType)
@@ -45,8 +47,8 @@ class DdayBucketListFragment : Fragment() {
         searchViewClicked.invoke(tabType)
     }
 
-    private fun goToBucketDetail(id: String) {
-        goToBucketDetail.invoke(id)
+    private fun goToBucketDetail(info: BucketInfoSimple) {
+        goToBucketDetail.invoke(info)
     }
 
     private fun loadAllBucket() = DDayBucketList(
@@ -84,6 +86,12 @@ class DdayBucketListFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = DdayBucketListFragment()
+        fun newInstance(
+            searchViewClicked: (TabType) -> Unit,
+            goToBucketDetail: (BucketInfoSimple) -> Unit
+        ) = DdayBucketListFragment().apply {
+            this.searchViewClicked = searchViewClicked
+            this.goToBucketDetail = goToBucketDetail
+        }
     }
 }

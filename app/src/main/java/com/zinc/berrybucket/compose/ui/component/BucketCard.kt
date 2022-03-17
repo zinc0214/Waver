@@ -28,7 +28,7 @@ import com.zinc.berrybucket.model.TabType
 fun BucketListView(
     bucketList: List<BucketInfoSimple>,
     tabType: TabType,
-    itemClicked: (String) -> Unit
+    itemClicked: (BucketInfoSimple) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         bucketList.forEach { bucket ->
@@ -48,7 +48,7 @@ fun BucketCard(
     itemInfo: BucketInfoSimple,
     tabType: TabType,
     animFinishEvent: (BucketProgressState) -> Unit,
-    itemClicked: (String) -> Unit
+    itemClicked: (BucketInfoSimple) -> Unit
 ) {
 
     val bucket = remember { mutableStateOf(itemInfo) }
@@ -59,7 +59,7 @@ fun BucketCard(
         modifier = Modifier
             .fillMaxWidth()
             .border(width = 1.dp, color = borderColor.value, shape = RoundedCornerShape(4.dp))
-            .clickable { itemClicked(itemInfo.id) },
+            .clickable { itemClicked(itemInfo) },
         shape = RoundedCornerShape(4.dp),
         elevation = 2.dp
     ) {

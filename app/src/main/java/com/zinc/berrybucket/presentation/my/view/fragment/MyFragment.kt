@@ -12,6 +12,7 @@ import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.databinding.FragmentMyBinding
+import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
@@ -24,7 +25,7 @@ class MyFragment : Fragment() {
     private lateinit var binding: FragmentMyBinding
     private val viewModel by viewModels<MyViewModel>()
 
-    private lateinit var goToBucketDetail: (String) -> Unit
+    private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +79,14 @@ class MyFragment : Fragment() {
             }
         )
         val categoryFragment = CategoryListFragment.newInstance()
-        val ddayFragment = DdayBucketListFragment.newInstance()
+        val ddayFragment = DdayBucketListFragment.newInstance(
+            searchViewClicked = { type ->
+                showSearchFragment(type)
+            },
+            goToBucketDetail = { id ->
+                goToBucketDetail.invoke(id)
+            }
+        )
 
         childFragmentManager.beginTransaction().add(R.id.myFrameLayout, allFragment).commit()
 
@@ -116,7 +124,7 @@ class MyFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(goToBucketDetail: (String) -> Unit) = MyFragment().apply {
+        fun newInstance(goToBucketDetail: (BucketInfoSimple) -> Unit) = MyFragment().apply {
             this.goToBucketDetail = goToBucketDetail
         }
     }
