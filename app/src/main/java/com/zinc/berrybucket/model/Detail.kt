@@ -53,3 +53,11 @@ fun detailId(descType: DetailDescType): Int {
     }
 }
 
+enum class DetailType {
+    MY_CLOSE,  // 내 공개 상세 버킷
+    MY_OPEN,  // 내 비공개 상세 버킷
+    OTHER_OPEN // 다른사람의 공개 상세 버킷
+}
+
+
+

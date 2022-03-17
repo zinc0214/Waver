@@ -94,14 +94,14 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="가나다라마바사아자차카타파아아앙아아가가가가가ㅏ가가가ㅏㅏ아앙" />
 
-                        <ImageView
+                        <ImageButton
                             android:id="@+id/optionButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/moreDesc"
-                            android:src="@drawable/ic_btn_32_more"
+                            android:background="@drawable/ic_btn_32_more"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

@@ -13,10 +13,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.FragmentDetailOptionDialogBinding
+import com.zinc.berrybucket.model.DetailType
 
 class DetailOptionDialogFragment : DialogFragment() {
 
     private lateinit var binding: FragmentDetailOptionDialogBinding
+    private lateinit var detailType: DetailType
 
     override fun onResume() {
         super.onResume()
@@ -53,5 +55,10 @@ class DetailOptionDialogFragment : DialogFragment() {
         binding.hideTextView.setOnClickListener {
             Toast.makeText(requireContext(), "hello", Toast.LENGTH_SHORT).show()
         }
+        binding.detailType = detailType
+    }
+
+    fun setDetailType(detailType: DetailType) {
+        this.detailType = detailType
     }
 }

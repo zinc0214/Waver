@@ -36,6 +36,7 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
         binding.goalCount = descInfo.goalCount.toString()
         isCountBucket = descInfo.goalCount > 1
         binding.isCountBucket = isCountBucket
+        binding.optionButton.setOnClickListener { showDetailOptionPopup() }
     }
 
     private fun setUpScrollChangedListener(detailList: List<DetailDescType>) {
@@ -62,7 +63,9 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
     }
 
     private fun showDetailOptionPopup() {
-        DetailOptionDialogFragment().show(supportFragmentManager, "showPopup")
+        DetailOptionDialogFragment().apply {
+            setDetailType(DetailType.MY_CLOSE)
+        }.show(supportFragmentManager, "showPopup")
     }
 
     private val detailList = listOf(

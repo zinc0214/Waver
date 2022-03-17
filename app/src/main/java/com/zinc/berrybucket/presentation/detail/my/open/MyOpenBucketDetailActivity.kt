@@ -148,7 +148,9 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
     }
 
     private fun showDetailOptionPopup() {
-        DetailOptionDialogFragment().show(supportFragmentManager, "showPopup")
+        DetailOptionDialogFragment().apply {
+            setDetailType(DetailType.MY_OPEN)
+        }.show(supportFragmentManager, "showPopup")
     }
 
     private val detailList = listOf(
