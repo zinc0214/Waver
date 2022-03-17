@@ -84,14 +84,15 @@ private fun CommentDescView(commenter: Commenter, commentLongClicked: (String) -
 
     Row(
         modifier = Modifier
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        commentLongClicked(commenter.commentId)
-                    }
-                )
-            }
-            .padding(start = 28.dp, bottom = 36.dp, end = 28.dp)
+            .fillMaxWidth()
+            .padding(bottom = 36.dp)
+            .combinedClickable(
+                onClick = { },
+                onLongClick = {
+                    commentLongClicked(commenter.commentId)
+                },
+            )
+            .padding(start = 28.dp, end = 28.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.test),
