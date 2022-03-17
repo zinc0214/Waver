@@ -53,20 +53,6 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
         setUpKeyBoard()
     }
 
-//    private fun setUpImageView() {
-//        binding.imageComposeView.apply {
-//            setViewCompositionStrategy(
-//                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
-//            )
-//            setContent {
-//                BaseTheme {
-//
-//                }
-//            }
-//        }
-//
-//    }
-
     private fun setUpKeyBoard() {
         val contentLayout = binding.contentLayout
         contentLayout.viewTreeObserver.addOnGlobalLayoutListener {
@@ -109,7 +95,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
 
                     // 하단 댓글 입력 버튼이 노출되어야 하는 경우
                     val showEditLayout =
-                        lastCompleteVisible >= lastIndex - 1 || lastVisible >= buttonPosition
+                        lastCompleteVisible >= lastIndex - 1 || lastVisible >= buttonPosition || !imm.isActive
                     detailListAdapter.updateSuccessButton(showEditLayout)
                     showEditView = showEditLayout
 
