@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.presentation.detail
 
 import android.app.ActionBar
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.FragmentCommentOptionDialogBinding
+import com.zinc.berrybucket.presentation.report.ReportActivity
 
 class CommentOptionDialogFragment : DialogFragment() {
 
@@ -39,8 +41,15 @@ class CommentOptionDialogFragment : DialogFragment() {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.setCanceledOnTouchOutside(true)
+        setUpViews()
 
         return binding.root
+    }
+
+    private fun setUpViews() {
+        binding.commentRepostTextView.setOnClickListener {
+            startActivity(Intent(requireContext(), ReportActivity::class.java))
+        }
     }
 
     fun setCommentId(commentId: String) {
