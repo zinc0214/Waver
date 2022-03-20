@@ -44,12 +44,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="28dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="28dp"
                     android:autofillHints="@string/reportTextFieldHint"
                     android:background="@null"
                     android:hint="@string/reportTextFieldHint"
                     android:imeOptions="actionDone"
                     android:maxLength="500"
+                    android:singleLine="true"
                     android:textColor="@color/gray10"
                     android:textColorHint="@color/gray7"
                     android:textSize="15sp"
@@ -68,8 +70,7 @@
 
         </androidx.core.widget.NestedScrollView>
 
-
-        <Button
+        <TextView
             android:id="@+id/reportActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,8 +78,14 @@
             android:layout_marginEnd="28dp"
             android:layout_marginBottom="28dp"
             android:background="@drawable/report_action_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:text="@string/reportActionButton"
             android:textColor="@color/gray10"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="@{keyBoardOpend ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
