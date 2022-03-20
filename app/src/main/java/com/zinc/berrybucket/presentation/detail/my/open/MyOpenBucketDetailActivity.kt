@@ -141,7 +141,7 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
 
     private val detailList = listOf(
         ImageInfo(
-            imageList = listOf("A", "B", "C")
+            imageList = listOf("A")
         ),
         ProfileInfo(
             profileImage = "",
