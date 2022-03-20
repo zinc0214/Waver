@@ -69,7 +69,12 @@ fun ImageViewPagerOutSideIndicator(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
+fun ImageViewPagerInsideIndicator(
+    modifier: Modifier = Modifier,
+    corner: Dp = 0.dp,
+    indicatorModifier: Modifier = Modifier,
+    imageList: List<String>
+) {
     Box(
         modifier
             .fillMaxWidth()
@@ -83,7 +88,7 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .aspectRatio(1f),
-                shape = RoundedCornerShape(0.dp),
+                shape = RoundedCornerShape(corner),
                 elevation = 0.dp,
                 content = {
                     HorizontalPager(
@@ -105,9 +110,8 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
             if (imageList.size > 1) {
                 PageCountIndicator(
                     pagerState = pagerState,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(bottom = 16.dp, end = 16.dp),
+                    modifier = indicatorModifier
+                        .align(Alignment.BottomEnd),
                 )
             }
         }

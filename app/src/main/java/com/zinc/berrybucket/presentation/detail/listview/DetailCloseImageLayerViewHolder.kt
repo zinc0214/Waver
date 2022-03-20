@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.ui.component.ImageViewPagerOutSideIndicator
+import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 import com.zinc.berrybucket.model.ImageInfo
 
@@ -21,11 +21,12 @@ class DetailCloseImageLayerViewHolder(private val binding: WidgetComposeViewBind
             )
             setContent {
                 BaseTheme {
-                    ImageViewPagerOutSideIndicator(
+                    ImageViewPagerInsideIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(28.dp),
                         corner = 8.dp,
+                        indicatorModifier = Modifier.padding(bottom = 8.dp, end = 8.dp),
                         imageList = imageInfo.imageList
                     )
                 }
