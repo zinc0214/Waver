@@ -102,12 +102,14 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                 }
             )
 
-            PageCountIndicator(
-                pagerState = pagerState,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 16.dp, end = 16.dp),
-            )
+            if (imageList.size > 1) {
+                PageCountIndicator(
+                    pagerState = pagerState,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(bottom = 16.dp, end = 16.dp),
+                )
+            }
         }
     )
 }
