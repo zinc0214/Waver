@@ -56,7 +56,6 @@ class MyFragment : Fragment() {
         viewModel.profileInfo.observe(viewLifecycleOwner) { profile ->
             profile?.let {
                 binding.profileInfo = it
-
                 binding.composeView.setContent {
                     MyTopLayer(profileInfo = profile)
                 }
