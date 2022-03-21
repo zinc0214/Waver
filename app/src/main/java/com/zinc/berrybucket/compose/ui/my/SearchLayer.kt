@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
@@ -138,7 +139,8 @@ private fun SearchEditView(
         Text(
             text = stringResource(id = getNameResource(type)),
             color = Main4,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium
         )
         Spacer(modifier = Modifier.width(12.dp))
 
@@ -160,7 +162,8 @@ private fun SearchEditView(
         value = searchText,
         textStyle = TextStyle(
             color = Gray10,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium
         ),
         onValueChange = { searchText = it },
         maxLines = 1,

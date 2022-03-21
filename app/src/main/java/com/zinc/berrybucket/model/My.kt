@@ -58,7 +58,7 @@ enum class BucketType {
 }
 
 enum class TabType {
-    ALL, D_DAY, CATEGORY, CHALLENGE;
+    ALL, CATEGORY, D_DAY, CHALLENGE;
 
     companion object {
         fun getNameResource(type: TabType): Int {
@@ -66,11 +66,11 @@ enum class TabType {
                 ALL -> {
                     R.string.allTab
                 }
-                D_DAY -> {
-                    R.string.ddayTab
-                }
                 CATEGORY -> {
                     R.string.categoryTab
+                }
+                D_DAY -> {
+                    R.string.ddayTab
                 }
                 else -> {
                     R.string.challengeTab
