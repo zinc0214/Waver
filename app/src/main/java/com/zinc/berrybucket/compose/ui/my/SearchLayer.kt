@@ -204,6 +204,7 @@ fun ChipBodyContent(
                             currentTab.value = tabType
                         }
                     ),
+                textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                 text = stringResource(id = getNameResource(tabType)),
                 isSelected = currentTab.value == tabType
             )
