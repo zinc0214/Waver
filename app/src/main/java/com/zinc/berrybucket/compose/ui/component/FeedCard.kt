@@ -75,7 +75,7 @@ fun FeedCardView(feedInfo: FeedInfo) {
             BottomStateView(
                 modifier = Modifier
                     .padding(horizontal = 14.dp)
-                    .padding(top = 8.dp, bottom = 20.dp)
+                    .padding(top = 12.dp, bottom = 20.dp)
                     .fillMaxWidth(),
                 feedInfo = feedInfo
             )
@@ -112,7 +112,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = modifier,
         text = title,
-        fontSize = 15.sp,
+        fontSize = 18.sp,
         color = Gray10
     )
 }
@@ -128,8 +128,6 @@ private fun ImageView(modifier: Modifier = Modifier, imageList: List<String>) {
 @Composable
 private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
     ConstraintLayout(modifier = modifier) {
-
-
         val (leftContent, rightContent) = createRefs()
 
         Row(modifier = Modifier.constrainAs(leftContent) {
