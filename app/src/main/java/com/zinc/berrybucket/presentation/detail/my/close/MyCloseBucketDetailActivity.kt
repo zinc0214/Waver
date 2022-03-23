@@ -8,11 +8,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityMyCloseBucketDetailBinding
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.CloseDetailDescInfo
+import com.zinc.berrybucket.model.DetailDescType
+import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.util.nonNullObserve
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MyCloseBucketDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyCloseBucketDetailBinding
     private val viewModel by viewModels<DetailViewModel>()
@@ -23,12 +27,25 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_close_bucket_detail)
-        setUpViews()
-        setUpScrollChangedListener(detailList)
+        setUpViewModels()
     }
 
-    private fun setUpViews() {
-        detailListAdapter = MyCloseDetailListViewAdapter(detailList)
+    private fun setUpViewModels() {
+        viewModel.bucketDetailInfo.nonNullObserve(this) {
+            setUpViews(it)
+        }
+
+        viewModel.getBucketDetail("close")
+    }
+
+    private fun setUpViews(detailList: List<DetailDescType>) {
+        setUpScrollChangedListener(detailList)
+
+        detailListAdapter = MyCloseDetailListViewAdapter {
+            // TODO = click event
+        }.apply {
+            updateItems(detailList)
+        }
         binding.detailListView.adapter = detailListAdapter
 
         val descInfo = detailList.first { it is CloseDetailDescInfo } as CloseDetailDescInfo
@@ -68,39 +85,5 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
         }.show(supportFragmentManager, "showPopup")
     }
 
-    private val detailList = listOf(
-        CloseDetailDescInfo(
-            CommonDetailDescInfo(
-                dDay = "D+201",
-                tagList = listOf("여행", "강남"),
-                title = "가나다라마바사",
-            ),
-            goalCount = 1,
-            userCount = 0
-        ),
-        ImageInfo(
-            imageList = listOf("A", "B", "C")
-        ),
-        MemoInfo(
-            memo = "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
-        )
-    )
+
 }

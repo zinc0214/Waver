@@ -2,22 +2,22 @@ package com.zinc.berrybucket.presentation.detail.my.open
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.listview.*
 
 class MyOpenDetailListViewAdapter(
-    private val detailInfoList: List<DetailDescType>,
     private val successClicked: () -> Unit,
     private val commentLongClicked: (String) -> Unit
-) : RecyclerView.Adapter<ViewHolder>() {
+) : ListAdapter<DetailDescType, ViewHolder>(diffUtil) {
 
     private var isVisible = true
 
     override fun getItemViewType(position: Int): Int {
-        return detailId(detailInfoList[position])
+        return detailId(getItem(position))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,20 +58,20 @@ class MyOpenDetailListViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
             is DetailOpenImageLayerViewHolder -> {
-                holder.bind(imageInfo = detailInfoList[position] as ImageInfo)
+                holder.bind(imageInfo = getItem(position) as ImageInfo)
             }
             is DetailProfileLayerViewHolder -> {
-                holder.bind(profileInfo = detailInfoList[position] as ProfileInfo)
+                holder.bind(profileInfo = getItem(position) as ProfileInfo)
             }
             is DetailDescLayerViewHolder -> {
-                holder.bind(commonDetailDescInfo = detailInfoList[position] as CommonDetailDescInfo)
+                holder.bind(commonDetailDescInfo = getItem(position) as CommonDetailDescInfo)
             }
             is DetailMemoLayerViewHolder -> {
-                holder.bind(memoInfo = detailInfoList[position] as MemoInfo)
+                holder.bind(memoInfo = getItem(position) as MemoInfo)
             }
             is DetailCommentViewHolder -> {
                 holder.bind(
-                    commentInfo = detailInfoList[position] as CommentInfo,
+                    commentInfo = getItem(position) as CommentInfo,
                     commentLongClicked = commentLongClicked
                 )
             }
@@ -81,14 +81,17 @@ class MyOpenDetailListViewAdapter(
         }
     }
 
-    fun updateSuccessButton(isVisible: Boolean) {
-        this.isVisible = isVisible
-        notifyDataSetChanged()
-        //Log.e("ayhan", "succssButtonIndex :$succssButtonIndex")
-        //notifyItemChanged(succssButtonIndex)
+    fun updateItems(items: List<DetailDescType>) {
+        submitList(items)
     }
 
-    override fun getItemCount(): Int {
-        return detailInfoList.size
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<DetailDescType>() {
+            override fun areContentsTheSame(oldItem: DetailDescType, newItem: DetailDescType) =
+                oldItem == newItem
+
+            override fun areItemsTheSame(oldItem: DetailDescType, newItem: DetailDescType) =
+                oldItem == newItem
+        }
     }
 }

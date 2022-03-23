@@ -38,8 +38,12 @@ data class Commenter(
     val comment: String
 )
 
+data class InnerSuccessButton(
+    var isVisible: Boolean
+) : DetailDescType()
+
 sealed class DetailDescType {
-    object Button : DetailDescType()
+
 }
 
 fun detailId(descType: DetailDescType): Int {
@@ -49,7 +53,7 @@ fun detailId(descType: DetailDescType): Int {
         is CommonDetailDescInfo, is CloseDetailDescInfo -> 2
         is MemoInfo -> 3
         is CommentInfo -> 4
-        DetailDescType.Button -> 5
+        is InnerSuccessButton -> 5
     }
 }
 

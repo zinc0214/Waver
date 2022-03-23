@@ -11,10 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityMyOpenBucketDetailBinding
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.CommonDetailDescInfo
+import com.zinc.berrybucket.model.DetailDescType
+import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.InnerSuccessButton
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.util.nonNullObserve
 import com.zinc.berrybucket.util.onTextChanged
 import com.zinc.berrybucket.util.setVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,29 +32,41 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
 
     private lateinit var detailListAdapter: MyOpenDetailListViewAdapter
     private lateinit var imm: InputMethodManager
-
+    private lateinit var detailList: List<DetailDescType>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_my_open_bucket_detail)
         setUpViews()
+        setUpViewModels()
     }
 
     private fun setUpViews() {
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        detailListAdapter = MyOpenDetailListViewAdapter(detailList,
+        binding.optionButton.setOnClickListener { showDetailOptionPopup() }
+        setUpEditText()
+        setUpKeyBoard()
+    }
+
+    private fun setUpViewModels() {
+        viewModel.bucketDetailInfo.nonNullObserve(this) {
+            detailList = it
+            setUpAdapter()
+        }
+        viewModel.getBucketDetail("open")
+    }
+
+    private fun setUpAdapter() {
+        detailListAdapter = MyOpenDetailListViewAdapter(
             successClicked = {
                 // Success Button Clicked!
             },
             commentLongClicked = {
                 showCommentOptionDialog(it)
-            })
+            }).apply { updateItems(detailList) }
 
         binding.detailListView.adapter = detailListAdapter
-        binding.optionButton.setOnClickListener { showDetailOptionPopup() }
-        setUpScrollChangedListener(detailList)
-        setUpEditText()
-        setUpKeyBoard()
+        setUpScrollChangedListener()
     }
 
     private fun setUpKeyBoard() {
@@ -70,10 +86,10 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun setUpScrollChangedListener(detailList: List<DetailDescType>) {
+    private fun setUpScrollChangedListener() {
         var isToolbarShown = false
         val lastIndex = detailList.lastIndex
-        val buttonPosition = detailList.indexOfFirst { it is DetailDescType.Button }
+        val buttonPosition = detailList.indexOfFirst { it is InnerSuccessButton }
         val titleInfoPosition = detailList.indexOfFirst { it is CommonDetailDescInfo }
 
         binding.apply {
@@ -96,7 +112,8 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
                     // 하단 댓글 입력 버튼이 노출되어야 하는 경우
                     val showEditLayout =
                         lastCompleteVisible >= lastIndex - 1 || lastVisible >= buttonPosition || !imm.isActive
-                    detailListAdapter.updateSuccessButton(showEditLayout)
+                    (detailList[buttonPosition] as InnerSuccessButton).isVisible = showEditLayout
+                    detailListAdapter.updateItems(detailList)
                     showEditView = showEditLayout
 
                     // 타이틀이 상단 appBar 에 노출되어야 하는 경우
@@ -138,57 +155,4 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
             setDetailType(DetailType.MY_OPEN)
         }.show(supportFragmentManager, "showPopup")
     }
-
-    private val detailList = listOf(
-        ImageInfo(
-            imageList = listOf("A")
-        ),
-        ProfileInfo(
-            profileImage = "",
-            badgeImage = "",
-            titlePosition = "멋쟁이 여행가",
-            nickName = "한아크크룽삐옹"
-        ),
-        CommonDetailDescInfo(
-            dDay = "D+201",
-            tagList = listOf("여행", "강남"),
-            title = "가나다라마바사",
-        ),
-        MemoInfo(
-            memo = "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
-                    "▶ 첫째날\n" +
-                    "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
-                    "\n" +
-                    "▶ 둘째날\n" +
-                    " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
-        ),
-        DetailDescType.Button,
-        CommentInfo(
-            commentCount = 2,
-            listOf(
-                Commenter(
-                    "1", "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
-                            "베리버킷 댓글입니다."
-                ),
-                Commenter(
-                    "2", "B",
-                    "Contrary to popular belief",
-                    "Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, "
-                ),
-            )
-        )
-    )
 }
