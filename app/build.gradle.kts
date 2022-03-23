@@ -74,6 +74,8 @@ dependencies {
     implementation(Dep.AndroidX.UI.material)
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.fragment.ktx)
+    implementation(Dep.AndroidX.Arch.common)
+    implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
@@ -113,7 +115,7 @@ dependencies {
     implementation(Dep.OkHttp.loggingInterceptor)
 
     // Glide
-    implementation(Dep.glide)
+    // implementation(Dep.glide)
 
     // CardView
     implementation(Dep.cardView)
@@ -124,5 +126,10 @@ dependencies {
 
     // FlexboxLayout
     implementation(Dep.flexBox)
+
+    // LiveData
+    implementation(Dep.AndroidX.Lifecycle.viewModel)
+    implementation(Dep.AndroidX.Lifecycle.runTime)
+    implementation(Dep.AndroidX.Lifecycle.livedata)
 
 }

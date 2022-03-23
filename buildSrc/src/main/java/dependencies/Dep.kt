@@ -12,7 +12,7 @@ object Versions {
 
 object Dep {
     object GradlePlugin {
-        const val androidStudioGradlePluginVersion = "7.1.2"
+        private const val androidStudioGradlePluginVersion = "7.1.2"
         const val android = "com.android.tools.build:gradle:$androidStudioGradlePluginVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val kotlinSerialization =
@@ -22,29 +22,29 @@ object Dep {
 
     object AndroidX {
         object activity {
-            const val activityVersion = "1.3.1"
+            const val activityVersion = "1.4.0"
             const val activity = "androidx.activity:activity:$activityVersion"
             const val ktx = "androidx.activity:activity-ktx:$activityVersion"
         }
 
-        const val appcompat = "androidx.appcompat:appcompat:1.3.1"
-        const val coreKtx = "androidx.core:core-ktx:1.6.0"
+        const val appcompat = "androidx.appcompat:appcompat:1.4.1"
+        const val coreKtx = "androidx.core:core-ktx:1.7.0"
 
         object fragment {
-            private const val fragmentVersion = "1.3.5"
+            private const val fragmentVersion = "1.4.1"
             const val fragment = "androidx.fragment:fragment:$fragmentVersion"
             const val ktx = "androidx.fragment:fragment-ktx:$fragmentVersion"
         }
 
         object Lifecycle {
-            private const val lifecycleVersion = "2.3.1"
+            private const val lifecycleVersion = "2.4.1"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
             const val runTime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
         }
 
         object UI {
-            const val material = "com.google.android.material:material:1.4.0"
+            const val material = "com.google.android.material:material:1.5.0"
         }
 
         object Compose {
@@ -60,9 +60,9 @@ object Dep {
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
-                "androidx.constraintlayout:constraintlayout-compose:1.0.0-rc02"
+                "androidx.constraintlayout:constraintlayout-compose:1.0.0"
             const val viewPager =
-                "com.google.accompanist:accompanist-pager:0.20.0"
+                "com.google.accompanist:accompanist-pager:0.23.1"
         }
 
         object RecyclerView {
@@ -70,11 +70,17 @@ object Dep {
             const val selection = "androidx.recyclerview:recyclerview-selection:1.1.0"
         }
 
+        object Arch {
+            private const val version = "2.1.0"
+            const val common = "androidx.arch.core:core-common:$version"
+            const val runtime = "androidx.arch.core:core-runtime:$version"
+        }
+
         const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
     }
 
     object Dagger {
-        const val version = "2.39.1"
+        const val version = "2.41"
         const val dagger = "com.google.dagger:dagger:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
 
@@ -90,7 +96,7 @@ object Dep {
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {
-            private const val coroutinesVersion = "1.5.2"
+            private const val coroutinesVersion = "1.6.0"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
             const val android =
                 "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
@@ -101,7 +107,7 @@ object Dep {
     }
 
     object OkHttp {
-        private const val version = "4.9.2"
+        private const val version = "4.9.3"
         const val core = "com.squareup.okhttp3:okhttp:$version"
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
     }
@@ -114,7 +120,7 @@ object Dep {
         const val converter = "com.squareup.retrofit2:converter-gson:$version"
     }
 
-    const val glide = "com.github.skydoves:landscapist-glide:1.1.7"
+    const val glide = "com.github.bumptech.glide:4.13.1"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val flexBox = "com.google.android:flexbox:2.0.1"
 
