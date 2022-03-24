@@ -16,6 +16,7 @@ class DetailViewModel @Inject constructor(
     private val _bucketDetailInfo = MutableLiveData<List<DetailDescType>>()
     val bucketDetailInfo: LiveData<List<DetailDescType>> get() = _bucketDetailInfo
 
+
     fun getBucketDetail(id: String) {
 //        viewModelScope.launch {
 //            loadBucketDetail(id)
@@ -26,6 +27,7 @@ class DetailViewModel @Inject constructor(
         } else {
             _bucketDetailInfo.value = detailList2
         }
+
 
     }
 

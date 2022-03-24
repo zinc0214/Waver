@@ -1,28 +1,28 @@
 package com.zinc.data.repository
 
-import com.zinc.data.api.MyApi
+import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.models.AllBucketList
 import com.zinc.data.models.DdayBucketList
 import com.zinc.data.models.MyProfileInfo
 import com.zinc.data.models.MyState
 import javax.inject.Inject
 
-class MyRepositoryImpl @Inject constructor(
-    private val myApi: MyApi
+internal class MyRepositoryImpl @Inject constructor(
+    private val berryBucketApi: BerryBucketApi
 ) : MyRepository {
     override suspend fun loadMyProfileInfo(): MyProfileInfo {
-        return myApi.loadMyProfileInfo()
+        return berryBucketApi.loadMyProfileInfo()
     }
 
     override suspend fun loadMyDdayBucketList(): DdayBucketList {
-        return myApi.loadMyDdayBucketList()
+        return berryBucketApi.loadMyDdayBucketList()
     }
 
     override suspend fun loadAllBucketList(): AllBucketList {
-        return myApi.loadAllBucketList()
+        return berryBucketApi.loadAllBucketList()
     }
 
     override suspend fun loadMyState(): MyState {
-        return myApi.loadMyState()
+        return berryBucketApi.loadMyState()
     }
 }

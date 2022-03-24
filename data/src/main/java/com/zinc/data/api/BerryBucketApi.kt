@@ -1,12 +1,9 @@
 package com.zinc.data.api
 
-import com.zinc.data.models.AllBucketList
-import com.zinc.data.models.DdayBucketList
-import com.zinc.data.models.MyProfileInfo
-import com.zinc.data.models.MyState
+import com.zinc.data.models.*
 import retrofit2.http.GET
 
-interface MyApi {
+interface BerryBucketApi {
 
     @GET("/profile_info")
     suspend fun loadMyProfileInfo(): MyProfileInfo
@@ -19,5 +16,8 @@ interface MyApi {
 
     @GET("/bucketList")
     suspend fun loadMyState(): MyState
+
+    @GET("/detail")
+    suspend fun loadBucketDetail(id: String): DetailInfo
 
 }
