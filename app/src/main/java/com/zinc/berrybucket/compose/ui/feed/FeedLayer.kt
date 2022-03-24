@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
@@ -57,6 +58,7 @@ private fun TitleView(modifier: Modifier = Modifier) {
         text = stringResource(id = R.string.feedContentTitle),
         color = Gray10,
         fontSize = 24.sp,
+        fontWeight = FontWeight.Bold,
         modifier = modifier
     )
 }
