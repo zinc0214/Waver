@@ -42,6 +42,11 @@ data class InnerSuccessButton(
     var isVisible: Boolean
 ) : DetailDescType()
 
+data class CommentTagInfo(
+    val profileImageView: String,
+    val nickName: String
+)
+
 sealed class DetailDescType {
 
 }

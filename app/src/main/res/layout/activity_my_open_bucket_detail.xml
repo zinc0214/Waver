@@ -123,7 +123,8 @@
             android:textColor="@color/gray1"
             android:textSize="16sp"
             android:visibility="@{showEditView ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/commentEditLayout"
@@ -192,6 +193,29 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/commentTagLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/comment_tag_layout_bg"
+            android:elevation="3dp"
+            android:paddingTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/commentEditLayout"
+            tools:visibility="visible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentTagListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_comment_tag" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
