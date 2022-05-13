@@ -12,7 +12,7 @@ object Versions {
 
 object Dep {
     object GradlePlugin {
-        const val androidStudioGradlePluginVersion = "7.1.2"
+        private const val androidStudioGradlePluginVersion = "7.1.3"
         const val android = "com.android.tools.build:gradle:$androidStudioGradlePluginVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val kotlinSerialization =
@@ -48,7 +48,7 @@ object Dep {
         }
 
         object Compose {
-            const val version = "1.0.5"
+            const val version = "1.1.1"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -86,7 +86,7 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.5.31"
+        const val version = "1.6.10"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {
