@@ -12,6 +12,11 @@
     <string name="proceedingText">진행중</string>
     <string name="succeedText">완료</string>
     <string name="blank"> </string>
+    <string name="hide">숨기기</string>
+    <string name="report">신고</string>
+    <string name="edit">수정</string>
+    <string name="delete">삭제</string>
+    <string name="countChange">완료횟수변경</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -74,5 +79,19 @@
     <string name="likeButtonDesc">좋아요 버튼</string>
     <string name="commentSendButtonDesc">댓글 전송 버튼</string>
     <string name="commentHintText">댓글을 입력하세요</string>
+    <string name="commentBlankText">버킷리스트의 첫 응원을 해주세요!</string>
+
+    <!-- Detail > Comment Option Dialog -->
+    <string name="commentOptionDialogTitle">댓글</string>
+    <string name="commentEdit">수정</string>
+    <string name="commentDelete">삭제</string>
+
+    <!-- Report -->
+    <string name="reportWriter">작성자</string>
+    <string name="reportContents">내용</string>
+    <string name="reportItemButton">신고버튼</string>
+    <string name="reportActionButton">신고하기</string>
+    <string name="reportTextFieldHint">신고 사유를 입력해주세요. (최대 500자) </string>
+
 
 </resources>

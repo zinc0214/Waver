@@ -86,7 +86,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.nickName,
             fontWeight = FontWeight.Bold,
-            fontSize = 18.sp,
+            fontSize = 20.sp,
             color = Gray10,
             textAlign = TextAlign.Center
         )
@@ -97,8 +97,8 @@ private fun ProfileLayer(profileInfo: TopProfile) {
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.bio,
             fontWeight = FontWeight.Bold,
-            fontSize = 13.sp,
-            color = Gray6,
+            fontSize = 14.sp,
+            color = Gray7,
             textAlign = TextAlign.Center
         )
     }
@@ -122,20 +122,21 @@ private fun FollowStateLayer(topProfile: TopProfile, modifier: Modifier) {
 
 @Composable
 private fun FollowStateView(modifier: Modifier, count: String, text: String) {
-    Column {
-        Text(
-            text = count,
-            fontSize = 20.sp,
-            color = Gray10,
-            textAlign = TextAlign.Center,
-            modifier = modifier.padding(2.dp)
-        )
-        Spacer(modifier = Modifier.height(5.dp))
+    Row(modifier = modifier) {
         Text(
             text = text,
-            fontSize = 14.sp,
-            color = Gray7,
-            textAlign = TextAlign.Center
+            fontSize = 13.sp,
+            color = Gray9,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = count,
+            fontSize = 15.sp,
+            color = Gray9,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.align(Alignment.CenterVertically)
         )
     }
 }

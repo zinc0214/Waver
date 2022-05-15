@@ -1,6 +1,8 @@
 package com.zinc.berrybucket.compose.ui.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
@@ -15,21 +17,25 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.theme.Gray3
-import com.zinc.berrybucket.compose.theme.Gray8
-import com.zinc.berrybucket.compose.theme.Gray9
+import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.Commenter
 
 @Composable
-fun DetailCommentLayer(commentInfo: CommentInfo) {
+fun DetailCommentLayer(commentInfo: CommentInfo, commentLongClicked: (String) -> Unit) {
     Column(
         modifier = Modifier.padding(top = 20.dp)
     ) {
         CommentLine()
         CommentCountView(commentInfo.commentCount)
-        CommentListView(commentInfo.commenterList)
+
+        if (commentInfo.commentCount > 0) {
+            Spacer(modifier = Modifier.height(28.dp))
+            CommentListView(commentInfo.commenterList, commentLongClicked)
+        } else {
+            Spacer(modifier = Modifier.height(12.dp))
+            CommentBlankView()
+        }
     }
 }
 
@@ -39,9 +45,9 @@ private fun CommentLine() {
 }
 
 @Composable
-private fun CommentCountView(commentCount: String) {
+private fun CommentCountView(commentCount: Int) {
     Row(
-        modifier = Modifier.padding(vertical = 28.dp, horizontal = 20.dp)
+        modifier = Modifier.padding(top = 28.dp, start = 20.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.btn_32_comment),
@@ -53,7 +59,7 @@ private fun CommentCountView(commentCount: String) {
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = commentCount,
+            text = "$commentCount",
             color = Gray10,
             fontSize = 15.sp,
             modifier = Modifier
@@ -63,16 +69,30 @@ private fun CommentCountView(commentCount: String) {
 }
 
 @Composable
-private fun CommentListView(commentList: List<Commenter>) {
+private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (String) -> Unit) {
     commentList.forEach { commenter ->
-        CommentDescView(commenter = commenter)
+        CommentDescView(commenter = commenter, commentLongClicked = commentLongClicked)
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CommentDescView(commenter: Commenter) {
+private fun CommentDescView(commenter: Commenter, commentLongClicked: (String) -> Unit) {
+    // val interactionSource = remember { MutableInteractionSource() }
+    var isPressed = false
+    val commentColor = if (isPressed) Gray3 else Gray1
+
     Row(
-        modifier = Modifier.padding(start = 28.dp, bottom = 36.dp, end = 28.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 36.dp)
+            .combinedClickable(
+                onClick = { },
+                onLongClick = {
+                    commentLongClicked(commenter.commentId)
+                },
+            )
+            .padding(start = 28.dp, end = 28.dp)
     ) {
         Image(
             painter = painterResource(id = R.drawable.test),
@@ -100,4 +120,16 @@ private fun CommentDescView(commenter: Commenter) {
             )
         }
     }
+}
+
+@Composable
+private fun CommentBlankView() {
+    Text(
+        modifier = Modifier
+            .padding(horizontal = 28.dp)
+            .padding(bottom = 36.dp),
+        text = stringResource(R.string.commentBlankText),
+        fontSize = 14.sp,
+        color = Gray6
+    )
 }

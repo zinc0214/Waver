@@ -41,6 +41,7 @@ android {
     buildFeatures {
         compose = true
         dataBinding = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.version
@@ -73,6 +74,8 @@ dependencies {
     implementation(Dep.AndroidX.UI.material)
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.fragment.ktx)
+    implementation(Dep.AndroidX.Arch.common)
+    implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
@@ -93,6 +96,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.tooling)
     implementation(Dep.AndroidX.Compose.activity)
     implementation(Dep.AndroidX.Compose.livedata)
+    implementation(Dep.AndroidX.Compose.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
 
     implementation(Dep.AndroidX.Compose.viewPager)
@@ -111,7 +115,7 @@ dependencies {
     implementation(Dep.OkHttp.loggingInterceptor)
 
     // Glide
-    implementation(Dep.glide)
+    // implementation(Dep.glide)
 
     // CardView
     implementation(Dep.cardView)
@@ -122,5 +126,10 @@ dependencies {
 
     // FlexboxLayout
     implementation(Dep.flexBox)
+
+    // LiveData
+    implementation(Dep.AndroidX.Lifecycle.viewModel)
+    implementation(Dep.AndroidX.Lifecycle.runTime)
+    implementation(Dep.AndroidX.Lifecycle.livedata)
 
 }

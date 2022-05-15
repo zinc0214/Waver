@@ -22,11 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray1
-import com.zinc.berrybucket.compose.theme.Gray2
-import com.zinc.berrybucket.compose.theme.Gray3
-import com.zinc.berrybucket.compose.theme.Main4
-import com.zinc.berrybucket.compose.ui.component.BoxedChip
+import com.zinc.berrybucket.compose.theme.*
+import com.zinc.berrybucket.compose.ui.component.RoundChip
 import kotlin.math.min
 
 
@@ -55,7 +52,11 @@ fun FeedKeywordsLayer(keywords: List<String>, recommendClicked: () -> Unit) {
                         color = Gray3
                     )
                 }
-                BodyContent(scrollState, keywords, recommendClicked)
+                BodyContent(
+                    state = scrollState,
+                    keywords = keywords,
+                    recommendClicked = recommendClicked
+                )
             }
         }
     }
@@ -89,6 +90,7 @@ private fun BodyContent(
     Box(
         content = {
             ChipBodyContent(
+                modifier = Modifier.padding(bottom = 100.dp),
                 state = state,
                 keywords = keywords
             )
@@ -117,17 +119,21 @@ private fun ChipBodyContent(
     ) {
         items(keywords) { keyword ->
             var selected by remember { mutableStateOf(false) }
-
-            BoxedChip(
+            RoundChip(
                 modifier = Modifier
                     .padding(horizontal = 8.5.dp, vertical = 14.dp)
-                    .size(width = 90.dp, height = 40.dp)
+                    .padding(bottom = if (keywords.last() == keyword) 69.dp else 0.dp)
+                    .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
                     .selectable(
                         selected = selected,
                         onClick = {
                             selected = !selected
                         }
                     ),
+                chipRadius = 24.dp,
+                textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+                selectedColor = Main3,
+                unSelectedColor = Gray7,
                 text = keyword,
                 isSelected = selected
             )

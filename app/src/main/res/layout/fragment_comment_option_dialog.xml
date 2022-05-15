@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="isOwner"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="54dp"
+        android:layout_marginEnd="54dp"
+        android:background="@drawable/popup_bg"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/commentOptionTitleView"
+            style="@style/PopupTitleTextStyle"
+            android:text="@string/commentOptionDialogTitle" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="@{isOwner ? View.VISIBLE : View.GONE}">
+
+            <TextView
+                android:id="@+id/commentEditTextView"
+                style="@style/PopupOptionTextStyle"
+                android:text="@string/commentEdit" />
+
+            <TextView
+                android:id="@+id/commentDeleteTextView"
+                style="@style/PopupOptionTextStyle"
+                android:layout_marginTop="20dp"
+                android:text="@string/commentDelete" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:visibility="@{isOwner ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:id="@+id/commentHideTextView"
+                style="@style/PopupOptionTextStyle"
+                android:text="@string/hide" />
+
+            <TextView
+                android:id="@+id/commentRepostTextView"
+                style="@style/PopupOptionTextStyle"
+                android:layout_marginTop="20dp"
+                android:text="@string/report" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

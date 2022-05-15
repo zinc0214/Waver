@@ -27,4 +27,91 @@
         <item name="android:drawablePadding">8dp</item>
         <item name="android:drawableEnd">@drawable/radio_background</item>
     </style>
+
+    <style name="PopupTitleTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/gray10</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PopupOptionTextStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/gray10</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">start</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/transparent_ripple</item>
+    </style>
+
+    <!--    <style name="DetailOptionPopup" parent="@style/Widget.AppCompat.PopupMenu">-->
+    <!--        <item name="android:itemPadding">16dp</item>-->
+    <!--        <item name="android:listPreferredItemPaddingStart">16dp</item>-->
+    <!--        <item name="android:listPreferredItemPaddingEnd">16dp</item>-->
+    <!--        <item name="android:popupBackground">@drawable/popup_bg</item>-->
+    <!--        <item name="android:textColorPrimary">@color/gray10</item>-->
+    <!--        <item name="android:listPreferredItemHeightSmall">94dp</item>-->
+    <!--        <item name="android:actionLayout">@layout/fragment_comment_option_dialog</item>-->
+    <!--    </style>-->
+    <!--    -->
+    <style name="DetailOptionPopup" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowBackground">@drawable/transparent_bg</item>
+        <item name="android:statusBarColor">@color/main3</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="SuccessButtonStyle" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Borderless" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/gray1</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Floating" parent="SuccessButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
+        <item name="android:layout_marginBottom">28dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:background">@drawable/detail_success_button_background</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Flat" parent="SuccessButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">17dp</item>
+        <item name="android:paddingBottom">17dp</item>
+        <item name="android:background">@drawable/detail_success_button_full_background</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Floating.Count" parent="SuccessButtonStyle.Floating">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+
+    <style name="SuccessButtonStyle.Flat.Count" parent="SuccessButtonStyle.Flat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:background">@drawable/detail_success_button_full_background</item>
+    </style>
 </resources>

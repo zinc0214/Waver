@@ -4,6 +4,11 @@
 
     <data>
 
+        <variable
+            name="showEditView"
+            type="boolean" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,9 +20,9 @@
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/commentEditLayout"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_goneMarginBottom="80dp"
             tools:ignore="MergeRootFrame">
 
             <com.google.android.material.appbar.AppBarLayout
@@ -40,16 +45,7 @@
                     app:titleEnabled="false"
                     app:toolbarId="@id/toolbar">
 
-                    <androidx.compose.ui.platform.ComposeView
-                        android:id="@+id/imageComposeView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="?attr/actionBarSize"
-                        app:layout_collapseMode="parallax"
-                        tools:background="@color/gray4"
-                        tools:layout_height="360dp" />
-
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -60,20 +56,45 @@
                         app:layout_collapseMode="pin">
 
                         <ImageView
+                            android:id="@+id/closeButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/closeDesc"
-                            android:src="@drawable/btn40close" />
+                            android:src="@drawable/btn40close"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/titleTextView"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginEnd="30dp"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:textColor="@color/gray10"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/optionButton"
+                            app:layout_constraintStart_toEndOf="@id/closeButton"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="가나다라마바사아자차카타파아아앙아아가가가가가ㅏ가가가ㅏㅏ아앙" />
 
                         <ImageView
+                            android:id="@+id/optionButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/moreDesc"
-                            android:src="@drawable/ic_btn_32_more" />
-                    </RelativeLayout>
+                            android:src="@drawable/ic_btn_32_more"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -101,8 +122,9 @@
             android:text="@string/successButtonText"
             android:textColor="@color/gray1"
             android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:visibility="@{showEditView ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/commentEditLayout"
@@ -111,7 +133,7 @@
             android:background="@color/gray3"
             android:orientation="horizontal"
             android:paddingBottom="24dp"
-            android:visibility="gone"
+            android:visibility="@{showEditView ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:visibility="visible">
 
@@ -170,8 +192,30 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/commentTagLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/comment_tag_layout_bg"
+            android:elevation="3dp"
+            android:paddingTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/commentEditLayout"
+            tools:visibility="visible">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentTagListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_comment_tag" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

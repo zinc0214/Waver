@@ -13,60 +13,32 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.theme.Gray7
 import com.zinc.berrybucket.compose.theme.Main3
-import com.zinc.berrybucket.compose.ui.component.ProfileView
-import com.zinc.berrybucket.model.DetailDescInfo
+import com.zinc.berrybucket.model.CommonDetailDescInfo
 
 @Composable
-fun DetailLayer(detailDescInfo: DetailDescInfo) {
+fun DetailDescLayer(commonDetailDescInfo: CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .padding(top = 28.dp)
     ) {
-        ProfileView(
-            imageSize = 48.dp,
-            profileSize = 44.dp,
-            profileRadius = 16.dp,
-            badgeSize = Pair(24.dp, 27.dp),
-            nickNameTextSize = 14.sp,
-            titlePositionTextSize = 13.sp,
-            nickNameTextColor = Gray10,
-            profileInfo = detailDescInfo.detailProfileInfo
-        )
+        Column {
+            DdayView(
+                modifier = Modifier.padding(top = 24.dp, start = 14.dp),
+                dday = commonDetailDescInfo.dDay
+            )
 
-        DetailDescLayer(detailDescInfo = detailDescInfo)
-    }
+            TagListView(
+                modifier = Modifier.padding(top = 26.dp, start = 14.dp),
+                tagList = commonDetailDescInfo.tagList
+            )
 
-}
-
-@Composable
-private fun DetailDescLayer(detailDescInfo: DetailDescInfo) {
-    Column {
-        DdayView(
-            modifier = Modifier.padding(top = 24.dp, start = 14.dp),
-            dday = detailDescInfo.dDay
-        )
-
-        TagListView(
-            modifier = Modifier.padding(top = 26.dp, start = 14.dp),
-            tagList = detailDescInfo.tagList
-        )
-
-        TitleView(
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            title = detailDescInfo.title
-        )
-
-        if (detailDescInfo.memo.isNotBlank()) {
-            MemoView(
-                modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
-                memo = detailDescInfo.memo
+            TitleView(
+                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                title = commonDetailDescInfo.title
             )
         }
-
     }
 }
 
@@ -117,16 +89,6 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
         text = title,
         color = Gray10,
         fontSize = 24.sp,
-        modifier = modifier
-    )
-}
-
-@Composable
-private fun MemoView(modifier: Modifier = Modifier, memo: String) {
-    Text(
-        text = memo,
-        color = Gray7,
-        fontSize = 15.sp,
         modifier = modifier
     )
 }

@@ -1,8 +1,7 @@
 package com.zinc.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.zinc.data.api.DetailApi
-import com.zinc.data.api.MyApi
+import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.repository.DetailRepository
 import com.zinc.data.repository.DetailRepositoryImpl
 import com.zinc.data.repository.MyRepository
@@ -20,7 +19,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module(includes = [DataModule.ApiModule::class])
-abstract class DataModule {
+internal abstract class DataModule {
     @Binds
     abstract fun bindMyRepository(
         repository: MyRepositoryImpl
@@ -44,18 +43,10 @@ abstract class DataModule {
 
         @Provides
         @Singleton
-        fun provideMyApi(
+        fun provideBerryBucketApi(
             retrofit: Retrofit
-        ): MyApi {
-            return retrofit.create(MyApi::class.java)
-        }
-
-        @Provides
-        @Singleton
-        fun provideDetailApi(
-            retrofit: Retrofit
-        ): DetailApi {
-            return retrofit.create(DetailApi::class.java)
+        ): BerryBucketApi {
+            return retrofit.create(BerryBucketApi::class.java)
         }
 
 //        @Provides

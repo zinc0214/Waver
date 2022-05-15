@@ -24,10 +24,12 @@ data class Category(
     val count: String
 )
 
+@Serializable
 data class CommentList(
     val commentList: List<CommentInfo>
 )
 
+@Serializable
 data class CommentInfo(
     val profileImageView: String,
     val nickName: String,

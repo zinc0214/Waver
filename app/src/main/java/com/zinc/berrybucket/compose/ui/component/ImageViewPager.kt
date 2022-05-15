@@ -9,17 +9,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray1
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
+fun ImageViewPagerOutSideIndicator(
+    modifier: Modifier = Modifier,
+    corner: Dp = 4.dp,
+    imageList: List<String>
+) {
     Column(
         modifier
             .fillMaxWidth()
@@ -33,12 +37,12 @@ fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: Lis
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .aspectRatio(1f),
-            shape = RoundedCornerShape(4.dp),
+            shape = RoundedCornerShape(corner),
             elevation = 0.dp,
             content = {
                 // Display 10 items
                 HorizontalPager(
-                    count = 10,
+                    count = imageList.size,
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -65,7 +69,12 @@ fun ImageViewPagerOutSideIndicator(modifier: Modifier = Modifier, imageList: Lis
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List<String>) {
+fun ImageViewPagerInsideIndicator(
+    modifier: Modifier = Modifier,
+    corner: Dp = 0.dp,
+    indicatorModifier: Modifier = Modifier,
+    imageList: List<String>
+) {
     Box(
         modifier
             .fillMaxWidth()
@@ -79,10 +88,9 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .aspectRatio(1f),
-                shape = RoundedCornerShape(0.dp),
+                shape = RoundedCornerShape(corner),
                 elevation = 0.dp,
                 content = {
-                    // Display 10 items
                     HorizontalPager(
                         count = imageList.size,
                         state = pagerState,
@@ -90,7 +98,7 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                             .fillMaxWidth()
                     ) { page ->
                         Image(
-                            painter = painterResource(id = R.drawable.test_2),
+                            painter = painterResource(id = R.drawable.kakao),
                             contentDescription = "Test",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
@@ -99,14 +107,13 @@ fun ImageViewPagerInsideIndicator(modifier: Modifier = Modifier, imageList: List
                 }
             )
 
-            HorizontalPagerIndicator(
-                pagerState = pagerState,
-                activeColor = Gray1,
-                inactiveColor = Gray1.copy(alpha = 0.5f),
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 18.dp, end = 18.dp),
-            )
+            if (imageList.size > 1) {
+                PageCountIndicator(
+                    pagerState = pagerState,
+                    modifier = indicatorModifier
+                        .align(Alignment.BottomEnd),
+                )
+            }
         }
     )
 }

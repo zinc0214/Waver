@@ -3,22 +3,22 @@ package com.zinc.berrybucket.presentation.detail.listview
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.recyclerview.widget.RecyclerView
 import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.ui.detail.DetailLayer
+import com.zinc.berrybucket.compose.ui.detail.DetailDescLayer
 import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
-import com.zinc.berrybucket.model.DetailDescInfo
+import com.zinc.berrybucket.model.CommonDetailDescInfo
 
-class DetailLayerViewHolder(private val binding: WidgetComposeViewBinding) :
+class DetailDescLayerViewHolder(private val binding: WidgetComposeViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(detailDescInfo: DetailDescInfo) {
+    fun bind(commonDetailDescInfo: CommonDetailDescInfo) {
         binding.composeView.apply {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
                 BaseTheme {
-                    DetailLayer(
-                        detailDescInfo = detailDescInfo
+                    DetailDescLayer(
+                        commonDetailDescInfo = commonDetailDescInfo
                     )
                 }
             }

@@ -23,7 +23,8 @@ data class BucketInfoSimple(
     val title: String,
     var currentCount: Int = 0,
     val goalCount: Int = 0,
-    val dDay: Int? = null
+    val dDay: Int? = null,
+    val detailType: DetailType = DetailType.MY_CLOSE
 ) {
     val dDayText = dDay?.let {
         when {
@@ -57,7 +58,7 @@ enum class BucketType {
 }
 
 enum class TabType {
-    ALL, D_DAY, CATEGORY, CHALLENGE;
+    ALL, CATEGORY, D_DAY, CHALLENGE;
 
     companion object {
         fun getNameResource(type: TabType): Int {
@@ -65,11 +66,11 @@ enum class TabType {
                 ALL -> {
                     R.string.allTab
                 }
-                D_DAY -> {
-                    R.string.ddayTab
-                }
                 CATEGORY -> {
                     R.string.categoryTab
+                }
+                D_DAY -> {
+                    R.string.ddayTab
                 }
                 else -> {
                     R.string.challengeTab
@@ -85,5 +86,5 @@ sealed class MyClickEvent {
     object CloseClicked : MyClickEvent()
 }
 
-data class ItemClicked(val id: String) : MyClickEvent()
+data class ItemClicked(val info: BucketInfoSimple) : MyClickEvent()
 data class SearchClicked(val tabType: TabType) : MyClickEvent()
