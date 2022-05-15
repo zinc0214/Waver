@@ -18,7 +18,7 @@ class DetailDescLayerViewHolder(private val binding: WidgetComposeViewBinding) :
             setContent {
                 BaseTheme {
                     DetailDescLayer(
-                        commonDetailDescInfo = commonDetailDescInfo
+                        detailDescInfo = commonDetailDescInfo
                     )
                 }
             }

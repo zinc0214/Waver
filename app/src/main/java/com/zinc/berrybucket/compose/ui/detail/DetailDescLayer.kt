@@ -13,32 +13,32 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray10
+import com.zinc.berrybucket.compose.theme.Gray7
 import com.zinc.berrybucket.compose.theme.Main3
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 
 @Composable
-fun DetailDescLayer(commonDetailDescInfo: CommonDetailDescInfo) {
+fun DetailDescLayer(detailDescInfo: CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
+            .padding(top = 30.dp)
     ) {
-        Column {
-            DdayView(
-                modifier = Modifier.padding(top = 24.dp, start = 14.dp),
-                dday = commonDetailDescInfo.dDay
-            )
+        DdayView(
+            modifier = Modifier.padding(start = 14.dp),
+            dday = detailDescInfo.dDay
+        )
 
-            TagListView(
-                modifier = Modifier.padding(top = 26.dp, start = 14.dp),
-                tagList = commonDetailDescInfo.tagList
-            )
+        TagListView(
+            modifier = Modifier.padding(top = 26.dp, start = 14.dp),
+            tagList = detailDescInfo.tagList
+        )
 
-            TitleView(
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                title = commonDetailDescInfo.title
-            )
-        }
+        TitleView(
+            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            title = detailDescInfo.title
+        )
     }
 }
 

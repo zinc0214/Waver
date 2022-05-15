@@ -13,9 +13,12 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail
 ) : ViewModel() {
+//
+//    private val _bucketDetailInfo = MutableLiveData<List<DetailDescType>>()
+//    val bucketDetailInfo: LiveData<List<DetailDescType>> get() = _bucketDetailInfo
 
-    private val _bucketDetailInfo = MutableLiveData<List<DetailDescType>>()
-    val bucketDetailInfo: LiveData<List<DetailDescType>> get() = _bucketDetailInfo
+    private val _bucketDetailInfo = MutableLiveData<DetailInfo>()
+    val bucketDetailInfo: LiveData<DetailInfo> get() = _bucketDetailInfo
 
     private val _originCommentTaggableList = MutableLiveData<List<CommentTagInfo>>()
     val originCommentTaggableList: LiveData<List<CommentTagInfo>> = _originCommentTaggableList
@@ -35,9 +38,9 @@ class DetailViewModel @Inject constructor(
 //        }
 
         if (id == "open") {
-            _bucketDetailInfo.value = detailList1
+            _bucketDetailInfo.value = detailInfo1
         } else {
-            _bucketDetailInfo.value = detailList2
+            _bucketDetailInfo.value = detailInfo1
         }
     }
 
@@ -194,4 +197,57 @@ class DetailViewModel @Inject constructor(
                     " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
         )
     )
+
+    private val detailInfo1 =
+        DetailInfo(
+            imageInfo = ImageInfo(
+                imageList = listOf("A", "B", "C")
+            ),
+            profileInfo = ProfileInfo(
+                profileImage = "",
+                badgeImage = "",
+                titlePosition = "멋쟁이 여행가",
+                nickName = "한아크크룽삐옹"
+            ),
+            descInfo = CommonDetailDescInfo(
+                dDay = "D+201",
+                tagList = listOf("여행", "강남"),
+                title = "가나다라마바사",
+            ),
+            memoInfo = MemoInfo(
+                memo = "▶ 첫째날\n" +
+                        "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                        "\n" +
+                        "▶ 둘째날\n" +
+                        " 쇠소깍 - 크엉해안경승지 - 이승악오름\n " +
+                        "▶ 첫째날\n" +
+                        "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                        "\n" +
+                        "▶ 둘째날\n" +
+                        " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" + "▶ 첫째날\n" +
+                        "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                        "\n" +
+                        "▶ 둘째날\n" +
+                        " 쇠소깍 - 크엉해안경승지 - 이승악오름\n" +
+                        "▶ 첫째날\n" +
+                        "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
+                        "\n" +
+                        "▶ 둘째날\n" +
+                        " 쇠소깍 - 크엉해안경승지 - 이승악오름\n"
+            ),
+            commentInfo = CommentInfo(
+                commentCount = 2,
+                listOf(
+                    Commenter(
+                        "1", "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
+                                "베리버킷 댓글입니다."
+                    ),
+                    Commenter(
+                        "2", "B",
+                        "Contrary to popular belief",
+                        "Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, "
+                    ),
+                )
+            )
+        )
 }

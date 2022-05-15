@@ -9,7 +9,7 @@ import com.zinc.berrybucket.databinding.WidgetComposeViewBinding
 class DetailSuccessButtonViewHolder(private val binding: WidgetComposeViewBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(isVisible: Boolean, successClicked: () -> Unit) {
+    fun bind(successClicked: () -> Unit) {
         binding.composeView.apply {
             setViewCompositionStrategy(
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
@@ -17,7 +17,6 @@ class DetailSuccessButtonViewHolder(private val binding: WidgetComposeViewBindin
             setContent {
                 BaseTheme {
                     DetailSuccessButtonView(
-                        isVisible = isVisible,
                         successClicked = successClicked
                     )
                 }

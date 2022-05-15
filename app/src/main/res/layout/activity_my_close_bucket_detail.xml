@@ -101,7 +101,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/moreDesc"
-                            android:background="@drawable/ic_btn_32_more"
+                            android:background="@drawable/btn32more"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />

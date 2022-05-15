@@ -20,15 +20,17 @@ import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Main4
 
 @Composable
-fun DetailSuccessButtonView(isVisible: Boolean, successClicked: () -> Unit) {
-    if (isVisible.not()) return
+fun DetailSuccessButtonView(
+    modifier: Modifier = Modifier,
+    successClicked: () -> Unit
+) {
     Box(
-        modifier = Modifier
-            .padding(top = 56.dp, start = 28.dp, end = 28.dp, bottom = 16.dp)
+        modifier = modifier
+            .padding(start = 28.dp, end = 28.dp, bottom = 16.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(Main4)
             .clickable {
-                successClicked()
+                successClicked.invoke()
             }
     ) {
         Text(

@@ -32,7 +32,7 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
 
     private fun setUpViewModels() {
         viewModel.bucketDetailInfo.nonNullObserve(this) {
-            setUpViews(it)
+           // setUpViews(it)
         }
 
         viewModel.getBucketDetail("close")
