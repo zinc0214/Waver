@@ -49,6 +49,7 @@
         <entry key="app/src/main/res/drawable/bottom_background.xml" value="0.2385" />
         <entry key="app/src/main/res/drawable/bottom_sheet_bg.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/btn40backw.xml" value="0.5572012257405515" />
+        <entry key="app/src/main/res/drawable/btn40close.xml" value="0.1595" />
         <entry key="app/src/main/res/drawable/btn_32_coment.xml" value="0.2755" />
         <entry key="app/src/main/res/drawable/btn_32_filter.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/btn_main_fill_background.xml" value="0.5572012257405515" />
@@ -109,6 +110,8 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.11" />
+        <entry key="app/src/main/res/layout/activity_my_close_bucket_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_my_open_bucket_detail.xml" value="0.26915219611848823" />
         <entry key="app/src/main/res/layout/fragment_all_bucket_list.xml" value="0.29097222222222224" />
         <entry key="app/src/main/res/layout/fragment_bucket_detail.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_category_list.xml" value="0.1" />
