@@ -110,7 +110,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.11" />
-        <entry key="app/src/main/res/layout/activity_my_close_bucket_detail.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_my_close_bucket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_my_open_bucket_detail.xml" value="0.26915219611848823" />
         <entry key="app/src/main/res/layout/fragment_all_bucket_list.xml" value="0.29097222222222224" />
         <entry key="app/src/main/res/layout/fragment_bucket_detail.xml" value="0.165" />
