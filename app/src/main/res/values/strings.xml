@@ -80,6 +80,7 @@
     <string name="commentSendButtonDesc">댓글 전송 버튼</string>
     <string name="commentHintText">댓글을 입력하세요</string>
     <string name="commentBlankText">버킷리스트의 첫 응원을 해주세요!</string>
+    <string name="successButtonCount"><![CDATA[<font color="#ffffff">%s</font><font color="#a6c6ff">/%s</font>]]></string>
 
     <!-- Detail > Comment Option Dialog -->
     <string name="commentOptionDialogTitle">댓글</string>

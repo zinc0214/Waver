@@ -15,7 +15,6 @@ import com.zinc.berrybucket.model.FeedInfo
 
 class FeedFragment : Fragment() {
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

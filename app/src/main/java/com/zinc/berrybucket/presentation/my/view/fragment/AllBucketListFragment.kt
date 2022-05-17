@@ -88,7 +88,7 @@ class AllBucketListFragment : Fragment() {
                 currentCount = 5,
                 goalCount = 10,
                 dDay = 20,
-                detailType = DetailType.MY_OPEN
+                detailType = DetailType.MY_CLOSE
             ),
             BucketInfoSimple(
                 id = "3",

@@ -13,12 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.detail.DetailClickEvent
 import com.zinc.berrybucket.compose.ui.detail.OpenDetailLayer
 import com.zinc.berrybucket.databinding.ActivityMyOpenBucketDetailBinding
-import com.zinc.berrybucket.model.CommentTagInfo
-import com.zinc.berrybucket.model.DetailInfo
-import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
@@ -68,8 +65,10 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
                             DetailClickEvent.MoreOptionClicked -> {
                                 showDetailOptionPopup()
                             }
-                            DetailClickEvent.SuccessClicked -> TODO()
-                            is DetailClickEvent.CommentLongClicked -> {
+                            DetailClickEvent.SuccessClicked -> {
+                                // TODO
+                            }
+                            is CommentLongClicked -> {
                                 showCommentOptionDialog(it.commentId)
                             }
                         }

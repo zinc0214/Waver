@@ -13,7 +13,9 @@ data class ImageInfo(
 data class CommonDetailDescInfo(
     val dDay: String,
     val tagList: List<String>,
-    val title: String
+    val title: String,
+    val goalCount: Int = 0,
+    val userCount: Int = 0
 ) : DetailDescType()
 
 data class CloseDetailDescInfo(
@@ -47,6 +49,11 @@ data class CommentTagInfo(
     val nickName: String
 )
 
+data class SuccessButtonInfo(
+    val goalCount: Int = 0,
+    val userCount: Int = 0
+)
+
 sealed class DetailDescType {
 
 }
@@ -67,10 +74,19 @@ enum class DetailType {
     MY_OPEN,  // 내 비공개 상세 버킷
     OTHER_OPEN // 다른사람의 공개 상세 버킷
 }
+
 data class DetailInfo(
-    val imageInfo : ImageInfo?,
+    val imageInfo: ImageInfo? = null,
     val profileInfo: ProfileInfo,
     val descInfo: CommonDetailDescInfo,
-    val memoInfo : MemoInfo?,
-    val commentInfo : CommentInfo
+    val memoInfo: MemoInfo? = null,
+    val commentInfo: CommentInfo? = null
 )
+
+sealed class DetailClickEvent {
+    object MoreOptionClicked : DetailClickEvent()
+    object CloseClicked : DetailClickEvent()
+    object SuccessClicked : DetailClickEvent()
+}
+
+data class CommentLongClicked(val commentId: String) : DetailClickEvent()

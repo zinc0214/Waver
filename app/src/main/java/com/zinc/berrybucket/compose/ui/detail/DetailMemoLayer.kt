@@ -11,21 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.compose.theme.Gray7
 
 @Composable
-fun DetailMemoLayer(memo: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-    ) {
-        MemoView(
-            modifier = Modifier.padding(top = 24.dp, start = 16.dp, end = 16.dp),
-            memo = memo
-        )
-    }
-}
-
-@Composable
-private fun MemoView(modifier: Modifier = Modifier, memo: String) {
+fun DetailMemoLayer(modifier: Modifier = Modifier, memo: String) {
     Text(
         text = memo,
         color = Gray7,
