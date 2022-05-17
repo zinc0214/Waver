@@ -1,10 +1,7 @@
 package com.zinc.berrybucket.compose.ui.detail
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -39,7 +36,7 @@ fun OpenDetailLayer(
     val listScrollState = rememberLazyListState()
     val titlePosition = if (detailInfo.imageInfo == null) 1 else 2
     val flatButtonIndex = flatButtonIndex(detailInfo)
-    val isScrollEnd = listScrollState.firstVisibleItemIndex >= flatButtonIndex - 1
+    val isScrollEnd = listScrollState.firstVisibleItemIndex >= flatButtonIndex - 2
     val originIsScrollEnd = remember { mutableStateOf(false) }
 
     if (isScrollEnd != originIsScrollEnd.value) {
@@ -65,6 +62,7 @@ fun OpenDetailLayer(
                         listState = listScrollState,
                         detailInfo = detailInfo,
                         clickEvent = clickEvent,
+                        flatButtonIndex = flatButtonIndex,
                         modifier = Modifier.constrainAs(contentView) {
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
@@ -79,7 +77,7 @@ fun OpenDetailLayer(
                                     end.linkTo(parent.end)
                                     bottom.linkTo(parent.bottom)
                                 }
-                                .padding(bottom = 12.dp),
+                                .padding(bottom = 30.dp),
                             successClicked = {
                                 clickEvent.invoke(DetailClickEvent.SuccessClicked)
                             }
@@ -163,6 +161,7 @@ private fun ContentView(
     modifier: Modifier,
     listState: LazyListState,
     detailInfo: DetailInfo,
+    flatButtonIndex: Int,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
 
@@ -202,12 +201,19 @@ private fun ContentView(
             }
         }
 
+        // TODO : 인터렉션 이슈 해결 필요
         item {
-            DetailSuccessButtonView(
-                successClicked = {
-                    clickEvent.invoke(DetailClickEvent.SuccessClicked)
-                }
-            )
+            if (listState.visibleLastIndex() > flatButtonIndex) {
+                DetailSuccessButtonView(
+                    successClicked = {
+                        clickEvent.invoke(DetailClickEvent.SuccessClicked)
+                    }
+                )
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(30.dp))
         }
 
         item {
@@ -246,7 +252,7 @@ private fun MemoView(modifier: Modifier = Modifier, memo: String) {
 }
 
 private fun flatButtonIndex(detailInfo: DetailInfo): Int {
-    var index = 4
+    var index = 5
     if (detailInfo.imageInfo == null) {
         index -= 1
     }
@@ -267,6 +273,6 @@ sealed class DetailClickEvent {
 }
 
 fun LazyListState.isScrolledToTheEnd() =
-    visibleLastIndex() == layoutInfo.totalItemsCount - 1
+    visibleLastIndex() == layoutInfo.viewportEndOffset
 
 fun LazyListState.visibleLastIndex() = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0

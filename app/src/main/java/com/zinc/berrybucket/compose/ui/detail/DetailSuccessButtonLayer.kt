@@ -26,7 +26,7 @@ fun DetailSuccessButtonView(
 ) {
     Box(
         modifier = modifier
-            .padding(start = 28.dp, end = 28.dp, bottom = 16.dp)
+            .padding(start = 28.dp, end = 28.dp)
             .clip(RoundedCornerShape(12.dp))
             .background(Main4)
             .clickable {
