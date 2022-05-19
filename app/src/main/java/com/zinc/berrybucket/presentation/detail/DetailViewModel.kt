@@ -38,7 +38,7 @@ class DetailViewModel @Inject constructor(
 //        }
 
         if (id == "open") {
-            _bucketDetailInfo.value = detailInfo1
+            _bucketDetailInfo.value = detailInfo2
         } else {
             _bucketDetailInfo.value = detailInfo2
         }
