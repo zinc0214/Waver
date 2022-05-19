@@ -12,11 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
-import com.zinc.berrybucket.compose.ui.component.ProfileView
+import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.compose.ui.common.ProfileView
 import com.zinc.berrybucket.model.*
 
 @Composable

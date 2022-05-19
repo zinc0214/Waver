@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
-import com.zinc.berrybucket.compose.ui.component.BucketListView
-import com.zinc.berrybucket.compose.ui.component.CategoryListView
-import com.zinc.berrybucket.compose.ui.component.RoundChip
+import com.zinc.berrybucket.compose.ui.common.BucketListView
+import com.zinc.berrybucket.compose.ui.common.CategoryListView
+import com.zinc.berrybucket.compose.ui.common.RoundChip
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent

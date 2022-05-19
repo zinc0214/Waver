@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.compose.ui.component
+package com.zinc.berrybucket.compose.ui.common
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween

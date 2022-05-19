@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.compose.ui.component
+package com.zinc.berrybucket.compose.ui.common
 
 import android.util.Log
 import android.view.MotionEvent

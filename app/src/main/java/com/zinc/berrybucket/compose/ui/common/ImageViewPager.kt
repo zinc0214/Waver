@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.compose.ui.component
+package com.zinc.berrybucket.compose.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

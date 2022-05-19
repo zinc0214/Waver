@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo

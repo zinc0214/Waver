@@ -15,8 +15,8 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
-import com.zinc.berrybucket.compose.ui.component.BucketListView
-import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
+import com.zinc.berrybucket.compose.ui.common.BucketListView
+import com.zinc.berrybucket.compose.ui.common.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent

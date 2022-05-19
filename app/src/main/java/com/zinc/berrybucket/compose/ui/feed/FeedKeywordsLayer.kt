@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
-import com.zinc.berrybucket.compose.ui.component.RoundChip
+import com.zinc.berrybucket.compose.ui.common.RoundChip
 import kotlin.math.min
 
 

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.ui.component.ProfileView
+import com.zinc.berrybucket.compose.ui.common.ProfileView
 import com.zinc.berrybucket.model.ProfileInfo
 
 @Composable

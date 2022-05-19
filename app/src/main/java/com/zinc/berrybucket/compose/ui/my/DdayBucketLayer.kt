@@ -8,8 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.compose.ui.component.BucketListView
-import com.zinc.berrybucket.compose.ui.component.FilterAndSearchImageView
+import com.zinc.berrybucket.compose.ui.common.BucketListView
+import com.zinc.berrybucket.compose.ui.common.FilterAndSearchImageView
 import com.zinc.berrybucket.model.DDayBucketList
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent

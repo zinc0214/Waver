@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.compose.ui.component
+package com.zinc.berrybucket.compose.ui.common
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.shape.RoundedCornerShape
