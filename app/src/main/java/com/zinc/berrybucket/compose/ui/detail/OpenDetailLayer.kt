@@ -1,19 +1,29 @@
 package com.zinc.berrybucket.compose.ui.detail
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.theme.Gray10
+import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.ui.component.ProfileView
 import com.zinc.berrybucket.model.*
@@ -33,12 +43,12 @@ fun OpenDetailLayer(
     val isScrollable = listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
 
     if (isScrollEnd != originIsScrollEnd.value) {
-        isScrollEnded.invoke(isScrollEnd)
+        //   isScrollEnded.invoke(isScrollEnd)
         originIsScrollEnd.value = isScrollEnd
     }
 
     if (!isScrollable) {
-        isScrollEnded.invoke(true)
+        //   isScrollEnded.invoke(true)
     }
 
     BaseTheme {
@@ -57,7 +67,7 @@ fun OpenDetailLayer(
                 ConstraintLayout(
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    val (contentView, floatingButtonView) = createRefs()
+                    val (contentView, floatingButtonView, editView) = createRefs()
 
                     ContentView(
                         listState = listScrollState,
@@ -69,7 +79,13 @@ fun OpenDetailLayer(
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
                             top.linkTo(parent.top)
+                            if (originIsScrollEnd.value) {
+                                bottom.linkTo(editView.top)
+                            } else {
+                                bottom.linkTo(parent.bottom)
+                            }
                         })
+
 
                     if ((listScrollState.visibleLastIndex() < flatButtonIndex) && !isScrollEnd) {
                         DetailSuccessButtonView(
@@ -77,7 +93,11 @@ fun OpenDetailLayer(
                                 .constrainAs(floatingButtonView) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
-                                    bottom.linkTo(parent.bottom)
+                                    if (originIsScrollEnd.value) {
+                                        bottom.linkTo(editView.top)
+                                    } else {
+                                        bottom.linkTo(parent.bottom)
+                                    }
                                 }
                                 .padding(bottom = 30.dp),
                             successClicked = {
@@ -89,6 +109,19 @@ fun OpenDetailLayer(
                             )
                         )
                     }
+
+                    if (originIsScrollEnd.value) {
+                        CommentEditTextView(
+                            modifier = Modifier
+                                .constrainAs(editView) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                },
+                            onImeAction = {})
+                    }
+
+
                 }
             }
         }
@@ -189,6 +222,94 @@ private fun ProfileView(profileInfo: ProfileInfo) {
         nickNameTextColor = Gray10,
         profileInfo = profileInfo
     )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun CommentEditTextView(
+    modifier: Modifier,
+    onImeAction: (String) -> Unit
+) {
+    val hintText = stringResource(id = R.string.commentHintText)
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var commentText by remember { mutableStateOf(TextFieldValue("")) }
+
+    val likedState = remember { mutableStateOf(false) }
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = Gray3)
+    ) {
+
+        IconToggleButton(
+            modifier = Modifier
+                .padding(top = 11.dp, start = 12.dp, bottom = 11.dp)
+                .size(32.dp),
+            checked = likedState.value,
+            onCheckedChange = {
+                likedState.value = !likedState.value
+            }) {
+            Icon(
+                painter = if (likedState.value) painterResource(id = R.drawable.btn_32_like_on)
+                else painterResource(id = R.drawable.btn_32_like_off),
+                contentDescription = stringResource(id = R.string.likeButtonDesc),
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .padding(start = 8.dp, top = 8.dp, bottom = 8.dp, end = 16.dp)
+                .background(color = Gray1, shape = RoundedCornerShape(8.dp))
+                .fillMaxWidth()
+        ) {
+            BasicTextField(
+                modifier = Modifier
+                    .padding(top = 8.dp, bottom = 8.dp, start = 10.dp, end = 8.dp),
+                value = commentText,
+                textStyle = TextStyle(
+                    color = Gray9,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                ),
+                onValueChange = { commentText = it },
+                maxLines = 3,
+                keyboardActions = KeyboardActions(onPrevious = {
+                    onImeAction(commentText.text)
+                    keyboardController?.hide()
+                }),
+                decorationBox = { innerTextField ->
+                    if (commentText.text.isBlank()) {
+                        Text(text = hintText, color = Gray6, fontSize = 14.sp)
+                    }
+                    Row {
+                        innerTextField()  //<-- Add this
+                    }
+                },
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            IconButton(
+                modifier = Modifier
+                    .padding(4.dp)
+                    .then(Modifier.size(28.dp))
+                    .align(Alignment.Bottom),
+                onClick = { /*TODO*/ }) {
+                Icon(
+                    painter =
+                    if (commentText.text.isBlank())
+                        painterResource(id = R.drawable.comment_send_off)
+                    else painterResource(
+                        id = R.drawable.comment_send_on
+                    ),
+                    contentDescription = stringResource(id = R.string.commentSendButtonDesc)
+                )
+            }
+        }
+
+    }
+
 }
 
 private fun flatButtonIndex(detailInfo: DetailInfo): Int {

@@ -45,8 +45,8 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
 
     private fun setUpViews() {
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        setUpEditText()
-        setUpKeyBoard()
+       // setUpEditText()
+      //  setUpKeyBoard()
     }
 
     private fun setUpContentInfo(detailInfo: DetailInfo) {

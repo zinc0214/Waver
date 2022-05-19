@@ -22,9 +22,11 @@ import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.Commenter
 
 @Composable
-fun DetailCommentLayer(commentInfo: CommentInfo, commentLongClicked: (String) -> Unit) {
+fun DetailCommentLayer(
+    commentInfo: CommentInfo, commentLongClicked: (String) -> Unit
+) {
     Column(
-        modifier = Modifier.padding(top = 20.dp)
+        modifier = Modifier.padding(top = 20.dp, bottom = 70.dp)
     ) {
         CommentLine()
         CommentCountView(commentInfo.commentCount)
@@ -78,10 +80,6 @@ private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (S
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CommentDescView(commenter: Commenter, commentLongClicked: (String) -> Unit) {
-    // val interactionSource = remember { MutableInteractionSource() }
-    var isPressed = false
-    val commentColor = if (isPressed) Gray3 else Gray1
-
     Row(
         modifier = Modifier
             .fillMaxWidth()

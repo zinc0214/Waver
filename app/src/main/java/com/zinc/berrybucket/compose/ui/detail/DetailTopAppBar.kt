@@ -24,13 +24,14 @@ fun DetailTopAppBar(
     listState: LazyListState,
     titlePosition: Int,
     title: String,
-    clickEvent: (DetailClickEvent) -> Unit
+    clickEvent: (DetailClickEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     val isTitleScrolled = listState.firstVisibleItemIndex > titlePosition
 
     ConstraintLayout(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(52.dp)
     ) {
