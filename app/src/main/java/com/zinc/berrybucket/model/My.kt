@@ -50,7 +50,7 @@ data class BucketInfoSimple(
 }
 
 enum class BucketProgressState {
-    STARTED, BACK, FINISHED
+    STARTED, PROGRESS_END, FINISHED
 }
 
 enum class BucketType {

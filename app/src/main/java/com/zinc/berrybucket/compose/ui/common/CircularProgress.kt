@@ -20,10 +20,6 @@ import com.zinc.berrybucket.compose.theme.Main2
 import com.zinc.berrybucket.compose.theme.Sub_D2
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.TabType
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @Composable
 fun BucketCircularProgressBar(
@@ -41,7 +37,13 @@ fun BucketCircularProgressBar(
         animationSpec = tween(
             durationMillis = animDuration,
             delayMillis = animDelay
-        )
+        ),
+        finishedListener = {
+            if (it == 1.0f) {
+                animationPlayed = false
+                progressState.invoke(BucketProgressState.PROGRESS_END)
+            }
+        }
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -90,16 +92,6 @@ fun BucketCircularProgressBar(
                     .height(32.dp)
                     .width(32.dp)
             )
-
-            runBlocking {
-                coroutineScope {
-                    launch {
-                        animationPlayed = false
-                        progressState.invoke(BucketProgressState.BACK)
-                        delay(500L) // TODO : Duration 을 주는 방법을 생각해야 함. (다른뷰에 영향을 미치는 상태라서)
-                    }
-                }
-            }
         }
 
         if ((curPercentage.value * 100).toInt() == 1) {

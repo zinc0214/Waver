@@ -108,7 +108,7 @@
         <entry key="app/src/main/res/drawable/switch_selector.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.18" />
         <entry key="app/src/main/res/drawable/transparent_bg.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1890625" />
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_my_close_bucket_detail.xml" value="0.25" />

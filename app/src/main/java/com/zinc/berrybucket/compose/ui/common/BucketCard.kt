@@ -84,7 +84,7 @@ fun BucketCard(
             ) {
                 BucketCircularProgressBar(
                     progressState = {
-                        if (it == BucketProgressState.BACK) {
+                        if (it == BucketProgressState.PROGRESS_END) {
                             if (tabType == TabType.ALL) {
                                 borderColor.value = Main2
                             } else {
