@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.IconToggleButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -17,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +28,8 @@ import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray3
 import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.compose.theme.Gray9
+import com.zinc.berrybucket.compose.ui.common.IconButton
+import com.zinc.berrybucket.compose.ui.common.IconToggleButton
 import com.zinc.berrybucket.compose.util.Keyboard
 import com.zinc.berrybucket.compose.util.keyboardAsState
 
@@ -65,13 +63,10 @@ fun CommentEditTextView(
             checked = likedState.value,
             onCheckedChange = {
                 likedState.value = !likedState.value
-            }) {
-            Icon(
-                painter = if (likedState.value) painterResource(id = R.drawable.btn_32_like_on)
-                else painterResource(id = R.drawable.btn_32_like_off),
-                contentDescription = stringResource(id = R.string.likeButtonDesc),
-            )
-        }
+            },
+            image = if (likedState.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
+            contentDescription = stringResource(id = R.string.likeButtonDesc),
+        )
 
         ConstraintLayout(
             modifier = Modifier
@@ -129,17 +124,11 @@ fun CommentEditTextView(
                     .alpha(if (isKeyboardStatus == Keyboard.Opened) 1f else 0f),
                 onClick = {
                     focusManager.clearFocus()
-                }) {
-                Icon(
-                    painter =
-                    if (commentText.text.isBlank())
-                        painterResource(id = R.drawable.comment_send_off)
-                    else painterResource(
-                        id = R.drawable.comment_send_on
-                    ),
-                    contentDescription = stringResource(id = R.string.commentSendButtonDesc)
-                )
-            }
+                },
+                enabled = commentText.text.isNotBlank(),
+                image = if (commentText.text.isBlank()) R.drawable.comment_send_off else R.drawable.comment_send_on,
+                contentDescription = stringResource(id = R.string.commentSendButtonDesc)
+            )
         }
     }
 }

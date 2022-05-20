@@ -81,7 +81,7 @@ enum class TabType {
 }
 
 
-sealed class MyClickEvent {
+sealed class MyClickEvent : IconClickEvent() {
     object FilterClicked : MyClickEvent()
     object CloseClicked : MyClickEvent()
 }

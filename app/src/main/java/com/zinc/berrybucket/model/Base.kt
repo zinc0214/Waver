@@ -10,3 +10,5 @@ data class ProfileInfo(
     val titlePosition: String,
     val nickName: String
 ) : DetailDescType()
+
+sealed class IconClickEvent

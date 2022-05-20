@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.platform.debugInspectorInfo
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -19,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
+import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.ProfileCircularProgressBar
 import com.zinc.data.models.BadgeType
 import com.zinc.domain.models.TopProfile
@@ -45,18 +45,28 @@ fun MyTopLayer(profileInfo: TopProfile) {
 @Composable
 private fun TopButtonLayer(modifier: Modifier) {
     Row(modifier = modifier) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(R.drawable.alarm),
-                contentDescription = stringResource(R.string.alarm)
-            )
-        }
-        IconButton(onClick = { /*TODO*/ }) {
-            Icon(
-                painter = painterResource(R.drawable.more),
-                contentDescription = stringResource(R.string.more)
-            )
-        }
+
+        IconButton(
+            modifier = Modifier
+                .then(Modifier.size(32.dp)),
+            onClick = {
+                /*TODO*/
+            },
+            image = R.drawable.alarm,
+            contentDescription = stringResource(R.string.alarm)
+        )
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        IconButton(
+            modifier = Modifier
+                .then(Modifier.size(32.dp)),
+            onClick = {
+                /*TODO*/
+            },
+            image = R.drawable.more,
+            contentDescription = stringResource(R.string.more)
+        )
     }
 }
 
