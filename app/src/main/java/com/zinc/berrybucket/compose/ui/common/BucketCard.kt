@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
@@ -72,15 +73,16 @@ fun BucketCard(
             val (leftContent, rightContent) = createRefs()
 
             // Right Content = SuccessButton
-            Box(
+            Card(
+                shape = CircleShape,
+                elevation = 0.dp,
                 modifier = Modifier
                     .constrainAs(rightContent) {
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                     }
-                    .clickable { },
-                contentAlignment = Alignment.CenterEnd
+                    .clickable { }
             ) {
                 BucketCircularProgressBar(
                     progressState = {
