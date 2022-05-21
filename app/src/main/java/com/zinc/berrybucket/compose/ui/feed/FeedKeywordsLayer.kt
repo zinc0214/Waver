@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.common.RoundChip
+import com.zinc.common.models.FeedKeyWord
 import kotlin.math.min
 
 
 @Composable
-fun FeedKeywordsLayer(keywords: List<String>, recommendClicked: () -> Unit) {
+fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit) {
 
     Scaffold {
         Column(
@@ -84,7 +85,7 @@ private fun FeedCollapsingToolbar(scrollOffset: Float) {
 @Composable
 private fun BodyContent(
     state: LazyListState,
-    keywords: List<String>,
+    keywords: List<FeedKeyWord>,
     recommendClicked: () -> Unit
 ) {
     Box(
@@ -110,19 +111,19 @@ private fun BodyContent(
 private fun ChipBodyContent(
     modifier: Modifier = Modifier,
     state: LazyListState,
-    keywords: List<String>
+    keywords: List<FeedKeyWord>
 ) {
     LazyVerticalGrid(
         cells = GridCells.Adaptive(minSize = 90.dp),
         state = state,
         modifier = modifier
     ) {
-        items(keywords) { keyword ->
+        items(keywords) { keywordItem ->
             var selected by remember { mutableStateOf(false) }
             RoundChip(
                 modifier = Modifier
                     .padding(horizontal = 8.5.dp, vertical = 14.dp)
-                    .padding(bottom = if (keywords.last() == keyword) 69.dp else 0.dp)
+                    .padding(bottom = if (keywords.last() == keywordItem) 69.dp else 0.dp)
                     .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
                     .selectable(
                         selected = selected,
@@ -134,7 +135,7 @@ private fun ChipBodyContent(
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
                 selectedColor = Main3,
                 unSelectedColor = Gray7,
-                text = keyword,
+                text = keywordItem.ketWord,
                 isSelected = selected
             )
         }

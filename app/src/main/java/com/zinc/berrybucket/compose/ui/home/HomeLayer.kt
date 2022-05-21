@@ -35,7 +35,7 @@ fun NavGraphBuilder.addHomeGraph(
         )
     }
     composable(HomeSections.FEED.route) { from ->
-        Feed(onPageClicked = { id -> onPageSelected(id, from) }, modifier)
+        Feed()
     }
     composable(HomeSections.SEARCH.route) { from ->
         //   SEARCH(onSnackClick = { id -> onPageSelected(id, from) }, modifier)

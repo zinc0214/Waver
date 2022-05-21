@@ -22,14 +22,14 @@ import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Main4
 import com.zinc.berrybucket.compose.theme.Main5
-import com.zinc.berrybucket.model.FeedInfo
 import com.zinc.berrybucket.model.profileInfo
+import com.zinc.common.models.FeedInfo
 
 
 @Composable
-fun FeedListView(modifier: Modifier = Modifier, feedList: List<FeedInfo>) {
+fun FeedListView(modifier: Modifier = Modifier, feedItems: List<FeedInfo>) {
     Column(modifier = modifier) {
-        feedList.forEach { feed ->
+        feedItems.forEach { feed ->
             FeedCardView(
                 feedInfo = feed,
             )
@@ -63,12 +63,12 @@ fun FeedCardView(feedInfo: FeedInfo) {
                 title = feedInfo.title
             )
 
-            if (!feedInfo.imageList.isNullOrEmpty()) {
+            feedInfo.imageList?.let {
                 ImageView(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(top = 20.dp),
-                    imageList = feedInfo.imageList
+                    imageList = it
                 )
             }
 

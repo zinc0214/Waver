@@ -1,35 +1,38 @@
 package com.zinc.berrybucket.compose.ui.feed
 
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.presentation.feed.viewModel.FeedViewModel
 
 @Composable
-fun Feed(
-    onPageClicked: (Long) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun Feed() {
 
-    val recommendClicked = remember {
-        mutableStateOf(false)
+    val viewModel: FeedViewModel = hiltViewModel()
+    viewModel.loadKeyWordSelected()
+
+    val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState(false)
+
+    Scaffold {
+        if (isKeyWordSelected) {
+            viewModel.loadFeedItems()
+            val feedItems by viewModel.feedItems.observeAsState()
+            feedItems?.let {
+                FeedLayer(feedItems = it)
+                viewModel.loadFeedKeyWords()
+            }
+
+        } else {
+            viewModel.loadFeedKeyWords()
+            val feedKeyWords by viewModel.feedKeyWords.observeAsState()
+            feedKeyWords?.let {
+                FeedKeywordsLayer(keywords = it, recommendClicked = {
+                    viewModel.setKeyWordSelected()
+                })
+            }
+        }
     }
-    if (recommendClicked.value) {
-        FeedLayer(feedList = loadMockData())
-    } else {
-        FeedKeywordsLayer(
-            keywords = listOf(
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "여행", "제주도", "맛집탐방", "넷플릭스", "데이트",
-                "뿅뿅짠짠"
-            ),
-            recommendClicked = {
-                recommendClicked.value = true
-            })
-    }
+
 }

@@ -20,4 +20,10 @@ interface BerryBucketApi {
     @GET("/detail")
     suspend fun loadBucketDetail(id: String): DetailInfo
 
+    @GET("/feed/keyWord")
+    suspend fun loadFeedKeyword(): List<FeedKeyWord>
+
+    @GET("/feed")
+    suspend fun loadFeedItems(): List<FeedInfo>
+
 }

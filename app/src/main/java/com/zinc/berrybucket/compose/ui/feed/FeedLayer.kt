@@ -19,11 +19,11 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.ui.common.FeedListView
-import com.zinc.berrybucket.model.FeedInfo
+import com.zinc.common.models.FeedInfo
 
 
 @Composable
-fun FeedLayer(feedList: List<FeedInfo>) {
+fun FeedLayer(feedItems: List<FeedInfo>) {
 
     Scaffold {
         Column(
@@ -46,7 +46,7 @@ fun FeedLayer(feedList: List<FeedInfo>) {
             FeedListView(
                 modifier = Modifier
                     .padding(top = 24.dp),
-                feedList = feedList
+                feedItems = feedItems
             )
         }
     }
