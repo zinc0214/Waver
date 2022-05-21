@@ -21,15 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.*
-import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.UIBucketInfoSimple
+import com.zinc.common.models.BucketInfoSimple
 
 @Composable
 fun BucketListView(
-    bucketList: List<BucketInfoSimple>,
+    bucketList: List<UIBucketInfoSimple>,
     tabType: TabType,
-    itemClicked: (BucketInfoSimple) -> Unit
+    itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
         bucketList.forEach { bucket ->
@@ -46,10 +47,10 @@ fun BucketListView(
 
 @Composable
 fun BucketCard(
-    itemInfo: BucketInfoSimple,
+    itemInfo: UIBucketInfoSimple,
     tabType: TabType,
     animFinishEvent: (BucketProgressState) -> Unit,
-    itemClicked: (BucketInfoSimple) -> Unit
+    itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
 
     val bucket = remember { mutableStateOf(itemInfo) }
@@ -152,7 +153,7 @@ fun BucketCard(
 
 
 @Composable
-private fun DdayBadgeView(info: BucketInfoSimple) {
+private fun DdayBadgeView(info: UIBucketInfoSimple) {
     Card(
         elevation = 0.dp,
         shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp),
@@ -179,7 +180,7 @@ private fun TitleTextView(title: String) {
 @Composable
 fun CountProgressView(
     modifier: Modifier = Modifier,
-    info: BucketInfoSimple,
+    info: UIBucketInfoSimple,
     bucketCount: Int,
     tabType: TabType
 ) {

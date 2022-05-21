@@ -15,6 +15,9 @@ interface BerryBucketApi {
     suspend fun loadAllBucketList(): AllBucketList
 
     @GET("/bucketList")
+    suspend fun loadCategoryList(): List<Category>
+
+    @GET("/bucketList")
     suspend fun loadMyState(): MyState
 
     @GET("/detail")

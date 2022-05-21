@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.model.BucketInfoSimple
+import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.BadgeType
+import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.Category
+import com.zinc.common.models.DdayBucketList
 import com.zinc.domain.models.TopProfile
-import com.zinc.domain.usecases.my.LoadProfileInfo
-import com.zinc.domain.usecases.my.LoadProfileState
-import dagger.assisted.AssistedFactory
+import com.zinc.domain.usecases.my.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.zip
@@ -21,7 +22,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MyViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
-    private val loadProfileState: LoadProfileState
+    private val loadProfileState: LoadProfileState,
+    private val loadAllBucketList: LoadAllBucketList,
+    private val loadCategoryList: LoadCategoryList,
+    private val loadDdayBucketList: LoadDdayBucketList
 ) : ViewModel() {
 
     private val _profileInfo = MutableLiveData<TopProfile>()
@@ -29,6 +33,15 @@ class MyViewModel @Inject constructor(
 
     private val _searchBucketResult = MutableLiveData<Pair<TabType, List<*>>>()
     val searchResult: LiveData<Pair<TabType, List<*>>> get() = _searchBucketResult
+
+    private val _allBucketItem = MutableLiveData<AllBucketList>()
+    val allBucketItem: LiveData<AllBucketList> get() = _allBucketItem
+
+    private val _categoryItems = MutableLiveData<List<Category>>()
+    val categoryItems: LiveData<List<Category>> get() = _categoryItems
+
+    private val _ddayBucketList = MutableLiveData<DdayBucketList>()
+    val ddayBucketList: LiveData<DdayBucketList> = _ddayBucketList
 
 
     fun loadProfile1() {
@@ -73,6 +86,45 @@ class MyViewModel @Inject constructor(
             followerCount = "10"
         )
         _profileInfo.value = topProfile
+    }
+
+    fun loadAllBucketList() {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                loadAllBucketList.invoke().apply {
+                    val uiALlBucketType = AllBucketList(
+                        processingCount = this.processingCount,
+                        succeedCount = this.succeedCount,
+                        bucketList = this.bucketList.parseToUI()
+                    )
+                    _allBucketItem.value = uiALlBucketType
+                }
+            }.getOrElse {
+
+            }
+        }
+    }
+
+    fun loadCategoryList() {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                loadCategoryList.invoke().apply {
+                    _categoryItems.value = this
+                }
+            }
+        }
+    }
+
+    fun loadDdayBucketList() {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                loadDdayBucketList.invoke().apply {
+                    _ddayBucketList.value = this
+                }
+            }.getOrElse {
+
+            }
+        }
     }
 
     fun searchList(type: TabType, searchWord: String) {

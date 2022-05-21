@@ -2,9 +2,10 @@ package com.zinc.berrybucket.compose.ui.my
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -17,19 +18,27 @@ import com.zinc.berrybucket.compose.theme.Main4
 import com.zinc.berrybucket.compose.ui.common.CategoryAddView
 import com.zinc.berrybucket.compose.ui.common.CategoryListView
 import com.zinc.berrybucket.compose.ui.common.EditButtonAndSearchImageView
-import com.zinc.common.models.Category
+import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 
 @Composable
-fun CategoryLayer(categoryList: List<Category>, recommendCategory: String) {
-    MaterialTheme {
+fun CategoryLayer(
+    viewModel: MyViewModel,
+) {
+
+    val recommendCategory = "여향"
+
+    viewModel.loadCategoryList()
+    val categoryList by viewModel.categoryItems.observeAsState()
+
+    categoryList?.let {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory)
             Spacer(modifier = Modifier.height(16.dp))
-            CategoryListView(categoryList)
+            CategoryListView(it)
             CategoryAddView()
         }
     }

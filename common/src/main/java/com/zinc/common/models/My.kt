@@ -21,13 +21,13 @@ data class MyState(
 
 @Serializable
 data class DdayBucketList(
-    val bucketList: List<BucketInfo>
+    val bucketList: List<BucketInfoSimple>
 )
 
 @Serializable
 data class AllBucketList(
     val processingCount: String,
     val succeedCount: String,
-    val bucketList: List<BucketInfo>
+    val bucketList: List<BucketInfoSimple>
 )
 

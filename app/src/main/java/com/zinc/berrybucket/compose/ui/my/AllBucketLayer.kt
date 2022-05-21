@@ -3,9 +3,10 @@ package com.zinc.berrybucket.compose.ui.my
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,24 +22,29 @@ import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 @Composable
 fun AllBucketLayer(
-    allBucketInfo: AllBucketList,
+    viewModel: MyViewModel,
     clickEvent: (MyClickEvent) -> Unit
 ) {
-    MaterialTheme {
+
+    viewModel.loadAllBucketList()
+    val allBucketInfo by viewModel.allBucketItem.observeAsState()
+
+    allBucketInfo?.let {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
             AllBucketTopView(
                 modifier = Modifier,
-                allBucketInfo = allBucketInfo,
+                allBucketInfo = it,
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(allBucketInfo.bucketList, TabType.ALL, itemClicked = {
+            BucketListView(it.bucketList, TabType.ALL, itemClicked = {
                 clickEvent.invoke(ItemClicked(it))
             })
         }
@@ -60,8 +66,8 @@ fun AllBucketTopView(
             modifier = Modifier
                 .padding(top = 24.dp, start = 22.dp)
                 .align(Alignment.CenterVertically),
-            proceedingBucketCount = allBucketInfo.proceedingBucketCount,
-            succeedBucketCount = allBucketInfo.succeedBucketCount
+            proceedingBucketCount = allBucketInfo.processingCount,
+            succeedBucketCount = allBucketInfo.succeedCount
         )
 
         FilterAndSearchImageView(

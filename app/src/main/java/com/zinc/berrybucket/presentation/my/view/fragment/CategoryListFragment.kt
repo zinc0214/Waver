@@ -18,7 +18,7 @@ class CategoryListFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                CategoryLayer(categoryList = loadCategory(), recommendCategory = "여행")
+                //CategoryLayer()
             }
         }
     }

@@ -25,11 +25,11 @@ import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.common.BucketListView
 import com.zinc.berrybucket.compose.ui.common.CategoryListView
 import com.zinc.berrybucket.compose.ui.common.RoundChip
-import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.model.TabType.Companion.getNameResource
+import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.common.models.Category
 
 @Composable
@@ -222,8 +222,8 @@ private fun SearchResultView(result: Pair<TabType, List<*>>, clickEvent: (MyClic
             CategoryListView(items)
         }
     } else {
-        if (result.second.all { item -> item is BucketInfoSimple }) {
-            val items = result.second as List<BucketInfoSimple>
+        if (result.second.all { item -> item is UIBucketInfoSimple }) {
+            val items = result.second as List<UIBucketInfoSimple>
             BucketListView(items, result.first, itemClicked = {
                 clickEvent.invoke(ItemClicked(it))
             })

@@ -18,6 +18,17 @@ data class BucketInfo(
 )
 
 @Serializable
+data class BucketInfoSimple(
+    val type: String = "",
+    val id: String,
+    val title: String,
+    var currentCount: Int = 0,
+    val goalCount: Int = 0,
+    val dDay: Int? = null,
+    val detailType: String = ""
+)
+
+@Serializable
 data class Category(
     val id: Int,
     val name: String,

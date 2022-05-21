@@ -102,6 +102,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.navigation)
 
     implementation(Dep.AndroidX.Compose.viewPager)
+    implementation(Dep.AndroidX.Compose.indicator)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
@@ -134,5 +135,4 @@ dependencies {
     implementation(Dep.AndroidX.Lifecycle.viewModel)
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.Lifecycle.livedata)
-
 }

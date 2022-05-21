@@ -64,6 +64,7 @@ object Dep {
                 "androidx.constraintlayout:constraintlayout-compose:1.0.0"
             const val viewPager =
                 "com.google.accompanist:accompanist-pager:0.23.1"
+            const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.23.1"
         }
 
         object RecyclerView {

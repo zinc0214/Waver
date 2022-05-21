@@ -12,8 +12,8 @@ import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.databinding.FragmentMyBinding
-import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,7 +25,7 @@ class MyFragment : Fragment() {
     private lateinit var binding: FragmentMyBinding
     private val viewModel by viewModels<MyViewModel>()
 
-    private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
+    private lateinit var goToBucketDetail: (UIBucketInfoSimple) -> Unit
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,52 +69,52 @@ class MyFragment : Fragment() {
         val myTabView = MyTabCustom(requireContext())
         myTabView.setUpTabDesigns(binding.myTabLayout)
 
-        val allFragment = AllBucketListFragment.newInstance(
-            searchViewClicked = { type ->
-                showSearchFragment(type)
-            },
-            goToBucketDetail = { id ->
-                goToBucketDetail.invoke(id)
-            }
-        )
-        val categoryFragment = CategoryListFragment.newInstance()
-        val ddayFragment = DdayBucketListFragment.newInstance(
-            searchViewClicked = { type ->
-                showSearchFragment(type)
-            },
-            goToBucketDetail = { id ->
-                goToBucketDetail.invoke(id)
-            }
-        )
+//        val allFragment = AllBucketListFragment.newInstance(
+//            searchViewClicked = { type ->
+//                showSearchFragment(type)
+//            },
+//            goToBucketDetail = { id ->
+//                goToBucketDetail.invoke(id)
+//            }
+//        )
+//        val categoryFragment = CategoryListFragment.newInstance()
+//        val ddayFragment = DdayBucketListFragment.newInstance(
+//            searchViewClicked = { type ->
+//                showSearchFragment(type)
+//            },
+//            goToBucketDetail = { id ->
+//                goToBucketDetail.invoke(id)
+//            }
+//        )
 
-        childFragmentManager.beginTransaction().add(R.id.myFrameLayout, allFragment).commit()
+        //childFragmentManager.beginTransaction().add(R.id.myFrameLayout, allFragment).commit()
 
-        binding.myTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                val currentFragment = when (tab.position) {
-                    0 -> {
-                        allFragment
-                    }
-                    1 -> {
-                        categoryFragment
-                    }
-                    else -> {
-                        ddayFragment
-                    }
-                }
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.myFrameLayout, currentFragment).commit()
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
-
-        })
+//        binding.myTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab) {
+//                val currentFragment = when (tab.position) {
+//                    0 -> {
+//                        allFragment
+//                    }
+//                    1 -> {
+//                        categoryFragment
+//                    }
+//                    else -> {
+//                        ddayFragment
+//                    }
+//                }
+//                childFragmentManager.beginTransaction()
+//                    .replace(R.id.myFrameLayout, currentFragment).commit()
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab) {
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab) {
+//
+//            }
+//
+//        })
     }
 
     private fun showSearchFragment(tabType: TabType) {
@@ -123,7 +123,7 @@ class MyFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(goToBucketDetail: (BucketInfoSimple) -> Unit) = MyFragment().apply {
+        fun newInstance(goToBucketDetail: (UIBucketInfoSimple) -> Unit) = MyFragment().apply {
             this.goToBucketDetail = goToBucketDetail
         }
     }

@@ -9,8 +9,8 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.BerryBucketApp
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
-import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.presentation.detail.my.close.MyCloseBucketDetailActivity
 import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var fragmentManager: FragmentManager
-    private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
+    private lateinit var goToBucketDetail: (UIBucketInfoSimple) -> Unit
     private lateinit var myFragment: MyFragment
     //   private lateinit var feedFragment: FeedFragment
 
