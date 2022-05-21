@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.BerryBucketApp
@@ -14,7 +13,6 @@ import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.presentation.detail.my.close.MyCloseBucketDetailActivity
 import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
-import com.zinc.berrybucket.presentation.feed.view.fragment.FeedFragment
 import com.zinc.berrybucket.presentation.my.view.fragment.MyFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,13 +22,13 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var fragmentManager: FragmentManager
     private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
     private lateinit var myFragment: MyFragment
-    private lateinit var feedFragment: FeedFragment
+    //   private lateinit var feedFragment: FeedFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // This app draws behind the system bars, so we want to handle fitting system windows
-       // WindowCompat.setDecorFitsSystemWindows(window, false)
+        // WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             BerryBucketApp()
@@ -58,24 +56,24 @@ class HomeActivity : AppCompatActivity() {
         }
 
         myFragment = MyFragment.newInstance(goToBucketDetail = { goToBucketDetail.invoke(it) })
-        feedFragment = FeedFragment.newInstance()
+        //feedFragment = FeedFragment.newInstance()
     }
 
     private fun setUpFragments() {
         fragmentManager.beginTransaction().add(R.id.frameLayout, myFragment).commit()
-        fragmentManager.beginTransaction().add(R.id.frameLayout, feedFragment).commit()
+        //  fragmentManager.beginTransaction().add(R.id.frameLayout, feedFragment).commit()
 
     }
 
     fun setMyFragment() {
         binding.selectType = AllType.MY
         fragmentManager.beginTransaction().show(myFragment).commit()
-        fragmentManager.beginTransaction().hide(feedFragment).commit()
+        //      fragmentManager.beginTransaction().hide(feedFragment).commit()
     }
 
     fun setFeedFragment() {
         binding.selectType = AllType.FEED
-        fragmentManager.beginTransaction().show(feedFragment).commit()
+//        fragmentManager.beginTransaction().show(feedFragment).commit()
         fragmentManager.beginTransaction().hide(myFragment).commit()
     }
 }
