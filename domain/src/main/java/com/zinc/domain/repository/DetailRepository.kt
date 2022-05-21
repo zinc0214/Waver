@@ -1,4 +1,4 @@
-package com.zinc.data.repository
+package com.zinc.domain.repository
 
 import com.zinc.data.models.DetailInfo
 

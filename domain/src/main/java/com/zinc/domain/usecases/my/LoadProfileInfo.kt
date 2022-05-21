@@ -1,6 +1,6 @@
 package com.zinc.domain.usecases.my
 
-import com.zinc.data.repository.MyRepository
+import com.zinc.domain.repository.MyRepository
 import javax.inject.Inject
 
 class LoadProfileInfo @Inject constructor(

@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 internal class MyRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
-) : MyRepository {
+) : com.zinc.domain.repository.MyRepository {
     override suspend fun loadMyProfileInfo(): MyProfileInfo {
         return berryBucketApi.loadMyProfileInfo()
     }

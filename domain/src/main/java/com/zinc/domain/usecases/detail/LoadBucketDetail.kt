@@ -1,6 +1,6 @@
 package com.zinc.domain.usecases.detail
 
-import com.zinc.data.repository.DetailRepository
+import com.zinc.domain.repository.DetailRepository
 import javax.inject.Inject
 
 class LoadBucketDetail @Inject constructor(

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 internal class DetailRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
-) : DetailRepository {
+) : com.zinc.domain.repository.DetailRepository {
 
     override suspend fun loadBucketDetail(id: String): DetailInfo {
         return berryBucketApi.loadBucketDetail(id)

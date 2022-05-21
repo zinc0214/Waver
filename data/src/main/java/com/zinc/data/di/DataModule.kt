@@ -2,9 +2,9 @@ package com.zinc.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.zinc.data.api.BerryBucketApi
-import com.zinc.data.repository.DetailRepository
+import com.zinc.domain.repository.DetailRepository
 import com.zinc.data.repository.DetailRepositoryImpl
-import com.zinc.data.repository.MyRepository
+import com.zinc.domain.repository.MyRepository
 import com.zinc.data.repository.MyRepositoryImpl
 import dagger.Binds
 import dagger.Module
@@ -23,12 +23,12 @@ internal abstract class DataModule {
     @Binds
     abstract fun bindMyRepository(
         repository: MyRepositoryImpl
-    ): MyRepository
+    ): com.zinc.domain.repository.MyRepository
 
     @Binds
     abstract fun bindDetailRepository(
         repository: DetailRepositoryImpl
-    ): DetailRepository
+    ): com.zinc.domain.repository.DetailRepository
 
     @InstallIn(SingletonComponent::class)
     @Module
