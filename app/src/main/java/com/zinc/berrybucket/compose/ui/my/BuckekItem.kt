@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.data.models.BucketInfo
+import com.zinc.common.models.BucketInfo
 
 @Composable
 fun BucketItemView(itemInfo: BucketInfo) {

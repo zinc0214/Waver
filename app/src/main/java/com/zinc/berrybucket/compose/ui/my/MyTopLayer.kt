@@ -20,7 +20,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.ProfileCircularProgressBar
-import com.zinc.data.models.BadgeType
+import com.zinc.common.models.BadgeType
 import com.zinc.domain.models.TopProfile
 
 @Composable

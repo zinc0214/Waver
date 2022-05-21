@@ -1,4 +1,4 @@
-package com.zinc.data.models
+package com.zinc.common.models
 
 import kotlinx.serialization.Serializable
 

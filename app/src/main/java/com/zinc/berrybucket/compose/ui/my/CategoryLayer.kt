@@ -17,7 +17,7 @@ import com.zinc.berrybucket.compose.theme.Main4
 import com.zinc.berrybucket.compose.ui.common.CategoryAddView
 import com.zinc.berrybucket.compose.ui.common.CategoryListView
 import com.zinc.berrybucket.compose.ui.common.EditButtonAndSearchImageView
-import com.zinc.data.models.Category
+import com.zinc.common.models.Category
 
 
 @Composable

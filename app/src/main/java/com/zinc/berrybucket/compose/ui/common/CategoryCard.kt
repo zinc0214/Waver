@@ -22,7 +22,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.Gray7
 import com.zinc.berrybucket.compose.theme.Gray9
 import com.zinc.berrybucket.compose.theme.Main2
-import com.zinc.data.models.Category
+import com.zinc.common.models.Category
 
 @Composable
 fun CategoryListView(categoryList: List<Category>) {

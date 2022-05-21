@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
+    implementation(project(":common"))
 
     testImplementation(Dep.Test.junit)
     androidTestImplementation(Dep.Test.androidJunit)

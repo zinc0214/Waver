@@ -10,3 +10,4 @@ rootProject.name = "BerryBucket"
 include(":app")
 include(":domain")
 include(":data")
+include(":common")

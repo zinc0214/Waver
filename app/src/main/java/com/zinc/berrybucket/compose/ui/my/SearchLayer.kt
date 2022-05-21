@@ -30,7 +30,7 @@ import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.model.TabType.Companion.getNameResource
-import com.zinc.data.models.Category
+import com.zinc.common.models.Category
 
 @Composable
 fun SearchLayer(

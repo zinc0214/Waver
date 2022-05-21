@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.model.BucketInfoSimple
 import com.zinc.berrybucket.model.TabType
-import com.zinc.data.models.BadgeType
-import com.zinc.data.models.Category
+import com.zinc.common.models.BadgeType
+import com.zinc.common.models.Category
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadProfileInfo
 import com.zinc.domain.usecases.my.LoadProfileState

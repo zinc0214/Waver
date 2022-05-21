@@ -1,6 +1,6 @@
 package com.zinc.domain.models
 
-import com.zinc.data.models.BadgeType
+import com.zinc.common.models.BadgeType
 
 data class TopProfile(
     val nickName: String,

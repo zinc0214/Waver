@@ -1,14 +1,11 @@
 plugins {
-    kotlin("plugin.serialization")
     id("com.android.library")
-    kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = Versions.compileSdk
-    buildToolsVersion = Versions.buildTools
+    namespace = "com.zinc.common"
+    compileSdk = 32
 
     defaultConfig {
         minSdk = Versions.minSdk
@@ -33,32 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
-    implementation(project(":common"))
-    implementation(project(":domain"))
+    // serialization
+    implementation(Dep.Kotlin.serialization)
 
     testImplementation(Dep.Test.junit)
     androidTestImplementation(Dep.Test.androidJunit)
     androidTestImplementation(Dep.Test.espressoCore)
 
-    // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    kapt(Dep.Dagger.Hilt.compiler)
-
-    // retrofit2
-    implementation(Dep.Retrofit.core)
-    implementation(Dep.Retrofit.serialization)
-    implementation(Dep.Retrofit.converter)
-
-    // okhttp3
-    implementation(Dep.OkHttp.core)
-    implementation(Dep.OkHttp.loggingInterceptor)
-
-    // serialization
-    implementation(Dep.Kotlin.serialization)
 }

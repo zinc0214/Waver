@@ -23,12 +23,12 @@ internal abstract class DataModule {
     @Binds
     abstract fun bindMyRepository(
         repository: MyRepositoryImpl
-    ): com.zinc.domain.repository.MyRepository
+    ): MyRepository
 
     @Binds
     abstract fun bindDetailRepository(
         repository: DetailRepositoryImpl
-    ): com.zinc.domain.repository.DetailRepository
+    ): DetailRepository
 
     @InstallIn(SingletonComponent::class)
     @Module

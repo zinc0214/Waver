@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import com.zinc.berrybucket.compose.ui.my.CategoryLayer
-import com.zinc.data.models.Category
+import com.zinc.common.models.Category
 
 class CategoryListFragment : Fragment() {
 
