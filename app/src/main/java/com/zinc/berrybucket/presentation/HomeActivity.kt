@@ -2,10 +2,12 @@ package com.zinc.berrybucket.presentation
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentManager
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.ui.BerryBucketApp
 import com.zinc.berrybucket.databinding.ActivityHomeBinding
 import com.zinc.berrybucket.model.AllType
 import com.zinc.berrybucket.model.BucketInfoSimple
@@ -26,13 +28,24 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fragmentManager = supportFragmentManager
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        binding.activity = this
-        init()
-        setUpFragments()
-        setMyFragment()
+
+        // This app draws behind the system bars, so we want to handle fitting system windows
+       // WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        setContent {
+            BerryBucketApp()
+        }
     }
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        fragmentManager = supportFragmentManager
+//        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+//        binding.activity = this
+//        init()
+//        setUpFragments()
+//        setMyFragment()
+//    }
 
     private fun init() {
 

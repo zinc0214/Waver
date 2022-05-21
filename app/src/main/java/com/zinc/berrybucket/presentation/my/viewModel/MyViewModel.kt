@@ -11,6 +11,7 @@ import com.zinc.data.models.Category
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadProfileInfo
 import com.zinc.domain.usecases.my.LoadProfileState
+import dagger.assisted.AssistedFactory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.zip
@@ -179,4 +180,5 @@ class MyViewModel @Inject constructor(
             count = "35"
         )
     )
+
 }

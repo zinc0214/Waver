@@ -2,6 +2,11 @@
     <string name="app_name">베리버킷</string>
 
     <!--타이틀 디스크립션-->
+    <string name="my">마이</string>
+    <string name="feed">피드</string>
+    <string name="search">검섹</string>
+    <string name="appMore">더보기</string>
+    <string name="write">버킷리스트 추가</string>
     <string name="titleLeftDesc">뒤로가기</string>
     <string name="closeDesc">닫기</string>
     <string name="moreDesc">더보기 버튼</string>

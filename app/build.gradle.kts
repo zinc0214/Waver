@@ -98,11 +98,13 @@ dependencies {
     implementation(Dep.AndroidX.Compose.livedata)
     implementation(Dep.AndroidX.Compose.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
+    implementation(Dep.AndroidX.Compose.navigation)
 
     implementation(Dep.AndroidX.Compose.viewPager)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
+    implementation(Dep.Dagger.Hilt.navigation)
     kapt(Dep.Dagger.Hilt.compiler)
 
     // retrofit2
