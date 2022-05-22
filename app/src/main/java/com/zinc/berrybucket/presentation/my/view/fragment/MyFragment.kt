@@ -57,7 +57,7 @@ class MyFragment : Fragment() {
             profile?.let {
                 binding.profileInfo = it
                 binding.composeView.setContent {
-                    MyTopLayer(profileInfo = profile)
+                 //   MyTopLayer(profileInfo = profile)
                 }
             }
 

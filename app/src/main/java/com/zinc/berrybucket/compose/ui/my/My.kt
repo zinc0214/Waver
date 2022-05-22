@@ -4,8 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -24,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,6 +36,10 @@ import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import kotlinx.coroutines.launch
 
+
+private val MaxTabOffset = 354.dp
+private val MinTabOffset = 24.dp
+
 @Composable
 fun My(
     modifier: Modifier = Modifier, key: String
@@ -44,15 +48,21 @@ fun My(
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
 
-    Column(
-        modifier = modifier
-    ) {
-        profileInfo?.let {
-            MyTopLayer(profileInfo = it)
-        }
+    val scrollState = rememberScrollState(0)
 
+    Box {
+        profileInfo?.let {
+            MyTopLayer(profileInfo = it,
+                scrollProvider = {
+                    scrollState.value
+                })
+        }
         MyTabLayer(
-            viewModel = viewModel
+            viewModel = viewModel,
+            scrollProvider = {
+                scrollState.value
+            },
+            scrollState = scrollState
         )
     }
 }
@@ -69,7 +79,9 @@ enum class MySections(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun MyTabLayer(
-    viewModel: MyViewModel
+    viewModel: MyViewModel,
+    scrollProvider: () -> Int,
+    scrollState: ScrollState
 ) {
     val pagerState = rememberPagerState()
     val tabItems = MySections.values()
@@ -82,7 +94,17 @@ private fun MyTabLayer(
         tabWidthStateList
     }
 
-    Column {
+    val maxOffset = with(LocalDensity.current) { MaxTabOffset.toPx() }
+    val minOffset = with(LocalDensity.current) { MinTabOffset.toPx() }
+
+    Column(
+        modifier = Modifier
+            .offset {
+                val scroll = scrollProvider()
+                val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
+                IntOffset(x = 0, y = offset.toInt())
+            }
+    ) {
         // 추후 수정 가능성이 있어 주석 처리
 //        TabRow(
 //            selectedTabIndex = pagerState.currentPage,
@@ -130,7 +152,7 @@ private fun MyTabLayer(
 //            }
 //        }
 
-        LazyRow(modifier = Modifier.padding(start = 16.dp, top = 46.dp)) {
+        LazyRow(modifier = Modifier.padding(start = 16.dp)) {
             itemsIndexed(items = tabItems, itemContent = { index, tab ->
                 MyTab(
                     mySection = tab,
@@ -149,7 +171,9 @@ private fun MyTabLayer(
         HorizontalPager(
             count = tabItems.size,
             state = pagerState,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(scrollState)
         ) { page ->
             when (page) {
                 0 -> {

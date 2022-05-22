@@ -9,36 +9,52 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.ProfileCircularProgressBar
-import com.zinc.common.models.BadgeType
 import com.zinc.domain.models.TopProfile
 
+private val MaxProfileOffset = 0.dp
+private val MinProfileOffset = (-354).dp
+
 @Composable
-fun MyTopLayer(profileInfo: TopProfile) {
-    MaterialTheme {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            TopButtonLayer(
-                modifier = Modifier
-                    .padding(top = 16.dp, end = 16.dp)
-                    .align(Alignment.End)
-            )
+fun MyTopLayer(
+    scrollProvider: () -> Int,
+    profileInfo: TopProfile
+) {
 
-            Spacer(modifier = Modifier.height(4.dp))
-            ProfileLayer(profileInfo)
+    val maxOffset = with(LocalDensity.current) { MaxProfileOffset.toPx() }
+    val minOffset = with(LocalDensity.current) { MinProfileOffset.toPx() }
 
-            Spacer(modifier = Modifier.height(24.dp))
-            FollowStateLayer(profileInfo, Modifier.align(Alignment.CenterHorizontally))
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .offset {
+                val scroll = scrollProvider()
+                val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
+                IntOffset(x = 0, y = offset.toInt())
+            })
+    {
+        TopButtonLayer(
+            modifier = Modifier
+                .padding(top = 16.dp, end = 16.dp)
+                .align(Alignment.End)
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+        ProfileLayer(profileInfo)
+
+        Spacer(modifier = Modifier.height(24.dp))
+        FollowStateLayer(profileInfo, Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
@@ -213,21 +229,4 @@ fun Modifier.customTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = indicatorOffset)
         .width(indicatorWidth)
-}
-
-@Composable
-@Preview
-fun MyTopLayerPreview() {
-    MyTopLayer(
-        TopProfile(
-            "한아라고해",
-            "",
-            0.5f,
-            BadgeType.TRIP1,
-            "고인물 그 자체의",
-            "나를 한아라고 물러줘 컴포즈는 왜 이렇ㅇ게 잘 안되는걸까 너무 힘들다.",
-            "10",
-            "5",
-        )
-    )
 }
