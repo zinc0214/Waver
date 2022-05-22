@@ -37,6 +37,8 @@ fun AllBucketLayer(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxSize()
+                .background(Gray2)
         ) {
             AllBucketTopView(
                 modifier = Modifier,
@@ -47,6 +49,7 @@ fun AllBucketLayer(
             BucketListView(it.bucketList, TabType.ALL, itemClicked = {
                 clickEvent.invoke(ItemClicked(it))
             })
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -60,7 +63,6 @@ fun AllBucketTopView(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(Gray2)
     ) {
         BucketStateView(
             modifier = Modifier
