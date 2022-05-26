@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.compose.ui
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -10,18 +9,19 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.zinc.berrybucket.compose.theme.BaseTheme
+import com.zinc.berrybucket.compose.ui.detail.CloseDetailLayer
 import com.zinc.berrybucket.compose.ui.home.HomeBottomBar
 import com.zinc.berrybucket.compose.ui.home.HomeSections
 import com.zinc.berrybucket.compose.ui.home.addHomeGraph
+import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.UIBucketInfoSimple
 
 @Composable
 fun BerryBucketApp() {
     MaterialTheme() {
         val appState = rememberBerryBucketkAppState()
-        
+
         Column {
-           
             Scaffold(
                 bottomBar = {
                     if (appState.shouldShowBottomBar) {
@@ -40,8 +40,20 @@ fun BerryBucketApp() {
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     berryBucketNavGraph(
-                        onTabSelected = appState::navigateToOpenBucketDetail,
-                        upPress = appState::upPress
+                        onBucketSelected = { selected, nav ->
+                            when (selected) {
+                                is BucketSelected.goToDetailBucket -> {
+                                    if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
+                                        appState.navigateToCloseBucketDetail(
+                                            selected.bucketInfo.id,
+                                            nav
+                                        )
+                                    }
+                                }
+                            }
+
+                        },
+                        backPress = appState::backPress
                     )
                 }
             }
@@ -57,15 +69,19 @@ object MainDestinations {
     const val BUCKET_ID_KEY = "bucketId"
 }
 
+sealed class BucketSelected {
+    data class goToDetailBucket(val bucketInfo: UIBucketInfoSimple) : BucketSelected()
+}
+
 private fun NavGraphBuilder.berryBucketNavGraph(
-    onTabSelected: (Long, NavBackStackEntry) -> Unit,
-    upPress: () -> Unit
+    onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
+    backPress: () -> Unit
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
         startDestination = HomeSections.MY.route
     ) {
-        addHomeGraph(onTabSelected)
+        addHomeGraph(onBucketSelected)
     }
     composable(
         "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
@@ -77,10 +93,12 @@ private fun NavGraphBuilder.berryBucketNavGraph(
     }
     composable(
         "${MainDestinations.CLOSE_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
-        arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) { type = NavType.LongType })
+        arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {
+            type = NavType.StringType
+        })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
-        val snackId = arguments.getLong(MainDestinations.CLOSE_BUCKET_DETAIL)
-        //   OpenDetailLayer(snackId, upPress)
+        val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
+        CloseDetailLayer(detailId, backPress)
     }
 }

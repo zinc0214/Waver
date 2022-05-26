@@ -1,23 +1,21 @@
 package com.zinc.berrybucket.compose.ui.detail
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.theme.Main1
+import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.model.DetailClickEvent
 
 
@@ -39,19 +37,18 @@ fun DetailTopAppBar(
     ) {
         val (closeButton, titleView, moreButton) = createRefs()
 
-        Icon(
-            painter = painterResource(id = R.drawable.btn40close),
-            contentDescription = null,
+        IconButton(
+            image = R.drawable.btn40close,
+            contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
-                .clickable {
-                    clickEvent(DetailClickEvent.CloseClicked)
-                }
+                .size(40.dp)
                 .constrainAs(closeButton) {
                     start.linkTo(parent.start)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                }
+                },
+            onClick = { clickEvent(DetailClickEvent.CloseClicked) }
         )
 
         if (isTitleScrolled) {
@@ -71,19 +68,18 @@ fun DetailTopAppBar(
             )
         }
 
-        Icon(
-            painter = painterResource(id = R.drawable.btn32more),
-            contentDescription = null,
+        IconButton(
+            image = R.drawable.btn32more,
+            contentDescription = stringResource(id = R.string.moreDesc),
             modifier = Modifier
-                .padding(end = 14.dp, top = 6.dp, bottom = 6.dp)
-                .clickable {
-                    clickEvent(DetailClickEvent.MoreOptionClicked)
-                }
+                .padding(end = 14.dp, top = 10.dp, bottom = 10.dp)
+                .size(32.dp)
                 .constrainAs(moreButton) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                }
+                },
+            onClick = { clickEvent(DetailClickEvent.MoreOptionClicked) }
         )
     }
 }

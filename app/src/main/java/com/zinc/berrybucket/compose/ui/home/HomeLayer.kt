@@ -19,18 +19,22 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.ui.BucketSelected
 import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.IconToggleButton
 import com.zinc.berrybucket.compose.ui.feed.Feed
 import com.zinc.berrybucket.compose.ui.my.My
 
 fun NavGraphBuilder.addHomeGraph(
-    onPageSelected: (Long, NavBackStackEntry) -> Unit,
+    onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     composable(HomeSections.MY.route) { from ->
         My(
             modifier = modifier,
+            onBucketSelected = {
+                onBucketSelected.invoke(it, from)
+            },
             key = route ?: "home/my"
         )
     }

@@ -59,7 +59,7 @@ class BerryBucketAppState(
     val currentRoute: String?
         get() = navController.currentDestination?.route
 
-    fun upPress() {
+    fun backPress() {
         navController.navigateUp()
     }
 
@@ -84,7 +84,7 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToCloseBucketDetail(bucketId: Long, from: NavBackStackEntry) {
+    fun navigateToCloseBucketDetail(bucketId: String, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.CLOSE_BUCKET_DETAIL}/$bucketId")

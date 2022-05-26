@@ -33,6 +33,10 @@ import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Gray6
+import com.zinc.berrybucket.compose.ui.BucketSelected
+import com.zinc.berrybucket.model.ItemClicked
+import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.SearchClicked
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import kotlinx.coroutines.launch
 
@@ -42,7 +46,9 @@ private val MinTabOffset = 24.dp
 
 @Composable
 fun My(
-    modifier: Modifier = Modifier, key: String
+    modifier: Modifier = Modifier,
+    onBucketSelected: (BucketSelected) -> Unit,
+    key: String
 ) {
     val viewModel: MyViewModel = hiltViewModel()
     viewModel.loadProfile()
@@ -62,7 +68,8 @@ fun My(
             scrollProvider = {
                 scrollState.value
             },
-            scrollState = scrollState
+            scrollState = scrollState,
+            onBucketSelected = onBucketSelected
         )
     }
 }
@@ -81,7 +88,8 @@ enum class MySections(
 private fun MyTabLayer(
     viewModel: MyViewModel,
     scrollProvider: () -> Int,
-    scrollState: ScrollState
+    scrollState: ScrollState,
+    onBucketSelected: (BucketSelected) -> Unit
 ) {
     val pagerState = rememberPagerState()
     val tabItems = MySections.values()
@@ -179,11 +187,18 @@ private fun MyTabLayer(
                 0 -> {
                     AllBucketLayer(viewModel = viewModel,
                         clickEvent = {
-
+                            when (it) {
+                                MyClickEvent.CloseClicked -> TODO()
+                                MyClickEvent.FilterClicked -> TODO()
+                                is ItemClicked -> {
+                                    onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
+                                }
+                                is SearchClicked -> TODO()
+                            }
                         })
                 }
                 1 -> {
-                    CategoryLayer(viewModel)
+                    CategoryLayer(viewModel = viewModel)
                 }
                 2 -> {
                     DdayBucketLayer(

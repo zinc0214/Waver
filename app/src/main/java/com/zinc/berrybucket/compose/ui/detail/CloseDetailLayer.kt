@@ -1,80 +1,129 @@
 package com.zinc.berrybucket.compose.ui.detail
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.BaseTheme
+import com.zinc.berrybucket.compose.theme.Gray1
+import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
+import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
 @Composable
 fun CloseDetailLayer(
-    detailInfo: DetailInfo,
-    clickEvent: (DetailClickEvent) -> Unit
+    detailId: String,
+    backPress : () -> Unit
 ) {
 
-    val listScrollState = rememberLazyListState()
-    val isScrollable = listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
-    val titlePosition = 0
+    val viewModel: DetailViewModel = hiltViewModel()
+    viewModel.getBucketDetail(detailId)
+    val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
 
-    BaseTheme {
-        Scaffold {
-            Column(
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                DetailTopAppBar(
-                    listState = listScrollState,
-                    titlePosition = titlePosition,
-                    title = detailInfo.descInfo.title,
-                    clickEvent = clickEvent
-                )
+    val optionPopUpShowed = remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
 
-                ConstraintLayout(
-                    modifier = Modifier.fillMaxHeight()
+    vmDetailInfo?.let { detailInfo ->
+        val listScrollState = rememberLazyListState()
+        val isScrollable =
+            listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
+        val titlePosition = 0
+
+        BaseTheme {
+            Scaffold {
+
+                if (optionPopUpShowed.value) {
+                    MoreMenuPopupView(optionPopUpShowed)
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { optionPopUpShowed.value = false }
+                        )
                 ) {
-                    val (contentView, floatingButtonView) = createRefs()
-
-                    ContentView(
+                    DetailTopAppBar(
                         listState = listScrollState,
-                        detailInfo = detailInfo,
-                        modifier = Modifier.constrainAs(contentView) {
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            top.linkTo(parent.top)
-                        })
+                        titlePosition = titlePosition,
+                        title = detailInfo.descInfo.title,
+                        clickEvent = {
+                            when (it) {
+                                DetailClickEvent.CloseClicked -> {
+                                    backPress()
+                                }
+                                DetailClickEvent.MoreOptionClicked -> {
+                                    optionPopUpShowed.value = true
+                                }
+                                DetailClickEvent.SuccessClicked -> {
+                                    // TODO
+                                }
+                                else -> {
+                                    // Do Nothing
+                                }
+                            }
+                        }
+                    )
 
-                    DetailSuccessButtonView(
-                        modifier = Modifier
-                            .constrainAs(floatingButtonView) {
+                    ConstraintLayout(
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        val (contentView, floatingButtonView) = createRefs()
+
+                        ContentView(
+                            listState = listScrollState,
+                            detailInfo = detailInfo,
+                            modifier = Modifier.constrainAs(contentView) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
-                            }
-                            .padding(bottom = if (!isScrollable) 0.dp else 28.dp),
-                        successClicked = {
-                            clickEvent.invoke(DetailClickEvent.SuccessClicked)
-                        },
-                        successButtonInfo = SuccessButtonInfo(
-                            goalCount = detailInfo.descInfo.goalCount,
-                            userCount = detailInfo.descInfo.userCount
-                        ),
-                        isWide = !isScrollable
-                    )
+                                top.linkTo(parent.top)
+                            })
+
+                        DetailSuccessButtonView(
+                            modifier = Modifier
+                                .constrainAs(floatingButtonView) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .padding(bottom = if (!isScrollable) 0.dp else 28.dp),
+                            successClicked = {
+                                //clickEvent.invoke(DetailClickEvent.SuccessClicked)
+                            },
+                            successButtonInfo = SuccessButtonInfo(
+                                goalCount = detailInfo.descInfo.goalCount,
+                                userCount = detailInfo.descInfo.userCount
+                            ),
+                            isWide = !isScrollable
+                        )
+                    }
                 }
             }
         }
     }
+
 }
 
 
@@ -123,7 +172,75 @@ private fun ContentView(
     }
 }
 
-private fun totalItemCount(itemInfo : DetailInfo) : Int{
+@Composable
+private fun MoreMenuPopupView(optionPopUpShowed: MutableState<Boolean>) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopEnd)
+            .padding(top = 8.dp, bottom = 8.dp),
+        shape = RoundedCornerShape(40.dp),
+        backgroundColor = Gray1,
+        elevation = 3.dp
+    ) {
+        DropdownMenu(
+            expanded = true,
+            onDismissRequest = { optionPopUpShowed.value = false },
+            offset = DpOffset(16.dp, 0.dp),
+            properties = PopupProperties(clippingEnabled = false)
+        ) {
+            DropdownMenuItem(
+                onClick = {
+                    // TODO : Go To Edit
+                },
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .sizeIn(
+                        maxHeight = 36.dp
+                    )
+            ) {
+                PppUpText(R.string.edit)
+            }
+            DropdownMenuItem(
+                onClick = {
+                    // TODO : Go To Count Change
+                },
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .sizeIn(
+                        maxHeight = 36.dp
+                    )
+            ) {
+                PppUpText(R.string.countChange)
+            }
+            DropdownMenuItem(
+                onClick = {
+                    // TODO : Go To Delete
+                },
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier
+                    .sizeIn(
+                        maxHeight = 36.dp
+                    )
+            ) {
+                PppUpText(R.string.delete)
+            }
+        }
+    }
+}
+
+@Composable
+private fun PppUpText(@StringRes text: Int) {
+    Text(
+        text = stringResource(id = text),
+        color = Gray10,
+        fontSize = 14.sp,
+        modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+    )
+}
+
+private fun totalItemCount(itemInfo: DetailInfo): Int {
     var count = 3
     if (itemInfo.memoInfo == null) {
         count -= 1

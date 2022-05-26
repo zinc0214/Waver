@@ -25,22 +25,22 @@ class MyCloseBucketDetailActivity : AppCompatActivity() {
     private fun setUpViewModels() {
         viewModel.bucketDetailInfo.nonNullObserve(this) {
             setContent {
-                CloseDetailLayer(detailInfo = it, clickEvent = {
-                    when (it) {
-                        DetailClickEvent.CloseClicked -> {
-                            finish()
-                        }
-                        DetailClickEvent.MoreOptionClicked -> {
-                            showDetailOptionPopup()
-                        }
-                        DetailClickEvent.SuccessClicked -> {
-                            // TODO
-                        }
-                        else -> {
-                            // Do Nothing
-                        }
-                    }
-                })
+//                CloseDetailLayer(detailId = "test", clickEvent = {
+//                    when (it) {
+//                        DetailClickEvent.CloseClicked -> {
+//                            finish()
+//                        }
+//                        DetailClickEvent.MoreOptionClicked -> {
+//                            fshowDetailOptionPopup()
+//                        }
+//                        DetailClickEvent.SuccessClicked -> {
+//                            // TODO
+//                        }
+//                        else -> {
+//                            // Do Nothing
+//                        }
+//                    }
+//                })
             }
         }
 
