@@ -25,6 +25,7 @@ import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.compose.util.rememberScrollContext
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
@@ -33,7 +34,7 @@ import com.zinc.berrybucket.presentation.detail.DetailViewModel
 @Composable
 fun CloseDetailLayer(
     detailId: String,
-    backPress : () -> Unit
+    backPress: () -> Unit
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
@@ -45,8 +46,7 @@ fun CloseDetailLayer(
 
     vmDetailInfo?.let { detailInfo ->
         val listScrollState = rememberLazyListState()
-        val isScrollable =
-            listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
+        val scrollContext = rememberScrollContext(listScrollState)
         val titlePosition = 0
 
         BaseTheme {
@@ -108,7 +108,7 @@ fun CloseDetailLayer(
                                     end.linkTo(parent.end)
                                     bottom.linkTo(parent.bottom)
                                 }
-                                .padding(bottom = if (!isScrollable) 0.dp else 28.dp),
+                                .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
                             successClicked = {
                                 //clickEvent.invoke(DetailClickEvent.SuccessClicked)
                             },
@@ -116,7 +116,7 @@ fun CloseDetailLayer(
                                 goalCount = detailInfo.descInfo.goalCount,
                                 userCount = detailInfo.descInfo.userCount
                             ),
-                            isWide = !isScrollable
+                            isWide = !scrollContext.isBottom
                         )
                     }
                 }
@@ -161,13 +161,16 @@ private fun ContentView(
                 ImageViewPagerInsideIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(28.dp)
-                        .padding(bottom = 100.dp),
+                        .padding(start = 28.dp, end = 28.dp, top = 28.dp, bottom = 100.dp),
                     corner = 8.dp,
                     indicatorModifier = Modifier.padding(bottom = 8.dp, end = 8.dp),
                     imageList = it.imageList
                 )
             }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(28.dp))
         }
     }
 }
@@ -238,15 +241,4 @@ private fun PppUpText(@StringRes text: Int) {
         fontSize = 14.sp,
         modifier = Modifier.padding(start = 16.dp, end = 24.dp)
     )
-}
-
-private fun totalItemCount(itemInfo: DetailInfo): Int {
-    var count = 3
-    if (itemInfo.memoInfo == null) {
-        count -= 1
-    }
-    if (itemInfo.imageInfo == null) {
-        count -= 1
-    }
-    return count
 }

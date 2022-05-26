@@ -218,7 +218,7 @@ private fun flatButtonIndex(detailInfo: DetailInfo): Int {
     return index
 }
 
-private fun LazyListState.visibleLastIndex() = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+private fun LazyListState.visibleLastIndex() = layoutInfo.visibleItemsInfo.lastIndex
 
 private fun totalItemCount(detailInfo: DetailInfo): Int {
     var count = 7
