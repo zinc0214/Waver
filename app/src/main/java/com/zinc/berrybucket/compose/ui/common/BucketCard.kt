@@ -24,7 +24,6 @@ import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.TabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
-import com.zinc.common.models.BucketInfoSimple
 
 @Composable
 fun BucketListView(
@@ -33,14 +32,14 @@ fun BucketListView(
     itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        bucketList.forEach { bucket ->
+        bucketList.forEachIndexed { index, bucket ->
             BucketCard(
                 itemInfo = bucket,
                 tabType = tabType,
                 animFinishEvent = {},
                 itemClicked = { itemClicked.invoke(it) }
             )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(if (index == bucketList.lastIndex) 140.dp else 12.dp))
         }
     }
 }

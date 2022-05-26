@@ -23,7 +23,7 @@ import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 @Composable
 fun CategoryLayer(
-    modifier : Modifier = Modifier,
+    modifier: Modifier = Modifier,
     viewModel: MyViewModel,
 ) {
 
@@ -43,7 +43,7 @@ fun CategoryLayer(
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(it)
             CategoryAddView()
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(140.dp))
         }
     }
 }
