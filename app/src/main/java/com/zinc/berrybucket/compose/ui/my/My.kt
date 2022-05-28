@@ -4,7 +4,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -23,14 +24,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.compose.ui.BucketSelected
@@ -38,12 +41,11 @@ import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.SearchClicked
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
+import com.zinc.berrybucket.ui.MyView
 import kotlinx.coroutines.launch
 
 
-private val MaxTabOffset = 354.dp
-private val MinTabOffset = 24.dp
-
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun My(
     modifier: Modifier = Modifier,
@@ -54,23 +56,23 @@ fun My(
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
 
-    val scrollState = rememberScrollState(0)
+    val tabItems = MySections.values()
+    val pagerState = rememberPagerState()
 
     Box {
-        profileInfo?.let {
-            MyTopLayer(profileInfo = it,
-                scrollProvider = {
-                    scrollState.value
-                })
+        profileInfo?.let { profile ->
+            AndroidView(factory = { context ->
+                MyView(context).apply {
+                    setProfileInfo(profile)
+                    setTabView(
+                        tabItems = tabItems,
+                        pagerState = pagerState,
+                        viewModel = viewModel,
+                        onBucketSelected = onBucketSelected
+                    )
+                }
+            })
         }
-        MyTabLayer(
-            viewModel = viewModel,
-            scrollProvider = {
-                scrollState.value
-            },
-            scrollState = scrollState,
-            onBucketSelected = onBucketSelected
-        )
     }
 }
 
@@ -85,14 +87,11 @@ enum class MySections(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun MyTabLayer(
-    viewModel: MyViewModel,
-    scrollProvider: () -> Int,
-    scrollState: ScrollState,
-    onBucketSelected: (BucketSelected) -> Unit
+fun MyTabLayer(
+    tabItems: Array<MySections>,
+    pagerState: PagerState
 ) {
-    val pagerState = rememberPagerState()
-    val tabItems = MySections.values()
+
     val coroutineScope = rememberCoroutineScope()
     val tabWidths = remember {
         val tabWidthStateList = mutableStateListOf<Dp>()
@@ -102,116 +101,69 @@ private fun MyTabLayer(
         tabWidthStateList
     }
 
-    val maxOffset = with(LocalDensity.current) { MaxTabOffset.toPx() }
-    val minOffset = with(LocalDensity.current) { MinTabOffset.toPx() }
-
-    Column(
+    LazyRow(
         modifier = Modifier
-            .offset {
-                val scroll = scrollProvider()
-                val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
-                IntOffset(x = 0, y = offset.toInt())
-            }
+            .background(color = Gray1)
+            .padding(start = 16.dp)
     ) {
-        // 추후 수정 가능성이 있어 주석 처리
-//        TabRow(
-//            selectedTabIndex = pagerState.currentPage,
-//            indicator = { tabPositions ->
-//                TabRowDefaults.Indicator(
-//                    Modifier
-//                        .customTabIndicatorOffset(
-//                            currentTabPosition = tabPositions[pagerState.currentPage],
-//                            tabWidth = tabWidths[pagerState.currentPage]
-//                        )
-//                        .height(3.dp)
-//                )
-//            },
-//            divider = {
-//                TabRowDefaults.Divider(
-//                    thickness = 0.dp,
-//                    color = Color.Transparent
-//                )
-//            },
-//            backgroundColor = Gray1,
-//            modifier = Modifier.padding(0.dp).wrapContentHeight()
-//        ) {
-//            tabItems.forEachIndexed { index, mySections ->
-//                val textStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = 15.sp)
-//                Tab(
-//                    text = {
-//                        Text(
-//                            text = stringResource(id = mySections.title),
-//                            style = if (pagerState.currentPage == index) textStyle.copy(color = Gray10)
-//                            else textStyle.copy(color = Gray6),
-//                            onTextLayout = { textLayoutResult ->
-//                                tabWidths[index] =
-//                                    with(density) { textLayoutResult.size.width.toDp() }
-//                            }
-//                        )
-//                    },
-//                    selected = pagerState.currentPage == index,
-//                    onClick = {
-//                        coroutineScope.launch {
-//                            pagerState.animateScrollToPage(index)
-//                        }
-//                    },
-//                    modifier = Modifier.wrapContentHeight().padding(0.dp)
-//                )
-//            }
-//        }
 
-        LazyRow(modifier = Modifier.padding(start = 16.dp)) {
-            itemsIndexed(items = tabItems, itemContent = { index, tab ->
-                MyTab(
-                    mySection = tab,
-                    isSelected = pagerState.currentPage == index,
-                    tabWidths = tabWidths,
-                    currentIndex = index,
-                    isClicked = {
-                        coroutineScope.launch {
-                            pagerState.animateScrollToPage(index)
-                        }
+        itemsIndexed(items = tabItems, itemContent = { index, tab ->
+            MyTab(
+                mySection = tab,
+                isSelected = pagerState.currentPage == index,
+                tabWidths = tabWidths,
+                currentIndex = index,
+                isClicked = {
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(index)
                     }
-                )
-            })
-        }
+                }
+            )
+        })
+    }
+}
 
-        HorizontalPager(
-            count = tabItems.size,
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(scrollState)
-        ) { page ->
-            when (page) {
-                0 -> {
-                    AllBucketLayer(viewModel = viewModel,
-                        clickEvent = {
-                            when (it) {
-                                MyClickEvent.CloseClicked -> TODO()
-                                MyClickEvent.FilterClicked -> TODO()
-                                is ItemClicked -> {
-                                    onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
-                                }
-                                is SearchClicked -> TODO()
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun MyViewPager(
+    tabItems: Array<MySections>,
+    pagerState: PagerState,
+    viewModel: MyViewModel,
+    onBucketSelected: (BucketSelected) -> Unit
+) {
+    HorizontalPager(
+        count = tabItems.size,
+        state = pagerState,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) { page ->
+        when (page) {
+            0 -> {
+                AllBucketLayer(viewModel = viewModel,
+                    clickEvent = {
+                        when (it) {
+                            MyClickEvent.CloseClicked -> TODO()
+                            MyClickEvent.FilterClicked -> TODO()
+                            is ItemClicked -> {
+                                onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
                             }
-                        })
-                }
-                1 -> {
-                    CategoryLayer(viewModel = viewModel)
-                }
-                2 -> {
-                    DdayBucketLayer(
-                        viewModel = viewModel,
-                        clickEvent = {
+                            is SearchClicked -> TODO()
+                        }
+                    })
+            }
+            1 -> {
+                CategoryLayer(viewModel = viewModel)
+            }
+            2 -> {
+                DdayBucketLayer(
+                    viewModel = viewModel,
+                    clickEvent = {
 
-                        })
-                }
+                    })
             }
         }
     }
 }
-
 
 @Composable
 private fun MyTab(
@@ -249,27 +201,4 @@ private fun MyTab(
                 .background(if (isSelected) Gray10 else Color.Transparent)
         )
     }
-}
-
-fun Modifier.customTabIndicatorOffset(
-    currentTabPosition: TabPosition,
-    tabWidth: Dp
-): Modifier = composed(
-    inspectorInfo = debugInspectorInfo {
-        name = "customTabIndicatorOffset"
-        value = currentTabPosition
-    }
-) {
-    val currentTabWidth by animateDpAsState(
-        targetValue = tabWidth,
-        animationSpec = tween(durationMillis = 100, easing = FastOutSlowInEasing)
-    )
-    val indicatorOffset by animateDpAsState(
-        targetValue = ((currentTabPosition.left + currentTabPosition.right - tabWidth) / 2),
-        animationSpec = tween(durationMillis = 250, easing = FastOutSlowInEasing)
-    )
-    fillMaxWidth()
-        .wrapContentSize(Alignment.BottomStart)
-        .offset(x = indicatorOffset)
-        .width(currentTabWidth)
 }

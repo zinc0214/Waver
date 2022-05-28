@@ -119,6 +119,7 @@
         <entry key="app/src/main/res/layout/fragment_category_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_dday_bucket_list.xml" value="0.18611111111111112" />
         <entry key="app/src/main/res/layout/fragment_dday_filter.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_detail_option_dialog.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_feed_keywords.xml" value="0.10326086956521739" />
         <entry key="app/src/main/res/layout/fragment_feed_recommend.xml" value="0.125" />
@@ -138,6 +139,8 @@
         <entry key="app/src/main/res/layout/widget_feed_content.xml" value="0.25" />
         <entry key="app/src/main/res/layout/widget_feed_image.xml" value="0.18629715165511931" />
         <entry key="app/src/main/res/layout/widget_feed_recommend.xml" value="0.33561440927011" />
+        <entry key="app/src/main/res/layout/widget_my_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/widget_my_tab.xml" value="0.10925925925925926" />
         <entry key="app/src/main/res/layout/widget_nav_title.xml" value="0.19707467282525018" />
         <entry key="app/src/main/res/layout/widget_switch.xml" value="0.1" />
         <entry key="app/src/main/res/layout/widget_text_and_switch.xml" value="0.125" />

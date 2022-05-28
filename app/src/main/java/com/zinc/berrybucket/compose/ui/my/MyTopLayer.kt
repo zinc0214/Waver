@@ -23,26 +23,14 @@ import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.ProfileCircularProgressBar
 import com.zinc.domain.models.TopProfile
 
-private val MaxProfileOffset = 0.dp
-private val MinProfileOffset = (-354).dp
-
 @Composable
 fun MyTopLayer(
-    scrollProvider: () -> Int,
     profileInfo: TopProfile
 ) {
 
-    val maxOffset = with(LocalDensity.current) { MaxProfileOffset.toPx() }
-    val minOffset = with(LocalDensity.current) { MinProfileOffset.toPx() }
-
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .offset {
-                val scroll = scrollProvider()
-                val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
-                IntOffset(x = 0, y = offset.toInt())
-            })
+            .fillMaxWidth())
     {
         TopButtonLayer(
             modifier = Modifier
