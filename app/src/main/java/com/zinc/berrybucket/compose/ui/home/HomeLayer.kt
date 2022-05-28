@@ -23,19 +23,17 @@ import com.zinc.berrybucket.compose.ui.BucketSelected
 import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.IconToggleButton
 import com.zinc.berrybucket.compose.ui.feed.Feed
-import com.zinc.berrybucket.compose.ui.my.My
+import com.zinc.berrybucket.compose.ui.my.MyScreen
 
 fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     modifier: Modifier = Modifier
 ) {
     composable(HomeSections.MY.route) { from ->
-        My(
-            modifier = modifier,
+        MyScreen(
             onBucketSelected = {
                 onBucketSelected.invoke(it, from)
-            },
-            key = route ?: "home/my"
+            }
         )
     }
     composable(HomeSections.FEED.route) { from ->

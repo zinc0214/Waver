@@ -1,25 +1,18 @@
 package com.zinc.berrybucket.compose.ui.my
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.TabPosition
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -47,10 +40,8 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun My(
-    modifier: Modifier = Modifier,
+fun MyScreen(
     onBucketSelected: (BucketSelected) -> Unit,
-    key: String
 ) {
     val viewModel: MyViewModel = hiltViewModel()
     viewModel.loadProfile()
@@ -59,9 +50,10 @@ fun My(
     val tabItems = MySections.values()
     val pagerState = rememberPagerState()
 
-    Box {
-        profileInfo?.let { profile ->
-            AndroidView(factory = { context ->
+    profileInfo?.let { profile ->
+        AndroidView(
+            modifier = Modifier.fillMaxSize(),
+            factory = { context ->
                 MyView(context).apply {
                     setProfileInfo(profile)
                     setTabView(
@@ -72,7 +64,6 @@ fun My(
                     )
                 }
             })
-        }
     }
 }
 
@@ -104,7 +95,7 @@ fun MyTabLayer(
     LazyRow(
         modifier = Modifier
             .background(color = Gray1)
-            .padding(start = 16.dp)
+            .padding(start = 16.dp, top = 24.dp)
     ) {
 
         itemsIndexed(items = tabItems, itemContent = { index, tab ->
@@ -136,6 +127,7 @@ fun MyViewPager(
         state = pagerState,
         modifier = Modifier
             .fillMaxWidth()
+            .fillMaxHeight()
     ) { page ->
         when (page) {
             0 -> {
