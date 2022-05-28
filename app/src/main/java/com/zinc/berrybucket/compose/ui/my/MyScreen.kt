@@ -65,7 +65,8 @@ fun MyScreen(
                 )
             }
         },
-        sheetPeekHeight = 1.dp
+        sheetPeekHeight = 1.dp,
+        sheetGesturesEnabled = currentBottomSheet !is BottomSheetScreenType.SearchScreen
     ) {
         profileInfo?.let { profile ->
             AndroidView(
