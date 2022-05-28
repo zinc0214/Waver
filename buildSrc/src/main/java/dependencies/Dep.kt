@@ -48,7 +48,7 @@ object Dep {
         }
 
         object Compose {
-            const val version = "1.1.1"
+            const val version = "1.2.0-beta02"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -95,7 +95,7 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.6.10"
+        const val version = "1.6.21"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {

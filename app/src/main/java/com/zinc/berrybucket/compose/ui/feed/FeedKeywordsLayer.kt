@@ -1,15 +1,16 @@
 package com.zinc.berrybucket.compose.ui.feed
 
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -31,36 +32,35 @@ import kotlin.math.min
 @Composable
 fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit) {
 
-    Scaffold {
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .background(Gray2)
-                .padding(horizontal = 28.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(Gray2)
+            .padding(horizontal = 28.dp)
 
-        ) {
-            val scrollState = rememberLazyListState()
-            val scrollOffset: Float = min(
-                1f,
-                1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
+    ) {
+        val scrollState = rememberLazyGridState()
+        val scrollOffset: Float = min(
+            1f,
+            1 - (scrollState.firstVisibleItemScrollOffset / 600f + scrollState.firstVisibleItemIndex)
+        )
+        Column {
+            FeedCollapsingToolbar(
+                scrollOffset = scrollOffset
             )
-            Column {
-                FeedCollapsingToolbar(
-                    scrollOffset = scrollOffset
-                )
-                if (scrollOffset <= 0.0) {
-                    Divider(
-                        color = Gray3
-                    )
-                }
-                BodyContent(
-                    state = scrollState,
-                    keywords = keywords,
-                    recommendClicked = recommendClicked
+            if (scrollOffset <= 0.0) {
+                Divider(
+                    color = Gray3
                 )
             }
+            BodyContent(
+                state = scrollState,
+                keywords = keywords,
+                recommendClicked = recommendClicked
+            )
         }
     }
+
 }
 
 @Composable
@@ -84,7 +84,7 @@ private fun FeedCollapsingToolbar(scrollOffset: Float) {
 
 @Composable
 private fun BodyContent(
-    state: LazyListState,
+    state: LazyGridState,
     keywords: List<FeedKeyWord>,
     recommendClicked: () -> Unit
 ) {
@@ -106,19 +106,18 @@ private fun BodyContent(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ChipBodyContent(
     modifier: Modifier = Modifier,
-    state: LazyListState,
+    state: LazyGridState,
     keywords: List<FeedKeyWord>
 ) {
-    LazyVerticalGrid(
-        cells = GridCells.Adaptive(minSize = 90.dp),
+    androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 90.dp),
         state = state,
         modifier = modifier
     ) {
-        items(keywords) { keywordItem ->
+        items(items = keywords) { keywordItem ->
             var selected by remember { mutableStateOf(false) }
             RoundChip(
                 modifier = Modifier
