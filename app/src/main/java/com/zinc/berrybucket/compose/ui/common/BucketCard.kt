@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.model.BucketProgressState
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 
 @Composable
 fun BucketListView(
     bucketList: List<UIBucketInfoSimple>,
-    tabType: TabType,
+    tabType: MyTabType,
     itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -47,7 +47,7 @@ fun BucketListView(
 @Composable
 fun BucketCard(
     itemInfo: UIBucketInfoSimple,
-    tabType: TabType,
+    tabType: MyTabType,
     animFinishEvent: (BucketProgressState) -> Unit,
     itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
@@ -87,7 +87,7 @@ fun BucketCard(
                 BucketCircularProgressBar(
                     progressState = {
                         if (it == BucketProgressState.PROGRESS_END) {
-                            if (tabType == TabType.ALL) {
+                            if (tabType == MyTabType.ALL) {
                                 borderColor.value = Main2
                             } else {
                                 borderColor.value = Sub_D2
@@ -181,11 +181,11 @@ fun CountProgressView(
     modifier: Modifier = Modifier,
     info: UIBucketInfoSimple,
     bucketCount: Int,
-    tabType: TabType
+    tabType: MyTabType
 ) {
 
     val countProgressColor =
-        if (tabType == TabType.ALL) {
+        if (tabType == MyTabType.ALL) {
             Main2
         } else if (info.dDay != null && info.dDay > 0) {
             Error2

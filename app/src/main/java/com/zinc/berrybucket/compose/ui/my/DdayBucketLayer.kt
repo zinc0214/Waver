@@ -13,7 +13,7 @@ import com.zinc.berrybucket.compose.ui.common.BucketListView
 import com.zinc.berrybucket.compose.ui.common.FilterAndSearchImageView
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
@@ -34,7 +34,7 @@ fun DdayBucketLayer(
         ) {
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(it.bucketList.parseToUI(), TabType.D_DAY,
+            BucketListView(it.bucketList.parseToUI(), MyTabType.DDAY,
                 itemClicked = {
                     clickEvent.invoke(ItemClicked(it))
                 })
@@ -51,6 +51,6 @@ private fun DdayFilterAndSearchImageView(
         modifier = modifier
             .fillMaxWidth(),
         clickEvent = { clickEvent.invoke(it) },
-        tabType = TabType.ALL
+        tabType = MyTabType.ALL
     )
 }

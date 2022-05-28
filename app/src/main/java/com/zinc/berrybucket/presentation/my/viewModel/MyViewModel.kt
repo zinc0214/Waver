@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.model.AllBucketList
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
@@ -31,8 +31,8 @@ class MyViewModel @Inject constructor(
     private val _profileInfo = MutableLiveData<TopProfile>()
     val profileInfo: LiveData<TopProfile> get() = _profileInfo
 
-    private val _searchBucketResult = MutableLiveData<Pair<TabType, List<*>>>()
-    val searchResult: LiveData<Pair<TabType, List<*>>> get() = _searchBucketResult
+    private val _searchBucketResult = MutableLiveData<Pair<MyTabType, List<*>>>()
+    val searchResult: LiveData<Pair<MyTabType, List<*>>> get() = _searchBucketResult
 
     private val _allBucketItem = MutableLiveData<AllBucketList>()
     val allBucketItem: LiveData<AllBucketList> get() = _allBucketItem
@@ -127,39 +127,39 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    fun searchList(type: TabType, searchWord: String) {
+    fun searchList(type: MyTabType, searchWord: String) {
         when (type) {
-            TabType.ALL -> searchAllBucket(searchWord = searchWord)
-            TabType.D_DAY -> searchDdayBucket(searchWord = searchWord)
-            TabType.CATEGORY -> searchCategoryItems(searchWord = searchWord)
-            TabType.CHALLENGE -> searchChallenge(searchWord = searchWord)
+            MyTabType.ALL -> searchAllBucket(searchWord = searchWord)
+            MyTabType.DDAY -> searchDdayBucket(searchWord = searchWord)
+            MyTabType.CATEGORY -> searchCategoryItems(searchWord = searchWord)
+            MyTabType.CHALLENGE -> searchChallenge(searchWord = searchWord)
         }
     }
 
     private fun searchAllBucket(searchWord: String) {
         _searchBucketResult.value = Pair(
-            TabType.ALL,
+            MyTabType.ALL,
             simpleTypeList
         )
     }
 
     private fun searchDdayBucket(searchWord: String) {
         _searchBucketResult.value = Pair(
-            TabType.D_DAY,
+            MyTabType.DDAY,
             simpleTypeList
         )
     }
 
     private fun searchCategoryItems(searchWord: String) {
         _searchBucketResult.value = Pair(
-            TabType.CATEGORY,
+            MyTabType.CATEGORY,
             searchCategory
         )
     }
 
     private fun searchChallenge(searchWord: String) {
         _searchBucketResult.value = Pair(
-            TabType.CHALLENGE,
+            MyTabType.CHALLENGE,
             simpleTypeList
         )
     }

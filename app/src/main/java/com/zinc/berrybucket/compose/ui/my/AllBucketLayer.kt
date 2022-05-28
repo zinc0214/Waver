@@ -21,7 +21,7 @@ import com.zinc.berrybucket.compose.ui.common.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 @Composable
@@ -46,7 +46,7 @@ fun AllBucketLayer(
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(it.bucketList, TabType.ALL, itemClicked = {
+            BucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
                 clickEvent.invoke(ItemClicked(it))
             })
             Spacer(modifier = Modifier.weight(1f))
@@ -77,7 +77,7 @@ fun AllBucketTopView(
                 .align(Alignment.CenterVertically)
                 .fillMaxWidth(),
             clickEvent = clickEvent,
-            tabType = TabType.ALL
+            tabType = MyTabType.ALL
         )
     }
 }

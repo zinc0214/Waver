@@ -11,11 +11,11 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.model.MyClickEvent
 import com.zinc.berrybucket.model.SearchClicked
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 
 @Composable
 fun FilterAndSearchImageView(
-    modifier: Modifier = Modifier, clickEvent: (MyClickEvent) -> Unit, tabType: TabType
+    modifier: Modifier = Modifier, clickEvent: (MyClickEvent) -> Unit, tabType: MyTabType
 ) {
     Row(
         modifier = modifier.padding(top = 16.dp, end = 16.dp),
@@ -27,7 +27,7 @@ fun FilterAndSearchImageView(
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_filter,
-            contentDescription = if (tabType == TabType.ALL) stringResource(R.string.allFilterImageViewDesc)
+            contentDescription = if (tabType == MyTabType.ALL) stringResource(R.string.allFilterImageViewDesc)
             else stringResource(
                 R.string.ddayFilterImageViewDesc
             )
@@ -48,7 +48,7 @@ fun FilterAndSearchImageView(
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_search,
-            contentDescription = if (tabType == TabType.ALL) stringResource(R.string.allSearchImageViewDesc)
+            contentDescription = if (tabType == MyTabType.ALL) stringResource(R.string.allSearchImageViewDesc)
             else stringResource(R.string.ddaySearchImageViewDesc)
         )
 

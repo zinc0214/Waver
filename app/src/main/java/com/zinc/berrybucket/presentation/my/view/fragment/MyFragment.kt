@@ -8,11 +8,9 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.tabs.TabLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.databinding.FragmentMyBinding
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyTabCustom
@@ -117,7 +115,7 @@ class MyFragment : Fragment() {
 //        })
     }
 
-    private fun showSearchFragment(tabType: TabType) {
+    private fun showSearchFragment(tabType: MyTabType) {
         MySearchFragment.newInstance(tabType).show(parentFragmentManager, "MySearchFragment")
     }
 

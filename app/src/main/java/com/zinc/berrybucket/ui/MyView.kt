@@ -4,16 +4,17 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.compose.foundation.ScrollState
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.zinc.berrybucket.compose.ui.BucketSelected
-import com.zinc.berrybucket.compose.ui.my.MySections
+import com.zinc.berrybucket.compose.ui.my.BottomSheetScreenType
 import com.zinc.berrybucket.compose.ui.my.MyTabLayer
 import com.zinc.berrybucket.compose.ui.my.MyTopLayer
 import com.zinc.berrybucket.compose.ui.my.MyViewPager
 import com.zinc.berrybucket.databinding.LayoutMyViewBinding
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.domain.models.TopProfile
 
@@ -48,7 +49,7 @@ class MyView @JvmOverloads constructor(
         }
     }
 
-    fun setProfileInfo(profileInfo: TopProfile) {
+    fun setProfileInfo(profileInfo: TopProfile?) {
         binding.profileComposeView.setContent {
             MyTopLayer(profileInfo = profileInfo)
         }
@@ -56,10 +57,11 @@ class MyView @JvmOverloads constructor(
 
     @OptIn(ExperimentalPagerApi::class)
     fun setTabView(
-        tabItems: Array<MySections>,
+        tabItems: Array<MyTabType>,
         pagerState: PagerState,
         viewModel: MyViewModel,
-        onBucketSelected: (BucketSelected) -> Unit
+        onBucketSelected: (BucketSelected) -> Unit,
+        bottomSheetClicked : (BottomSheetScreenType) -> Unit
     ) {
         binding.tabComposeView.setContent {
             MyTabLayer(tabItems, pagerState)
@@ -69,7 +71,8 @@ class MyView @JvmOverloads constructor(
                 tabItems = tabItems,
                 pagerState = pagerState,
                 viewModel = viewModel,
-                onBucketSelected = onBucketSelected
+                onBucketSelected = onBucketSelected,
+                bottomSheetClicked = bottomSheetClicked
             )
         }
     }

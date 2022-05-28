@@ -19,12 +19,12 @@ import com.zinc.berrybucket.compose.theme.Gray3
 import com.zinc.berrybucket.compose.theme.Main2
 import com.zinc.berrybucket.compose.theme.Sub_D2
 import com.zinc.berrybucket.model.BucketProgressState
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 
 @Composable
 fun BucketCircularProgressBar(
     progressState: (BucketProgressState) -> Unit,
-    tabType: TabType,
+    tabType: MyTabType,
     radius: Dp = 16.dp,
     animDuration: Int = 1000,
     animDelay: Int = 0
@@ -64,7 +64,7 @@ fun BucketCircularProgressBar(
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
-                color = if (tabType == TabType.ALL) Main2 else Sub_D2,
+                color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
                 -90f,
                 360 * curPercentage.value,
                 useCenter = false,
@@ -83,7 +83,7 @@ fun BucketCircularProgressBar(
         if ((curPercentage.value * 100).toInt() == 100) {
             Image(
                 painter =
-                if (tabType == TabType.ALL)
+                if (tabType == MyTabType.ALL)
                     painterResource(R.drawable.check_succeed)
                 else
                     painterResource(R.drawable.check_succeed_dday),

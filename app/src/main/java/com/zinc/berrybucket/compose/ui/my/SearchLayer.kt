@@ -27,17 +27,16 @@ import com.zinc.berrybucket.compose.ui.common.CategoryListView
 import com.zinc.berrybucket.compose.ui.common.RoundChip
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.TabType
-import com.zinc.berrybucket.model.TabType.Companion.getNameResource
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.common.models.Category
 
 @Composable
 fun SearchLayer(
-    currentTabType: TabType,
+    currentTabType: MyTabType,
     clickEvent: (MyClickEvent) -> Unit,
-    searchWord: (TabType, String) -> Unit,
-    result: State<Pair<TabType, List<*>>?>
+    searchWord: (MyTabType, String) -> Unit,
+    result: State<Pair<MyTabType, List<*>>?>
 ) {
 
     val selectTab = remember { mutableStateOf(currentTabType) }
@@ -49,7 +48,7 @@ fun SearchLayer(
                 .fillMaxWidth()
                 .fillMaxHeight()
                 .background(Gray2)
-        ) {
+        ) { _ ->
             Column {
                 TopAppBar(clickEvent = clickEvent)
 
@@ -78,7 +77,7 @@ fun SearchLayer(
 
                 ChipBodyContent(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    list = TabType.values().toList(),
+                    list = MyTabType.values().toList(),
                     currentTab = selectTab
                 )
 
@@ -129,7 +128,7 @@ private fun TopAppBar(clickEvent: (MyClickEvent) -> Unit) {
 
 @Composable
 private fun SearchEditView(
-    type: TabType,
+    type: MyTabType,
     onImeAction: (String) -> Unit
 ) {
 
@@ -137,7 +136,7 @@ private fun SearchEditView(
         modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
     ) {
         Text(
-            text = stringResource(id = getNameResource(type)),
+            text = stringResource(type.title),
             color = Main4,
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium
@@ -187,8 +186,8 @@ private fun SearchEditView(
 @Composable
 fun ChipBodyContent(
     modifier: Modifier = Modifier,
-    list: List<TabType>,
-    currentTab: MutableState<TabType>
+    list: List<MyTabType>,
+    currentTab: MutableState<MyTabType>
 ) {
     Row(
         modifier = modifier
@@ -205,7 +204,7 @@ fun ChipBodyContent(
                         }
                     ),
                 textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                text = stringResource(id = getNameResource(tabType)),
+                text = stringResource(id = tabType.title),
                 isSelected = currentTab.value == tabType
             )
         }
@@ -214,9 +213,9 @@ fun ChipBodyContent(
 
 
 @Composable
-private fun SearchResultView(result: Pair<TabType, List<*>>, clickEvent: (MyClickEvent) -> Unit) {
+private fun SearchResultView(result: Pair<MyTabType, List<*>>, clickEvent: (MyClickEvent) -> Unit) {
 
-    if (result.first == TabType.CATEGORY) {
+    if (result.first == MyTabType.CATEGORY) {
         if (result.second.all { item -> item is Category }) {
             val items = result.second as List<Category>
             CategoryListView(items)

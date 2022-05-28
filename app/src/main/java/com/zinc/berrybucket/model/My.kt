@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.model
 
+import androidx.annotation.StringRes
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray6
@@ -80,29 +81,14 @@ enum class BucketType(
     CHALLENGE("CHALLENGE")
 }
 
-enum class TabType {
-    ALL, CATEGORY, D_DAY, CHALLENGE;
-
-    companion object {
-        fun getNameResource(type: TabType): Int {
-            return when (type) {
-                ALL -> {
-                    R.string.allTab
-                }
-                CATEGORY -> {
-                    R.string.categoryTab
-                }
-                D_DAY -> {
-                    R.string.ddayTab
-                }
-                else -> {
-                    R.string.challengeTab
-                }
-            }
-        }
-    }
+enum class MyTabType(
+    @StringRes val title: Int
+) {
+    ALL(title = R.string.allTab),
+    CATEGORY(title = R.string.categoryTab),
+    DDAY(title = R.string.ddayTab),
+    CHALLENGE(title = R.string.challengeTab)
 }
-
 
 sealed class MyClickEvent : IconClickEvent() {
     object FilterClicked : MyClickEvent()
@@ -110,4 +96,4 @@ sealed class MyClickEvent : IconClickEvent() {
 }
 
 data class ItemClicked(val info: UIBucketInfoSimple) : MyClickEvent()
-data class SearchClicked(val tabType: TabType) : MyClickEvent()
+data class SearchClicked(val tabType: MyTabType) : MyClickEvent()

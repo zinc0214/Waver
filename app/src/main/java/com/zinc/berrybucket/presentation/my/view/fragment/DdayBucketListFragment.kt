@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DdayBucketListFragment : Fragment() {
 
-    private lateinit var searchViewClicked: (TabType) -> Unit
+    private lateinit var searchViewClicked: (MyTabType) -> Unit
     // private lateinit var goToBucketDetail: (BucketInfoSimple) -> Unit
 
     override fun onCreateView(

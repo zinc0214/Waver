@@ -15,14 +15,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.ui.my.SearchLayer
 import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.TabType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MySearchFragment : BottomSheetDialogFragment() {
 
-    lateinit var tabType: TabType
+    lateinit var tabType: MyTabType
     private val viewModel by viewModels<MyViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +75,7 @@ class MySearchFragment : BottomSheetDialogFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(tabType: TabType) = MySearchFragment().apply {
+        fun newInstance(tabType: MyTabType) = MySearchFragment().apply {
             this.tabType = tabType
         }
     }

@@ -23,24 +23,27 @@ import com.zinc.domain.models.TopProfile
 
 @Composable
 fun MyTopLayer(
-    profileInfo: TopProfile
+    profileInfo: TopProfile?
 ) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth())
-    {
-        TopButtonLayer(
+    profileInfo?.let {
+        Column(
             modifier = Modifier
-                .padding(top = 16.dp, end = 16.dp)
-                .align(Alignment.End)
+                .fillMaxWidth()
         )
+        {
+            TopButtonLayer(
+                modifier = Modifier
+                    .padding(top = 16.dp, end = 16.dp)
+                    .align(Alignment.End)
+            )
 
-        Spacer(modifier = Modifier.height(4.dp))
-        ProfileLayer(profileInfo)
+            Spacer(modifier = Modifier.height(4.dp))
+            ProfileLayer(profileInfo)
 
-        Spacer(modifier = Modifier.height(24.dp))
-        FollowStateLayer(profileInfo, Modifier.align(Alignment.CenterHorizontally))
+            Spacer(modifier = Modifier.height(24.dp))
+            FollowStateLayer(profileInfo, Modifier.align(Alignment.CenterHorizontally))
+        }
     }
 }
 

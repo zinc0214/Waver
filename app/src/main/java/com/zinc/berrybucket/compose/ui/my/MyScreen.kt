@@ -1,12 +1,11 @@
 package com.zinc.berrybucket.compose.ui.my
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -25,61 +24,80 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.compose.ui.BucketSelected
 import com.zinc.berrybucket.model.ItemClicked
 import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.SearchClicked
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.ui.MyView
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MyScreen(
     onBucketSelected: (BucketSelected) -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     val viewModel: MyViewModel = hiltViewModel()
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
 
-    val tabItems = MySections.values()
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+
+    var currentBottomSheet: BottomSheetScreenType? by remember { mutableStateOf(null) }
+
+    val tabItems = MyTabType.values()
     val pagerState = rememberPagerState()
 
-    profileInfo?.let { profile ->
-        AndroidView(
-            modifier = Modifier.fillMaxSize(),
-            factory = { context ->
-                MyView(context).apply {
-                    setProfileInfo(profile)
-                    setTabView(
-                        tabItems = tabItems,
-                        pagerState = pagerState,
-                        viewModel = viewModel,
-                        onBucketSelected = onBucketSelected
-                    )
-                }
-            })
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetScaffoldState,
+        sheetContent = {
+            currentBottomSheet?.let {
+                MyBottomSheetScreen(
+                    currentScreen = it,
+                    bottomSheetScaffoldState = bottomSheetScaffoldState
+                )
+            }
+        },
+        sheetPeekHeight = 1.dp
+    ) {
+        profileInfo?.let { profile ->
+            AndroidView(
+                modifier = Modifier.fillMaxSize(),
+                factory = { context ->
+                    MyView(context).apply {
+                        setProfileInfo(profile)
+                        setTabView(
+                            tabItems = tabItems,
+                            pagerState = pagerState,
+                            viewModel = viewModel,
+                            onBucketSelected = onBucketSelected,
+                            bottomSheetClicked = {
+                                currentBottomSheet = it
+                                coroutineScope.launch {
+                                    bottomSheetScaffoldState.bottomSheetState.expand()
+                                }
+                            }
+                        )
+                    }
+                })
+        }
     }
+
+
 }
 
-enum class MySections(
-    @StringRes val title: Int
-) {
-    ALL(title = R.string.allTab),
-    CATEGORY(title = R.string.categoryTab),
-    DDAY(title = R.string.ddayTab),
-    CHALLENGE(title = R.string.challengeTab)
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyTabLayer(
-    tabItems: Array<MySections>,
+    tabItems: Array<MyTabType>,
     pagerState: PagerState
 ) {
 
@@ -117,11 +135,14 @@ fun MyTabLayer(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyViewPager(
-    tabItems: Array<MySections>,
+    tabItems: Array<MyTabType>,
     pagerState: PagerState,
     viewModel: MyViewModel,
-    onBucketSelected: (BucketSelected) -> Unit
+    onBucketSelected: (BucketSelected) -> Unit,
+    bottomSheetClicked: (BottomSheetScreenType) -> Unit
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     HorizontalPager(
         count = tabItems.size,
         state = pagerState,
@@ -139,7 +160,16 @@ fun MyViewPager(
                             is ItemClicked -> {
                                 onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
                             }
-                            is SearchClicked -> TODO()
+                            is SearchClicked -> {
+                                coroutineScope.launch {
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.SearchScreen(
+                                            selectTab = MyTabType.ALL,
+                                            viewModel = viewModel
+                                        )
+                                    )
+                                }
+                            }
                         }
                     })
             }
@@ -159,7 +189,7 @@ fun MyViewPager(
 
 @Composable
 private fun MyTab(
-    mySection: MySections,
+    mySection: MyTabType,
     isSelected: Boolean,
     tabWidths: SnapshotStateList<Dp>,
     currentIndex: Int,
@@ -193,4 +223,70 @@ private fun MyTab(
                 .background(if (isSelected) Gray10 else Color.Transparent)
         )
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun MyBottomSheetScreen(
+    currentScreen: BottomSheetScreenType,
+    bottomSheetScaffoldState: BottomSheetScaffoldState
+) {
+    when (currentScreen) {
+        BottomSheetScreenType.FilterScreen -> {
+            // .>
+        }
+        is BottomSheetScreenType.SearchScreen -> {
+            SearchBottomView(
+                tab = currentScreen.selectTab,
+                viewModel = currentScreen.viewModel,
+                bottomSheetScaffoldState = bottomSheetScaffoldState
+            )
+        }
+        else -> {
+
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun SearchBottomView(
+    tab: MyTabType,
+    viewModel: MyViewModel,
+    bottomSheetScaffoldState: BottomSheetScaffoldState
+) {
+
+    val coroutineScope = rememberCoroutineScope()
+
+    SearchLayer(
+        currentTabType = tab,
+        clickEvent = {
+            when (it) {
+                MyClickEvent.CloseClicked -> {
+                    coroutineScope.launch {
+                        if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
+                            bottomSheetScaffoldState.bottomSheetState.collapse()
+                        }
+                    }
+                }
+                MyClickEvent.FilterClicked -> TODO()
+                is ItemClicked -> TODO()
+                is SearchClicked -> TODO()
+            }
+        },
+        searchWord = { tab, word ->
+
+        },
+        result = viewModel.searchResult.observeAsState()
+    )
+
+}
+
+sealed class BottomSheetScreenType {
+    data class SearchScreen(
+        val selectTab: MyTabType,
+        val viewModel: MyViewModel
+    ) : BottomSheetScreenType()
+
+    object FilterScreen : BottomSheetScreenType()
 }
