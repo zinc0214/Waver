@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.compose.ui
 
 import android.content.res.Resources
+import android.util.Log
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*

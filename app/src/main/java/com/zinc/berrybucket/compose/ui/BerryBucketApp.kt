@@ -1,10 +1,13 @@
 package com.zinc.berrybucket.compose.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
@@ -51,7 +54,6 @@ fun BerryBucketApp() {
                                     }
                                 }
                             }
-
                         },
                         backPress = appState::backPress
                     )

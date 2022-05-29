@@ -6,7 +6,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -54,6 +57,16 @@ fun MyScreen(
 
     var currentBottomSheet: BottomSheetScreenType? by remember { mutableStateOf(null) }
 
+    val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
+        coroutineScope.launch {
+            if (it) {
+                bottomSheetScaffoldState.bottomSheetState.expand()
+            } else {
+                bottomSheetScaffoldState.bottomSheetState.collapse()
+            }
+        }
+    }
+
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState()
 
@@ -63,8 +76,9 @@ fun MyScreen(
             currentBottomSheet?.let {
                 MyBottomSheetScreen(
                     currentScreen = it,
-                    bottomSheetScaffoldState = bottomSheetScaffoldState,
-                    coroutineScope = coroutineScope
+                    isNeedToBottomSheetOpen = {
+                        isNeedToBottomSheetOpen.invoke(it)
+                    }
                 )
             }
         },
@@ -74,7 +88,7 @@ fun MyScreen(
                 topStart = 16.dp
             ) else RoundedCornerShape(0.dp),
         sheetPeekHeight = 1.dp,
-        sheetGesturesEnabled = currentBottomSheet !is BottomSheetScreenType.SearchScreen
+        sheetGesturesEnabled = false
     ) {
         profileInfo?.let { profile ->
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
@@ -89,6 +103,7 @@ fun MyScreen(
                             currentBottomSheet = it
                             coroutineScope.launch {
                                 bottomSheetScaffoldState.bottomSheetState.expand()
+                                isNeedToBottomSheetOpen.invoke(true)
                             }
                         })
                 }
@@ -226,53 +241,40 @@ private fun MyTab(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun MyBottomSheetScreen(
     currentScreen: BottomSheetScreenType,
-    bottomSheetScaffoldState: BottomSheetScaffoldState,
-    coroutineScope: CoroutineScope,
+    isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
     when (currentScreen) {
         is BottomSheetScreenType.FilterScreen -> {
             FilterBottomView(
                 viewModel = currentScreen.viewModel,
-                bottomSheetScaffoldState = bottomSheetScaffoldState,
-                coroutineScope = coroutineScope
+                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
         }
         is BottomSheetScreenType.SearchScreen -> {
             SearchBottomView(
                 tab = currentScreen.selectTab,
                 viewModel = currentScreen.viewModel,
-                bottomSheetScaffoldState = bottomSheetScaffoldState,
-                coroutineScope = coroutineScope
+                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
-        }
-        else -> {
-
         }
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SearchBottomView(
     tab: MyTabType,
     viewModel: MyViewModel,
-    bottomSheetScaffoldState: BottomSheetScaffoldState,
-    coroutineScope: CoroutineScope
+    isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
 
 
     MySearchBottomScreen(currentTabType = tab, clickEvent = {
         when (it) {
             MySearchClickEvent.CloseClicked -> {
-                coroutineScope.launch {
-                    if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-                        bottomSheetScaffoldState.bottomSheetState.collapse()
-                    }
-                }
+                isNeedToBottomSheetOpen(false)
             }
             is MySearchClickEvent.ItemClicked -> TODO()
             is MySearchClickEvent.SearchClicked -> TODO()
@@ -283,21 +285,15 @@ private fun SearchBottomView(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun FilterBottomView(
     viewModel: MyViewModel,
-    bottomSheetScaffoldState: BottomSheetScaffoldState,
-    coroutineScope: CoroutineScope
+    isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
     MyFilterBottomScreen(viewModel = viewModel, clickEvent = {
         when (it) {
             BottomButtonClickEvent.LeftButtonClicked -> {
-                coroutineScope.launch {
-                    if (bottomSheetScaffoldState.bottomSheetState.isExpanded) {
-                        bottomSheetScaffoldState.bottomSheetState.collapse()
-                    }
-                }
+                isNeedToBottomSheetOpen.invoke(false)
             }
             BottomButtonClickEvent.RightButtonClicked -> TODO()
         }
