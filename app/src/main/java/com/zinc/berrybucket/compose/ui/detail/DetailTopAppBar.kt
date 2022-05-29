@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.model.DetailAppBarClickEvent

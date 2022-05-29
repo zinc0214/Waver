@@ -1,33 +1,22 @@
 package com.zinc.berrybucket.compose.ui.detail
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.PopupProperties
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.BaseTheme
-import com.zinc.berrybucket.compose.theme.Gray1
-import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.util.rememberScrollContext
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
-import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
@@ -54,7 +43,7 @@ fun CloseDetailLayer(
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
-                    MoreMenuPopupView(optionPopUpShowed)
+                    MyDetailAppBarMoreMenuPopupView(optionPopUpShowed)
                 }
 
                 Column(
@@ -168,72 +157,4 @@ private fun ContentView(
             Spacer(modifier = Modifier.height(28.dp))
         }
     }
-}
-
-@Composable
-private fun MoreMenuPopupView(optionPopUpShowed: MutableState<Boolean>) {
-
-    Card(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.TopEnd)
-            .padding(top = 8.dp, bottom = 8.dp),
-        shape = RoundedCornerShape(40.dp),
-        backgroundColor = Gray1,
-        elevation = 3.dp
-    ) {
-        DropdownMenu(
-            expanded = true,
-            onDismissRequest = { optionPopUpShowed.value = false },
-            offset = DpOffset(16.dp, 0.dp),
-            properties = PopupProperties(clippingEnabled = false)
-        ) {
-            DropdownMenuItem(
-                onClick = {
-                    // TODO : Go To Edit
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(R.string.edit)
-            }
-            DropdownMenuItem(
-                onClick = {
-                    // TODO : Go To Count Change
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(R.string.countChange)
-            }
-            DropdownMenuItem(
-                onClick = {
-                    // TODO : Go To Delete
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(R.string.delete)
-            }
-        }
-    }
-}
-
-@Composable
-private fun PppUpText(@StringRes text: Int) {
-    Text(
-        text = stringResource(id = text),
-        color = Gray10,
-        fontSize = 14.sp,
-        modifier = Modifier.padding(start = 16.dp, end = 24.dp)
-    )
 }

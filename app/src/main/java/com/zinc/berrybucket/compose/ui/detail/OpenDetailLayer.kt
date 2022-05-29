@@ -1,5 +1,7 @@
 package com.zinc.berrybucket.compose.ui.detail
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -29,9 +31,8 @@ fun OpenDetailLayer(
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
-    viewModel.getBucketDetail("open")
+    viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
-
 
     vmDetailInfo?.let { detailInfo ->
 
@@ -43,14 +44,28 @@ fun OpenDetailLayer(
         val isScrollable =
             listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
 
+        val optionPopUpShowed = remember { mutableStateOf(false) }
+        val interactionSource = remember { MutableInteractionSource() }
+
         if (isScrollEnd != originIsScrollEnd.value) {
             originIsScrollEnd.value = isScrollEnd
         }
 
         BaseTheme {
             Scaffold { _ ->
+
+                if (optionPopUpShowed.value) {
+                    MyDetailAppBarMoreMenuPopupView(optionPopUpShowed)
+                }
+
                 Column(
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null,
+                            onClick = { optionPopUpShowed.value = false }
+                        )
                 ) {
 
                     DetailTopAppBar(
@@ -62,7 +77,9 @@ fun OpenDetailLayer(
                                 DetailAppBarClickEvent.CloseClicked -> {
                                     backPress()
                                 }
-                                DetailAppBarClickEvent.MoreOptionClicked -> TODO()
+                                DetailAppBarClickEvent.MoreOptionClicked -> {
+                                    optionPopUpShowed.value = true
+                                }
                             }
                         }
                     )
