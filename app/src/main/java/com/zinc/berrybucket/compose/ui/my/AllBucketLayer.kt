@@ -19,15 +19,14 @@ import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.ui.common.BucketListView
 import com.zinc.berrybucket.compose.ui.common.FilterAndSearchImageView
 import com.zinc.berrybucket.model.AllBucketList
-import com.zinc.berrybucket.model.ItemClicked
-import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 @Composable
 fun AllBucketLayer(
     viewModel: MyViewModel,
-    clickEvent: (MyClickEvent) -> Unit
+    clickEvent: (MyPagerClickEvent) -> Unit
 ) {
 
     viewModel.loadAllBucketList()
@@ -47,7 +46,7 @@ fun AllBucketLayer(
             )
             Spacer(modifier = Modifier.height(16.dp))
             BucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
-                clickEvent.invoke(ItemClicked(it))
+                clickEvent.invoke(MyPagerClickEvent.ItemClicked(it))
             })
             Spacer(modifier = Modifier.weight(1f))
         }
@@ -58,7 +57,7 @@ fun AllBucketLayer(
 fun AllBucketTopView(
     modifier: Modifier = Modifier,
     allBucketInfo: AllBucketList,
-    clickEvent: (MyClickEvent) -> Unit
+    clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     Row(
         modifier = modifier

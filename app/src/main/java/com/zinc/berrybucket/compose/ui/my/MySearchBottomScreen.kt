@@ -25,8 +25,7 @@ import com.zinc.berrybucket.compose.theme.*
 import com.zinc.berrybucket.compose.ui.common.BucketListView
 import com.zinc.berrybucket.compose.ui.common.CategoryListView
 import com.zinc.berrybucket.compose.ui.common.RoundChip
-import com.zinc.berrybucket.model.ItemClicked
-import com.zinc.berrybucket.model.MyClickEvent
+import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.common.models.Category
@@ -34,7 +33,7 @@ import com.zinc.common.models.Category
 @Composable
 fun MySearchBottomScreen(
     currentTabType: MyTabType,
-    clickEvent: (MyClickEvent) -> Unit,
+    clickEvent: (MySearchClickEvent) -> Unit,
     searchWord: (MyTabType, String) -> Unit,
     result: State<Pair<MyTabType, List<*>>?>
 ) {
@@ -105,7 +104,7 @@ fun MySearchBottomScreen(
 }
 
 @Composable
-private fun TopAppBar(clickEvent: (MyClickEvent) -> Unit) {
+private fun TopAppBar(clickEvent: (MySearchClickEvent) -> Unit) {
     TopAppBar(
         navigationIcon = {
             Icon(
@@ -114,7 +113,7 @@ private fun TopAppBar(clickEvent: (MyClickEvent) -> Unit) {
                 modifier = Modifier
                     .padding(start = 14.dp, top = 8.dp)
                     .clickable {
-                        clickEvent(MyClickEvent.CloseClicked)
+                        clickEvent(MySearchClickEvent.CloseClicked)
                     }
             )
         },
@@ -213,7 +212,7 @@ fun ChipBodyContent(
 
 
 @Composable
-private fun SearchResultView(result: Pair<MyTabType, List<*>>, clickEvent: (MyClickEvent) -> Unit) {
+private fun SearchResultView(result: Pair<MyTabType, List<*>>, clickEvent: (MySearchClickEvent) -> Unit) {
 
     if (result.first == MyTabType.CATEGORY) {
         if (result.second.all { item -> item is Category }) {
@@ -224,7 +223,7 @@ private fun SearchResultView(result: Pair<MyTabType, List<*>>, clickEvent: (MyCl
         if (result.second.all { item -> item is UIBucketInfoSimple }) {
             val items = result.second as List<UIBucketInfoSimple>
             BucketListView(items, result.first, itemClicked = {
-                clickEvent.invoke(ItemClicked(it))
+                clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
             })
         }
     }

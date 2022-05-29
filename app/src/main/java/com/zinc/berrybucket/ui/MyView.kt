@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -17,6 +16,7 @@ import com.zinc.berrybucket.databinding.LayoutMyViewBinding
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 import com.zinc.domain.models.TopProfile
+import kotlinx.coroutines.CoroutineScope
 
 class MyView @JvmOverloads constructor(
     context: Context,
@@ -60,11 +60,12 @@ class MyView @JvmOverloads constructor(
         tabItems: Array<MyTabType>,
         pagerState: PagerState,
         viewModel: MyViewModel,
+        coroutineScope: CoroutineScope,
         onBucketSelected: (BucketSelected) -> Unit,
-        bottomSheetClicked : (BottomSheetScreenType) -> Unit
+        bottomSheetClicked: (BottomSheetScreenType) -> Unit
     ) {
         binding.tabComposeView.setContent {
-            MyTabLayer(tabItems, pagerState)
+            MyTabLayer(tabItems, pagerState, coroutineScope)
         }
         binding.pagerComposeView.setContent {
             MyViewPager(
@@ -72,7 +73,8 @@ class MyView @JvmOverloads constructor(
                 pagerState = pagerState,
                 viewModel = viewModel,
                 onBucketSelected = onBucketSelected,
-                bottomSheetClicked = bottomSheetClicked
+                bottomSheetClicked = bottomSheetClicked,
+                coroutineScope = coroutineScope
             )
         }
     }

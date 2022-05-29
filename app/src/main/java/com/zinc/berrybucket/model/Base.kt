@@ -12,3 +12,8 @@ data class ProfileInfo(
 ) : DetailDescType()
 
 sealed class IconClickEvent
+
+sealed class BottomButtonClickEvent {
+    object LeftButtonClicked : BottomButtonClickEvent()
+    object RightButtonClicked : BottomButtonClickEvent()
+}

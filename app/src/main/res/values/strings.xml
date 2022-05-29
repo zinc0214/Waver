@@ -22,6 +22,7 @@
     <string name="edit">수정</string>
     <string name="delete">삭제</string>
     <string name="countChange">완료횟수변경</string>
+    <string name="selected">선택 버튼</string>
 
     <!-- My -->
     <string name="alarm">알람</string>

@@ -9,13 +9,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray4
-import com.zinc.berrybucket.model.MyClickEvent
-import com.zinc.berrybucket.model.SearchClicked
+import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 
 @Composable
 fun FilterAndSearchImageView(
-    modifier: Modifier = Modifier, clickEvent: (MyClickEvent) -> Unit, tabType: MyTabType
+    modifier: Modifier = Modifier, clickEvent: (MyPagerClickEvent) -> Unit, tabType: MyTabType
 ) {
     Row(
         modifier = modifier.padding(top = 16.dp, end = 16.dp),
@@ -23,7 +22,7 @@ fun FilterAndSearchImageView(
     ) {
         IconButton(
             onClick = {
-                clickEvent(MyClickEvent.FilterClicked)
+                clickEvent(MyPagerClickEvent.FilterClicked)
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_filter,
@@ -44,7 +43,7 @@ fun FilterAndSearchImageView(
 
         IconButton(
             onClick = {
-                clickEvent(SearchClicked(tabType = tabType))
+                clickEvent(MyPagerClickEvent.SearchClicked(tabType = tabType))
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_search,

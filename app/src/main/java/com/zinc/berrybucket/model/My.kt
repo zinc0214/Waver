@@ -90,10 +90,14 @@ enum class MyTabType(
     CHALLENGE(title = R.string.challengeTab)
 }
 
-sealed class MyClickEvent : IconClickEvent() {
-    object FilterClicked : MyClickEvent()
-    object CloseClicked : MyClickEvent()
+sealed class MyPagerClickEvent {
+    object FilterClicked : MyPagerClickEvent()
+    data class SearchClicked(val tabType: MyTabType) : MyPagerClickEvent()
+    data class ItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
+}
+sealed class MySearchClickEvent {
+    object CloseClicked : MySearchClickEvent()
+    data class ItemClicked(val info: UIBucketInfoSimple) : MySearchClickEvent()
+    data class SearchClicked(val tabType: MyTabType) : MySearchClickEvent()
 }
 
-data class ItemClicked(val info: UIBucketInfoSimple) : MyClickEvent()
-data class SearchClicked(val tabType: MyTabType) : MyClickEvent()
