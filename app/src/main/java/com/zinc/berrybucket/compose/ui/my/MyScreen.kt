@@ -259,7 +259,7 @@ private fun SearchBottomView(
 
     val coroutineScope = rememberCoroutineScope()
 
-    SearchLayer(
+    MySearchBottomScreen(
         currentTabType = tab,
         clickEvent = {
             when (it) {

@@ -32,7 +32,7 @@ import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.common.models.Category
 
 @Composable
-fun SearchLayer(
+fun MySearchBottomScreen(
     currentTabType: MyTabType,
     clickEvent: (MyClickEvent) -> Unit,
     searchWord: (MyTabType, String) -> Unit,
