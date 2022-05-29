@@ -4,111 +4,139 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.DropdownMenu
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.ui.common.ProfileView
 import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
 @Composable
 fun OpenDetailLayer(
-    detailInfo: DetailInfo,
-    clickEvent: (DetailClickEvent) -> Unit,
+    detailId: String,
+    backPress: () -> Unit
 ) {
 
-    val listScrollState = rememberLazyListState()
-    val titlePosition = if (detailInfo.imageInfo == null) 1 else 2
-    val flatButtonIndex = flatButtonIndex(detailInfo)
-    val isScrollEnd = listScrollState.firstVisibleItemIndex >= flatButtonIndex - 2
-    val originIsScrollEnd = remember { mutableStateOf(false) }
-    val isScrollable = listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
+    val viewModel: DetailViewModel = hiltViewModel()
+    viewModel.getBucketDetail("open")
+    val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
 
-    if (isScrollEnd != originIsScrollEnd.value) {
-        originIsScrollEnd.value = isScrollEnd
-    }
 
-    BaseTheme {
-        Scaffold {
-            Column(
-                modifier = Modifier.fillMaxHeight()
-            ) {
+    vmDetailInfo?.let { detailInfo ->
 
-                DetailTopAppBar(
-                    listState = listScrollState,
-                    titlePosition = titlePosition,
-                    title = detailInfo.descInfo.title,
-                    clickEvent = clickEvent
-                )
+        val listScrollState = rememberLazyListState()
+        val titlePosition = if (detailInfo.imageInfo == null) 1 else 2
+        val flatButtonIndex = flatButtonIndex(detailInfo)
+        val isScrollEnd = listScrollState.firstVisibleItemIndex >= flatButtonIndex - 2
+        val originIsScrollEnd = remember { mutableStateOf(false) }
+        val isScrollable =
+            listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
 
-                ConstraintLayout(
+        if (isScrollEnd != originIsScrollEnd.value) {
+            originIsScrollEnd.value = isScrollEnd
+        }
+
+        BaseTheme {
+            Scaffold { _ ->
+                Column(
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    val (contentView, floatingButtonView, editView) = createRefs()
 
-                    ContentView(
+                    DetailTopAppBar(
                         listState = listScrollState,
-                        detailInfo = detailInfo,
-                        clickEvent = clickEvent,
-                        flatButtonIndex = flatButtonIndex,
-                        isScrollable = isScrollable,
-                        modifier = Modifier.constrainAs(contentView) {
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            top.linkTo(parent.top)
-                            if (originIsScrollEnd.value) {
-                                bottom.linkTo(editView.top)
-                            } else {
-                                bottom.linkTo(parent.bottom)
+                        titlePosition = titlePosition,
+                        title = detailInfo.descInfo.title,
+                        clickEvent = {
+                            when (it) {
+                                DetailAppBarClickEvent.CloseClicked -> {
+                                    backPress()
+                                }
+                                DetailAppBarClickEvent.MoreOptionClicked -> TODO()
                             }
-                        }.fillMaxHeight())
+                        }
+                    )
 
+                    ConstraintLayout(
+                        modifier = Modifier.fillMaxHeight()
+                    ) {
+                        val (contentView, floatingButtonView, editView) = createRefs()
 
-                    if ((listScrollState.visibleLastIndex() < flatButtonIndex) && !isScrollEnd) {
-                        DetailSuccessButtonView(
+                        ContentView(
+                            listState = listScrollState,
+                            detailInfo = detailInfo,
+                            clickEvent = {
+                                when (it) {
+                                    is CommentLongClicked -> TODO()
+                                    DetailClickEvent.SuccessClicked -> TODO()
+                                }
+                            },
+                            flatButtonIndex = flatButtonIndex,
+                            isScrollable = isScrollable,
                             modifier = Modifier
-                                .constrainAs(floatingButtonView) {
+                                .constrainAs(contentView) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
+                                    top.linkTo(parent.top)
                                     if (originIsScrollEnd.value) {
                                         bottom.linkTo(editView.top)
                                     } else {
                                         bottom.linkTo(parent.bottom)
                                     }
                                 }
-                                .padding(bottom = 30.dp),
-                            successClicked = {
-                                clickEvent.invoke(DetailClickEvent.SuccessClicked)
-                            },
-                            successButtonInfo = SuccessButtonInfo(
-                                goalCount = detailInfo.descInfo.goalCount,
-                                userCount = detailInfo.descInfo.userCount
-                            )
+                                .fillMaxHeight()
                         )
-                    }
 
-                    if (originIsScrollEnd.value || !isScrollable) {
-                        CommentEditTextView(
-                            modifier = Modifier
-                                .constrainAs(editView) {
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                    bottom.linkTo(parent.bottom)
+
+                        if ((listScrollState.visibleLastIndex() < flatButtonIndex) && !isScrollEnd) {
+                            DetailSuccessButtonView(
+                                modifier = Modifier
+                                    .constrainAs(floatingButtonView) {
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                        if (originIsScrollEnd.value) {
+                                            bottom.linkTo(editView.top)
+                                        } else {
+                                            bottom.linkTo(parent.bottom)
+                                        }
+                                    }
+                                    .padding(bottom = 30.dp),
+                                successClicked = {
+                                    // TODO : viewModel Scuccess
                                 },
-                            onImeAction = {})
+                                successButtonInfo = SuccessButtonInfo(
+                                    goalCount = detailInfo.descInfo.goalCount,
+                                    userCount = detailInfo.descInfo.userCount
+                                )
+                            )
+                        }
+
+                        if (originIsScrollEnd.value || !isScrollable) {
+                            CommentEditTextView(
+                                modifier = Modifier
+                                    .constrainAs(editView) {
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                        bottom.linkTo(parent.bottom)
+                                    },
+                                onImeAction = {})
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 

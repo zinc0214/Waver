@@ -83,9 +83,12 @@ data class DetailInfo(
     val commentInfo: CommentInfo? = null
 )
 
+sealed class DetailAppBarClickEvent {
+    object MoreOptionClicked : DetailAppBarClickEvent()
+    object CloseClicked : DetailAppBarClickEvent()
+}
+
 sealed class DetailClickEvent {
-    object MoreOptionClicked : DetailClickEvent()
-    object CloseClicked : DetailClickEvent()
     object SuccessClicked : DetailClickEvent()
 }
 

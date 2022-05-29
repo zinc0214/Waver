@@ -16,7 +16,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.IconButton
-import com.zinc.berrybucket.model.DetailClickEvent
+import com.zinc.berrybucket.model.DetailAppBarClickEvent
 
 
 @Composable
@@ -24,7 +24,7 @@ fun DetailTopAppBar(
     listState: LazyListState,
     titlePosition: Int,
     title: String,
-    clickEvent: (DetailClickEvent) -> Unit,
+    clickEvent: (DetailAppBarClickEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -48,7 +48,7 @@ fun DetailTopAppBar(
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-            onClick = { clickEvent(DetailClickEvent.CloseClicked) }
+            onClick = { clickEvent(DetailAppBarClickEvent.CloseClicked) }
         )
 
         if (isTitleScrolled) {
@@ -79,7 +79,7 @@ fun DetailTopAppBar(
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-            onClick = { clickEvent(DetailClickEvent.MoreOptionClicked) }
+            onClick = { clickEvent(DetailAppBarClickEvent.MoreOptionClicked) }
         )
     }
 }

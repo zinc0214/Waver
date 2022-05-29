@@ -26,6 +26,7 @@ import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.util.rememberScrollContext
+import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
@@ -50,7 +51,7 @@ fun CloseDetailLayer(
         val titlePosition = 0
 
         BaseTheme {
-            Scaffold {
+            Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
                     MoreMenuPopupView(optionPopUpShowed)
@@ -71,17 +72,11 @@ fun CloseDetailLayer(
                         title = detailInfo.descInfo.title,
                         clickEvent = {
                             when (it) {
-                                DetailClickEvent.CloseClicked -> {
+                                DetailAppBarClickEvent.CloseClicked -> {
                                     backPress()
                                 }
-                                DetailClickEvent.MoreOptionClicked -> {
+                                DetailAppBarClickEvent.MoreOptionClicked -> {
                                     optionPopUpShowed.value = true
-                                }
-                                DetailClickEvent.SuccessClicked -> {
-                                    // TODO
-                                }
-                                else -> {
-                                    // Do Nothing
                                 }
                             }
                         }

@@ -55,25 +55,25 @@ class MyOpenBucketDetailActivity : AppCompatActivity() {
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
-                OpenDetailLayer(
-                    detailInfo = detailInfo,
-                    clickEvent = {
-                        when (it) {
-                            DetailClickEvent.CloseClicked -> {
-                                finish()
-                            }
-                            DetailClickEvent.MoreOptionClicked -> {
-                                showDetailOptionPopup()
-                            }
-                            DetailClickEvent.SuccessClicked -> {
-                                // TODO
-                            }
-                            is CommentLongClicked -> {
-                                showCommentOptionDialog(it.commentId)
-                            }
-                        }
-                    }
-                )
+//                OpenDetailLayer(
+//                    detailInfo = detailInfo,
+//                    clickEvent = {
+//                        when (it) {
+//                            DetailClickEvent.CloseClicked -> {
+//                                finish()
+//                            }
+//                            DetailClickEvent.MoreOptionClicked -> {
+//                                showDetailOptionPopup()
+//                            }
+//                            DetailClickEvent.SuccessClicked -> {
+//                                // TODO
+//                            }
+//                            is CommentLongClicked -> {
+//                                showCommentOptionDialog(it.commentId)
+//                            }
+//                        }
+//                    }
+//                )
             }
         }
     }

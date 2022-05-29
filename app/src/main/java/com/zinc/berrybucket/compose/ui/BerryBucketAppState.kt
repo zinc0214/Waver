@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.compose.ui
 
 import android.content.res.Resources
-import android.util.Log
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
@@ -78,7 +77,7 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToOpenBucketDetail(bucketId: Long, from: NavBackStackEntry) {
+    fun navigateToOpenBucketDetail(bucketId: String, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/$bucketId")

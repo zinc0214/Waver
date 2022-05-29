@@ -11,6 +11,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.zinc.berrybucket.compose.ui.detail.CloseDetailLayer
+import com.zinc.berrybucket.compose.ui.detail.OpenDetailLayer
 import com.zinc.berrybucket.compose.ui.home.HomeBottomBar
 import com.zinc.berrybucket.compose.ui.home.HomeSections
 import com.zinc.berrybucket.compose.ui.home.addHomeGraph
@@ -84,11 +85,16 @@ fun BerryBucketApp() {
                                                 selected.bucketInfo.id,
                                                 nav
                                             )
+                                        } else {
+                                            appState.navigateToOpenBucketDetail(
+                                                selected.bucketInfo.id,
+                                                nav
+                                            )
                                         }
                                     }
                                 }
                             },
-                            bottomSheetItemClicekd = {
+                            bottomSheetItemClicked = {
                                 currentBottomSheet = it
                                 isNeedToBottomSheetOpen.invoke(true)
                             },
@@ -116,22 +122,22 @@ sealed class BucketSelected {
 
 private fun NavGraphBuilder.berryBucketNavGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
-    bottomSheetItemClicekd: (BottomSheetScreenType) -> Unit,
+    bottomSheetItemClicked: (BottomSheetScreenType) -> Unit,
     backPress: () -> Unit
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
         startDestination = HomeSections.MY.route
     ) {
-        addHomeGraph(onBucketSelected, bottomSheetItemClicekd)
+        addHomeGraph(onBucketSelected, bottomSheetItemClicked)
     }
     composable(
         "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
         arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) { type = NavType.LongType })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
-        val snackId = arguments.getLong(MainDestinations.OPEN_BUCKET_DETAIL)
-        //   OpenDetailLayer(snackId, upPress)
+        val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
+        OpenDetailLayer(detailId, backPress)
     }
     composable(
         "${MainDestinations.CLOSE_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
