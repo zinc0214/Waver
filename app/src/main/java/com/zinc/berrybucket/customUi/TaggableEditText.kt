@@ -8,9 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import androidx.lifecycle.LifecycleOwner
 import com.zinc.berrybucket.databinding.LayoutTaggableEdittextBinding
 import com.zinc.berrybucket.model.CommentTagInfo
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
+import com.zinc.berrybucket.util.nonNullObserve
 import com.zinc.berrybucket.util.onTextChanged
 import com.zinc.berrybucket.util.setVisible
 
@@ -25,6 +28,7 @@ class TaggableEditText @JvmOverloads constructor(
     private lateinit var updateValidTaggableList: (List<CommentTagInfo>) -> Unit
     private lateinit var commentSendButtonClicked: () -> Unit
     private lateinit var viewModel: DetailViewModel
+    private lateinit var lifecycleOwner: LifecycleOwner
 
 
     init {
@@ -34,17 +38,35 @@ class TaggableEditText @JvmOverloads constructor(
 
     fun setUpView(
         viewModel: DetailViewModel,
+        lifecycleOwner: LifecycleOwner,
         originCommentTaggableList: List<CommentTagInfo>,
         updateValidTaggableList: ((List<CommentTagInfo>) -> Unit),
         commentSendButtonClicked: () -> Unit,
     ) {
         this.viewModel = viewModel
+        this.lifecycleOwner = lifecycleOwner
         this.originCommentTaggableList = originCommentTaggableList
         this.updateValidTaggableList = updateValidTaggableList
         this.commentSendButtonClicked = commentSendButtonClicked
 
         Log.e("ayhan", "originCommentTaggableList : $originCommentTaggableList")
         setUpViews()
+        setUpObservers()
+    }
+
+    private fun setUpObservers() {
+
+        viewModel.commentEditString.nonNullObserve(lifecycleOwner) {
+            changeEditText(it)
+            val getLastIndex = binding.commentEditTextView.text.length
+            binding.commentEditTextView.setSelection(getLastIndex)
+        }
+
+        viewModel.commentTagClicked.nonNullObserve(lifecycleOwner) {
+            val editText = binding.commentEditTextView.text.toString()
+            val currentBlock = getCurrentEditTextBlock(editText)
+            viewModel.addCommentTaggedItem(it, currentBlock.startIndex, currentBlock.endIndex)
+        }
     }
 
     private fun setUpViews() {
@@ -93,7 +115,7 @@ class TaggableEditText @JvmOverloads constructor(
     }
 
     // 현재 EditText 의 커서가 있는 블록값 확인
-    private fun getCurrentEditTextBlock(currentEditText: String): CurrentBlock {
+    private fun getCurrentEditTextBlock(currentEditText: String): MyOpenBucketDetailActivity.CurrentBlock {
         val splitText = currentEditText.split(" ")
         var splitLength = 0
         var startIndex = 0
@@ -101,14 +123,18 @@ class TaggableEditText @JvmOverloads constructor(
         splitText.forEach {
             splitLength += it.length + 1
             if (splitLength > currentEditTextFocus) {
-                return CurrentBlock(it, startIndex, startIndex + it.length)
+                return MyOpenBucketDetailActivity.CurrentBlock(
+                    it,
+                    startIndex,
+                    startIndex + it.length
+                )
             }
             startIndex += it.length + 1
         }
-        return CurrentBlock(currentEditText, 0, 0)
+        return MyOpenBucketDetailActivity.CurrentBlock(currentEditText, 0, 0)
     }
 
-    fun changeEditText(currentEditText: String) {
+    private fun changeEditText(currentEditText: String) {
         val changedColorText = changeTaggedTextColor(currentEditText)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             binding.commentEditTextView.setText(

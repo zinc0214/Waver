@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.compose.ui.detail
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -15,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -32,8 +32,7 @@ import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
 @Composable
 fun OpenDetailLayer(
-    detailId: String,
-    backPress: () -> Unit
+    detailId: String, backPress: () -> Unit
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
@@ -42,13 +41,10 @@ fun OpenDetailLayer(
 
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
     val originCommentTaggableList by viewModel.originCommentTaggableList.observeAsState()
-    val commentEditString by viewModel.commentEditString.observeAsState()
 
     val validTaggableList = remember {
         mutableListOf<CommentTagInfo>()
     }
-    val currentEditText = ""
-    val currentEditTextEndFocus = 0
 
     vmDetailInfo?.let { detailInfo ->
 
@@ -61,9 +57,11 @@ fun OpenDetailLayer(
             listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
 
         val optionPopUpShowed = remember { mutableStateOf(false) }
+        val isKeyBoardOpend = remember { mutableStateOf(true) }
         val interactionSource = remember { MutableInteractionSource() }
         val isKeyboardStatus by keyboardAsState()
         val focusManager = LocalFocusManager.current
+        val lifecycleOwner = LocalLifecycleOwner.current
 
         if (isScrollEnd != originIsScrollEnd.value) {
             originIsScrollEnd.value = isScrollEnd
@@ -71,6 +69,9 @@ fun OpenDetailLayer(
 
         if (isKeyboardStatus == Keyboard.Closed) {
             focusManager.clearFocus()
+            isKeyBoardOpend.value = false
+        } else {
+            isKeyBoardOpend.value = true
         }
 
         BaseTheme {
@@ -84,15 +85,12 @@ fun OpenDetailLayer(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .clickable(
-                            interactionSource = interactionSource,
+                        .clickable(interactionSource = interactionSource,
                             indication = null,
-                            onClick = { optionPopUpShowed.value = false }
-                        )
+                            onClick = { optionPopUpShowed.value = false })
                 ) {
 
-                    DetailTopAppBar(
-                        listState = listScrollState,
+                    DetailTopAppBar(listState = listScrollState,
                         titlePosition = titlePosition,
                         title = detailInfo.descInfo.title,
                         clickEvent = {
@@ -104,16 +102,14 @@ fun OpenDetailLayer(
                                     optionPopUpShowed.value = true
                                 }
                             }
-                        }
-                    )
+                        })
 
                     ConstraintLayout(
                         modifier = Modifier.fillMaxHeight()
                     ) {
                         val (contentView, floatingButtonView, editView) = createRefs()
 
-                        ContentView(
-                            listState = listScrollState,
+                        ContentView(listState = listScrollState,
                             detailInfo = detailInfo,
                             clickEvent = {
                                 when (it) {
@@ -134,84 +130,64 @@ fun OpenDetailLayer(
                                         bottom.linkTo(parent.bottom)
                                     }
                                 }
-                                .fillMaxHeight()
-                        )
+                                .fillMaxHeight())
 
 
                         if ((listScrollState.visibleLastIndex() < flatButtonIndex) && !isScrollEnd) {
-                            DetailSuccessButtonView(
-                                modifier = Modifier
-                                    .constrainAs(floatingButtonView) {
-                                        start.linkTo(parent.start)
-                                        end.linkTo(parent.end)
-                                        if (originIsScrollEnd.value) {
-                                            bottom.linkTo(editView.top)
-                                        } else {
-                                            bottom.linkTo(parent.bottom)
-                                        }
+                            DetailSuccessButtonView(modifier = Modifier
+                                .constrainAs(
+                                    floatingButtonView
+                                ) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    if (originIsScrollEnd.value) {
+                                        bottom.linkTo(editView.top)
+                                    } else {
+                                        bottom.linkTo(parent.bottom)
                                     }
-                                    .padding(bottom = 30.dp),
-                                successClicked = {
-                                    // TODO : viewModel Scuccess
-                                },
-                                successButtonInfo = SuccessButtonInfo(
-                                    goalCount = detailInfo.descInfo.goalCount,
-                                    userCount = detailInfo.descInfo.userCount
-                                )
+                                }
+                                .padding(bottom = 30.dp), successClicked = {
+                                // TODO : viewModel Scuccess
+                            }, successButtonInfo = SuccessButtonInfo(
+                                goalCount = detailInfo.descInfo.goalCount,
+                                userCount = detailInfo.descInfo.userCount
+                            )
                             )
                         }
 
                         if (originIsScrollEnd.value || !isScrollable) {
-                            AndroidView(
-                                modifier = Modifier
-                                    .constrainAs(editView) {
-                                        start.linkTo(parent.start)
-                                        end.linkTo(parent.end)
-                                        bottom.linkTo(parent.bottom)
-                                    }
-                                    .height(68.dp)
-                                    .fillMaxWidth(),
-                                factory = {
-                                    TaggableEditText(it).apply {
-                                        setUpView(
-                                            viewModel = viewModel,
-                                            originCommentTaggableList = originCommentTaggableList
-                                                ?: emptyList(),
-                                            updateValidTaggableList = { validList ->
-                                                validTaggableList.clear()
-                                                validTaggableList.addAll(validList)
-                                                Log.e(
-                                                    "ayhan",
-                                                    "validTaggableList :$validTaggableList"
-                                                )
-                                            },
-                                            commentSendButtonClicked = {
-                                                focusManager.clearFocus()
-                                            }
-                                        )
-                                        changeEditText(commentEditString ?: "")
-                                    }
-                                })
+                            AndroidView(modifier = Modifier
+                                .constrainAs(editView) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
+                                }
+                                .height(if (isKeyBoardOpend.value) 52.dp else 68.dp)
+                                .fillMaxWidth(), factory = {
+                                TaggableEditText(it).apply {
+                                    setUpView(
+                                        viewModel = viewModel,
+                                        lifecycleOwner = lifecycleOwner,
+                                        originCommentTaggableList = originCommentTaggableList
+                                            ?: emptyList(),
+                                        updateValidTaggableList = { validList ->
+                                            validTaggableList.clear()
+                                            validTaggableList.addAll(validList)
+                                        },
+                                        commentSendButtonClicked = {
+                                            focusManager.clearFocus()
+                                        })
+                                }
+                            })
                         }
                     }
                 }
 
                 // 유효한 태그가 있을 때만 노출
-                if (validTaggableList.isNotEmpty()) {
-                    DetailCommenterTagDropDownView(
-                        modifier = Modifier
-                            .padding(vertical = 8.dp, horizontal = 16.dp),
-                        commentTaggableList = validTaggableList,
+                if (validTaggableList.isNotEmpty() && isKeyBoardOpend.value) {
+                    DetailCommenterTagDropDownView(commentTaggableList = validTaggableList,
                         tagClicked = {
-                            val currentBlock = getCurrentEditTextBlock(
-                                currentEditText,
-                                currentEditTextEndFocus
-                            )
-                            viewModel.addCommentTaggedItem(
-                                it,
-                                currentBlock.startIndex,
-                                currentBlock.endIndex
-                            )
+                            viewModel.taggedClicked(it)
                         })
                 }
             }
@@ -231,8 +207,7 @@ private fun ContentView(
 ) {
 
     LazyColumn(
-        modifier = modifier,
-        state = listState
+        modifier = modifier, state = listState
     ) {
         detailInfo.imageInfo?.let {
             item {
@@ -256,12 +231,8 @@ private fun ContentView(
             if (detailInfo.memoInfo != null) {
                 DetailMemoLayer(
                     modifier = Modifier.padding(
-                        top = 24.dp,
-                        start = 28.dp,
-                        end = 28.dp,
-                        bottom = 56.dp
-                    ),
-                    memo = detailInfo.memoInfo.memo
+                        top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
+                    ), memo = detailInfo.memoInfo.memo
                 )
             } else {
                 Spacer(modifier = Modifier.height(56.dp))
@@ -275,8 +246,7 @@ private fun ContentView(
                 DetailSuccessButtonView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
-                    },
-                    successButtonInfo = SuccessButtonInfo(
+                    }, successButtonInfo = SuccessButtonInfo(
                         goalCount = detailInfo.descInfo.goalCount,
                         userCount = detailInfo.descInfo.userCount
                     )
@@ -290,11 +260,9 @@ private fun ContentView(
 
         detailInfo.commentInfo?.let {
             item {
-                DetailCommentLayer(commentInfo = detailInfo.commentInfo,
-                    commentLongClicked = {
-                        clickEvent.invoke(CommentLongClicked(it))
-                    }
-                )
+                DetailCommentLayer(commentInfo = detailInfo.commentInfo, commentLongClicked = {
+                    clickEvent.invoke(CommentLongClicked(it))
+                })
             }
         }
     }
@@ -341,52 +309,3 @@ private fun totalItemCount(detailInfo: DetailInfo): Int {
     }
     return count
 }
-
-// 현재 커서가 위치한 EditText 블록에서 태그 가능한 리스트 확인
-private fun getCurrentBlockTaggableList(
-    commentTaggableList: List<CommentTagInfo>,
-    currentEditText: String,
-    currentEditTextFocus: Int
-): List<CommentTagInfo> {
-    val currentCursorBlock =
-        getCurrentEditTextBlock(currentEditText, currentEditTextFocus).currentBlockText
-    if (currentCursorBlock.isEmpty()) return emptyList()
-
-    if (currentCursorBlock.isNotBlank() && currentCursorBlock.first() == '@') {
-        val originString = currentCursorBlock.drop(1)
-        return if (originString.isNotBlank()) {
-            commentTaggableList.filter { commentInfo ->
-                commentInfo.nickName.contains(
-                    originString
-                )
-            }
-        } else {
-            commentTaggableList
-        }
-    }
-    return emptyList()
-}
-
-// 현재 EditText 의 커서가 있는 블록값 확인
-private fun getCurrentEditTextBlock(
-    currentEditText: String,
-    currentEditTextFocus: Int
-): CurrentBlock {
-    val splitText = currentEditText.split(" ")
-    var splitLength = 0
-    var startIndex = 0
-    splitText.forEach {
-        splitLength += it.length + 1
-        if (splitLength > currentEditTextFocus) {
-            return CurrentBlock(it, startIndex, startIndex + it.length)
-        }
-        startIndex += it.length + 1
-    }
-    return CurrentBlock(currentEditText, 0, 0)
-}
-
-data class CurrentBlock(
-    val currentBlockText: String,
-    val startIndex: Int,
-    val endIndex: Int
-)

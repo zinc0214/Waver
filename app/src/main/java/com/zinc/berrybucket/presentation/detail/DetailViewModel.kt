@@ -29,6 +29,9 @@ class DetailViewModel @Inject constructor(
     private val _commentEditString = MutableLiveData<String>()
     val commentEditString: LiveData<String> = _commentEditString
 
+    private val _commentTagClicked = MutableLiveData<CommentTagInfo>()
+    val commentTagClicked: LiveData<CommentTagInfo> = _commentTagClicked
+
     private var commentEditOriginString = ""
 
 
@@ -53,6 +56,9 @@ class DetailViewModel @Inject constructor(
         _originCommentTaggableList.value = tagableNickName
     }
 
+    fun taggedClicked(commentTagInfo: CommentTagInfo) {
+        _commentTagClicked.value = commentTagInfo
+    }
 
     fun addCommentTaggedItem(
         commentTagInfo: CommentTagInfo,

@@ -13,9 +13,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.ui.detail.OpenDetailLayer
 import com.zinc.berrybucket.databinding.ActivityMyOpenBucketDetailBinding
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.DetailInfo
+import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.presentation.detail.CommentOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailOptionDialogFragment
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
