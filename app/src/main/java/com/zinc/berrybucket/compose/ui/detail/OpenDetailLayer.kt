@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.compose.ui.detail
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -13,14 +14,19 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.ui.common.ProfileView
+import com.zinc.berrybucket.compose.util.Keyboard
+import com.zinc.berrybucket.compose.util.keyboardAsState
+import com.zinc.berrybucket.customUi.TaggableEditText
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
@@ -32,7 +38,17 @@ fun OpenDetailLayer(
 
     val viewModel: DetailViewModel = hiltViewModel()
     viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
+    viewModel.getCommentTaggableList()
+
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
+    val originCommentTaggableList by viewModel.originCommentTaggableList.observeAsState()
+    val commentEditString by viewModel.commentEditString.observeAsState()
+
+    val validTaggableList = remember {
+        mutableListOf<CommentTagInfo>()
+    }
+    val currentEditText = ""
+    val currentEditTextEndFocus = 0
 
     vmDetailInfo?.let { detailInfo ->
 
@@ -46,12 +62,19 @@ fun OpenDetailLayer(
 
         val optionPopUpShowed = remember { mutableStateOf(false) }
         val interactionSource = remember { MutableInteractionSource() }
+        val isKeyboardStatus by keyboardAsState()
+        val focusManager = LocalFocusManager.current
 
         if (isScrollEnd != originIsScrollEnd.value) {
             originIsScrollEnd.value = isScrollEnd
         }
 
+        if (isKeyboardStatus == Keyboard.Closed) {
+            focusManager.clearFocus()
+        }
+
         BaseTheme {
+
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
@@ -139,21 +162,61 @@ fun OpenDetailLayer(
                         }
 
                         if (originIsScrollEnd.value || !isScrollable) {
-                            CommentEditTextView(
+                            AndroidView(
                                 modifier = Modifier
                                     .constrainAs(editView) {
                                         start.linkTo(parent.start)
                                         end.linkTo(parent.end)
                                         bottom.linkTo(parent.bottom)
-                                    },
-                                onImeAction = {})
+                                    }
+                                    .height(68.dp)
+                                    .fillMaxWidth(),
+                                factory = {
+                                    TaggableEditText(it).apply {
+                                        setUpView(
+                                            viewModel = viewModel,
+                                            originCommentTaggableList = originCommentTaggableList
+                                                ?: emptyList(),
+                                            updateValidTaggableList = { validList ->
+                                                validTaggableList.clear()
+                                                validTaggableList.addAll(validList)
+                                                Log.e(
+                                                    "ayhan",
+                                                    "validTaggableList :$validTaggableList"
+                                                )
+                                            },
+                                            commentSendButtonClicked = {
+                                                focusManager.clearFocus()
+                                            }
+                                        )
+                                        changeEditText(commentEditString ?: "")
+                                    }
+                                })
                         }
                     }
+                }
+
+                // 유효한 태그가 있을 때만 노출
+                if (validTaggableList.isNotEmpty()) {
+                    DetailCommenterTagDropDownView(
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 16.dp),
+                        commentTaggableList = validTaggableList,
+                        tagClicked = {
+                            val currentBlock = getCurrentEditTextBlock(
+                                currentEditText,
+                                currentEditTextEndFocus
+                            )
+                            viewModel.addCommentTaggedItem(
+                                it,
+                                currentBlock.startIndex,
+                                currentBlock.endIndex
+                            )
+                        })
                 }
             }
         }
     }
-
 }
 
 
@@ -278,3 +341,52 @@ private fun totalItemCount(detailInfo: DetailInfo): Int {
     }
     return count
 }
+
+// 현재 커서가 위치한 EditText 블록에서 태그 가능한 리스트 확인
+private fun getCurrentBlockTaggableList(
+    commentTaggableList: List<CommentTagInfo>,
+    currentEditText: String,
+    currentEditTextFocus: Int
+): List<CommentTagInfo> {
+    val currentCursorBlock =
+        getCurrentEditTextBlock(currentEditText, currentEditTextFocus).currentBlockText
+    if (currentCursorBlock.isEmpty()) return emptyList()
+
+    if (currentCursorBlock.isNotBlank() && currentCursorBlock.first() == '@') {
+        val originString = currentCursorBlock.drop(1)
+        return if (originString.isNotBlank()) {
+            commentTaggableList.filter { commentInfo ->
+                commentInfo.nickName.contains(
+                    originString
+                )
+            }
+        } else {
+            commentTaggableList
+        }
+    }
+    return emptyList()
+}
+
+// 현재 EditText 의 커서가 있는 블록값 확인
+private fun getCurrentEditTextBlock(
+    currentEditText: String,
+    currentEditTextFocus: Int
+): CurrentBlock {
+    val splitText = currentEditText.split(" ")
+    var splitLength = 0
+    var startIndex = 0
+    splitText.forEach {
+        splitLength += it.length + 1
+        if (splitLength > currentEditTextFocus) {
+            return CurrentBlock(it, startIndex, startIndex + it.length)
+        }
+        startIndex += it.length + 1
+    }
+    return CurrentBlock(currentEditText, 0, 0)
+}
+
+data class CurrentBlock(
+    val currentBlockText: String,
+    val startIndex: Int,
+    val endIndex: Int
+)

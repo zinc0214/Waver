@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,7 +31,7 @@ import com.zinc.berrybucket.compose.ui.BucketSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.ui.MyView
+import com.zinc.berrybucket.customUi.MyView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

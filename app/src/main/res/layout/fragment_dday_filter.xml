@@ -22,14 +22,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/showBucketList" />
 
-            <com.zinc.berrybucket.ui.TextAndSwitchView
+            <com.zinc.berrybucket.customUi.TextAndSwitchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 app:isOn="false"
                 app:text="@string/noDdayBucketList" />
 
-            <com.zinc.berrybucket.ui.TextAndSwitchView
+            <com.zinc.berrybucket.customUi.TextAndSwitchView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"

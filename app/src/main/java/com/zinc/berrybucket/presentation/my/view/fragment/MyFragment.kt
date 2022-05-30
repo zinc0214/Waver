@@ -13,7 +13,7 @@ import com.zinc.berrybucket.databinding.FragmentMyBinding
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.ui.MyTabCustom
+import com.zinc.berrybucket.customUi.MyTabCustom
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

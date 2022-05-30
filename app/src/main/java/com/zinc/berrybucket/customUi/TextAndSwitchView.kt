@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui
+package com.zinc.berrybucket.customUi
 
 import android.content.Context
 import android.content.res.TypedArray
@@ -13,7 +13,7 @@ class TextAndSwitchView @JvmOverloads constructor(
     val attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
-    lateinit var binding: WidgetTextAndSwitchBinding
+    private lateinit var binding: WidgetTextAndSwitchBinding
     var text: String? = ""
     var isOn = false
 

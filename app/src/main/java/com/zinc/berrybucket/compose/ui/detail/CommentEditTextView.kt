@@ -32,12 +32,15 @@ import com.zinc.berrybucket.compose.ui.common.IconButton
 import com.zinc.berrybucket.compose.ui.common.IconToggleButton
 import com.zinc.berrybucket.compose.util.Keyboard
 import com.zinc.berrybucket.compose.util.keyboardAsState
+import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.presentation.detail.DetailViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CommentEditTextView(
     modifier: Modifier,
-    onImeAction: (String) -> Unit
+    viewModel: DetailViewModel,
+    textChanged: (String, Int) -> Unit
 ) {
     val isKeyboardStatus by keyboardAsState()
     val hintText = stringResource(id = R.string.commentHintText)
@@ -92,17 +95,11 @@ fun CommentEditTextView(
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
-                onValueChange = { commentText = it },
+                onValueChange = {
+                    commentText = it
+                    textChanged(it.text, it.selection.end)
+                },
                 maxLines = 3,
-//                keyboardOptions = KeyboardOptions.Default.copy(
-//                    autoCorrect = true
-//                ),
-//                keyboardActions = KeyboardActions {
-//                    onImeAction(commentText.text)
-//                    keyboardController?.hide()
-//                    focusManager.clearFocus()
-//                    Log.e("ayahn", "action : onANy")
-//                },
                 decorationBox = { innerTextField ->
                     if (commentText.text.isBlank()) {
                         Text(text = hintText, color = Gray6, fontSize = 14.sp)
