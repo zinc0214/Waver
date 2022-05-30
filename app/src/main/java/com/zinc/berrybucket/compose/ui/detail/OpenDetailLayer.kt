@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.compose.theme.BaseTheme
 import com.zinc.berrybucket.compose.theme.Gray10
@@ -129,6 +130,7 @@ fun OpenDetailLayer(
                                     } else {
                                         bottom.linkTo(parent.bottom)
                                     }
+                                    height = Dimension.fillToConstraints
                                 }
                                 .fillMaxHeight())
 
