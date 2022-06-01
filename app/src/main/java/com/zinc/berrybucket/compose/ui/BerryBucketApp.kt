@@ -133,7 +133,9 @@ private fun NavGraphBuilder.berryBucketNavGraph(
     }
     composable(
         "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
-        arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) { type = NavType.LongType })
+        arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {
+            type = NavType.StringType
+        })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
