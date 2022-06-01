@@ -26,13 +26,10 @@ fun DetailCommentLayer(
     commentInfo: CommentInfo, commentLongClicked: (String) -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(top = 20.dp, bottom = 70.dp)
+        modifier = Modifier.padding(top = 20.dp)
     ) {
-        CommentLine()
-        CommentCountView(commentInfo.commentCount)
 
         if (commentInfo.commentCount > 0) {
-            Spacer(modifier = Modifier.height(28.dp))
             CommentListView(commentInfo.commenterList, commentLongClicked)
         } else {
             Spacer(modifier = Modifier.height(12.dp))
@@ -42,12 +39,12 @@ fun DetailCommentLayer(
 }
 
 @Composable
-private fun CommentLine() {
+fun CommentLine() {
     Divider(color = Gray3, thickness = 1.dp)
 }
 
 @Composable
-private fun CommentCountView(commentCount: Int) {
+fun CommentCountView(commentCount: Int) {
     Row(
         modifier = Modifier.padding(top = 28.dp, start = 20.dp)
     ) {
@@ -72,18 +69,26 @@ private fun CommentCountView(commentCount: Int) {
 
 @Composable
 private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (String) -> Unit) {
-    commentList.forEach { commenter ->
-        CommentDescView(commenter = commenter, commentLongClicked = commentLongClicked)
+    commentList.forEachIndexed { index, commenter ->
+        CommentDescView(
+            commenter = commenter,
+            isLastItem = commentList.lastIndex == index,
+            commentLongClicked = commentLongClicked
+        )
     }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CommentDescView(commenter: Commenter, commentLongClicked: (String) -> Unit) {
+private fun CommentDescView(
+    commenter: Commenter,
+    isLastItem: Boolean,
+    commentLongClicked: (String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 36.dp)
+            .padding(bottom = if (isLastItem) 140.dp else 36.dp)
             .combinedClickable(
                 onClick = { },
                 onLongClick = {

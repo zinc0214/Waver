@@ -29,3 +29,9 @@ fun rememberScrollContext(listState: LazyListState): ScrollContext {
     }
     return scrollContext
 }
+
+@Composable
+fun LazyListState.visibleLastIndex(): Int {
+    return if (layoutInfo.visibleItemsInfo.isEmpty()) 0
+    else layoutInfo.visibleItemsInfo.last().key.hashCode()
+}

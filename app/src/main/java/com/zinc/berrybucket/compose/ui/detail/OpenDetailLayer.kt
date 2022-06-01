@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.compose.ui.detail
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import com.zinc.berrybucket.compose.ui.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.compose.ui.common.ProfileView
 import com.zinc.berrybucket.compose.util.Keyboard
 import com.zinc.berrybucket.compose.util.keyboardAsState
+import com.zinc.berrybucket.compose.util.visibleLastIndex
 import com.zinc.berrybucket.customUi.TaggableEditText
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
@@ -49,34 +51,37 @@ fun OpenDetailLayer(
 
     vmDetailInfo?.let { detailInfo ->
 
+        // scroll 상태에 따른 버튼 상태
         val listScrollState = rememberLazyListState()
-        val titlePosition = if (detailInfo.imageInfo == null) 1 else 2
-        val flatButtonIndex = flatButtonIndex(detailInfo)
-        val isScrollEnd = listScrollState.firstVisibleItemIndex >= flatButtonIndex - 2
-        val originIsScrollEnd = remember { mutableStateOf(false) }
+        val titleIndex = if (detailInfo.imageInfo == null) 1 else 2 // 타이틀의 위치
+        val flatButtonIndex = flatButtonIndex(detailInfo) // 붙는 버튼의 위치
+        val visibleLastIndex = listScrollState.visibleLastIndex() // 현재 보여지는 마지막 아이템의 index
+        val isCommentViewShown =
+            visibleLastIndex > listScrollState.layoutInfo.totalItemsCount - 2 // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
         val isScrollable =
-            listScrollState.layoutInfo.visibleItemsInfo.size < totalItemCount(detailInfo)
+            if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
 
-        val optionPopUpShowed = remember { mutableStateOf(false) }
-        val isKeyBoardOpend = remember { mutableStateOf(true) }
-        val interactionSource = remember { MutableInteractionSource() }
+        // 팝업 노출 여부
+        val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
+
+        // 키보드 상태 확인
+        val isKeyBoardOpened = remember { mutableStateOf(true) } // 키보드 오픈 상태 확인
         val isKeyboardStatus by keyboardAsState()
         val focusManager = LocalFocusManager.current
-        val lifecycleOwner = LocalLifecycleOwner.current
-
-        if (isScrollEnd != originIsScrollEnd.value) {
-            originIsScrollEnd.value = isScrollEnd
-        }
-
         if (isKeyboardStatus == Keyboard.Closed) {
             focusManager.clearFocus()
-            isKeyBoardOpend.value = false
+            isKeyBoardOpened.value = false
         } else {
-            isKeyBoardOpend.value = true
+            isKeyBoardOpened.value = true
         }
 
-        BaseTheme {
+        // 전체 뷰 clickable 인데, 리플 효과 제거를 위해 사용
+        val interactionSource = remember { MutableInteractionSource() }
 
+        // ComposeView 에서 observer 사용을 위해
+        val lifecycleOwner = LocalLifecycleOwner.current
+
+        BaseTheme {
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
@@ -91,8 +96,19 @@ fun OpenDetailLayer(
                             onClick = { optionPopUpShowed.value = false })
                 ) {
 
-                    DetailTopAppBar(listState = listScrollState,
-                        titlePosition = titlePosition,
+                    if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
+                        Log.e(
+                            "ayhan",
+                            "last item : ${listScrollState.layoutInfo.visibleItemsInfo.last()}, " +
+                                    "${listScrollState.layoutInfo.visibleItemsInfo.last().key}," +
+                                    "${listScrollState.layoutInfo.visibleItemsInfo.last().key.hashCode()}"
+                        )
+                    }
+
+
+                    DetailTopAppBar(
+                        listState = listScrollState,
+                        titlePosition = titleIndex,
                         title = detailInfo.descInfo.title,
                         clickEvent = {
                             when (it) {
@@ -119,56 +135,54 @@ fun OpenDetailLayer(
                                 }
                             },
                             flatButtonIndex = flatButtonIndex,
-                            isScrollable = isScrollable,
+                            isCommentViewShown = isCommentViewShown,
                             modifier = Modifier
                                 .constrainAs(contentView) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                     top.linkTo(parent.top)
-                                    if (originIsScrollEnd.value) {
-                                        bottom.linkTo(editView.top)
-                                    } else {
-                                        bottom.linkTo(parent.bottom)
-                                    }
+                                    bottom.linkTo(parent.bottom)
                                     height = Dimension.fillToConstraints
-                                }
-                                .fillMaxHeight())
+                                })
 
-
-                        if ((listScrollState.visibleLastIndex() < flatButtonIndex) && !isScrollEnd) {
-                            DetailSuccessButtonView(modifier = Modifier
-                                .constrainAs(
-                                    floatingButtonView
-                                ) {
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                    if (originIsScrollEnd.value) {
-                                        bottom.linkTo(editView.top)
-                                    } else {
-                                        bottom.linkTo(parent.bottom)
+                        if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
+                            // 플로팅 완료 버튼
+                            if ((listScrollState.layoutInfo.visibleItemsInfo.last().key.hashCode() < flatButtonIndex)) {
+                                DetailSuccessButtonView(modifier = Modifier
+                                    .constrainAs(
+                                        floatingButtonView
+                                    ) {
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                        if (isCommentViewShown) {
+                                            bottom.linkTo(editView.top)
+                                        } else {
+                                            bottom.linkTo(parent.bottom)
+                                        }
                                     }
-                                }
-                                .padding(bottom = 30.dp), successClicked = {
-                                // TODO : viewModel Scuccess
-                            }, successButtonInfo = SuccessButtonInfo(
-                                goalCount = detailInfo.descInfo.goalCount,
-                                userCount = detailInfo.descInfo.userCount
-                            )
-                            )
+                                    .padding(bottom = 30.dp), successClicked = {
+                                    // TODO : viewModel Scuccess
+                                }, successButtonInfo = SuccessButtonInfo(
+                                    goalCount = detailInfo.descInfo.goalCount,
+                                    userCount = detailInfo.descInfo.userCount
+                                )
+                                )
+                            }
                         }
 
-                        if (originIsScrollEnd.value || !isScrollable) {
+
+                        // 최하단 EditTextView
+                        if (isCommentViewShown || !isScrollable) {
                             AndroidView(modifier = Modifier
                                 .constrainAs(editView) {
                                     start.linkTo(parent.start)
                                     end.linkTo(parent.end)
                                     bottom.linkTo(parent.bottom)
                                 }
-                                .height(if (isKeyBoardOpend.value) 52.dp else 68.dp)
+                                .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
                                 .fillMaxWidth(), factory = {
                                 TaggableEditText(it).apply {
-                                    setUpView(
-                                        viewModel = viewModel,
+                                    setUpView(viewModel = viewModel,
                                         lifecycleOwner = lifecycleOwner,
                                         originCommentTaggableList = originCommentTaggableList
                                             ?: emptyList(),
@@ -186,8 +200,9 @@ fun OpenDetailLayer(
                 }
 
                 // 유효한 태그가 있을 때만 노출
-                if (validTaggableList.isNotEmpty() && isKeyBoardOpend.value) {
-                    DetailCommenterTagDropDownView(commentTaggableList = validTaggableList,
+                if (validTaggableList.isNotEmpty() && isKeyBoardOpened.value) {
+                    DetailCommenterTagDropDownView(
+                        commentTaggableList = validTaggableList,
                         tagClicked = {
                             viewModel.taggedClicked(it)
                         })
@@ -204,7 +219,7 @@ private fun ContentView(
     listState: LazyListState,
     detailInfo: DetailInfo,
     flatButtonIndex: Int,
-    isScrollable: Boolean,
+    isCommentViewShown: Boolean,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
 
@@ -233,7 +248,7 @@ private fun ContentView(
             if (detailInfo.memoInfo != null) {
                 DetailMemoLayer(
                     modifier = Modifier.padding(
-                        top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
+                        top = 24.dp, start = 28.dp, end = 28.dp
                     ), memo = detailInfo.memoInfo.memo
                 )
             } else {
@@ -244,15 +259,18 @@ private fun ContentView(
 
         // TODO : 인터렉션 이슈 해결 필요
         item {
-            if (listState.visibleLastIndex() > flatButtonIndex || !isScrollable) {
+            if (listState.layoutInfo.visibleItemsInfo.last().key.hashCode() >= flatButtonIndex || isCommentViewShown) {
                 DetailSuccessButtonView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
                     }, successButtonInfo = SuccessButtonInfo(
                         goalCount = detailInfo.descInfo.goalCount,
                         userCount = detailInfo.descInfo.userCount
-                    )
+                    ),
+                    modifier = Modifier.padding(top = 30.dp)
                 )
+            } else {
+                Spacer(modifier = Modifier.height(30.dp))
             }
         }
 
@@ -260,7 +278,14 @@ private fun ContentView(
             Spacer(modifier = Modifier.height(30.dp))
         }
 
+
         detailInfo.commentInfo?.let {
+            item {
+                CommentLine()
+            }
+            item {
+                CommentCountView(it.commentCount)
+            }
             item {
                 DetailCommentLayer(commentInfo = detailInfo.commentInfo, commentLongClicked = {
                     clickEvent.invoke(CommentLongClicked(it))
@@ -286,7 +311,7 @@ private fun ProfileView(profileInfo: ProfileInfo) {
 }
 
 private fun flatButtonIndex(detailInfo: DetailInfo): Int {
-    var index = 5
+    var index = 6
     if (detailInfo.imageInfo == null) {
         index -= 1
     }
@@ -295,8 +320,6 @@ private fun flatButtonIndex(detailInfo: DetailInfo): Int {
     }
     return index
 }
-
-private fun LazyListState.visibleLastIndex() = layoutInfo.visibleItemsInfo.lastIndex
 
 private fun totalItemCount(detailInfo: DetailInfo): Int {
     var count = 7
