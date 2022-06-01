@@ -320,17 +320,3 @@ private fun flatButtonIndex(detailInfo: DetailInfo): Int {
     }
     return index
 }
-
-private fun totalItemCount(detailInfo: DetailInfo): Int {
-    var count = 7
-    if (detailInfo.imageInfo == null) {
-        count -= 1
-    }
-    if (detailInfo.memoInfo == null) {
-        count -= 1
-    }
-    if (detailInfo.commentInfo == null) {
-        count -= 1
-    }
-    return count
-}
