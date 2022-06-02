@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.compose.ui.my
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +11,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.theme.Main4
 import com.zinc.berrybucket.compose.ui.common.CategoryAddView
@@ -36,14 +34,11 @@ fun CategoryLayer(
         Column(
             modifier = modifier
                 .fillMaxWidth()
-                .fillMaxSize()
-                .background(Gray2)
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory)
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(it)
             CategoryAddView()
-            Spacer(modifier = Modifier.height(140.dp))
         }
     }
 }

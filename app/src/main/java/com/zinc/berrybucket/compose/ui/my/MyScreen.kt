@@ -28,10 +28,10 @@ import com.zinc.berrybucket.compose.theme.Gray1
 import com.zinc.berrybucket.compose.theme.Gray10
 import com.zinc.berrybucket.compose.theme.Gray6
 import com.zinc.berrybucket.compose.ui.BucketSelected
+import com.zinc.berrybucket.customUi.MyView
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.customUi.MyView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -121,7 +121,6 @@ fun MyViewPager(
         state = pagerState,
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight()
     ) { page ->
         when (page) {
             0 -> {

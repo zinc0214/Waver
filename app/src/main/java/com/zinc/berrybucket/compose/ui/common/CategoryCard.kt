@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.compose.ui.common
 
-import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,7 +47,6 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
             .fillMaxWidth()
             .border(width = 1.dp, color = borderColor.value, shape = RoundedCornerShape(4.dp))
             .pointerInteropFilter {
-                Log.e("ayhan", "motionEvent : ${it.action}")
                 when (it.action) {
                     MotionEvent.ACTION_DOWN -> {
                         borderColor.value = Main2

@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.compose.ui.my
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -13,7 +12,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.compose.theme.Gray2
 import com.zinc.berrybucket.compose.theme.Gray4
 import com.zinc.berrybucket.compose.theme.Gray8
 import com.zinc.berrybucket.compose.ui.common.BucketListView
@@ -36,8 +34,6 @@ fun AllBucketLayer(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxSize()
-                .background(Gray2)
         ) {
             AllBucketTopView(
                 modifier = Modifier,

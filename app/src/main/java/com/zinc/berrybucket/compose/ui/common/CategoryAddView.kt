@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -30,8 +29,7 @@ fun CategoryAddView() {
                 color = Main2,
                 shape = MaterialTheme.shapes.medium, on = 4.dp, off = 4.dp
             )
-            .background(Gray1),
-        contentAlignment = Alignment.Center
+            .background(Gray1)
     ) {
         Text(
             textAlign = TextAlign.Center,
