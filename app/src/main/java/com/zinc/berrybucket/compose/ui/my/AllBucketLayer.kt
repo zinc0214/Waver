@@ -48,7 +48,6 @@ fun AllBucketLayer(
             BucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
                 clickEvent.invoke(MyPagerClickEvent.ItemClicked(it))
             })
-            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
@@ -65,7 +64,7 @@ fun AllBucketTopView(
     ) {
         BucketStateView(
             modifier = Modifier
-                .padding(top = 24.dp, start = 22.dp)
+                .padding(top = 16.dp, start = 22.dp)
                 .align(Alignment.CenterVertically),
             proceedingBucketCount = allBucketInfo.processingCount,
             succeedBucketCount = allBucketInfo.succeedCount
