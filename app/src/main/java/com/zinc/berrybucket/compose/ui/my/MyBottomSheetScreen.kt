@@ -9,7 +9,7 @@ import com.zinc.berrybucket.presentation.my.viewModel.MyViewModel
 
 @Composable
 fun MyBottomSheetScreen(
-    currentScreen: BottomSheetScreenType,
+    currentScreen: BottomSheetScreenType?,
     isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
     when (currentScreen) {
@@ -25,6 +25,9 @@ fun MyBottomSheetScreen(
                 viewModel = currentScreen.viewModel,
                 isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
+        }
+        else -> {
+            // Do Nothing
         }
     }
 }

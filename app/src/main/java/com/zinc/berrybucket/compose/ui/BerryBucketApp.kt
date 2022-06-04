@@ -1,6 +1,8 @@
 package com.zinc.berrybucket.compose.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -27,36 +29,38 @@ fun BerryBucketApp() {
     MaterialTheme {
         val coroutineScope = rememberCoroutineScope()
         val appState = rememberBerryBucketkAppState()
-        val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+        val bottomSheetScaffoldState = rememberModalBottomSheetState(
+            initialValue = ModalBottomSheetValue.Hidden,
+            skipHalfExpanded = true
+        )
         var currentBottomSheet: BottomSheetScreenType? by remember { mutableStateOf(null) }
         val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
             coroutineScope.launch {
                 if (it) {
-                    bottomSheetScaffoldState.bottomSheetState.expand()
+                    bottomSheetScaffoldState.show()
                 } else {
-                    bottomSheetScaffoldState.bottomSheetState.collapse()
+                    bottomSheetScaffoldState.hide()
                 }
             }
         }
-        BottomSheetScaffold(
-            scaffoldState = bottomSheetScaffoldState,
+        ModalBottomSheetLayout(
+            sheetState = bottomSheetScaffoldState,
             sheetContent = {
-                currentBottomSheet?.let {
+                Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
                     MyBottomSheetScreen(
-                        currentScreen = it,
+                        currentScreen = currentBottomSheet,
                         isNeedToBottomSheetOpen = {
                             isNeedToBottomSheetOpen.invoke(it)
                         }
                     )
                 }
+
             },
             sheetShape = if (currentBottomSheet is BottomSheetScreenType.FilterScreen)
                 RoundedCornerShape(
                     topEnd = 16.dp,
                     topStart = 16.dp
-                ) else RoundedCornerShape(0.dp),
-            sheetPeekHeight = 1.dp,
-            sheetGesturesEnabled = false
+                ) else RoundedCornerShape(0.dp)
         ) {
             Column {
                 Scaffold(
