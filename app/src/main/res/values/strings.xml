@@ -92,6 +92,8 @@
     <string name="commentOptionDialogTitle">댓글</string>
     <string name="commentEdit">수정</string>
     <string name="commentDelete">삭제</string>
+    <string name="commentHide">숨기기</string>
+    <string name="commentReport">신고</string>
 
     <!-- Report -->
     <string name="reportWriter">작성자</string>

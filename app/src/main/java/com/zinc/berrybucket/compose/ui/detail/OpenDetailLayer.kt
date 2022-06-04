@@ -63,6 +63,8 @@ fun OpenDetailLayer(
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
+        val commentOptionPopUpShowed =
+            remember { mutableStateOf(false to 0) } // 댓글 롱클릭 옵션 팝업 노출여부 + 댓글 index
 
         // 키보드 상태 확인
         val isKeyBoardOpened = remember { mutableStateOf(true) } // 키보드 오픈 상태 확인
@@ -87,6 +89,28 @@ fun OpenDetailLayer(
                 if (optionPopUpShowed.value) {
                     MyDetailAppBarMoreMenuPopupView(optionPopUpShowed)
                 }
+
+                if (commentOptionPopUpShowed.value.first) {
+                    if (vmDetailInfo?.commentInfo != null) {
+                        CommentSelectedDialogLayer(
+                            isMyComment = true,
+                            commentInfo = vmDetailInfo?.commentInfo?.commenterList?.getOrNull(
+                                commentOptionPopUpShowed.value.second
+                            ),
+                            onDismissRequest = {
+                                commentOptionPopUpShowed.value =
+                                    false to commentOptionPopUpShowed.value.second
+                            },
+                            commentOptionClicked = {
+                                when (it) {
+                                    is CommentOptionClicked.FirstOptionClicked -> TODO()
+                                    is CommentOptionClicked.SecondOptionClicked -> TODO()
+                                }
+                            }
+                        )
+                    }
+                }
+
 
                 Column(
                     modifier = Modifier
@@ -130,7 +154,9 @@ fun OpenDetailLayer(
                             detailInfo = detailInfo,
                             clickEvent = {
                                 when (it) {
-                                    is CommentLongClicked -> TODO()
+                                    is CommentLongClicked -> {
+                                        commentOptionPopUpShowed.value = true to it.commentIndex
+                                    }
                                     DetailClickEvent.SuccessClicked -> TODO()
                                 }
                             },

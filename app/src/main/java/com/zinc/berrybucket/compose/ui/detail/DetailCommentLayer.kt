@@ -23,7 +23,7 @@ import com.zinc.berrybucket.model.Commenter
 
 @Composable
 fun DetailCommentLayer(
-    commentInfo: CommentInfo, commentLongClicked: (String) -> Unit
+    commentInfo: CommentInfo, commentLongClicked: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(top = 20.dp)
@@ -68,10 +68,11 @@ fun CommentCountView(commentCount: Int) {
 }
 
 @Composable
-private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (String) -> Unit) {
+private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (Int) -> Unit) {
     commentList.forEachIndexed { index, commenter ->
         CommentDescView(
             commenter = commenter,
+            commentIndex = index,
             isLastItem = commentList.lastIndex == index,
             commentLongClicked = commentLongClicked
         )
@@ -82,8 +83,9 @@ private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (S
 @Composable
 private fun CommentDescView(
     commenter: Commenter,
+    commentIndex: Int,
     isLastItem: Boolean,
-    commentLongClicked: (String) -> Unit
+    commentLongClicked: (Int) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -92,7 +94,7 @@ private fun CommentDescView(
             .combinedClickable(
                 onClick = { },
                 onLongClick = {
-                    commentLongClicked(commenter.commentId)
+                    commentLongClicked(commentIndex)
                 },
             )
             .padding(start = 28.dp, end = 28.dp)

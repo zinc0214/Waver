@@ -37,7 +37,8 @@ data class Commenter(
     val commentId: String = "",
     val profileImage: String,
     val nickName: String,
-    val comment: String
+    val comment: String,
+    val isMine: Boolean = true
 )
 
 data class InnerSuccessButton(
@@ -92,4 +93,4 @@ sealed class DetailClickEvent {
     object SuccessClicked : DetailClickEvent()
 }
 
-data class CommentLongClicked(val commentId: String) : DetailClickEvent()
+data class CommentLongClicked(val commentIndex: Int) : DetailClickEvent()
