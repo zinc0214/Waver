@@ -19,22 +19,4 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.BerryBucket.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.BerryBucket.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="BucketTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/gray11</item>
-    </style>
-
-    <style name="BucketStateStyle" parent="Widget.AppCompat.TextView">
-        <item name="android:paddingTop">3dp</item>
-        <item name="android:paddingBottom">3dp</item>
-        <item name="android:paddingStart">8dp</item>
-        <item name="android:paddingEnd">8dp</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/gray1</item>
-        <item name="android:textStyle">bold</item>
-    </style>
 </resources>
