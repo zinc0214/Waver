@@ -46,9 +46,5 @@
             android:background="@drawable/divider_bg"
             android:importantForAccessibility="no" />
 
-        <include
-            layout="@layout/lqyout_filter_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
     </LinearLayout>
 </layout>

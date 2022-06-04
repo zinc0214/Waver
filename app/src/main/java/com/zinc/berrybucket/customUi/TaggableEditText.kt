@@ -12,7 +12,6 @@ import androidx.lifecycle.LifecycleOwner
 import com.zinc.berrybucket.databinding.LayoutTaggableEdittextBinding
 import com.zinc.berrybucket.model.CommentTagInfo
 import com.zinc.berrybucket.presentation.detail.DetailViewModel
-import com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity
 import com.zinc.berrybucket.util.nonNullObserve
 import com.zinc.berrybucket.util.onTextChanged
 import com.zinc.berrybucket.util.setVisible
@@ -115,7 +114,7 @@ class TaggableEditText @JvmOverloads constructor(
     }
 
     // 현재 EditText 의 커서가 있는 블록값 확인
-    private fun getCurrentEditTextBlock(currentEditText: String): MyOpenBucketDetailActivity.CurrentBlock {
+    private fun getCurrentEditTextBlock(currentEditText: String): CurrentBlock {
         val splitText = currentEditText.split(" ")
         var splitLength = 0
         var startIndex = 0
@@ -123,7 +122,7 @@ class TaggableEditText @JvmOverloads constructor(
         splitText.forEach {
             splitLength += it.length + 1
             if (splitLength > currentEditTextFocus) {
-                return MyOpenBucketDetailActivity.CurrentBlock(
+                return CurrentBlock(
                     it,
                     startIndex,
                     startIndex + it.length
@@ -131,7 +130,7 @@ class TaggableEditText @JvmOverloads constructor(
             }
             startIndex += it.length + 1
         }
-        return MyOpenBucketDetailActivity.CurrentBlock(currentEditText, 0, 0)
+        return CurrentBlock(currentEditText, 0, 0)
     }
 
     private fun changeEditText(currentEditText: String) {
