@@ -152,7 +152,7 @@ private fun SearchEditView(
 private fun SearchEditView(
     onImeAction: (String) -> Unit
 ) {
-    val hintText = stringResource(id = R.string.hint)
+    val hintText = stringResource(id = R.string.myBucketSearchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
@@ -212,7 +212,10 @@ fun ChipBodyContent(
 
 
 @Composable
-private fun SearchResultView(result: Pair<MyTabType, List<*>>, clickEvent: (MySearchClickEvent) -> Unit) {
+private fun SearchResultView(
+    result: Pair<MyTabType, List<*>>,
+    clickEvent: (MySearchClickEvent) -> Unit
+) {
 
     if (result.first == MyTabType.CATEGORY) {
         if (result.second.all { item -> item is Category }) {

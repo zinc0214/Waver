@@ -23,6 +23,7 @@
     <string name="delete">삭제</string>
     <string name="countChange">완료횟수변경</string>
     <string name="selected">선택 버튼</string>
+    <string name="copy">버킷리스트 복사 버튼</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -68,7 +69,7 @@
     <string name="ddayPastBucketList">디데이가 지난 버킷리스트</string>
 
     <!-- My > Search -->
-    <string name="hint">리스트를 검색하세요</string>
+    <string name="myBucketSearchHint">리스트를 검색하세요</string>
 
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
@@ -102,5 +103,8 @@
     <string name="reportActionButton">신고하기</string>
     <string name="reportTextFieldHint">신고 사유를 입력해주세요. (최대 500자) </string>
 
+    <!-- Search -->
+    <string name="searchTitle">검색</string>
+    <string name="searchHint">검색어를 입력해주세요.</string>
 
 </resources>

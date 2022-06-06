@@ -25,6 +25,7 @@ import com.zinc.berrybucket.compose.ui.common.IconToggleButton
 import com.zinc.berrybucket.compose.ui.feed.Feed
 import com.zinc.berrybucket.compose.ui.my.BottomSheetScreenType
 import com.zinc.berrybucket.compose.ui.my.MyScreen
+import com.zinc.berrybucket.compose.ui.search.SearchScreen
 
 fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
@@ -45,7 +46,7 @@ fun NavGraphBuilder.addHomeGraph(
         Feed()
     }
     composable(HomeSections.SEARCH.route) { from ->
-        //   SEARCH(onSnackClick = { id -> onPageSelected(id, from) }, modifier)
+        SearchScreen()
     }
     composable(HomeSections.MORE.route) {
         //  MORE(modifier)

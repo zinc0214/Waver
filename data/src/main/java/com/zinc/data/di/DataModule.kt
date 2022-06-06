@@ -5,9 +5,11 @@ import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.repository.DetailRepositoryImpl
 import com.zinc.data.repository.FeedRepositoryImpl
 import com.zinc.data.repository.MyRepositoryImpl
+import com.zinc.data.repository.SearchRepositoryImpl
 import com.zinc.domain.repository.DetailRepository
 import com.zinc.domain.repository.FeedRepository
 import com.zinc.domain.repository.MyRepository
+import com.zinc.domain.repository.SearchRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -36,6 +38,11 @@ internal abstract class DataModule {
     abstract fun bindFeedRepository(
         repository: FeedRepositoryImpl
     ): FeedRepository
+
+    @Binds
+    abstract fun bindSearchRepository(
+        repository: SearchRepositoryImpl
+    ): SearchRepository
 
     @InstallIn(SingletonComponent::class)
     @Module

@@ -13,8 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.compose.theme.Error2
 import com.zinc.berrybucket.compose.theme.Gray10
-import com.zinc.berrybucket.compose.theme.Gray7
-import com.zinc.berrybucket.compose.theme.Main3
+import com.zinc.berrybucket.compose.ui.common.TagListView
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 
 @Composable
@@ -61,25 +60,6 @@ private fun DdayView(modifier: Modifier = Modifier, dday: String) {
                 modifier = Modifier.align(Alignment.Center)
             )
         }
-    )
-}
-
-@Composable
-private fun TagListView(modifier: Modifier = Modifier, tagList: List<String>) {
-    Row(modifier = modifier) {
-        tagList.forEach { tag ->
-            TagView(modifier = Modifier.padding(end = 5.dp), tag)
-        }
-    }
-}
-
-@Composable
-private fun TagView(modifier: Modifier = Modifier, tag: String) {
-    Text(
-        text = "# $tag",
-        color = Main3,
-        fontSize = 15.sp,
-        modifier = modifier
     )
 }
 

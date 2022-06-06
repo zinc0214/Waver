@@ -29,4 +29,9 @@ interface BerryBucketApi {
     @GET("/feed")
     suspend fun loadFeedItems(): List<FeedInfo>
 
+    @GET("/search/recommendCategory")
+    suspend fun loadSearchRecommendCategoryItems(): List<SearchRecommendCategory>
+
+    @GET("/search/recommendList")
+    suspend fun loadRecommendList(): RecommendList
 }
