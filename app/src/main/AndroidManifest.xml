@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BerryBucket">
         <activity
-            android:name="com.zinc.berrybucket.presentation.HomeActivity"
+            android:name="com.zinc.berrybucket.ui.presentation.HomeActivity"
             android:exported="true"
             android:theme="@style/Theme.BerryBucket.NoActionBar"
             android:windowSoftInputMode="adjustResize">
@@ -24,15 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.zinc.berrybucket.presentation.detail.my.open.MyOpenBucketDetailActivity"
-            android:theme="@style/Theme.BerryBucket.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.zinc.berrybucket.presentation.detail.my.close.MyCloseBucketDetailActivity"
-            android:theme="@style/Theme.BerryBucket.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.zinc.berrybucket.presentation.report.ReportActivity"
+            android:name="com.zinc.berrybucket.ui.presentation.report.ReportActivity"
             android:theme="@style/Theme.BerryBucket.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
     </application>

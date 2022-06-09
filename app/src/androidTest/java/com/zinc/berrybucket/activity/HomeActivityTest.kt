@@ -2,7 +2,7 @@ package com.zinc.berrybucket.activity
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.zinc.berrybucket.presentation.HomeActivity
+import com.zinc.berrybucket.ui.presentation.HomeActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
