@@ -186,10 +186,10 @@ private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boo
 }
 
 @Composable
-fun SearchDivider() {
+fun SearchDivider(modifier: Modifier = Modifier) {
     Divider(
         color = Gray2,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(6.dp)
     )
@@ -223,11 +223,16 @@ fun RecommendListView(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 28.dp, end = 28.dp, top = 32.dp),
+                .padding(top = 32.dp),
         ) {
             items(recommendList.items, itemContent = {
                 RecommendTitleView(it)
                 RecommendBucketListView(it.items)
+                if (recommendList.items.last() != it) {
+                    SearchDivider(modifier = Modifier.padding(vertical = 32.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(32.dp))
+                }
             })
         }
     }
@@ -238,7 +243,11 @@ fun RecommendListView(
 private fun RecommendTitleView(recommendItem: RecommendItem) {
     val type =
         RecommendType.values().find { it.title == recommendItem.type } ?: RecommendType.RECOMMEND
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 28.dp)
+    ) {
         Row {
             Image(
                 painter = if (type == RecommendType.POPULAR) painterResource(R.drawable.btn_32_like_on) else painterResource(
@@ -258,12 +267,15 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
 
 @Composable
 private fun RecommendBucketListView(list: List<RecommendBucketItem>) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 28.dp)
+    ) {
         list.forEach {
             RecommendBucketItemView(it)
         }
     }
-
 }
 
 @Composable
@@ -272,6 +284,7 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
         backgroundColor = Gray1,
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, Gray3),
+        elevation = 0.dp,
         modifier = Modifier.padding(top = 16.dp)
     ) {
         Column {
