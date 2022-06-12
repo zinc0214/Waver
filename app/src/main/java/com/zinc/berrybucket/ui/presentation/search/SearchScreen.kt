@@ -16,8 +16,6 @@ import kotlin.math.min
 
 @Composable
 fun SearchScreen() {
-    val coroutineScope = rememberCoroutineScope()
-
     val viewModel: SearchViewModel = hiltViewModel()
     viewModel.loadSearchRecommendCategoryItems()
     viewModel.loadRecommendList()
@@ -54,13 +52,14 @@ fun SearchScreen() {
         recommendList?.let { list ->
             RecommendListView(
                 onOffsetChanged = {
-                    Log.d("OFFSET", "$it")
-                    height = it
+                    // 맨 마지막 아이템에서 갑자기 튀는 현상이 있음. 방지를 위함.
+                    if (height == 0f || it - height <= 500) {
+                        height = it
+                    }
                 },
                 maxAppBarHeight = maxAppBarHeight,
                 minAppBarHeight = minAppBarHeight,
                 recommendList = list,
-                listState = scrollState
             )
         }
 

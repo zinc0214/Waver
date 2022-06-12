@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,9 +16,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
-import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -29,7 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -40,11 +35,11 @@ import com.zinc.berrybucket.model.toKorean
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.TagListView
+import com.zinc.berrybucket.ui.presentation.common.rememberNestedScrollConnection
 import com.zinc.common.models.RecommendBucketItem
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchRecommendCategory
-import kotlin.math.abs
 
 
 @Composable
@@ -202,46 +197,11 @@ fun SearchDivider() {
 
 
 @Composable
-private fun rememberNestedScrollConnection(
-    onOffsetChanged: (Float) -> Unit,
-    maxAppBarHeight: Float,
-    minAppBarHeight: Float
-) =
-    remember {
-        var currentHeight = maxAppBarHeight
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                Log.d("ayhan", "available : $available")
-                currentHeight = (currentHeight + available.y).coerceIn(
-                    minimumValue = minAppBarHeight,
-                    maximumValue = maxAppBarHeight
-                )
-                return if (abs(currentHeight) == maxAppBarHeight || abs(currentHeight) == minAppBarHeight) {
-                    super.onPreScroll(available, source)
-                } else {
-                    onOffsetChanged(currentHeight)
-                    available
-                }
-            }
-
-            override suspend fun onPreFling(available: Velocity): Velocity {
-                if (available.y < 0) {
-                    onOffsetChanged(minAppBarHeight)
-                } else {
-                    onOffsetChanged(maxAppBarHeight)
-                }
-                return super.onPreFling(available)
-            }
-        }
-    }
-
-@Composable
 fun RecommendListView(
     onOffsetChanged: (Float) -> Unit,
     maxAppBarHeight: Dp,
     minAppBarHeight: Dp,
-    recommendList: RecommendList,
-    listState: LazyListState
+    recommendList: RecommendList
 ) {
 
     val maxAppBarPixelValue = with(LocalDensity.current) { maxAppBarHeight.toPx() }
@@ -264,7 +224,6 @@ fun RecommendListView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 28.dp, end = 28.dp, top = 32.dp),
-            state = listState,
         ) {
             items(recommendList.items, itemContent = {
                 RecommendTitleView(it)
