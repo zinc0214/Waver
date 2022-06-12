@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.search
 
 import android.util.Log
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +16,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -47,22 +45,15 @@ import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchRecommendCategory
 import kotlin.math.abs
-import kotlin.math.max
 
 
 @Composable
 fun SearchTopBar(
     modifier: Modifier,
-    viewModel: SearchViewModel,
     editViewClicked: () -> Unit,
-    scrollOffset: Float,
-    isScrolled: Boolean,
-    height: Dp
+    height: Dp,
+    recommendCategoryItemList: List<SearchRecommendCategory>?
 ) {
-    val minOffest = 0f
-
-    val titleVisible by animateFloatAsState(targetValue = max(1f, 1f - scrollOffset))
-    val recommendCategoryItemList by viewModel.recommendCategoryItems.observeAsState()
 
     Log.e("ayhan", "height : $height")
     Column(modifier = modifier.height(height)) {

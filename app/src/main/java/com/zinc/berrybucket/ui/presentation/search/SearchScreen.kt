@@ -25,20 +25,6 @@ fun SearchScreen() {
     val searchRecommendCategoryItems by viewModel.recommendCategoryItems.observeAsState()
     val recommendList by viewModel.recommendList.observeAsState()
 
-//    AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
-//        SearchView(context).apply {
-//            setComposeView {
-//                // go to search view
-//            }
-//            searchRecommendCategoryItems?.let {
-//                setRecommendView(it)
-//            }
-//            recommendList?.let {
-//                setRecommendBucketList(it)
-//            }
-//        }
-//    })
-
     val scrollState = rememberLazyListState()
     val isScrolled = scrollState.firstVisibleItemIndex != 0
     val scrollOffset: Float = min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 50f))
@@ -57,9 +43,7 @@ fun SearchScreen() {
             modifier = Modifier
                 .fillMaxWidth(),
             height = animatedHeight,
-            viewModel = viewModel,
-            scrollOffset = scrollOffset,
-            isScrolled = isScrolled,
+            recommendCategoryItemList = searchRecommendCategoryItems,
             editViewClicked = {
 
             }
@@ -81,25 +65,4 @@ fun SearchScreen() {
         }
 
     }
-
-//    Column(modifier = Modifier.fillMaxSize()) {
-//        SearchTopBar(
-//            modifier = Modifier.fillMaxWidth(),
-//            viewModel = viewModel,
-//            scrollOffset = scrollOffset,
-//            isScrolled = isScrolled,
-//            editViewClicked = {
-//
-//            }
-//        )
-//
-//        recommendList?.let {
-//            RecommendListView(it, scrollState)
-//        }
-//    }
-}
-
-@Composable
-fun DismissibleAppBar() {
-
 }
