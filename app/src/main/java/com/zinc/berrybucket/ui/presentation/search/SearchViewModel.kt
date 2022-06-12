@@ -18,8 +18,8 @@ class SearchViewModel @Inject constructor(
     private val loadRecommendList: LoadRecommendList
 ) : ViewModel() {
 
-    private val _searchRecommendCategoryItems = MutableLiveData<List<SearchRecommendCategory>>()
-    val searchRecommendCategoryItems: LiveData<List<SearchRecommendCategory>> get() = _searchRecommendCategoryItems
+    private val _recommendCategoryItems = MutableLiveData<List<SearchRecommendCategory>>()
+    val recommendCategoryItems: LiveData<List<SearchRecommendCategory>> get() = _recommendCategoryItems
 
     private val _recommendList = MutableLiveData<RecommendList>()
     val recommendList: LiveData<RecommendList> get() = _recommendList
@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 loadSearchRecommendCategoryItems.invoke().apply {
-                    _searchRecommendCategoryItems.value = this
+                    _recommendCategoryItems.value = this
                 }
             }.getOrElse {
 

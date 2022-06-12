@@ -1,10 +1,14 @@
 package com.zinc.berrybucket.ui.presentation.search
 
+import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,13 +17,21 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -34,6 +46,39 @@ import com.zinc.common.models.RecommendBucketItem
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchRecommendCategory
+import kotlin.math.abs
+import kotlin.math.max
+
+
+@Composable
+fun SearchTopBar(
+    modifier: Modifier,
+    viewModel: SearchViewModel,
+    editViewClicked: () -> Unit,
+    scrollOffset: Float,
+    isScrolled: Boolean,
+    height: Dp
+) {
+    val minOffest = 0f
+
+    val titleVisible by animateFloatAsState(targetValue = max(1f, 1f - scrollOffset))
+    val recommendCategoryItemList by viewModel.recommendCategoryItems.observeAsState()
+
+    Log.e("ayhan", "height : $height")
+    Column(modifier = modifier.height(height)) {
+        if (height >= 130.dp) {
+            SearchTitle()
+        }
+        SearchEditView {
+            editViewClicked.invoke()
+        }
+        if (height >= 150.dp) {
+            recommendCategoryItemList?.let {
+                SearchRecommendCategoryItemsView(it)
+            }
+        }
+    }
+}
 
 @Composable
 fun SearchTitle() {
@@ -49,31 +94,27 @@ fun SearchTitle() {
 }
 
 @Composable
-fun SearchEditView(
+private fun SearchEditView(
     editViewClicked: () -> Unit
 ) {
     val hintText = stringResource(id = R.string.myBucketSearchHint)
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Gray1)
-            .padding(top = 20.dp, bottom = 29.dp, start = 28.dp, end = 28.dp)
-            .background(shape = RoundedCornerShape(8.dp), color = Gray2)
-            .clickable {
-                editViewClicked()
-            }
-    ) {
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .background(color = Gray1)
+        .padding(top = 20.dp, bottom = 29.dp, start = 28.dp, end = 28.dp)
+        .height(48.dp)
+        .background(shape = RoundedCornerShape(8.dp), color = Gray2)
+        .clickable {
+            editViewClicked()
+        }) {
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (searchEdit, searchButton) = createRefs()
 
-            BasicTextField(
-                value = searchText,
+            BasicTextField(value = searchText,
                 textStyle = TextStyle(
-                    color = Gray10,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium
+                    color = Gray10, fontSize = 14.sp, fontWeight = FontWeight.Medium
                 ),
                 onValueChange = { searchText = it },
                 maxLines = 1,
@@ -101,11 +142,9 @@ fun SearchEditView(
                             endMargin = 12.dp,
                         )
                         width = Dimension.fillToConstraints
-                    }
-            )
+                    })
 
-            Image(
-                painter = painterResource(id = R.drawable.btn_32_search),
+            Image(painter = painterResource(id = R.drawable.btn_32_search),
                 contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
@@ -114,19 +153,15 @@ fun SearchEditView(
                         bottom.linkTo(parent.bottom)
                         end.linkTo(parent.end)
                         linkTo(
-                            endMargin = 12.dp,
-                            end = parent.end,
-                            start = parent.start,
-                            bias = 1f
+                            endMargin = 12.dp, end = parent.end, start = parent.start, bias = 1f
                         )
-                    }
-            )
+                    })
         }
     }
 }
 
 @Composable
-fun SearchRecommendCategoryItemsView(items: List<SearchRecommendCategory>) {
+private fun SearchRecommendCategoryItemsView(items: List<SearchRecommendCategory>) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -174,17 +209,79 @@ fun SearchDivider() {
     )
 }
 
+
 @Composable
-fun RecommendListView(recommendList: RecommendList) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 28.dp, end = 28.dp, top = 32.dp)
-    ) {
-        recommendList.items.forEach {
-            RecommendTitleView(it)
+private fun rememberNestedScrollConnection(
+    onOffsetChanged: (Float) -> Unit,
+    maxAppBarHeight: Float,
+    minAppBarHeight: Float
+) =
+    remember {
+        var currentHeight = maxAppBarHeight
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                Log.d("ayhan", "available : $available")
+                currentHeight = (currentHeight + available.y).coerceIn(
+                    minimumValue = minAppBarHeight,
+                    maximumValue = maxAppBarHeight
+                )
+                return if (abs(currentHeight) == maxAppBarHeight || abs(currentHeight) == minAppBarHeight) {
+                    super.onPreScroll(available, source)
+                } else {
+                    onOffsetChanged(currentHeight)
+                    available
+                }
+            }
+
+            override suspend fun onPreFling(available: Velocity): Velocity {
+                if (available.y < 0) {
+                    onOffsetChanged(minAppBarHeight)
+                } else {
+                    onOffsetChanged(maxAppBarHeight)
+                }
+                return super.onPreFling(available)
+            }
         }
     }
+
+@Composable
+fun RecommendListView(
+    onOffsetChanged: (Float) -> Unit,
+    maxAppBarHeight: Dp,
+    minAppBarHeight: Dp,
+    recommendList: RecommendList,
+    listState: LazyListState
+) {
+
+    val maxAppBarPixelValue = with(LocalDensity.current) { maxAppBarHeight.toPx() }
+    val minAppBarPixelValue = with(LocalDensity.current) { minAppBarHeight.toPx() }
+    val nestedScrollState =
+        rememberNestedScrollConnection(
+            onOffsetChanged = onOffsetChanged,
+            maxAppBarHeight = maxAppBarPixelValue,
+            minAppBarHeight = minAppBarPixelValue
+        )
+    LaunchedEffect(key1 = Unit, block = {
+        onOffsetChanged(maxAppBarPixelValue)
+    })
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(nestedScrollState)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 28.dp, end = 28.dp, top = 32.dp),
+            state = listState,
+        ) {
+            items(recommendList.items, itemContent = {
+                RecommendTitleView(it)
+                RecommendBucketListView(it.items)
+            })
+        }
+    }
+
 }
 
 @Composable
@@ -196,9 +293,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
             Image(
                 painter = if (type == RecommendType.POPULAR) painterResource(R.drawable.btn_32_like_on) else painterResource(
                     R.drawable.btn_32_star
-                ),
-                contentDescription = null,
-                modifier = Modifier
+                ), contentDescription = null, modifier = Modifier
                     .size(24.dp)
                     .padding(end = 4.dp)
             )
@@ -208,8 +303,6 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
         TagListView(
             tagList = recommendItem.tagList
         )
-
-        RecommendBucketListView(recommendItem.items)
     }
 }
 
@@ -234,7 +327,8 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
         Column {
             if (item.thumbnail != null) {
                 Image(
-                    painter = painterResource(id = R.drawable.kakao), contentDescription = null,
+                    painter = painterResource(id = R.drawable.kakao),
+                    contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 12.dp, top = 12.dp, end = 12.dp)
@@ -244,8 +338,7 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
             ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
                 val (bucketTitle, copiedIcon) = createRefs()
 
-                Text(
-                    text = item.title,
+                Text(text = item.title,
                     fontSize = 14.sp,
                     color = Gray10,
                     modifier = Modifier.constrainAs(bucketTitle) {
@@ -264,10 +357,9 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
                         width = Dimension.fillToConstraints
                     })
 
-                IconButton(
-                    onClick = {
-                        // can copied if is unCopied
-                    },
+                IconButton(onClick = {
+                    // can copied if is unCopied
+                },
                     image = if (item.isCopied) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
                     contentDescription = stringResource(id = R.string.copy),
                     modifier = Modifier
@@ -277,8 +369,7 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
                             end.linkTo(parent.end)
                         }
                         .padding(end = 12.dp)
-                        .size(32.dp)
-                )
+                        .size(32.dp))
             }
         }
     }
