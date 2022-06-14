@@ -34,7 +34,7 @@ fun DdayBucketLayer(
             Spacer(modifier = Modifier.height(16.dp))
             BucketListView(it.bucketList.parseToUI(), MyTabType.DDAY,
                 itemClicked = {
-                    clickEvent.invoke(MyPagerClickEvent.ItemClicked(it))
+                    clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
                 })
         }
     }

@@ -42,7 +42,7 @@ fun AllBucketLayer(
             )
             Spacer(modifier = Modifier.height(16.dp))
             BucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
-                clickEvent.invoke(MyPagerClickEvent.ItemClicked(it))
+                clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
             })
         }
     }

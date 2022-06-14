@@ -15,6 +15,7 @@ fun MyBottomSheetScreen(
     when (currentScreen) {
         is BottomSheetScreenType.FilterScreen -> {
             FilterBottomView(
+                tab = currentScreen.selectTab,
                 viewModel = currentScreen.viewModel,
                 isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
@@ -56,17 +57,37 @@ private fun SearchBottomView(
 
 @Composable
 private fun FilterBottomView(
+    tab: MyTabType,
     viewModel: MyViewModel,
     isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
-    MyFilterBottomScreen(viewModel = viewModel, clickEvent = {
-        when (it) {
-            BottomButtonClickEvent.LeftButtonClicked -> {
-                isNeedToBottomSheetOpen.invoke(false)
-            }
-            BottomButtonClickEvent.RightButtonClicked -> TODO()
+    when (tab) {
+        MyTabType.ALL -> {
+            MyAllBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
+                when (it) {
+                    BottomButtonClickEvent.LeftButtonClicked -> {
+                        isNeedToBottomSheetOpen.invoke(false)
+                    }
+                    BottomButtonClickEvent.RightButtonClicked -> TODO()
+                }
+            })
         }
-    })
+        MyTabType.DDAY -> {
+            MyDdayBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
+                when (it) {
+                    BottomButtonClickEvent.LeftButtonClicked -> {
+                        isNeedToBottomSheetOpen.invoke(false)
+                    }
+                    BottomButtonClickEvent.RightButtonClicked -> TODO()
+                }
+            })
+        }
+        MyTabType.CHALLENGE -> TODO()
+        else -> {
+            // Do Nothing
+        }
+    }
+
 
 }
 
@@ -76,6 +97,6 @@ sealed class BottomSheetScreenType {
     ) : BottomSheetScreenType()
 
     data class FilterScreen(
-        val viewModel: MyViewModel
+        val selectTab: MyTabType, val viewModel: MyViewModel
     ) : BottomSheetScreenType()
 }

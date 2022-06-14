@@ -11,6 +11,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.MyPagerClickEvent
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.compose.theme.Gray8
 import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.CategoryAddView
@@ -23,8 +25,8 @@ import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 fun CategoryLayer(
     modifier: Modifier = Modifier,
     viewModel: MyViewModel,
+    clickEvent: (MyPagerClickEvent) -> Unit
 ) {
-
     val recommendCategory = "여향"
 
     viewModel.loadCategoryList()
@@ -35,7 +37,7 @@ fun CategoryLayer(
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            TopView(modifier = Modifier.fillMaxWidth(), recommendCategory)
+            TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(it)
             CategoryAddView()
@@ -44,7 +46,11 @@ fun CategoryLayer(
 }
 
 @Composable
-private fun TopView(modifier: Modifier = Modifier, recommendCategory: String) {
+private fun TopView(
+    modifier: Modifier = Modifier,
+    recommendCategory: String,
+    clickEvent: (MyPagerClickEvent) -> Unit
+) {
     Row(
         modifier = modifier
             .padding(start = 22.dp, end = 16.dp, top = 16.dp)
@@ -53,7 +59,7 @@ private fun TopView(modifier: Modifier = Modifier, recommendCategory: String) {
             modifier = Modifier.align(Alignment.CenterVertically),
             recommendCategory = recommendCategory
         )
-        TopRightView(modifier = Modifier.fillMaxWidth())
+        TopRightView(modifier = Modifier.fillMaxWidth(), clickEvent = clickEvent)
     }
 }
 
@@ -79,11 +85,15 @@ private fun TopLeftView(modifier: Modifier = Modifier, recommendCategory: String
 }
 
 @Composable
-private fun TopRightView(modifier: Modifier = Modifier) {
+private fun TopRightView(modifier: Modifier = Modifier, clickEvent: (MyPagerClickEvent) -> Unit) {
     EditButtonAndSearchImageView(
         modifier = modifier
             .fillMaxWidth(),
-        editClicked = {},
-        searchClicked = {}
+        editClicked = {
+            clickEvent(MyPagerClickEvent.CategoryEditClicked)
+        },
+        searchClicked = {
+            clickEvent(MyPagerClickEvent.SearchClicked(tabType = MyTabType.CATEGORY))
+        }
     )
 }

@@ -27,7 +27,7 @@ import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 
 @Composable
-fun MyFilterBottomScreen(
+fun MyAllBucketFilterBottomScreen(
     viewModel: MyViewModel, clickEvent: (BottomButtonClickEvent) -> Unit
 ) {
 

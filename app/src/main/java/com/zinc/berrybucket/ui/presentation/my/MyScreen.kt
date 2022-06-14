@@ -126,7 +126,7 @@ fun MyViewPager(
             0 -> {
                 AllBucketLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
-                        is MyPagerClickEvent.ItemClicked -> {
+                        is MyPagerClickEvent.BucketItemClicked -> {
                             onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
                         }
                         is MyPagerClickEvent.SearchClicked -> {
@@ -142,20 +142,73 @@ fun MyViewPager(
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
                                     BottomSheetScreenType.FilterScreen(
+                                        selectTab = MyTabType.ALL,
                                         viewModel = viewModel
                                     )
                                 )
                             }
                         }
+                        else -> {
+                            // Do Nothing
+                        }
                     }
                 })
             }
             1 -> {
-                CategoryLayer(viewModel = viewModel)
+                CategoryLayer(viewModel = viewModel, clickEvent = {
+                    when (it) {
+                        MyPagerClickEvent.CategoryEditClicked -> {
+                            // go to edit
+                        }
+                        is MyPagerClickEvent.SearchClicked -> {
+                            coroutineScope.launch {
+                                bottomSheetClicked.invoke(
+                                    BottomSheetScreenType.SearchScreen(
+                                        selectTab = MyTabType.CATEGORY, viewModel = viewModel
+                                    )
+                                )
+                            }
+                        }
+                        is MyPagerClickEvent.CategoryItemClicked -> {
+                            // go to category item
+                        }
+                        else -> {
+                            // Do Nothing
+                        }
+
+                    }
+                })
             }
             2 -> {
                 DdayBucketLayer(viewModel = viewModel, clickEvent = {
-
+                    when (it) {
+                        is MyPagerClickEvent.BucketItemClicked -> {
+                            onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
+                        }
+                        is MyPagerClickEvent.SearchClicked -> {
+                            coroutineScope.launch {
+                                bottomSheetClicked.invoke(
+                                    BottomSheetScreenType.SearchScreen(
+                                        selectTab = MyTabType.DDAY,
+                                        viewModel = viewModel
+                                    )
+                                )
+                            }
+                        }
+                        MyPagerClickEvent.FilterClicked -> {
+                            coroutineScope.launch {
+                                bottomSheetClicked.invoke(
+                                    BottomSheetScreenType.FilterScreen(
+                                        selectTab = MyTabType.DDAY,
+                                        viewModel = viewModel
+                                    )
+                                )
+                            }
+                        }
+                        else -> {
+                            // Do Nothing
+                        }
+                    }
                 })
             }
         }

@@ -7,6 +7,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.compose.theme.Sub_D3
 import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.Category
 
 data class AllBucketList(
     val processingCount: String,
@@ -92,9 +93,12 @@ enum class MyTabType(
 
 sealed class MyPagerClickEvent {
     object FilterClicked : MyPagerClickEvent()
+    object CategoryEditClicked : MyPagerClickEvent()
     data class SearchClicked(val tabType: MyTabType) : MyPagerClickEvent()
-    data class ItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
+    data class BucketItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
+    data class CategoryItemClicked(val category: Category) : MyPagerClickEvent()
 }
+
 sealed class MySearchClickEvent {
     object CloseClicked : MySearchClickEvent()
     data class ItemClicked(val info: UIBucketInfoSimple) : MySearchClickEvent()

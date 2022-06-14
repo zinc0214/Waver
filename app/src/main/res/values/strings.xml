@@ -51,6 +51,10 @@
     <string name="showContent">표시 항목</string>
     <string name="showDday">디데이</string>
 
+    <!-- My > Dday > Filter -->
+    <string name="dDayPreBucketList">디데이가 지나지 않은 버킷리스트</string>
+    <string name="dDayGoneBucketList">디데이가 지난 버킷리스트</string>
+
     <!-- My > Category -->
     <string name="recommendCategory">추천 카테고리</string>
     <string name="recommendTag">#</string>
