@@ -40,7 +40,7 @@ fun ReportScreen(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }, isDividerVisible = isScrolled, backButtonClicked = {
-
+                backPress()
             })
 
             ReportContentView(
