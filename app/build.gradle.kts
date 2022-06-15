@@ -136,4 +136,6 @@ dependencies {
     implementation(Dep.AndroidX.Lifecycle.viewModel)
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.Lifecycle.livedata)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 }

@@ -47,6 +47,7 @@
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/java/com/zinc/berrybucket/compose/ui/common/LabelWithSwitchView.kt" value="0.45" />
         <entry key="app/src/main/java/com/zinc/berrybucket/compose/ui/my/MyTopLayer.kt" value="0.3296296296296296" />
+        <entry key="app/src/main/java/com/zinc/berrybucket/ui/presentation/report/ReportComponent.kt" value="0.335" />
         <entry key="app/src/main/res/drawable/add_bucket_icon.xml" value="0.11" />
         <entry key="app/src/main/res/drawable/bottom_background.xml" value="0.2385" />
         <entry key="app/src/main/res/drawable/bottom_sheet_bg.xml" value="0.18" />
@@ -116,6 +117,7 @@
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.11" />
         <entry key="app/src/main/res/layout/activity_my_close_bucket_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_my_open_bucket_detail.xml" value="0.26915219611848823" />
+        <entry key="app/src/main/res/layout/activity_report.xml" value="0.23333333333333334" />
         <entry key="app/src/main/res/layout/fragment_all_bucket_list.xml" value="0.29097222222222224" />
         <entry key="app/src/main/res/layout/fragment_bucket_detail.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_category_list.xml" value="0.1" />

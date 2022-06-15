@@ -1,9 +1,13 @@
 package com.zinc.berrybucket.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ReportInfo(
+    val id: String,
     val writer: String,
     val contents: String
-)
+) : java.io.Serializable
 
 data class ReportItems(
     val items: List<ReportItem>

@@ -26,15 +26,14 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
  * 댓글 롱크릭 시 노출되는 팝업
  *
  * @param isMyComment 내 댓글인지 확인
- * @param commentInfo 댓글 정보
+ * @param commenter 댓글 정보
  * @param onDismissRequest
  * @param commentOptionClicked
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CommentSelectedDialogLayer(
-    isMyComment: Boolean,
-    commentInfo: Commenter?,
+    commenter: Commenter,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (CommentOptionClicked) -> Unit
 ) {
@@ -46,57 +45,57 @@ fun CommentSelectedDialogLayer(
         usePlatformDefaultWidth = false
     )
 
-    if (commentInfo != null) {
-        Dialog(
-            properties = dialogProperties,
-            onDismissRequest = { onDismissRequest(false) }) {
-            Column(
+
+    Dialog(
+        properties = dialogProperties,
+        onDismissRequest = { onDismissRequest(false) }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 50.dp)
+                .background(color = Gray1, shape = RoundedCornerShape(8.dp))
+                .padding(24.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.commentOptionDialogTitle),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Gray10,
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+            Text(
+                text = stringResource(id = if (commenter.isMine) R.string.commentEdit else R.string.commentHide),
+                fontSize = 14.sp,
+                color = Gray10,
                 modifier = Modifier
+                    .padding(bottom = 20.dp)
                     .fillMaxWidth()
-                    .padding(horizontal = 50.dp)
-                    .background(color = Gray1, shape = RoundedCornerShape(8.dp))
-                    .padding(24.dp)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.commentOptionDialogTitle),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Gray10,
-                    modifier = Modifier.padding(bottom = 24.dp)
-                )
-                Text(
-                    text = stringResource(id = if (isMyComment) R.string.commentEdit else R.string.commentHide),
-                    fontSize = 14.sp,
-                    color = Gray10,
-                    modifier = Modifier
-                        .padding(bottom = 20.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            commentOptionClicked.invoke(
-                                CommentOptionClicked.FirstOptionClicked(
-                                    commentInfo.commentId
-                                )
+                    .clickable {
+                        commentOptionClicked.invoke(
+                            CommentOptionClicked.FirstOptionClicked(
+                                commenter.commentId
                             )
-                        }
-                )
-                Text(
-                    text = stringResource(id = if (isMyComment) R.string.commentDelete else R.string.commentReport),
-                    fontSize = 14.sp,
-                    color = Gray10,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            commentOptionClicked.invoke(
-                                CommentOptionClicked.SecondOptionClicked(
-                                    commentInfo.commentId
-                                )
+                        )
+                    }
+            )
+            Text(
+                text = stringResource(id = if (commenter.isMine) R.string.commentDelete else R.string.commentReport),
+                fontSize = 14.sp,
+                color = Gray10,
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        commentOptionClicked.invoke(
+                            CommentOptionClicked.SecondOptionClicked(
+                                commenter.commentId
                             )
-                        }
-                )
-            }
+                        )
+                    }
+            )
         }
     }
+
 }
 
 sealed class CommentOptionClicked {

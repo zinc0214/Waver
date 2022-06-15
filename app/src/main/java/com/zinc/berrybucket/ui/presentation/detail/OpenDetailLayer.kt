@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -29,12 +28,15 @@ import com.zinc.berrybucket.ui.compose.util.Keyboard
 import com.zinc.berrybucket.ui.compose.util.keyboardAsState
 import com.zinc.berrybucket.ui.compose.util.visibleLastIndex
 import com.zinc.berrybucket.ui.custom.TaggableEditText
+import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 
 @Composable
 fun OpenDetailLayer(
-    detailId: String, backPress: () -> Unit
+    detailId: String,
+    goToEvent: (GoToBucketDetailEvent) -> Unit,
+    backPress: () -> Unit
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
@@ -90,12 +92,13 @@ fun OpenDetailLayer(
                 }
 
                 if (commentOptionPopUpShowed.value.first) {
-                    if (vmDetailInfo?.commentInfo != null) {
+                    val commenter = vmDetailInfo?.commentInfo?.commenterList?.getOrNull(
+                        commentOptionPopUpShowed.value.second
+                    )
+
+                    if (commenter != null) {
                         CommentSelectedDialogLayer(
-                            isMyComment = true,
-                            commentInfo = vmDetailInfo?.commentInfo?.commenterList?.getOrNull(
-                                commentOptionPopUpShowed.value.second
-                            ),
+                            commenter = commenter,
                             onDismissRequest = {
                                 commentOptionPopUpShowed.value =
                                     false to commentOptionPopUpShowed.value.second
@@ -103,7 +106,22 @@ fun OpenDetailLayer(
                             commentOptionClicked = {
                                 when (it) {
                                     is CommentOptionClicked.FirstOptionClicked -> TODO()
-                                    is CommentOptionClicked.SecondOptionClicked -> TODO()
+                                    is CommentOptionClicked.SecondOptionClicked -> {
+                                        if (commenter.isMine) {
+                                            // go to ..?
+                                        } else {
+                                            val reportInfo = ReportInfo(
+                                                id = commenter.commentId,
+                                                writer = commenter.nickName,
+                                                contents = commenter.comment
+                                            )
+
+                                            // 신고이벤트
+                                            goToEvent.invoke(
+                                                GoToBucketDetailEvent.GoToCommentReport(reportInfo)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         )
@@ -118,17 +136,6 @@ fun OpenDetailLayer(
                             indication = null,
                             onClick = { optionPopUpShowed.value = false })
                 ) {
-
-                    if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
-                        Log.e(
-                            "ayhan",
-                            "last item : ${listScrollState.layoutInfo.visibleItemsInfo.last()}, " +
-                                    "${listScrollState.layoutInfo.visibleItemsInfo.last().key}," +
-                                    "${listScrollState.layoutInfo.visibleItemsInfo.last().key.hashCode()}"
-                        )
-                    }
-
-
                     DetailTopAppBar(
                         listState = listScrollState,
                         titlePosition = titleIndex,
@@ -283,7 +290,11 @@ private fun ContentView(
         }
 
         // TODO : 인터렉션 이슈 해결 필요
+
         item {
+            if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
+                return@item
+            }
             if (listState.layoutInfo.visibleItemsInfo.last().key.hashCode() >= flatButtonIndex || isCommentViewShown) {
                 DetailSuccessButtonView(
                     successClicked = {

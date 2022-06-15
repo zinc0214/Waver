@@ -9,11 +9,18 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.*
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.UIBucketInfoSimple
+import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
+import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.detail.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.OpenDetailLayer
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
@@ -21,6 +28,8 @@ import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.home.addHomeGraph
 import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
 import com.zinc.berrybucket.ui.presentation.my.MyBottomSheetScreen
+import com.zinc.berrybucket.ui.presentation.report.ReportScreen
+import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -77,33 +86,42 @@ fun BerryBucketApp() {
                 ) { innerPaddingModifier ->
                     NavHost(
                         navController = appState.navController,
-                        startDestination = MainDestinations.HOME_ROUTE,
+                        startDestination = HomeSections.MY.route,
                         modifier = Modifier.padding(innerPaddingModifier)
                     ) {
+
+                        addHomeGraph(onBucketSelected = { selected, nav ->
+                            when (selected) {
+                                is BucketSelected.GoToDetailBucket -> {
+                                    if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
+                                        appState.navigateToCloseBucketDetail(
+                                            selected.bucketInfo.id,
+                                            nav
+                                        )
+                                    } else {
+                                        appState.navigateToOpenBucketDetail(
+                                            selected.bucketInfo.id,
+                                            nav
+                                        )
+                                    }
+                                }
+                            }
+                        }, bottomSheetClicked = {
+                            currentBottomSheet = it
+                            isNeedToBottomSheetOpen.invoke(true)
+                        })
+
                         berryBucketNavGraph(
-                            onBucketSelected = { selected, nav ->
-                                when (selected) {
-                                    is BucketSelected.goToDetailBucket -> {
-                                        if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
-                                            appState.navigateToCloseBucketDetail(
-                                                selected.bucketInfo.id,
-                                                nav
-                                            )
-                                        } else {
-                                            appState.navigateToOpenBucketDetail(
-                                                selected.bucketInfo.id,
-                                                nav
-                                            )
-                                        }
+                            goToBucketDetailEvent = { eventInfo, nav ->
+                                when (eventInfo) {
+                                    is GoToBucketDetailEvent.GoToCommentReport -> {
+                                        appState.navigateToCommentReport(eventInfo.reportInfo, nav)
                                     }
                                 }
                             },
-                            bottomSheetItemClicked = {
-                                currentBottomSheet = it
-                                isNeedToBottomSheetOpen.invoke(true)
-                            },
                             backPress = appState::backPress
                         )
+                        bucketNavGraph(backPress = appState::backPress)
                     }
                 }
             }
@@ -120,21 +138,23 @@ object MainDestinations {
     const val BUCKET_ID_KEY = "bucketId"
 }
 
+object BucketDestinations {
+    const val BUCKET_COMMENT_REPORT = "bucket_comment_report"
+    const val REPORT_INFO = "report_info"
+}
+
 sealed class BucketSelected {
-    data class goToDetailBucket(val bucketInfo: UIBucketInfoSimple) : BucketSelected()
+    data class GoToDetailBucket(val bucketInfo: UIBucketInfoSimple) : BucketSelected()
+}
+
+sealed class GoToBucketDetailEvent {
+    data class GoToCommentReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
 }
 
 private fun NavGraphBuilder.berryBucketNavGraph(
-    onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
-    bottomSheetItemClicked: (BottomSheetScreenType) -> Unit,
+    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
-    navigation(
-        route = MainDestinations.HOME_ROUTE,
-        startDestination = HomeSections.MY.route
-    ) {
-        addHomeGraph(onBucketSelected, bottomSheetItemClicked)
-    }
     composable(
         "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
         arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {
@@ -143,7 +163,20 @@ private fun NavGraphBuilder.berryBucketNavGraph(
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
-        OpenDetailLayer(detailId, backPress)
+        OpenDetailLayer(
+            detailId = detailId,
+            goToEvent = {
+                when (it) {
+                    is GoToBucketDetailEvent.GoToCommentReport -> {
+                        goToBucketDetailEvent.invoke(
+                            GoToBucketDetailEvent.GoToCommentReport(it.reportInfo),
+                            backStackEntry
+                        )
+                    }
+                }
+            },
+            backPress = backPress
+        )
     }
     composable(
         "${MainDestinations.CLOSE_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
@@ -155,4 +188,20 @@ private fun NavGraphBuilder.berryBucketNavGraph(
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         CloseDetailLayer(detailId, backPress)
     }
+}
+
+private fun NavGraphBuilder.bucketNavGraph(
+    backPress: () -> Unit
+) {
+    navigation(
+        route = MainDestinations.OPEN_BUCKET_DETAIL,
+        startDestination = BUCKET_COMMENT_REPORT
+    ) {
+        composable(BUCKET_COMMENT_REPORT) { entry ->
+            val arguments = requireNotNull(entry.arguments)
+            val reportInfo = arguments.getRequiredSerializableExtra<ReportInfo>(REPORT_INFO)
+            ReportScreen(reportInfo = reportInfo, backPress = backPress)
+        }
+    }
+
 }

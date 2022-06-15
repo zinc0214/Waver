@@ -1,15 +1,6 @@
 <resources>
     <string name="app_name">베리버킷</string>
 
-    <!--타이틀 디스크립션-->
-    <string name="my">마이</string>
-    <string name="feed">피드</string>
-    <string name="search">검섹</string>
-    <string name="appMore">더보기</string>
-    <string name="write">버킷리스트 추가</string>
-    <string name="titleLeftDesc">뒤로가기</string>
-    <string name="closeDesc">닫기</string>
-    <string name="moreDesc">더보기 버튼</string>
 
     <!-- Common -->
     <string name="cancel">취소</string>
@@ -24,6 +15,17 @@
     <string name="countChange">완료횟수변경</string>
     <string name="selected">선택 버튼</string>
     <string name="copy">버킷리스트 복사 버튼</string>
+    <string name="back">뒤로가기</string>
+
+    <!--타이틀 디스크립션-->
+    <string name="my">마이</string>
+    <string name="feed">피드</string>
+    <string name="search">검섹</string>
+    <string name="appMore">더보기</string>
+    <string name="write">버킷리스트 추가</string>
+    <string name="titleLeftDesc">뒤로가기</string>
+    <string name="closeDesc">닫기</string>
+    <string name="moreDesc">더보기 버튼</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -101,10 +103,12 @@
     <string name="commentReport">신고</string>
 
     <!-- Report -->
+    <string name="commentReportTitle">댓글 신고</string>
     <string name="reportWriter">작성자</string>
     <string name="reportContents">내용</string>
     <string name="reportItemButton">신고버튼</string>
     <string name="reportActionButton">신고하기</string>
+    <string name="reportEtc">기타</string>
     <string name="reportTextFieldHint">신고 사유를 입력해주세요. (최대 500자) </string>
 
     <!-- Search -->

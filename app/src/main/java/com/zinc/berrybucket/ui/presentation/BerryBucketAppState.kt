@@ -13,7 +13,9 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
+import com.zinc.berrybucket.util.navigateWithArgument
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -88,6 +90,17 @@ class BerryBucketAppState(
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.CLOSE_BUCKET_DETAIL}/$bucketId")
+        }
+    }
+
+    fun navigateToCommentReport(reportInfo: ReportInfo, from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigateWithArgument(
+                route = BucketDestinations.BUCKET_COMMENT_REPORT,
+                args = listOf(
+                    BucketDestinations.REPORT_INFO to reportInfo
+                )
+            )
         }
     }
 }

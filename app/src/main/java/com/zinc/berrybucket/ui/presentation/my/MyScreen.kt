@@ -127,7 +127,7 @@ fun MyViewPager(
                 AllBucketLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         is MyPagerClickEvent.BucketItemClicked -> {
-                            onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
+                            onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
                         }
                         is MyPagerClickEvent.SearchClicked -> {
                             coroutineScope.launch {
@@ -183,7 +183,7 @@ fun MyViewPager(
                 DdayBucketLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         is MyPagerClickEvent.BucketItemClicked -> {
-                            onBucketSelected.invoke(BucketSelected.goToDetailBucket(it.info))
+                            onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
                         }
                         is MyPagerClickEvent.SearchClicked -> {
                             coroutineScope.launch {

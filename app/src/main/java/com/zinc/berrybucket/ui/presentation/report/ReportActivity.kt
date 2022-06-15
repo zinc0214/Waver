@@ -10,8 +10,6 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityReportBinding
-import com.zinc.berrybucket.model.ReportClickEvent
-import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.ReportItem
 import com.zinc.berrybucket.model.ReportItems
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,23 +35,23 @@ class ReportActivity : AppCompatActivity() {
                 ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
             )
             setContent {
-                ReportLayer(reportInfo = reportInfo, reportItems = reportItems, clickEvent = {
-                    when (it) {
-                        is ReportClickEvent.ReportClicked -> {
-                            // go to report
-                        }
-                        is ReportClickEvent.ReportItemSelected -> {
-                            Log.e(
-                                "ayhan",
-                                "it.reportItem :${it.reportItem.text} , ${it.reportItem.text == "기타"}"
-                            )
-                            binding.etcVisible = it.reportItem.text == "기타"
-                        }
-                        ReportClickEvent.BackClicked -> {
-                            finish()
-                        }
-                    }
-                })
+//                ReportLayer(reportInfo = reportInfo, reportItems = reportItems, clickEvent = {
+//                    when (it) {
+//                        is ReportClickEvent.ReportClicked -> {
+//                            // go to report
+//                        }
+//                        is ReportClickEvent.ReportItemSelected -> {
+//                            Log.e(
+//                                "ayhan",
+//                                "it.reportItem :${it.reportItem.text} , ${it.reportItem.text == "기타"}"
+//                            )
+//                            binding.etcVisible = it.reportItem.text == "기타"
+//                        }
+//                        ReportClickEvent.BackClicked -> {
+//                            finish()
+//                        }
+//                    }
+//                })
             }
         }
     }
@@ -80,10 +78,10 @@ class ReportActivity : AppCompatActivity() {
         }
     }
 
-    val reportInfo = ReportInfo(
-        writer = "마이버리 귀염둥이 이명선",
-        contents = "버킷리스트가 너무 재미없어요 좀 재밌게 써달란 말이에욥"
-    )
+//    val reportInfo = ReportInfo(
+//        writer = "마이버리 귀염둥이 이명선",
+//        contents = "버킷리스트가 너무 재미없어요 좀 재밌게 써달란 말이에욥"
+//    )
 
     val reportItems = ReportItems(
         items = listOf(

@@ -157,7 +157,7 @@ class DetailViewModel @Inject constructor(
                 listOf(
                     Commenter(
                         "1", "A", "아연이 내꺼지 너무너무 이쁘지", "@귀염둥이 이명선 베리버킷 댓글입니다.\n" +
-                                "베리버킷 댓글입니다."
+                                "베리버킷 댓글입니다.", false
                     ),
                     Commenter(
                         "2", "B",
