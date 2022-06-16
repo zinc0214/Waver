@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ReportClickEvent
-import com.zinc.berrybucket.model.ReportInfo
-import com.zinc.berrybucket.model.ReportItem
-import com.zinc.berrybucket.model.ReportItems
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.common.models.ReportInfo
+import com.zinc.common.models.ReportItem
+import com.zinc.common.models.ReportItems
 
 
 @Composable

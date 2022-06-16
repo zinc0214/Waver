@@ -31,6 +31,7 @@ import com.zinc.berrybucket.ui.custom.TaggableEditText
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
+import com.zinc.common.models.ReportInfo
 
 @Composable
 fun OpenDetailLayer(

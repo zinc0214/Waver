@@ -1,22 +1,6 @@
 package com.zinc.berrybucket.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class ReportInfo(
-    val id: String,
-    val writer: String,
-    val contents: String
-) : java.io.Serializable
-
-data class ReportItems(
-    val items: List<ReportItem>
-)
-
-data class ReportItem(
-    val text: String,
-    val id: String
-)
+import com.zinc.common.models.ReportItem
 
 sealed class ReportClickEvent {
     object BackClicked : ReportClickEvent()

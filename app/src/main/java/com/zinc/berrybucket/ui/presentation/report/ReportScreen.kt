@@ -8,12 +8,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.zinc.berrybucket.model.ReportInfo
-import com.zinc.berrybucket.model.ReportItem
-import com.zinc.berrybucket.model.ReportItems
 import com.zinc.berrybucket.ui.compose.theme.BaseTheme
 import com.zinc.berrybucket.ui.compose.util.Keyboard
 import com.zinc.berrybucket.ui.compose.util.keyboardAsState
+import com.zinc.common.models.ReportInfo
+import com.zinc.common.models.ReportItem
+import com.zinc.common.models.ReportItems
 
 
 @OptIn(ExperimentalComposeUiApi::class)

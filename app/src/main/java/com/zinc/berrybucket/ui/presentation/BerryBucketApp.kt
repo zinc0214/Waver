@@ -17,7 +17,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.DetailType
-import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
@@ -30,6 +29,7 @@ import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
 import com.zinc.berrybucket.ui.presentation.my.MyBottomSheetScreen
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
+import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)

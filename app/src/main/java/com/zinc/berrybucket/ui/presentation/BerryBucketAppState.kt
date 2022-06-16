@@ -13,9 +13,9 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.navigateWithArgument
+import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.CoroutineScope
 
 @Composable

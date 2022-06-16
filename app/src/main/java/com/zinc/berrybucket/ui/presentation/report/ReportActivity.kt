@@ -10,8 +10,8 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.databinding.DataBindingUtil
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.ActivityReportBinding
-import com.zinc.berrybucket.model.ReportItem
-import com.zinc.berrybucket.model.ReportItems
+import com.zinc.common.models.ReportItem
+import com.zinc.common.models.ReportItems
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
