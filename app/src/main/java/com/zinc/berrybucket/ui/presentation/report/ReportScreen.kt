@@ -4,15 +4,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.compose.theme.BaseTheme
 import com.zinc.berrybucket.ui.compose.util.Keyboard
 import com.zinc.berrybucket.ui.compose.util.keyboardAsState
 import com.zinc.common.models.ReportInfo
-import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 
 
@@ -21,7 +22,10 @@ import com.zinc.common.models.ReportItems
 fun ReportScreen(
     reportInfo: ReportInfo, backPress: () -> Unit
 ) {
-    val reportItems: ReportItems = ReportItems(listOf(ReportItem("0", ""), ReportItem("기타", "1")))
+    val viewModel: ReportViewModel = hiltViewModel()
+    viewModel.loadReportItmes()
+
+    val reportItems by viewModel.reportItemList.observeAsState()
 
     BaseTheme {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -53,7 +57,7 @@ fun ReportScreen(
                     },
                 scrollState = scrollState,
                 reportInfo = reportInfo,
-                reportItems = reportItems,
+                reportItems = reportItems ?: ReportItems(items = emptyList()),
                 keyboardController = keyboardController,
                 onImeAction = {
                     etcText = it

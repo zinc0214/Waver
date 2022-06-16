@@ -34,4 +34,7 @@ interface BerryBucketApi {
 
     @GET("/search/recommendList")
     suspend fun loadRecommendList(): RecommendList
+
+    @GET("/report/comment")
+    suspend fun loadReportItems(): ReportItems
 }
