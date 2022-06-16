@@ -259,7 +259,7 @@ private fun ContentView(
         modifier = modifier, state = listState
     ) {
         detailInfo.imageInfo?.let {
-            item {
+            item(key = "imageViewPager") {
                 ImageViewPagerInsideIndicator(
                     modifier = Modifier.fillMaxWidth(),
                     indicatorModifier = Modifier.padding(bottom = 16.dp, end = 16.dp),
@@ -268,15 +268,15 @@ private fun ContentView(
             }
         }
 
-        item {
+        item(key = "profileView") {
             ProfileView(detailInfo.profileInfo)
         }
 
-        item {
+        item(key = "detailDescLayer") {
             DetailDescLayer(detailInfo.descInfo)
         }
 
-        item {
+        item(key = "memoView") {
             if (detailInfo.memoInfo != null) {
                 DetailMemoLayer(
                     modifier = Modifier.padding(
@@ -291,7 +291,7 @@ private fun ContentView(
 
         // TODO : 인터렉션 이슈 해결 필요
 
-        item {
+        item(key = "flatDetailSuccessButton") {
             if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
                 return@item
             }
@@ -310,19 +310,19 @@ private fun ContentView(
             }
         }
 
-        item {
+        item(key = "spacer") {
             Spacer(modifier = Modifier.height(30.dp))
         }
 
 
         detailInfo.commentInfo?.let {
-            item {
+            item(key = "commentLine") {
                 CommentLine()
             }
-            item {
+            item(key = "commentCountView") {
                 CommentCountView(it.commentCount)
             }
-            item {
+            item(key = "commentLayer") {
                 DetailCommentLayer(commentInfo = detailInfo.commentInfo, commentLongClicked = {
                     clickEvent.invoke(CommentLongClicked(it))
                 })

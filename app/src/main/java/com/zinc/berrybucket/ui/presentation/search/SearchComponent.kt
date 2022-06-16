@@ -225,15 +225,18 @@ fun RecommendListView(
                 .fillMaxWidth()
                 .padding(top = 32.dp),
         ) {
-            items(recommendList.items, itemContent = {
-                RecommendTitleView(it)
-                RecommendBucketListView(it.items)
-                if (recommendList.items.last() != it) {
-                    SearchDivider(modifier = Modifier.padding(vertical = 32.dp))
-                } else {
-                    Spacer(modifier = Modifier.height(32.dp))
-                }
-            })
+            items(
+                items = recommendList.items,
+                key = { it.type },
+                itemContent = {
+                    RecommendTitleView(it)
+                    RecommendBucketListView(it.items)
+                    if (recommendList.items.last() != it) {
+                        SearchDivider(modifier = Modifier.padding(vertical = 32.dp))
+                    } else {
+                        Spacer(modifier = Modifier.height(32.dp))
+                    }
+                })
         }
     }
 
