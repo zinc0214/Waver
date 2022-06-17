@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.compose.theme.BaseTheme
 import com.zinc.berrybucket.ui.compose.util.Keyboard
@@ -56,7 +57,10 @@ fun ReportScreen(
                         top.linkTo(topAppBar.bottom)
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    },
+                        bottom.linkTo(parent.bottom)
+                        height = Dimension.fillToConstraints
+                    }
+                    .padding(bottom = 70.dp),
                 scrollState = scrollState,
                 reportInfo = reportInfo,
                 reportItems = reportItems ?: ReportItems(items = emptyList()),

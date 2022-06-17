@@ -1,12 +1,11 @@
 package com.zinc.berrybucket.ui.presentation.report
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -18,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,6 +38,7 @@ import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -93,7 +94,7 @@ fun ReportTopAppBar(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
                     },
-                color = Gray10
+                color = Gray3
             )
         }
     }
@@ -146,18 +147,12 @@ fun ReportContentView(
             ReportItemsLayer(
                 reportItems = reportItems,
                 selectedItem = currentReportItem,
+                onImeAction = onImeAction,
+                keyboardController = keyboardController,
                 selectItem = { selectItem ->
                     currentReportItem = selectItem
                     clickEvent.invoke(ReportClickEvent.ReportItemSelected(selectItem))
                 })
-        }
-        item {
-            if (currentReportItem.text == "기타") {
-                ETCTextField(
-                    onImeAction = onImeAction,
-                    keyboardController = keyboardController
-                )
-            }
         }
     }
 }
@@ -193,11 +188,14 @@ fun ReportInfoLayer(reportInfo: ReportInfo) {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ReportItemsLayer(
     reportItems: ReportItems,
     selectedItem: ReportItem,
-    selectItem: (ReportItem) -> Unit
+    selectItem: (ReportItem) -> Unit,
+    onImeAction: (String) -> Unit,
+    keyboardController: SoftwareKeyboardController?
 ) {
     reportItems.items.forEach { item ->
         Column {
@@ -206,6 +204,13 @@ fun ReportItemsLayer(
                 isSelected = (item == selectedItem),
                 selectItem = selectItem
             )
+
+            if (selectedItem.text == "기타" && item.text == "기타") {
+                ETCTextField(
+                    onImeAction = onImeAction,
+                    keyboardController = keyboardController
+                )
+            }
         }
     }
 }
@@ -244,7 +249,7 @@ fun ReportItemLayer(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun ETCTextField(
     onImeAction: (String) -> Unit,
@@ -252,12 +257,14 @@ fun ETCTextField(
 ) {
     val hintText = stringResource(id = R.string.reportTextFieldHint)
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 28.dp)
-            .padding(top = 24.dp)
+            .padding(horizontal = 28.dp, vertical = 24.dp)
+            .bringIntoViewRequester(bringIntoViewRequester)
     ) {
 
         BasicTextField(
@@ -281,6 +288,13 @@ fun ETCTextField(
             },
             modifier = Modifier
                 .fillMaxWidth()
+                .onFocusEvent { focusState ->
+                    if (focusState.isFocused) {
+                        coroutineScope.launch {
+                            bringIntoViewRequester.bringIntoView()
+                        }
+                    }
+                }
         )
 
         Divider(
