@@ -2,12 +2,14 @@ package com.zinc.berrybucket.ui.presentation.report
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.compose.theme.BaseTheme
@@ -72,10 +74,11 @@ fun ReportScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .constrainAs(bottomButton) {
-                            top.linkTo(topAppBar.bottom)
+                            start.linkTo(parent.start)
                             bottom.linkTo(parent.bottom)
                             end.linkTo(parent.end)
-                        },
+                        }
+                        .padding(bottom = 28.dp),
                     reportButtonClicked = {
 
                     }
