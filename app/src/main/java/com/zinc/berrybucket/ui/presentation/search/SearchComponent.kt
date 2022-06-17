@@ -222,8 +222,13 @@ fun RecommendListView(
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 32.dp),
+                .fillMaxWidth(),
+            contentPadding = WindowInsets.safeContent.add(
+                WindowInsets(
+                    top = 32.dp,
+                    bottom = 32.dp
+                )
+            ).asPaddingValues()
         ) {
             items(
                 items = recommendList.items,
@@ -233,8 +238,6 @@ fun RecommendListView(
                     RecommendBucketListView(it.items)
                     if (recommendList.items.last() != it) {
                         SearchDivider(modifier = Modifier.padding(vertical = 32.dp))
-                    } else {
-                        Spacer(modifier = Modifier.height(32.dp))
                     }
                 })
         }
