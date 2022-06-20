@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.ui.compose.theme.Gray10
+import com.zinc.berrybucket.ui.compose.theme.Gray3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 
 
@@ -35,7 +37,7 @@ fun DetailTopAppBar(
             .fillMaxWidth()
             .height(52.dp)
     ) {
-        val (closeButton, titleView, moreButton) = createRefs()
+        val (closeButton, titleView, moreButton, divider) = createRefs()
 
         IconButton(
             image = R.drawable.btn40close,
@@ -81,5 +83,16 @@ fun DetailTopAppBar(
                 },
             onClick = { clickEvent(DetailAppBarClickEvent.MoreOptionClicked) }
         )
+
+        if (isTitleScrolled) {
+            Divider(
+                modifier = Modifier.constrainAs(divider) {
+                    top.linkTo(titleView.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
+                color = Gray3
+            )
+        }
     }
 }
