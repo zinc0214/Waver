@@ -35,10 +35,16 @@ fun ReportScreen(
             val (topAppBar, content, bottomButton) = createRefs()
 
             val scrollState = rememberLazyListState()
-            val isScrolled = scrollState.firstVisibleItemIndex != 0
+            //   val isScrolled = scrollState.firstVisibleItemIndex != 0
             val keyboardController = LocalSoftwareKeyboardController.current
             val isKeyboardStatus by keyboardAsState()
             var etcText by remember { mutableStateOf("") }
+
+            val isScrolled by remember {
+                derivedStateOf {
+                    scrollState.firstVisibleItemIndex != 0
+                }
+            }
 
             ReportTopAppBar(modifier = Modifier
                 .fillMaxWidth()

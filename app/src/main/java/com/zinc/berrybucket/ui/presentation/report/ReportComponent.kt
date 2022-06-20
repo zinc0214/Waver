@@ -131,8 +131,43 @@ fun ReportContentView(
         state = scrollState
     ) {
         item {
-            ReportInfoLayer(reportInfo)
+            Text(
+                text = stringResource(id = R.string.reportWriter),
+                fontSize = 13.sp,
+                color = Gray7,
+                modifier = Modifier.padding(top = 28.dp, start = 28.dp, end = 28.dp)
+            )
         }
+
+        item {
+            Text(
+                modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
+                text = reportInfo.writer,
+                fontSize = 14.sp,
+                color = Gray10
+            )
+        }
+
+        item {
+            Text(
+                modifier = Modifier.padding(top = 8.dp, start = 28.dp, end = 28.dp),
+                text = stringResource(id = R.string.reportContents),
+                fontSize = 13.sp,
+                color = Gray7
+            )
+        }
+
+        item {
+            Text(
+                modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
+                text = reportInfo.contents,
+                fontSize = 14.sp,
+                color = Gray10,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        
         item {
             Divider(
                 modifier = Modifier
@@ -154,37 +189,6 @@ fun ReportContentView(
                     clickEvent.invoke(ReportClickEvent.ReportItemSelected(selectItem))
                 })
         }
-    }
-}
-
-@Composable
-fun ReportInfoLayer(reportInfo: ReportInfo) {
-    Column(modifier = Modifier.padding(top = 28.dp, start = 28.dp, end = 28.dp)) {
-        Text(
-            text = stringResource(id = R.string.reportWriter),
-            fontSize = 13.sp,
-            color = Gray7
-        )
-        Text(
-            modifier = Modifier.padding(top = 4.dp),
-            text = reportInfo.writer,
-            fontSize = 14.sp,
-            color = Gray10
-        )
-        Text(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stringResource(id = R.string.reportContents),
-            fontSize = 13.sp,
-            color = Gray7
-        )
-        Text(
-            modifier = Modifier.padding(top = 4.dp),
-            text = reportInfo.contents,
-            fontSize = 14.sp,
-            color = Gray10,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
     }
 }
 
