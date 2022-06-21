@@ -35,7 +35,6 @@ fun CategoryLayer(
     categoryList?.let {
         Column(
             modifier = modifier
-                .fillMaxWidth()
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))

@@ -31,10 +31,7 @@ fun AllBucketLayer(
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
 
     allBucketInfo?.let {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        Column {
             AllBucketTopView(
                 modifier = Modifier,
                 allBucketInfo = it,

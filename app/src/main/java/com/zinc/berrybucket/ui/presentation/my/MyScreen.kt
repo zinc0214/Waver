@@ -9,6 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
@@ -119,8 +120,7 @@ fun MyViewPager(
     HorizontalPager(
         count = tabItems.size,
         state = pagerState,
-        modifier = Modifier
-            .fillMaxWidth()
+        verticalAlignment = Alignment.Top
     ) { page ->
         when (page) {
             0 -> {
@@ -153,6 +153,7 @@ fun MyViewPager(
                         }
                     }
                 })
+                return@HorizontalPager
             }
             1 -> {
                 CategoryLayer(viewModel = viewModel, clickEvent = {
@@ -178,6 +179,7 @@ fun MyViewPager(
 
                     }
                 })
+                return@HorizontalPager
             }
             2 -> {
                 DdayBucketLayer(viewModel = viewModel, clickEvent = {
@@ -210,6 +212,7 @@ fun MyViewPager(
                         }
                     }
                 })
+                return@HorizontalPager
             }
         }
     }

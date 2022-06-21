@@ -26,10 +26,7 @@ fun DdayBucketLayer(
     val dDayBucketList by viewModel.ddayBucketList.observeAsState()
 
     dDayBucketList?.let {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
+        Column {
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             BucketListView(it.bucketList.parseToUI(), MyTabType.DDAY,
