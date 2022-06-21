@@ -1,10 +1,7 @@
 package com.zinc.berrybucket.ui.presentation.search
 
 import android.util.Log
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -15,8 +12,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -249,25 +248,66 @@ fun RecommendListView(
 private fun RecommendTitleView(recommendItem: RecommendItem) {
     val type =
         RecommendType.values().find { it.title == recommendItem.type } ?: RecommendType.RECOMMEND
-    Column(
+    ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 28.dp)
     ) {
-        Row {
-            Image(
-                painter = if (type == RecommendType.POPULAR) painterResource(R.drawable.btn_32_like_on) else painterResource(
-                    R.drawable.btn_32_star
-                ), contentDescription = null, modifier = Modifier
-                    .size(24.dp)
-                    .padding(end = 4.dp)
-            )
-            Text(text = type.toKorean(), fontSize = 15.sp, color = Gray10)
-        }
 
-        TagListView(
-            tagList = recommendItem.tagList
-        )
+        val (leftContent, rightContent) = createRefs()
+
+        Column(
+            modifier = Modifier
+                .constrainAs(leftContent) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(if (type == RecommendType.POPULAR) rightContent.start else parent.end)
+                    width = Dimension.fillToConstraints
+                }
+        ) {
+            Row {
+                Image(
+                    painter = if (type == RecommendType.POPULAR) painterResource(R.drawable.btn_32_like_on) else painterResource(
+                        R.drawable.btn_32_star
+                    ), contentDescription = null, modifier = Modifier
+                        .size(24.dp)
+                        .padding(end = 4.dp)
+                )
+                Text(text = type.toKorean(), fontSize = 15.sp, color = Gray10)
+            }
+
+            TagListView(
+                tagList = recommendItem.tagList
+            )
+        }
+        if (type == RecommendType.RECOMMEND) {
+            Row(
+                modifier = Modifier
+                    .constrainAs(rightContent) {
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .background(shape = RoundedCornerShape(4.dp), color = Gray1)
+                    .border(width = 1.dp, color = Gray4, shape = RoundedCornerShape(4.dp))
+                    .padding(start = 8.dp, top = 6.dp, bottom = 6.dp, end = 12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painterResource(R.drawable.btn_16_refresh),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .height(24.dp)
+                        .width(24.dp),
+                    contentScale = ContentScale.Crop
+                )
+                Text(
+                    text = stringResource(id = R.string.keywordRefresh),
+                    fontSize = 13.sp,
+                    color = Gray9
+                )
+
+            }
+        }
     }
 }
 
