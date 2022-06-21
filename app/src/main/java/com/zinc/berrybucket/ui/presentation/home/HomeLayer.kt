@@ -20,15 +20,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.presentation.BucketSelected
+import com.zinc.berrybucket.ui.presentation.SearchEvent
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.feed.Feed
 import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
 import com.zinc.berrybucket.ui.presentation.my.MyScreen
-import com.zinc.berrybucket.ui.presentation.search.SearchScreen
+import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
 
 fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
+    onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -46,7 +48,11 @@ fun NavGraphBuilder.addHomeGraph(
         Feed()
     }
     composable(HomeSections.SEARCH.route) { from ->
-        SearchScreen()
+        RecommendScreen(
+            onSearchEvent = {
+                onSearchEvent.invoke(it, from)
+            }
+        )
     }
     composable(HomeSections.MORE.route) {
         //  MORE(modifier)

@@ -103,6 +103,12 @@ class BerryBucketAppState(
             )
         }
     }
+
+    fun navigateToSearch(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(SearchDestinations.GO_TO_SEARCH)
+        }
+    }
 }
 
 /**

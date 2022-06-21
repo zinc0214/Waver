@@ -7,11 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -19,9 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -42,7 +40,7 @@ import com.zinc.common.models.SearchRecommendCategory
 
 
 @Composable
-fun SearchTopBar(
+fun RecommendTopBar(
     modifier: Modifier,
     editViewClicked: () -> Unit,
     height: Dp,
@@ -54,7 +52,7 @@ fun SearchTopBar(
         if (height >= 130.dp) {
             SearchTitle()
         }
-        SearchEditView {
+        SearchTextView {
             editViewClicked.invoke()
         }
         if (height >= 150.dp) {
@@ -79,38 +77,29 @@ fun SearchTitle() {
 }
 
 @Composable
-private fun SearchEditView(
+private fun SearchTextView(
     editViewClicked: () -> Unit
 ) {
     val hintText = stringResource(id = R.string.myBucketSearchHint)
-    var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(color = Gray1)
-        .padding(top = 20.dp, bottom = 29.dp, start = 28.dp, end = 28.dp)
-        .height(48.dp)
-        .background(shape = RoundedCornerShape(8.dp), color = Gray2)
-        .clickable {
-            editViewClicked()
-        }) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = Gray1)
+            .padding(top = 20.dp, bottom = 29.dp, start = 28.dp, end = 28.dp)
+            .height(48.dp)
+            .background(shape = RoundedCornerShape(8.dp), color = Gray2)
+            .clickable {
+                editViewClicked()
+            }) {
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (searchEdit, searchButton) = createRefs()
 
-            BasicTextField(value = searchText,
-                textStyle = TextStyle(
-                    color = Gray10, fontSize = 14.sp, fontWeight = FontWeight.Medium
-                ),
-                onValueChange = { searchText = it },
-                maxLines = 1,
-                decorationBox = { innerTextField ->
-                    Row {
-                        if (searchText.text.isEmpty()) {
-                            Text(text = hintText, color = Gray6, fontSize = 20.sp)
-                        }
-                        innerTextField()  //<-- Add this
-                    }
-                },
+            Text(
+                text = hintText,
+                color = Gray6,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(searchEdit) {
@@ -185,7 +174,7 @@ private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boo
 }
 
 @Composable
-fun SearchDivider(modifier: Modifier = Modifier) {
+fun RecommendDivider(modifier: Modifier = Modifier) {
     Divider(
         color = Gray2,
         modifier = modifier
@@ -236,7 +225,7 @@ fun RecommendListView(
                     RecommendTitleView(it)
                     RecommendBucketListView(it.items)
                     if (recommendList.items.last() != it) {
-                        SearchDivider(modifier = Modifier.padding(vertical = 32.dp))
+                        RecommendDivider(modifier = Modifier.padding(vertical = 32.dp))
                     }
                 })
         }

@@ -12,10 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.ui.presentation.SearchEvent
 import kotlin.math.min
 
 @Composable
-fun SearchScreen() {
+fun RecommendScreen(
+    onSearchEvent: (SearchEvent.GoToSearch) -> Unit
+) {
     val viewModel: SearchViewModel = hiltViewModel()
     viewModel.loadSearchRecommendCategoryItems()
     viewModel.loadRecommendList()
@@ -37,17 +40,17 @@ fun SearchScreen() {
     val density = LocalDensity.current
     val animatedHeight by animateDpAsState(targetValue = with(density) { height.toDp() })
     Column(modifier = Modifier.fillMaxSize()) {
-        SearchTopBar(
+        RecommendTopBar(
             modifier = Modifier
                 .fillMaxWidth(),
             height = animatedHeight,
             recommendCategoryItemList = searchRecommendCategoryItems,
             editViewClicked = {
-
+                onSearchEvent.invoke(SearchEvent.GoToSearch)
             }
         )
 
-        SearchDivider()
+        RecommendDivider()
 
         recommendList?.let { list ->
             RecommendListView(
@@ -62,6 +65,5 @@ fun SearchScreen() {
                 recommendList = list,
             )
         }
-
     }
 }

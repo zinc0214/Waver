@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zinc.common.models.RecommendList
-import com.zinc.common.models.SearchRecommendCategory
+import com.zinc.common.models.*
 import com.zinc.domain.usecases.search.LoadRecommendList
 import com.zinc.domain.usecases.search.LoadSearchRecommendCategoryItems
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +22,9 @@ class SearchViewModel @Inject constructor(
 
     private val _recommendList = MutableLiveData<RecommendList>()
     val recommendList: LiveData<RecommendList> get() = _recommendList
+
+    private val _searchRecommendItems = MutableLiveData<SearchRecommendItems>()
+    val searchRecommendItems: LiveData<SearchRecommendItems> get() = _searchRecommendItems
 
     fun loadSearchRecommendCategoryItems() {
         viewModelScope.launch {
@@ -46,5 +48,12 @@ class SearchViewModel @Inject constructor(
 
             }
         }
+    }
+
+    fun loadSearchRecommendItems() {
+        _searchRecommendItems.value = SearchRecommendItems(
+            recentWords = listOf(RecentItem("1", "여행"), RecentItem("2", "맛집")),
+            recommendWords = listOf(KeyWordItem("1", "여행", "22"))
+        )
     }
 }

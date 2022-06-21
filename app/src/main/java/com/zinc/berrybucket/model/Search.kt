@@ -5,6 +5,9 @@ enum class RecommendType(val title: String) {
     RECOMMEND(title = "recommend");
 }
 
+enum class SearchRecommendType {
+    RECENT, RECOMMEND
+}
 fun RecommendType.toKorean(): String {
     return when (this) {
         RecommendType.POPULAR -> {

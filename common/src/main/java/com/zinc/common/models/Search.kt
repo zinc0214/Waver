@@ -21,3 +21,19 @@ data class RecommendBucketItem(
     val title: String,
     val isCopied: Boolean,
 )
+
+data class SearchRecommendItems(
+    val recentWords: List<RecentItem>,
+    val recommendWords: List<KeyWordItem>
+)
+
+data class RecentItem(
+    val id: String,
+    val word: String
+)
+
+data class KeyWordItem(
+    val id: String,
+    val keyword: String,
+    val count: String
+)
