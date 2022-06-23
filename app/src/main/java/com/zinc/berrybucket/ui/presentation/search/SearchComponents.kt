@@ -266,11 +266,20 @@ private fun RecentSearchItem(recentItem: RecentItem) {
 
 @Composable
 private fun RecommendKeyWordView(ketWordItems: List<KeyWordItem>) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(items = ketWordItems) { item ->
-            RecommendKeyWordItem(item)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            items(items = ketWordItems) { item ->
+                RecommendKeyWordItem(item)
+            }
         }
+
+        KeyWordChangeButton(
+            modifier = Modifier
+                .padding(top = 40.dp, bottom = 32.dp)
+                .align(Alignment.CenterHorizontally)
+        )
     }
+
 }
 
 @Composable

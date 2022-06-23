@@ -270,32 +270,10 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
             )
         }
         if (type == RecommendType.RECOMMEND) {
-            Row(
-                modifier = Modifier
-                    .constrainAs(rightContent) {
-                        bottom.linkTo(parent.bottom)
-                        end.linkTo(parent.end)
-                    }
-                    .background(shape = RoundedCornerShape(4.dp), color = Gray1)
-                    .border(width = 1.dp, color = Gray4, shape = RoundedCornerShape(4.dp))
-                    .padding(start = 8.dp, top = 6.dp, bottom = 6.dp, end = 12.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painterResource(R.drawable.btn_16_refresh),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .height(24.dp)
-                        .width(24.dp),
-                    contentScale = ContentScale.Crop
-                )
-                Text(
-                    text = stringResource(id = R.string.keywordRefresh),
-                    fontSize = 13.sp,
-                    color = Gray9
-                )
-
-            }
+            KeyWordChangeButton(modifier = Modifier.constrainAs(rightContent) {
+                bottom.linkTo(parent.bottom)
+                end.linkTo(parent.end)
+            })
         }
     }
 }
@@ -370,5 +348,30 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
                         .size(32.dp))
             }
         }
+    }
+}
+
+@Composable
+fun KeyWordChangeButton(modifier: Modifier) {
+    Row(
+        modifier = modifier
+            .background(shape = RoundedCornerShape(4.dp), color = Gray1)
+            .border(width = 1.dp, color = Gray4, shape = RoundedCornerShape(4.dp))
+            .padding(start = 8.dp, top = 6.dp, bottom = 6.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painterResource(R.drawable.btn_16_refresh),
+            contentDescription = null,
+            modifier = Modifier
+                .height(24.dp)
+                .width(24.dp),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = stringResource(id = R.string.keywordRefresh),
+            fontSize = 13.sp,
+            color = Gray9
+        )
     }
 }
