@@ -1,27 +1,32 @@
 package com.zinc.berrybucket.ui.presentation.search
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -30,9 +35,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.SearchRecommendType
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.common.models.KeyWordItem
-import com.zinc.common.models.RecentItem
-import com.zinc.common.models.SearchRecommendItems
+import com.zinc.common.models.*
 
 
 @Composable
@@ -312,5 +315,198 @@ private fun RecommendKeyWordItem(item: KeyWordItem) {
                     end.linkTo(parent.end)
                 }
         )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SearchResultView(
+    resultItems: SearchResultItems
+) {
+    var needBucketMoreButtonShow by remember {
+        mutableStateOf(resultItems.bucketItems.size > 3)
+    }
+    var needUserMoreButtonShow by remember {
+        mutableStateOf(resultItems.userItems.size > 3)
+    }
+    var bucketVisibleItem by remember {
+        mutableStateOf(if (needBucketMoreButtonShow) resultItems.bucketItems.take(3) else resultItems.bucketItems)
+    }
+    var userVisibleItem by remember {
+        mutableStateOf(if (needUserMoreButtonShow) resultItems.userItems.take(3) else resultItems.userItems)
+    }
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 28.dp),
+        contentPadding = PaddingValues(
+            top = 16.dp, bottom = 70.dp
+        )
+    ) {
+
+        items(
+            items = bucketVisibleItem,
+            key = {
+                it.id
+            },
+            itemContent = {
+                RecommendBucketItemView(
+                    modifier = Modifier.animateItemPlacement(),
+                    item = it
+                )
+            }
+        )
+        if (needBucketMoreButtonShow) {
+            item(
+                key = "BucketShowMoreButton"
+            ) {
+                ShowMoreButton {
+                    bucketVisibleItem = resultItems.bucketItems
+                    needBucketMoreButtonShow = false
+                }
+            }
+        }
+
+        item(
+            key = "BucketDivider"
+        ) {
+            Divider(
+                color = Gray3,
+                modifier = Modifier.padding(
+                    top = if (needBucketMoreButtonShow) 0.dp else 28.dp,
+                    bottom = 15.dp
+                )
+            )
+        }
+
+        items(
+            items = userVisibleItem,
+            key = {
+                it.userId
+            },
+            itemContent = {
+                SearchUserItemView(
+                    modifier = Modifier.animateItemPlacement(),
+                    item = it
+                )
+            }
+        )
+
+        if (needUserMoreButtonShow) {
+            item(
+                key = "UserShowMoreButton"
+            ) {
+                ShowMoreButton {
+                    userVisibleItem = resultItems.userItems
+                    needUserMoreButtonShow = false
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ShowMoreButton(buttonClicked: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .padding(vertical = 16.dp)
+            .fillMaxWidth()
+            .background(color = Gray2, shape = RoundedCornerShape(2.dp))
+            .clip(shape = RoundedCornerShape(2.dp))
+            .clickable {
+                buttonClicked()
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(id = R.string.showMore),
+            color = Gray7,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(vertical = 10.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun SearchUserItemView(
+    modifier: Modifier = Modifier,
+    item: UserItem
+) {
+    Card(
+        backgroundColor = Gray1,
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, Gray3),
+        elevation = 0.dp,
+        modifier = modifier.padding(top = 12.dp)
+    ) {
+
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+            val (profileImage, nickNameView, followButton) = createRefs()
+
+            if (item.profileImageUrl != null) {
+                Image(
+                    painter = painterResource(id = R.drawable.kakao),
+                    contentDescription = stringResource(
+                        id = R.string.feedProfileImage
+                    ),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .padding(start = 12.dp)
+                        .size(32.dp)
+                        .aspectRatio(1f)
+                        .clip(shape = RoundedCornerShape(12.dp))
+                        .constrainAs(profileImage) {
+                            linkTo(
+                                top = parent.top,
+                                bottom = parent.bottom,
+                                topMargin = 16.dp,
+                                bottomMargin = 16.dp
+                            )
+                            start.linkTo(parent.start)
+                        }
+                )
+            }
+
+
+            Text(text = item.nickName,
+                fontSize = 14.sp,
+                color = Gray10,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                modifier = Modifier.constrainAs(nickNameView) {
+                    linkTo(
+                        top = parent.top,
+                        bottom = parent.bottom,
+                        topMargin = 22.dp,
+                        bottomMargin = 22.dp
+                    )
+                    linkTo(
+                        start = profileImage.end,
+                        end = followButton.start,
+                        startMargin = 12.dp,
+                        endMargin = 12.dp
+                    )
+                    width = Dimension.fillToConstraints
+                })
+
+            IconButton(onClick = {
+                // can copied if is unCopied
+            },
+                image = if (item.isFollowed) R.drawable.btn_32_following else R.drawable.btn_32_not_follow,
+                contentDescription = stringResource(id = R.string.copy),
+                modifier = Modifier
+                    .constrainAs(followButton) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(end = 12.dp)
+                    .size(32.dp))
+        }
+
     }
 }

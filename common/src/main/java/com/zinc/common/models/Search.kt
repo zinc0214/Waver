@@ -12,10 +12,10 @@ data class RecommendList(
 data class RecommendItem(
     val type: String,
     val tagList: List<String>,
-    val items: List<RecommendBucketItem>
+    val items: List<SearchBucketItem>
 )
 
-data class RecommendBucketItem(
+data class SearchBucketItem(
     val id: String,
     val thumbnail: String? = null,
     val title: String,
@@ -37,3 +37,16 @@ data class KeyWordItem(
     val keyword: String,
     val count: String
 )
+
+data class SearchResultItems(
+    val bucketItems: List<SearchBucketItem>,
+    val userItems: List<UserItem>
+)
+
+data class UserItem(
+    val userId: String,
+    val profileImageUrl: String? = null,
+    val nickName: String,
+    val isFollowed: Boolean
+)
+

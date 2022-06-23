@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,9 +34,9 @@ import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.ui.presentation.common.rememberNestedScrollConnection
-import com.zinc.common.models.RecommendBucketItem
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
+import com.zinc.common.models.SearchBucketItem
 import com.zinc.common.models.SearchRecommendCategory
 
 
@@ -211,12 +212,9 @@ fun RecommendListView(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(),
-            contentPadding = WindowInsets.safeContent.add(
-                WindowInsets(
-                    top = 32.dp,
-                    bottom = 32.dp
-                )
-            ).asPaddingValues()
+            contentPadding = PaddingValues(
+                top = 32.dp, bottom = 32.dp
+            )
         ) {
             items(
                 items = recommendList.items,
@@ -230,7 +228,6 @@ fun RecommendListView(
                 })
         }
     }
-
 }
 
 @Composable
@@ -278,27 +275,33 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
     }
 }
 
+
 @Composable
-private fun RecommendBucketListView(list: List<RecommendBucketItem>) {
+fun RecommendBucketListView(list: List<SearchBucketItem>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 28.dp)
     ) {
         list.forEach {
-            RecommendBucketItemView(it)
+            RecommendBucketItemView(
+                item = it
+            )
         }
     }
 }
 
 @Composable
-private fun RecommendBucketItemView(item: RecommendBucketItem) {
+fun RecommendBucketItemView(
+    modifier: Modifier = Modifier,
+    item: SearchBucketItem
+) {
     Card(
         backgroundColor = Gray1,
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, Gray3),
         elevation = 0.dp,
-        modifier = Modifier.padding(top = 16.dp)
+        modifier = modifier.padding(top = 12.dp)
     ) {
         Column {
             if (item.thumbnail != null) {
@@ -314,9 +317,12 @@ private fun RecommendBucketItemView(item: RecommendBucketItem) {
             ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
                 val (bucketTitle, copiedIcon) = createRefs()
 
-                Text(text = item.title,
+                Text(
+                    text = item.title,
                     fontSize = 14.sp,
                     color = Gray10,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
                     modifier = Modifier.constrainAs(bucketTitle) {
                         linkTo(
                             top = parent.top,

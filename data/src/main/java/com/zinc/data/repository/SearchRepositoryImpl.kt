@@ -1,8 +1,8 @@
 package com.zinc.data.repository
 
-import com.zinc.common.models.RecommendBucketItem
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
+import com.zinc.common.models.SearchBucketItem
 import com.zinc.common.models.SearchRecommendCategory
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.SearchRepository
@@ -25,23 +25,23 @@ internal class SearchRepositoryImpl @Inject constructor(
         //  return berryBucketApi.loadRecommendList()
 
         val bucketItem = listOf(
-            RecommendBucketItem(
+            SearchBucketItem(
                 id = "1",
                 thumbnail = "1",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
                 isCopied = false
             ),
-            RecommendBucketItem(
+            SearchBucketItem(
                 id = "2",
                 title = "버킷리스트 타이틀",
                 isCopied = true
             ),
-            RecommendBucketItem(
+            SearchBucketItem(
                 id = "3",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
                 isCopied = false
             ),
-            RecommendBucketItem(
+            SearchBucketItem(
                 id = "4",
                 title = "버킷리스트 타이틀",
                 isCopied = true

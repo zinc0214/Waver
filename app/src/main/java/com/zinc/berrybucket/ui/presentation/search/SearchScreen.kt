@@ -19,6 +19,7 @@ fun SearchScreen(
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItems by viewModel.searchRecommendItems.observeAsState()
+    val searchResultItems by viewModel.searchResultItems.observeAsState()
     viewModel.loadSearchRecommendItems()
 
     val listScrollState = rememberLazyListState()
@@ -54,19 +55,20 @@ fun SearchScreen(
             .scrollable(state = listScrollState, orientation = Orientation.Vertical)) {
             SearchEditView(
                 onImeAction = {
-                    // go to search
-
+                    viewModel.loadSearchResult(searchWord)
                 },
                 searchTextChange = {
                     searchWord = it
                 }
             )
-            if (searchWord.isEmpty()) {
+            if (searchWord.isEmpty() && searchResultItems == null) {
                 searchRecommendItems?.let {
                     RecommendKeyWordView(it)
                 }
             }
-
+            searchResultItems?.let {
+                SearchResultView(it)
+            }
         }
     }
 }
