@@ -3,9 +3,7 @@ package com.zinc.berrybucket.ui.presentation.search
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -74,15 +72,19 @@ fun SearchTopAppBar(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 text = title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 modifier = Modifier
                     .padding(top = 14.dp, bottom = 14.dp)
+                    .padding(start = 60.dp, end = 60.dp)
                     .constrainAs(titleView) {
-                        start.linkTo(closeButton.end)
+                        start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
                         width = Dimension.fillToConstraints
-                    }
+                    },
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -92,11 +94,12 @@ fun SearchTopAppBar(
 @Composable
 fun SearchEditView(
     onImeAction: (String) -> Unit,
-    searchTextChange: (String) -> Unit
+    searchTextChange: (String) -> Unit,
+    currentSearchWord: String
 ) {
     val hintText = stringResource(id = R.string.searchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
-    var searchText by remember { mutableStateOf("") }
+    var searchText by remember { mutableStateOf(currentSearchWord) }
 
     ConstraintLayout(
         modifier = Modifier
@@ -226,9 +229,9 @@ fun RecommendKeyWordView(searchItems: SearchRecommendItems) {
 
 @Composable
 private fun RecentSearchView(recentItems: List<RecentItem>) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-        items(items = recentItems) { item ->
-            RecentSearchItem(item)
+    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        recentItems.forEach {
+            RecentSearchItem(it)
         }
     }
 }
@@ -268,11 +271,11 @@ private fun RecentSearchItem(recentItem: RecentItem) {
 }
 
 @Composable
-private fun RecommendKeyWordView(ketWordItems: List<KeyWordItem>) {
+private fun RecommendKeyWordView(keyWordItems: List<KeyWordItem>) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            items(items = ketWordItems) { item ->
-                RecommendKeyWordItem(item)
+        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+            keyWordItems.forEach {
+                RecommendKeyWordItem(it)
             }
         }
 
@@ -321,7 +324,8 @@ private fun RecommendKeyWordItem(item: KeyWordItem) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchResultView(
-    resultItems: SearchResultItems
+    resultItems: SearchResultItems,
+    modifier: Modifier
 ) {
     var needBucketMoreButtonShow by remember {
         mutableStateOf(resultItems.bucketItems.size > 3)
@@ -336,71 +340,41 @@ fun SearchResultView(
         mutableStateOf(if (needUserMoreButtonShow) resultItems.userItems.take(3) else resultItems.userItems)
     }
 
-    LazyColumn(
-        modifier = Modifier
+    Column(
+        modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 28.dp),
-        contentPadding = PaddingValues(
-            top = 16.dp, bottom = 70.dp
-        )
+            .padding(horizontal = 28.dp)
     ) {
 
-        items(
-            items = bucketVisibleItem,
-            key = {
-                it.id
-            },
-            itemContent = {
-                RecommendBucketItemView(
-                    modifier = Modifier.animateItemPlacement(),
-                    item = it
-                )
-            }
-        )
+        bucketVisibleItem.forEach {
+            RecommendBucketItemView(item = it)
+        }
+
         if (needBucketMoreButtonShow) {
-            item(
-                key = "BucketShowMoreButton"
-            ) {
-                ShowMoreButton {
-                    bucketVisibleItem = resultItems.bucketItems
-                    needBucketMoreButtonShow = false
-                }
+            ShowMoreButton {
+                bucketVisibleItem = resultItems.bucketItems
+                needBucketMoreButtonShow = false
             }
         }
 
-        item(
-            key = "BucketDivider"
-        ) {
-            Divider(
-                color = Gray3,
-                modifier = Modifier.padding(
-                    top = if (needBucketMoreButtonShow) 0.dp else 28.dp,
-                    bottom = 15.dp
-                )
+        Divider(
+            color = Gray3,
+            modifier = Modifier.padding(
+                top = if (needBucketMoreButtonShow) 0.dp else 28.dp,
+                bottom = 15.dp
+            )
+        )
+
+        userVisibleItem.forEach {
+            SearchUserItemView(
+                item = it
             )
         }
 
-        items(
-            items = userVisibleItem,
-            key = {
-                it.userId
-            },
-            itemContent = {
-                SearchUserItemView(
-                    modifier = Modifier.animateItemPlacement(),
-                    item = it
-                )
-            }
-        )
-
         if (needUserMoreButtonShow) {
-            item(
-                key = "UserShowMoreButton"
-            ) {
-                ShowMoreButton {
-                    userVisibleItem = resultItems.userItems
-                    needUserMoreButtonShow = false
-                }
+            ShowMoreButton {
+                userVisibleItem = resultItems.userItems
+                needUserMoreButtonShow = false
             }
         }
     }

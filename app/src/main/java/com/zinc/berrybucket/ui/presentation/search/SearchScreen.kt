@@ -1,18 +1,20 @@
 package com.zinc.berrybucket.ui.presentation.search
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
     goTGoEvent: () -> Unit
@@ -24,6 +26,7 @@ fun SearchScreen(
 
     val listScrollState = rememberLazyListState()
     var searchWord by remember { mutableStateOf("") }
+    var isScrolled = listScrollState.firstVisibleItemIndex != 0
 
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -44,30 +47,48 @@ fun SearchScreen(
                 }
         )
 
-        Column(modifier = Modifier
-            .constrainAs(searchResultView) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(topAppBar.bottom)
-                bottom.linkTo(parent.bottom)
-                height = Dimension.fillToConstraints
-            }
-            .scrollable(state = listScrollState, orientation = Orientation.Vertical)) {
-            SearchEditView(
-                onImeAction = {
-                    viewModel.loadSearchResult(searchWord)
+        LazyColumn(
+            modifier = Modifier
+                .constrainAs(searchResultView) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(topAppBar.bottom)
+                    bottom.linkTo(parent.bottom)
+                    height = Dimension.fillToConstraints
                 },
-                searchTextChange = {
-                    searchWord = it
-                }
-            )
-            if (searchWord.isEmpty() && searchResultItems == null) {
-                searchRecommendItems?.let {
-                    RecommendKeyWordView(it)
+            contentPadding = PaddingValues(
+                top = 16.dp, bottom = 70.dp
+            ),
+            state = listScrollState
+        ) {
+            item {
+                SearchEditView(
+                    onImeAction = {
+                        viewModel.loadSearchResult(searchWord)
+                    },
+                    searchTextChange = {
+                        searchWord = it
+                    },
+                    currentSearchWord = searchWord
+                )
+            }
+
+            item {
+                if (searchWord.isEmpty() && searchResultItems == null) {
+                    searchRecommendItems?.let {
+                        RecommendKeyWordView(it)
+                    }
                 }
             }
-            searchResultItems?.let {
-                SearchResultView(it)
+
+
+            item {
+                searchResultItems?.let {
+                    SearchResultView(
+                        resultItems = it,
+                        modifier = Modifier.animateItemPlacement(),
+                    )
+                }
             }
         }
     }
