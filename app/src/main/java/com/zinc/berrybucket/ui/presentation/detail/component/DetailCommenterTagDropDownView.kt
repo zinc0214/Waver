@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

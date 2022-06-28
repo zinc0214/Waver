@@ -21,8 +21,8 @@ import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
-import com.zinc.berrybucket.ui.presentation.detail.CloseDetailLayer
-import com.zinc.berrybucket.ui.presentation.detail.OpenDetailLayer
+import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
+import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailLayer
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.home.addHomeGraph

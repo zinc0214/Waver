@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,14 +25,13 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 /**
  * 댓글 롱크릭 시 노출되는 팝업
  *
- * @param isMyComment 내 댓글인지 확인
  * @param commenter 댓글 정보
  * @param onDismissRequest
  * @param commentOptionClicked
  */
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CommentSelectedDialogLayer(
+fun CommentSelectedDialog(
     commenter: Commenter,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (CommentOptionClicked) -> Unit

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -23,6 +23,8 @@ import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.compose.theme.BaseTheme
 import com.zinc.berrybucket.ui.compose.util.rememberScrollContext
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.ui.presentation.detail.component.*
 
 @Composable
 fun CloseDetailLayer(
@@ -46,7 +48,7 @@ fun CloseDetailLayer(
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuPopupView(optionPopUpShowed)
+                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed)
                 }
 
                 Column(
@@ -128,12 +130,12 @@ private fun ContentView(
     ) {
 
         item {
-            DetailDescLayer(detailInfo.descInfo)
+            DetailDescView(detailInfo.descInfo)
         }
 
         detailInfo.memoInfo?.let {
             item {
-                DetailMemoLayer(
+                DetailMemoView(
                     modifier = Modifier.padding(
                         top = 24.dp,
                         start = 28.dp,

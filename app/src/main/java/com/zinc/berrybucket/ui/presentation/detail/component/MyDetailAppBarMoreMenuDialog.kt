@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.*
@@ -21,7 +21,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 
 @Composable
-fun MyDetailAppBarMoreMenuPopupView(optionPopUpShowed: MutableState<Boolean>) {
+fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
 
     Card(
         modifier = Modifier

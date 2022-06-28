@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +12,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 
 @Composable
-fun DetailProfileLayer(profileInfo: ProfileInfo) {
+fun DetailProfileView(profileInfo: ProfileInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -32,6 +32,7 @@ import com.zinc.berrybucket.ui.compose.util.Keyboard
 import com.zinc.berrybucket.ui.compose.util.keyboardAsState
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
+import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

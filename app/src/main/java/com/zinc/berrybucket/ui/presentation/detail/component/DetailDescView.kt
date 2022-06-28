@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -17,7 +17,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 
 @Composable
-fun DetailDescLayer(detailDescInfo: CommonDetailDescInfo) {
+fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

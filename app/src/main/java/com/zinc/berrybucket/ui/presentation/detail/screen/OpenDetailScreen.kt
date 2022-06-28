@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,6 +31,8 @@ import com.zinc.berrybucket.ui.custom.TaggableEditText
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
+import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.ui.presentation.detail.component.*
 import com.zinc.common.models.ReportInfo
 
 @Composable
@@ -89,7 +91,7 @@ fun OpenDetailLayer(
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuPopupView(optionPopUpShowed)
+                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed)
                 }
 
                 if (commentOptionPopUpShowed.value.first) {
@@ -98,7 +100,7 @@ fun OpenDetailLayer(
                     )
 
                     if (commenter != null) {
-                        CommentSelectedDialogLayer(
+                        CommentSelectedDialog(
                             commenter = commenter,
                             onDismissRequest = {
                                 commentOptionPopUpShowed.value =
@@ -274,12 +276,12 @@ private fun ContentView(
         }
 
         item(key = "detailDescLayer") {
-            DetailDescLayer(detailInfo.descInfo)
+            DetailDescView(detailInfo.descInfo)
         }
 
         item(key = "memoView") {
             if (detailInfo.memoInfo != null) {
-                DetailMemoLayer(
+                DetailMemoView(
                     modifier = Modifier.padding(
                         top = 24.dp, start = 28.dp, end = 28.dp
                     ), memo = detailInfo.memoInfo.memo
@@ -324,7 +326,7 @@ private fun ContentView(
                 CommentCountView(it.commentCount)
             }
             item(key = "commentLayer") {
-                DetailCommentLayer(commentInfo = detailInfo.commentInfo, commentLongClicked = {
+                DetailCommentView(commentInfo = detailInfo.commentInfo, commentLongClicked = {
                     clickEvent.invoke(CommentLongClicked(it))
                 })
             }

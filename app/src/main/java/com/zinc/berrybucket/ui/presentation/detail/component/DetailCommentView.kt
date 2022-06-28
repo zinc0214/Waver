@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.detail
+package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -22,7 +22,7 @@ import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.compose.theme.*
 
 @Composable
-fun DetailCommentLayer(
+fun DetailCommentView(
     commentInfo: CommentInfo, commentLongClicked: (Int) -> Unit
 ) {
     Column(
