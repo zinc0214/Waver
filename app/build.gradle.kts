@@ -69,6 +69,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":common"))
+    implementation(project(":datastore"))
 
     // android X
     implementation(Dep.AndroidX.coreKtx)

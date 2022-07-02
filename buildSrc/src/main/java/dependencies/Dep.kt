@@ -78,7 +78,14 @@ object Dep {
             const val runtime = "androidx.arch.core:core-runtime:$version"
         }
 
+        object DataStore {
+            private const val version = "1.0.0"
+            const val core = "androidx.datastore:datastore-preferences-core:1.0.0"
+            const val dataStore = "androidx.datastore:datastore-preferences:1.0.0"
+        }
+
         const val viewPager2 = "androidx.viewpager2:viewpager2:1.0.0"
+
     }
 
     object Dagger {
