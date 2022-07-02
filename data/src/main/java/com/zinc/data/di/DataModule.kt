@@ -19,6 +19,11 @@ import javax.inject.Singleton
 @Module(includes = [DataModule.ApiModule::class])
 internal abstract class DataModule {
     @Binds
+    abstract fun bindLoginRepository(
+        repository: LoginRepositoryImpl
+    ): LoginRepository
+
+    @Binds
     abstract fun bindMyRepository(
         repository: MyRepositoryImpl
     ): MyRepository
@@ -61,19 +66,5 @@ internal abstract class DataModule {
         ): BerryBucketApi {
             return retrofit.create(BerryBucketApi::class.java)
         }
-
-//        @Provides
-//        @Singleton
-//        fun provideGithubApi(
-//            okHttpClient: OkHttpClient,
-//            converterFactory: Converter.Factory
-//        ): GithubApi {
-//            return Retrofit.Builder()
-//                .baseUrl("https://api.github.com/")
-//                .addConverterFactory(converterFactory)
-//                .client(okHttpClient)
-//                .build()
-//                .create(GithubApi::class.java)
-//        }
     }
 }

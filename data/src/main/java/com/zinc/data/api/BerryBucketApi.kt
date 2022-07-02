@@ -1,9 +1,15 @@
 package com.zinc.data.api
 
 import com.zinc.common.models.*
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface BerryBucketApi {
+
+    // 회원가입
+    @POST("/user/join")
+    suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
     @GET("/profile_info")
     suspend fun loadMyProfileInfo(): MyProfileInfo
