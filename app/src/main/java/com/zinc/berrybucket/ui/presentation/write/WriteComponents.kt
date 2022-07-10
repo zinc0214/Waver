@@ -14,13 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray3
+import com.zinc.berrybucket.ui.compose.theme.Gray6
+import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 
 @Composable
 fun WriteAppBar(
     modifier: Modifier,
     rightText: Int,
-    clickEvent: (WriteAppBarClickEvent) -> Unit
+    clickEvent: (WriteAppBarClickEvent) -> Unit,
+    nextButtonClickable: Boolean
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -53,11 +56,13 @@ fun WriteAppBar(
                     bottom.linkTo(parent.bottom)
                 }
                 .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
-                .clickable {
-                    clickEvent(WriteAppBarClickEvent.NextClicked)
-                }
+                .clickable(
+                    enabled = nextButtonClickable,
+                    onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) }
+                )
                 .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
-            text = stringResource(id = rightText)
+            text = stringResource(id = rightText),
+            color = if (nextButtonClickable) Main4 else Gray6
         )
 
         Divider(
