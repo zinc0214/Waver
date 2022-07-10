@@ -109,6 +109,12 @@ class BerryBucketAppState(
             navController.navigate(SearchDestinations.GO_TO_SEARCH)
         }
     }
+
+    fun navigateToWrite(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(WriteDestinations.GO_TO_WRITE)
+        }
+    }
 }
 
 /**

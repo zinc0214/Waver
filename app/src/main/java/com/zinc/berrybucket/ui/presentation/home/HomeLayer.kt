@@ -96,7 +96,8 @@ enum class HomeSections(
 fun HomeBottomBar(
     tabs: List<HomeSections>,
     currentRoute: String,
-    navigateToRoute: (String) -> Unit
+    navigateToRoute: (String) -> Unit,
+    goToWrite: () -> Unit
 ) {
     val currentSection = tabs.first { it.route == currentRoute }
 
@@ -136,7 +137,7 @@ fun HomeBottomBar(
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end)
                 },
-                onClick = { /*TODO*/ },
+                onClick = { goToWrite() },
                 image = R.drawable.add_bucket_icon,
                 contentDescription = stringResource(id = R.string.write)
             )

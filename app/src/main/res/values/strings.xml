@@ -26,6 +26,7 @@
     <string name="titleLeftDesc">뒤로가기</string>
     <string name="closeDesc">닫기</string>
     <string name="moreDesc">더보기 버튼</string>
+    <string name="nextDesc">다음 버튼</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -118,5 +119,8 @@
     <string name="recentSearch">최근 검색어</string>
     <string name="recommendSearch">추천 키워드</string>
     <string name="showMore">더보기</string>
+
+    <!-- Write -->
+    <string name="writeGoToNext">다음</string>
 
 </resources>

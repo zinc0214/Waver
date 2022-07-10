@@ -21,6 +21,7 @@ import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
+import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailLayer
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
@@ -30,6 +31,7 @@ import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
 import com.zinc.berrybucket.ui.presentation.my.MyBottomSheetScreen
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
+import com.zinc.berrybucket.ui.presentation.write.WriteScreen
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.launch
@@ -81,7 +83,9 @@ fun BerryBucketApp() {
                                 tabs = appState.bottomBarTabs,
                                 currentRoute = appState.currentRoute!!,
                                 navigateToRoute = appState::navigateToBottomBarRoute
-                            )
+                            ) {
+                                appState.navigateToWrite(appState.navController.currentBackStackEntry!!)
+                            }
                         }
                     },
                     scaffoldState = appState.scaffoldState
@@ -133,6 +137,7 @@ fun BerryBucketApp() {
                         )
                         bucketNavGraph(backPress = appState::backPress)
                         searchNavGraph(backPress = appState::backPress)
+                        writeNavGraph(backPress = appState::backPress)
                     }
                 }
             }
@@ -158,12 +163,20 @@ object SearchDestinations {
     const val GO_TO_SEARCH = "go_to_search"
 }
 
+object WriteDestinations {
+    const val GO_TO_WRITE = "go_to_write"
+}
+
 sealed class BucketSelected {
     data class GoToDetailBucket(val bucketInfo: UIBucketInfoSimple) : BucketSelected()
 }
 
 sealed class SearchEvent {
     object GoToSearch : SearchEvent()
+}
+
+sealed class WriteEvent {
+    object GoToWrite : WriteEvent()
 }
 
 sealed class GoToBucketDetailEvent {
@@ -232,4 +245,15 @@ private fun NavGraphBuilder.searchNavGraph(
             backPress()
         }
     }
+}
+
+private fun NavGraphBuilder.writeNavGraph(
+    backPress: () -> Unit
+) {
+    composable(GO_TO_WRITE) {
+        WriteScreen {
+            backPress()
+        }
+    }
+
 }
