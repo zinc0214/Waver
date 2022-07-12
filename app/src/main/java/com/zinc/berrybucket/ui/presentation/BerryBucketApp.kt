@@ -165,6 +165,7 @@ object SearchDestinations {
 
 object WriteDestinations {
     const val GO_TO_WRITE = "go_to_write"
+    const val WRITE_OPTION_MEMO = "write_option_memo"
 }
 
 sealed class BucketSelected {

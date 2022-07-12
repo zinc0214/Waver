@@ -1,13 +1,16 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -16,16 +19,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Gray3
-import com.zinc.berrybucket.ui.compose.theme.Gray6
-import com.zinc.berrybucket.ui.compose.theme.Main4
+import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 
 @Composable
@@ -42,8 +42,7 @@ fun WriteAppBar(
     ) {
         val (closeButton, moreButton, divider) = createRefs()
 
-        IconButton(
-            image = R.drawable.btn40close,
+        IconButton(image = R.drawable.btn40close,
             contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -55,22 +54,18 @@ fun WriteAppBar(
                 },
             onClick = {
                 clickEvent(WriteAppBarClickEvent.CloseClicked)
-            }
-        )
+            })
 
-        Text(
-            modifier = Modifier
-                .constrainAs(moreButton) {
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                }
-                .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
-                .clickable(
-                    enabled = nextButtonClickable,
-                    onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) }
-                )
-                .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
+        Text(modifier = Modifier
+            .constrainAs(moreButton) {
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+            }
+            .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
+            .clickable(enabled = nextButtonClickable,
+                onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) })
+            .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
             text = stringResource(id = rightText),
             color = if (nextButtonClickable) Main4 else Gray6
         )
@@ -90,21 +85,17 @@ fun WriteAppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WriteTitleView(
-    modifier: Modifier,
-    title: String,
-    onImeAction: (String) -> Unit
+    modifier: Modifier, title: String, onImeAction: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.writeTitleHintText)
     val keyboardController = LocalSoftwareKeyboardController.current
-    var titleText by remember { mutableStateOf(TextFieldValue("")) }
+    var titleText by remember { mutableStateOf(TextFieldValue(title)) }
 
     BasicTextField(
         modifier = modifier,
         value = titleText,
         textStyle = TextStyle(
-            color = Gray10,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium
+            color = Gray10, fontSize = 24.sp, fontWeight = FontWeight.Medium
         ),
         onValueChange = { titleText = it },
         maxLines = 1,
@@ -126,19 +117,63 @@ fun WriteTitleView(
 }
 
 @Composable
+fun MemoOptionView(
+    modifier: Modifier = Modifier,
+    memoText: String,
+    memoDelete: () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .background(color = Gray2)
+            .fillMaxWidth()
+    ) {
+        IconButton(
+            onClick = { memoDelete() },
+            image = R.drawable.btn_16_close,
+            contentDescription = stringResource(id = R.string.closeDesc),
+            modifier = Modifier
+                .background(
+                    color = Gray3,
+                    shape = RoundedCornerShape(bottomStart = 18.dp)
+                )
+                .align(Alignment.TopEnd)
+                .padding(
+                    top = 7.dp,
+                    bottom = 7.dp,
+                    start = 14.dp,
+                    end = 9.dp
+                )
+                .then(Modifier.size(16.dp))
+                .wrapContentWidth()
+                .wrapContentHeight()
+        )
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp, horizontal = 28.dp)
+                .align(Alignment.Center),
+            text = memoText,
+            color = Gray7,
+            fontSize = 14.sp,
+            maxLines = 5,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
 fun BottomOptionView(
     modifier: Modifier = Modifier,
     currentClickedOptions: List<BottomOptionType>,
-    optionClicked: (Pair<BottomOptionType, Boolean>) -> Unit
+    optionUsed: (BottomOptionType) -> Unit
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
 
         Divider(
-            modifier = Modifier.fillMaxWidth(),
-            color = Gray3
+            modifier = Modifier.fillMaxWidth(), color = Gray3
         )
 
         Row(
@@ -151,7 +186,7 @@ fun BottomOptionView(
                 BottomOptionIcon(
                     currentClickedOptions = currentClickedOptions,
                     type = it,
-                    optionClicked = optionClicked
+                    optionClicked = optionUsed
                 )
             }
         }
@@ -164,33 +199,30 @@ fun BottomOptionView(
 private fun BottomOptionIcon(
     currentClickedOptions: List<BottomOptionType>,
     type: BottomOptionType,
-    optionClicked: (Pair<BottomOptionType, Boolean>) -> Unit
+    optionClicked: (BottomOptionType) -> Unit
 ) {
-    val isClicked = currentClickedOptions.find { it == type } != null
-    IconToggleButton(
+    val isUsed = currentClickedOptions.find { it == type } != null
+    IconButton(
         modifier = Modifier.size(40.dp),
-        checked = isClicked,
-        onCheckedChange = {
-            optionClicked(type to it)
-        },
-        image = when (type) {
+        onClick = {
+            optionClicked(type)
+        }, image = when (type) {
             MEMO -> {
-                if (isClicked) R.drawable.btn_40_memo_on else R.drawable.btn_40_memo_off
+                if (isUsed) R.drawable.btn_40_memo_on else R.drawable.btn_40_memo_off
             }
             IMAGE -> {
-                if (isClicked) R.drawable.btn_40_gallery_on else R.drawable.btn_40_gallery_off
+                if (isUsed) R.drawable.btn_40_gallery_on else R.drawable.btn_40_gallery_off
             }
             CATEGORY -> {
-                if (isClicked) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
+                if (isUsed) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
             }
             D_DAY -> {
-                if (isClicked) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
+                if (isUsed) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
             }
             GOAL -> {
-                if (isClicked) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
+                if (isUsed) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
             }
-        },
-        contentDescription = stringResource(
+        }, contentDescription = stringResource(
             id = when (type) {
                 MEMO -> R.string.addMemoDesc
                 IMAGE -> R.string.addImageDesc
