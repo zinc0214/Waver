@@ -25,6 +25,8 @@ import com.zinc.berrybucket.ui.compose.theme.Gray3
 import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
+import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 
 @Composable
 fun WriteAppBar(
@@ -123,7 +125,88 @@ fun WriteTitleView(
     )
 }
 
+@Composable
+fun BottomOptionView(
+    modifier: Modifier = Modifier,
+    currentClickedOptions: List<BottomOptionType>,
+    optionClicked: (Pair<BottomOptionType, Boolean>) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+
+        Divider(
+            modifier = Modifier.fillMaxWidth(),
+            color = Gray3
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 40.dp, vertical = 20.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            BottomOptionType.values().forEach {
+                BottomOptionIcon(
+                    currentClickedOptions = currentClickedOptions,
+                    type = it,
+                    optionClicked = optionClicked
+                )
+            }
+        }
+    }
+
+}
+
+
+@Composable
+private fun BottomOptionIcon(
+    currentClickedOptions: List<BottomOptionType>,
+    type: BottomOptionType,
+    optionClicked: (Pair<BottomOptionType, Boolean>) -> Unit
+) {
+    val isClicked = currentClickedOptions.find { it == type } != null
+    IconToggleButton(
+        modifier = Modifier.size(40.dp),
+        checked = isClicked,
+        onCheckedChange = {
+            optionClicked(type to it)
+        },
+        image = when (type) {
+            MEMO -> {
+                if (isClicked) R.drawable.btn_40_memo_on else R.drawable.btn_40_memo_off
+            }
+            IMAGE -> {
+                if (isClicked) R.drawable.btn_40_gallery_on else R.drawable.btn_40_gallery_off
+            }
+            CATEGORY -> {
+                if (isClicked) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
+            }
+            D_DAY -> {
+                if (isClicked) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
+            }
+            GOAL -> {
+                if (isClicked) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
+            }
+        },
+        contentDescription = stringResource(
+            id = when (type) {
+                MEMO -> R.string.addMemoDesc
+                IMAGE -> R.string.addImageDesc
+                CATEGORY -> R.string.addCategoryDesc
+                D_DAY -> R.string.addDdayDesc
+                GOAL -> R.string.addGoalDesc
+            }
+        )
+    )
+}
+
 sealed class WriteAppBarClickEvent {
     object CloseClicked : WriteAppBarClickEvent()
     object NextClicked : WriteAppBarClickEvent()
+}
+
+enum class BottomOptionType {
+    MEMO, IMAGE, CATEGORY, D_DAY, GOAL
 }
