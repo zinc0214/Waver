@@ -102,9 +102,14 @@ dependencies {
     implementation(Dep.AndroidX.Compose.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.navigation)
-
+    implementation(Dep.AndroidX.Compose.accompanist)
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.indicator)
+
+    // camera
+    implementation(Dep.AndroidX.Camera.camera2)
+    implementation(Dep.AndroidX.Camera.lifecycle)
+    implementation(Dep.AndroidX.Camera.view)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
@@ -138,5 +143,8 @@ dependencies {
     implementation(Dep.AndroidX.Lifecycle.runTime)
     implementation(Dep.AndroidX.Lifecycle.livedata)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+    // coil
+    implementation(Dep.coil)
+
+    implementation("com.theartofdev.edmodo:android-image-cropper:2.8.0")
 }

@@ -1,20 +1,139 @@
 package com.zinc.berrybucket.ui.presentation
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaScannerConnection
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
+import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
+
+    private var photoUri: Uri? = null
+    private lateinit var takePhotoAction: ActionWithActivity.TakePhoto
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                photoUri?.let {
+                    cropImage(it)
+                    MediaScannerConnection.scanFile(
+                        this,
+                        arrayOf(it.path), null
+                    ) { _, _ -> }
+                }
+            }
+        }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == Activity.RESULT_OK) {
+                    result.uri?.let {
+                        photoUri = result.uri
+                        getFile()
+                    }
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    val error = result.error
+                    Toast.makeText(this, "이미지를 가져오는데 실패했습니다1.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // This app draws behind the system bars, so we want to handle fitting system windows
-        // WindowCompat.setDecorFitsSystemWindows(window, false)
-
         setContent {
-            BerryBucketApp()
+            BerryBucketApp(action = {
+                when (it) {
+                    is ActionWithActivity.TakePhoto -> {
+                        takePhotoAction = it
+                        takePhoto()
+                    }
+                }
+            })
         }
     }
+
+    private fun takePhoto() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        var photoFile: File? = null
+
+        try {
+            photoFile = createImageFile(this)
+        } catch (e: IOException) {
+            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+
+        if (photoFile != null) {
+            photoUri = FileProvider.getUriForFile(
+                this,
+                "BerryBucketApplication.provider",
+                photoFile
+            )
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            resultLauncher.launch(intent)
+        }
+    }
+
+    private fun cropImage(photoUri: Uri) {
+        CropImage.activity(photoUri).setGuidelines(CropImageView.Guidelines.ON)
+            .setAllowFlipping(false)
+            .setAspectRatio(1, 1)
+            .setScaleType(CropImageView.ScaleType.CENTER_CROP)
+            .setCropShape(CropImageView.CropShape.RECTANGLE)
+            .start(this)
+    }
+
+    private fun getFile() {
+        val src = BitmapFactory.decodeFile(photoUri?.path)
+        val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
+        val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
+        if (photoUri != null) {
+            takePhotoAction.succeed(photoUri!!)
+        } else {
+            Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun saveBitmapAsFile(bitmap: Bitmap?, filePath: String): File {
+        val file = File(filePath)
+        var os: OutputStream
+        try {
+            file.createNewFile()
+            os = FileOutputStream(file)
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, os)
+            os.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return file
+    }
+
+}
+
+sealed class ActionWithActivity {
+    data class TakePhoto(
+        val failed: () -> Unit,
+        val succeed: (Uri) -> Unit
+    ) : ActionWithActivity()
 }

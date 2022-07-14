@@ -38,7 +38,9 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BerryBucketApp() {
+fun BerryBucketApp(
+    action: (ActionWithActivity) -> Unit
+) {
     MaterialTheme {
         val coroutineScope = rememberCoroutineScope()
         val appState = rememberBerryBucketkAppState()
@@ -137,7 +139,11 @@ fun BerryBucketApp() {
                         )
                         bucketNavGraph(backPress = appState::backPress)
                         searchNavGraph(backPress = appState::backPress)
-                        writeNavGraph(backPress = appState::backPress)
+                        writeNavGraph(
+                            action = { actionType -> action(actionType) },
+                            backPress = {
+                                appState.backPress()
+                            })
                     }
                 }
             }
@@ -249,12 +255,13 @@ private fun NavGraphBuilder.searchNavGraph(
 }
 
 private fun NavGraphBuilder.writeNavGraph(
+    action: (ActionWithActivity) -> Unit,
     backPress: () -> Unit
 ) {
     composable(GO_TO_WRITE) {
-        WriteScreen {
-            backPress()
-        }
+        WriteScreen(
+            action = { actionType -> action(actionType) },
+            goToBack = { backPress() })
     }
 
 }

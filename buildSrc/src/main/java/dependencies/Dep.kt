@@ -1,7 +1,7 @@
 @file:Suppress("ClassName")
 
 object Versions {
-    const val compileSdk = 31
+    const val compileSdk = 32
     const val buildTools = "31.0.0"
 
     const val minSdk = 24
@@ -57,6 +57,7 @@ object Dep {
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val navigation = "androidx.navigation:navigation-compose:2.4.2"
+            const val accompanist = "com.google.accompanist:accompanist-permissions:0.18.0"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
@@ -65,6 +66,14 @@ object Dep {
             const val viewPager =
                 "com.google.accompanist:accompanist-pager:0.23.1"
             const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.23.1"
+        }
+
+        object Camera {
+            private const val version = "1.2.0-alpha03"
+
+            const val camera2 = "androidx.camera:camera-camera2:${version}"
+            const val lifecycle = "androidx.camera:camera-lifecycle:${version}"
+            const val view = "androidx.camera:camera-view:${version}"
         }
 
         object RecyclerView {
@@ -133,6 +142,7 @@ object Dep {
     const val glide = "com.github.bumptech.glide:4.13.1"
     const val cardView = "androidx.cardview:cardview:1.0.0"
     const val flexBox = "com.google.android:flexbox:2.0.1"
+    const val coil = "io.coil-kt:coil-compose:2.1.0"
 
 
     object Test {
