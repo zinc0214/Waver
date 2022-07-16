@@ -14,15 +14,13 @@
         <item name="android:textSize">13sp</item>
     </style>
 
-    <!--    <style name="DetailOptionPopup" parent="@style/Widget.AppCompat.PopupMenu">-->
-    <!--        <item name="android:itemPadding">16dp</item>-->
-    <!--        <item name="android:listPreferredItemPaddingStart">16dp</item>-->
-    <!--        <item name="android:listPreferredItemPaddingEnd">16dp</item>-->
-    <!--        <item name="android:popupBackground">@drawable/popup_bg</item>-->
-    <!--        <item name="android:textColorPrimary">@color/gray10</item>-->
-    <!--        <item name="android:listPreferredItemHeightSmall">94dp</item>-->
-    <!--        <item name="android:actionLayout">@layout/fragment_comment_option_dialog</item>-->
-    <!--    </style>-->
-    <!--    -->
+    <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 
 </resources>
