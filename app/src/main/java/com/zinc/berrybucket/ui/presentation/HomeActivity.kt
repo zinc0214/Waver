@@ -26,8 +26,8 @@ import java.io.OutputStream
 class HomeActivity : AppCompatActivity() {
 
     private var photoUri: Uri? = null
-    private lateinit var takePhotoAction: ActionWithActivity.TakePhoto
-    private val resultLauncher =
+    private lateinit var takePhotoAction: ActionWithActivity.AddImage
+    private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 photoUri?.let {
@@ -37,6 +37,13 @@ class HomeActivity : AppCompatActivity() {
                         arrayOf(it.path), null
                     ) { _, _ -> }
                 }
+            }
+        }
+
+    private val imageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            result.data?.data?.let {
+                cropImage(it)
             }
         }
 
@@ -64,9 +71,14 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             BerryBucketApp(action = {
                 when (it) {
-                    is ActionWithActivity.TakePhoto -> {
+                    is ActionWithActivity.AddImage -> {
                         takePhotoAction = it
-                        takePhoto()
+                        if (it.type == ActionWithActivity.AddImageType.CAMERA) {
+                            takePhoto()
+                        } else {
+                            goToGallery()
+                        }
+
                     }
                 }
             })
@@ -91,8 +103,16 @@ class HomeActivity : AppCompatActivity() {
                 photoFile
             )
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-            resultLauncher.launch(intent)
+            cameraLauncher.launch(intent)
         }
+    }
+
+    private fun goToGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        intent.putExtra("crop", true)
+        intent.action = Intent.ACTION_GET_CONTENT
+        imageLauncher.launch(intent)
     }
 
     private fun cropImage(photoUri: Uri) {
@@ -132,8 +152,13 @@ class HomeActivity : AppCompatActivity() {
 }
 
 sealed class ActionWithActivity {
-    data class TakePhoto(
+    data class AddImage(
+        val type: AddImageType,
         val failed: () -> Unit,
         val succeed: (Uri) -> Unit
     ) : ActionWithActivity()
+
+    enum class AddImageType {
+        CAMERA, GALLERY
+    }
 }

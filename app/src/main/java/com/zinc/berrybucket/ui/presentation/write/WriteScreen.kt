@@ -51,7 +51,8 @@ fun WriteScreen(
         CameraPermission(modifier = Modifier,
             isAvailable = {
                 if (it) {
-                    action(ActionWithActivity.TakePhoto(
+                    action(ActionWithActivity.AddImage(
+                        type = ActionWithActivity.AddImageType.GALLERY,
                         failed = {
                             Toast.makeText(context, "카메라 실패", Toast.LENGTH_SHORT).show()
                             showOptionView = null

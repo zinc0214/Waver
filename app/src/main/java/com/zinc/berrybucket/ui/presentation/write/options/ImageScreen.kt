@@ -9,9 +9,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
-import com.zinc.berrybucket.ui.presentation.CameraCapture
 import java.io.File
 
 @Composable
@@ -37,12 +35,6 @@ fun CameraScreen(modifier: Modifier = Modifier) {
             }
         }
     } else {
-        CameraCapture(
-            modifier = modifier,
-            onImageFile = { file ->
-                imageUri = file.toUri()
-                imageFile = file
-            }
-        )
+
     }
 }
