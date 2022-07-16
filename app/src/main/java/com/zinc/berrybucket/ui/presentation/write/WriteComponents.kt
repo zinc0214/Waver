@@ -214,10 +214,10 @@ private fun BottomOptionIcon(
                 if (isUsed) R.drawable.btn_40_gallery_on else R.drawable.btn_40_gallery_off
             }
             CATEGORY -> {
-                if (isUsed) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
+                if (isUsed) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
             }
             D_DAY -> {
-                if (isUsed) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
+                if (isUsed) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
             }
             GOAL -> {
                 if (isUsed) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
