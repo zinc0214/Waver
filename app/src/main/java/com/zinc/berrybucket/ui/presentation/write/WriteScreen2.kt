@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteResultInfo
 import com.zinc.berrybucket.ui.presentation.common.gridItems
@@ -29,6 +30,10 @@ fun WriteScreen2(
 
         val (appBar, contents) = createRefs()
         val nextButtonClickable = remember { mutableStateOf(false) }
+        val optionsList = listOf(
+            WriteAddOption(title = "키워드 추가", tagList = listOf("#제주도"), clicked = {}),
+            WriteAddOption(title = "함께할 친구 추가하기", tagList = listOf("@한아연"), clicked = {})
+        )
 
         WriteAppBar(modifier = Modifier
             .fillMaxWidth()
@@ -50,15 +55,13 @@ fun WriteScreen2(
                 }
             })
 
-        LazyColumn(
-            modifier = Modifier.constrainAs(contents) {
-                top.linkTo(appBar.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-                height = Dimension.fillToConstraints
-            }
-        ) {
+        LazyColumn(modifier = Modifier.constrainAs(contents) {
+            top.linkTo(appBar.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            bottom.linkTo(parent.bottom)
+            height = Dimension.fillToConstraints
+        }) {
             item {
                 WriteTitleView(
                     modifier = Modifier.padding(bottom = if (writeInfo1.images.isEmpty()) 40.dp else 150.dp),
@@ -75,6 +78,15 @@ fun WriteScreen2(
                     .padding(top = 28.dp)
             ) { itemData ->
                 ImageScreen(imageInfo = itemData)
+            }
+
+            optionsList.forEach {
+                item {
+                    WriteAddOptionView(
+                        modifier = Modifier.fillMaxWidth(),
+                        option = it, isLastItem = it == optionsList.last()
+                    )
+                }
             }
         }
 
