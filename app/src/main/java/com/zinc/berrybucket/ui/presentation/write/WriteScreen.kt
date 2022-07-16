@@ -134,8 +134,9 @@ fun WriteScreen(
                     .fillMaxWidth()
                     .padding(28.dp),
                     title = title.value,
-                    onImeAction = {
+                    textChanged = {
                         title.value = it
+                        nextButtonClickable.value = it.isNotEmpty()
                     })
 
                 if (originMemo.value.isNotEmpty()) {

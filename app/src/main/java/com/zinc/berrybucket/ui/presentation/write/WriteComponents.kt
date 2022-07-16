@@ -85,7 +85,9 @@ fun WriteAppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WriteTitleView(
-    modifier: Modifier, title: String, onImeAction: (String) -> Unit
+    modifier: Modifier,
+    title: String,
+    textChanged: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.writeTitleHintText)
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -97,12 +99,15 @@ fun WriteTitleView(
         textStyle = TextStyle(
             color = Gray10, fontSize = 24.sp, fontWeight = FontWeight.Medium
         ),
-        onValueChange = { titleText = it },
+        onValueChange = {
+            titleText = it
+            textChanged(titleText.text)
+        },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = {
-            onImeAction(titleText.text)
+            textChanged(titleText.text)
             keyboardController?.hide()
         }),
         decorationBox = { innerTextField ->
