@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
@@ -36,7 +36,7 @@ fun WriteScreen(
 
     val title = remember { mutableStateOf("") }
     val originMemo = remember { mutableStateOf("") }
-    val imageList = remember { mutableStateListOf<Uri>() }
+    val imageList = remember { mutableStateListOf<WriteImageInfo>() }
     val optionList = remember { mutableStateListOf<WriteOption>() }
 
     BackHandler() {

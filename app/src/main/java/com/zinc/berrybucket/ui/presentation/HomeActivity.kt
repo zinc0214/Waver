@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -136,7 +137,7 @@ class HomeActivity : AppCompatActivity() {
         val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
         val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
         if (photoUri != null) {
-            takePhotoAction.succeed(photoUri!!)
+            takePhotoAction.succeed(WriteImageInfo(uri = photoUri!!, file = imageFile))
         } else {
             Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -160,7 +161,7 @@ class HomeActivity : AppCompatActivity() {
 
 sealed class ActionWithActivity {
     data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (Uri) -> Unit
+        val type: AddImageType, val failed: () -> Unit, val succeed: (WriteImageInfo) -> Unit
     ) : ActionWithActivity()
 
     enum class AddImageType {
