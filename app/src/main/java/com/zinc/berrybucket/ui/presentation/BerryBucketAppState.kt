@@ -13,6 +13,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.navigateWithArgument
 import com.zinc.common.models.ReportInfo
@@ -110,9 +111,20 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToWrite(from: NavBackStackEntry) {
+    fun navigateToWrite1(from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigate(WriteDestinations.GO_TO_WRITE)
+            navController.navigate(WriteDestinations.GO_TO_WRITE1)
+        }
+    }
+
+    fun navigateToWrite2(from: NavBackStackEntry, writeInfo: WriteInfo1) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigateWithArgument(
+                route = WriteDestinations.GO_TO_WRITE2,
+                args = listOf(
+                    WriteDestinations.WRITE_INFO to writeInfo
+                )
+            )
         }
     }
 }

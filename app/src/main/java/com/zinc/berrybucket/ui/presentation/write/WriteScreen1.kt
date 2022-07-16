@@ -2,11 +2,11 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,9 +16,11 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteImageInfo
+import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
+import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
@@ -26,13 +28,14 @@ import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun WriteScreen(
-    action: (ActionWithActivity) -> Unit, goToBack: () -> Unit
+fun WriteScreen1(
+    action: (ActionWithActivity) -> Unit, goToBack: () -> Unit, goToNext: (WriteInfo1) -> Unit
 ) {
     val context = LocalContext.current
 
     var showOptionView: BottomOptionType? by remember { mutableStateOf(null) }
     val currentClickedOptions = remember { mutableStateListOf<BottomOptionType>() }
+    val nextButtonClickable = remember { mutableStateOf(false) }
 
     val title = remember { mutableStateOf("") }
     val originMemo = remember { mutableStateOf("") }
@@ -73,6 +76,7 @@ fun WriteScreen(
                         })
                 )
             }
+            showOptionView = null
         })
     }
 
@@ -94,20 +98,17 @@ fun WriteScreen(
         showOptionView = null
     }
 
-
     if (showOptionView == null) {
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (appBar, contents, option) = createRefs()
-            val nextButtonClickable = remember { mutableStateOf(false) }
 
-            WriteAppBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(appBar) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                    },
+            WriteAppBar(modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(appBar) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                },
                 nextButtonClickable = nextButtonClickable.value,
                 rightText = R.string.writeGoToNext,
                 clickEvent = {
@@ -116,49 +117,67 @@ fun WriteScreen(
                             goToBack()
                         }
                         WriteAppBarClickEvent.NextClicked -> {
-
-
+                            goToNext(
+                                WriteInfo1(
+                                    title = title.value,
+                                    memo = originMemo.value,
+                                    images = imageList,
+                                    options = optionList
+                                )
+                            )
                         }
                     }
                 })
 
-            Column(modifier = Modifier.constrainAs(contents) {
-                top.linkTo(appBar.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(option.top)
-                height = Dimension.fillToConstraints
-            }) {
+            LazyColumn(modifier = Modifier
+                .constrainAs(contents) {
+                    top.linkTo(appBar.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(option.top)
+                    height = Dimension.fillToConstraints
+                }
+                .padding(bottom = 20.dp)) {
 
-                WriteTitleView(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(28.dp),
-                    title = title.value,
-                    textChanged = {
-                        title.value = it
-                        nextButtonClickable.value = it.isNotEmpty()
-                    })
-
-                if (originMemo.value.isNotEmpty()) {
-                    MemoOptionView(modifier = Modifier.padding(top = 28.dp),
-                        memoText = originMemo.value,
-                        memoDelete = {
-                            originMemo.value = ""
-                            currentClickedOptions.remove(MEMO)
+                item {
+                    WriteTitleFieldView(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(28.dp),
+                        title = title.value,
+                        textChanged = {
+                            title.value = it
+                            nextButtonClickable.value = it.isNotEmpty()
                         })
                 }
 
-                // TODO : 카메라 이미지 뷰 정의
-                ImageScreen(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 28.dp, start = 28.dp, end = 28.dp),
-                    imageList = imageList,
-                    state = rememberLazyGridState(),
-                    deleteImage = {
-                        imageList.remove(it)
-                    })
 
-                OptionScreen(options = optionList)
+                item {
+                    if (originMemo.value.isNotEmpty()) {
+                        MemoOptionView(modifier = Modifier.padding(top = 28.dp),
+                            memoText = originMemo.value,
+                            memoDelete = {
+                                originMemo.value = ""
+                                currentClickedOptions.remove(MEMO)
+                            })
+                    }
+
+                }
+
+                gridItems(
+                    data = imageList,
+                    columnCount = 3,
+                    horizontalArrangement = Arrangement.spacedBy(32.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 28.dp)
+                        .padding(top = 28.dp)
+                ) { itemData ->
+                    ImageScreen(imageInfo = itemData)
+                }
+
+                // TODO : 카메라 이미지 뷰 정의
+                item {
+                    OptionScreen(options = optionList)
+                }
             }
 
             BottomOptionView(modifier = Modifier

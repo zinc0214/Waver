@@ -84,7 +84,7 @@ fun WriteAppBar(
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun WriteTitleView(
+fun WriteTitleFieldView(
     modifier: Modifier,
     title: String,
     textChanged: (String) -> Unit
