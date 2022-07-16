@@ -2,20 +2,23 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import android.net.Uri
 import android.widget.Toast
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
 import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
+import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -122,13 +125,15 @@ fun WriteScreen(
                 }
 
                 // TODO : 카메라 이미지 뷰 정의
-                imageList.forEach {
-                    Image(
-                        modifier = Modifier.size(80.dp),
-                        painter = rememberAsyncImagePainter(model = it),
-                        contentDescription = "Captured image"
-                    )
-                }
+                ImageScreen(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(28.dp),
+                    imageList = imageList,
+                    state = rememberLazyGridState(),
+                    deleteImage = {
+                        imageList.remove(it)
+                    })
             }
 
             BottomOptionView(

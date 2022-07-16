@@ -141,13 +141,3 @@ class AddImageActivity : AppCompatActivity() {
         }
     }
 }
-
-sealed class ActionWithActivity {
-    data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (Uri) -> Unit
-    ) : ActionWithActivity()
-
-    enum class AddImageType {
-        CAMERA, GALLERY
-    }
-}

@@ -2,39 +2,79 @@ package com.zinc.berrybucket.ui.presentation.write.options
 
 import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
-import java.io.File
+import com.zinc.berrybucket.R
+import com.zinc.berrybucket.ui.compose.theme.Gray1
+import com.zinc.berrybucket.ui.presentation.common.IconButton
 
 @Composable
-fun CameraScreen(modifier: Modifier = Modifier) {
-    val emptyImageUri = Uri.parse("file://dev/null")
-    var imageUri by remember { mutableStateOf(emptyImageUri) }
-    var imageFile: File? by remember { mutableStateOf(null) }
-
-    if (imageUri != emptyImageUri) {
-        Box(modifier = modifier) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = rememberAsyncImagePainter(model = imageUri),
-                contentDescription = "Captured image"
-            )
-            Button(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                onClick = {
-                    imageUri = emptyImageUri
-                }
+fun ImageScreen(
+    modifier: Modifier = Modifier,
+    imageList: List<Uri>,
+    state: LazyGridState,
+    deleteImage: (Uri) -> Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 80.dp),
+        state = state,
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(32.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(items = imageList, key = { it }) { uri ->
+            ConstraintLayout(
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(10.dp))
             ) {
-                Text("Remove image")
+                val (icon, image) = createRefs()
+
+                Image(
+                    modifier = Modifier
+                        .padding(0.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .constrainAs(image) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    painter = rememberAsyncImagePainter(model = uri),
+                    contentDescription = "Captured image"
+                )
+
+
+                IconButton(
+                    onClick = { deleteImage(uri) },
+                    image = R.drawable.btn_12_close,
+                    modifier = Modifier
+                        .padding(5.dp)
+                        .background(
+                            color = Gray1.copy(alpha = 0.7f), shape = CircleShape
+                        )
+                        .then(Modifier.size(20.dp))
+                        .constrainAs(icon) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                        },
+                    contentDescription = "닫기"
+                )
             }
         }
-    } else {
-
     }
 }
