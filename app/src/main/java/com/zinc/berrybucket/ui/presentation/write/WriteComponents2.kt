@@ -2,9 +2,14 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +42,8 @@ fun WriteTitleView(
 @Composable
 fun WriteAddOptionView(
     modifier: Modifier,
-    option: WriteAddOption, isLastItem: Boolean
+    option: WriteAddOption,
+    isLastItem: Boolean
 ) {
 
     Log.e("ayhan", "option  :$option, ${option.title}")
@@ -68,7 +74,11 @@ fun WriteAddOptionView(
                 color = Gray10,
                 fontSize = 16.sp)
 
-            Text(text = option.tagToString(),
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = 60.dp), state = rememberLazyGridState(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                userScrollEnabled = false,
                 modifier = Modifier
                     .constrainAs(tag) {
                         top.linkTo(title.bottom)
@@ -77,9 +87,18 @@ fun WriteAddOptionView(
                         width = Dimension.fillToConstraints
                     }
                     .padding(top = 12.dp, start = 28.dp, end = 28.dp, bottom = 20.dp),
-                color = Main3,
-                fontSize = 16.sp)
+            ) {
+                items(items = option.tagList) { tag ->
+                    Text(
+                        text = tag,
+                        modifier = Modifier,
+                        color = Main3,
+                        fontSize = 16.sp
+                    )
+                }
+            }
         }
+
 
         if (isLastItem) {
             Divider(color = Gray3)

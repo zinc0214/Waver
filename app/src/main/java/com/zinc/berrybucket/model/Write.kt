@@ -15,17 +15,9 @@ data class WriteImageInfo(
 
 data class WriteAddOption(
     val title: String,
-    private val tagList: List<String>,
+    val tagList: List<String>,
     val clicked: (List<String>) -> Unit
-) {
-    fun tagToString(): String {
-        var text = ""
-        tagList.forEach {
-            text += " $it"
-        }
-        return text
-    }
-}
+)
 
 data class WriteInfo1(
     val title: String,
