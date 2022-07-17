@@ -104,6 +104,7 @@ fun WriteScreen2(
                 }
             }
 
+            // TODO : Flexible 로 수정 필요
             optionsList.forEach {
                 WriteAddOptionView(
                     modifier = Modifier.fillMaxWidth(),
