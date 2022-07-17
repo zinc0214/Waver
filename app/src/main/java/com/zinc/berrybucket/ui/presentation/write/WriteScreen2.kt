@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteResultInfo
+import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
 
 @Composable
@@ -111,6 +113,8 @@ fun WriteScreen2(
                     option = it, isLastItem = it == optionsList.last()
                 )
             }
+
+            Divider(color = Gray2, thickness = 8.dp)
         }
     }
 }
