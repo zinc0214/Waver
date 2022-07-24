@@ -40,20 +40,17 @@ fun WriteScreen1(
     val title = remember { mutableStateOf(writeInfo1.title) }
     val originMemo = remember { mutableStateOf(writeInfo1.memo) }
     val imageList = remember { mutableStateOf(writeInfo1.images) }
-    val optionList = remember { mutableStateListOf<WriteOption>() }
-
+    val optionList = remember { mutableStateOf(writeInfo1.options) }
 
     // init
     nextButtonClickable.value = title.value.isNotEmpty()
-    optionList.addAll(writeInfo1.options)
-    // imageList.addAll(writeInfo1.images)
     if (writeInfo1.memo.isNotEmpty()) {
         currentClickedOptions.add(MEMO)
     }
     if (imageList.value.isNotEmpty()) {
         currentClickedOptions.add(IMAGE)
     }
-    optionList.forEach {
+    optionList.value.forEach {
         when (it.type) {
             OptionsType.CATEGORY -> currentClickedOptions.add(CATEGORY)
             OptionsType.D_DAY -> currentClickedOptions.add(D_DAY)
@@ -80,7 +77,7 @@ fun WriteScreen1(
     }
 
     if (showOptionView == IMAGE) {
-        // 카메라인지 갤러리인지 확인필요
+        // TODO : 카메라인지 갤러리인지 확인필요
         CameraPermission(modifier = Modifier, isAvailable = {
             if (it) {
                 action(
@@ -102,34 +99,27 @@ fun WriteScreen1(
 
     if (showOptionView == CATEGORY) {
         currentClickedOptions.add(CATEGORY)
-        optionList.add(
-            WriteOption(
-                type = OptionsType.CATEGORY,
-                title = "카테고리", content = "요가를해보자요가는재미가없지만"
-            )
+        optionList.value += WriteOption(
+            type = OptionsType.CATEGORY,
+            title = "카테고리",
+            content = "요가를해보자요가는재미가없지만"
         )
         showOptionView = null
     }
 
     if (showOptionView == D_DAY) {
         currentClickedOptions.add(D_DAY)
-        optionList.add(
-            WriteOption(
-                type = OptionsType.D_DAY,
-                title = "디데이", content = "2022.10.08(D-102)"
-            )
+        optionList.value += WriteOption(
+            type = OptionsType.D_DAY,
+            title = "디데이",
+            content = "2022.10.08(D-102)"
         )
         showOptionView = null
     }
 
     if (showOptionView == GOAL) {
         currentClickedOptions.add(GOAL)
-        optionList.add(
-            WriteOption(
-                type = OptionsType.GOAL,
-                title = "목표 달성 횟수", content = "10"
-            )
-        )
+        optionList.value += WriteOption(type = OptionsType.GOAL, title = "목표 달성 횟수", content = "10")
         showOptionView = null
     }
 
@@ -157,7 +147,7 @@ fun WriteScreen1(
                                     title = title.value,
                                     memo = originMemo.value,
                                     images = imageList.value,
-                                    options = optionList
+                                    options = optionList.value
                                 )
                             )
                         }
@@ -198,8 +188,7 @@ fun WriteScreen1(
                 }
 
                 item {
-                    gridItems(
-                        data = imageList.value,
+                    gridItems(data = imageList.value,
                         maxRow = 3,
                         modifier = Modifier
                             .padding(horizontal = 28.dp)
@@ -207,21 +196,17 @@ fun WriteScreen1(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalSpace = 28.dp,
                         itemContent = {
-                            ImageItem(
-                                imageInfo = it,
-                                deleteImage = { removeImage ->
-                                    imageList.value -= removeImage
-                                })
+                            ImageItem(imageInfo = it, deleteImage = { removeImage ->
+                                imageList.value -= removeImage
+                            })
                         },
                         emptyContent = {
                             Spacer(modifier = Modifier.size(80.dp))
-                        }
-                    )
+                        })
                 }
 
                 item {
-                    // TODO : 카메라 이미지 뷰 정의
-                    OptionScreen(options = optionList)
+                    OptionScreen(options = optionList.value)
                 }
             }
 
