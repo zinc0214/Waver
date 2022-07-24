@@ -42,46 +42,55 @@ fun ImageScreen(
             Log.e("ayhan", "key : ${images.size}, ${it.parseKey()}")
         }
         items(items = images, key = { it.parseKey() }) { imageInfo ->
-            ConstraintLayout(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(10.dp))
-            ) {
-                val (icon, image) = createRefs()
-
-                Image(
-                    modifier = Modifier
-                        .padding(0.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                        .constrainAs(image) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        },
-                    painter = rememberAsyncImagePainter(model = imageInfo.uri),
-                    contentDescription = "Captured image"
-                )
-
-
-                if (deleteImage != null) {
-                    IconButton(
-                        onClick = { deleteImage(imageInfo) },
-                        image = R.drawable.btn_12_close,
-                        modifier = Modifier
-                            .padding(5.dp)
-                            .background(
-                                color = Gray1.copy(alpha = 0.7f), shape = CircleShape
-                            )
-                            .then(Modifier.size(20.dp))
-                            .constrainAs(icon) {
-                                end.linkTo(parent.end)
-                                top.linkTo(parent.top)
-                            },
-                        contentDescription = "닫기"
-                    )
-                }
-            }
+            ImageItem(imageInfo, deleteImage)
         }
+    }
+}
+
+@Composable
+fun ImageItem(
+    imageInfo: WriteImageInfo,
+    deleteImage: ((WriteImageInfo) -> Unit)? = null
+) {
+    ConstraintLayout(
+        modifier = Modifier
+            .size(80.dp)
+            .clip(RoundedCornerShape(10.dp))
+    ) {
+        val (icon, image) = createRefs()
+
+        Image(
+            modifier = Modifier
+                .padding(0.dp)
+                .clip(RoundedCornerShape(10.dp))
+                .constrainAs(image) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                },
+            painter = rememberAsyncImagePainter(model = imageInfo.uri),
+            contentDescription = "Captured image"
+        )
+
+
+        if (deleteImage != null) {
+            IconButton(
+                onClick = { deleteImage(imageInfo) },
+                image = R.drawable.btn_12_close,
+                modifier = Modifier
+                    .padding(5.dp)
+                    .background(
+                        color = Gray1.copy(alpha = 0.7f), shape = CircleShape
+                    )
+                    .then(Modifier.size(20.dp))
+                    .constrainAs(icon) {
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                    },
+                contentDescription = "닫기"
+            )
+        }
+
     }
 }

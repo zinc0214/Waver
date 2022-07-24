@@ -3,9 +3,7 @@ package com.zinc.berrybucket.ui.presentation.write
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -19,8 +17,9 @@ import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
+import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
-import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
+import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
 
@@ -199,14 +198,25 @@ fun WriteScreen1(
                 }
 
                 item {
-                    ImageScreen(modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 28.dp, start = 28.dp, end = 28.dp),
-                        images = imageList.value,
-                        deleteImage = { removeImage ->
-                            imageList.value -= removeImage
-                            Log.e("ayhan", "imageList ${imageList}")
-                        })
+                    gridItems(
+                        data = imageList.value,
+                        maxRow = 3,
+                        modifier = Modifier
+                            .padding(horizontal = 28.dp)
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalSpace = 28.dp,
+                        itemContent = {
+                            ImageItem(
+                                imageInfo = it,
+                                deleteImage = { removeImage ->
+                                    imageList.value -= removeImage
+                                })
+                        },
+                        emptyContent = {
+                            Spacer(modifier = Modifier.size(80.dp))
+                        }
+                    )
                 }
 
                 item {
