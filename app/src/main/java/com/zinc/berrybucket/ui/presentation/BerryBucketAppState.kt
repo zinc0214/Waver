@@ -116,8 +116,7 @@ class BerryBucketAppState(
                     WriteDestinations.WRITE_INFO to writeInfo
                 ),
                 navOptions {
-                    // Pop up backstack to the first destination and save state. This makes going back
-                    // to the start destination when pressing back in any other bottom tab.
+                    // TODO : 백했을 때 홈이 항상 첫번째 탭으로 오는 문제 해결 필요
                     popUpTo(findStartDestination(navController.graph).id) {
                         inclusive = false
                         saveState = true

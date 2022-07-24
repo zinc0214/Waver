@@ -23,6 +23,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
 
 
+// TODO : 백키를 통해 이동시킬 때 데이터를 가져가지 않고 그냥 돌아가는 문제 해결 필요
 @Composable
 fun WriteScreen2(
     modifier: Modifier = Modifier,
