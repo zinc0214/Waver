@@ -111,9 +111,14 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToWrite1(from: NavBackStackEntry) {
+    fun navigateToWrite1(from: NavBackStackEntry, writeInfo: WriteInfo1) {
         if (from.lifecycleIsResumed()) {
-            navController.navigate(WriteDestinations.GO_TO_WRITE1)
+            navController.navigateWithArgument(
+                route = WriteDestinations.GO_TO_WRITE1,
+                args = listOf(
+                    WriteDestinations.WRITE_INFO to writeInfo
+                )
+            )
         }
     }
 

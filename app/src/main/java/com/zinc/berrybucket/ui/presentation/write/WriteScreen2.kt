@@ -1,11 +1,12 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -15,10 +16,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
+import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteResultInfo
 import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
+
 
 @Composable
 fun WriteScreen2(
@@ -27,7 +30,7 @@ fun WriteScreen2(
     goToBack: (WriteInfo1) -> Unit,
     goToAddBucket: (WriteResultInfo) -> Unit
 ) {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+    ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
         val optionsList = listOf(
@@ -63,10 +66,18 @@ fun WriteScreen2(
             clickEvent = {
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
-                        goToBack(writeInfo1)
+                        val newImage = mutableListOf<WriteImageInfo>()
+                        writeInfo1.images.forEach { info ->
+                            val image = info.copy(key = info.intKey() + writeInfo1.images.size)
+                            newImage.add(image)
+                        }
+                        val newInfo = writeInfo1.copy(images = newImage)
+                        Log.e("ayhan", "newInfo :$newInfo")
+                        goToBack(newInfo)
+                        // TODO : 이미지
                     }
                     WriteAppBarClickEvent.NextClicked -> {
-                        // go to write
+                        // goToAddBucket(WriteResultInfo())
                     }
                 }
             })
@@ -92,19 +103,7 @@ fun WriteScreen2(
                 title = writeInfo1.title
             )
 
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 60.dp), state = rememberLazyGridState(),
-                horizontalArrangement = Arrangement.spacedBy(32.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                userScrollEnabled = false,
-                modifier = Modifier
-                    .padding(horizontal = 28.dp)
-                    .padding(bottom = 40.dp)
-            ) {
-                items(items = writeInfo1.images) { image ->
-                    ImageScreen(imageInfo = image)
-                }
-            }
+            ImageScreen(images = writeInfo1.images)
 
             // TODO : Flexible 로 수정 필요
             optionsList.forEach {

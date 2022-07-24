@@ -86,7 +86,10 @@ fun BerryBucketApp(
                                 currentRoute = appState.currentRoute!!,
                                 navigateToRoute = appState::navigateToBottomBarRoute
                             ) {
-                                appState.navigateToWrite1(appState.navController.currentBackStackEntry!!)
+                                appState.navigateToWrite1(
+                                    appState.navController.currentBackStackEntry!!,
+                                    WriteInfo1()
+                                )
                             }
                         }
                     }, scaffoldState = appState.scaffoldState
@@ -133,12 +136,15 @@ fun BerryBucketApp(
                         )
                         bucketNavGraph(backPress = appState::backPress)
                         searchNavGraph(backPress = appState::backPress)
-                        writeNavGraph(action = { actionType -> action(actionType) },
+                        writeNavGraph1(action = { actionType -> action(actionType) },
                             backPress = {
                                 appState.backPress()
                             }, goToNextWrite = { nav, info ->
                                 appState.navigateToWrite2(nav, info)
                             })
+                        writeNavGraph2(backPress = { nav, info ->
+                            appState.navigateToWrite1(nav, info)
+                        })
                     }
                 }
             }
@@ -245,24 +251,36 @@ private fun NavGraphBuilder.searchNavGraph(
     }
 }
 
-private fun NavGraphBuilder.writeNavGraph(
+private fun NavGraphBuilder.writeNavGraph1(
     action: (ActionWithActivity) -> Unit,
     backPress: () -> Unit,
     goToNextWrite: (NavBackStackEntry, WriteInfo1) -> Unit
 ) {
     composable(GO_TO_WRITE1) {
-        WriteScreen1(action = { actionType -> action(actionType) },
+        val arguments = requireNotNull(it.arguments)
+        val writeInfo1 = arguments.getRequiredSerializableExtra<WriteInfo1>(WRITE_INFO)
+
+        WriteScreen1(
+            action = { actionType -> action(actionType) },
             goToBack = { backPress() },
             goToNext = { info ->
                 goToNextWrite(it, info)
-            })
+            },
+            writeInfo1 = writeInfo1
+        )
     }
+}
 
-    composable(GO_TO_WRITE2) {
-        val arguments = requireNotNull(it.arguments)
+private fun NavGraphBuilder.writeNavGraph2(
+    backPress: (NavBackStackEntry, WriteInfo1) -> Unit
+) {
+
+    composable(GO_TO_WRITE2) { nav ->
+        val arguments = requireNotNull(nav.arguments)
         val writeInfo1 = arguments.getRequiredSerializableExtra<WriteInfo1>(WRITE_INFO)
-        WriteScreen2(writeInfo1 = writeInfo1, goToBack = { backPress() }, goToAddBucket = {})
+        WriteScreen2(
+            writeInfo1 = writeInfo1,
+            goToBack = { newInfo -> backPress(nav, newInfo) },
+            goToAddBucket = {})
     }
-
-
 }

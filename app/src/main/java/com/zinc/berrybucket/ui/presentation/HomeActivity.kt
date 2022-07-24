@@ -37,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
 
     private var imageType: ActionWithActivity.AddImageType? = null
     private var photoUri: Uri? = null
+    private var imageCount = 0
     private lateinit var takePhotoAction: ActionWithActivity.AddImage
 
     private val cameraLauncher =
@@ -137,7 +138,12 @@ class HomeActivity : AppCompatActivity() {
         val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
         val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
         if (photoUri != null) {
-            takePhotoAction.succeed(WriteImageInfo(uri = photoUri!!, file = imageFile))
+            takePhotoAction.succeed(
+                WriteImageInfo(
+                    key = imageCount++,
+                    uri = photoUri!!, file = imageFile
+                )
+            )
         } else {
             Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
         }

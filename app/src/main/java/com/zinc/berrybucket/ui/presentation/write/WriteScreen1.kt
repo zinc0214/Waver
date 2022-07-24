@@ -1,8 +1,8 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,12 +15,10 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
-import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
@@ -29,7 +27,10 @@ import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WriteScreen1(
-    action: (ActionWithActivity) -> Unit, goToBack: () -> Unit, goToNext: (WriteInfo1) -> Unit
+    action: (ActionWithActivity) -> Unit,
+    goToBack: () -> Unit,
+    goToNext: (WriteInfo1) -> Unit,
+    writeInfo1: WriteInfo1
 ) {
     val context = LocalContext.current
 
@@ -37,10 +38,29 @@ fun WriteScreen1(
     val currentClickedOptions = remember { mutableStateListOf<BottomOptionType>() }
     val nextButtonClickable = remember { mutableStateOf(false) }
 
-    val title = remember { mutableStateOf("") }
-    val originMemo = remember { mutableStateOf("") }
-    val imageList = remember { mutableStateListOf<WriteImageInfo>() }
+    val title = remember { mutableStateOf(writeInfo1.title) }
+    val originMemo = remember { mutableStateOf(writeInfo1.memo) }
+    val imageList = remember { mutableStateOf(writeInfo1.images) }
     val optionList = remember { mutableStateListOf<WriteOption>() }
+
+
+    // init
+    nextButtonClickable.value = title.value.isNotEmpty()
+    optionList.addAll(writeInfo1.options)
+    // imageList.addAll(writeInfo1.images)
+    if (writeInfo1.memo.isNotEmpty()) {
+        currentClickedOptions.add(MEMO)
+    }
+    if (imageList.value.isNotEmpty()) {
+        currentClickedOptions.add(IMAGE)
+    }
+    optionList.forEach {
+        when (it.type) {
+            OptionsType.CATEGORY -> currentClickedOptions.add(CATEGORY)
+            OptionsType.D_DAY -> currentClickedOptions.add(D_DAY)
+            OptionsType.GOAL -> currentClickedOptions.add(GOAL)
+        }
+    }
 
     BackHandler() {
         if (showOptionView == null) {
@@ -71,7 +91,8 @@ fun WriteScreen1(
                             showOptionView = null
                         },
                         succeed = { uri ->
-                            imageList.add(uri)
+                            Log.e("ayhan", "uri : $uri")
+                            imageList.value += uri
                             showOptionView = null
                         })
                 )
@@ -82,19 +103,34 @@ fun WriteScreen1(
 
     if (showOptionView == CATEGORY) {
         currentClickedOptions.add(CATEGORY)
-        optionList.add(WriteOption(title = "카테고리", content = "요가를해보자요가는재미가없지만"))
+        optionList.add(
+            WriteOption(
+                type = OptionsType.CATEGORY,
+                title = "카테고리", content = "요가를해보자요가는재미가없지만"
+            )
+        )
         showOptionView = null
     }
 
     if (showOptionView == D_DAY) {
         currentClickedOptions.add(D_DAY)
-        optionList.add(WriteOption(title = "디데이", content = "2022.10.08(D-102)"))
+        optionList.add(
+            WriteOption(
+                type = OptionsType.D_DAY,
+                title = "디데이", content = "2022.10.08(D-102)"
+            )
+        )
         showOptionView = null
     }
 
     if (showOptionView == GOAL) {
         currentClickedOptions.add(GOAL)
-        optionList.add(WriteOption(title = "목표 달성 횟수", content = "10"))
+        optionList.add(
+            WriteOption(
+                type = OptionsType.GOAL,
+                title = "목표 달성 횟수", content = "10"
+            )
+        )
         showOptionView = null
     }
 
@@ -121,7 +157,7 @@ fun WriteScreen1(
                                 WriteInfo1(
                                     title = title.value,
                                     memo = originMemo.value,
-                                    images = imageList,
+                                    images = imageList.value,
                                     options = optionList
                                 )
                             )
@@ -160,22 +196,21 @@ fun WriteScreen1(
                                 currentClickedOptions.remove(MEMO)
                             })
                     }
-
                 }
 
-                gridItems(
-                    data = imageList,
-                    columnCount = 3,
-                    horizontalArrangement = Arrangement.spacedBy(32.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 28.dp)
-                        .padding(top = 28.dp)
-                ) { itemData ->
-                    ImageScreen(imageInfo = itemData)
-                }
-
-                // TODO : 카메라 이미지 뷰 정의
                 item {
+                    ImageScreen(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 28.dp, start = 28.dp, end = 28.dp),
+                        images = imageList.value,
+                        deleteImage = { removeImage ->
+                            imageList.value -= removeImage
+                            Log.e("ayhan", "imageList ${imageList}")
+                        })
+                }
+
+                item {
+                    // TODO : 카메라 이미지 뷰 정의
                     OptionScreen(options = optionList)
                 }
             }
@@ -198,3 +233,4 @@ fun WriteScreen1(
         }
     }
 }
+

@@ -17,7 +17,6 @@ import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.util.createImageFile
 import java.io.File
 import java.io.FileOutputStream
@@ -113,7 +112,7 @@ class AddImageActivity : AppCompatActivity() {
         val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
         val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
         if (photoUri != null) {
-            takePhotoAction.succeed(WriteImageInfo(uri = photoUri!!, file = imageFile))
+      //      takePhotoAction.succeed(WriteImageInfo(uri = photoUri!!, file = imageFile))
         } else {
             Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
         }

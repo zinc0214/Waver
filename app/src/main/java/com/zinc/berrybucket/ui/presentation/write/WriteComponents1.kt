@@ -247,3 +247,7 @@ sealed class WriteAppBarClickEvent {
 enum class BottomOptionType {
     MEMO, IMAGE, CATEGORY, D_DAY, GOAL
 }
+
+enum class OptionsType {
+    CATEGORY, D_DAY, GOAL
+}
