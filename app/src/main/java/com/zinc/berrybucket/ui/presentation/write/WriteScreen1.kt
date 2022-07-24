@@ -167,14 +167,14 @@ fun WriteScreen1(
                 item {
                     WriteTitleFieldView(modifier = Modifier
                         .fillMaxWidth()
-                        .padding(28.dp),
+                        .padding(top = 28.dp)
+                        .padding(horizontal = 28.dp),
                         title = title.value,
                         textChanged = {
                             title.value = it
                             nextButtonClickable.value = it.isNotEmpty()
                         })
                 }
-
 
                 item {
                     if (originMemo.value.isNotEmpty()) {
@@ -192,6 +192,7 @@ fun WriteScreen1(
                         maxRow = 3,
                         modifier = Modifier
                             .padding(horizontal = 28.dp)
+                            .padding(top = 28.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalSpace = 28.dp,
