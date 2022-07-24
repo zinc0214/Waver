@@ -7,10 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination
-import androidx.navigation.NavGraph
-import androidx.navigation.NavHostController
+import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.WriteInfo1
@@ -117,7 +114,15 @@ class BerryBucketAppState(
                 route = WriteDestinations.GO_TO_WRITE1,
                 args = listOf(
                     WriteDestinations.WRITE_INFO to writeInfo
-                )
+                ),
+                navOptions {
+                    // Pop up backstack to the first destination and save state. This makes going back
+                    // to the start destination when pressing back in any other bottom tab.
+                    popUpTo(findStartDestination(navController.graph).id) {
+                        inclusive = false
+                        saveState = true
+                    }
+                }
             )
         }
     }
