@@ -40,7 +40,7 @@ fun DetailTopAppBar(
         val (closeButton, titleView, moreButton, divider) = createRefs()
 
         IconButton(
-            image = R.drawable.btn40close,
+            image = R.drawable.btn_40_close,
             contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -72,7 +72,7 @@ fun DetailTopAppBar(
 
         IconButton(
             image = R.drawable.btn32more,
-            contentDescription = stringResource(id = R.string.moreDesc),
+            contentDescription = stringResource(id = R.string.moreButtonDesc),
             modifier = Modifier
                 .padding(end = 14.dp, top = 10.dp, bottom = 10.dp)
                 .size(32.dp)

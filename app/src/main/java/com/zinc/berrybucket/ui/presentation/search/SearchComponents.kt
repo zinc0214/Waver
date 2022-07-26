@@ -56,7 +56,7 @@ fun SearchTopAppBar(
         val (closeButton, titleView) = createRefs()
 
         IconButton(
-            image = R.drawable.btn40close,
+            image = R.drawable.btn_40_close,
             contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -259,7 +259,7 @@ private fun RecentSearchItem(recentItem: RecentItem) {
                 }
         )
         Image(
-            painter = painterResource(id = R.drawable.btn_40_close),
+            painter = painterResource(id = R.drawable.btn_24_close),
             modifier = Modifier
                 .size(24.dp)
                 .constrainAs(deleteView) {

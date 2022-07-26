@@ -15,10 +15,11 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteOption
+import com.zinc.berrybucket.model.WriteOptionsType1
+import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
 import com.zinc.berrybucket.ui.presentation.common.gridItems
-import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
@@ -33,8 +34,8 @@ fun WriteScreen1(
 ) {
     val context = LocalContext.current
 
-    var showOptionView: BottomOptionType? by remember { mutableStateOf(null) }
-    val currentClickedOptions = remember { mutableStateListOf<BottomOptionType>() }
+    var showOptionView: WriteOptionsType1? by remember { mutableStateOf(null) }
+    val currentClickedOptions = remember { mutableStateListOf<WriteOptionsType1>() }
     val nextButtonClickable = remember { mutableStateOf(false) }
 
     val title = remember { mutableStateOf(writeInfo1.title) }
@@ -52,9 +53,12 @@ fun WriteScreen1(
     }
     optionList.value.forEach {
         when (it.type) {
-            OptionsType.CATEGORY -> currentClickedOptions.add(CATEGORY)
-            OptionsType.D_DAY -> currentClickedOptions.add(D_DAY)
-            OptionsType.GOAL -> currentClickedOptions.add(GOAL)
+            CATEGORY -> currentClickedOptions.add(CATEGORY)
+            D_DAY -> currentClickedOptions.add(D_DAY)
+            GOAL -> currentClickedOptions.add(GOAL)
+            else -> {
+                // do nothing
+            }
         }
     }
 
@@ -100,7 +104,7 @@ fun WriteScreen1(
     if (showOptionView == CATEGORY) {
         currentClickedOptions.add(CATEGORY)
         optionList.value += WriteOption(
-            type = OptionsType.CATEGORY,
+            type = CATEGORY,
             title = "카테고리",
             content = "요가를해보자요가는재미가없지만"
         )
@@ -110,7 +114,7 @@ fun WriteScreen1(
     if (showOptionView == D_DAY) {
         currentClickedOptions.add(D_DAY)
         optionList.value += WriteOption(
-            type = OptionsType.D_DAY,
+            type = D_DAY,
             title = "디데이",
             content = "2022.10.08(D-102)"
         )
@@ -119,7 +123,7 @@ fun WriteScreen1(
 
     if (showOptionView == GOAL) {
         currentClickedOptions.add(GOAL)
-        optionList.value += WriteOption(type = OptionsType.GOAL, title = "목표 달성 횟수", content = "10")
+        optionList.value += WriteOption(type = GOAL, title = "목표 달성 횟수", content = "10")
         showOptionView = null
     }
 

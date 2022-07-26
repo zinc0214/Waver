@@ -24,9 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.WriteOptionsType1
+import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.ui.presentation.write.BottomOptionType.*
 
 @Composable
 fun WriteAppBar(
@@ -42,7 +43,8 @@ fun WriteAppBar(
     ) {
         val (closeButton, moreButton, divider) = createRefs()
 
-        IconButton(image = R.drawable.btn40close,
+        IconButton(
+            image = R.drawable.btn_40_close,
             contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -170,8 +172,8 @@ fun MemoOptionView(
 @Composable
 fun BottomOptionView(
     modifier: Modifier = Modifier,
-    currentClickedOptions: List<BottomOptionType>,
-    optionUsed: (BottomOptionType) -> Unit
+    currentClickedOptions: List<WriteOptionsType1>,
+    optionUsed: (WriteOptionsType1) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -187,7 +189,7 @@ fun BottomOptionView(
                 .padding(horizontal = 40.dp, vertical = 20.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            BottomOptionType.values().forEach {
+            WriteOptionsType1.values().forEach {
                 BottomOptionIcon(
                     currentClickedOptions = currentClickedOptions,
                     type = it,
@@ -202,9 +204,9 @@ fun BottomOptionView(
 
 @Composable
 private fun BottomOptionIcon(
-    currentClickedOptions: List<BottomOptionType>,
-    type: BottomOptionType,
-    optionClicked: (BottomOptionType) -> Unit
+    currentClickedOptions: List<WriteOptionsType1>,
+    type: WriteOptionsType1,
+    optionClicked: (WriteOptionsType1) -> Unit
 ) {
     val isUsed = currentClickedOptions.find { it == type } != null
     IconButton(
@@ -242,12 +244,4 @@ private fun BottomOptionIcon(
 sealed class WriteAppBarClickEvent {
     object CloseClicked : WriteAppBarClickEvent()
     object NextClicked : WriteAppBarClickEvent()
-}
-
-enum class BottomOptionType {
-    MEMO, IMAGE, CATEGORY, D_DAY, GOAL
-}
-
-enum class OptionsType {
-    CATEGORY, D_DAY, GOAL
 }

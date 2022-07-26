@@ -16,6 +16,10 @@
     <string name="selected">선택 버튼</string>
     <string name="copy">버킷리스트 복사 버튼</string>
     <string name="back">뒤로가기</string>
+    <string name="closeDesc">닫기</string>
+    <string name="moreButtonDesc">더보기 버튼</string>
+    <string name="nextButtonDesc">다음 버튼</string>
+    <string name="addDesc">추가</string>
 
     <!--타이틀 디스크립션-->
     <string name="my">마이</string>
@@ -24,9 +28,6 @@
     <string name="appMore">더보기</string>
     <string name="write">버킷리스트 추가</string>
     <string name="titleLeftDesc">뒤로가기</string>
-    <string name="closeDesc">닫기</string>
-    <string name="moreDesc">더보기 버튼</string>
-    <string name="nextDesc">다음 버튼</string>
 
     <!-- My -->
     <string name="alarm">알람</string>
@@ -130,5 +131,6 @@
     <string name="addCategoryDesc">카테고리 추가하기</string>
     <string name="addDdayDesc">디데이 추가하기</string>
     <string name="addGoalDesc">달성횟수 추가하기</string>
+    <string name="writeSelectKeyWordGuide">키워드는 3개까지 선택 가능합니다.</string>
 
 </resources>

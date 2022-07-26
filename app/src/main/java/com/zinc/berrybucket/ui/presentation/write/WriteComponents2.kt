@@ -2,6 +2,7 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,26 +40,29 @@ fun WriteTitleView(
 fun WriteAddOptionView(
     modifier: Modifier,
     option: WriteAddOption,
-    isLastItem: Boolean
+    isLastItem: Boolean,
+    optionClicked: () -> Unit
 ) {
 
     Log.e("ayhan", "option  :$option, ${option.title}")
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable { optionClicked() }) {
         Divider(color = Gray3)
 
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (title, arrow, tag) = createRefs()
 
-            Image(modifier = Modifier
-                .constrainAs(arrow) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                }
-                .padding(20.dp),
+            Image(
+                modifier = Modifier
+                    .constrainAs(arrow) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(20.dp),
                 painter = painterResource(R.drawable.ico_16_right),
                 contentDescription = null)
 
-            Text(text = option.title,
+            Text(
+                text = option.title,
                 modifier = Modifier
                     .constrainAs(title) {
                         top.linkTo(parent.top)

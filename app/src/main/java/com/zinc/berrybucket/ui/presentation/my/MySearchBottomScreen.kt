@@ -108,7 +108,7 @@ private fun TopAppBar(clickEvent: (MySearchClickEvent) -> Unit) {
     TopAppBar(
         navigationIcon = {
             Icon(
-                painter = painterResource(id = R.drawable.btn40close),
+                painter = painterResource(id = R.drawable.btn_40_close),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 14.dp, top = 8.dp)

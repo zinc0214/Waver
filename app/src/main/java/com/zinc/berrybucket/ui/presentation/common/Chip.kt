@@ -6,7 +6,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,7 @@ fun RoundChip(
     isSelected: Boolean
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clip(RoundedCornerShape(chipRadius)),
         border = BorderStroke(color = if (isSelected) Main4 else Gray4, width = 1.dp),
         shape = RoundedCornerShape(chipRadius),
         elevation = 0.dp
@@ -36,6 +38,7 @@ fun RoundChip(
             color = if (isSelected) selectedColor else unSelectedColor,
             fontSize = 15.sp,
             modifier = textModifier,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
     }

@@ -2,12 +2,11 @@ package com.zinc.berrybucket.model
 
 import android.net.Uri
 import android.os.Parcelable
-import com.zinc.berrybucket.ui.presentation.write.OptionsType
 import kotlinx.parcelize.Parcelize
 import java.io.File
 
 data class WriteOption(
-    val type: OptionsType,
+    val type: WriteOptionsType1,
     val title: String,
     val content: String
 ) : java.io.Serializable
@@ -23,9 +22,10 @@ data class WriteImageInfo(
 }
 
 data class WriteAddOption(
+    val type: WriteOptionsType2,
     val title: String,
     val tagList: List<String>,
-    val clicked: (List<String>) -> Unit
+    val clicked: (WriteOptionsType2) -> Unit
 ) : java.io.Serializable
 
 @Parcelize
@@ -42,3 +42,17 @@ data class WriteResultInfo(
     val tagFriends: List<String>,
     val isScrapAvailable: Boolean = false
 ) : java.io.Serializable
+
+data class WriteKeyWord(
+    val id: String,
+    val text: String
+)
+
+enum class WriteOptionsType1 {
+    MEMO, IMAGE, CATEGORY, D_DAY, GOAL
+}
+
+interface WriteOptionsType2 {
+    object TAG : WriteOptionsType2
+    object FRIENDS : WriteOptionsType2
+}

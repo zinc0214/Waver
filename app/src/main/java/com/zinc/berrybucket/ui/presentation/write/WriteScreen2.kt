@@ -9,18 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Divider
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.WriteAddOption
-import com.zinc.berrybucket.model.WriteImageInfo
-import com.zinc.berrybucket.model.WriteInfo1
-import com.zinc.berrybucket.model.WriteResultInfo
+import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
+import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScreen
 
 
 // TODO : 백키를 통해 이동시킬 때 데이터를 가져가지 않고 그냥 돌아가는 문제 해결 필요
@@ -31,37 +29,87 @@ fun WriteScreen2(
     goToBack: (WriteInfo1) -> Unit,
     goToAddBucket: (WriteResultInfo) -> Unit
 ) {
+
+    var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
+
+
+    // TODO : 데이터 받아오도록 수정 필요
+    val originKeyWord = buildList {
+        repeat(50) {
+            add(WriteKeyWord(id = it.toString(), text = "여행 + $it"))
+        }
+    }
+
+    val selectedKeyWords = remember { mutableStateListOf<WriteKeyWord>() }
+
+    val optionsList = mutableListOf(
+        WriteAddOption(
+            type = WriteOptionsType2.TAG,
+            title = "키워드 추가",
+            tagList = selectedKeyWords.map { it.text },
+            clicked = {
+                optionScreenShow = it
+            }),
+        WriteAddOption(
+            type = WriteOptionsType2.FRIENDS,
+            title = "함께할 친구 추가하기",
+            tagList = listOf("aaa"),
+            clicked = {
+                optionScreenShow = it
+            })
+    )
+
+    if (optionScreenShow != null) {
+        when (optionScreenShow) {
+            WriteOptionsType2.TAG -> {
+                WriteSelectKeyWordScreen(
+                    closeClicked = { optionScreenShow = null },
+                    originKeyWord = originKeyWord,
+                    selectedKeyWords = selectedKeyWords,
+                    addKeyWordClicked = {
+                        selectedKeyWords.clear()
+                        selectedKeyWords.addAll(it)
+                        optionScreenShow = null
+                    }
+                )
+            }
+            WriteOptionsType2.FRIENDS -> {
+
+            }
+        }
+    } else {
+        WriteScreen2ContentView(
+            modifier = modifier,
+            writeInfo1 = writeInfo1,
+            optionsList = optionsList,
+            goToBack = { goToBack(writeInfo1) },
+            write2OptionClicked = { optionScreenShow = it },
+            goToAddBucket = { })
+    }
+}
+
+
+@Composable
+private fun WriteScreen2ContentView(
+    modifier: Modifier = Modifier,
+    writeInfo1: WriteInfo1,
+    optionsList: List<WriteAddOption>,
+    goToBack: (WriteInfo1) -> Unit,
+    write2OptionClicked: (WriteOptionsType2) -> Unit,
+    goToAddBucket: () -> Unit
+) {
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
-        val optionsList = listOf(
-            WriteAddOption(
-                title = "키워드 추가",
-                tagList = listOf(
-                    "#제주도",
-                    "#서울",
-                    "#2e3제주도",
-                    "#1서울",
-                    "#2제주도가나나나나나",
-                    "#3서울",
-                    "#4서울",
-                    "#5제주도",
-                    "6#서울",
-                    "#7서울",
-                    "#8제주도",
-                    "#9서울"
-                ),
-                clicked = {}),
-            WriteAddOption(title = "함께할 친구 추가하기", tagList = listOf("aaa"), clicked = {})
-        )
 
-        WriteAppBar(modifier = Modifier
-            .fillMaxWidth()
-            .constrainAs(appBar) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            },
+        WriteAppBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(appBar) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                },
             nextButtonClickable = true,
             rightText = R.string.writeGoToFinish,
             clickEvent = {
@@ -110,7 +158,9 @@ fun WriteScreen2(
             optionsList.forEach {
                 WriteAddOptionView(
                     modifier = Modifier.fillMaxWidth(),
-                    option = it, isLastItem = it == optionsList.last()
+                    option = it,
+                    isLastItem = it == optionsList.last(),
+                    optionClicked = { write2OptionClicked(it.type) }
                 )
             }
 
