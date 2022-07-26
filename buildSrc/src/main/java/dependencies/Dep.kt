@@ -58,6 +58,7 @@ object Dep {
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val navigation = "androidx.navigation:navigation-compose:2.4.2"
             const val accompanist = "com.google.accompanist:accompanist-permissions:0.18.0"
+            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.24.13-rc"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"

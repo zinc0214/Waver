@@ -2,14 +2,9 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.ui.compose.theme.Gray10
@@ -74,11 +70,7 @@ fun WriteAddOptionView(
                 color = Gray10,
                 fontSize = 16.sp)
 
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 60.dp), state = rememberLazyGridState(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                userScrollEnabled = false,
+            FlowRow(
                 modifier = Modifier
                     .constrainAs(tag) {
                         top.linkTo(title.bottom)
@@ -86,11 +78,13 @@ fun WriteAddOptionView(
                         end.linkTo(arrow.start)
                         width = Dimension.fillToConstraints
                     }
-                    .padding(top = 12.dp, start = 28.dp, end = 28.dp, bottom = 20.dp),
+                    .padding(top = 12.dp, start = 28.dp, bottom = 20.dp),
+                mainAxisSpacing = 12.dp,
+                crossAxisSpacing = 8.dp,
             ) {
-                items(items = option.tagList) { tag ->
+                option.tagList.forEach {
                     Text(
-                        text = tag,
+                        text = it,
                         modifier = Modifier,
                         color = Main3,
                         fontSize = 16.sp
@@ -98,7 +92,6 @@ fun WriteAddOptionView(
                 }
             }
         }
-
 
         if (isLastItem) {
             Divider(color = Gray3)

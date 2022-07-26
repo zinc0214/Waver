@@ -106,6 +106,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.accompanist)
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.indicator)
+    implementation(Dep.AndroidX.Compose.flowlayout)
 
     // camera
     implementation(Dep.AndroidX.Camera.camera2)
