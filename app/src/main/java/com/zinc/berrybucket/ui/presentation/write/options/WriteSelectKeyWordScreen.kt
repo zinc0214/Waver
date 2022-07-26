@@ -26,6 +26,7 @@ import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
 
+// TODO : 스크롤 액션 수정 필요
 @Composable
 fun WriteSelectKeyWordScreen(
     closeClicked: () -> Unit,
