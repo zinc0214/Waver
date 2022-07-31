@@ -1,6 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
-import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,10 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteKeyWord
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Gray7
-import com.zinc.berrybucket.ui.compose.theme.Main3
-import com.zinc.berrybucket.ui.compose.theme.Main4
+import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
@@ -39,9 +36,9 @@ fun WriteSelectKeyWordScreen(
     val scrollState = rememberLazyListState()
     val isShowDivider = scrollState.firstVisibleItemIndex == 1
 
-    Log.e("ayhan", "state : ${scrollState.firstVisibleItemIndex}")
-
-    Column {
+    Column(
+        modifier = Modifier.background(color = Gray2)
+    ) {
         WriteAppBar(
             modifier = Modifier
                 .fillMaxWidth(),
