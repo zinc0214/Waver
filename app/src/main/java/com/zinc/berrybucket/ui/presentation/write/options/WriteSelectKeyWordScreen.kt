@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -37,11 +38,14 @@ fun WriteSelectKeyWordScreen(
 
     val updateKeyWords = remember { mutableStateOf(selectedKeyWords) }
     val scrollState = rememberLazyGridState()
-    val isShowDivider = remember { mutableStateOf(scrollState.firstVisibleItemIndex > 0) }
+    val isShowDivider = remember { mutableStateOf(scrollState.firstVisibleItemIndex > 1) }
+
+    Log.e("ayhan", "state : ${scrollState.firstVisibleItemIndex}")
 
     Column {
-        WriteAppBar(modifier = Modifier
-            .fillMaxWidth(),
+        WriteAppBar(
+            modifier = Modifier
+                .fillMaxWidth(),
             nextButtonClickable = true,
             rightText = R.string.addDesc,
             clickEvent = {
@@ -65,7 +69,8 @@ fun WriteSelectKeyWordScreen(
                 .padding(horizontal = 28.dp)
                 .padding(top = 24.dp)
                 .scrollable(state = scrollState, orientation = Orientation.Vertical),
-            state = rememberLazyListState()
+            state = rememberLazyListState(),
+            contentPadding = PaddingValues(bottom = 50.dp)
         ) {
             item {
                 Text(
