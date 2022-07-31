@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
@@ -31,6 +32,13 @@ fun WriteScreen2(
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
 
+    BackHandler(enabled = true) { // <-----
+        if (optionScreenShow != null) {
+            optionScreenShow = null
+        } else {
+            goToBack(writeInfo1)
+        }
+    }
 
     // TODO : 데이터 받아오도록 수정 필요
     val originKeyWord = buildList {
