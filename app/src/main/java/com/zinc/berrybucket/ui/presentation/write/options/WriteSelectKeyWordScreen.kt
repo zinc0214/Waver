@@ -4,10 +4,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.ui.compose.theme.*
@@ -59,52 +59,56 @@ fun WriteSelectKeyWordScreen(
             Divider(modifier = Modifier.fillMaxWidth(), color = Gray3)
         }
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 28.dp)
                 .padding(top = 24.dp)
-                .scrollable(state = scrollState, orientation = Orientation.Vertical)
+                .scrollable(state = scrollState, orientation = Orientation.Vertical),
+            state = rememberLazyListState()
         ) {
-            Text(
-                text = stringResource(id = R.string.writeSelectKeyWordGuide),
-                color = Gray10,
-                fontSize = 15.sp,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+            item {
+                Text(
+                    text = stringResource(id = R.string.writeSelectKeyWordGuide),
+                    color = Gray10,
+                    fontSize = 15.sp,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
 
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 90.dp),
-                state = rememberLazyGridState(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 34.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalArrangement = Arrangement.spacedBy(17.dp)
-            ) {
-                items(items = originKeyWord) { keywordItem ->
-                    var selected by remember { mutableStateOf(updateKeyWords.value.any { it == keywordItem }) }
-                    RoundChip(
-                        modifier = Modifier
-                            .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
-                            .selectable(
-                                selected = selected,
-                                onClick = {
-                                    if (selected) {
-                                        updateKeyWords.value -= keywordItem
-                                    } else {
-                                        updateKeyWords.value += keywordItem
+            item {
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 34.dp),
+                    mainAxisSpacing = 24.dp,
+                    crossAxisSpacing = 17.dp,
+                ) {
+                    originKeyWord.forEach { keywordItem ->
+                        var selected by remember { mutableStateOf(updateKeyWords.value.any { it == keywordItem }) }
+                        RoundChip(
+                            chipRadius = 24.dp,
+                            modifier = Modifier
+                                .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
+                                .selectable(
+                                    selected = selected,
+                                    onClick = {
+                                        if (selected) {
+                                            updateKeyWords.value -= keywordItem
+                                        } else {
+                                            updateKeyWords.value += keywordItem
+                                        }
+                                        selected = !selected
                                     }
-                                    selected = !selected
-                                }),
-                        chipRadius = 24.dp,
-                        textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
-                        selectedColor = Main3,
-                        unSelectedColor = Gray7,
-                        text = keywordItem.text,
-                        isSelected = selected
-                    )
+                                ),
+                            textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+                            selectedColor = Main3,
+                            unSelectedColor = Gray7,
+                            text = keywordItem.text,
+                            isSelected = selected
+                        )
+                    }
                 }
             }
         }

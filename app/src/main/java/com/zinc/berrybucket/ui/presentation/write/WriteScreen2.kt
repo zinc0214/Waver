@@ -1,13 +1,11 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,7 +15,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.ui.compose.theme.Gray2
-import com.zinc.berrybucket.ui.presentation.write.options.ImageScreen
+import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScreen
 
 
@@ -121,7 +120,6 @@ private fun WriteScreen2ContentView(
                             newImage.add(image)
                         }
                         val newInfo = writeInfo1.copy(images = newImage)
-                        Log.e("ayhan", "newInfo :$newInfo")
                         goToBack(newInfo)
                         // TODO : 이미지
                     }
@@ -133,7 +131,7 @@ private fun WriteScreen2ContentView(
 
         val state = rememberLazyGridState()
 
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .constrainAs(contents) {
                     top.linkTo(appBar.bottom)
@@ -145,26 +143,46 @@ private fun WriteScreen2ContentView(
                 .scrollable(
                     state = state,
                     orientation = Orientation.Vertical
-                )
+                ),
+            state = rememberLazyListState()
         ) {
-            WriteTitleView(
-                modifier = Modifier.padding(bottom = if (writeInfo1.images.isEmpty()) 150.dp else 32.dp),
-                title = writeInfo1.title
-            )
-
-            ImageScreen(images = writeInfo1.images)
-
-            // TODO : Flexible 로 수정 필요
-            optionsList.forEach {
-                WriteAddOptionView(
-                    modifier = Modifier.fillMaxWidth(),
-                    option = it,
-                    isLastItem = it == optionsList.last(),
-                    optionClicked = { write2OptionClicked(it.type) }
+            item {
+                WriteTitleView(
+                    modifier = Modifier.padding(bottom = if (writeInfo1.images.isEmpty()) 150.dp else 32.dp),
+                    title = writeInfo1.title
                 )
             }
 
-            Divider(color = Gray2, thickness = 8.dp)
+            item {
+                gridItems(data = writeInfo1.images,
+                    maxRow = 3,
+                    modifier = Modifier
+                        .padding(horizontal = 28.dp)
+                        .padding(top = 28.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalSpace = 28.dp,
+                    itemContent = {
+                        ImageItem(imageInfo = it)
+                    },
+                    emptyContent = {
+                        Spacer(modifier = Modifier.size(80.dp))
+                    })
+            }
+
+            item {
+                // TODO : Flexible 로 수정 필요
+                optionsList.forEach {
+                    WriteAddOptionView(
+                        modifier = Modifier.fillMaxWidth(),
+                        option = it,
+                        isLastItem = it == optionsList.last(),
+                        optionClicked = { write2OptionClicked(it.type) }
+                    )
+                }
+
+                Divider(color = Gray2, thickness = 8.dp)
+            }
         }
     }
 }

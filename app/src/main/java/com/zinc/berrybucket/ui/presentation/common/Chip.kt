@@ -28,9 +28,9 @@ fun RoundChip(
     isSelected: Boolean
 ) {
     Card(
-        modifier = modifier.clip(RoundedCornerShape(chipRadius)),
         border = BorderStroke(color = if (isSelected) Main4 else Gray4, width = 1.dp),
         shape = RoundedCornerShape(chipRadius),
+        modifier = modifier.clip(RoundedCornerShape(chipRadius)),
         elevation = 0.dp
     ) {
         Text(
