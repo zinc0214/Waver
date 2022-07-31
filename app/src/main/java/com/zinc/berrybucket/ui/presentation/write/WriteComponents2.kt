@@ -1,17 +1,20 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -19,10 +22,9 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
-import com.zinc.berrybucket.model.WriteOptionsType2
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Gray3
-import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.model.WriteFriend
+import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.presentation.common.IconButton
 
 @Composable
 fun WriteTitleView(
@@ -114,16 +116,121 @@ fun WriteAddOptionView(
 }
 
 @Composable
-@Preview
-private fun WriteAddOptionViewTest() {
-    WriteAddOptionView(modifier = Modifier
-        .fillMaxWidth()
-        .background(color = Gray3),
-        option = WriteAddOption(
-            type = WriteOptionsType2.FRIENDS,
-            title = "친구 추가하기",
-            tagList = listOf("kkk"),
-            clicked = {}),
-        isLastItem = false,
-        optionClicked = {})
+fun AddedFriendItem(
+    writeFriend: WriteFriend,
+    deleteFriend: (WriteFriend) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .background(
+                color = Gray1,
+                shape = RoundedCornerShape(18.dp)
+            )
+            .border(width = 1.dp, shape = RoundedCornerShape(18.dp), color = Gray4),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = writeFriend.nickname,
+            color = Gray9,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 4.dp)
+        )
+
+        IconButton(
+            modifier = Modifier
+                .padding(8.dp)
+                .then(Modifier.size(20.dp)),
+            onClick = {
+                deleteFriend(writeFriend)
+            },
+            image = R.drawable.btn_20_delete,
+            contentDescription = stringResource(id = R.string.deleteButtonDesc)
+        )
+    }
+}
+
+@Composable
+fun ShowAllFriendItem(
+    clicked: () -> Unit
+) {
+    Text(
+        text = stringResource(id = R.string.showSelectedAllFriends),
+        color = Main3,
+        fontSize = 14.sp,
+        modifier = Modifier
+            .background(
+                color = Gray1,
+                shape = RoundedCornerShape(18.dp)
+            )
+            .border(width = 1.dp, color = Main2, shape = RoundedCornerShape(18.dp))
+            .padding(horizontal = 22.dp, vertical = 10.dp)
+            .clickable {
+                clicked()
+            }
+    )
+}
+
+@Composable
+fun WriteSelectFriendItem(
+    modifier: Modifier = Modifier,
+    writeFriend: WriteFriend,
+    isSelected: Boolean
+) {
+    Card(
+        backgroundColor = Gray1,
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, if (isSelected) Main3 else Gray3),
+        elevation = 0.dp,
+        modifier = modifier
+    ) {
+
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+            val (profileImage, nickNameView) = createRefs()
+
+            Image(
+                painter = painterResource(id = R.drawable.kakao),
+                contentDescription = stringResource(
+                    id = R.string.feedProfileImage
+                ),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(32.dp)
+                    .aspectRatio(1f)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .constrainAs(profileImage) {
+                        linkTo(
+                            top = parent.top,
+                            bottom = parent.bottom,
+                            topMargin = 16.dp,
+                            bottomMargin = 16.dp
+                        )
+                        start.linkTo(parent.start)
+                    }
+            )
+
+            Text(text = writeFriend.nickname,
+                fontSize = 14.sp,
+                color = Gray10,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                modifier = Modifier.constrainAs(nickNameView) {
+                    linkTo(
+                        top = parent.top,
+                        bottom = parent.bottom,
+                        topMargin = 22.dp,
+                        bottomMargin = 22.dp
+                    )
+                    linkTo(
+                        start = profileImage.end,
+                        end = parent.end,
+                        startMargin = 12.dp,
+                        endMargin = 12.dp
+                    )
+                    width = Dimension.fillToConstraints
+                })
+        }
+    }
 }

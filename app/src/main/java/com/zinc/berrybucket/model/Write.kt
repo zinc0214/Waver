@@ -48,6 +48,12 @@ data class WriteKeyWord(
     val text: String
 )
 
+data class WriteFriend(
+    val id: String,
+    val imageUrl: String,
+    val nickname: String
+)
+
 enum class WriteOptionsType1 {
     MEMO, IMAGE, CATEGORY, D_DAY, GOAL
 }

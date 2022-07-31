@@ -18,6 +18,7 @@ import com.zinc.berrybucket.model.*
 import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
+import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScreen
 
 
@@ -48,6 +49,7 @@ fun WriteScreen2(
     }
 
     val selectedKeyWords = remember { mutableStateListOf<WriteKeyWord>() }
+    val selectedFriends = remember { mutableStateListOf<WriteFriend>() }
 
     val optionsList = mutableListOf(
         WriteAddOption(
@@ -60,7 +62,7 @@ fun WriteScreen2(
         WriteAddOption(
             type = WriteOptionsType2.FRIENDS,
             title = "함께할 친구 추가하기",
-            tagList = listOf("aaa"),
+            tagList = selectedFriends.map { it.nickname },
             clicked = {
                 optionScreenShow = it
             })
@@ -81,7 +83,15 @@ fun WriteScreen2(
                 )
             }
             WriteOptionsType2.FRIENDS -> {
-
+                WriteSelectFriendsScreen(
+                    closeClicked = { optionScreenShow = null },
+                    selectedFriends = selectedFriends,
+                    addFriendsClicked = {
+                        selectedFriends.clear()
+                        selectedFriends.addAll(it)
+                        optionScreenShow = null
+                    }
+                )
             }
         }
     } else {
