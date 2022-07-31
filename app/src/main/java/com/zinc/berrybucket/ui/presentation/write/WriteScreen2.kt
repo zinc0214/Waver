@@ -55,14 +55,14 @@ fun WriteScreen2(
         WriteAddOption(
             type = WriteOptionsType2.TAG,
             title = "키워드 추가",
-            tagList = selectedKeyWords.map { it.text },
+            tagList = selectedKeyWords.map { "#${it.text}" },
             clicked = {
                 optionScreenShow = it
             }),
         WriteAddOption(
             type = WriteOptionsType2.FRIENDS,
             title = "함께할 친구 추가하기",
-            tagList = selectedFriends.map { it.nickname },
+            tagList = selectedFriends.map { "@${it.nickname}" },
             clicked = {
                 optionScreenShow = it
             })
