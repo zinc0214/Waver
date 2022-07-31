@@ -2,14 +2,10 @@ package com.zinc.berrybucket.ui.presentation.write.options
 
 import android.util.Log
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,7 +17,10 @@ import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteKeyWord
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.compose.theme.Gray10
+import com.zinc.berrybucket.ui.compose.theme.Gray7
+import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
@@ -37,8 +36,8 @@ fun WriteSelectKeyWordScreen(
 ) {
 
     val updateKeyWords = remember { mutableStateOf(selectedKeyWords) }
-    val scrollState = rememberLazyGridState()
-    val isShowDivider = remember { mutableStateOf(scrollState.firstVisibleItemIndex > 1) }
+    val scrollState = rememberLazyListState()
+    val isShowDivider = scrollState.firstVisibleItemIndex == 1
 
     Log.e("ayhan", "state : ${scrollState.firstVisibleItemIndex}")
 
@@ -57,19 +56,16 @@ fun WriteSelectKeyWordScreen(
                         addKeyWordClicked(updateKeyWords.value)
                     }
                 }
-            })
-
-        if (isShowDivider.value) {
-            Divider(modifier = Modifier.fillMaxWidth(), color = Gray3)
-        }
+            },
+            isShowDivider = isShowDivider
+        )
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 28.dp)
-                .padding(top = 24.dp)
-                .scrollable(state = scrollState, orientation = Orientation.Vertical),
-            state = rememberLazyListState(),
+                .padding(top = 24.dp),
+            state = scrollState,
             contentPadding = PaddingValues(bottom = 50.dp)
         ) {
             item {

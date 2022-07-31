@@ -34,7 +34,8 @@ fun WriteAppBar(
     modifier: Modifier,
     rightText: Int,
     clickEvent: (WriteAppBarClickEvent) -> Unit,
-    nextButtonClickable: Boolean
+    nextButtonClickable: Boolean,
+    isShowDivider: Boolean = true
 ) {
     ConstraintLayout(
         modifier = modifier
@@ -72,15 +73,17 @@ fun WriteAppBar(
             color = if (nextButtonClickable) Main4 else Gray6
         )
 
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(divider) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }, color = Gray3
-        )
+        if (isShowDivider) {
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(divider) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }, color = Gray3
+            )
+        }
     }
 }
 
