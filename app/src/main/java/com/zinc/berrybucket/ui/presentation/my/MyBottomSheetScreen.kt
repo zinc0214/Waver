@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.my
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -25,7 +24,6 @@ fun MyBottomSheetScreen(
         is BottomSheetScreenType.SearchScreen -> {
             SearchBottomView(
                 tab = currentScreen.selectTab,
-                viewModel = currentScreen.viewModel,
                 isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
         }
@@ -36,25 +34,18 @@ fun MyBottomSheetScreen(
 }
 
 @Composable
-private fun SearchBottomView(
+fun SearchBottomView(
     tab: MyTabType,
-    viewModel: MyViewModel,
     isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
-
-
     MySearchBottomScreen(currentTabType = tab, clickEvent = {
         when (it) {
             MySearchClickEvent.CloseClicked -> {
                 isNeedToBottomSheetOpen(false)
             }
             is MySearchClickEvent.ItemClicked -> TODO()
-            is MySearchClickEvent.SearchClicked -> TODO()
         }
-    }, searchWord = { tab, word ->
-
-    }, result = viewModel.searchResult.observeAsState()
-    )
+    })
 }
 
 @Composable

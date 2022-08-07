@@ -31,8 +31,7 @@ import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
 fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
-    bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-    modifier: Modifier = Modifier
+    bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit
 ) {
     composable(HomeSections.MY.route) { from ->
         MyScreen(
@@ -40,7 +39,7 @@ fun NavGraphBuilder.addHomeGraph(
                 onBucketSelected.invoke(it, from)
             },
             bottomSheetClicked = {
-                bottomSheetClicked.invoke(it)
+                bottomSheetClicked.invoke(it, from)
             }
         )
     }

@@ -17,10 +17,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.DetailType
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
+import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE1
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE2
@@ -32,6 +34,7 @@ import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.home.addHomeGraph
 import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
 import com.zinc.berrybucket.ui.presentation.my.MyBottomSheetScreen
+import com.zinc.berrybucket.ui.presentation.my.SearchBottomView
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
@@ -120,10 +123,16 @@ fun BerryBucketApp(
                                     appState.navigateToSearch(nav)
                                 }
                             }
-                        }, bottomSheetClicked = {
-                            currentBottomSheet = it
-                            isNeedToBottomSheetOpen.invoke(true)
+                        }, bottomSheetClicked = { event, nav ->
+                            if (event is BottomSheetScreenType.SearchScreen) {
+                                appState.navigateToMySearch(event.selectTab, nav)
+                            } else {
+                                currentBottomSheet = event
+                                isNeedToBottomSheetOpen.invoke(true)
+                            }
                         })
+
+                        homeSearchNavGraph(backPress = appState::backPress)
 
                         berryBucketNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->
@@ -159,6 +168,7 @@ object MainDestinations {
     const val CLOSE_BUCKET_DETAIL = "close_bucket_detail"
     const val OPEN_BUCKET_DETAIL = "open_bucket_detail"
     const val BUCKET_ID_KEY = "bucketId"
+    const val MY_SEARCH = "my_search"
 }
 
 object BucketDestinations {
@@ -224,6 +234,23 @@ private fun NavGraphBuilder.berryBucketNavGraph(
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         CloseDetailLayer(detailId, backPress)
+    }
+}
+
+private fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
+    navigation(
+        route = MainDestinations.HOME_ROUTE, startDestination = MY_SEARCH
+    ) {
+        composable(MY_SEARCH) { entry ->
+            val arguments = requireNotNull(entry.arguments)
+            val selectedTab = arguments.getRequiredSerializableExtra<MyTabType>(MY_SEARCH)
+            SearchBottomView(
+                tab = selectedTab,
+                isNeedToBottomSheetOpen = {
+                    backPress()
+                }
+            )
+        }
     }
 }
 

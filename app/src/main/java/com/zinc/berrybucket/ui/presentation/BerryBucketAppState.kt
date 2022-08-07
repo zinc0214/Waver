@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.navigateWithArgument
@@ -74,6 +75,15 @@ class BerryBucketAppState(
                     saveState = true
                 }
             }
+        }
+    }
+
+    fun navigateToMySearch(tab: MyTabType, from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigateWithArgument(
+                route = MainDestinations.MY_SEARCH,
+                args = listOf(MainDestinations.MY_SEARCH to tab)
+            )
         }
     }
 

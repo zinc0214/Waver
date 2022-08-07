@@ -102,6 +102,5 @@ sealed class MyPagerClickEvent {
 sealed class MySearchClickEvent {
     object CloseClicked : MySearchClickEvent()
     data class ItemClicked(val info: UIBucketInfoSimple) : MySearchClickEvent()
-    data class SearchClicked(val tabType: MyTabType) : MySearchClickEvent()
 }
 
