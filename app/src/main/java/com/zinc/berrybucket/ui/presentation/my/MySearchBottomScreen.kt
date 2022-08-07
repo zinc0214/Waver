@@ -19,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -28,6 +27,7 @@ import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.BucketListView
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.Category
 
 @Composable
@@ -137,7 +137,7 @@ private fun SearchEditView(
         Text(
             text = stringResource(type.title),
             color = Main4,
-            fontSize = 20.sp,
+            fontSize = dpToSp(20.dp),
             fontWeight = FontWeight.Medium
         )
         Spacer(modifier = Modifier.width(12.dp))
@@ -160,7 +160,7 @@ private fun SearchEditView(
         value = searchText,
         textStyle = TextStyle(
             color = Gray10,
-            fontSize = 20.sp,
+            fontSize = dpToSp(20.dp),
             fontWeight = FontWeight.Medium
         ),
         onValueChange = { searchText = it },
@@ -173,7 +173,7 @@ private fun SearchEditView(
         decorationBox = { innerTextField ->
             Row {
                 if (searchText.text.isEmpty()) {
-                    Text(text = hintText, color = Gray6, fontSize = 20.sp)
+                    Text(text = hintText, color = Gray6, fontSize = dpToSp(20.dp))
                 }
                 innerTextField()  //<-- Add this
             }

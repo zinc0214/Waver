@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.ProfileCircularProgressBar
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.domain.models.TopProfile
 
 @Composable
@@ -90,7 +90,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.titlePosition,
-            fontSize = 15.sp,
+            fontSize = dpToSp(15.dp),
             color = Main3,
             textAlign = TextAlign.Center
         )
@@ -101,7 +101,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.nickName,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
+            fontSize = dpToSp(20.dp),
             color = Gray10,
             textAlign = TextAlign.Center
         )
@@ -112,7 +112,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.bio,
             fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             color = Gray7,
             textAlign = TextAlign.Center
         )
@@ -140,7 +140,7 @@ private fun FollowStateView(modifier: Modifier, count: String, text: String) {
     Row(modifier = modifier) {
         Text(
             text = text,
-            fontSize = 13.sp,
+            fontSize = dpToSp(13.dp),
             color = Gray9,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.CenterVertically)
@@ -148,7 +148,7 @@ private fun FollowStateView(modifier: Modifier, count: String, text: String) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = count,
-            fontSize = 15.sp,
+            fontSize = dpToSp(15.dp),
             color = Gray9,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.CenterVertically)

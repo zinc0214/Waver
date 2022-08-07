@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.flowlayout.FlowRow
@@ -25,6 +24,7 @@ import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun WriteTitleView(
@@ -35,7 +35,7 @@ fun WriteTitleView(
             .padding(start = 28.dp, top = 28.dp, end = 28.dp)
             .fillMaxWidth(),
         text = title,
-        fontSize = 24.sp,
+        fontSize = dpToSp(24.dp),
         color = Gray10
     )
 }
@@ -81,7 +81,7 @@ fun WriteAddOptionView(
                         bottom = if (option.tagList.isEmpty()) 18.dp else 12.dp
                     ),
                 color = Gray10,
-                fontSize = 16.sp)
+                fontSize = dpToSp(16.dp))
 
             FlowRow(
                 modifier = Modifier
@@ -103,7 +103,7 @@ fun WriteAddOptionView(
                         text = it,
                         modifier = Modifier,
                         color = Main3,
-                        fontSize = 16.sp
+                        fontSize = dpToSp(16.dp),
                     )
                 }
             }
@@ -133,7 +133,7 @@ fun AddedFriendItem(
         Text(
             text = writeFriend.nickname,
             color = Gray9,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 4.dp)
         )
@@ -158,7 +158,7 @@ fun ShowAllFriendItem(
     Text(
         text = stringResource(id = R.string.showSelectedAllFriends),
         color = Main3,
-        fontSize = 14.sp,
+        fontSize = dpToSp(14.dp),
         modifier = Modifier
             .background(
                 color = Gray1,
@@ -211,8 +211,9 @@ fun WriteSelectFriendItem(
                     }
             )
 
-            Text(text = writeFriend.nickname,
-                fontSize = 14.sp,
+            Text(
+                text = writeFriend.nickname,
+                fontSize = dpToSp(14.dp),
                 color = Gray10,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2,

@@ -29,13 +29,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.SearchRecommendType
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.*
 
 
@@ -67,7 +67,7 @@ fun SearchTopAppBar(
         if (isTitleScrolled) {
             Text(
                 color = Gray10,
-                fontSize = 16.sp,
+                fontSize = dpToSp(16.dp),
                 fontWeight = FontWeight.Bold,
                 text = title,
                 overflow = TextOverflow.Ellipsis,
@@ -106,7 +106,7 @@ fun SearchEditView(
         BasicTextField(
             value = searchText,
             textStyle = TextStyle(
-                color = Gray10, fontSize = 22.sp, fontWeight = FontWeight.Medium
+                color = Gray10, fontSize = dpToSp(22.dp), fontWeight = FontWeight.Medium
             ),
             onValueChange = {
                 searchTextChange(it)
@@ -121,7 +121,7 @@ fun SearchEditView(
             decorationBox = { innerTextField ->
                 Row {
                     if (searchText.isEmpty()) {
-                        Text(text = hintText, color = Gray6, fontSize = 22.sp)
+                        Text(text = hintText, color = Gray6, fontSize = dpToSp(22.dp))
                     }
                     innerTextField()  //<-- Add this
                 }
@@ -184,7 +184,7 @@ fun RecommendKeyWordView(
     ) {
         Row(modifier = Modifier.padding(horizontal = 24.dp)) {
             Text(text = stringResource(id = R.string.recentSearch),
-                fontSize = 15.sp,
+                fontSize = dpToSp(15.dp),
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECENT) Main4 else Gray6,
                 modifier = Modifier
@@ -193,7 +193,7 @@ fun RecommendKeyWordView(
                         selectType = SearchRecommendType.RECENT
                     })
             Text(text = stringResource(id = R.string.recommendSearch),
-                fontSize = 15.sp,
+                fontSize = dpToSp(15.dp),
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECOMMEND) Main4 else Gray6,
                 modifier = Modifier
@@ -250,8 +250,9 @@ private fun RecentSearchItem(
     ) {
         val (textView, deleteView) = createRefs()
 
-        Text(text = recentItem.word,
-            fontSize = 15.sp,
+        Text(
+            text = recentItem.word,
+            fontSize = dpToSp(15.dp),
             color = Gray9,
             modifier = Modifier
                 .constrainAs(textView) {
@@ -322,7 +323,7 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
         val (textView, countView) = createRefs()
 
         Text(text = "#${item.keyword}",
-            fontSize = 15.sp,
+            fontSize = dpToSp(15.dp),
             color = Gray9,
             modifier = Modifier
                 .padding(end = 24.dp)
@@ -334,7 +335,7 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
                     width = Dimension.fillToConstraints
                 })
         Text(text = "${item.count}개",
-            fontSize = 15.sp,
+            fontSize = dpToSp(15.dp),
             color = Gray6,
             modifier = Modifier.constrainAs(countView) {
                 top.linkTo(parent.top)
@@ -414,7 +415,7 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
         Text(
             text = stringResource(id = R.string.showMore),
             color = Gray7,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(vertical = 10.dp)
@@ -461,8 +462,9 @@ fun SearchUserItemView(
             }
 
 
-            Text(text = item.nickName,
-                fontSize = 14.sp,
+            Text(
+                text = item.nickName,
+                fontSize = dpToSp(14.dp),
                 color = Gray10,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2,

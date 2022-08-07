@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
@@ -34,6 +33,7 @@ import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.ui.presentation.common.rememberNestedScrollConnection
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchBucketItem
@@ -68,7 +68,7 @@ fun RecommendTopBar(
 fun SearchTitle() {
     Text(
         text = stringResource(id = R.string.searchTitle),
-        fontSize = 24.sp,
+        fontSize = dpToSp(24.dp),
         color = Gray10,
         modifier = Modifier
             .fillMaxWidth()
@@ -99,7 +99,7 @@ private fun SearchTextView(
             Text(
                 text = hintText,
                 color = Gray6,
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -166,7 +166,7 @@ private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boo
         )
         Text(
             text = item.category,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             color = Gray10,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
@@ -259,7 +259,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                Text(text = type.toKorean(), fontSize = 15.sp, color = Gray10)
+                Text(text = type.toKorean(), fontSize = dpToSp(15.dp), color = Gray10)
             }
 
             TagListView(
@@ -319,7 +319,7 @@ fun RecommendBucketItemView(
 
                 Text(
                     text = item.title,
-                    fontSize = 14.sp,
+                    fontSize = dpToSp(14.dp),
                     color = Gray10,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
@@ -376,7 +376,7 @@ fun KeyWordChangeButton(modifier: Modifier) {
         )
         Text(
             text = stringResource(id = R.string.keywordRefresh),
-            fontSize = 13.sp,
+            fontSize = dpToSp(13.dp),
             color = Gray9
         )
     }

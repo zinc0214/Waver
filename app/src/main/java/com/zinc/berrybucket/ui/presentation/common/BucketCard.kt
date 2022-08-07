@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun BucketListView(
@@ -161,7 +161,7 @@ private fun DdayBadgeView(info: UIBucketInfoSimple) {
         Text(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 3.dp, bottom = 3.dp),
             text = info.dDayText!!,
-            fontSize = 12.sp,
+            fontSize = dpToSp(12.dp),
             color = Gray1
         )
     }
@@ -172,7 +172,7 @@ private fun TitleTextView(title: String) {
     Text(
         text = title,
         color = Gray10,
-        fontSize = 14.sp
+        fontSize = dpToSp(14.dp),
     )
 }
 
@@ -206,12 +206,12 @@ fun CountProgressView(
         Text(
             text = bucketCount.toString(),
             color = countProgressColor,
-            fontSize = 13.sp
+            fontSize = dpToSp(13.dp),
         )
         Text(
             text = "/${info.goalCountText()}",
             color = Gray4,
-            fontSize = 13.sp
+            fontSize = dpToSp(13.dp),
         )
     }
 }

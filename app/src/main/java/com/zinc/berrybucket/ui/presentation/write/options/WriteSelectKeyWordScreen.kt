@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteKeyWord
@@ -22,6 +21,7 @@ import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
+import com.zinc.berrybucket.util.dpToSp
 
 // TODO : 스크롤 액션 수정 필요
 @Composable
@@ -69,7 +69,7 @@ fun WriteSelectKeyWordScreen(
                 Text(
                     text = stringResource(id = R.string.writeSelectKeyWordGuide),
                     color = Gray10,
-                    fontSize = 15.sp,
+                    fontSize = dpToSp(15.dp),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -137,7 +137,7 @@ private fun WriteSelectKeyWordAppBarLayout(
         Text(
             text = stringResource(id = R.string.addDesc),
             color = Main4,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             modifier = Modifier
                 .padding(10.dp)
                 .clickable {

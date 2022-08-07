@@ -18,7 +18,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -33,6 +32,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.custom.MyView
 import com.zinc.berrybucket.ui.presentation.BucketSelected
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
+import com.zinc.berrybucket.util.dpToSp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -227,7 +227,7 @@ private fun MyTab(
     isClicked: (Int) -> Unit
 
 ) {
-    val textStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = 15.sp)
+    val textStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = dpToSp(15.dp))
     val density = LocalDensity.current
 
     Column(modifier = Modifier

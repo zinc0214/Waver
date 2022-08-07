@@ -10,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -20,6 +19,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray8
 import com.zinc.berrybucket.ui.presentation.common.BucketListView
 import com.zinc.berrybucket.ui.presentation.common.FilterAndSearchImageView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun AllBucketLayer(
@@ -86,7 +86,7 @@ private fun BucketStateView(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
-        Text(text = proceedingText, fontSize = 13.sp, color = Gray8)
+        Text(text = proceedingText, fontSize = dpToSp(13.dp), color = Gray8)
         Divider(
             color = Gray4,
             modifier = Modifier
@@ -95,6 +95,6 @@ private fun BucketStateView(
                 .width(1.dp)
                 .align(Alignment.CenterVertically)
         )
-        Text(text = succeedingText, fontSize = 13.sp, color = Gray8)
+        Text(text = succeedingText, fontSize = dpToSp(13.dp), color = Gray8)
     }
 }

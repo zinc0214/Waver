@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.ui.compose.theme.Gray7
 import com.zinc.berrybucket.ui.compose.theme.Gray9
 import com.zinc.berrybucket.ui.compose.theme.Main2
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.Category
 
 @Composable
@@ -121,7 +121,7 @@ private fun CategoryCountView(modifier: Modifier = Modifier, count: String) {
         modifier = modifier,
         text = count,
         color = Gray7,
-        fontSize = 14.sp
+        fontSize = dpToSp(14.dp),
     )
 }
 
@@ -144,6 +144,6 @@ private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
         modifier = modifier,
         text = name,
         color = Gray9,
-        fontSize = 14.sp
+        fontSize = dpToSp(14.dp),
     )
 }

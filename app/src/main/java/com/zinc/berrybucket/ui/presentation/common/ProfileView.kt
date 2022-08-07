@@ -15,11 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.ui.compose.theme.Gray7
 import com.zinc.berrybucket.ui.compose.theme.Gray9
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun ProfileView(
@@ -28,8 +28,8 @@ fun ProfileView(
     profileSize: Dp = 32.dp,
     profileRadius: Dp = 12.dp,
     badgeSize: Pair<Dp, Dp> = Pair(18.dp, 20.dp),
-    nickNameTextSize: TextUnit = 12.sp,
-    titlePositionTextSize: TextUnit = 12.sp,
+    nickNameTextSize: TextUnit = dpToSp(12.dp),
+    titlePositionTextSize: TextUnit = dpToSp(12.dp),
     nickNameTextColor: Color = Gray9,
     titlePositionTextColor: Color = Gray7,
     profileInfo: ProfileInfo

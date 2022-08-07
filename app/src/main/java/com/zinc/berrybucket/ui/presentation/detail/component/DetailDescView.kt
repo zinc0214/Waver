@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.ui.compose.theme.Error2
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.TagListView
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
@@ -56,7 +56,7 @@ private fun DdayView(modifier: Modifier = Modifier, dday: String) {
             Text(
                 text = dday,
                 color = Error2,
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -68,7 +68,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
     Text(
         text = title,
         color = Gray10,
-        fontSize = 24.sp,
+        fontSize = dpToSp(24.dp),
         modifier = modifier
     )
 }

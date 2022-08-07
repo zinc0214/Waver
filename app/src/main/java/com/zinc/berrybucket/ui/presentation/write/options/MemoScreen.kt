@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
@@ -22,6 +21,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun MemoScreen(
@@ -72,14 +72,14 @@ fun MemoScreen(
             value = currentMemo.value,
             textStyle = TextStyle(
                 color = Gray10,
-                fontSize = 24.sp,
+                fontSize = dpToSp(24.dp),
                 fontWeight = FontWeight.Medium
             ),
             onValueChange = { currentMemo.value = it },
             decorationBox = { innerTextField ->
                 Row {
                     if (currentMemo.value.isEmpty()) {
-                        Text(text = hintText, color = Gray6, fontSize = 24.sp)
+                        Text(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
                         nextButtonClickable.value = false
                     } else {
                         nextButtonClickable.value = true

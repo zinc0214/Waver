@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -33,6 +32,7 @@ import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.*
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
 @Composable
@@ -342,8 +342,8 @@ fun ProfileView(profileInfo: ProfileInfo) {
         profileSize = 44.dp,
         profileRadius = 16.dp,
         badgeSize = Pair(24.dp, 27.dp),
-        nickNameTextSize = 14.sp,
-        titlePositionTextSize = 13.sp,
+        nickNameTextSize = dpToSp(14.dp),
+        titlePositionTextSize = dpToSp(13.dp),
         nickNameTextColor = Gray10,
         profileInfo = profileInfo
     )

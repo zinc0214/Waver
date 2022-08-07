@@ -22,12 +22,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedKeyWord
 import kotlin.math.min
 
@@ -106,7 +106,7 @@ private fun FeedCollapsingToolbar(
         text = if (scrollOffset > 0.0 && !isScrolled) stringResource(id = R.string.feedRecommendTitle) else stringResource(
             id = R.string.feedRecommendSmallTitle
         ),
-        fontSize = if (isScrolled) 16.sp else textSize.value.sp,
+        fontSize = if (isScrolled) dpToSp(16.dp) else dpToSp(textSize),
         fontWeight = FontWeight.Bold,
         textAlign = if (scrollOffset > 0.0 && !isScrolled) TextAlign.Start else TextAlign.Center,
         modifier = modifier
@@ -180,7 +180,7 @@ private fun BucketRecommendButton(modifier: Modifier = Modifier, recommendClicke
             textAlign = TextAlign.Center,
             color = Gray1,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = dpToSp(16.dp),
             modifier = Modifier
                 .padding(vertical = 14.dp, horizontal = 24.dp)
                 .fillMaxWidth()

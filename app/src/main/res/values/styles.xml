@@ -11,7 +11,7 @@
 
     <style name="FilterTitleStyle" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/gray7</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">13dp</item>
     </style>
 
     <style name="Theme.AppCompat.Transparent.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">

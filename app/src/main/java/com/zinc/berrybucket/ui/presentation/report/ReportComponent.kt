@@ -29,12 +29,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ReportClickEvent
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
@@ -72,7 +72,7 @@ fun ReportTopAppBar(
 
         Text(
             text = stringResource(id = R.string.commentReportTitle),
-            fontSize = 16.sp,
+            fontSize = dpToSp(16.dp),
             color = Gray10,
             textAlign = TextAlign.Center,
             modifier = Modifier
@@ -133,7 +133,7 @@ fun ReportContentView(
         item {
             Text(
                 text = stringResource(id = R.string.reportWriter),
-                fontSize = 13.sp,
+                fontSize = dpToSp(13.dp),
                 color = Gray7,
                 modifier = Modifier.padding(top = 28.dp, start = 28.dp, end = 28.dp)
             )
@@ -143,7 +143,7 @@ fun ReportContentView(
             Text(
                 modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
                 text = reportInfo.writer,
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 color = Gray10
             )
         }
@@ -152,7 +152,7 @@ fun ReportContentView(
             Text(
                 modifier = Modifier.padding(top = 8.dp, start = 28.dp, end = 28.dp),
                 text = stringResource(id = R.string.reportContents),
-                fontSize = 13.sp,
+                fontSize = dpToSp(13.dp),
                 color = Gray7
             )
         }
@@ -161,7 +161,7 @@ fun ReportContentView(
             Text(
                 modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
                 text = reportInfo.contents,
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 color = Gray10,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
@@ -246,7 +246,7 @@ fun ReportItemLayer(
             Text(
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp),
                 text = item.text,
-                fontSize = 15.sp,
+                fontSize = dpToSp(15.dp),
                 color = if (isSelected) Main4 else Gray10
             )
         }
@@ -274,7 +274,7 @@ fun ETCTextField(
         BasicTextField(
             value = searchText,
             textStyle = TextStyle(
-                color = Gray10, fontSize = 15.sp, fontWeight = FontWeight.Medium
+                color = Gray10, fontSize = dpToSp(15.dp), fontWeight = FontWeight.Medium
             ),
             onValueChange = { searchText = it },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -285,7 +285,7 @@ fun ETCTextField(
             decorationBox = { innerTextField ->
                 Row {
                     if (searchText.text.isEmpty()) {
-                        Text(text = hintText, color = Gray7, fontSize = 15.sp)
+                        Text(text = hintText, color = Gray7, fontSize = dpToSp(15.dp))
                     }
                     innerTextField()  //<-- Add this
                 }
@@ -333,7 +333,7 @@ fun ReportButton(modifier: Modifier, reportButtonClicked: () -> Unit) {
     ) {
         Text(
             text = stringResource(id = R.string.reportActionButton),
-            fontSize = 16.sp,
+            fontSize = dpToSp(16.dp),
             color = Gray10,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center

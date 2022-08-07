@@ -16,10 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentTagInfo
 import com.zinc.berrybucket.ui.compose.theme.Gray9
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun DetailCommenterTagDropDownView(
@@ -82,7 +82,7 @@ private fun TagDropDownItem(
             modifier = Modifier.padding(start = 12.dp),
             text = commentTagInfo.nickName,
             color = Gray9,
-            fontSize = 13.sp,
+            fontSize = dpToSp(13.dp),
             textAlign = TextAlign.Center
         )
     }

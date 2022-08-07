@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
@@ -30,6 +29,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray4
 import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.util.dpToSp
 
 
 /**
@@ -58,7 +58,7 @@ fun LabelWithSwitchView(
         val (leftContent, rightContent) = createRefs()
         Text(
             text = stringResource(id = textLabel),
-            fontSize = 16.sp,
+            fontSize = dpToSp(16.dp),
             color = Gray10,
             modifier = Modifier
                 .constrainAs(leftContent) {

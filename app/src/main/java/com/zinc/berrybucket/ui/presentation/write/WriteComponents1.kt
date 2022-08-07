@@ -21,13 +21,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.compose.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun WriteAppBar(
@@ -40,7 +40,7 @@ fun WriteAppBar(
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
-            .height(52.dp)
+            .heightIn(min = 52.dp)
     ) {
         val (closeButton, moreButton, divider) = createRefs()
 
@@ -59,18 +59,20 @@ fun WriteAppBar(
                 clickEvent(WriteAppBarClickEvent.CloseClicked)
             })
 
-        Text(modifier = Modifier
-            .constrainAs(moreButton) {
-                end.linkTo(parent.end)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-            }
-            .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
-            .clickable(enabled = nextButtonClickable,
-                onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) })
-            .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
+        Text(
+            modifier = Modifier
+                .constrainAs(moreButton) {
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                }
+                .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
+                .clickable(enabled = nextButtonClickable,
+                    onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) })
+                .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
             text = stringResource(id = rightText),
-            color = if (nextButtonClickable) Main4 else Gray6
+            color = if (nextButtonClickable) Main4 else Gray6,
+            fontSize = dpToSp(18.dp),
         )
 
         if (isShowDivider) {
@@ -102,7 +104,7 @@ fun WriteTitleFieldView(
         modifier = modifier,
         value = titleText,
         textStyle = TextStyle(
-            color = Gray10, fontSize = 24.sp, fontWeight = FontWeight.Medium
+            color = Gray10, fontSize = dpToSp(24.dp), fontWeight = FontWeight.Medium
         ),
         onValueChange = {
             titleText = it
@@ -118,7 +120,7 @@ fun WriteTitleFieldView(
         decorationBox = { innerTextField ->
             Row {
                 if (titleText.text.isEmpty()) {
-                    Text(text = hintText, color = Gray6, fontSize = 24.sp)
+                    Text(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
                 }
                 innerTextField()  //<-- Add this
             }
@@ -165,7 +167,7 @@ fun MemoOptionView(
                 .align(Alignment.Center),
             text = memoText,
             color = Gray7,
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             maxLines = 5,
             overflow = TextOverflow.Ellipsis
         )

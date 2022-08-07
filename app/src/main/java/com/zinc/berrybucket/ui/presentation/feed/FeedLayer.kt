@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.common.FeedListView
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedInfo
 
 
@@ -57,7 +57,7 @@ private fun TitleView(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(id = R.string.feedContentTitle),
         color = Gray10,
-        fontSize = 24.sp,
+        fontSize = dpToSp(24.dp),
         fontWeight = FontWeight.Bold,
         modifier = modifier
     )

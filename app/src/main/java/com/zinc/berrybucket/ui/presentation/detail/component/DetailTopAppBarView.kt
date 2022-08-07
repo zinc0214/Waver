@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.util.dpToSp
 
 
 @Composable
@@ -56,7 +56,7 @@ fun DetailTopAppBar(
         if (isTitleScrolled) {
             Text(
                 color = Gray10,
-                fontSize = 16.sp,
+                fontSize = dpToSp(16.dp),
                 fontWeight = FontWeight.Bold,
                 text = title,
                 modifier = Modifier

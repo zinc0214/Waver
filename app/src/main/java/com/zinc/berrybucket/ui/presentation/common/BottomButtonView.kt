@@ -20,6 +20,7 @@ import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.compose.theme.Main4
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun BottomButtonView(
@@ -80,7 +81,8 @@ fun BottomButtonView(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(id = leftText),
                     color = if (leftButtonEnable) Main4 else Gray6,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontSize = dpToSp(16.dp)
                 )
             }
 
@@ -103,7 +105,8 @@ fun BottomButtonView(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(id = rightText),
                     color = if (rightButtonEnable) Main4 else Gray6,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    fontSize = dpToSp(16.dp)
                 )
             }
         }

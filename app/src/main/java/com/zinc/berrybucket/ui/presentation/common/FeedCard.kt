@@ -15,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.profileInfo
@@ -23,6 +22,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.compose.theme.Main5
+import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedInfo
 
 
@@ -100,7 +100,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
                     id = if (isProcessing) R.string.proceedingText else R.string.succeedText
                 ),
                 color = if (isProcessing) Main4 else Main5,
-                fontSize = 13.sp,
+                fontSize = dpToSp(13.dp),
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -112,7 +112,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
     Text(
         modifier = modifier,
         text = title,
-        fontSize = 18.sp,
+        fontSize = dpToSp(18.dp),
         color = Gray10
     )
 }
@@ -154,7 +154,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
             Text(
                 text = feedInfo.likeCount,
                 color = Gray10,
-                fontSize = 12.sp,
+                fontSize = dpToSp(12.dp),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
             )
@@ -176,7 +176,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
             Text(
                 text = feedInfo.commentCount,
                 color = Gray10,
-                fontSize = 12.sp,
+                fontSize = dpToSp(12.dp),
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
             )

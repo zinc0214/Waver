@@ -16,13 +16,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Main4
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun DetailSuccessButtonView(
@@ -60,7 +60,7 @@ private fun SimpleSuccessButton(
         textAlign = textAlign,
         color = Gray1,
         fontWeight = FontWeight.Bold,
-        fontSize = 16.sp,
+        fontSize = dpToSp(16.dp),
         modifier = modifier
             .padding(horizontal = 24.dp)
             .fillMaxWidth()
@@ -99,7 +99,7 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
             ).toString(),
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
-            fontSize = 16.sp,
+            fontSize = dpToSp(16.dp),
             modifier = Modifier
                 .padding(end = 38.dp)
                 .constrainAs(countView) {

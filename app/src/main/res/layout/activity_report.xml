@@ -55,7 +55,7 @@
                     android:singleLine="true"
                     android:textColor="@color/gray10"
                     android:textColorHint="@color/gray7"
-                    android:textSize="15sp"
+                    android:textSize="15dp"
                     android:visibility="@{etcVisible ? View.VISIBLE : View.GONE}" />
 
                 <ImageView
@@ -86,7 +86,7 @@
             android:paddingBottom="15dp"
             android:text="@string/reportActionButton"
             android:textColor="@color/gray10"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:textStyle="bold"
             android:visibility="@{keyBoardOpend ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"

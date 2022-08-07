@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
@@ -33,6 +32,7 @@ import com.zinc.berrybucket.ui.compose.util.keyboardAsState
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.util.dpToSp
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -90,7 +90,7 @@ fun CommentEditTextView(
                 value = commentText,
                 textStyle = TextStyle(
                     color = Gray9,
-                    fontSize = 14.sp,
+                    fontSize = dpToSp(14.dp),
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start
                 ),
@@ -101,7 +101,7 @@ fun CommentEditTextView(
                 maxLines = 3,
                 decorationBox = { innerTextField ->
                     if (commentText.text.isBlank()) {
-                        Text(text = hintText, color = Gray6, fontSize = 14.sp)
+                        Text(text = hintText, color = Gray6, fontSize = dpToSp(14.dp))
                     }
                     Row {
                         innerTextField()  //<-- Add this

@@ -9,7 +9,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -19,6 +18,7 @@ import com.zinc.berrybucket.ui.presentation.common.CategoryAddView
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.EditButtonAndSearchImageView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
+import com.zinc.berrybucket.util.dpToSp
 
 
 @Composable
@@ -69,7 +69,7 @@ private fun TopLeftView(modifier: Modifier = Modifier, recommendCategory: String
             modifier = Modifier.align(Alignment.CenterVertically),
             text = stringResource(id = R.string.recommendCategory),
             color = Gray8,
-            fontSize = 13.sp
+            fontSize = dpToSp(13.dp),
         )
         Text(
             modifier = Modifier
@@ -77,7 +77,7 @@ private fun TopLeftView(modifier: Modifier = Modifier, recommendCategory: String
                 .padding(start = 8.dp),
             text = stringResource(id = R.string.recommendTag) + recommendCategory,
             color = Main4,
-            fontSize = 13.sp
+            fontSize = dpToSp(13.dp),
         )
     }
 

@@ -15,11 +15,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun DetailCommentView(
@@ -60,7 +60,7 @@ fun CommentCountView(commentCount: Int) {
         Text(
             text = "$commentCount",
             color = Gray10,
-            fontSize = 15.sp,
+            fontSize = dpToSp(15.dp),
             modifier = Modifier
                 .align(Alignment.CenterVertically)
         )
@@ -115,12 +115,12 @@ private fun CommentDescView(
             Text(
                 text = commenter.nickName,
                 color = Gray9,
-                fontSize = 13.sp
+                fontSize = dpToSp(13.dp),
             )
             Text(
                 text = commenter.comment,
                 color = Gray8,
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 modifier = Modifier.padding(top = 8.dp)
             )
         }
@@ -134,7 +134,7 @@ private fun CommentBlankView() {
             .padding(horizontal = 28.dp)
             .padding(bottom = 36.dp),
         text = stringResource(R.string.commentBlankText),
-        fontSize = 14.sp,
+        fontSize = dpToSp(14.dp),
         color = Gray6
     )
 }

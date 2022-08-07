@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
@@ -21,6 +20,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
+import com.zinc.berrybucket.util.dpToSp
 
 /**
  * 댓글 롱크릭 시 노출되는 팝업
@@ -57,14 +57,14 @@ fun CommentSelectedDialog(
         ) {
             Text(
                 text = stringResource(id = R.string.commentOptionDialogTitle),
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 fontWeight = FontWeight.Bold,
                 color = Gray10,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
             Text(
                 text = stringResource(id = if (commenter.isMine) R.string.commentEdit else R.string.commentHide),
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
                     .padding(bottom = 20.dp)
@@ -79,7 +79,7 @@ fun CommentSelectedDialog(
             )
             Text(
                 text = stringResource(id = if (commenter.isMine) R.string.commentDelete else R.string.commentReport),
-                fontSize = 14.sp,
+                fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
                     .padding(bottom = 8.dp)

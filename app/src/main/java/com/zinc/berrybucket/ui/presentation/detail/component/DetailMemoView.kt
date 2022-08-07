@@ -3,15 +3,16 @@ package com.zinc.berrybucket.ui.presentation.detail.component
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.compose.theme.Gray7
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun DetailMemoView(modifier: Modifier = Modifier, memo: String) {
     Text(
         text = memo,
         color = Gray7,
-        fontSize = 15.sp,
+        fontSize = dpToSp(15.dp),
         modifier = modifier
     )
 }

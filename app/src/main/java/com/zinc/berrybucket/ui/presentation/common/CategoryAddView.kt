@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Main2
 import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun CategoryAddView() {
@@ -28,15 +28,16 @@ fun CategoryAddView() {
             .dashedBorder(
                 width = 1.dp,
                 color = Main2,
-                shape = MaterialTheme.shapes.medium, on = 4.dp, off = 4.dp
+                shape = MaterialTheme.shapes.medium,
+                on = 4.dp,
+                off = 4.dp
             )
-            .background(Gray1),
-        contentAlignment = Alignment.Center
+            .background(Gray1), contentAlignment = Alignment.Center
     ) {
         Text(
             textAlign = TextAlign.Center,
             text = stringResource(id = R.string.categoryAdd),
-            fontSize = 14.sp,
+            fontSize = dpToSp(14.dp),
             color = Main3,
             modifier = Modifier.padding(vertical = 22.dp, horizontal = 20.dp)
         )

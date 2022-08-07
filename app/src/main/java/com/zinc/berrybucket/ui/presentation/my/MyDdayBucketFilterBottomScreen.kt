@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.compose.theme.Gray2
@@ -22,6 +21,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun MyDdayBucketFilterBottomScreen(
@@ -78,6 +78,6 @@ private fun FilterTitleLabel(
         modifier = modifier.padding(horizontal = 28.dp),
         text = stringResource(id = labelText),
         color = Gray7,
-        fontSize = 13.sp
+        fontSize = dpToSp(13.dp)
     )
 }

@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.model.WriteOption
@@ -20,6 +19,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray4
 import com.zinc.berrybucket.ui.compose.theme.Gray8
+import com.zinc.berrybucket.util.dpToSp
 
 @Composable
 fun OptionScreen(options: List<WriteOption>) {
@@ -46,7 +46,7 @@ fun OptionScreen(options: List<WriteOption>) {
                             bottom.linkTo(parent.bottom)
                             start.linkTo(parent.start)
                         },
-                    fontSize = 14.sp,
+                    fontSize = dpToSp(14.dp),
                     color = Gray8,
                     text = option.title
                 )
@@ -61,7 +61,7 @@ fun OptionScreen(options: List<WriteOption>) {
                             end.linkTo(parent.end)
                             width = Dimension.fillToConstraints
                         },
-                    fontSize = 15.sp,
+                    fontSize = dpToSp(15.dp),
                     color = Gray10,
                     text = option.content,
                     textAlign = TextAlign.End
