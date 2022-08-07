@@ -35,7 +35,7 @@ fun WriteSelectFriendsScreen(
     val updateFriends = remember { mutableStateOf(selectedFriends) }
 
     val scrollState = rememberLazyListState()
-    var searchWord by remember { mutableStateOf("") }
+    val searchWord = remember { mutableStateOf("") }
 
     viewModel.clearFriendsData()
 
@@ -66,7 +66,7 @@ fun WriteSelectFriendsScreen(
                 viewModel.searchFriends(it)
             },
             searchTextChange = {
-                searchWord = it
+                searchWord.value = it
             },
             currentSearchWord = searchWord
         )

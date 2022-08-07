@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -25,7 +28,7 @@ fun SearchScreen(
     viewModel.loadSearchRecommendItems()
 
     val listScrollState = rememberLazyListState()
-    var searchWord by remember { mutableStateOf("") }
+    val searchWord = remember { mutableStateOf("") }
     var isScrolled = listScrollState.firstVisibleItemIndex != 0
 
 
@@ -34,7 +37,7 @@ fun SearchScreen(
 
         SearchTopAppBar(
             listState = listScrollState,
-            title = searchWord,
+            title = searchWord.value,
             closeClicked = {
                 goTGoEvent.invoke()
             },
@@ -64,10 +67,10 @@ fun SearchScreen(
             item {
                 SearchEditView(
                     onImeAction = {
-                        viewModel.loadSearchResult(searchWord)
+                        viewModel.loadSearchResult(searchWord.value)
                     },
                     searchTextChange = {
-                        searchWord = it
+                        searchWord.value = it
                     },
                     currentSearchWord = searchWord
                 )
@@ -75,12 +78,13 @@ fun SearchScreen(
 
             // 최근 검색어 + 추천 키워드 화면
             item {
-                if (searchWord.isEmpty() && searchResultItems == null) {
+                if (searchWord.value.isEmpty() && searchResultItems == null) {
                     searchRecommendItems?.let {
                         RecommendKeyWordView(
                             searchItems = it,
-                            itemClicked = { searchWord ->
-                                viewModel.loadSearchResult(searchWord)
+                            itemClicked = { selectWord ->
+                                searchWord.value = selectWord
+                                viewModel.loadSearchResult(selectWord)
                             },
                             recentItemDelete = { deleteItem ->
                                 viewModel.deleteRecentWord(deleteItem)

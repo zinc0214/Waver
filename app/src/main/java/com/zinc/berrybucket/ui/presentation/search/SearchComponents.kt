@@ -91,11 +91,13 @@ fun SearchTopAppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchEditView(
-    onImeAction: (String) -> Unit, searchTextChange: (String) -> Unit, currentSearchWord: String
+    onImeAction: (String) -> Unit,
+    searchTextChange: (String) -> Unit,
+    currentSearchWord: MutableState<String>
 ) {
     val hintText = stringResource(id = R.string.searchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
-    var searchText by remember { mutableStateOf(currentSearchWord) }
+    var searchText by remember { mutableStateOf(currentSearchWord.value) }
 
     ConstraintLayout(
         modifier = Modifier
