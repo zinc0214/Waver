@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.my
+package com.zinc.berrybucket.ui.presentation.my.dday
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

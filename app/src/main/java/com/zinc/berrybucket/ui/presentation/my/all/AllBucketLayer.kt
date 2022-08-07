@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.my
+package com.zinc.berrybucket.ui.presentation.my.all
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider

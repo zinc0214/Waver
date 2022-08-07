@@ -31,6 +31,9 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray6
 import com.zinc.berrybucket.ui.custom.MyView
 import com.zinc.berrybucket.ui.presentation.BucketSelected
+import com.zinc.berrybucket.ui.presentation.my.all.AllBucketLayer
+import com.zinc.berrybucket.ui.presentation.my.category.CategoryLayer
+import com.zinc.berrybucket.ui.presentation.my.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.util.dpToSp
 import kotlinx.coroutines.CoroutineScope
