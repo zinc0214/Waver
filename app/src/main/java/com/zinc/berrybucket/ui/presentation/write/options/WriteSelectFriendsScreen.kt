@@ -1,10 +1,10 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
@@ -23,16 +23,16 @@ fun WriteSelectFriendsScreen(
     addFriendsClicked: (List<WriteFriend>) -> Unit
 ) {
     val viewModel: WriteViewModel = hiltViewModel()
-    val friendsResult by viewModel.searchFriendsResult.observeAsState()
+    val searchFriendsResult by viewModel.searchFriendsResult.observeAsState()
 
     // 이미 선택된 친구가 5명이 넘는 경우
     val needShowAllFriendButton = remember { mutableStateOf(selectedFriends.size > 5) }
 
     // 검색한 친구 중 선택된 목록
-    val addedResultFriends = remember { mutableListOf<WriteFriend>() }
+    // val addedResultFriends = remember { mutableListOf<WriteFriend>() }
 
     // 최종 친구 목록
-    val updateFriends = remember { mutableStateOf(selectedFriends) }
+    var updateFriends by remember { mutableStateOf(selectedFriends) }
 
     val scrollState = rememberLazyListState()
     val searchWord = remember { mutableStateOf("") }
@@ -53,8 +53,7 @@ fun WriteSelectFriendsScreen(
                         closeClicked()
                     }
                     WriteAppBarClickEvent.NextClicked -> {
-                        updateFriends.value += addedResultFriends
-                        addFriendsClicked(updateFriends.value)
+                        addFriendsClicked(updateFriends)
                     }
                 }
             },
@@ -78,7 +77,7 @@ fun WriteSelectFriendsScreen(
             state = scrollState,
             contentPadding = PaddingValues(bottom = 50.dp)
         ) {
-            if (updateFriends.value.isNotEmpty()) {
+            if (updateFriends.isNotEmpty()) {
                 item {
                     FlowRow(
                         modifier = Modifier
@@ -88,12 +87,12 @@ fun WriteSelectFriendsScreen(
                         crossAxisSpacing = 8.dp,
                     ) {
                         val list =
-                            if (needShowAllFriendButton.value) updateFriends.value.take(5) else updateFriends.value
+                            if (needShowAllFriendButton.value) updateFriends.take(5) else updateFriends
                         list.forEach {
                             AddedFriendItem(
                                 writeFriend = it,
                                 deleteFriend = { friend ->
-                                    updateFriends.value -= friend
+                                    updateFriends = updateFriends - friend
                                 })
                         }
                         if (needShowAllFriendButton.value) {
@@ -105,29 +104,23 @@ fun WriteSelectFriendsScreen(
                 }
             }
 
-            friendsResult?.let { friends ->
+            searchFriendsResult?.let { friends ->
                 item {
                     Spacer(modifier = Modifier.height(15.dp))
                 }
 
-                items(items = friends,
+                items(
+                    items = friends,
                     itemContent = { friend ->
-                        var selected by remember { mutableStateOf(updateFriends.value.any { it == friend }) }
+                        var selected = updateFriends.any { it == friend }
                         WriteSelectFriendItem(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 12.dp)
-                                .selectable(
-                                    selected = selected,
-                                    onClick = {
-                                        if (selected) {
-                                            addedResultFriends -= friend
-                                        } else {
-                                            addedResultFriends += friend
-                                        }
-                                        selected = !selected
-                                    }
-                                ),
+                                .clickable(enabled = !selected, onClick = {
+                                    updateFriends = updateFriends + friend
+                                    selected = !selected
+                                }),
                             writeFriend = friend,
                             isSelected = selected
                         )
