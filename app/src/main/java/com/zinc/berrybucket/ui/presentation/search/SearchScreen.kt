@@ -73,10 +73,19 @@ fun SearchScreen(
                 )
             }
 
+            // 최근 검색어 + 추천 키워드 화면
             item {
                 if (searchWord.isEmpty() && searchResultItems == null) {
                     searchRecommendItems?.let {
-                        RecommendKeyWordView(it)
+                        RecommendKeyWordView(
+                            searchItems = it,
+                            itemClicked = { searchWord ->
+                                viewModel.loadSearchResult(searchWord)
+                            },
+                            recentItemDelete = { deleteItem ->
+                                viewModel.deleteRecentWord(deleteItem)
+                            }
+                        )
                     }
                 }
             }

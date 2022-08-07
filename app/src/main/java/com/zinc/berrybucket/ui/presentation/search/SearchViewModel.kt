@@ -56,7 +56,12 @@ class SearchViewModel @Inject constructor(
     fun loadSearchRecommendItems() {
         _searchRecommendItems.value = SearchRecommendItems(
             recentWords = listOf(RecentItem("1", "여행"), RecentItem("2", "맛집")),
-            recommendWords = listOf(KeyWordItem("1", "여행", "22"))
+            recommendWords = listOf(
+                KeyWordItem("2", "여행", "22"),
+                KeyWordItem("3", "여행", "22"),
+                KeyWordItem("4", "여행", "22"),
+                KeyWordItem("5", "여행", "22")
+            )
         )
     }
 
@@ -92,6 +97,14 @@ class SearchViewModel @Inject constructor(
                     userId = "F", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
                 )
             )
+        )
+    }
+
+    fun deleteRecentWord(deleteItem: RecentItem) {
+        val originRecentWords = _searchRecommendItems.value?.recentWords?.toMutableList()
+        originRecentWords?.remove(deleteItem)
+        _searchRecommendItems.value = _searchRecommendItems.value?.copy(
+            recentWords = originRecentWords.orEmpty()
         )
     }
 }

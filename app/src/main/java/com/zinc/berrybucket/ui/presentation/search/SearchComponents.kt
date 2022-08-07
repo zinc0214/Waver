@@ -41,10 +41,7 @@ import com.zinc.common.models.*
 
 @Composable
 fun SearchTopAppBar(
-    listState: LazyListState,
-    title: String,
-    closeClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    listState: LazyListState, title: String, closeClicked: () -> Unit, modifier: Modifier = Modifier
 ) {
     val isTitleScrolled = listState.firstVisibleItemIndex != 0
 
@@ -55,8 +52,7 @@ fun SearchTopAppBar(
     ) {
         val (closeButton, titleView) = createRefs()
 
-        IconButton(
-            image = R.drawable.btn_40_close,
+        IconButton(image = R.drawable.btn_40_close,
             contentDescription = stringResource(id = R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -66,8 +62,7 @@ fun SearchTopAppBar(
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-            onClick = { closeClicked() }
-        )
+            onClick = { closeClicked() })
 
         if (isTitleScrolled) {
             Text(
@@ -96,9 +91,7 @@ fun SearchTopAppBar(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchEditView(
-    onImeAction: (String) -> Unit,
-    searchTextChange: (String) -> Unit,
-    currentSearchWord: String
+    onImeAction: (String) -> Unit, searchTextChange: (String) -> Unit, currentSearchWord: String
 ) {
     val hintText = stringResource(id = R.string.searchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -113,9 +106,7 @@ fun SearchEditView(
         BasicTextField(
             value = searchText,
             textStyle = TextStyle(
-                color = Gray10,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Medium
+                color = Gray10, fontSize = 22.sp, fontWeight = FontWeight.Medium
             ),
             onValueChange = {
                 searchTextChange(it)
@@ -173,25 +164,26 @@ fun SearchEditView(
                 start.linkTo(parent.start)
                 bottom.linkTo(parent.bottom)
                 end.linkTo(parent.end)
-            },
-            color = Gray4
+            }, color = Gray4
         )
     }
 }
 
 @Composable
-fun RecommendKeyWordView(searchItems: SearchRecommendItems) {
+fun RecommendKeyWordView(
+    searchItems: SearchRecommendItems,
+    itemClicked: (String) -> Unit,
+    recentItemDelete: (RecentItem) -> Unit
+) {
     var selectType by remember { mutableStateOf(SearchRecommendType.RECENT) }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp)
             .padding(top = 20.dp)
     ) {
-        Row {
-            Text(
-                text = stringResource(id = R.string.recentSearch),
+        Row(modifier = Modifier.padding(horizontal = 24.dp)) {
+            Text(text = stringResource(id = R.string.recentSearch),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECENT) Main4 else Gray6,
@@ -199,10 +191,8 @@ fun RecommendKeyWordView(searchItems: SearchRecommendItems) {
                     .padding(end = 16.dp)
                     .clickable {
                         selectType = SearchRecommendType.RECENT
-                    }
-            )
-            Text(
-                text = stringResource(id = R.string.recommendSearch),
+                    })
+            Text(text = stringResource(id = R.string.recommendSearch),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECOMMEND) Main4 else Gray6,
@@ -210,8 +200,7 @@ fun RecommendKeyWordView(searchItems: SearchRecommendItems) {
                     .padding(end = 16.dp)
                     .clickable {
                         selectType = SearchRecommendType.RECOMMEND
-                    }
-            )
+                    })
         }
         Column(
             modifier = Modifier.padding(top = 24.dp)
@@ -219,66 +208,98 @@ fun RecommendKeyWordView(searchItems: SearchRecommendItems) {
             AnimatedVisibility(
                 visible = selectType == SearchRecommendType.RECENT
             ) {
-                RecentSearchView(searchItems.recentWords)
+                RecentSearchView(
+                    searchItems.recentWords,
+                    itemClicked = itemClicked,
+                    recentItemDelete = recentItemDelete
+                )
             }
             AnimatedVisibility(
                 visible = selectType == SearchRecommendType.RECOMMEND
             ) {
-                RecommendKeyWordView(searchItems.recommendWords)
+                RecommendKeyWordView(
+                    searchItems.recommendWords,
+                    itemClicked = itemClicked,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun RecentSearchView(recentItems: List<RecentItem>) {
-    Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+private fun RecentSearchView(
+    recentItems: List<RecentItem>,
+    itemClicked: (String) -> Unit,
+    recentItemDelete: (RecentItem) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         recentItems.forEach {
-            RecentSearchItem(it)
+            RecentSearchItem(it, itemClicked, recentItemDelete)
         }
     }
 }
 
 @Composable
-private fun RecentSearchItem(recentItem: RecentItem) {
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+private fun RecentSearchItem(
+    recentItem: RecentItem, itemClicked: (String) -> Unit, recentItemDelete: (RecentItem) -> Unit
+) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp)
+    ) {
         val (textView, deleteView) = createRefs()
 
-        Text(
-            text = recentItem.word,
+        Text(text = recentItem.word,
             fontSize = 15.sp,
             color = Gray9,
             modifier = Modifier
-                .padding(end = 24.dp)
                 .constrainAs(textView) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(deleteView.start)
+                    height = Dimension.fillToConstraints
                     width = Dimension.fillToConstraints
                 }
-        )
-        Image(
-            painter = painterResource(id = R.drawable.btn_24_close),
+                .clickable {
+                    itemClicked(recentItem.word)
+                }
+                .padding(start = 24.dp)
+                .wrapContentHeight(align = Alignment.CenterVertically),
+            textAlign = TextAlign.Start)
+
+        Box(
             modifier = Modifier
-                .size(24.dp)
                 .constrainAs(deleteView) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end)
+                    height = Dimension.fillToConstraints
+                }
+                .clickable {
+                    recentItemDelete(recentItem)
                 },
-            contentDescription = stringResource(id = R.string.delete),
-            alignment = Alignment.CenterEnd
-        )
+            contentAlignment = Alignment.CenterStart
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.btn_24_close),
+                modifier = Modifier
+                    .padding(start = 18.dp, end = 24.dp)
+                    .sizeIn(24.dp),
+                contentDescription = stringResource(id = R.string.delete),
+                alignment = Alignment.CenterEnd
+            )
+        }
     }
 }
 
 @Composable
-private fun RecommendKeyWordView(keyWordItems: List<KeyWordItem>) {
+private fun RecommendKeyWordView(keyWordItems: List<KeyWordItem>, itemClicked: (String) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             keyWordItems.forEach {
-                RecommendKeyWordItem(it)
+                RecommendKeyWordItem(it, itemClicked)
             }
         }
 
@@ -292,12 +313,15 @@ private fun RecommendKeyWordView(keyWordItems: List<KeyWordItem>) {
 }
 
 @Composable
-private fun RecommendKeyWordItem(item: KeyWordItem) {
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Unit) {
+    ConstraintLayout(modifier = Modifier
+        .heightIn(min = 40.dp)
+        .fillMaxWidth()
+        .clickable { itemClicked(item.keyword) }
+        .padding(horizontal = 24.dp)) {
         val (textView, countView) = createRefs()
 
-        Text(
-            text = "#${item.keyword}",
+        Text(text = "#${item.keyword}",
             fontSize = 15.sp,
             color = Gray9,
             modifier = Modifier
@@ -308,26 +332,21 @@ private fun RecommendKeyWordItem(item: KeyWordItem) {
                     start.linkTo(parent.start)
                     end.linkTo(countView.start)
                     width = Dimension.fillToConstraints
-                }
-        )
-        Text(
-            text = "${item.count}개",
+                })
+        Text(text = "${item.count}개",
             fontSize = 15.sp,
             color = Gray6,
-            modifier = Modifier
-                .constrainAs(countView) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                }
-        )
+            modifier = Modifier.constrainAs(countView) {
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+                end.linkTo(parent.end)
+            })
     }
 }
 
 @Composable
 fun SearchResultView(
-    resultItems: SearchResultItems,
-    modifier: Modifier
+    resultItems: SearchResultItems, modifier: Modifier
 ) {
     var needBucketMoreButtonShow by remember {
         mutableStateOf(resultItems.bucketItems.size > 3)
@@ -360,10 +379,8 @@ fun SearchResultView(
         }
 
         Divider(
-            color = Gray3,
-            modifier = Modifier.padding(
-                top = if (needBucketMoreButtonShow) 0.dp else 28.dp,
-                bottom = 15.dp
+            color = Gray3, modifier = Modifier.padding(
+                top = if (needBucketMoreButtonShow) 0.dp else 28.dp, bottom = 15.dp
             )
         )
 
@@ -392,8 +409,7 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
             .clip(shape = RoundedCornerShape(2.dp))
             .clickable {
                 buttonClicked()
-            },
-        contentAlignment = Alignment.Center
+            }, contentAlignment = Alignment.Center
     ) {
         Text(
             text = stringResource(id = R.string.showMore),
@@ -409,8 +425,7 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
 
 @Composable
 fun SearchUserItemView(
-    modifier: Modifier = Modifier,
-    item: UserItem
+    modifier: Modifier = Modifier, item: UserItem
 ) {
     Card(
         backgroundColor = Gray1,
@@ -424,8 +439,7 @@ fun SearchUserItemView(
             val (profileImage, nickNameView, followButton) = createRefs()
 
             if (item.profileImageUrl != null) {
-                Image(
-                    painter = painterResource(id = R.drawable.kakao),
+                Image(painter = painterResource(id = R.drawable.kakao),
                     contentDescription = stringResource(
                         id = R.string.feedProfileImage
                     ),
@@ -443,8 +457,7 @@ fun SearchUserItemView(
                                 bottomMargin = 16.dp
                             )
                             start.linkTo(parent.start)
-                        }
-                )
+                        })
             }
 
 
