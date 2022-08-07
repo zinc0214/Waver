@@ -28,9 +28,6 @@ fun WriteSelectFriendsScreen(
     // 이미 선택된 친구가 5명이 넘는 경우
     val needShowAllFriendButton = remember { mutableStateOf(selectedFriends.size > 5) }
 
-    // 검색한 친구 중 선택된 목록
-    // val addedResultFriends = remember { mutableListOf<WriteFriend>() }
-
     // 최종 친구 목록
     var updateFriends by remember { mutableStateOf(selectedFriends) }
 
