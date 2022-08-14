@@ -1,18 +1,18 @@
 @file:Suppress("ClassName")
 
 object Versions {
-    const val compileSdk = 32
+    const val compileSdk = 33
     const val buildTools = "31.0.0"
 
     const val minSdk = 24
-    const val targetSdk = 31
+    const val targetSdk = 33
     const val versionCode = 1
     const val versionName = "1.0.0"
 }
 
 object Dep {
     object GradlePlugin {
-        private const val androidStudioGradlePluginVersion = "7.2.1"
+        private const val androidStudioGradlePluginVersion = "7.2.2"
         const val android = "com.android.tools.build:gradle:$androidStudioGradlePluginVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val kotlinSerialization =
@@ -22,29 +22,23 @@ object Dep {
 
     object AndroidX {
         object activity {
-            const val activityVersion = "1.4.0"
+            const val activityVersion = "1.5.1"
             const val activity = "androidx.activity:activity:$activityVersion"
             const val ktx = "androidx.activity:activity-ktx:$activityVersion"
         }
 
-        const val appcompat = "androidx.appcompat:appcompat:1.4.1"
-        const val coreKtx = "androidx.core:core-ktx:1.7.0"
-
-        object fragment {
-            private const val fragmentVersion = "1.4.1"
-            const val fragment = "androidx.fragment:fragment:$fragmentVersion"
-            const val ktx = "androidx.fragment:fragment-ktx:$fragmentVersion"
-        }
+        const val appcompat = "androidx.appcompat:appcompat:1.4.2"
+        const val coreKtx = "androidx.core:core-ktx:1.8.0"
 
         object Lifecycle {
-            private const val lifecycleVersion = "2.4.1"
+            private const val lifecycleVersion = "2.5.1"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
             const val runTime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
         }
 
         object UI {
-            const val material = "com.google.android.material:material:1.5.0"
+            const val material = "com.google.android.material:material:1.6.1"
         }
 
         object Compose {

@@ -77,7 +77,6 @@ dependencies {
     implementation(Dep.AndroidX.appcompat)
     implementation(Dep.AndroidX.UI.material)
     implementation(Dep.AndroidX.Lifecycle.runTime)
-    implementation(Dep.AndroidX.fragment.ktx)
     implementation(Dep.AndroidX.Arch.common)
     implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
