@@ -63,19 +63,6 @@ object Dep {
             const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.23.1"
         }
 
-        object Camera {
-            private const val version = "1.2.0-alpha03"
-
-            const val camera2 = "androidx.camera:camera-camera2:${version}"
-            const val lifecycle = "androidx.camera:camera-lifecycle:${version}"
-            const val view = "androidx.camera:camera-view:${version}"
-        }
-
-        object RecyclerView {
-            const val core = "androidx.recyclerview:recyclerview:1.2.1"
-            const val selection = "androidx.recyclerview:recyclerview-selection:1.1.0"
-        }
-
         object Arch {
             private const val version = "2.1.0"
             const val common = "androidx.arch.core:core-common:$version"
@@ -134,11 +121,8 @@ object Dep {
         const val converter = "com.squareup.retrofit2:converter-gson:$version"
     }
 
-    const val glide = "com.github.bumptech.glide:4.13.1"
-    const val cardView = "androidx.cardview:cardview:1.0.0"
-    const val flexBox = "com.google.android:flexbox:2.0.1"
     const val coil = "io.coil-kt:coil-compose:2.1.0"
-
+    const val cropper = "com.theartofdev.edmodo:android-image-cropper:2.8.0"
 
     object Test {
         const val junit = "junit:junit:4.13.2"

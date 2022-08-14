@@ -107,11 +107,6 @@ dependencies {
     implementation(Dep.AndroidX.Compose.indicator)
     implementation(Dep.AndroidX.Compose.flowlayout)
 
-    // camera
-    implementation(Dep.AndroidX.Camera.camera2)
-    implementation(Dep.AndroidX.Camera.lifecycle)
-    implementation(Dep.AndroidX.Camera.view)
-
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
     implementation(Dep.Dagger.Hilt.navigation)
@@ -126,19 +121,6 @@ dependencies {
     implementation(Dep.OkHttp.core)
     implementation(Dep.OkHttp.loggingInterceptor)
 
-    // Glide
-    // implementation(Dep.glide)
-
-    // CardView
-    implementation(Dep.cardView)
-
-    // RecyclerView
-    implementation(Dep.AndroidX.RecyclerView.core)
-    implementation(Dep.AndroidX.RecyclerView.selection)
-
-    // FlexboxLayout
-    implementation(Dep.flexBox)
-
     // LiveData
     implementation(Dep.AndroidX.Lifecycle.viewModel)
     implementation(Dep.AndroidX.Lifecycle.runTime)
@@ -147,5 +129,6 @@ dependencies {
     // coil
     implementation(Dep.coil)
 
-    implementation("com.theartofdev.edmodo:android-image-cropper:2.8.0")
+    // cropper
+    implementation(Dep.cropper)
 }
