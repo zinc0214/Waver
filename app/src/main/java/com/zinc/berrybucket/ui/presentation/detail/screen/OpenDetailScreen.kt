@@ -26,10 +26,10 @@ import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.util.Keyboard
 import com.zinc.berrybucket.ui.compose.util.keyboardAsState
 import com.zinc.berrybucket.ui.compose.util.visibleLastIndex
-import com.zinc.berrybucket.ui.custom.TaggableEditText
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
+import com.zinc.berrybucket.ui.presentation.common.TaggableEditText
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.*
 import com.zinc.berrybucket.util.dpToSp

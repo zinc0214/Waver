@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.custom
+package com.zinc.berrybucket.ui.presentation.common
 
 import android.content.Context
 import android.util.AttributeSet
