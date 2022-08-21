@@ -14,7 +14,6 @@ import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.compose.theme.Gray8
 import com.zinc.berrybucket.ui.compose.theme.Main4
-import com.zinc.berrybucket.ui.presentation.common.CategoryAddView
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.EditButtonAndSearchImageView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
@@ -98,4 +99,12 @@ fun BucketCircularProgressBar(
             progressState.invoke(BucketProgressState.FINISHED)
         }
     }
+}
+
+@Preview
+@Composable
+private fun BucketCircularProgressBarPreview() {
+    BucketCircularProgressBar(
+        progressState = {}, tabType = MyTabType.ALL,
+    )
 }

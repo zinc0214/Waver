@@ -15,6 +15,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.ui.compose.theme.Gray7
@@ -145,5 +146,15 @@ private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
         text = name,
         color = Gray9,
         fontSize = dpToSp(14.dp),
+    )
+}
+
+@Composable
+@Preview
+private fun CategoryListPreview() {
+    CategoryListView(
+        categoryList = listOf(
+            Category(id = 1, name = "여행", count = "10")
+        )
     )
 }

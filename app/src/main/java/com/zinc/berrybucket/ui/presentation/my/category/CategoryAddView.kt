@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.common
+package com.zinc.berrybucket.ui.presentation.my.category
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -11,16 +11,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Main2
 import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.ui.presentation.common.dashedBorder
 import com.zinc.berrybucket.util.dpToSp
 
+@Preview
 @Composable
 fun CategoryAddView() {
-
     Box(
         Modifier
             .fillMaxWidth()

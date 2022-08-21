@@ -1,6 +1,8 @@
 package com.zinc.berrybucket.ui.presentation.common
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -10,6 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.compose.theme.Gray4
@@ -42,4 +45,15 @@ fun RoundChip(
             textAlign = TextAlign.Center
         )
     }
+}
+
+@Preview
+@Composable
+private fun RoundChipPreview() {
+    RoundChip(
+        modifier = Modifier.defaultMinSize(minWidth = 90.dp, minHeight = 48.dp),
+        textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+        text = "칩테스트",
+        isSelected = false
+    )
 }
