@@ -29,9 +29,9 @@ import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.ui.compose.theme.*
-import com.zinc.berrybucket.ui.presentation.common.BucketListView
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
+import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.BucketInfoSimple
@@ -209,7 +209,7 @@ private fun SearchResultView(
     } else {
         if (result.second.all { item -> item is BucketInfoSimple }) {
             val items = result.second as List<BucketInfoSimple>
-            BucketListView(items.parseToUI(), result.first, itemClicked = {
+            SimpleBucketListView(items.parseToUI(), result.first, itemClicked = {
                 clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
             })
         }

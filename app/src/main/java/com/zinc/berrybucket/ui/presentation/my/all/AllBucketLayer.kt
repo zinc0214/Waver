@@ -16,8 +16,8 @@ import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.compose.theme.Gray4
 import com.zinc.berrybucket.ui.compose.theme.Gray8
-import com.zinc.berrybucket.ui.presentation.common.BucketListView
 import com.zinc.berrybucket.ui.presentation.common.FilterAndSearchImageView
+import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.util.dpToSp
 
@@ -38,7 +38,7 @@ fun AllBucketLayer(
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            BucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
+            SimpleBucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
                 clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
             })
         }
