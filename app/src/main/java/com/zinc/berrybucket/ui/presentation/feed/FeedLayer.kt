@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Gray2
-import com.zinc.berrybucket.ui.presentation.common.FeedListView
 import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedInfo
 

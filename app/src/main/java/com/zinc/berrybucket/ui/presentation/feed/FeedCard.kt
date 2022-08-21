@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.common
+package com.zinc.berrybucket.ui.presentation.feed
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -22,6 +22,8 @@ import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray10
 import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.ui.compose.theme.Main5
+import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicator
+import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedInfo
 

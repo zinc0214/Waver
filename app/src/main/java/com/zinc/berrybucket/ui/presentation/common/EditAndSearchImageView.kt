@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray4
@@ -51,4 +52,10 @@ fun EditButtonAndSearchImageView(
             contentDescription = stringResource(R.string.categorySearchImageViewDesc)
         )
     }
+}
+
+@Preview
+@Composable
+private fun EditButtonAndSearchImagePreview() {
+    EditButtonAndSearchImageView(editClicked = {}, searchClicked = {})
 }
