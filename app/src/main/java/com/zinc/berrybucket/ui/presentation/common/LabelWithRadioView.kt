@@ -17,7 +17,7 @@ import com.zinc.berrybucket.ui.compose.theme.Main4
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable
-fun LabelWichRadioView(
+fun LabelWithRadioView(
     modifier: Modifier = Modifier,
     itemLabels: List<Pair<Int, Int>>,
     selectedIndex: Int,

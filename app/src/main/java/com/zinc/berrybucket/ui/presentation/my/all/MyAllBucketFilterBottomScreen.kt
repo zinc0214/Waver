@@ -21,7 +21,7 @@ import com.zinc.berrybucket.ui.compose.theme.Gray2
 import com.zinc.berrybucket.ui.compose.theme.Gray3
 import com.zinc.berrybucket.ui.compose.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
-import com.zinc.berrybucket.ui.presentation.common.LabelWichRadioView
+import com.zinc.berrybucket.ui.presentation.common.LabelWithRadioView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 import com.zinc.berrybucket.util.dpToSp
@@ -82,7 +82,7 @@ fun MyAllBucketFilterBottomScreen(
             modifier = Modifier.padding(bottom = 20.dp),
             labelText = R.string.sortStandard
         )
-        LabelWichRadioView(modifier = Modifier,
+        LabelWithRadioView(modifier = Modifier,
             itemLabels = listOf(0 to R.string.sortByUpdate, 1 to R.string.sortByCreate),
             selectedIndex = sortSelectedState.value,
             changedSelectedItem = {
