@@ -43,11 +43,6 @@ fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit)
     ) {
         val scrollState = rememberLazyGridState()
         val isScrolled = scrollState.firstVisibleItemIndex != 0
-        Log.e(
-            "ayhan",
-            "firstVisibleItemScrollOffset ; ${scrollState.firstVisibleItemScrollOffset}, ${scrollState.firstVisibleItemIndex}"
-        )
-
         val scrollOffset: Float = min(
             1f, 1 - (scrollState.firstVisibleItemScrollOffset / 150f)
         )

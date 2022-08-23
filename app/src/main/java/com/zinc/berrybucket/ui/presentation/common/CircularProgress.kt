@@ -66,8 +66,8 @@ fun BucketCircularProgressBar(
         Canvas(modifier = Modifier.size(radius * 2f)) {
             drawArc(
                 color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
-                -90f,
-                360 * curPercentage.value,
+                startAngle = -90f,
+                sweepAngle = 360 * curPercentage.value,
                 useCenter = false,
                 style = Stroke(1.5.dp.toPx(), cap = StrokeCap.Round)
             )
