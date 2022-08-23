@@ -42,7 +42,8 @@ object Dep {
         }
 
         object Compose {
-            const val version = "1.2.0-beta02"
+            const val compilerVersion = "1.3.0"
+            const val version = "1.3.0-alpha03"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -50,9 +51,9 @@ object Dep {
             const val tooling = "androidx.compose.ui:ui-tooling:${version}"
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
-            const val navigation = "androidx.navigation:navigation-compose:2.4.2"
-            const val accompanist = "com.google.accompanist:accompanist-permissions:0.18.0"
-            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.24.13-rc"
+            const val navigation = "androidx.navigation:navigation-compose:2.5.1"
+            const val accompanist = "com.google.accompanist:accompanist-permissions:0.25.1"
+            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.26.1-alpha"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
@@ -80,7 +81,7 @@ object Dep {
     }
 
     object Dagger {
-        const val version = "2.41"
+        const val version = "2.43.2"
         const val dagger = "com.google.dagger:dagger:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
 
@@ -93,11 +94,11 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.6.21"
+        const val version = "1.7.10"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {
-            private const val coroutinesVersion = "1.6.0"
+            private const val coroutinesVersion = "1.6.4"
             const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
             const val android =
                 "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"

@@ -46,7 +46,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.version
+        kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.compilerVersion
     }
     kapt {
         correctErrorTypes = true
