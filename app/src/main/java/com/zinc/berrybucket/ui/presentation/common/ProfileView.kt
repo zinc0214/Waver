@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -122,4 +123,17 @@ private fun ProfileTextView(
             color = nickNameTextColor
         )
     }
+}
+
+@Composable
+@Preview
+private fun ProfilePreview() {
+    ProfileView(
+        profileInfo = ProfileInfo(
+            profileImage = "",
+            badgeImage = "",
+            titlePosition = "나는 아이스크름이 되는거야",
+            nickName = "멋쟁이 토마토"
+        )
+    )
 }

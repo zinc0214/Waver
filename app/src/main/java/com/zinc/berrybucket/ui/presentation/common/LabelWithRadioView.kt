@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.compose.theme.Gray7
@@ -69,4 +70,13 @@ private fun RadioItemView(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun LabelWithRadioView() {
+    LabelWithRadioView(modifier = Modifier,
+        itemLabels = listOf(0 to R.string.sortByUpdate, 1 to R.string.sortByCreate),
+        selectedIndex = 0,
+        changedSelectedItem = {})
 }

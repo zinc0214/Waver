@@ -8,9 +8,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.ui.compose.theme.Gray1
 import com.zinc.berrybucket.ui.compose.theme.Gray11
 import com.zinc.berrybucket.util.dpToSp
@@ -36,4 +38,11 @@ fun PageCountIndicator(
             fontSize = dpToSp(12.dp),
         )
     }
+}
+
+@ExperimentalPagerApi
+@Composable
+@Preview
+private fun PageCountIndicatorView() {
+    PageCountIndicator(pagerState = rememberPagerState())
 }

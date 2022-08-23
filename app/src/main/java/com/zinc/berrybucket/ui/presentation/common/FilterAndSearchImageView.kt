@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -52,4 +53,10 @@ fun FilterAndSearchImageView(
         )
 
     }
+}
+
+@Preview
+@Composable
+private fun FilterAndSearchImagePreview() {
+    FilterAndSearchImageView(clickEvent = {}, tabType = MyTabType.ALL)
 }

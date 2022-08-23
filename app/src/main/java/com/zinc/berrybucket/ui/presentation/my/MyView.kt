@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.common
+package com.zinc.berrybucket.ui.presentation.my
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,10 +10,6 @@ import com.google.accompanist.pager.PagerState
 import com.zinc.berrybucket.databinding.LayoutMyViewBinding
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.presentation.BucketSelected
-import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
-import com.zinc.berrybucket.ui.presentation.my.MyTabLayer
-import com.zinc.berrybucket.ui.presentation.my.MyTopLayer
-import com.zinc.berrybucket.ui.presentation.my.MyViewPager
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 import com.zinc.domain.models.TopProfile
 import kotlinx.coroutines.CoroutineScope
