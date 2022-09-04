@@ -344,7 +344,7 @@ fun ProfileView(profileInfo: ProfileInfo) {
         nickNameTextSize = dpToSp(14.dp),
         titlePositionTextSize = dpToSp(13.dp),
         nickNameTextColor = Gray10,
-        profileInfo = profileInfo
+        profileInfo = profileInfo.toUi()
     )
 }
 

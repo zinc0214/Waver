@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.common.R
-import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.UiProfileInfo
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -33,7 +33,7 @@ fun ProfileView(
     titlePositionTextSize: TextUnit = dpToSp(12.dp),
     nickNameTextColor: Color = Gray9,
     titlePositionTextColor: Color = Gray7,
-    profileInfo: ProfileInfo
+    profileInfo: UiProfileInfo
 ) {
     Row(
         modifier = modifier
@@ -129,7 +129,7 @@ private fun ProfileTextView(
 @Preview
 private fun ProfilePreview() {
     ProfileView(
-        profileInfo = ProfileInfo(
+        profileInfo = UiProfileInfo(
             profileImage = "",
             badgeImage = "",
             titlePosition = "나는 아이스크름이 되는거야",

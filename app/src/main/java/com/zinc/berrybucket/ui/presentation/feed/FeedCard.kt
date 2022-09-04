@@ -52,7 +52,7 @@ fun FeedCardView(feedInfo: FeedInfo) {
         Column {
             ProfileView(
                 modifier = Modifier.padding(top = 20.dp),
-                profileInfo = feedInfo.profileInfo()
+                profileInfo = feedInfo.profileInfo().toUi()
             )
             ProcessView(
                 modifier = Modifier.padding(top = 25.dp, start = 10.dp),

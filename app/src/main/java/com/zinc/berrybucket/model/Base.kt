@@ -9,6 +9,13 @@ data class ProfileInfo(
     val badgeImage: String,
     val titlePosition: String,
     val nickName: String
-) : DetailDescType()
+) : DetailDescType() {
+    fun toUi() = UiProfileInfo(
+        profileImage = this.profileImage,
+        badgeImage = this.badgeImage,
+        titlePosition = this.titlePosition,
+        nickName = this.nickName
+    )
+}
 
 sealed class IconClickEvent
