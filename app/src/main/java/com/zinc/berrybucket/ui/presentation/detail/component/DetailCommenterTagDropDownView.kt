@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentTagInfo
 import com.zinc.berrybucket.ui.design.theme.Gray9
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailCommenterTagDropDownView(

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.util
+package com.zinc.berrybucket.ui.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

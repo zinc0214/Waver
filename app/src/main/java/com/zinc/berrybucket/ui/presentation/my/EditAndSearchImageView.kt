@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.common
+package com.zinc.berrybucket.ui.presentation.my
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray9
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun EditButtonAndSearchImageView(
@@ -31,7 +32,7 @@ fun EditButtonAndSearchImageView(
                 .clickable {
                     editClicked()
                 },
-            text = stringResource(id = R.string.categoryEdit),
+            text = stringResource(id = R.string.edit2),
             color = Gray9,
             fontSize = dpToSp(16.dp),
         )

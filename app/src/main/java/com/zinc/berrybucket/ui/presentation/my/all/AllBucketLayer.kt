@@ -16,10 +16,10 @@ import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
-import com.zinc.berrybucket.ui.presentation.common.FilterAndSearchImageView
-import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView
+import com.zinc.berrybucket.ui.presentation.my.FilterAndSearchImageView
+import com.zinc.berrybucket.ui.presentation.my.SimpleBucketListView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun AllBucketLayer(

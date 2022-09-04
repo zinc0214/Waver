@@ -21,7 +21,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.Category
 
 @Composable

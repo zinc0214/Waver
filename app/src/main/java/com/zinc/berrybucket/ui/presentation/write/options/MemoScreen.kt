@@ -21,7 +21,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun MemoScreen(

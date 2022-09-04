@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.common
+package com.zinc.berrybucket.ui.presentation.my
 
 import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -23,7 +23,7 @@ import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.design.theme.*
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun SimpleBucketListView(

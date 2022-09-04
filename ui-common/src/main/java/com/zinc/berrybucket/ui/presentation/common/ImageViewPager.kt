@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.zinc.berrybucket.R
+import com.zinc.berrybucket.common.R
 
 
 @OptIn(ExperimentalPagerApi::class)

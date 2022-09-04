@@ -18,7 +18,7 @@ import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 
 @Composable

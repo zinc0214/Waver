@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
-import com.zinc.berrybucket.ui.presentation.common.FilterAndSearchImageView
-import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView
+import com.zinc.berrybucket.ui.presentation.my.FilterAndSearchImageView
+import com.zinc.berrybucket.ui.presentation.my.SimpleBucketListView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
 
 @Composable

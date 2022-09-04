@@ -21,10 +21,10 @@ import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
-import com.zinc.berrybucket.ui.presentation.common.LabelWithRadioView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
+import com.zinc.berrybucket.ui.presentation.my.LabelWithRadioView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun MyAllBucketFilterBottomScreen(

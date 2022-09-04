@@ -67,11 +67,6 @@ data class UIBucketInfoSimple(
     fun goalCountText() = goalCount.toString()
 }
 
-
-enum class BucketProgressState {
-    STARTED, PROGRESS_END, FINISHED
-}
-
 enum class BucketType(
     val text: String
 ) {

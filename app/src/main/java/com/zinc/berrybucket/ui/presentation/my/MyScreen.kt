@@ -34,7 +34,7 @@ import com.zinc.berrybucket.ui.presentation.my.all.AllBucketLayer
 import com.zinc.berrybucket.ui.presentation.my.category.CategoryLayer
 import com.zinc.berrybucket.ui.presentation.my.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

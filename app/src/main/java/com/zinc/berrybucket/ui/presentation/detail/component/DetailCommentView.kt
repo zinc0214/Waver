@@ -19,7 +19,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.design.theme.*
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailCommentView(

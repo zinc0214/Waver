@@ -16,11 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
+import com.zinc.berrybucket.common.R
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun ProfileView(
@@ -80,7 +80,7 @@ private fun ProfileImageView(
             Image(
                 painter = painterResource(id = R.drawable.kakao),
                 contentDescription = stringResource(
-                    id = R.string.feedProfileImage
+                    id = R.string.profileImgDesc
                 ),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

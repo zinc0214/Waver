@@ -24,7 +24,7 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Main5
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.FeedInfo
 
 

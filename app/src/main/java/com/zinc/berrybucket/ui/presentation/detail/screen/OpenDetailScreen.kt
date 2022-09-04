@@ -29,10 +29,9 @@ import com.zinc.berrybucket.ui.design.util.visibleLastIndex
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
-import com.zinc.berrybucket.ui.presentation.common.TaggableEditText
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.*
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
 @Composable

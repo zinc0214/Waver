@@ -14,7 +14,7 @@ import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.TagListView
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {

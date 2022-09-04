@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Common -->
+    <string name="cancel">취소</string>
+    <string name="apply">적용</string>
+    <string name="proceedingText">진행중</string>
+    <string name="succeedText">완료</string>
+    <string name="blank"> </string>
+    <string name="hide">숨기기</string>
+    <string name="report">신고</string>
+    <string name="edit">수정</string>
+    <string name="edit2">편집</string>
+    <string name="delete">삭제</string>
+    <string name="countChange">완료횟수변경</string>
+    <string name="selected">선택 버튼</string>
+    <string name="copy">버킷리스트 복사 버튼</string>
+    <string name="back">뒤로가기</string>
+    <string name="closeDesc">닫기</string>
+    <string name="moreButtonDesc">더보기 버튼</string>
+    <string name="nextButtonDesc">다음 버튼</string>
+    <string name="deleteButtonDesc">삭제 버튼</string>
+    <string name="addDesc">추가</string>
+
+    <string name="profileImgDesc">프로필 이미지</string>
+
+</resources>

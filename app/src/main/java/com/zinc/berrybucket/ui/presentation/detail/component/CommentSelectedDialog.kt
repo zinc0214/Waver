@@ -20,7 +20,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 /**
  * 댓글 롱크릭 시 노출되는 팝업

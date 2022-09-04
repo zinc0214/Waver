@@ -31,9 +31,8 @@ import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
-import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView
 import com.zinc.berrybucket.ui.presentation.my.viewModel.MyViewModel
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.Category
 

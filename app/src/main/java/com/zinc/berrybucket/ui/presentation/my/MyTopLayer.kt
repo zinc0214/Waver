@@ -18,7 +18,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.ProfileCircularProgressBar
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.domain.models.TopProfile
 
 @Composable

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.common"
+    namespace = "com.zinc.berrybucket.common"
     compileSdk = 32
 
     defaultConfig {

@@ -18,7 +18,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
-import com.zinc.berrybucket.util.dpToSp
+import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
