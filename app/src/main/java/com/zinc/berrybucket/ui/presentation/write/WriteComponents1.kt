@@ -25,7 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType1.*
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.util.dpToSp
 

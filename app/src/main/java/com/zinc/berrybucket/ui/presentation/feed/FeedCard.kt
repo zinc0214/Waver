@@ -18,10 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.profileInfo
-import com.zinc.berrybucket.ui.compose.theme.Gray1
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Main4
-import com.zinc.berrybucket.ui.compose.theme.Main5
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.design.theme.Main5
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.util.dpToSp

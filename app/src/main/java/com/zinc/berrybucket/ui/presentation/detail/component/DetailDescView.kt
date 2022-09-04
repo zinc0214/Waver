@@ -11,8 +11,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommonDetailDescInfo
-import com.zinc.berrybucket.ui.compose.theme.Error2
-import com.zinc.berrybucket.ui.compose.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Error2
+import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.util.dpToSp
 

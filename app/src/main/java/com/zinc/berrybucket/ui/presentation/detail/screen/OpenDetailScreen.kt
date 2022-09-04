@@ -21,11 +21,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.*
-import com.zinc.berrybucket.ui.compose.theme.BaseTheme
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.util.Keyboard
-import com.zinc.berrybucket.ui.compose.util.keyboardAsState
-import com.zinc.berrybucket.ui.compose.util.visibleLastIndex
+import com.zinc.berrybucket.ui.design.theme.BaseTheme
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.util.Keyboard
+import com.zinc.berrybucket.ui.design.util.keyboardAsState
+import com.zinc.berrybucket.ui.design.util.visibleLastIndex
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView

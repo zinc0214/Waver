@@ -4,7 +4,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.ui.compose.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable

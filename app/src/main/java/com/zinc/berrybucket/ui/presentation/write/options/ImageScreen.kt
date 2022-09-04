@@ -20,7 +20,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteImageInfo
-import com.zinc.berrybucket.ui.compose.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 
 @Composable

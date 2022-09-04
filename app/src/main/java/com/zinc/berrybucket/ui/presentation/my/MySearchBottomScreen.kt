@@ -28,7 +28,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.presentation.common.SimpleBucketListView

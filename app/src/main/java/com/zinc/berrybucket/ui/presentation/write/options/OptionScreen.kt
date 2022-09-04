@@ -15,10 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.model.WriteOption
-import com.zinc.berrybucket.ui.compose.theme.Gray1
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Gray4
-import com.zinc.berrybucket.ui.compose.theme.Gray8
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable

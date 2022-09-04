@@ -26,9 +26,9 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.ui.compose.theme.Gray1
-import com.zinc.berrybucket.ui.compose.theme.Gray10
-import com.zinc.berrybucket.ui.compose.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.BucketSelected
 import com.zinc.berrybucket.ui.presentation.my.all.AllBucketLayer
 import com.zinc.berrybucket.ui.presentation.my.category.CategoryLayer

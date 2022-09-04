@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.Gray1
-import com.zinc.berrybucket.ui.compose.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable

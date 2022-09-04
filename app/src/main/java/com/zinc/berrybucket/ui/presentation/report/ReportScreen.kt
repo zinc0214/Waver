@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.compose.theme.BaseTheme
-import com.zinc.berrybucket.ui.compose.util.Keyboard
-import com.zinc.berrybucket.ui.compose.util.keyboardAsState
+import com.zinc.berrybucket.ui.design.theme.BaseTheme
+import com.zinc.berrybucket.ui.design.util.Keyboard
+import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItems
 

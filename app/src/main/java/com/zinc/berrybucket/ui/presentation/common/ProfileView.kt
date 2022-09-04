@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ProfileInfo
-import com.zinc.berrybucket.ui.compose.theme.Gray7
-import com.zinc.berrybucket.ui.compose.theme.Gray9
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable

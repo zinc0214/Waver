@@ -15,7 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.ProfileCircularProgressBar
 import com.zinc.berrybucket.util.dpToSp

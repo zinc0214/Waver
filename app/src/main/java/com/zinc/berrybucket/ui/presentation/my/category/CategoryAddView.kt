@@ -14,9 +14,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.Gray1
-import com.zinc.berrybucket.ui.compose.theme.Main2
-import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Main2
+import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.presentation.common.dashedBorder
 import com.zinc.berrybucket.util.dpToSp
 

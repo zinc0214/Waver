@@ -20,8 +20,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
-import com.zinc.berrybucket.ui.compose.theme.BaseTheme
-import com.zinc.berrybucket.ui.compose.util.rememberScrollContext
+import com.zinc.berrybucket.ui.design.theme.BaseTheme
+import com.zinc.berrybucket.ui.design.util.rememberScrollContext
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.*

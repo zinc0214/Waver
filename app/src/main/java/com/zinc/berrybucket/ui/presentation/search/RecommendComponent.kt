@@ -29,7 +29,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.RecommendType
 import com.zinc.berrybucket.model.toKorean
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.ui.presentation.common.rememberNestedScrollConnection

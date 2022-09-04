@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.Main4
+import com.zinc.berrybucket.ui.design.theme.Main4
 
 
 @Composable

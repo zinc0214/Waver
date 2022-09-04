@@ -2,10 +2,10 @@ package com.zinc.berrybucket.model
 
 import androidx.annotation.StringRes
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.Error2
-import com.zinc.berrybucket.ui.compose.theme.Gray6
-import com.zinc.berrybucket.ui.compose.theme.Main4
-import com.zinc.berrybucket.ui.compose.theme.Sub_D3
+import com.zinc.berrybucket.ui.design.theme.Error2
+import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.design.theme.Sub_D3
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.Category
 

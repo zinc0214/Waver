@@ -22,7 +22,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UIBucketInfoSimple
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.util.dpToSp
 
 @Composable

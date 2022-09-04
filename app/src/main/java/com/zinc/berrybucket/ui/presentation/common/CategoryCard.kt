@@ -18,9 +18,9 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.zinc.berrybucket.ui.compose.theme.Gray7
-import com.zinc.berrybucket.ui.compose.theme.Gray9
-import com.zinc.berrybucket.ui.compose.theme.Main2
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray9
+import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.Category
 

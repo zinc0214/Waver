@@ -14,8 +14,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import com.zinc.berrybucket.ui.compose.theme.Gray4
-import com.zinc.berrybucket.ui.compose.theme.Main3
+import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Main3
 
 @ExperimentalPagerApi
 @Composable

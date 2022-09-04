@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.compose.util
+package com.zinc.berrybucket.ui.design.util
 
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable

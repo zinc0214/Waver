@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.BottomButtonClickEvent
-import com.zinc.berrybucket.ui.compose.theme.Gray2
-import com.zinc.berrybucket.ui.compose.theme.Gray3
-import com.zinc.berrybucket.ui.compose.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithRadioView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.max
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.compose.theme.*
+import com.zinc.berrybucket.ui.design.theme.*
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.util.dpToSp
 import com.zinc.common.models.FeedKeyWord

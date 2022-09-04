@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.compose.theme
+package com.zinc.berrybucket.ui.design.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
