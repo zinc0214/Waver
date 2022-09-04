@@ -17,6 +17,9 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/datastore" />
             <option value="$PROJECT_DIR$/domain" />
+            <option value="$PROJECT_DIR$/nativelib" />
+            <option value="$PROJECT_DIR$/ui-common" />
+            <option value="$PROJECT_DIR$/ui-common2" />
           </set>
         </option>
       </GradleProjectSettings>

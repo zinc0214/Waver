@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":common"))
     implementation(project(":datastore"))
+    implementation(project(":ui-common"))
 
     // android X
     implementation(Dep.AndroidX.coreKtx)
