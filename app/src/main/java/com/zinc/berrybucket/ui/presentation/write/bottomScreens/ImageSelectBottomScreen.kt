@@ -34,7 +34,7 @@ fun ImageSelectBottomScreen(
                 .padding(vertical = 16.dp),
             text = stringResource(id = R.string.selectGallery),
             fontSize = dpToSp(dp = 15.dp),
-            color = Gray9,
+            color = Gray9
         )
 
         Text(
@@ -45,7 +45,7 @@ fun ImageSelectBottomScreen(
                 },
             text = stringResource(id = R.string.selectCamera),
             fontSize = dpToSp(dp = 15.dp),
-            color = Gray9,
+            color = Gray9
         )
     }
 }
