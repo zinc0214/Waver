@@ -82,7 +82,6 @@ dependencies {
     implementation(Dep.AndroidX.Arch.common)
     implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
 
     // test
     testImplementation(Dep.Test.junit)
