@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.selects
+package com.zinc.berrybucket.ui.presentation.write.bottomScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

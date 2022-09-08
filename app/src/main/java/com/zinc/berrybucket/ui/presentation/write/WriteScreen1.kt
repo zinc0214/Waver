@@ -25,11 +25,11 @@ import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
 import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
+import com.zinc.berrybucket.ui.presentation.write.bottomScreens.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
-import com.zinc.berrybucket.ui.presentation.write.selects.GoalCountBottomScreen
-import com.zinc.berrybucket.ui.presentation.write.selects.ImageSelectBottomScreen
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
