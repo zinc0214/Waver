@@ -216,9 +216,8 @@ private fun BottomOptionIcon(
     val isUsed = currentClickedOptions.find { it == type } != null
     IconButton(
         modifier = Modifier.size(40.dp),
-        onClick = {
-            optionClicked(type)
-        }, image = when (type) {
+        onClick = { optionClicked(type) },
+        image = when (type) {
             MEMO -> {
                 if (isUsed) R.drawable.btn_40_memo_on else R.drawable.btn_40_memo_off
             }
@@ -234,7 +233,8 @@ private fun BottomOptionIcon(
             GOAL -> {
                 if (isUsed) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
             }
-        }, contentDescription = stringResource(
+        },
+        contentDescription = stringResource(
             id = when (type) {
                 MEMO -> R.string.addMemoDesc
                 IMAGE -> R.string.addImageDesc
