@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -23,8 +22,6 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.util.dpToSp
-import java.text.SimpleDateFormat
-import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -32,15 +29,14 @@ internal fun MonthWithYearView(
     year: Int,
     navigateMonthDrawableIds: Pair<Int, Int>,
     onNavigateMonthPressed: (Int, Int) -> Unit,
-    month: Int,
-    topPadding: Dp = 32.dp
+    month: Int
 ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 28.dp)
             .background(Gray1)
-            .padding(top = topPadding)
+            .padding(top = 4.dp)
     ) {
 
         val (leftButton, rightButton, yearAndMonth, divider) = createRefs()
@@ -64,7 +60,7 @@ internal fun MonthWithYearView(
 
 
         Text(
-            text = "${year}년 " + SimpleDateFormat("MM", Locale.getDefault()).format(month) + "월",
+            text = "${year}년 " + parseMonth(month),
             fontSize = dpToSp(dp = 18.dp),
             color = Gray10,
             fontWeight = FontWeight.Bold,
@@ -109,6 +105,10 @@ internal fun MonthWithYearView(
     }
 }
 
+private fun parseMonth(month: Int): String {
+    return if (month > 9) "${month}월" else "0${month}월"
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
@@ -122,7 +122,6 @@ private fun MonthRowPreview() {
         onNavigateMonthPressed = { a, b ->
 
         },
-        month = 5,
-        topPadding = 32.dp
+        month = 5
     )
 }

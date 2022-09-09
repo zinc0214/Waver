@@ -4,17 +4,13 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -40,8 +36,6 @@ fun CalendarView(
     navigateMonthDrawableIds: Pair<Int, Int> = Pair(
         R.drawable.btn_28_left_circle, R.drawable.btn_28_right_circle
     ),
-    topPadding: Dp = 0.dp,
-    bottomPadding: Dp = 0.dp,
     dateCircleDiameter: Dp = 42.dp
     // todo (fvalela - #2): allow user to adjust what start and end day is (weekly view, for example)
     //    startDay: Int = 1,
@@ -55,6 +49,7 @@ fun CalendarView(
     val resolvedYear = if (month < 1 || year < 1) today.year else year
 
     val lengthOfCurrentMonth = LocalDate.of(resolvedYear, resolvedMonth, 1).lengthOfMonth()
+    val datePressed = remember { mutableStateOf(LocalDate.now().toEpochDay()) }
 
     val resolvedStartDate = resolveLocalDate(
         resolvedYear, resolvedMonth, maybeResolveDay(startDay, lengthOfCurrentMonth, false)
@@ -71,14 +66,13 @@ fun CalendarView(
         modifier = Modifier
             .fillMaxWidth()
             .background(Gray1)
-            .padding(horizontal = 28.dp)
+            .padding(28.dp)
     ) {
         MonthWithYearView(
             year = resolvedYear,
             month = resolvedMonth,
             navigateMonthDrawableIds = navigateMonthDrawableIds,
-            onNavigateMonthPressed = onNavigateMonthPressed,
-            topPadding = topPadding
+            onNavigateMonthPressed = onNavigateMonthPressed
         )
 
         DaysOfTheWeekRow(
@@ -89,8 +83,10 @@ fun CalendarView(
         WeekRows(
             startDate = resolvedStartDate,
             endDate = resolvedEndDate,
-            onDayPressed = onDayPressed,
-            verticalPadding = topPadding,
+            onDayPressed = {
+                datePressed.value = it
+                onDayPressed?.invoke(it)
+            },
             selectedDates = selectedDates,
             dateCircleDiameter = dateCircleDiameter,
         )
@@ -108,20 +104,6 @@ private fun maybeResolveDay(
     return unresolvedDay
 }
 
-@Composable
-private fun DividerBetweenDaysOfWeekAndWeekRow(
-    color: Color = MaterialTheme.colors.onBackground, thickness: Dp = 1.dp, verticalPadding: Dp
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(verticalPadding)
-    ) {
-        Divider(color = color, thickness = thickness)
-    }
-}
-
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
@@ -129,7 +111,7 @@ private fun DefaultPreview() {
 
     val datePressed = remember { mutableStateOf(LocalDate.now().toEpochDay()) }
     CalendarView(
-        month = 9, year = 2022, selectedDates = listOf(
+        month = 3, year = 2022, selectedDates = listOf(
             CalendarDate(
                 dateInMilli = LocalDate.now().toEpochDay(),
                 backgroundColour = Main4,
@@ -138,6 +120,6 @@ private fun DefaultPreview() {
         ), onDayPressed = { newDayPressed ->
             // i.e. update viewModel
             datePressed.value = newDayPressed
-        }, topPadding = 5.dp
+        }
     )
 }

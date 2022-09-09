@@ -29,7 +29,6 @@ internal fun WeekRows(
     startDate: LocalDate,
     endDate: LocalDate,
     onDayPressed: ((Long) -> Unit)?,
-    verticalPadding: Dp,
     selectedDates: Collection<CalendarDate>,
     dateCircleDiameter: Dp,
 ) {
@@ -52,7 +51,6 @@ internal fun WeekRows(
                     weekStartDate = currentWorkingDate,
                     absoluteStartDate = startDate,
                     absoluteEndDate = endDate,
-                    verticalPadding = verticalPadding,
                     onDayPressed = onDayPressed,
                     selectedDates = selectedDates,
                     dateCircleDiameter = dateCircleDiameter,
@@ -62,7 +60,6 @@ internal fun WeekRows(
                 WeekRow(
                     weekStartDate = currentWorkingDate,
                     absoluteEndDate = endDate,
-                    verticalPadding = verticalPadding,
                     onDayPressed = onDayPressed,
                     selectedDates = selectedDates,
                     dateCircleDiameter = dateCircleDiameter,
@@ -73,7 +70,6 @@ internal fun WeekRows(
             ) ->
                 WeekRow(
                     weekStartDate = currentWorkingDate,
-                    verticalPadding = verticalPadding,
                     onDayPressed = onDayPressed,
                     selectedDates = selectedDates,
                     dateCircleDiameter = dateCircleDiameter,
@@ -89,7 +85,6 @@ private fun WeekRow(
     weekStartDate: LocalDate,
     absoluteStartDate: LocalDate = LocalDate.MIN,
     absoluteEndDate: LocalDate = LocalDate.MAX,
-    verticalPadding: Dp,
     selectedDates: Collection<CalendarDate>,
     onDayPressed: ((Long) -> Unit)?,
     dateCircleDiameter: Dp,
@@ -97,7 +92,7 @@ private fun WeekRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(verticalPadding)
+            .padding(top = 4.dp)
     ) {
         var runningDate = weekStartDate
 
