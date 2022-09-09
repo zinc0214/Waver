@@ -6,6 +6,10 @@ plugins {
 android {
     namespace = "com.zinc.berrybucket.ui_common"
 
+    defaultConfig {
+        minSdk = Versions.minSdk
+    }
+
     compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools
 
