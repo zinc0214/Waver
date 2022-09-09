@@ -79,7 +79,7 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                count = category.count
+                count = category.bucketlistCount
             )
 
             // Left Contents
@@ -154,7 +154,7 @@ private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
 private fun CategoryListPreview() {
     CategoryListView(
         categoryList = listOf(
-            Category(id = 1, name = "여행", count = "10")
+            Category(id = 1, name = "여행", bucketlistCount = "10")
         )
     )
 }

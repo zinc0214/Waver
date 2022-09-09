@@ -20,7 +20,7 @@ interface BerryBucketApi {
     @GET("/bucketList")
     suspend fun loadAllBucketList(): AllBucketList
 
-    @GET("/bucketList")
+    @GET("/category")
     suspend fun loadCategoryList(): List<Category>
 
     @GET("/bucketList")

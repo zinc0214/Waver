@@ -25,6 +25,7 @@ import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
 import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
@@ -104,15 +105,6 @@ fun WriteScreen1(
         })
     }
 
-    if (selectedOptionType == CATEGORY) {
-        currentClickedOptions.add(CATEGORY)
-        optionList.value += WriteOption(
-            type = CATEGORY,
-            title = "카테고리",
-            content = "요가를해보자요가는재미가없지만"
-        )
-        selectedOptionType = null
-    }
 
     if (selectedOptionType == D_DAY) {
         currentClickedOptions.add(D_DAY)
@@ -147,7 +139,17 @@ fun WriteScreen1(
 
                     })
                 }
-                CATEGORY -> TODO()
+                CATEGORY -> {
+                    CategorySelectBottomScreen(confirmed = {
+                        currentClickedOptions.add(CATEGORY)
+                        optionList.value += WriteOption(
+                            type = CATEGORY,
+                            title = "카테고리",
+                            content = it.name
+                        )
+                        selectedOptionType = null
+                    })
+                }
                 D_DAY -> TODO()
                 GOAL -> {
                     GoalCountBottomScreen(

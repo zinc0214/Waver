@@ -48,6 +48,11 @@ internal abstract class DataModule {
         repository: ReportRepositoryImpl
     ): ReportRepository
 
+    @Binds
+    abstract fun bindCategoryRepository(
+        repository: CategoryRepositoryImpl
+    ): CategoryRepository
+
     @InstallIn(SingletonComponent::class)
     @Module
     internal object ApiModule {

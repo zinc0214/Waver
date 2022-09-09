@@ -209,27 +209,27 @@ class MyViewModel @Inject constructor(
         Category(
             id = 1,
             name = "여행",
-            count = "20"
+            bucketlistCount = "20"
         ),
         Category(
             id = 1,
             name = "아주아주 맛있는 것을 먹으러 다니는 거야 냠냠쩝쩝 하면서 룰루리랄라 크크루삥봉",
-            count = "10"
+            bucketlistCount = "10"
         ),
         Category(
             id = 1,
             name = "제주도여행을 갈거야",
-            count = "3"
+            bucketlistCount = "3"
         ),
         Category(
             id = 1,
             name = "제주도여행을 갈거야",
-            count = "5"
+            bucketlistCount = "5"
         ),
         Category(
             id = 1,
             name = "검색한 갈거야",
-            count = "35"
+            bucketlistCount = "35"
         )
     )
 

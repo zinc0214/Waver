@@ -32,7 +32,8 @@ data class BucketInfoSimple(
 data class Category(
     val id: Int,
     val name: String,
-    val count: String
+    val defaultYn: YesOrNo = YesOrNo.Y,
+    val bucketlistCount: String
 )
 
 @Serializable
@@ -50,4 +51,9 @@ data class CommentInfo(
 
 enum class BadgeType {
     TRIP1, TRIP2, TRIP3
+}
+
+
+enum class YesOrNo {
+    Y, N
 }
