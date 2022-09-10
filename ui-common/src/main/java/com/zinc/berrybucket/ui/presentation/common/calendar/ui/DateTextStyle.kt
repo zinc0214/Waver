@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.sp
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray8
 
-internal object DateTextStyle {
+object DateTextStyle {
     val selected = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
