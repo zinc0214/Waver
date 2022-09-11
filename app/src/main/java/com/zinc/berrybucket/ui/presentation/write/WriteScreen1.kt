@@ -31,6 +31,7 @@ import com.zinc.berrybucket.ui.presentation.write.bottomScreens.ImageSelectBotto
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -46,9 +47,19 @@ fun WriteScreen1(
     val currentClickedOptions = remember { mutableStateListOf<WriteOptionsType1>() }
     val nextButtonClickable = remember { mutableStateOf(false) }
 
+    val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
     )
+    val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
+        coroutineScope.launch {
+            if (it) {
+                bottomSheetScaffoldState.show()
+            } else {
+                bottomSheetScaffoldState.hide()
+            }
+        }
+    }
 
     val title = remember { mutableStateOf(writeInfo1.title) }
     val originMemo = remember { mutableStateOf(writeInfo1.memo) }
@@ -120,53 +131,65 @@ fun WriteScreen1(
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
-            when (selectedOptionType) {
-                IMAGE -> {
-                    ImageSelectBottomScreen(selectedType = {
-                        action(
-                            ActionWithActivity.AddImage(type = it,
-                                failed = {
-                                    Toast.makeText(context, "이미지 로드에 실패했습니다.", Toast.LENGTH_SHORT)
-                                        .show()
-                                    selectedOptionType = null
-                                },
-                                succeed = { uri ->
-                                    Log.e("ayhan", "uri : $uri")
-                                    imageList.value += uri
-                                    selectedOptionType = null
-                                })
-                        )
-
-                    })
-                }
-                CATEGORY -> {
-                    CategorySelectBottomScreen(confirmed = {
-                        currentClickedOptions.add(CATEGORY)
-                        optionList.value += WriteOption(
-                            type = CATEGORY,
-                            title = "카테고리",
-                            content = it.name
-                        )
-                        selectedOptionType = null
-                    })
-                }
-                D_DAY -> TODO()
-                GOAL -> {
-                    GoalCountBottomScreen(
-                        canceled = {
-                            selectedOptionType = null
-                        }, confirmed = {
-                            currentClickedOptions.add(GOAL)
+            Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
+                when (selectedOptionType) {
+                    IMAGE -> {
+                        ImageSelectBottomScreen(selectedType = {
+                            action(
+                                ActionWithActivity.AddImage(type = it,
+                                    failed = {
+                                        Toast.makeText(
+                                            context,
+                                            "이미지 로드에 실패했습니다.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        selectedOptionType = null
+                                        isNeedToBottomSheetOpen.invoke(false)
+                                    },
+                                    succeed = { uri ->
+                                        Log.e("ayhan", "uri : $uri")
+                                        imageList.value += uri
+                                        selectedOptionType = null
+                                        isNeedToBottomSheetOpen.invoke(false)
+                                    })
+                            )
+                        })
+                        isNeedToBottomSheetOpen.invoke(true)
+                    }
+                    CATEGORY -> {
+                        CategorySelectBottomScreen(confirmed = {
+                            currentClickedOptions.add(CATEGORY)
                             optionList.value += WriteOption(
-                                type = GOAL,
-                                title = "목표 달성 횟수",
-                                content = it
+                                type = CATEGORY,
+                                title = "카테고리",
+                                content = it.name
                             )
                             selectedOptionType = null
+                            isNeedToBottomSheetOpen.invoke(false)
                         })
-                }
-                else -> {
-                    // Do Nothing
+                        isNeedToBottomSheetOpen.invoke(true)
+                    }
+                    D_DAY -> TODO()
+                    GOAL -> {
+                        GoalCountBottomScreen(
+                            canceled = {
+                                selectedOptionType = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            }, confirmed = {
+                                currentClickedOptions.add(GOAL)
+                                optionList.value += WriteOption(
+                                    type = GOAL,
+                                    title = "목표 달성 횟수",
+                                    content = it
+                                )
+                                selectedOptionType = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            })
+                        isNeedToBottomSheetOpen.invoke(true)
+                    }
+                    else -> {
+                        // Do Nothing
+                    }
                 }
             }
         },
