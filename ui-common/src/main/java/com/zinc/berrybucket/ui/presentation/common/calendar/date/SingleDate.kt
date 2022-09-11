@@ -38,7 +38,7 @@ internal fun SingleDate(
     var dateModifier = modifier
         .background(color = backgroundColor, shape = dateBackgroundShape)
 
-    if (onDayPressed != null) {
+    if (onDayPressed != null && isOutOfRange.not()) {
         dateModifier = dateModifier.clickable {
             onDayPressed(dayInMilli)
         }

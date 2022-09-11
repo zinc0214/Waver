@@ -36,7 +36,7 @@ fun CalendarView(
     navigateMonthDrawableIds: Pair<Int, Int> = Pair(
         R.drawable.btn_28_left_circle, R.drawable.btn_28_right_circle
     ),
-    dateCircleDiameter: Dp = 42.dp
+    dateCircleDiameter: Dp = 32.dp
     // todo (fvalela - #2): allow user to adjust what start and end day is (weekly view, for example)
     //    startDay: Int = 1,
     //    endDay: Int = 100,
