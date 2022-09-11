@@ -65,6 +65,9 @@ fun WriteScreen1(
 
     val title = remember { mutableStateOf(writeInfo1.title) }
     val originMemo = remember { mutableStateOf(writeInfo1.memo) }
+    val originCount = remember {
+        mutableStateOf(writeInfo1.options.find { option -> option.type == GOAL }?.content ?: "0")
+    }
     val imageList = remember { mutableStateOf(writeInfo1.images) }
     val optionList = remember { mutableStateOf(writeInfo1.options) }
 
@@ -188,6 +191,7 @@ fun WriteScreen1(
                     }
                     GOAL -> {
                         GoalCountBottomScreen(
+                            originCount = originCount.value,
                             canceled = {
                                 selectedOptionType = null
                                 isNeedToBottomSheetOpen.invoke(false)
@@ -201,6 +205,7 @@ fun WriteScreen1(
                                 )
                                 selectedOptionType = null
                                 isNeedToBottomSheetOpen.invoke(false)
+                                originCount.value = it
                             })
                         isNeedToBottomSheetOpen.invoke(true)
                     }

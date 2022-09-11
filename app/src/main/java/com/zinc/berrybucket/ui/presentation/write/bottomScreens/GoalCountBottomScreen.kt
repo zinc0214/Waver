@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -57,12 +58,19 @@ fun GoalCountBottomScreen(
                     color = if (originCount == editedGoalCount.text || editedGoalCount.text == "0") Gray4 else Main3
                 ),
             value = editedGoalCount,
-            textStyle = TextStyle(textAlign = TextAlign.Center, fontWeight = FontWeight.Bold),
+            textStyle = TextStyle(
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontSize = dpToSp(dp = 22.dp)
+            ),
             onValueChange = {
                 editedGoalCount = it
             },
             maxLines = 1,
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.Number
+            ),
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
