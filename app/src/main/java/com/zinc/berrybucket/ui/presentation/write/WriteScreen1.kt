@@ -25,12 +25,14 @@ import com.zinc.berrybucket.model.WriteOptionsType1.*
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.CameraPermission
 import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
+import com.zinc.berrybucket.util.parseWithDday
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
@@ -116,17 +118,6 @@ fun WriteScreen1(
         })
     }
 
-
-    if (selectedOptionType == D_DAY) {
-        currentClickedOptions.add(D_DAY)
-        optionList.value += WriteOption(
-            type = D_DAY,
-            title = "디데이",
-            content = "2022.10.08(D-102)"
-        )
-        selectedOptionType = null
-    }
-
     // 바텀시트
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
@@ -169,7 +160,22 @@ fun WriteScreen1(
                         })
                         isNeedToBottomSheetOpen.invoke(true)
                     }
-                    D_DAY -> TODO()
+                    D_DAY -> {
+                        CalendarSelectBottomSheet(selectDate = {
+                            currentClickedOptions.add(D_DAY)
+                            optionList.value += WriteOption(
+                                type = D_DAY,
+                                title = "디데이",
+                                content = it.parseWithDday()
+                            )
+                            selectedOptionType = null
+                            isNeedToBottomSheetOpen.invoke(false)
+                        }, canceled = {
+                            selectedOptionType = null
+                            isNeedToBottomSheetOpen.invoke(false)
+                        })
+                        isNeedToBottomSheetOpen.invoke(true)
+                    }
                     GOAL -> {
                         GoalCountBottomScreen(
                             canceled = {
