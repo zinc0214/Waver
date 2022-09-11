@@ -177,7 +177,7 @@ fun MemoOptionView(
 @Composable
 fun BottomOptionView(
     modifier: Modifier = Modifier,
-    currentClickedOptions: List<WriteOptionsType1>,
+    currentClickedOptions: Set<WriteOptionsType1>,
     optionUsed: (WriteOptionsType1) -> Unit
 ) {
     Column(
@@ -209,7 +209,7 @@ fun BottomOptionView(
 
 @Composable
 private fun BottomOptionIcon(
-    currentClickedOptions: List<WriteOptionsType1>,
+    currentClickedOptions: Set<WriteOptionsType1>,
     type: WriteOptionsType1,
     optionClicked: (WriteOptionsType1) -> Unit
 ) {

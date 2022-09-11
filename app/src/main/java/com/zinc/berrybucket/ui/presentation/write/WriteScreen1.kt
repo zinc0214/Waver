@@ -46,7 +46,7 @@ fun WriteScreen1(
     val context = LocalContext.current
 
     var selectedOptionType: WriteOptionsType1? by remember { mutableStateOf(null) }
-    val currentClickedOptions = remember { mutableStateListOf<WriteOptionsType1>() }
+    val currentClickedOptions = remember { mutableSetOf<WriteOptionsType1>() }
     val nextButtonClickable = remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -118,6 +118,14 @@ fun WriteScreen1(
         })
     }
 
+    // 기존 option 값 제거?
+    fun deleteOption(type: WriteOptionsType1) {
+        optionList.value.find { option -> option.type == type }
+            ?.let { existOption ->
+                optionList.value -= existOption
+            }
+    }
+
     // 바텀시트
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
@@ -150,6 +158,7 @@ fun WriteScreen1(
                     CATEGORY -> {
                         CategorySelectBottomScreen(confirmed = {
                             currentClickedOptions.add(CATEGORY)
+                            deleteOption(CATEGORY)
                             optionList.value += WriteOption(
                                 type = CATEGORY,
                                 title = "카테고리",
@@ -163,6 +172,7 @@ fun WriteScreen1(
                     D_DAY -> {
                         CalendarSelectBottomSheet(selectDate = {
                             currentClickedOptions.add(D_DAY)
+                            deleteOption(D_DAY)
                             optionList.value += WriteOption(
                                 type = D_DAY,
                                 title = "디데이",
@@ -183,6 +193,7 @@ fun WriteScreen1(
                                 isNeedToBottomSheetOpen.invoke(false)
                             }, confirmed = {
                                 currentClickedOptions.add(GOAL)
+                                deleteOption(GOAL)
                                 optionList.value += WriteOption(
                                     type = GOAL,
                                     title = "목표 달성 횟수",
@@ -201,7 +212,6 @@ fun WriteScreen1(
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
-
         if (selectedOptionType != MEMO) {
             ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                 val (appBar, contents, option) = createRefs()
@@ -309,4 +319,5 @@ fun WriteScreen1(
         }
     }
 }
+
 
