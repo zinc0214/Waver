@@ -1,17 +1,18 @@
 package com.zinc.berrybucket.util
 
+import android.util.Log
 import java.time.LocalDate
 import java.util.*
 
 fun LocalDate.parseWithDday(): String {
     val year = this.year
-    val month = parseMonth(this.month.value)
+    val month = parseDateWithZero(this.month.value)
     val date = this.dayOfMonth
 
     return "${year}.${month}.${date}(${this.getDday()})"
 }
 
-fun parseMonth(month: Int): String {
+fun parseDateWithZero(month: Int): String {
     return if (month > 9) "$month" else "0${month}"
 }
 
@@ -41,4 +42,16 @@ private fun LocalDate.getDday(): String {
         strFormat = "D+%d"
     }
     return String.format(strFormat, result)
+}
+
+fun textParseToLocalDate(ddayText: String?): LocalDate {
+    if (ddayText.isNullOrEmpty()) return LocalDate.now()
+    val split = ddayText.split(".")
+    val year = split[0].toInt()
+    val month = split[1].toInt()
+    val date = split[2].split("(")[0].toInt()
+
+    Log.e("ayhan", "dateSplit : $year $month $date")
+
+    return LocalDate.of(year, month, date)
 }

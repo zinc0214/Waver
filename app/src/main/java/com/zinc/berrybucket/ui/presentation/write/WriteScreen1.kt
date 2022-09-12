@@ -33,6 +33,7 @@ import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
 import com.zinc.berrybucket.util.parseWithDday
+import com.zinc.berrybucket.util.textParseToLocalDate
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
@@ -68,10 +69,16 @@ fun WriteScreen1(
     val originCount = remember {
         mutableStateOf(writeInfo1.options.find { option -> option.type == GOAL }?.content ?: "0")
     }
+    val originDdayDate = remember {
+        mutableStateOf(textParseToLocalDate(writeInfo1.options.find { option ->
+            option.type == D_DAY
+        }?.content))
+    }
+
     val imageList = remember { mutableStateOf(writeInfo1.images) }
     val optionList = remember { mutableStateOf(writeInfo1.options) }
 
-    // init
+// init
     nextButtonClickable.value = title.value.isNotEmpty()
     if (writeInfo1.memo.isNotEmpty()) {
         currentClickedOptions.add(MEMO)
@@ -90,7 +97,7 @@ fun WriteScreen1(
         }
     }
 
-    // 백키 이벤트
+// 백키 이벤트
     BackHandler() {
         if (selectedOptionType == null) {
             goToBack()
@@ -100,7 +107,7 @@ fun WriteScreen1(
     }
 
 
-    // 각 option 값이 들어왔을 때 해야하는 것들 정리
+// 각 option 값이 들어왔을 때 해야하는 것들 정리
     if (selectedOptionType == MEMO) {
         MemoScreen(originMemo = originMemo.value, memoChanged = {
             originMemo.value = it
@@ -129,7 +136,7 @@ fun WriteScreen1(
             }
     }
 
-    // 바텀시트
+// 바텀시트
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
@@ -173,7 +180,7 @@ fun WriteScreen1(
                         isNeedToBottomSheetOpen.invoke(true)
                     }
                     D_DAY -> {
-                        CalendarSelectBottomSheet(selectDate = {
+                        CalendarSelectBottomSheet(confirmed = {
                             currentClickedOptions.add(D_DAY)
                             deleteOption(D_DAY)
                             optionList.value += WriteOption(
@@ -186,7 +193,7 @@ fun WriteScreen1(
                         }, canceled = {
                             selectedOptionType = null
                             isNeedToBottomSheetOpen.invoke(false)
-                        })
+                        }, selectedDate = originDdayDate.value)
                         isNeedToBottomSheetOpen.invoke(true)
                     }
                     GOAL -> {

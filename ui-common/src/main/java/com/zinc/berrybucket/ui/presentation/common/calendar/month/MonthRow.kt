@@ -3,6 +3,7 @@ package com.zinc.berrybucket.ui.presentation.common.calendar.month
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,7 @@ internal fun MonthWithYearView(
     year: Int,
     navigateMonthDrawableIds: Pair<Int, Int>,
     onNavigateMonthPressed: (Int, Int) -> Unit,
+    changeViewType: () -> Unit,
     month: Int
 ) {
     ConstraintLayout(
@@ -70,6 +72,9 @@ internal fun MonthWithYearView(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
+                }
+                .clickable {
+                    changeViewType()
                 }
         )
 
@@ -122,6 +127,6 @@ private fun MonthRowPreview() {
         onNavigateMonthPressed = { a, b ->
 
         },
-        month = 5
+        month = 5, changeViewType = {}
     )
 }

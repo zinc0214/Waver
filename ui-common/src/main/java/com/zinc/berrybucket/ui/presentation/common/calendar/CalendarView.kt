@@ -32,6 +32,7 @@ fun CalendarView(
     month: Int = 0,
     onDayPressed: ((Long) -> Unit)? = null,
     onNavigateMonthPressed: (Int, Int) -> Unit = { _, _ -> /*no op*/ },
+    changeViewType: () -> Unit,
     selectedDates: Collection<CalendarDate> = setOf(),
     navigateMonthDrawableIds: Pair<Int, Int> = Pair(
         R.drawable.btn_28_left_circle, R.drawable.btn_28_right_circle
@@ -72,7 +73,8 @@ fun CalendarView(
             year = resolvedYear,
             month = resolvedMonth,
             navigateMonthDrawableIds = navigateMonthDrawableIds,
-            onNavigateMonthPressed = onNavigateMonthPressed
+            onNavigateMonthPressed = onNavigateMonthPressed,
+            changeViewType = changeViewType
         )
 
         DaysOfTheWeekRow(
@@ -120,6 +122,7 @@ private fun DefaultPreview() {
         ), onDayPressed = { newDayPressed ->
             // i.e. update viewModel
             datePressed.value = newDayPressed
-        }
+        },
+        changeViewType = {}
     )
 }
