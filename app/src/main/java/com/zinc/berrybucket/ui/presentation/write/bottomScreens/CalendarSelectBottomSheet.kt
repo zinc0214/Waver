@@ -43,10 +43,16 @@ fun CalendarSelectBottomSheet(
 
     var viewType by remember { mutableStateOf(CALENDAR) }
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 420.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
         when (viewType) {
             CALENDAR -> {
-                CalendarTypeView(currentYear = currentLocalDate.year,
+                CalendarTypeView(
+                    currentYear = currentLocalDate.year,
                     currentMonth = currentLocalDate.monthValue,
                     navigateMonth = { year: Int, month: Int ->
                         currentLocalDate = LocalDate.of(year, month, currentLocalDate.dayOfMonth)
@@ -62,7 +68,6 @@ fun CalendarSelectBottomSheet(
             PICKER -> {
                 DatePickerView(
                     currentDate = currentLocalDate,
-                    viewModel = viewModel,
                     changeViewType = {
                         viewType = it
                     },
@@ -76,14 +81,16 @@ fun CalendarSelectBottomSheet(
             }
         }
 
-        BottomButtonView(clickEvent = {
-            when (it) {
-                BottomButtonClickEvent.LeftButtonClicked -> canceled()
-                BottomButtonClickEvent.RightButtonClicked -> {
-                    confirmed(currentLocalDate)
+        BottomButtonView(
+            clickEvent = {
+                when (it) {
+                    BottomButtonClickEvent.LeftButtonClicked -> canceled()
+                    BottomButtonClickEvent.RightButtonClicked -> {
+                        confirmed(currentLocalDate)
+                    }
                 }
-            }
-        }, rightText = R.string.confirm)
+            }, rightText = R.string.confirm
+        )
     }
 }
 
@@ -110,7 +117,6 @@ private fun CalendarTypeView(
 @Composable
 private fun DatePickerView(
     currentDate: LocalDate,
-    viewModel: DateViewModel,
     updateDated: (Int, Int, Int) -> Unit,
     changeViewType: (CalendarViewType) -> Unit
 ) {
