@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,6 +28,7 @@ import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
 import java.time.LocalDate
+import java.util.*
 
 
 @Composable
@@ -67,7 +67,10 @@ fun CalendarSelectBottomSheet(
                         viewType = it
                     },
                     updateDated = { year: Int, month: Int, date: Int ->
-                        currentLocalDate = LocalDate.of(year, month, date)
+                        val checkValidValue = date <= getValidPickerDate(year, month)
+                        if (checkValidValue) {
+                            currentLocalDate = LocalDate.of(year, month, date)
+                        }
                     },
                 )
             }
@@ -126,7 +129,14 @@ private fun DatePickerView(
         var month by remember { mutableStateOf(currentDate.monthValue) }
         var date by remember { mutableStateOf(currentDate.dayOfMonth) }
 
-        val maxValidDate by viewModel.validDateRange.observeAsState()
+        var maxValidDate by remember {
+            mutableStateOf(
+                getValidPickerDate(
+                    currentDate.year,
+                    currentDate.monthValue
+                )
+            )
+        }
 
         Text(
             text = stringResource(id = com.zinc.berrybucket.R.string.optionCalendarSelect),
@@ -172,8 +182,8 @@ private fun DatePickerView(
                 value = year,
                 onValueChange = { value ->
                     year = value
+                    maxValidDate = getValidPickerDate(year, month)
                     updateDated(year, month, date)
-                    viewModel.updateYearAndMonth(year, month)
                 },
                 rangeList = (today.year - 100..today.year + 100).toList()
             )
@@ -183,8 +193,8 @@ private fun DatePickerView(
                 value = month,
                 onValueChange = { value ->
                     month = value
+                    maxValidDate = getValidPickerDate(year, month)
                     updateDated(year, month, date)
-                    viewModel.updateYearAndMonth(year, month)
                 },
                 rangeList = (1..12).toList()
             )
@@ -195,9 +205,8 @@ private fun DatePickerView(
                 onValueChange = { value ->
                     date = value
                     updateDated(year, month, date)
-                    viewModel.updateYearAndMonth(year, month)
                 },
-                rangeList = (1..(if (maxValidDate != null) maxValidDate else 30)!!).toList()
+                rangeList = (1..maxValidDate).toList()
             )
         }
     }
@@ -205,6 +214,12 @@ private fun DatePickerView(
 
 private enum class CalendarViewType {
     CALENDAR, PICKER
+}
+
+private fun getValidPickerDate(year: Int, month: Int): Int {
+    val calendar = Calendar.getInstance()
+    calendar.set(year, month - 1, 1)
+    return calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 }
 
 @Preview
