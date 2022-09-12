@@ -188,6 +188,7 @@ fun WriteScreen1(
                                 title = "디데이",
                                 content = it.parseWithDday()
                             )
+                            originDdayDate.value = it
                             selectedOptionType = null
                             isNeedToBottomSheetOpen.invoke(false)
                         }, canceled = {

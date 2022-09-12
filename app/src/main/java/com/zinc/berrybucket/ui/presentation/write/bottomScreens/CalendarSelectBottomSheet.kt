@@ -32,9 +32,11 @@ import com.zinc.berrybucket.ui.presentation.write.DateViewModel
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.CALENDAR
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.util.toEpochMilli
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+
 
 @Composable
 fun CalendarSelectBottomSheet(
@@ -49,7 +51,7 @@ fun CalendarSelectBottomSheet(
     var selectedCalendarDate: CalendarDate by remember {
         mutableStateOf(
             CalendarDate(
-                dateInMilli = currentLocalDate.toEpochDay(),
+                dateInMilli = currentLocalDate.toEpochMilli(),
                 backgroundColour = Main4,
                 backgroundShape = RoundedCornerShape(10.dp),
                 textStyle = DateTextStyle.selected

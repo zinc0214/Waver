@@ -2,6 +2,7 @@ package com.zinc.berrybucket.util
 
 import android.util.Log
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 
 fun LocalDate.parseWithDday(): String {
@@ -10,6 +11,10 @@ fun LocalDate.parseWithDday(): String {
     val date = this.dayOfMonth
 
     return "${year}.${month}.${date}(${this.getDday()})"
+}
+
+fun LocalDate.toEpochMilli(): Long {
+    return this.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 }
 
 fun parseDateWithZero(month: Int): String {
