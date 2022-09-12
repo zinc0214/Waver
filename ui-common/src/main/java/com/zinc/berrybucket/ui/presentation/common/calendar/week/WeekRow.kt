@@ -13,13 +13,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.calendar.DAY_IN_MILLI
 import com.zinc.berrybucket.ui.presentation.common.calendar.date.SingleDate
 import com.zinc.berrybucket.ui.presentation.common.calendar.differenceBetweenTimeLibEndDayOfWeekAndPassedEndDayOfWeek
 import com.zinc.berrybucket.ui.presentation.common.calendar.differenceBetweenTimeLibStartDayOfWeekAndPassedStartDayOfWeek
 import com.zinc.berrybucket.ui.presentation.common.calendar.lengthOfWeek
-import com.zinc.berrybucket.ui.presentation.common.calendar.model.CalendarDate
 import com.zinc.berrybucket.ui.presentation.common.calendar.ui.DateTextStyle
+import com.zinc.berrybucket.ui.util.toEpochMilli
 import java.time.LocalDate
 import java.time.ZoneId
 
@@ -28,8 +29,8 @@ import java.time.ZoneId
 internal fun WeekRows(
     startDate: LocalDate,
     endDate: LocalDate,
-    onDayPressed: ((Long) -> Unit)?,
-    selectedDates: Collection<CalendarDate>,
+    onDayPressed: ((LocalDate) -> Unit)?,
+    selectedDates: Collection<LocalDate>,
     dateCircleDiameter: Dp,
 ) {
     // todo (fvalela - #3): add functionality to start and end week at specific weekdays
@@ -85,8 +86,8 @@ private fun WeekRow(
     weekStartDate: LocalDate,
     absoluteStartDate: LocalDate = LocalDate.MIN,
     absoluteEndDate: LocalDate = LocalDate.MAX,
-    selectedDates: Collection<CalendarDate>,
-    onDayPressed: ((Long) -> Unit)?,
+    selectedDates: Collection<LocalDate>,
+    onDayPressed: ((LocalDate) -> Unit)?,
     dateCircleDiameter: Dp,
 ) {
     Row(
@@ -109,11 +110,11 @@ private fun WeekRow(
                 modifier = Modifier.weight(1f, true),
                 day = runningDate.dayOfMonth,
                 dateBackgroundColour = dateBackgroundColourAndTextStyle.first,
-                dateTextStyle = dateBackgroundColourAndTextStyle.second,
-                dateBackgroundShape = dateBackgroundColourAndTextStyle.third,
+                dateBackgroundShape = dateBackgroundColourAndTextStyle.second,
+                dateTextStyle = dateBackgroundColourAndTextStyle.third,
                 isOutOfRange = isOutOfRange,
                 onDayPressed = onDayPressed,
-                dayInMilli = runningDateEpochMilli,
+                localDate = runningDate,
                 circleDiameter = dateCircleDiameter,
             )
             runningDate = runningDate.plusDays(1L)
@@ -122,30 +123,21 @@ private fun WeekRow(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 private fun getSelectedDateColoursAndTextStyle(
-    selectedDates: Collection<CalendarDate>,
+    selectedDates: Collection<LocalDate>,
     dateStartTimeInEpochMilli: Long
-): Triple<Color, TextStyle, Shape> {
+): Triple<Color, Shape, TextStyle> {
     val dateEndTimeInEpochMilli = dateStartTimeInEpochMilli + DAY_IN_MILLI
     for (date in selectedDates) {
-        if (date.dateInMilli in dateStartTimeInEpochMilli until dateEndTimeInEpochMilli) {
-            val resolvedTextStyle = resolveTextStyle(true)
-            val resolvedBackgroundColour = date.backgroundColour
-            val resolveBackgroundShape = resolveBackgroundShape(date.backgroundShape)
-            return Triple(
-                resolvedBackgroundColour,
-                resolvedTextStyle,
-                resolveBackgroundShape
-            )
+        if (date.toEpochMilli() in dateStartTimeInEpochMilli until dateEndTimeInEpochMilli) {
+            return resolveStyle(true)
         }
     }
-    return Triple(Color.Unspecified, resolveTextStyle(false), RoundedCornerShape(0.dp))
+    return resolveStyle(false)
 }
 
-private fun resolveTextStyle(isSelected: Boolean): TextStyle {
-    return if (isSelected) DateTextStyle.selected else DateTextStyle.unSelected
-}
-
-private fun resolveBackgroundShape(shape: Shape): Shape {
-    return shape
+private fun resolveStyle(isSelected: Boolean): Triple<Color, Shape, TextStyle> {
+    return if (isSelected) Triple(Main4, RoundedCornerShape(10.dp), DateTextStyle.selected)
+    else Triple(Color.Transparent, RoundedCornerShape(0.dp), DateTextStyle.unSelected)
 }

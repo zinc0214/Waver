@@ -3,7 +3,6 @@ package com.zinc.berrybucket.ui.presentation.write.bottomScreens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -22,20 +21,14 @@ import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
-import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.common.NumberPicker
 import com.zinc.berrybucket.ui.presentation.common.calendar.CalendarView
-import com.zinc.berrybucket.ui.presentation.common.calendar.model.CalendarDate
-import com.zinc.berrybucket.ui.presentation.common.calendar.ui.DateTextStyle
 import com.zinc.berrybucket.ui.presentation.write.DateViewModel
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.CALENDAR
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.util.toEpochMilli
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 
 
 @Composable
@@ -48,17 +41,6 @@ fun CalendarSelectBottomSheet(
     // 선택된 연, 월, 일 정보
     var currentLocalDate by remember { mutableStateOf(selectedDate) }
 
-    var selectedCalendarDate: CalendarDate by remember {
-        mutableStateOf(
-            CalendarDate(
-                dateInMilli = currentLocalDate.toEpochMilli(),
-                backgroundColour = Main4,
-                backgroundShape = RoundedCornerShape(10.dp),
-                textStyle = DateTextStyle.selected
-            )
-        )
-    }
-
     var viewType by remember { mutableStateOf(CALENDAR) }
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -69,12 +51,9 @@ fun CalendarSelectBottomSheet(
                     navigateMonth = { year: Int, month: Int ->
                         currentLocalDate = LocalDate.of(year, month, currentLocalDate.dayOfMonth)
                     },
-                    selectedDate = selectedCalendarDate,
+                    selectedDate = currentLocalDate,
                     updateSelectedDate = {
-                        selectedCalendarDate = it
-                        currentLocalDate =
-                            Instant.ofEpochMilli(it.dateInMilli).atZone(ZoneId.systemDefault())
-                                .toLocalDate()
+                        currentLocalDate = it
                     },
                     changeViewType = {
                         viewType = it
@@ -109,18 +88,20 @@ fun CalendarSelectBottomSheet(
 private fun CalendarTypeView(
     currentYear: Int,
     currentMonth: Int,
-    selectedDate: CalendarDate,
+    selectedDate: LocalDate,
     navigateMonth: (Int, Int) -> Unit,
-    updateSelectedDate: (CalendarDate) -> Unit,
+    updateSelectedDate: (LocalDate) -> Unit,
     changeViewType: (CalendarViewType) -> Unit
 ) {
-    CalendarView(year = currentYear, month = currentMonth, onDayPressed = { mill ->
-        updateSelectedDate(selectedDate.copy(dateInMilli = mill))
-    }, onNavigateMonthPressed = { month: Int, year: Int ->
-        navigateMonth(year, month)
-    }, selectedDates = listOf(selectedDate), changeViewType = {
-        changeViewType(PICKER)
-    })
+    CalendarView(year = currentYear, month = currentMonth,
+        onDayPressed = { localDate ->
+            updateSelectedDate(localDate)
+        }, onNavigateMonthPressed = { month: Int, year: Int ->
+            navigateMonth(year, month)
+        }, selectedDates = listOf(selectedDate),
+        changeViewType = {
+            changeViewType(PICKER)
+        })
 }
 
 @Composable

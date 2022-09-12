@@ -14,13 +14,14 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import java.time.LocalDate
 
 @Composable
 internal fun SingleDate(
     day: Int,
     modifier: Modifier = Modifier,
-    onDayPressed: ((Long) -> Unit)?,
-    dayInMilli: Long,
+    onDayPressed: ((LocalDate) -> Unit)?,
+    localDate: LocalDate,
     dateBackgroundColour: Color,
     dateTextStyle: TextStyle,
     dateBackgroundShape: Shape,
@@ -40,7 +41,7 @@ internal fun SingleDate(
 
     if (onDayPressed != null && isOutOfRange.not()) {
         dateModifier = dateModifier.clickable {
-            onDayPressed(dayInMilli)
+            onDayPressed(localDate)
         }
     }
 

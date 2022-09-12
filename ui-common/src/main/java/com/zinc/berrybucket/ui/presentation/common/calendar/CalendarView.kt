@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,9 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray1
-import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.calendar.daysofweek.DaysOfTheWeekRow
-import com.zinc.berrybucket.ui.presentation.common.calendar.model.CalendarDate
 import com.zinc.berrybucket.ui.presentation.common.calendar.month.MonthWithYearView
 import com.zinc.berrybucket.ui.presentation.common.calendar.week.WeekRows
 import com.zinc.berrybucket.ui_common.R
@@ -30,17 +27,14 @@ var lengthOfWeek: Int = 0
 fun CalendarView(
     year: Int = 0,
     month: Int = 0,
-    onDayPressed: ((Long) -> Unit)? = null,
+    onDayPressed: ((LocalDate) -> Unit)? = null,
     onNavigateMonthPressed: (Int, Int) -> Unit = { _, _ -> /*no op*/ },
     changeViewType: () -> Unit,
-    selectedDates: Collection<CalendarDate> = setOf(),
+    selectedDates: Collection<LocalDate> = setOf(),
     navigateMonthDrawableIds: Pair<Int, Int> = Pair(
         R.drawable.btn_28_left_circle, R.drawable.btn_28_right_circle
     ),
     dateCircleDiameter: Dp = 32.dp
-    // todo (fvalela - #2): allow user to adjust what start and end day is (weekly view, for example)
-    //    startDay: Int = 1,
-    //    endDay: Int = 100,
 ) {
     val startDay = 1
     val endDay = 31
@@ -50,7 +44,7 @@ fun CalendarView(
     val resolvedYear = if (month < 1 || year < 1) today.year else year
 
     val lengthOfCurrentMonth = LocalDate.of(resolvedYear, resolvedMonth, 1).lengthOfMonth()
-    val datePressed = remember { mutableStateOf(LocalDate.now().toEpochDay()) }
+    val datePressed = remember { mutableStateOf(LocalDate.now()) }
 
     val resolvedStartDate = resolveLocalDate(
         resolvedYear, resolvedMonth, maybeResolveDay(startDay, lengthOfCurrentMonth, false)
@@ -111,15 +105,12 @@ private fun maybeResolveDay(
 @Composable
 private fun DefaultPreview() {
 
-    val datePressed = remember { mutableStateOf(LocalDate.now().toEpochDay()) }
+    val datePressed = remember { mutableStateOf(LocalDate.now()) }
     CalendarView(
-        month = 3, year = 2022, selectedDates = listOf(
-            CalendarDate(
-                dateInMilli = LocalDate.now().toEpochDay(),
-                backgroundColour = Main4,
-                backgroundShape = RoundedCornerShape(10.dp)
-            )
-        ), onDayPressed = { newDayPressed ->
+        month = 3,
+        year = 2022,
+        selectedDates = listOf(LocalDate.now()),
+        onDayPressed = { newDayPressed ->
             // i.e. update viewModel
             datePressed.value = newDayPressed
         },
