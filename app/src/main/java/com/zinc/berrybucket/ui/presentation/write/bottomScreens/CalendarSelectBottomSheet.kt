@@ -165,17 +165,21 @@ private fun DatePickerView(
                 })
 
         // 연월일 picker
-        Row(modifier = Modifier
-            .constrainAs(picker) {
-                top.linkTo(divider.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(parent.bottom)
-                width = Dimension.fillToConstraints
-            }
-            .padding(top = 60.dp, bottom = 70.dp),
+        Row(
+            modifier = Modifier
+                .constrainAs(picker) {
+                    top.linkTo(divider.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                    width = Dimension.fillToConstraints
+                },
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 24.dp,
+                alignment = Alignment.CenterHorizontally
+            )
+        ) {
 
             NumberPicker(
                 label = { it },

@@ -46,7 +46,7 @@ fun NumberPicker(
     onValueChange: (Int) -> Unit,
     rangeList: List<Int>
 ) {
-    val verticalMargin = 8.dp
+    val verticalMargin = 16.dp
     val numbersColumnHeight = 80.dp
     val halfNumbersColumnHeight = numbersColumnHeight / 2
     val halfNumbersColumnHeightPx = with(LocalDensity.current) { halfNumbersColumnHeight.toPx() }
@@ -115,6 +115,7 @@ fun NumberPicker(
             )
             .padding(vertical = numbersColumnHeight / 3 + verticalMargin * 2),
         content = {
+
             Box(
                 modifier
                     .width(dividersWidth)
@@ -123,7 +124,7 @@ fun NumberPicker(
             )
             Box(
                 modifier = Modifier
-                    .padding(vertical = verticalMargin, horizontal = 20.dp)
+                    .padding(vertical = verticalMargin)
                     .offset { IntOffset(x = 0, y = coercedAnimatedOffset.roundToInt()) }
             ) {
                 val baseLabelModifier = Modifier.align(Alignment.Center)
@@ -138,7 +139,6 @@ fun NumberPicker(
                         modifier = baseLabelModifier
                             .offset(y = -halfNumbersColumnHeight)
                             .heightIn(min = 48.dp)
-                            .padding(bottom = 16.dp)
                     )
                 Label(
                     text = label(parseDateWithZero(rangeList.elementAt(indexOfElement))),
@@ -149,7 +149,6 @@ fun NumberPicker(
                     ),
                     modifier = baseLabelModifier
                         .heightIn(min = 48.dp)
-                        .padding(bottom = 16.dp)
                 )
                 if (indexOfElement < rangeList.count() - 1)
                     Label(
@@ -212,6 +211,7 @@ private fun Label(text: String, textStyle: TextStyle, modifier: Modifier) {
     Text(
         modifier = modifier
             .widthIn(min = 80.dp)
+            .heightIn(min = 48.dp)
             .pointerInput(Unit) {
                 detectTapGestures(onLongPress = {
                     // FIXME: Empty to disable text selection
