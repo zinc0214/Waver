@@ -32,8 +32,9 @@ import com.zinc.berrybucket.ui.presentation.write.DateViewModel
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.CALENDAR
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
+import java.time.Instant
 import java.time.LocalDate
-import java.util.*
+import java.time.ZoneId
 
 @Composable
 fun CalendarSelectBottomSheet(
@@ -41,16 +42,14 @@ fun CalendarSelectBottomSheet(
 ) {
 
     val viewModel: DateViewModel = hiltViewModel()
-    val selectedLocalDate by viewModel.selectedLocalDate.observeAsState(selectedDate)
 
-    viewModel.updateSelectedLocalDate(
-        selectedDate.year, selectedDate.monthValue, selectedDate.dayOfMonth
-    )
+    // 선택된 연, 월, 일 정보
+    var currentLocalDate by remember { mutableStateOf(selectedDate) }
 
-    var updatedDate: CalendarDate by remember {
+    var selectedCalendarDate: CalendarDate by remember {
         mutableStateOf(
             CalendarDate(
-                dateInMilli = selectedLocalDate.toEpochDay(),
+                dateInMilli = currentLocalDate.toEpochDay(),
                 backgroundColour = Main4,
                 backgroundShape = RoundedCornerShape(10.dp),
                 textStyle = DateTextStyle.selected
@@ -63,31 +62,31 @@ fun CalendarSelectBottomSheet(
     Column(modifier = Modifier.fillMaxWidth()) {
         when (viewType) {
             CALENDAR -> {
-                CalendarTypeView(currentYear = selectedLocalDate.year,
-                    currentMonth = selectedLocalDate.monthValue,
+                CalendarTypeView(currentYear = currentLocalDate.year,
+                    currentMonth = currentLocalDate.monthValue,
                     navigateMonth = { year: Int, month: Int ->
-                        viewModel.updateYearAndMonth(year, month)
-                        viewModel.updateSelectedLocalDate(year, month, selectedLocalDate.dayOfMonth)
+                        currentLocalDate = LocalDate.of(year, month, currentLocalDate.dayOfMonth)
                     },
-                    selectedDate = updatedDate,
+                    selectedDate = selectedCalendarDate,
                     updateSelectedDate = {
-                        updatedDate = it
-                        viewModel.updateSelectedLocalDate(it.dateInMilli)
+                        selectedCalendarDate = it
+                        currentLocalDate =
+                            Instant.ofEpochMilli(it.dateInMilli).atZone(ZoneId.systemDefault())
+                                .toLocalDate()
                     },
                     changeViewType = {
                         viewType = it
                     })
             }
             PICKER -> {
-                val calendar = Calendar.getInstance()
                 DatePickerView(
-                    selectedDate = selectedLocalDate,
+                    currentDate = currentLocalDate,
                     viewModel = viewModel,
                     changeViewType = {
                         viewType = it
                     },
                     updateDated = { year: Int, month: Int, date: Int ->
-                        viewModel.updateSelectedLocalDate(year, month, date)
+                        currentLocalDate = LocalDate.of(year, month, date)
                     },
                 )
             }
@@ -97,7 +96,7 @@ fun CalendarSelectBottomSheet(
             when (it) {
                 BottomButtonClickEvent.LeftButtonClicked -> canceled()
                 BottomButtonClickEvent.RightButtonClicked -> {
-                    confirmed(selectedLocalDate)
+                    confirmed(currentLocalDate)
                 }
             }
         }, rightText = R.string.confirm)
@@ -124,7 +123,7 @@ private fun CalendarTypeView(
 
 @Composable
 private fun DatePickerView(
-    selectedDate: LocalDate,
+    currentDate: LocalDate,
     viewModel: DateViewModel,
     updateDated: (Int, Int, Int) -> Unit,
     changeViewType: (CalendarViewType) -> Unit
@@ -140,13 +139,14 @@ private fun DatePickerView(
         val today = LocalDate.now()
         val (textView, divider, picker) = createRefs()
 
-        var year by remember { mutableStateOf(selectedDate.year) }
-        var month by remember { mutableStateOf(selectedDate.monthValue) }
-        var date by remember { mutableStateOf(selectedDate.dayOfMonth) }
+        var year by remember { mutableStateOf(currentDate.year) }
+        var month by remember { mutableStateOf(currentDate.monthValue) }
+        var date by remember { mutableStateOf(currentDate.dayOfMonth) }
 
         val maxValidDate by viewModel.validDateRange.observeAsState()
 
-        Text(text = stringResource(id = com.zinc.berrybucket.R.string.optionCalendarSelect),
+        Text(
+            text = stringResource(id = com.zinc.berrybucket.R.string.optionCalendarSelect),
             fontSize = dpToSp(dp = 18.dp),
             color = Gray10,
             fontWeight = FontWeight.Bold,
@@ -171,6 +171,7 @@ private fun DatePickerView(
                     width = Dimension.fillToConstraints
                 })
 
+        // 연월일 picker
         Row(modifier = Modifier
             .constrainAs(picker) {
                 top.linkTo(divider.bottom)
@@ -183,25 +184,37 @@ private fun DatePickerView(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(24.dp)) {
 
-            NumberPicker(label = { it }, value = year, onValueChange = { value ->
-                year = value
-                updateDated(year, month, date)
-                viewModel.updateYearAndMonth(year, month)
-            }, rangeList = (today.year - 100..today.year + 100).toList()
+            NumberPicker(
+                label = { it },
+                value = year,
+                onValueChange = { value ->
+                    year = value
+                    updateDated(year, month, date)
+                    viewModel.updateYearAndMonth(year, month)
+                },
+                rangeList = (today.year - 100..today.year + 100).toList()
             )
 
-            NumberPicker(label = { it }, value = month, onValueChange = { value ->
-                month = value
-                updateDated(year, month, date)
-                viewModel.updateYearAndMonth(year, month)
-            }, rangeList = (1..12).toList()
+            NumberPicker(
+                label = { it },
+                value = month,
+                onValueChange = { value ->
+                    month = value
+                    updateDated(year, month, date)
+                    viewModel.updateYearAndMonth(year, month)
+                },
+                rangeList = (1..12).toList()
             )
 
-            NumberPicker(label = { it }, value = date, onValueChange = { value ->
-                date = value
-                updateDated(year, month, date)
-                viewModel.updateYearAndMonth(year, month)
-            }, rangeList = (1..(if (maxValidDate != null) maxValidDate else 30)!!).toList()
+            NumberPicker(
+                label = { it },
+                value = date,
+                onValueChange = { value ->
+                    date = value
+                    updateDated(year, month, date)
+                    viewModel.updateYearAndMonth(year, month)
+                },
+                rangeList = (1..(if (maxValidDate != null) maxValidDate else 30)!!).toList()
             )
         }
     }
