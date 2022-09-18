@@ -6,14 +6,14 @@ import java.util.*
 
 fun LocalDate.parseWithDday(): String {
     val year = this.year
-    val month = parseDateWithZero(this.month.value)
-    val date = this.dayOfMonth
+    val month = parseNumberWithZero(this.month.value)
+    val date = parseNumberWithZero(this.dayOfMonth)
 
     return "${year}.${month}.${date}(${this.getDday()})"
 }
 
-fun parseDateWithZero(month: Int): String {
-    return if (month > 9) "$month" else "0${month}"
+fun parseNumberWithZero(value: Int): String {
+    return if (value > 9) "$value" else "0${value}"
 }
 
 private fun LocalDate.getDday(): String {
