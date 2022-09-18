@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.ModalBottomSheetValue.Hidden
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -50,9 +50,10 @@ fun WriteScreen1(
     val currentClickedOptions = remember { mutableSetOf<WriteOptionsType1>() }
     val nextButtonClickable = remember { mutableStateOf(false) }
 
+    // BottomSheet 관련
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
+        initialValue = Hidden, skipHalfExpanded = true
     )
     val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
         coroutineScope.launch {
@@ -60,6 +61,18 @@ fun WriteScreen1(
                 bottomSheetScaffoldState.show()
             } else {
                 bottomSheetScaffoldState.hide()
+            }
+        }
+    }
+
+    LaunchedEffect(bottomSheetScaffoldState.currentValue) {
+        when (bottomSheetScaffoldState.currentValue) {
+            Hidden -> {
+                selectedOptionType = null
+                isNeedToBottomSheetOpen(false)
+            }
+            else -> {
+                // Do Nothing
             }
         }
     }
@@ -102,6 +115,9 @@ fun WriteScreen1(
         if (selectedOptionType == null) {
             goToBack()
         } else {
+            coroutineScope.launch {
+                isNeedToBottomSheetOpen.invoke(false)
+            }
             selectedOptionType = null
         }
     }
