@@ -47,7 +47,7 @@ fun NumberPicker(
     rangeList: List<Int>
 ) {
     val verticalMargin = 16.dp
-    val numbersColumnHeight = 80.dp
+    val numbersColumnHeight = 120.dp
     val halfNumbersColumnHeight = numbersColumnHeight / 2
     val halfNumbersColumnHeightPx = with(LocalDensity.current) { halfNumbersColumnHeight.toPx() }
 
@@ -211,7 +211,7 @@ private fun Label(text: String, textStyle: TextStyle, modifier: Modifier) {
     Text(
         modifier = modifier
             .widthIn(min = 80.dp)
-            .heightIn(min = 48.dp)
+            .heightIn(min = 60.dp)
             .pointerInput(Unit) {
                 detectTapGestures(onLongPress = {
                     // FIXME: Empty to disable text selection
