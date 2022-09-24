@@ -15,17 +15,18 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.accessToken.observe(this) {
-            if (it.isNullOrEmpty()) {
-                viewModel.joinBerryBucket()
-            } else {
-                startActivity(Intent(this, HomeActivity::class.java))
-                finish()
-            }
-        }
+        viewModel.joinBerryBucket()
 
         viewModel.joinResponse.observe(this) {
-            viewModel.loadToken()
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
         }
+
+        // TODO : api 실패 팝업 노출
+        viewModel.failJoin.observe(this) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            finish()
+        }
+
     }
 }

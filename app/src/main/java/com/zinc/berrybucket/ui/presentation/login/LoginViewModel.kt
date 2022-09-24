@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.ui.presentation.CommonViewModel
-import com.zinc.common.models.JoinResponse
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.lgin.JoinBerryBucket
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,20 +17,31 @@ class LoginViewModel @Inject constructor(
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
-    private val _joinResponse = MutableLiveData<JoinResponse>()
-    val joinResponse: LiveData<JoinResponse> get() = _joinResponse
+    private val _joinResponse = MutableLiveData<String>()
+    val joinResponse: LiveData<String> get() = _joinResponse
+
+    // TODO : go to Nothing & SingleLiveEvent
+    private val _failJoin = MutableLiveData<Boolean>()
+    val failJoin: LiveData<Boolean> get() = _failJoin
 
     fun joinBerryBucket() {
-        viewModelScope.launch {
-            runCatching {
-                joinBerryBucket.invoke("zinc1@gmail.com").apply {
-                    _joinResponse.value = this
-                    loginPreferenceDataStoreModule.setAccessToken(this.accessToken)
-                    loginPreferenceDataStoreModule.setRefreshToken(this.refreshToken)
+        if (accessToken.value.isNullOrEmpty()) {
+            viewModelScope.launch {
+                runCatching {
+                    // TODO : 구글로그인 붙이기
+                    val res = joinBerryBucket.invoke("zinc1@gmail.com")
+
+                    _joinResponse.value = res.accessToken
+                    loginPreferenceDataStoreModule.setAccessToken(res.accessToken)
+                    loginPreferenceDataStoreModule.setRefreshToken(res.refreshToken)
+
+                }.getOrElse {
+                    Log.e("ayhan", "Fail : $it")
+                    _failJoin.value = true
                 }
-            }.getOrElse {
-                Log.e("ayhan", "Fail : $it")
             }
+        } else {
+            _failJoin.value = true
         }
     }
 }
