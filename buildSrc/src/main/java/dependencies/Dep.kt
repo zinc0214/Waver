@@ -114,6 +114,11 @@ object Dep {
         const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$version"
     }
 
+    object Gson {
+        const val google = "com.google.code.gson:gson:2.9.0"
+        const val squareup = "com.squareup.retrofit2:converter-gson:2.3.0"
+    }
+
     object Retrofit {
         private const val version = "2.9.0"
         const val core = "com.squareup.retrofit2:retrofit:$version"

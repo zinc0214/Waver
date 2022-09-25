@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.my.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,17 +13,17 @@ import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.Category
 import com.zinc.common.models.DdayBucketList
 import com.zinc.domain.models.TopProfile
-import com.zinc.domain.usecases.my.*
+import com.zinc.domain.usecases.my.LoadAllBucketList
+import com.zinc.domain.usecases.my.LoadCategoryList
+import com.zinc.domain.usecases.my.LoadDdayBucketList
+import com.zinc.domain.usecases.my.LoadProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
-    private val loadProfileState: LoadProfileState,
     private val loadAllBucketList: LoadAllBucketList,
     private val loadCategoryList: LoadCategoryList,
     private val loadDdayBucketList: LoadDdayBucketList
@@ -44,37 +45,30 @@ class MyViewModel @Inject constructor(
     val ddayBucketList: LiveData<DdayBucketList> = _ddayBucketList
 
 
-    fun loadProfile1() {
-        val profileInfoFlow = flowOf(loadProfileInfo)
-        val profileStateFlow = flowOf(loadProfileState)
+    fun loadProfile() {
         viewModelScope.launch {
-            profileInfoFlow.zip(profileStateFlow) { info, state ->
-                val profileInfo = info.invoke()
-                val stateInfo = state.invoke()
-                val topProfile = TopProfile(
-//                    nickName = profileInfo.nickName,
-//                    profileImg = profileInfo.profileImg,
-//                    badgeType = profileInfo.badgeType,
-//                    titlePosition = profileInfo.titlePosition,
-//                    bio = profileInfo.bio,
-//                    followingCount = stateInfo.followingCount,
-//                    followerCount = stateInfo.followerCount
+            runCatching {
+                val profileInfo = loadProfileInfo.invoke()
 
-                    nickName = "HANA",
-                    profileImg = "ddd",
-                    percent = 0.8f,
-                    badgeType = BadgeType.TRIP1,
-                    titlePosition = "안녕 반가우이",
-                    bio = "나는 ESFP 한아라고 불러줘?",
-                    followingCount = "20",
-                    followerCount = "10"
+                val topProfile = TopProfile(
+                    nickName = profileInfo.nickName,
+                    profileImg = profileInfo.profileImg,
+                    badgeType = profileInfo.badgeType,
+                    titlePosition = profileInfo.badgeTitle,
+                    bio = profileInfo.bio,
+                    followingCount = profileInfo.followingCount,
+                    followerCount = profileInfo.followerCount,
+                    percent = profileInfo.bucketInfo.grade()
                 )
                 _profileInfo.value = topProfile
+            }.getOrElse {
+                Log.e("ayhan", "Fail Load Profile : $it")
+                loadDummyProfile()
             }
         }
     }
 
-    fun loadProfile() {
+    private fun loadDummyProfile() {
         val topProfile = TopProfile(
             nickName = "HANA",
             profileImg = "ddd",

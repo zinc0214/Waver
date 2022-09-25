@@ -1,6 +1,18 @@
 package com.zinc.data.api
 
-import com.zinc.common.models.*
+import com.zinc.common.models.AllBucketList
+import com.zinc.common.models.Category
+import com.zinc.common.models.DdayBucketList
+import com.zinc.common.models.DetailInfo
+import com.zinc.common.models.FeedInfo
+import com.zinc.common.models.FeedKeyWord
+import com.zinc.common.models.JoinRequest
+import com.zinc.common.models.JoinResponse
+import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.MyState
+import com.zinc.common.models.RecommendList
+import com.zinc.common.models.ReportItems
+import com.zinc.common.models.SearchRecommendCategory
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -11,7 +23,7 @@ interface BerryBucketApi {
     @POST("/user/join")
     suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
-    @GET("/profile_info")
+    @GET("/my")
     suspend fun loadMyProfileInfo(): MyProfileInfo
 
     @GET("/bucketList")

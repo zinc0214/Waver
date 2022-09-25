@@ -33,4 +33,8 @@ dependencies {
     androidTestImplementation(Dep.Test.androidJunit)
     androidTestImplementation(Dep.Test.espressoCore)
 
+    // Gson
+    implementation(Dep.Gson.google)
+    implementation(Dep.Gson.squareup)
+
 }

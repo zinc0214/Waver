@@ -6,7 +6,6 @@ import javax.inject.Inject
 class LoadProfileInfo @Inject constructor(
     private val myRepository: MyRepository
 ) {
-    suspend operator fun invoke() {
+    suspend operator fun invoke() =
         myRepository.loadMyProfileInfo()
-    }
 }

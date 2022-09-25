@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 runCatching {
                     // TODO : 구글로그인 붙이기
-                    val res = joinBerryBucket.invoke("zinc1@gmail.com")
+                    val res = joinBerryBucket.invoke("zinc0@gmail.com")
 
                     _joinResponse.value = res.accessToken
                     loginPreferenceDataStoreModule.setAccessToken(res.accessToken)
