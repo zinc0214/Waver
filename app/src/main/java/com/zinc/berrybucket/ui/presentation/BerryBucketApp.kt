@@ -5,8 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
@@ -16,9 +26,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
@@ -32,13 +42,11 @@ import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailLayer
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.home.addHomeGraph
-import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
-import com.zinc.berrybucket.ui.presentation.my.MyBottomSheetScreen
-import com.zinc.berrybucket.ui.presentation.my.SearchBottomView
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
+import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.launch
@@ -68,7 +76,7 @@ fun BerryBucketApp(
             sheetState = bottomSheetScaffoldState,
             sheetContent = {
                 Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
-                    MyBottomSheetScreen(
+                    com.zinc.berrybucket.ui_my.MyBottomSheetScreen(
                         currentScreen = currentBottomSheet,
                         isNeedToBottomSheetOpen = {
                             isNeedToBottomSheetOpen.invoke(it)
@@ -76,7 +84,7 @@ fun BerryBucketApp(
                 }
 
             },
-            sheetShape = if (currentBottomSheet is BottomSheetScreenType.FilterScreen) RoundedCornerShape(
+            sheetShape = if (currentBottomSheet is com.zinc.berrybucket.ui_my.BottomSheetScreenType.FilterScreen) RoundedCornerShape(
                 topEnd = 16.dp, topStart = 16.dp
             ) else RoundedCornerShape(0.dp)
         ) {
@@ -124,7 +132,7 @@ fun BerryBucketApp(
                                 }
                             }
                         }, bottomSheetClicked = { event, nav ->
-                            if (event is BottomSheetScreenType.SearchScreen) {
+                            if (event is com.zinc.berrybucket.ui_my.BottomSheetScreenType.SearchScreen) {
                                 appState.navigateToMySearch(event.selectTab, nav)
                             } else {
                                 currentBottomSheet = event
@@ -186,10 +194,6 @@ object WriteDestinations {
     const val WRITE_INFO = "write_info"
 }
 
-sealed class BucketSelected {
-    data class GoToDetailBucket(val bucketInfo: UIBucketInfoSimple) : BucketSelected()
-}
-
 sealed class SearchEvent {
     object GoToSearch : SearchEvent()
 }
@@ -244,7 +248,7 @@ private fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
         composable(MY_SEARCH) { entry ->
             val arguments = requireNotNull(entry.arguments)
             val selectedTab = arguments.getRequiredSerializableExtra<MyTabType>(MY_SEARCH)
-            SearchBottomView(
+            com.zinc.berrybucket.ui_my.SearchBottomView(
                 tab = selectedTab,
                 isNeedToBottomSheetOpen = {
                     backPress()

@@ -2,7 +2,12 @@ package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,7 +29,11 @@ import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.rememberScrollContext
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
-import com.zinc.berrybucket.ui.presentation.detail.component.*
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
+import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 
 @Composable
 fun CloseDetailLayer(
@@ -141,7 +150,7 @@ private fun ContentView(
                         start = 28.dp,
                         end = 28.dp
                     ),
-                    memo = detailInfo.memoInfo.memo
+                    memo = it.memo
                 )
             }
         }

@@ -19,14 +19,14 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.presentation.BucketSelected
+import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.ui.presentation.SearchEvent
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.feed.Feed
-import com.zinc.berrybucket.ui.presentation.my.BottomSheetScreenType
-import com.zinc.berrybucket.ui.presentation.my.MyScreen
 import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
+import com.zinc.berrybucket.ui_my.BottomSheetScreenType
+import com.zinc.berrybucket.ui_my.MyScreen
 
 fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,

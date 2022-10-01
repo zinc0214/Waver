@@ -2,7 +2,12 @@ package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -20,7 +25,13 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.CommentLongClicked
+import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.DetailAppBarClickEvent
+import com.zinc.berrybucket.model.DetailClickEvent
+import com.zinc.berrybucket.model.DetailInfo
+import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.util.Keyboard
@@ -30,7 +41,18 @@ import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
-import com.zinc.berrybucket.ui.presentation.detail.component.*
+import com.zinc.berrybucket.ui.presentation.detail.component.CommentCountView
+import com.zinc.berrybucket.ui.presentation.detail.component.CommentLine
+import com.zinc.berrybucket.ui.presentation.detail.component.CommentOptionClicked
+import com.zinc.berrybucket.ui.presentation.detail.component.CommentSelectedDialog
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailCommentView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailCommenterTagDropDownView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
+import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
+import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
+import com.zinc.berrybucket.ui.presentation.detail.component.TaggableEditText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
@@ -283,7 +305,7 @@ private fun ContentView(
                 DetailMemoView(
                     modifier = Modifier.padding(
                         top = 24.dp, start = 28.dp, end = 28.dp
-                    ), memo = detailInfo.memoInfo.memo
+                    ), memo = detailInfo.memoInfo!!.memo
                 )
             } else {
                 Spacer(modifier = Modifier.height(56.dp))
@@ -325,7 +347,7 @@ private fun ContentView(
                 CommentCountView(it.commentCount)
             }
             item(key = "commentLayer") {
-                DetailCommentView(commentInfo = detailInfo.commentInfo, commentLongClicked = {
+                DetailCommentView(commentInfo = it, commentLongClicked = {
                     clickEvent.invoke(CommentLongClicked(it))
                 })
             }

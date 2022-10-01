@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- My > TabTitle -->
+    <string name="allTab">전체</string>
+    <string name="categoryTab">카테고리</string>
+    <string name="ddayTab">디데이</string>
+    <string name="challengeTab">챌린지</string>
+</resources>
