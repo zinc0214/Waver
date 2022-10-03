@@ -3,6 +3,8 @@ plugins {
     kotlin("android")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -18,15 +20,18 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.compilerVersion
     }
-
     buildFeatures {
         compose = true
+    }
+    kapt {
+        correctErrorTypes = true
     }
 }
 
 dependencies {
 
     implementation(project(":common"))
+    implementation(project(":datastore"))
 
     // compose
     implementation(Dep.AndroidX.Compose.ui)
@@ -41,5 +46,10 @@ dependencies {
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.indicator)
     implementation(Dep.AndroidX.Compose.flowlayout)
+
+    // Hilt
+    implementation(Dep.Dagger.Hilt.android)
+    implementation(Dep.Dagger.Hilt.navigation)
+    kapt(Dep.Dagger.Hilt.compiler)
 
 }

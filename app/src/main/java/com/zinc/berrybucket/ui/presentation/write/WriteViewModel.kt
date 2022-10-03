@@ -2,8 +2,8 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.WriteFriend
-import com.zinc.berrybucket.ui.presentation.CommonViewModel
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

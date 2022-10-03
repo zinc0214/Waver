@@ -3,8 +3,8 @@ package com.zinc.berrybucket.ui_my.viewModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
@@ -12,6 +12,7 @@ import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.Category
 import com.zinc.common.models.DdayBucketList
+import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadCategoryList
@@ -26,8 +27,9 @@ class MyViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
     private val loadAllBucketList: LoadAllBucketList,
     private val loadCategoryList: LoadCategoryList,
-    private val loadDdayBucketList: LoadDdayBucketList
-) : ViewModel() {
+    private val loadDdayBucketList: LoadDdayBucketList,
+    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val _profileInfo = MutableLiveData<TopProfile>()
     val profileInfo: LiveData<TopProfile> get() = _profileInfo
@@ -48,19 +50,22 @@ class MyViewModel @Inject constructor(
     fun loadProfile() {
         viewModelScope.launch {
             runCatching {
-                val profileInfo = loadProfileInfo.invoke()
+                accessToken.value?.let { token ->
+                    Log.e("ayhan", "tokgen : $token")
+                    val profileInfo = loadProfileInfo.invoke(token)
 
-                val topProfile = TopProfile(
-                    nickName = profileInfo.nickName,
-                    profileImg = profileInfo.profileImg,
-                    badgeType = profileInfo.badgeType,
-                    titlePosition = profileInfo.badgeTitle,
-                    bio = profileInfo.bio,
-                    followingCount = profileInfo.followingCount,
-                    followerCount = profileInfo.followerCount,
-                    percent = profileInfo.bucketInfo.grade()
-                )
-                _profileInfo.value = topProfile
+                    val topProfile = TopProfile(
+                        nickName = profileInfo.nickName,
+                        profileImg = profileInfo.profileImg,
+                        badgeType = profileInfo.badgeType,
+                        titlePosition = profileInfo.badgeTitle,
+                        bio = profileInfo.bio,
+                        followingCount = profileInfo.followingCount,
+                        followerCount = profileInfo.followerCount,
+                        percent = profileInfo.bucketInfo.grade()
+                    )
+                    _profileInfo.value = topProfile
+                }
             }.getOrElse {
                 Log.e("ayhan", "Fail Load Profile : $it")
                 loadDummyProfile()

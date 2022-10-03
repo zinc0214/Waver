@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.ui.presentation.CommonViewModel
+import com.zinc.berrybucket.CommonViewModel
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.lgin.JoinBerryBucket
 import dagger.hilt.android.lifecycle.HiltViewModel

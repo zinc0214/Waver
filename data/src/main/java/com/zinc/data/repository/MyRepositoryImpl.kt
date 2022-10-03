@@ -1,6 +1,11 @@
 package com.zinc.data.repository
 
-import com.zinc.common.models.*
+import com.zinc.common.models.AllBucketList
+import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.Category
+import com.zinc.common.models.DdayBucketList
+import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.MyState
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.MyRepository
 import javax.inject.Inject
@@ -8,8 +13,8 @@ import javax.inject.Inject
 internal class MyRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MyRepository {
-    override suspend fun loadMyProfileInfo(): MyProfileInfo {
-        return berryBucketApi.loadMyProfileInfo()
+    override suspend fun loadMyProfileInfo(token: String): MyProfileInfo {
+        return berryBucketApi.loadMyProfileInfo(token)
     }
 
     override suspend fun loadMyDdayBucketList(): DdayBucketList {

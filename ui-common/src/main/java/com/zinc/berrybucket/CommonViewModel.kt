@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation
+package com.zinc.berrybucket
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

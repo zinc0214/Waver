@@ -15,6 +15,7 @@ import com.zinc.common.models.ReportItems
 import com.zinc.common.models.SearchRecommendCategory
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface BerryBucketApi {
@@ -24,7 +25,7 @@ interface BerryBucketApi {
     suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
     @GET("/my")
-    suspend fun loadMyProfileInfo(): MyProfileInfo
+    suspend fun loadMyProfileInfo(@Header("X-Auth-Token") token: String): MyProfileInfo
 
     @GET("/bucketList")
     suspend fun loadMyDdayBucketList(): DdayBucketList
