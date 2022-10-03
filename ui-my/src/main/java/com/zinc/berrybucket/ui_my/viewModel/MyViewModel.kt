@@ -51,12 +51,14 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 accessToken.value?.let { token ->
-                    Log.e("ayhan", "tokgen : $token")
+                    Log.e("ayhan", "token : $token")
+
                     val profileInfo = loadProfileInfo.invoke(token)
+                    Log.e("ayhan", "profileInfo : $profileInfo")
 
                     val topProfile = TopProfile(
-                        nickName = profileInfo.nickName,
-                        profileImg = profileInfo.profileImg,
+                        nickName = profileInfo.name,
+                        profileImg = profileInfo.imgUrl,
                         badgeType = profileInfo.badgeType,
                         titlePosition = profileInfo.badgeTitle,
                         bio = profileInfo.bio,

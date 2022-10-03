@@ -25,7 +25,7 @@ interface BerryBucketApi {
     suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
     @GET("/my")
-    suspend fun loadMyProfileInfo(@Header("X-Auth-Token") token: String): MyProfileInfo
+    suspend fun loadMyProfileInfo(@Header("Authorization") token: String): MyProfileInfo
 
     @GET("/bucketList")
     suspend fun loadMyDdayBucketList(): DdayBucketList

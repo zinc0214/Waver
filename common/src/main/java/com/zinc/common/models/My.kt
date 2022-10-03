@@ -1,12 +1,11 @@
 package com.zinc.common.models
 
-import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class MyProfileInfo(
-    @SerializedName("name") val nickName: String, // 프로필네임
-    @SerializedName("imgUrl") val profileImg: String, // 프로필이미지
+    val name: String, // 프로필네임
+    val imgUrl: String, // 프로필이미지
     val badgeType: BadgeType,
     val badgeTitle: String,
     val bio: String,

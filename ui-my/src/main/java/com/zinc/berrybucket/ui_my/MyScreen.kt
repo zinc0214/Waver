@@ -60,10 +60,8 @@ fun MyScreen(
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
 
-
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState()
-
 
     profileInfo?.let { profile ->
         AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->

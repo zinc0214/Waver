@@ -102,7 +102,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             ProfileCircularProgressBar(
                 percentage = profileInfo.percent,
-                profileImageUrl = profileInfo.profileImg
+                profileImageUrl = profileInfo.profileImg ?: ""
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -110,7 +110,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            text = profileInfo.titlePosition,
+            text = profileInfo.titlePosition ?: "",
             fontSize = dpToSp(15.dp),
             color = Main3,
             textAlign = TextAlign.Center
@@ -131,7 +131,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            text = profileInfo.bio,
+            text = profileInfo.bio ?: "",
             fontWeight = FontWeight.Bold,
             fontSize = dpToSp(14.dp),
             color = Gray7,

@@ -60,4 +60,7 @@ dependencies {
     implementation(Dep.Dagger.Hilt.android)
     implementation(Dep.Dagger.Hilt.navigation)
     kapt(Dep.Dagger.Hilt.compiler)
+
+    // Coil
+    implementation(Dep.coil)
 }

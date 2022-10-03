@@ -127,7 +127,7 @@ object Dep {
         const val converter = "com.squareup.retrofit2:converter-gson:$version"
     }
 
-    const val coil = "io.coil-kt:coil-compose:2.1.0"
+    const val coil = "io.coil-kt:coil-compose:2.2.2"
     const val cropper = "com.theartofdev.edmodo:android-image-cropper:2.8.0"
 
     object Test {
