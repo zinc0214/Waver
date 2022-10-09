@@ -10,7 +10,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
-import com.zinc.common.models.Category
+import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
@@ -40,8 +40,8 @@ class MyViewModel @Inject constructor(
     private val _allBucketItem = MutableLiveData<AllBucketList>()
     val allBucketItem: LiveData<AllBucketList> get() = _allBucketItem
 
-    private val _categoryItems = MutableLiveData<List<Category>>()
-    val categoryItems: LiveData<List<Category>> get() = _categoryItems
+    private val _categoryInfoItems = MutableLiveData<List<CategoryInfo>>()
+    val categoryInfoItems: LiveData<List<CategoryInfo>> get() = _categoryInfoItems
 
     private val _ddayBucketList = MutableLiveData<DdayBucketList>()
     val ddayBucketList: LiveData<DdayBucketList> = _ddayBucketList
@@ -110,7 +110,7 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             kotlin.runCatching {
                 loadCategoryList.invoke().apply {
-                    _categoryItems.value = this
+                    _categoryInfoItems.value = this
                 }
             }
         }
@@ -154,7 +154,7 @@ class MyViewModel @Inject constructor(
     private fun searchCategoryItems(searchWord: String) {
         _searchBucketResult.value = Pair(
             MyTabType.CATEGORY,
-            searchCategory
+            searchCategoryInfos
         )
     }
 
@@ -206,28 +206,28 @@ class MyViewModel @Inject constructor(
         )
     )
 
-    private val searchCategory = listOf(
-        Category(
+    private val searchCategoryInfos = listOf(
+        CategoryInfo(
             id = 1,
             name = "여행",
             bucketlistCount = "20"
         ),
-        Category(
+        CategoryInfo(
             id = 1,
             name = "아주아주 맛있는 것을 먹으러 다니는 거야 냠냠쩝쩝 하면서 룰루리랄라 크크루삥봉",
             bucketlistCount = "10"
         ),
-        Category(
+        CategoryInfo(
             id = 1,
             name = "제주도여행을 갈거야",
             bucketlistCount = "3"
         ),
-        Category(
+        CategoryInfo(
             id = 1,
             name = "제주도여행을 갈거야",
             bucketlistCount = "5"
         ),
-        Category(
+        CategoryInfo(
             id = 1,
             name = "검색한 갈거야",
             bucketlistCount = "35"

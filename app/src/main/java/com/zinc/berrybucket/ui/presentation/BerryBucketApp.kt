@@ -297,7 +297,7 @@ private fun NavGraphBuilder.writeNavGraph1(
             goToNext = { info ->
                 goToNextWrite(it, info)
             },
-            writeInfo1 = writeInfo1
+            originWriteInfo1 = writeInfo1
         )
     }
 }

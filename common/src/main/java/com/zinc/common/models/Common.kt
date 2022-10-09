@@ -29,7 +29,7 @@ data class BucketInfoSimple(
 )
 
 @Serializable
-data class Category(
+data class CategoryInfo(
     val id: Int,
     val name: String,
     val defaultYn: YesOrNo = YesOrNo.Y,

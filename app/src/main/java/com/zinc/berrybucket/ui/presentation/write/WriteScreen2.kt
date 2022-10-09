@@ -3,18 +3,37 @@ package com.zinc.berrybucket.ui.presentation.write
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.WriteAddOption
+import com.zinc.berrybucket.model.WriteFriend
+import com.zinc.berrybucket.model.WriteImageInfo
+import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.model.WriteKeyWord
+import com.zinc.berrybucket.model.WriteOption
+import com.zinc.berrybucket.model.WriteOption1Info
+import com.zinc.berrybucket.model.WriteOptionsType1
+import com.zinc.berrybucket.model.WriteOptionsType2
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
@@ -28,7 +47,7 @@ fun WriteScreen2(
     modifier: Modifier = Modifier,
     writeInfo1: WriteInfo1,
     goToBack: (WriteInfo1) -> Unit,
-    goToAddBucket: (WriteResultInfo) -> Unit
+    goToAddBucket: () -> Unit
 ) {
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
@@ -82,6 +101,7 @@ fun WriteScreen2(
                     }
                 )
             }
+
             WriteOptionsType2.FRIENDS -> {
                 WriteSelectFriendsScreen(
                     closeClicked = { optionScreenShow = null },
@@ -118,6 +138,7 @@ private fun WriteScreen2ContentView(
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
+        val viewModel: WriteViewModel = hiltViewModel()
 
         WriteAppBar(
             modifier = Modifier
@@ -129,19 +150,33 @@ private fun WriteScreen2ContentView(
                 },
             nextButtonClickable = true,
             rightText = R.string.writeGoToFinish,
-            clickEvent = {
+            clickEvent = { it ->
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
                         val newImage = mutableListOf<WriteImageInfo>()
-                        writeInfo1.images.forEach { info ->
-                            val image = info.copy(key = info.intKey() + writeInfo1.images.size)
-                            newImage.add(image)
+                        writeInfo1.getImages()?.let { infos ->
+                            infos.forEach { info ->
+                                val image = info.copy(key = info.intKey() + infos.size)
+                                newImage.add(image)
+                            }
                         }
-                        val newInfo = writeInfo1.copy(images = newImage)
-                        goToBack(newInfo)
+                        val option =
+                            writeInfo1.options.find { option -> option.type == WriteOptionsType1.IMAGE }
+                        val optionUpdate = writeInfo1.options.toMutableList()
+                        optionUpdate.remove(option)
+                        optionUpdate.add(
+                            WriteOption(
+                                type = WriteOptionsType1.IMAGE,
+                                title = "이미지",
+                                info = WriteOption1Info.Images(newImage)
+                            )
+                        )
+                        goToBack(writeInfo1.copy(options = optionUpdate))
                         // TODO : 이미지
                     }
+
                     WriteAppBarClickEvent.NextClicked -> {
+                        viewModel.addNewBucketList()
                         // goToAddBucket(WriteResultInfo())
                     }
                 }
@@ -166,13 +201,16 @@ private fun WriteScreen2ContentView(
         ) {
             item {
                 WriteTitleView(
-                    modifier = Modifier.padding(bottom = if (writeInfo1.images.isEmpty()) 150.dp else 32.dp),
+                    modifier = Modifier.padding(
+                        bottom = if (writeInfo1.getImages().isNullOrEmpty()) 150.dp else 32.dp
+                    ),
                     title = writeInfo1.title
                 )
             }
 
             item {
-                gridItems(data = writeInfo1.images,
+                gridItems(
+                    data = writeInfo1.getImages(),
                     maxRow = 3,
                     modifier = Modifier
                         .padding(horizontal = 28.dp)

@@ -17,6 +17,10 @@ class WriteViewModel @Inject constructor(
     val searchFriendsResult: LiveData<List<WriteFriend>> get() = _searchFriendsResult
 
 
+    fun addNewBucketList() {
+
+    }
+
     fun clearFriendsData() {
         _searchFriendsResult.value = emptyList()
     }

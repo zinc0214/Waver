@@ -33,7 +33,7 @@ fun CategoryLayer(
     val recommendCategory = "여향"
 
     viewModel.loadCategoryList()
-    val categoryList by viewModel.categoryItems.observeAsState()
+    val categoryList by viewModel.categoryInfoItems.observeAsState()
 
     categoryList?.let {
         Column(

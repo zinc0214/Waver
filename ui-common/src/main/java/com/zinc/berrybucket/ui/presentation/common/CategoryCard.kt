@@ -3,7 +3,12 @@ package com.zinc.berrybucket.ui.presentation.common
 import android.view.MotionEvent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -22,14 +27,14 @@ import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.Category
+import com.zinc.common.models.CategoryInfo
 
 @Composable
-fun CategoryListView(categoryList: List<Category>) {
+fun CategoryListView(categoryInfoList: List<CategoryInfo>) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        categoryList.forEach { category ->
+        categoryInfoList.forEach { category ->
             CategoryCard(
-                category = category,
+                categoryInfo = category,
                 clicked = {}
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -39,7 +44,7 @@ fun CategoryListView(categoryList: List<Category>) {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CategoryCard(category: Category, clicked: () -> Unit) {
+fun CategoryCard(categoryInfo: CategoryInfo, clicked: () -> Unit) {
 
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
@@ -79,7 +84,7 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                count = category.bucketlistCount
+                count = categoryInfo.bucketlistCount
             )
 
             // Left Contents
@@ -99,7 +104,7 @@ fun CategoryCard(category: Category, clicked: () -> Unit) {
                         )
                     }
                     .fillMaxWidth(.8f),
-                name = category.name
+                name = categoryInfo.name
             )
         }
     }
@@ -153,8 +158,8 @@ private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
 @Preview
 private fun CategoryListPreview() {
     CategoryListView(
-        categoryList = listOf(
-            Category(id = 1, name = "여행", bucketlistCount = "10")
+        categoryInfoList = listOf(
+            CategoryInfo(id = 1, name = "여행", bucketlistCount = "10")
         )
     )
 }

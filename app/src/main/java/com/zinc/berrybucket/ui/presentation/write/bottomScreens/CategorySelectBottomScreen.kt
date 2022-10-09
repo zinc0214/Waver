@@ -1,7 +1,11 @@
 package com.zinc.berrybucket.ui.presentation.write.bottomScreens
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
@@ -22,15 +26,15 @@ import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.category.CategoryViewModel
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.Category
+import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo
 
 @Composable
 fun CategorySelectBottomScreen(
-    confirmed: (Category) -> Unit
+    confirmed: (CategoryInfo) -> Unit
 ) {
     val viewModel: CategoryViewModel = hiltViewModel()
-    val categoryList by viewModel.categoryList.observeAsState()
+    val categoryList by viewModel.categoryInfoList.observeAsState()
     viewModel.loadCategoryList()
 
     categoryList?.let {
@@ -41,8 +45,11 @@ fun CategorySelectBottomScreen(
 }
 
 @Composable
-private fun CategorySelectView(categoryList: List<Category>, confirmed: (Category) -> Unit) {
-    if (categoryList.isNotEmpty()) {
+private fun CategorySelectView(
+    categoryInfoList: List<CategoryInfo>,
+    confirmed: (CategoryInfo) -> Unit
+) {
+    if (categoryInfoList.isNotEmpty()) {
 
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (category, addButton) = createRefs()
@@ -61,7 +68,7 @@ private fun CategorySelectView(categoryList: List<Category>, confirmed: (Categor
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(items = categoryList, key = { keyCategory ->
+                items(items = categoryInfoList, key = { keyCategory ->
                     keyCategory.id
                 }, itemContent = { category ->
                     Text(
@@ -105,8 +112,8 @@ private fun CategorySelectView(categoryList: List<Category>, confirmed: (Categor
 @Composable
 @Preview
 private fun CategorySelectBottomScreenPreview() {
-    CategorySelectView(categoryList = buildList {
-        add(Category(id = 0, name = "여행", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
-        add(Category(id = 11, name = "여행234", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
+    CategorySelectView(categoryInfoList = buildList {
+        add(CategoryInfo(id = 0, name = "여행", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
+        add(CategoryInfo(id = 11, name = "여행234", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
     }, confirmed = {})
 }

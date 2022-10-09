@@ -1,7 +1,9 @@
 package com.zinc.data.api
 
+import com.zinc.common.models.AddBucketListRequest
+import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AllBucketList
-import com.zinc.common.models.Category
+import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.FeedInfo
@@ -17,6 +19,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface BerryBucketApi {
 
@@ -34,7 +37,7 @@ interface BerryBucketApi {
     suspend fun loadAllBucketList(): AllBucketList
 
     @GET("/category")
-    suspend fun loadCategoryList(@Header("Authorization") token: String): List<Category>
+    suspend fun loadCategoryList(@Header("Authorization") token: String): List<CategoryInfo>
 
     @GET("/bucketList")
     suspend fun loadMyState(): MyState
@@ -56,4 +59,11 @@ interface BerryBucketApi {
 
     @GET("/report/comment")
     suspend fun loadReportItems(): ReportItems
+
+    // 버킷리스트 등록
+    @POST("/bucketlist")
+    suspend fun addNewBucketList(
+        @Header("Authorization") token: String,
+        @Part request: AddBucketListRequest
+    ): AddBucketListResponse
 }

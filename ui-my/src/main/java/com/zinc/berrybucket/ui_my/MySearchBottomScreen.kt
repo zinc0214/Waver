@@ -55,7 +55,7 @@ import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import com.zinc.common.models.BucketInfoSimple
-import com.zinc.common.models.Category
+import com.zinc.common.models.CategoryInfo
 
 @Composable
 fun MySearchBottomScreen(
@@ -222,8 +222,8 @@ private fun SearchResultView(
     result: Pair<MyTabType, List<*>>, clickEvent: (MySearchClickEvent) -> Unit
 ) {
     if (result.first == MyTabType.CATEGORY) {
-        if (result.second.all { item -> item is Category }) {
-            val items = result.second as List<Category>
+        if (result.second.all { item -> item is CategoryInfo }) {
+            val items = result.second as List<CategoryInfo>
             CategoryListView(items)
         }
     } else {
