@@ -194,6 +194,13 @@ fun WriteScreen1(
                                         imageList.value += uri
                                         selectedOption = null
                                         isNeedToBottomSheetOpen.invoke(false)
+                                        updatedWriteOptions.add(
+                                            WriteOption(
+                                                type = IMAGE,
+                                                title = "이미지",
+                                                info = WriteOption1Info.Images(imageList.value)
+                                            )
+                                        )
                                     })
                             )
                         })
