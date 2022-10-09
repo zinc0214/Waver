@@ -34,7 +34,7 @@ interface BerryBucketApi {
     suspend fun loadAllBucketList(): AllBucketList
 
     @GET("/category")
-    suspend fun loadCategoryList(): List<Category>
+    suspend fun loadCategoryList(@Header("Authorization") token: String): List<Category>
 
     @GET("/bucketList")
     suspend fun loadMyState(): MyState

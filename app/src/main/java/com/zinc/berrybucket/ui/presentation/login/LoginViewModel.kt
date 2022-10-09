@@ -29,11 +29,11 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 runCatching {
                     // TODO : 구글로그인 붙이기
-                    val res = joinBerryBucket.invoke("zinc11@gmail.com")
+                    val res = joinBerryBucket.invoke("zinc3@gmail.com")
 
                     _joinResponse.value = res.accessToken
-                    loginPreferenceDataStoreModule.setAccessToken(res.accessToken)
-                    loginPreferenceDataStoreModule.setRefreshToken(res.refreshToken)
+                    loginPreferenceDataStoreModule.setAccessToken("Bearer ${res.accessToken}")
+                    loginPreferenceDataStoreModule.setRefreshToken("Bearer ${res.refreshToken}")
 
                 }.getOrElse {
                     Log.e("ayhan", "Fail : $it")

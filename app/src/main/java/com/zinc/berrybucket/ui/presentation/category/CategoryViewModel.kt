@@ -21,8 +21,14 @@ class CategoryViewModel @Inject constructor(
     val categoryList: LiveData<List<Category>> get() = _categoryList
 
     fun loadCategoryList() {
-        viewModelScope.launch {
-            _categoryList.value = loadCategoryList.invoke()
+
+        accessToken.value?.let { token ->
+            viewModelScope.launch {
+                _categoryList.value = loadCategoryList.invoke(token)
+            }
+        }.runCatching {
+
         }
+
     }
 }

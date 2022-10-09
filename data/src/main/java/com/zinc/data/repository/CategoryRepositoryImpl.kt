@@ -8,10 +8,10 @@ import javax.inject.Inject
 internal class CategoryRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : CategoryRepository {
-    override suspend fun loadCategoryList(): List<Category> {
-        return buildList {
-            add(Category(id = 0, name = "여행", bucketlistCount = "3"))
-        }
-        //   return berryBucketApi.loadCategoryList()
+    override suspend fun loadCategoryList(token: String): List<Category> {
+//        return buildList {
+//            add(Category(id = 0, name = "여행", bucketlistCount = "3"))
+//        }
+        return berryBucketApi.loadCategoryList(token)
     }
 }

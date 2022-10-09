@@ -14,7 +14,7 @@ internal class MyRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MyRepository {
     override suspend fun loadMyProfileInfo(token: String): MyProfileInfo {
-        return berryBucketApi.loadMyProfileInfo("Bearer $token")
+        return berryBucketApi.loadMyProfileInfo(token)
     }
 
     override suspend fun loadMyDdayBucketList(): DdayBucketList {

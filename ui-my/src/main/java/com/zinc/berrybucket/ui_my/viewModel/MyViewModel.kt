@@ -54,7 +54,7 @@ class MyViewModel @Inject constructor(
                     Log.e("ayhan", "token : $token")
 
                     val profileInfo = loadProfileInfo.invoke(token)
-                    Log.e("ayhan", "profileInfo : $profileInfo")
+                    Log.e("ayhan", "tokgen : $profileInfo")
 
                     val topProfile = TopProfile(
                         nickName = profileInfo.name,

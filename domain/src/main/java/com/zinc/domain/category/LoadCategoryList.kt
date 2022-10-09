@@ -6,5 +6,5 @@ import javax.inject.Inject
 class LoadCategoryList @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
-    suspend operator fun invoke() = categoryRepository.loadCategoryList()
+    suspend operator fun invoke(token: String) = categoryRepository.loadCategoryList(token)
 }
