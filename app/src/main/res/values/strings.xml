@@ -72,4 +72,7 @@
     <string name="optionOpenTypePublic">전체공개</string>
     <string name="optionOpenTypeFriends">친구에게만 공개</string>
     <string name="optionOpenTypePrivate">비공개</string>
+    <string name="optionScrap">스크랩</string>
+    <string name="optionScrapInfoDesc">스크랩이란?</string>
+    <string name="optionScrapNotAvailable">버킷리스트를 공개로 설정해주세요</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +50,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.Switch
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -341,10 +345,95 @@ fun SelectOpenTypePopup(
     }
 }
 
+
+@Composable
+fun WriteScrapOptionView(
+    modifier: Modifier,
+    isScrapAvailable: Boolean,
+    isScrapUsed: Boolean,
+    scrapChanged: (Boolean) -> Unit
+) {
+    val context = LocalContext.current
+
+    Log.e("ayhan", "isScrapAvailable : $isScrapAvailable")
+
+    Column(modifier = modifier) {
+
+        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+            val (title, switch) = createRefs()
+
+            Row(modifier = Modifier
+                .constrainAs(title) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    bottom.linkTo(parent.bottom)
+                }
+                .padding(
+                    start = 28.dp,
+                    top = 18.dp,
+                    end = 28.dp,
+                    bottom = 18.dp
+                ),
+                verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(id = R.string.optionScrap),
+                    color = Gray10,
+                    fontSize = dpToSp(16.dp)
+                )
+
+                IconButton(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .padding(start = 2.dp),
+                    onClick = {
+
+                    },
+                    image = R.drawable.btn_16_info,
+                    contentDescription = stringResource(id = R.string.optionScrapInfoDesc)
+                )
+            }
+
+
+            Switch(
+                modifier = Modifier
+                    .constrainAs(switch) {
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .padding(vertical = 12.5.dp)
+                    .padding(end = 20.dp),
+                isSwitchOn = isScrapUsed,
+                isScrapAvailable = isScrapAvailable,
+                switchChanged = {
+                    if (isScrapAvailable) {
+                        scrapChanged(it)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            R.string.optionScrapNotAvailable,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                }
+            )
+        }
+        Divider(color = Gray3)
+    }
+}
+
 @Preview
 @Composable
 private fun SelectOpenTypePopupPreview() {
     SelectOpenTypePopup(true, {}) {
 
     }
+}
+
+@Preview
+@Composable
+private fun WriteScrapOptionPreview() {
+    WriteScrapOptionView(modifier = Modifier, isScrapAvailable = false,
+        isScrapUsed = true, scrapChanged = {})
 }

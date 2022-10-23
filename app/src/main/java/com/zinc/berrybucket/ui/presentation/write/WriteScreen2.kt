@@ -124,10 +124,15 @@ fun WriteScreen2(
     } else {
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
+            val isScrapAvailable = remember {
+                mutableStateOf(if (selectedOpenType.isEmpty()) true else selectedOpenType.none { it == "비공개" })
+            }
+
             WriteScreen2ContentView(
                 writeInfo1 = writeInfo1,
                 optionsList = optionsList,
                 goToBack = { goToBack(writeInfo1) },
+                isScrapAvailable = isScrapAvailable.value,
                 write2OptionClicked = { optionScreenShow = it },
                 goToAddBucket = { })
 
@@ -157,12 +162,14 @@ private fun WriteScreen2ContentView(
     optionsList: List<WriteAddOption>,
     goToBack: (WriteInfo1) -> Unit,
     write2OptionClicked: (WriteOptionsType2) -> Unit,
-    goToAddBucket: () -> Unit
+    goToAddBucket: () -> Unit,
+    isScrapAvailable: Boolean,
 ) {
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
         val viewModel: WriteViewModel = hiltViewModel()
+        val scrapUsed = remember { mutableStateOf(false) }
 
         WriteAppBar(
             modifier = Modifier
@@ -260,6 +267,16 @@ private fun WriteScreen2ContentView(
                         optionClicked = { write2OptionClicked(it.type) }
                     )
                 }
+            }
+
+            item {
+                WriteScrapOptionView(
+                    modifier = Modifier.fillMaxWidth(),
+                    isScrapAvailable = isScrapAvailable,
+                    isScrapUsed = if (isScrapAvailable) scrapUsed.value else false,
+                    scrapChanged = {
+                        scrapUsed.value = it
+                    })
             }
         }
     }
