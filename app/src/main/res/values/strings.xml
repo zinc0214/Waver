@@ -68,4 +68,8 @@
     <string name="optionGoalCount">목표 달성 횟수(반복)</string>
     <string name="optionCategoryAddButton">카테고리 추가</string>
     <string name="optionCalendarSelect">달력으로 선택하기</string>
+    <string name="optionOpenType">공개설정</string>
+    <string name="optionOpenTypePublic">전체공개</string>
+    <string name="optionOpenTypeFriends">친구에게만 공개</string>
+    <string name="optionOpenTypePrivate">비공개</string>
 </resources>

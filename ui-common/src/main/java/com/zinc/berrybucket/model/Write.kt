@@ -38,6 +38,7 @@ data class WriteAddOption(
     val type: WriteOptionsType2,
     val title: String,
     val tagList: List<String>,
+    val showDivider: Boolean = false,
     val clicked: (WriteOptionsType2) -> Unit
 ) : java.io.Serializable
 
@@ -99,6 +100,7 @@ sealed class WriteOption1Info {
 interface WriteOptionsType2 {
     object TAG : WriteOptionsType2
     object FRIENDS : WriteOptionsType2
+    object OPEN : WriteOptionsType2
 }
 
 fun ParseUIBucketListInfo(

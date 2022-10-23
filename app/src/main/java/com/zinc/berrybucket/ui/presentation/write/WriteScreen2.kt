@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -34,7 +33,6 @@ import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType2
-import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
@@ -69,6 +67,7 @@ fun WriteScreen2(
 
     val selectedKeyWords = remember { mutableStateListOf<WriteKeyWord>() }
     val selectedFriends = remember { mutableStateListOf<WriteFriend>() }
+    val selectedOpenType = remember { mutableStateListOf<String>() }
 
     val optionsList = mutableListOf(
         WriteAddOption(
@@ -84,10 +83,18 @@ fun WriteScreen2(
             tagList = selectedFriends.map { "@${it.nickname}" },
             clicked = {
                 optionScreenShow = it
-            })
+            }),
+        WriteAddOption(
+            type = WriteOptionsType2.OPEN,
+            title = "공개설정",
+            tagList = selectedOpenType,
+            showDivider = true,
+            clicked = {
+                optionScreenShow = it
+            }),
     )
 
-    if (optionScreenShow != null) {
+    if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
         when (optionScreenShow) {
             WriteOptionsType2.TAG -> {
                 WriteSelectKeyWordScreen(
@@ -115,13 +122,30 @@ fun WriteScreen2(
             }
         }
     } else {
-        WriteScreen2ContentView(
-            modifier = modifier,
-            writeInfo1 = writeInfo1,
-            optionsList = optionsList,
-            goToBack = { goToBack(writeInfo1) },
-            write2OptionClicked = { optionScreenShow = it },
-            goToAddBucket = { })
+        ConstraintLayout(modifier = modifier.fillMaxSize()) {
+
+            WriteScreen2ContentView(
+                writeInfo1 = writeInfo1,
+                optionsList = optionsList,
+                goToBack = { goToBack(writeInfo1) },
+                write2OptionClicked = { optionScreenShow = it },
+                goToAddBucket = { })
+
+            if (optionScreenShow == WriteOptionsType2.OPEN) {
+                SelectOpenTypePopup(
+                    isPrivateAvailable = selectedFriends.isEmpty(),
+                    onDismissRequest = {
+                        optionScreenShow = null
+                    },
+                    typeSelected = {
+                        selectedOpenType.clear()
+                        selectedOpenType.add(it)
+                        optionScreenShow = null
+                    }
+                )
+            }
+
+        }
     }
 }
 
@@ -236,8 +260,6 @@ private fun WriteScreen2ContentView(
                         optionClicked = { write2OptionClicked(it.type) }
                     )
                 }
-
-                Divider(color = Gray2, thickness = 8.dp)
             }
         }
     }

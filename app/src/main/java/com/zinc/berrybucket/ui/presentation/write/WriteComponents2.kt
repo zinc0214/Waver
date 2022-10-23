@@ -1,10 +1,22 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,16 +25,27 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
-import com.zinc.berrybucket.ui.design.theme.*
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray9
+import com.zinc.berrybucket.ui.design.theme.Main2
+import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.util.dpToSp
 
@@ -49,11 +72,16 @@ fun WriteAddOptionView(
 ) {
 
     Column(modifier = modifier.clickable { optionClicked() }) {
+
         Divider(color = Gray3)
+
+        if (option.showDivider) {
+            Divider(color = Gray2, thickness = 8.dp)
+            Divider(color = Gray3)
+        }
 
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (title, arrow, tag) = createRefs()
-
             Image(
                 modifier = Modifier
                     .constrainAs(arrow) {
@@ -233,5 +261,90 @@ fun WriteSelectFriendItem(
                     width = Dimension.fillToConstraints
                 })
         }
+    }
+}
+
+@Composable
+fun SelectOpenTypePopup(
+    isPrivateAvailable: Boolean,
+    onDismissRequest: () -> Unit,
+    typeSelected: (String) -> Unit
+) {
+    Dialog(
+        onDismissRequest = { onDismissRequest() }
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(8.dp),
+            color = Gray1
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 24.dp, bottom = 22.dp)
+            ) {
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 14.dp),
+                    text = stringResource(id = R.string.optionOpenType),
+                    color = Gray10,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                        .clickable {
+                            typeSelected("전체공개")
+                        },
+                    text = stringResource(id = R.string.optionOpenTypePublic),
+                    color = Gray10,
+                    fontSize = 14.sp
+                )
+
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp)
+                        .clickable {
+                            typeSelected("친구에게만 공개")
+                        },
+                    text = stringResource(id = R.string.optionOpenTypeFriends),
+                    color = Gray10,
+                    fontSize = 14.sp
+                )
+
+                if (isPrivateAvailable) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 10.dp)
+                            .clickable {
+                                typeSelected("비공개")
+                            },
+                        text = stringResource(id = R.string.optionOpenTypePrivate),
+                        color = Gray10,
+                        fontSize = 14.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SelectOpenTypePopupPreview() {
+    SelectOpenTypePopup(true, {}) {
+
     }
 }
