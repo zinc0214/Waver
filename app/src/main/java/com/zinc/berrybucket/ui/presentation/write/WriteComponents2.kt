@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -49,6 +48,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
+import com.zinc.berrybucket.ui.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.Switch
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -272,7 +272,7 @@ fun WriteSelectFriendItem(
 fun SelectOpenTypePopup(
     isPrivateAvailable: Boolean,
     onDismissRequest: () -> Unit,
-    typeSelected: (String) -> Unit
+    typeSelected: (WriteOpenType) -> Unit
 ) {
     Dialog(
         onDismissRequest = { onDismissRequest() }
@@ -308,7 +308,7 @@ fun SelectOpenTypePopup(
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
                         .clickable {
-                            typeSelected("전체공개")
+                            typeSelected(WriteOpenType.PUBLIC)
                         },
                     text = stringResource(id = R.string.optionOpenTypePublic),
                     color = Gray10,
@@ -320,7 +320,7 @@ fun SelectOpenTypePopup(
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
                         .clickable {
-                            typeSelected("친구에게만 공개")
+                            typeSelected(WriteOpenType.FRIENDS_OPEN)
                         },
                     text = stringResource(id = R.string.optionOpenTypeFriends),
                     color = Gray10,
@@ -333,7 +333,7 @@ fun SelectOpenTypePopup(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
                             .clickable {
-                                typeSelected("비공개")
+                                typeSelected(WriteOpenType.PRIVATE)
                             },
                         text = stringResource(id = R.string.optionOpenTypePrivate),
                         color = Gray10,
@@ -354,8 +354,6 @@ fun WriteScrapOptionView(
     scrapChanged: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
-
-    Log.e("ayhan", "isScrapAvailable : $isScrapAvailable")
 
     Column(modifier = modifier) {
 
@@ -434,6 +432,8 @@ private fun SelectOpenTypePopupPreview() {
 @Preview
 @Composable
 private fun WriteScrapOptionPreview() {
-    WriteScrapOptionView(modifier = Modifier, isScrapAvailable = false,
-        isScrapUsed = true, scrapChanged = {})
+    WriteScrapOptionView(
+        modifier = Modifier, isScrapAvailable = false,
+        isScrapUsed = true
+    ) {}
 }

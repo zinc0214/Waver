@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,7 @@ import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType2
+import com.zinc.berrybucket.ui.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
@@ -67,7 +69,7 @@ fun WriteScreen2(
 
     val selectedKeyWords = remember { mutableStateListOf<WriteKeyWord>() }
     val selectedFriends = remember { mutableStateListOf<WriteFriend>() }
-    val selectedOpenType = remember { mutableStateListOf<String>() }
+    val selectedOpenType = remember { mutableStateOf(WriteOpenType.PUBLIC) }
 
     val optionsList = mutableListOf(
         WriteAddOption(
@@ -87,7 +89,7 @@ fun WriteScreen2(
         WriteAddOption(
             type = WriteOptionsType2.OPEN,
             title = "공개설정",
-            tagList = selectedOpenType,
+            tagList = listOf(selectedOpenType.value.text),
             showDivider = true,
             clicked = {
                 optionScreenShow = it
@@ -124,17 +126,13 @@ fun WriteScreen2(
     } else {
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
-            val isScrapAvailable = remember {
-                mutableStateOf(if (selectedOpenType.isEmpty()) true else selectedOpenType.none { it == "비공개" })
-            }
-
             WriteScreen2ContentView(
                 writeInfo1 = writeInfo1,
                 optionsList = optionsList,
                 goToBack = { goToBack(writeInfo1) },
-                isScrapAvailable = isScrapAvailable.value,
-                write2OptionClicked = { optionScreenShow = it },
-                goToAddBucket = { })
+                selectedOpenType = selectedOpenType,
+                write2OptionClicked = { optionScreenShow = it }
+            ) { }
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
@@ -143,8 +141,7 @@ fun WriteScreen2(
                         optionScreenShow = null
                     },
                     typeSelected = {
-                        selectedOpenType.clear()
-                        selectedOpenType.add(it)
+                        selectedOpenType.value = it
                         optionScreenShow = null
                     }
                 )
@@ -162,9 +159,12 @@ private fun WriteScreen2ContentView(
     optionsList: List<WriteAddOption>,
     goToBack: (WriteInfo1) -> Unit,
     write2OptionClicked: (WriteOptionsType2) -> Unit,
+    selectedOpenType: MutableState<WriteOpenType>,
     goToAddBucket: () -> Unit,
-    isScrapAvailable: Boolean,
 ) {
+
+    val isScrapAvailable by remember { mutableStateOf(selectedOpenType.value != WriteOpenType.PRIVATE) }
+
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
