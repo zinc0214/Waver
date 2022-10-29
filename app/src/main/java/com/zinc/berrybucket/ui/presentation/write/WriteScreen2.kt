@@ -233,7 +233,7 @@ private fun WriteScreen2ContentView(
             item {
                 WriteTitleView(
                     modifier = Modifier.padding(
-                        bottom = if (writeInfo1.getImages().isNullOrEmpty()) 150.dp else 32.dp
+                        bottom = if (writeInfo1.getImages().isEmpty()) 150.dp else 32.dp
                     ),
                     title = writeInfo1.title
                 )
