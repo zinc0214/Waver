@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -34,7 +33,6 @@ fun OptionScreen(options: List<WriteOption>) {
         val showableOptions =
             options.filterNot { it.type == WriteOptionsType1.IMAGE || it.type == WriteOptionsType1.MEMO }
         showableOptions.forEach { option ->
-            Log.e("ayhan", "option : ${option.content()}, ${option.title}")
             ConstraintLayout(
                 modifier = Modifier
                     .fillMaxWidth()

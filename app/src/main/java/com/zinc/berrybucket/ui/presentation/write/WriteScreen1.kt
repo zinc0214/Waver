@@ -20,6 +20,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -68,7 +69,7 @@ fun WriteScreen1(
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
 
     // 저장된 option 값들
-    val updatedWriteOptions = remember { mutableSetOf<WriteOption>() }
+    val updatedWriteOptions = remember { mutableStateListOf<WriteOption>() }
 
     val nextButtonClickable = remember { mutableStateOf(false) }
 
@@ -111,7 +112,15 @@ fun WriteScreen1(
         nextButtonClickable.value = title.value.isNotEmpty()
         options.forEach {
             when (it.type) {
-                CATEGORY, D_DAY, GOAL -> updatedWriteOptions.add(it)
+                CATEGORY, D_DAY, GOAL -> {
+                    val isAlreadyAdded = updatedWriteOptions.indexOfFirst { t -> t.type == it.type }
+                    if (isAlreadyAdded != -1) {
+                        updatedWriteOptions[isAlreadyAdded] = it
+                    } else {
+                        updatedWriteOptions.add(it)
+                    }
+                }
+
                 else -> {
                     // Do Nothing
                 }
@@ -327,13 +336,11 @@ fun WriteScreen1(
                     }
 
                     item {
-                        if (originMemo.value.isNotEmpty()) {
-                            MemoOptionView(modifier = Modifier.padding(top = 28.dp),
-                                memoText = originMemo.value,
-                                memoDelete = {
-                                    originMemo.value = ""
-                                    updatedWriteOptions.remove(updatedWriteOptions.find { it.type == MEMO })
-                                })
+                        if (updatedWriteOptions.find { it.type == MEMO } != null) {
+                            MemoOptionView(
+                                modifier = Modifier.padding(top = 28.dp),
+                                memoText = originMemo.value
+                            )
                         }
                     }
 
@@ -347,9 +354,14 @@ fun WriteScreen1(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalSpace = 28.dp,
                             itemContent = {
-                                ImageItem(imageInfo = it, deleteImage = { removeImage ->
-                                    imageList.value -= removeImage
-                                })
+                                ImageItem(
+                                    imageInfo = it,
+                                    deleteImage = { removeImage ->
+                                        imageList.value -= removeImage
+                                        if (imageList.value.isEmpty()) {
+                                            updatedWriteOptions.removeIf { it.type == IMAGE }
+                                        }
+                                    })
                             },
                             emptyContent = {
                                 Spacer(modifier = Modifier.size(80.dp))
@@ -371,10 +383,26 @@ fun WriteScreen1(
                         bottom.linkTo(parent.bottom)
                     },
                     currentClickedOptions = updatedWriteOptions.map { it.type }.toSet(),
-                    optionUsed = {
-                        when (it) {
-                            MEMO, IMAGE, CATEGORY, D_DAY, GOAL -> {
-                                selectedOption = it
+                    optionClicked = { option ->
+                        val isAlreadySelected = updatedWriteOptions.find { it.type == option }
+                        if (isAlreadySelected != null) {
+                            when (option) {
+                                IMAGE -> {
+                                    selectedOption = option
+                                }
+
+                                MEMO,
+                                CATEGORY,
+                                D_DAY,
+                                GOAL -> {
+                                    updatedWriteOptions.remove(isAlreadySelected)
+                                }
+                            }
+                        } else {
+                            when (option) {
+                                MEMO, IMAGE, CATEGORY, D_DAY, GOAL -> {
+                                    selectedOption = option
+                                }
                             }
                         }
                     })

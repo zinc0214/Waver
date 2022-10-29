@@ -2,13 +2,11 @@ package com.zinc.berrybucket.ui.presentation.category
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.common.models.CategoryInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.category.LoadCategoryList
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,13 +20,30 @@ class CategoryViewModel @Inject constructor(
 
     fun loadCategoryList() {
 
-        accessToken.value?.let { token ->
-            viewModelScope.launch {
-                _categoryInfoList.value = loadCategoryList.invoke(token)
-            }
-        }.runCatching {
-
-        }
+        _categoryInfoList.value = listOf(
+            CategoryInfo(
+                id = 0,
+                name = "여행",
+                bucketlistCount = "10"
+            ),
+            CategoryInfo(
+                id = 1,
+                name = "음식",
+                bucketlistCount = "10"
+            ),
+            CategoryInfo(
+                id = 2,
+                name = "쇼미",
+                bucketlistCount = "10"
+            )
+        )
+//        accessToken.value?.let { token ->
+//            viewModelScope.launch {
+//                _categoryInfoList.value = loadCategoryList.invoke(token)
+//            }
+//        }.runCatching {
+//
+//        }
 
     }
 }

@@ -2,14 +2,24 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -24,8 +34,17 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteOptionsType1
-import com.zinc.berrybucket.model.WriteOptionsType1.*
-import com.zinc.berrybucket.ui.design.theme.*
+import com.zinc.berrybucket.model.WriteOptionsType1.CATEGORY
+import com.zinc.berrybucket.model.WriteOptionsType1.D_DAY
+import com.zinc.berrybucket.model.WriteOptionsType1.GOAL
+import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
+import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.util.dpToSp
 
@@ -131,35 +150,13 @@ fun WriteTitleFieldView(
 @Composable
 fun MemoOptionView(
     modifier: Modifier = Modifier,
-    memoText: String,
-    memoDelete: () -> Unit
+    memoText: String
 ) {
     Box(
         modifier = modifier
             .background(color = Gray2)
             .fillMaxWidth()
     ) {
-        IconButton(
-            onClick = { memoDelete() },
-            image = R.drawable.btn_16_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
-            modifier = Modifier
-                .background(
-                    color = Gray3,
-                    shape = RoundedCornerShape(bottomStart = 18.dp)
-                )
-                .align(Alignment.TopEnd)
-                .padding(
-                    top = 7.dp,
-                    bottom = 7.dp,
-                    start = 14.dp,
-                    end = 9.dp
-                )
-                .then(Modifier.size(16.dp))
-                .wrapContentWidth()
-                .wrapContentHeight()
-        )
-
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -178,7 +175,7 @@ fun MemoOptionView(
 fun BottomOptionView(
     modifier: Modifier = Modifier,
     currentClickedOptions: Set<WriteOptionsType1>,
-    optionUsed: (WriteOptionsType1) -> Unit
+    optionClicked: (WriteOptionsType1) -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxWidth()
@@ -198,7 +195,7 @@ fun BottomOptionView(
                 BottomOptionIcon(
                     currentClickedOptions = currentClickedOptions,
                     type = it,
-                    optionClicked = optionUsed
+                    optionClicked = optionClicked
                 )
             }
         }
