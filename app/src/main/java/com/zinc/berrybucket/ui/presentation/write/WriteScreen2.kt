@@ -269,6 +269,7 @@ private fun WriteScreen2ContentView(
                 }
             }
 
+            // TODO : 스크랩 상태가 바로 수정되지 않음
             item {
                 WriteScrapOptionView(
                     modifier = Modifier.fillMaxWidth(),
