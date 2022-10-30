@@ -17,7 +17,7 @@ import com.zinc.berrybucket.ui.presentation.common.calendar.lengthOfWeek
 import com.zinc.berrybucket.ui.util.dpToSp
 import java.time.LocalDate
 import java.time.format.TextStyle
-import java.util.*
+import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

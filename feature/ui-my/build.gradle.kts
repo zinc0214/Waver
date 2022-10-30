@@ -34,7 +34,7 @@ android {
 dependencies {
 
     implementation(project(":common"))
-    implementation(project(":ui-common"))
+    implementation(project(":feature:ui-common"))
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":common"))
