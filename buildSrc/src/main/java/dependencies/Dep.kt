@@ -42,7 +42,7 @@ object Dep {
         }
 
         object Compose {
-            const val compilerVersion = "1.3.0"
+            const val compilerVersion = "1.3.2"
             const val version = "1.3.0-alpha03"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
@@ -62,6 +62,15 @@ object Dep {
             const val viewPager =
                 "com.google.accompanist:accompanist-pager:0.23.1"
             const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.23.1"
+
+            object Bom {
+                const val runtime = "androidx.compose.runtime:runtime"
+                const val ui = "androidx.compose.ui:ui"
+                const val material = "androidx.compose.material:material"
+                const val tooling = "androidx.compose.ui:ui-tooling"
+                const val livedata = "androidx.compose.runtime:runtime-livedata"
+                const val foundation = "androidx.compose.foundation:foundation"
+            }
         }
 
         object Arch {
@@ -94,7 +103,7 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.7.10"
+        const val version = "1.7.20"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {

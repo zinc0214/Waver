@@ -40,18 +40,22 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":datastore"))
 
+    val composeBom = platform("androidx.compose:compose-bom:2022.10.00")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
     // androidX
     implementation(Dep.AndroidX.coreKtx)
     implementation(Dep.AndroidX.appcompat)
     implementation(Dep.AndroidX.UI.material)
 
     // compose
-    implementation(Dep.AndroidX.Compose.ui)
-    implementation(Dep.AndroidX.Compose.material)
-    implementation(Dep.AndroidX.Compose.livedata)
-    implementation(Dep.AndroidX.Compose.runtime)
+    implementation(Dep.AndroidX.Compose.Bom.ui)
+    implementation(Dep.AndroidX.Compose.Bom.material)
+    implementation(Dep.AndroidX.Compose.Bom.tooling)
+    implementation(Dep.AndroidX.Compose.Bom.livedata)
+    implementation(Dep.AndroidX.Compose.Bom.runtime)
     implementation(Dep.AndroidX.Compose.accompanist)
-    implementation(Dep.AndroidX.Compose.tooling)
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.navigation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
