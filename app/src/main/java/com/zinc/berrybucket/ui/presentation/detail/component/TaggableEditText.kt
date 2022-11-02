@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.text.Html
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -48,7 +47,6 @@ class TaggableEditText @JvmOverloads constructor(
         this.updateValidTaggableList = updateValidTaggableList
         this.commentSendButtonClicked = commentSendButtonClicked
 
-        Log.e("ayhan", "originCommentTaggableList : $originCommentTaggableList")
         setUpViews()
         setUpObservers()
     }

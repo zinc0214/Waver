@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.common
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -25,12 +24,8 @@ fun <T> LazyListScope.gridItems(
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
     itemContent: @Composable BoxScope.(T) -> Unit,
 ) {
-    Log.e("ayhan", "columnCount : $columnCount")
     val size = data.count()
     val rows = if (size == 0) 0 else 1 + (size - 1) / columnCount
-    if (rows > 0) {
-        Log.e("ayhan", " { data[it].hashCode() : ${data[0].hashCode()} }")
-    }
     items(rows, key = { data[it].hashCode() }) { rowIndex ->
         Row(
             horizontalArrangement = horizontalArrangement,
@@ -93,8 +88,6 @@ fun <T> gridItems(
                         val startIndex = columnIndex * maxRow
                         val endIndex = min(startIndex + maxRow, data.size)
                         val rowItems = data.subList(startIndex, endIndex)
-
-                        Log.e("ayhan", "rowItemsSize : ${rowItems.size}")
 
                         // 빈 공간을 채우기 위함
                         val emptyViews = maxRow - rowItems.size

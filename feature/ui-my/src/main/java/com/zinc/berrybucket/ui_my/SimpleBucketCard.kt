@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_my
 
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -113,7 +112,6 @@ fun SimpleBucketCard(
                         } else if (it == BucketProgressState.FINISHED) {
                             borderColor.value = Color.Transparent
                             animFinishEvent.invoke(it)
-                            Log.e("ayhan", "BucketProgressState.FINISHED")
                             bucketCount += 1
                         }
                     },

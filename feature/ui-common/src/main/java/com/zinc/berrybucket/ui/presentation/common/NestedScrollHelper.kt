@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.common
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Offset
@@ -19,7 +18,6 @@ fun rememberNestedScrollConnection(
         var currentHeight = maxAppBarHeight
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                Log.d("ayhan", "available : $available")
                 currentHeight = (currentHeight + available.y).coerceIn(
                     minimumValue = minAppBarHeight,
                     maximumValue = maxAppBarHeight

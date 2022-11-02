@@ -3,7 +3,6 @@ package com.zinc.berrybucket.ui.presentation.report
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -73,7 +72,6 @@ class ReportActivity : AppCompatActivity() {
         }
 
         binding.etcEditTextView.setOnFocusChangeListener { view, isFocused ->
-            Log.e("ayhan", "isFoucsed :$isFocused")
             binding.keyBoardOpend = isFocused
         }
     }

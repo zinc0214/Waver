@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -38,9 +37,6 @@ fun ImageScreen(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
 
-        images.forEach {
-            Log.e("ayhan", "key : ${images.size}, ${it.parseKey()}")
-        }
         items(items = images, key = { it.parseKey() }) { imageInfo ->
             ImageItem(imageInfo, deleteImage)
         }

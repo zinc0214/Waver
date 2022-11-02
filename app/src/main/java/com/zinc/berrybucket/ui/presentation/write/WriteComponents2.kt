@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.write
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -93,7 +92,6 @@ fun WriteAddOptionView(
 
         if (option.type is WriteOptionsType2.SCRAP) {
             val scrapOption = option.type as WriteOptionsType2.SCRAP
-            Log.e("ayhan", " scrapOption  :$scrapOption")
             WriteScrapOptionView(
                 modifier = Modifier.fillMaxWidth(),
                 isScrapAvailable = scrapOption.isScrapAvailable,

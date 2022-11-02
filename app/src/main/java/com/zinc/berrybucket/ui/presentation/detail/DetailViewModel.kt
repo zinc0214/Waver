@@ -1,10 +1,16 @@
 package com.zinc.berrybucket.ui.presentation.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.zinc.berrybucket.model.*
+import com.zinc.berrybucket.model.CommentInfo
+import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.Commenter
+import com.zinc.berrybucket.model.CommonDetailDescInfo
+import com.zinc.berrybucket.model.DetailInfo
+import com.zinc.berrybucket.model.ImageInfo
+import com.zinc.berrybucket.model.MemoInfo
+import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -68,8 +74,6 @@ class DetailViewModel @Inject constructor(
         val taggedList = commentTaggedListToArray()
         taggedList.add(commentTagInfo)
         _commentTaggedList.value = taggedList
-
-        Log.e("ayhan", "cursorStartIndex :$cursorStartIndex cursorEndIndex : $cursorEndIndex")
         addCommentTaggedItemToEditString(commentTagInfo, cursorStartIndex, cursorEndIndex)
     }
 
