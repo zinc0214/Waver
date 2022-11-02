@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -20,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -49,6 +51,8 @@ fun WriteScreen2(
     goToBack: (WriteInfo1) -> Unit,
     goToAddBucket: () -> Unit
 ) {
+
+    val context = LocalContext.current
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
 
@@ -128,6 +132,14 @@ fun WriteScreen2(
                     addFriendsClicked = {
                         selectedFriends.clear()
                         selectedFriends.addAll(it)
+                        if (selectedFriends.isNotEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {
+                            selectedOpenType.value = WriteOpenType.PUBLIC
+                            Toast.makeText(
+                                context,
+                                R.string.optionIfFriendsNotEmptyOpenPrivateDetect,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                         optionScreenShow = null
                     }
                 )
