@@ -1,11 +1,13 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -40,17 +43,20 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
+import com.zinc.berrybucket.model.WriteOptionsType2
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.Switch
+import com.zinc.berrybucket.ui.presentation.common.SwitchOnlyView
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -72,7 +78,8 @@ fun WriteAddOptionView(
     modifier: Modifier,
     option: WriteAddOption,
     isLastItem: Boolean,
-    optionClicked: () -> Unit
+    optionClicked: () -> Unit,
+    optionValueChanged: (WriteAddOption) -> Unit
 ) {
 
     Column(modifier = modifier.clickable { optionClicked() }) {
@@ -84,65 +91,87 @@ fun WriteAddOptionView(
             Divider(color = Gray3)
         }
 
-        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-            val (title, arrow, tag) = createRefs()
-            Image(
-                modifier = Modifier
-                    .constrainAs(arrow) {
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                    }
-                    .padding(20.dp),
-                painter = painterResource(R.drawable.ico_16_right),
-                contentDescription = null)
-
-            Text(
-                text = option.title,
-                modifier = Modifier
-                    .constrainAs(title) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(arrow.start)
-                        bottom.linkTo(tag.top)
-                        width = Dimension.fillToConstraints
-                    }
-                    .padding(
-                        start = 28.dp,
-                        top = 18.dp,
-                        end = 28.dp,
-                        bottom = if (option.tagList.isEmpty()) 18.dp else 12.dp
-                    ),
-                color = Gray10,
-                fontSize = dpToSp(16.dp))
-
-            FlowRow(
-                modifier = Modifier
-                    .constrainAs(tag) {
-                        top.linkTo(title.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(arrow.start)
-                        width = Dimension.fillToConstraints
-                    }
-                    .padding(
-                        start = if (option.tagList.isEmpty()) 0.dp else 28.dp,
-                        bottom = if (option.tagList.isEmpty()) 0.dp else 20.dp
-                    ),
-                mainAxisSpacing = 12.dp,
-                crossAxisSpacing = 8.dp,
-            ) {
-                option.tagList.forEach {
-                    Text(
-                        text = it,
-                        modifier = Modifier,
-                        color = Main3,
-                        fontSize = dpToSp(16.dp),
+        if (option.type is WriteOptionsType2.SCRAP) {
+            val scrapOption = option.type as WriteOptionsType2.SCRAP
+            Log.e("ayhan", " scrapOption  :$scrapOption")
+            WriteScrapOptionView(
+                modifier = Modifier.fillMaxWidth(),
+                isScrapAvailable = scrapOption.isScrapAvailable,
+                isScrapUsed = scrapOption.isScrapUsed,
+                scrapChanged = { isScrapUsed ->
+                    scrapOption.isScrapUsed = isScrapUsed
+                    optionValueChanged(
+                        option.copy {
+                            (it as WriteOptionsType2.SCRAP).isScrapUsed = isScrapUsed
+                        }
                     )
-                }
-            }
+                })
+        } else {
+            TextWithTagOptionView(option)
         }
 
         if (isLastItem) {
             Divider(color = Gray3)
+        }
+    }
+}
+
+@Composable
+private fun TextWithTagOptionView(option: WriteAddOption) {
+    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
+        val (title, arrow, tag) = createRefs()
+        Image(
+            modifier = Modifier
+                .constrainAs(arrow) {
+                    top.linkTo(parent.top)
+                    end.linkTo(parent.end)
+                }
+                .padding(20.dp),
+            painter = painterResource(R.drawable.ico_16_right),
+            contentDescription = null)
+
+        Text(
+            text = option.title,
+            modifier = Modifier
+                .constrainAs(title) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(arrow.start)
+                    bottom.linkTo(tag.top)
+                    width = Dimension.fillToConstraints
+                }
+                .padding(
+                    start = 28.dp,
+                    top = 18.dp,
+                    end = 28.dp,
+                    bottom = if (option.tagList.isEmpty()) 18.dp else 12.dp
+                ),
+            color = Gray10,
+            fontSize = dpToSp(16.dp))
+
+        FlowRow(
+            modifier = Modifier
+                .constrainAs(tag) {
+                    top.linkTo(title.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(arrow.start)
+                    width = Dimension.fillToConstraints
+                }
+                .padding(
+                    start = if (option.tagList.isEmpty()) 0.dp else 28.dp,
+                    bottom = if (option.tagList.isEmpty()) 0.dp else 20.dp
+                ),
+            mainAxisSpacing = 12.dp,
+            crossAxisSpacing = 8.dp,
+        ) {
+            option.tagList.forEach {
+                Text(
+                    text = it,
+                    modifier = Modifier,
+                    color = Main3,
+                    fontSize = dpToSp(16.dp),
+                )
+            }
         }
     }
 }
@@ -360,22 +389,23 @@ fun WriteScrapOptionView(
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (title, switch) = createRefs()
 
-            Row(modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom)
-                }
-                .padding(
-                    start = 28.dp,
-                    top = 18.dp,
-                    end = 28.dp,
-                    bottom = 18.dp
-                ),
+            Row(
+                modifier = Modifier
+                    .constrainAs(title) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .padding(
+                        start = 28.dp,
+                        top = 18.dp,
+                        end = 28.dp,
+                        bottom = 18.dp
+                    ),
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(id = R.string.optionScrap),
-                    color = Gray10,
+                    color = if (isScrapAvailable) Gray10 else Gray7,
                     fontSize = dpToSp(16.dp)
                 )
 
@@ -391,33 +421,49 @@ fun WriteScrapOptionView(
                 )
             }
 
-
-            Switch(
-                modifier = Modifier
-                    .constrainAs(switch) {
-                        top.linkTo(parent.top)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .padding(vertical = 12.5.dp)
-                    .padding(end = 20.dp),
-                isSwitchOn = isScrapUsed,
-                isScrapAvailable = isScrapAvailable,
-                switchChanged = {
-                    if (isScrapAvailable) {
+            if (isScrapAvailable) {
+                Switch(
+                    modifier = Modifier
+                        .constrainAs(switch) {
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .padding(vertical = 12.5.dp)
+                        .padding(end = 20.dp),
+                    isSwitchOn = isScrapUsed,
+                    switchChanged = {
                         scrapChanged(it)
-                    } else {
-                        Toast.makeText(
-                            context,
-                            R.string.optionScrapNotAvailable,
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
+                )
+            } else {
+                SwitchOnlyView(
+                    modifier = Modifier
+                        .constrainAs(switch) {
+                            top.linkTo(parent.top)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        }
+                        .padding(vertical = 12.5.dp)
+                        .padding(end = 20.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            R.string.optionScrapNotAvailable,
+                                            Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                                }
+                            )
+                        }
+                )
+            }
 
-                }
-            )
+
         }
-        Divider(color = Gray3)
     }
 }
 
@@ -429,11 +475,13 @@ private fun SelectOpenTypePopupPreview() {
     }
 }
 
-@Preview
-@Composable
-private fun WriteScrapOptionPreview() {
-    WriteScrapOptionView(
-        modifier = Modifier, isScrapAvailable = false,
-        isScrapUsed = true
-    ) {}
-}
+//@Preview
+//@Composable
+//private fun WriteScrapOptionPreview() {
+//    WriteScrapOptionView(
+//        modifier = Modifier, isScrapAvailable = false,
+//        isScrapUsed = true,
+//        {},
+//        option
+//    )
+//}

@@ -94,6 +94,16 @@ fun WriteScreen2(
             clicked = {
                 optionScreenShow = it
             }),
+        WriteAddOption(
+            type = WriteOptionsType2.SCRAP(
+                isScrapAvailable = selectedOpenType.value != WriteOpenType.PRIVATE,
+                isScrapUsed = false
+            ),
+            title = "스크랩",
+            tagList = emptyList(),
+            clicked = {
+                optionScreenShow = null
+            }),
     )
 
     if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
@@ -131,7 +141,10 @@ fun WriteScreen2(
                 optionsList = optionsList,
                 goToBack = { goToBack(writeInfo1) },
                 selectedOpenType = selectedOpenType,
-                write2OptionClicked = { optionScreenShow = it }
+                optionValueChanged = { changedOption ->
+                    val changedIndex = optionsList.indexOfFirst { it.type == changedOption.type }
+                    optionsList[changedIndex] = changedOption
+                }
             ) { }
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
@@ -143,6 +156,12 @@ fun WriteScreen2(
                     typeSelected = {
                         selectedOpenType.value = it
                         optionScreenShow = null
+                        val changedIndex =
+                            optionsList.indexOfFirst { option -> option.type is WriteOptionsType2.SCRAP }
+                        val scarpOption = optionsList[changedIndex]
+                        (scarpOption.type as WriteOptionsType2.SCRAP).isScrapAvailable =
+                            it != WriteOpenType.PRIVATE
+                        optionsList[changedIndex] = scarpOption
                     }
                 )
             }
@@ -158,8 +177,8 @@ private fun WriteScreen2ContentView(
     writeInfo1: WriteInfo1,
     optionsList: List<WriteAddOption>,
     goToBack: (WriteInfo1) -> Unit,
-    write2OptionClicked: (WriteOptionsType2) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
+    optionValueChanged: (WriteAddOption) -> Unit,
     goToAddBucket: () -> Unit,
 ) {
 
@@ -264,20 +283,12 @@ private fun WriteScreen2ContentView(
                         modifier = Modifier.fillMaxWidth(),
                         option = it,
                         isLastItem = it == optionsList.last(),
-                        optionClicked = { write2OptionClicked(it.type) }
+                        optionClicked = { it.clicked(it.type) },
+                        optionValueChanged = { option ->
+                            optionValueChanged(option)
+                        }
                     )
                 }
-            }
-
-            // TODO : 스크랩 상태가 바로 수정되지 않음
-            item {
-                WriteScrapOptionView(
-                    modifier = Modifier.fillMaxWidth(),
-                    isScrapAvailable = isScrapAvailable,
-                    isScrapUsed = if (isScrapAvailable) scrapUsed.value else false,
-                    scrapChanged = {
-                        scrapUsed.value = it
-                    })
             }
         }
     }
