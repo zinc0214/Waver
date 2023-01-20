@@ -341,20 +341,16 @@ private fun ContentView(
         item(key = "spacer") {
             Spacer(modifier = Modifier.height(30.dp))
         }
-
-
-        detailInfo.commentInfo?.let {
-            item(key = "commentLine") {
-                CommentLine()
-            }
-            item(key = "commentCountView") {
-                CommentCountView(it.commentCount)
-            }
-            item(key = "commentLayer") {
-                DetailCommentView(commentInfo = it, commentLongClicked = {
-                    clickEvent.invoke(CommentLongClicked(it))
-                })
-            }
+        item(key = "commentLine") {
+            CommentLine()
+        }
+        item(key = "commentCountView") {
+            CommentCountView(detailInfo.commentInfo?.commentCount ?: 0)
+        }
+        item(key = "commentLayer") {
+            DetailCommentView(commentInfo = detailInfo.commentInfo, commentLongClicked = {
+                clickEvent.invoke(CommentLongClicked(it))
+            })
         }
     }
 }

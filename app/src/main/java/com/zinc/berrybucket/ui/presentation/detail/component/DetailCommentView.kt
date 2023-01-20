@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentInfo
@@ -23,14 +24,14 @@ import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailCommentView(
-    commentInfo: CommentInfo, commentLongClicked: (Int) -> Unit
+    commentInfo: CommentInfo?, commentLongClicked: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(top = 20.dp)
     ) {
 
-        if (commentInfo.commentCount > 0) {
-            CommentListView(commentInfo.commenterList, commentLongClicked)
+        if ((commentInfo?.commentCount ?: 0) > 0) {
+            CommentListView(commentInfo?.commenterList.orEmpty(), commentLongClicked)
         } else {
             Spacer(modifier = Modifier.height(12.dp))
             CommentBlankView()
@@ -132,9 +133,15 @@ private fun CommentBlankView() {
     Text(
         modifier = Modifier
             .padding(horizontal = 28.dp)
-            .padding(bottom = 36.dp),
+            .padding(bottom = 140.dp),
         text = stringResource(R.string.commentBlankText),
         fontSize = dpToSp(14.dp),
         color = Gray6
     )
+}
+
+@Preview
+@Composable
+fun CommentBlankPreview() {
+    CommentBlankView()
 }
