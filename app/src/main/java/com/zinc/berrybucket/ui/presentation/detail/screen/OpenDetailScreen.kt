@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -108,6 +110,10 @@ fun OpenDetailLayer(
         // ComposeView 에서 observer 사용을 위해
         val lifecycleOwner = LocalLifecycleOwner.current
 
+        var visible by remember {
+            mutableStateOf(isCommentViewShown || !isScrollable)
+        }
+
         BaseTheme {
             Scaffold { _ ->
 
@@ -169,6 +175,7 @@ fun OpenDetailLayer(
                                 DetailAppBarClickEvent.CloseClicked -> {
                                     backPress()
                                 }
+
                                 DetailAppBarClickEvent.MoreOptionClicked -> {
                                     optionPopUpShowed.value = true
                                 }
@@ -187,6 +194,7 @@ fun OpenDetailLayer(
                                     is CommentLongClicked -> {
                                         commentOptionPopUpShowed.value = true to it.commentIndex
                                     }
+
                                     DetailClickEvent.SuccessClicked -> TODO()
                                 }
                             },
@@ -228,29 +236,32 @@ fun OpenDetailLayer(
 
 
                         // 최하단 EditTextView
-                        if (isCommentViewShown || !isScrollable) {
-                            AndroidView(modifier = Modifier
-                                .constrainAs(editView) {
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                    bottom.linkTo(parent.bottom)
-                                }
-                                .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
-                                .fillMaxWidth(), factory = {
-                                TaggableEditText(it).apply {
-                                    setUpView(viewModel = viewModel,
-                                        lifecycleOwner = lifecycleOwner,
-                                        originCommentTaggableList = originCommentTaggableList
-                                            ?: emptyList(),
-                                        updateValidTaggableList = { validList ->
-                                            validTaggableList.clear()
-                                            validTaggableList.addAll(validList)
-                                        },
-                                        commentSendButtonClicked = {
-                                            focusManager.clearFocus()
-                                        })
-                                }
-                            })
+                        Column(modifier = Modifier
+                            .constrainAs(editView) {
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }) {
+                            AnimatedVisibility(isCommentViewShown || !isScrollable) {
+                                AndroidView(modifier = Modifier
+                                    .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
+                                    .fillMaxWidth(), factory = {
+
+                                    TaggableEditText(it).apply {
+                                        setUpView(viewModel = viewModel,
+                                            lifecycleOwner = lifecycleOwner,
+                                            originCommentTaggableList = originCommentTaggableList
+                                                ?: emptyList(),
+                                            updateValidTaggableList = { validList ->
+                                                validTaggableList.clear()
+                                                validTaggableList.addAll(validList)
+                                            },
+                                            commentSendButtonClicked = {
+                                                focusManager.clearFocus()
+                                            })
+                                    }
+                                })
+                            }
                         }
                     }
                 }
