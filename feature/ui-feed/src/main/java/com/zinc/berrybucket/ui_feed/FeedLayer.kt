@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.feed
+package com.zinc.berrybucket.ui_feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,12 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.FeedInfo
-
 
 @Composable
 fun FeedLayer(feedItems: List<FeedInfo>) {

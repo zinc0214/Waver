@@ -1,11 +1,11 @@
-package com.zinc.berrybucket.ui.presentation.feed
+package com.zinc.berrybucket.ui_feed
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.presentation.feed.viewModel.FeedViewModel
+import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 
 @Composable
 fun Feed() {

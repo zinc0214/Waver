@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.feed.viewModel
+package com.zinc.berrybucket.ui_feed.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

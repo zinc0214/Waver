@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":datastore"))
     implementation(project(":feature:ui-common"))
     implementation(project(":feature:ui-my"))
+    implementation(project(":feature:ui-feed"))
 
     // android X
     implementation(Dep.AndroidX.coreKtx)

@@ -19,6 +19,7 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/ui-common" />
+            <option value="$PROJECT_DIR$/feature/ui-feed" />
             <option value="$PROJECT_DIR$/feature/ui-my" />
           </set>
         </option>

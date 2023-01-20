@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.feed
+package com.zinc.berrybucket.ui_feed
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3

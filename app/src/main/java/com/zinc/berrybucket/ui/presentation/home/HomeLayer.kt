@@ -23,8 +23,8 @@ import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.ui.presentation.SearchEvent
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
-import com.zinc.berrybucket.ui.presentation.feed.Feed
 import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
+import com.zinc.berrybucket.ui_feed.Feed
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 
