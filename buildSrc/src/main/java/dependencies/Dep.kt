@@ -43,7 +43,7 @@ object Dep {
 
         object Compose {
             const val compilerVersion = "1.3.2"
-            const val version = "1.3.0-alpha03"
+            const val version = "1.4.0-alpha04"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"

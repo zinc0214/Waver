@@ -14,8 +14,8 @@ data class CommonDetailDescInfo(
     val dDay: String,
     val tagList: List<String>,
     val title: String,
-    val goalCount: Int = 0,
-    val userCount: Int = 0
+    val goalCount: Int,
+    val userCount: Int
 ) : DetailDescType()
 
 data class CloseDetailDescInfo(
@@ -51,8 +51,8 @@ data class CommentTagInfo(
 )
 
 data class SuccessButtonInfo(
-    val goalCount: Int = 0,
-    val userCount: Int = 0
+    val goalCount: Int,
+    val userCount: Int
 )
 
 sealed class DetailDescType {

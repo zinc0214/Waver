@@ -3,6 +3,7 @@ package com.zinc.berrybucket.ui.presentation.detail.screen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
@@ -109,10 +110,6 @@ fun OpenDetailLayer(
 
         // ComposeView 에서 observer 사용을 위해
         val lifecycleOwner = LocalLifecycleOwner.current
-
-        var visible by remember {
-            mutableStateOf(isCommentViewShown || !isScrollable)
-        }
 
         BaseTheme {
             Scaffold { _ ->
@@ -209,20 +206,16 @@ fun OpenDetailLayer(
                                     height = Dimension.fillToConstraints
                                 })
 
+                        // 플로팅 완료 버튼 노출 조건
                         if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
-                            // 플로팅 완료 버튼
-                            if ((listScrollState.layoutInfo.visibleItemsInfo.last().key.hashCode() < flatButtonIndex)) {
+                            if ((listScrollState.layoutInfo.visibleItemsInfo.lastIndex < flatButtonIndex) && !isCommentViewShown) {
                                 DetailSuccessButtonView(modifier = Modifier
                                     .constrainAs(
                                         floatingButtonView
                                     ) {
                                         start.linkTo(parent.start)
                                         end.linkTo(parent.end)
-                                        if (isCommentViewShown) {
-                                            bottom.linkTo(editView.top)
-                                        } else {
-                                            bottom.linkTo(parent.bottom)
-                                        }
+                                        bottom.linkTo(parent.bottom)
                                     }
                                     .padding(bottom = 30.dp), successClicked = {
                                     // TODO : viewModel Scuccess
@@ -330,7 +323,7 @@ private fun ContentView(
             if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
                 return@item
             }
-            if (listState.layoutInfo.visibleItemsInfo.last().key.hashCode() >= flatButtonIndex || isCommentViewShown) {
+            Box(modifier = Modifier.alpha(if (listState.layoutInfo.visibleItemsInfo.lastIndex >= flatButtonIndex || isCommentViewShown) 1f else 0f)) {
                 DetailSuccessButtonView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
@@ -340,9 +333,9 @@ private fun ContentView(
                     ),
                     modifier = Modifier.padding(top = 30.dp)
                 )
-            } else {
-                Spacer(modifier = Modifier.height(30.dp))
             }
+
+
         }
 
         item(key = "spacer") {

@@ -132,7 +132,7 @@ class DetailViewModel @Inject constructor(
                 dDay = "D+201",
                 tagList = listOf("여행", "강남"),
                 title = "가나다라마바사",
-                goalCount = 0,
+                goalCount = 10,
                 userCount = 0
             ),
             memoInfo = MemoInfo(

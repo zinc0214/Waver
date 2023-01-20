@@ -1,5 +1,8 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -39,13 +42,19 @@ fun DetailSuccessButtonView(
             .clickable {
                 successClicked.invoke()
             }
-            .requiredHeightIn(min = if (isWide) 64.dp else 56.dp),
+            .requiredHeightIn(min = if (isWide) 64.dp else 56.dp)
+            .animateContentSize(
+                animationSpec = tween(
+                    durationMillis = 500,
+                    easing = LinearOutSlowInEasing
+                )
+            ),
         contentAlignment = Alignment.Center
     ) {
         if (successButtonInfo.goalCount > 0) {
             CountSuccessButton(successButtonInfo)
         } else {
-            SimpleSuccessButton( )
+            SimpleSuccessButton()
         }
     }
 }
