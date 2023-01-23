@@ -18,12 +18,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.core.text.HtmlCompat
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.util.dpToSp
 
@@ -82,41 +83,59 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        val (titleView, countView) = createRefs()
+        val (titleView, userCountView, goalCountView) = createRefs()
 
         SimpleSuccessButton(modifier = Modifier
             .constrainAs(titleView) {
                 start.linkTo(parent.start)
                 top.linkTo(parent.top)
                 bottom.linkTo(parent.bottom)
-                end.linkTo(countView.start)
+                end.linkTo(userCountView.start)
             }
 
-            .padding(start = 38.dp),
+            .padding(start = 24.dp),
             textAlign = TextAlign.Start)
 
-        val countText = stringResource(
-            R.string.successButtonCount,
-            successButtonInfo.userCount.toString(),
-            successButtonInfo.goalCount.toString()
-        )
+
 
         Text(
-            text = HtmlCompat.fromHtml(
-                countText,
-                HtmlCompat.FROM_HTML_MODE_COMPACT
-            ).toString(),
+            text = successButtonInfo.userCount.toString(),
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
             fontSize = dpToSp(16.dp),
+            color = Gray1,
             modifier = Modifier
-                .padding(end = 38.dp)
-                .constrainAs(countView) {
+                .constrainAs(userCountView) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(goalCountView.start)
+                }
+        )
+
+        Text(
+            text = "/${successButtonInfo.userCount}",
+            textAlign = TextAlign.End,
+            fontWeight = FontWeight.Bold,
+            fontSize = dpToSp(16.dp),
+            color = Main2,
+            modifier = Modifier
+                .padding(end = 24.dp)
+                .constrainAs(goalCountView) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     end.linkTo(parent.end)
                 }
         )
-
     }
+}
+
+@Preview
+@Composable
+fun CountSuccessButtonPreview() {
+    CountSuccessButton(
+        successButtonInfo = SuccessButtonInfo(
+            goalCount = 1,
+            userCount = 2
+        )
+    )
 }
