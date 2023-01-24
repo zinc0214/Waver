@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="moreProfileImageDesc">프로필 이미지</string>
+    <string name="goToBadgeChangeButtonText">변경</string>
+    <string name="goToUpdateProfile">프로필 관리</string>
 </resources>

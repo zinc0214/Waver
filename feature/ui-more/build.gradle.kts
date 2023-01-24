@@ -33,10 +33,17 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":datastore"))
+    implementation(project(":feature:ui-common"))
 
     val composeBom = platform("androidx.compose:compose-bom:2022.10.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
+
+    // compose
+    implementation(Dep.AndroidX.Compose.Bom.ui)
+    implementation(Dep.AndroidX.Compose.Bom.material)
+    implementation(Dep.AndroidX.Compose.tooling)
+    implementation(Dep.AndroidX.Compose.constraintLayout)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
