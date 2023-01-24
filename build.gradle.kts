@@ -9,6 +9,7 @@ buildscript {
         classpath(Dep.GradlePlugin.kotlin)
         classpath(Dep.GradlePlugin.kotlinSerialization)
         classpath(Dep.GradlePlugin.hilt)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20-dev-1059")
     }
 }
 
