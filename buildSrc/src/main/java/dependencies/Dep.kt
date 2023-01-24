@@ -52,16 +52,16 @@ object Dep {
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
             const val navigation = "androidx.navigation:navigation-compose:2.5.1"
-            const val accompanist = "com.google.accompanist:accompanist-permissions:0.25.1"
-            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.26.1-alpha"
+            const val accompanist = "com.google.accompanist:accompanist-permissions:0.29.0-alpha"
+            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.29.0-alpha"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
                 "androidx.constraintlayout:constraintlayout-compose:1.0.0"
             const val viewPager =
-                "com.google.accompanist:accompanist-pager:0.23.1"
-            const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.23.1"
+                "com.google.accompanist:accompanist-pager:0.29.0-alpha"
+            const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.29.0-alpha"
 
             object Bom {
                 const val runtime = "androidx.compose.runtime:runtime"
