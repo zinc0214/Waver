@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
@@ -30,6 +29,7 @@ import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 fun BerryBucketApp(
     action: (ActionWithActivity) -> Unit
 ) {
-    MaterialTheme {
+    BaseTheme {
         val coroutineScope = rememberCoroutineScope()
         val appState = rememberBerryBucketkAppState()
         val bottomSheetScaffoldState = rememberModalBottomSheetState(

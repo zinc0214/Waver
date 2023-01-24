@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -22,6 +21,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -60,8 +60,7 @@ internal fun MonthWithYearView(
             }
         )
 
-
-        Text(
+        MyText(
             text = "${year}년 " + parseMonth(month),
             fontSize = dpToSp(dp = 18.dp),
             color = Gray10,

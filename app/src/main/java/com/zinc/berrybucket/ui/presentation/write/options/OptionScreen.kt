@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +19,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -41,7 +41,7 @@ fun OptionScreen(options: List<WriteOption>) {
             ) {
                 val (title, content) = createRefs()
 
-                Text(
+                MyText(
                     modifier = Modifier
                         .padding(vertical = 21.dp, horizontal = 16.dp)
                         .constrainAs(title) {
@@ -54,7 +54,7 @@ fun OptionScreen(options: List<WriteOption>) {
                     text = option.title
                 )
 
-                Text(
+                MyText(
                     modifier = Modifier
                         .padding(vertical = 21.dp, horizontal = 20.dp)
                         .constrainAs(content) {

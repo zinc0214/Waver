@@ -43,7 +43,10 @@ fun SearchBottomView(
             MySearchClickEvent.CloseClicked -> {
                 isNeedToBottomSheetOpen(false)
             }
-            is MySearchClickEvent.ItemClicked -> TODO()
+
+            is MySearchClickEvent.ItemClicked -> {
+
+            }
         }
     })
 }

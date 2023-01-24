@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -118,12 +117,12 @@ private fun ProfileTextView(
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.padding(start = 7.dp)) {
-        Text(
+        MyText(
             text = titlePosition,
             fontSize = titlePositionTextSize,
             color = titlePositionTextColor
         )
-        Text(
+        MyText(
             text = nickname,
             fontSize = nickNameTextSize,
             color = nickNameTextColor

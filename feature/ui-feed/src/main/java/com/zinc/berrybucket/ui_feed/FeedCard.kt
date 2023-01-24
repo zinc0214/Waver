@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +29,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Main5
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicator
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.FeedInfo
@@ -104,7 +104,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
                     .size(61.dp, 21.dp)
                     .align(Alignment.Center)
             )
-            Text(
+            MyText(
                 text = stringResource(
                     id = if (isProcessing) R.string.proceedingText else R.string.succeedText
                 ),
@@ -118,7 +118,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
 
 @Composable
 private fun TitleView(modifier: Modifier = Modifier, title: String) {
-    Text(
+    MyText(
         modifier = modifier,
         text = title,
         fontSize = dpToSp(18.dp),
@@ -160,7 +160,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
 
             Spacer(modifier = Modifier.width(4.dp))
 
-            Text(
+            MyText(
                 text = feedInfo.likeCount,
                 color = Gray10,
                 fontSize = dpToSp(12.dp),
@@ -182,7 +182,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
 
             Spacer(modifier = Modifier.width(4.dp))
 
-            Text(
+            MyText(
                 text = feedInfo.commentCount,
                 color = Gray10,
                 fontSize = dpToSp(12.dp),

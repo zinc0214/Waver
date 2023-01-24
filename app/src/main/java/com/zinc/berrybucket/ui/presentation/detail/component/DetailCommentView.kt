@@ -3,10 +3,17 @@ package com.zinc.berrybucket.ui.presentation.detail.component
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +26,12 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.Commenter
-import com.zinc.berrybucket.ui.design.theme.*
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray8
+import com.zinc.berrybucket.ui.design.theme.Gray9
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -58,7 +70,7 @@ fun CommentCountView(commentCount: Int) {
 
         Spacer(modifier = Modifier.width(4.dp))
 
-        Text(
+        MyText(
             text = "$commentCount",
             color = Gray10,
             fontSize = dpToSp(15.dp),
@@ -113,12 +125,12 @@ private fun CommentDescView(
         )
 
         Column(modifier = Modifier.padding(start = 12.dp)) {
-            Text(
+            MyText(
                 text = commenter.nickName,
                 color = Gray9,
                 fontSize = dpToSp(13.dp),
             )
-            Text(
+            MyText(
                 text = commenter.comment,
                 color = Gray8,
                 fontSize = dpToSp(14.dp),
@@ -130,7 +142,7 @@ private fun CommentDescView(
 
 @Composable
 private fun CommentBlankView() {
-    Text(
+    MyText(
         modifier = Modifier
             .padding(horizontal = 28.dp)
             .padding(bottom = 140.dp),

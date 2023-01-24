@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +13,7 @@ import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import java.time.LocalDate
 
 @Composable
@@ -70,7 +70,7 @@ internal fun SingleDate(
         contentAlignment = Alignment.Center,
     ) {
         if (isOutOfRange.not()) {
-            Text(
+            MyText(
                 textAlign = TextAlign.Center,
                 modifier = Modifier,
                 text = day.toString(),

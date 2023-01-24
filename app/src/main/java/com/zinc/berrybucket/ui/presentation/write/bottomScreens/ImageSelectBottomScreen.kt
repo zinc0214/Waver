@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -13,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -25,7 +25,7 @@ fun ImageSelectBottomScreen(
             .padding(top = 32.dp, start = 28.dp, end = 28.dp, bottom = 28.dp)
     ) {
 
-        Text(
+        MyText(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -37,7 +37,7 @@ fun ImageSelectBottomScreen(
             color = Gray9
         )
 
-        Text(
+        MyText(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .clickable {

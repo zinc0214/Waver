@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +53,7 @@ import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.Switch
 import com.zinc.berrybucket.ui.presentation.common.SwitchOnlyView
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -62,7 +62,7 @@ import com.zinc.berrybucket.ui.util.dpToSp
 fun WriteTitleView(
     modifier: Modifier = Modifier, title: String
 ) {
-    Text(
+    MyText(
         modifier = modifier
             .padding(start = 28.dp, top = 28.dp, end = 28.dp)
             .fillMaxWidth(),
@@ -128,7 +128,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
             painter = painterResource(R.drawable.ico_16_right),
             contentDescription = null)
 
-        Text(
+        MyText(
             text = option.title,
             modifier = Modifier
                 .constrainAs(title) {
@@ -163,7 +163,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
             crossAxisSpacing = 8.dp,
         ) {
             option.tagList.forEach {
-                Text(
+                MyText(
                     text = it,
                     modifier = Modifier,
                     color = Main3,
@@ -189,7 +189,7 @@ fun AddedFriendItem(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        MyText(
             text = writeFriend.nickname,
             color = Gray9,
             fontSize = dpToSp(14.dp),
@@ -214,7 +214,7 @@ fun AddedFriendItem(
 fun ShowAllFriendItem(
     clicked: () -> Unit
 ) {
-    Text(
+    MyText(
         text = stringResource(id = R.string.showSelectedAllFriends),
         color = Main3,
         fontSize = dpToSp(14.dp),
@@ -270,7 +270,7 @@ fun WriteSelectFriendItem(
                     }
             )
 
-            Text(
+            MyText(
                 text = writeFriend.nickname,
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
@@ -320,7 +320,7 @@ fun SelectOpenTypePopup(
                     .padding(top = 24.dp, bottom = 22.dp)
             ) {
 
-                Text(
+                MyText(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 14.dp),
@@ -330,7 +330,7 @@ fun SelectOpenTypePopup(
                     fontWeight = FontWeight.Bold
                 )
 
-                Text(
+                MyText(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
@@ -342,7 +342,7 @@ fun SelectOpenTypePopup(
                     fontSize = 14.sp
                 )
 
-                Text(
+                MyText(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 10.dp)
@@ -355,7 +355,7 @@ fun SelectOpenTypePopup(
                 )
 
                 if (isPrivateAvailable) {
-                    Text(
+                    MyText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
@@ -401,7 +401,7 @@ fun WriteScrapOptionView(
                         bottom = 18.dp
                     ),
                 verticalAlignment = Alignment.CenterVertically) {
-                Text(
+                MyText(
                     text = stringResource(id = R.string.optionScrap),
                     color = if (isScrapAvailable) Gray10 else Gray7,
                     fontSize = dpToSp(16.dp)

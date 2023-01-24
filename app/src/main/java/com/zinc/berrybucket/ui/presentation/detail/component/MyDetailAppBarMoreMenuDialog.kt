@@ -1,12 +1,15 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -18,6 +21,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -80,7 +84,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
 
 @Composable
 private fun PppUpText(@StringRes text: Int) {
-    Text(
+    MyText(
         text = stringResource(id = text),
         color = Gray10,
         fontSize = dpToSp(14.dp),

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -224,7 +223,7 @@ fun NumberPicker(
 
 @Composable
 private fun Label(text: String, textStyle: TextStyle, modifier: Modifier) {
-    Text(
+    MyText(
         modifier = modifier
             .widthIn(min = 80.dp)
             .heightIn(min = 60.dp)

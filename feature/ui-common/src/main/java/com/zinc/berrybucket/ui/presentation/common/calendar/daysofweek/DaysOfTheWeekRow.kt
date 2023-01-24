@@ -6,12 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.calendar.differenceBetweenTimeLibStartDayOfWeekAndPassedStartDayOfWeek
 import com.zinc.berrybucket.ui.presentation.common.calendar.lengthOfWeek
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -38,7 +38,7 @@ internal fun DaysOfTheWeekRow(startDate: LocalDate, endDate: LocalDate) {
                     .weight(1f, true),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
+                MyText(
                     text = runningDate.dayOfWeek.getDisplayName(
                         TextStyle.NARROW,
                         Locale.getDefault(),

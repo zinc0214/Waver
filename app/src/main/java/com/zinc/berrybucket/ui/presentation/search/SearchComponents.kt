@@ -5,16 +5,30 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -33,10 +47,24 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.SearchRecommendType
-import com.zinc.berrybucket.ui.design.theme.*
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray9
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.*
+import com.zinc.common.models.KeyWordItem
+import com.zinc.common.models.RecentItem
+import com.zinc.common.models.SearchRecommendItems
+import com.zinc.common.models.SearchResultItems
+import com.zinc.common.models.UserItem
 
 
 @Composable
@@ -65,7 +93,7 @@ fun SearchTopAppBar(
             onClick = { closeClicked() })
 
         if (isTitleScrolled) {
-            Text(
+            MyText(
                 color = Gray10,
                 fontSize = dpToSp(16.dp),
                 fontWeight = FontWeight.Bold,
@@ -105,7 +133,7 @@ fun SearchEditView(
             .padding(horizontal = 24.dp)
     ) {
         val (searchEdit, deleteButton, divider) = createRefs()
-        BasicTextField(
+        MyTextField(
             value = searchText,
             textStyle = TextStyle(
                 color = Gray10, fontSize = dpToSp(22.dp), fontWeight = FontWeight.Medium
@@ -123,7 +151,7 @@ fun SearchEditView(
             decorationBox = { innerTextField ->
                 Row {
                     if (searchText.isEmpty()) {
-                        Text(text = hintText, color = Gray6, fontSize = dpToSp(22.dp))
+                        MyText(text = hintText, color = Gray6, fontSize = dpToSp(22.dp))
                     }
                     innerTextField()  //<-- Add this
                 }
@@ -185,7 +213,7 @@ fun RecommendKeyWordView(
             .padding(top = 20.dp)
     ) {
         Row(modifier = Modifier.padding(horizontal = 24.dp)) {
-            Text(text = stringResource(id = R.string.recentSearch),
+            MyText(text = stringResource(id = R.string.recentSearch),
                 fontSize = dpToSp(15.dp),
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECENT) Main4 else Gray6,
@@ -194,7 +222,7 @@ fun RecommendKeyWordView(
                     .clickable {
                         selectType = SearchRecommendType.RECENT
                     })
-            Text(text = stringResource(id = R.string.recommendSearch),
+            MyText(text = stringResource(id = R.string.recommendSearch),
                 fontSize = dpToSp(15.dp),
                 fontWeight = FontWeight.Bold,
                 color = if (selectType == SearchRecommendType.RECOMMEND) Main4 else Gray6,
@@ -252,7 +280,7 @@ private fun RecentSearchItem(
     ) {
         val (textView, deleteView) = createRefs()
 
-        Text(
+        MyText(
             text = recentItem.word,
             fontSize = dpToSp(15.dp),
             color = Gray9,
@@ -324,7 +352,7 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
         .padding(horizontal = 24.dp)) {
         val (textView, countView) = createRefs()
 
-        Text(text = "#${item.keyword}",
+        MyText(text = "#${item.keyword}",
             fontSize = dpToSp(15.dp),
             color = Gray9,
             modifier = Modifier
@@ -336,7 +364,7 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
                     end.linkTo(countView.start)
                     width = Dimension.fillToConstraints
                 })
-        Text(text = "${item.count}개",
+        MyText(text = "${item.count}개",
             fontSize = dpToSp(15.dp),
             color = Gray6,
             modifier = Modifier.constrainAs(countView) {
@@ -414,7 +442,7 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
                 buttonClicked()
             }, contentAlignment = Alignment.Center
     ) {
-        Text(
+        MyText(
             text = stringResource(id = R.string.showMore),
             color = Gray7,
             fontSize = dpToSp(14.dp),
@@ -464,7 +492,7 @@ fun SearchUserItemView(
             }
 
 
-            Text(
+            MyText(
                 text = item.nickName,
                 fontSize = dpToSp(14.dp),
                 color = Gray10,

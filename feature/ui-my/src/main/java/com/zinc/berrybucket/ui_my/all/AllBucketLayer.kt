@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -23,6 +22,7 @@ import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.FilterAndSearchImageView
 import com.zinc.berrybucket.ui_my.SimpleBucketListView
@@ -93,7 +93,7 @@ private fun BucketStateView(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
-        Text(text = proceedingText, fontSize = dpToSp(13.dp), color = Gray8)
+        MyText(text = proceedingText, fontSize = dpToSp(13.dp), color = Gray8)
         Divider(
             color = Gray4,
             modifier = Modifier
@@ -102,6 +102,6 @@ private fun BucketStateView(
                 .width(1.dp)
                 .align(Alignment.CenterVertically)
         )
-        Text(text = succeedingText, fontSize = dpToSp(13.dp), color = Gray8)
+        MyText(text = succeedingText, fontSize = dpToSp(13.dp), color = Gray8)
     }
 }

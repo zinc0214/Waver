@@ -2,10 +2,18 @@ package com.zinc.berrybucket.ui.presentation.write.bottomScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,6 +29,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.NumberPicker
 import com.zinc.berrybucket.ui.presentation.common.calendar.CalendarView
 import com.zinc.berrybucket.ui.presentation.write.DateViewModel
@@ -28,7 +37,7 @@ import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
 import java.time.LocalDate
-import java.util.*
+import java.util.Calendar
 
 
 @Composable
@@ -144,7 +153,7 @@ private fun DatePickerView(
             )
         }
 
-        Text(
+        MyText(
             text = stringResource(id = com.zinc.berrybucket.R.string.optionCalendarSelect),
             fontSize = dpToSp(dp = 18.dp),
             color = Gray10,

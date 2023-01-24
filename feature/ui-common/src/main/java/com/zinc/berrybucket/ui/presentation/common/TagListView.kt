@@ -2,7 +2,6 @@ package com.zinc.berrybucket.ui.presentation.common
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,7 +19,7 @@ fun TagListView(modifier: Modifier = Modifier, tagList: List<String>) {
 
 @Composable
 private fun TagView(modifier: Modifier = Modifier, tag: String) {
-    Text(
+    MyText(
         text = "# $tag",
         color = Main3,
         fontSize = dpToSp(15.dp),

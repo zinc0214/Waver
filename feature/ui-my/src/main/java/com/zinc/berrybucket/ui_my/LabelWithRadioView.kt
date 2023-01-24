@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -58,7 +58,7 @@ private fun RadioItemView(
         .clickable {
             changedSelectedItem.invoke(item.first)
         }) {
-        Text(
+        MyText(
             text = stringResource(id = item.second),
             color = if (isSelected) Main4 else Gray7,
             fontSize = dpToSp(16.dp),

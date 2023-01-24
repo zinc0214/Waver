@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +44,8 @@ import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -78,7 +78,7 @@ fun WriteAppBar(
                 clickEvent(WriteAppBarClickEvent.CloseClicked)
             })
 
-        Text(
+        MyText(
             modifier = Modifier
                 .constrainAs(moreButton) {
                     end.linkTo(parent.end)
@@ -119,7 +119,7 @@ fun WriteTitleFieldView(
     val keyboardController = LocalSoftwareKeyboardController.current
     var titleText by remember { mutableStateOf(TextFieldValue(title)) }
 
-    BasicTextField(
+    MyTextField(
         modifier = modifier,
         value = titleText,
         textStyle = TextStyle(
@@ -139,7 +139,7 @@ fun WriteTitleFieldView(
         decorationBox = { innerTextField ->
             Row {
                 if (titleText.text.isEmpty()) {
-                    Text(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
+                    MyText(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
                 }
                 innerTextField()  //<-- Add this
             }
@@ -157,7 +157,7 @@ fun MemoOptionView(
             .background(color = Gray2)
             .fillMaxWidth()
     ) {
-        Text(
+        MyText(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 20.dp, horizontal = 28.dp)

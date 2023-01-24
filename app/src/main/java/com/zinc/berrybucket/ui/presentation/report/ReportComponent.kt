@@ -1,18 +1,33 @@
 package com.zinc.berrybucket.ui.presentation.report
 
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -32,8 +47,14 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ReportClickEvent
-import com.zinc.berrybucket.ui.design.theme.*
+import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItem
@@ -70,7 +91,7 @@ fun ReportTopAppBar(
             contentDescription = stringResource(id = R.string.back)
         )
 
-        Text(
+        MyText(
             text = stringResource(id = R.string.commentReportTitle),
             fontSize = dpToSp(16.dp),
             color = Gray10,
@@ -131,7 +152,7 @@ fun ReportContentView(
         state = scrollState
     ) {
         item {
-            Text(
+            MyText(
                 text = stringResource(id = R.string.reportWriter),
                 fontSize = dpToSp(13.dp),
                 color = Gray7,
@@ -140,7 +161,7 @@ fun ReportContentView(
         }
 
         item {
-            Text(
+            MyText(
                 modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
                 text = reportInfo.writer,
                 fontSize = dpToSp(14.dp),
@@ -149,7 +170,7 @@ fun ReportContentView(
         }
 
         item {
-            Text(
+            MyText(
                 modifier = Modifier.padding(top = 8.dp, start = 28.dp, end = 28.dp),
                 text = stringResource(id = R.string.reportContents),
                 fontSize = dpToSp(13.dp),
@@ -158,7 +179,7 @@ fun ReportContentView(
         }
 
         item {
-            Text(
+            MyText(
                 modifier = Modifier.padding(top = 4.dp, start = 28.dp, end = 28.dp),
                 text = reportInfo.contents,
                 fontSize = dpToSp(14.dp),
@@ -243,7 +264,7 @@ fun ReportItemLayer(
                 else painterResource(id = R.drawable.ic_btn_radio_unselect),
                 contentDescription = stringResource(id = R.string.reportItemButton)
             )
-            Text(
+            MyText(
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp),
                 text = item.text,
                 fontSize = dpToSp(15.dp),
@@ -271,7 +292,7 @@ fun ETCTextField(
             .bringIntoViewRequester(bringIntoViewRequester)
     ) {
 
-        BasicTextField(
+        MyTextField(
             value = searchText,
             textStyle = TextStyle(
                 color = Gray10, fontSize = dpToSp(15.dp), fontWeight = FontWeight.Medium
@@ -285,7 +306,7 @@ fun ETCTextField(
             decorationBox = { innerTextField ->
                 Row {
                     if (searchText.text.isEmpty()) {
-                        Text(text = hintText, color = Gray7, fontSize = dpToSp(15.dp))
+                        MyText(text = hintText, color = Gray7, fontSize = dpToSp(15.dp))
                     }
                     innerTextField()  //<-- Add this
                 }
@@ -331,7 +352,7 @@ fun ReportButton(modifier: Modifier, reportButtonClicked: () -> Unit) {
             .requiredHeightIn(min = 56.dp),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        MyText(
             text = stringResource(id = R.string.reportActionButton),
             fontSize = dpToSp(16.dp),
             color = Gray10,

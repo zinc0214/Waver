@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,6 +18,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.EditButtonAndSearchImageView
 import com.zinc.berrybucket.ui_my.R
@@ -68,13 +68,13 @@ private fun TopView(
 @Composable
 private fun TopLeftView(modifier: Modifier = Modifier, recommendCategory: String) {
     Row(modifier = modifier) {
-        Text(
+        MyText(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = stringResource(id = R.string.recommendCategory),
             color = Gray8,
             fontSize = dpToSp(13.dp),
         )
-        Text(
+        MyText(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp),

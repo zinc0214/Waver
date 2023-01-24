@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -50,6 +49,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.ui.presentation.common.rememberNestedScrollConnection
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -84,7 +84,7 @@ fun RecommendTopBar(
 
 @Composable
 fun SearchTitle() {
-    Text(
+    MyText(
         text = stringResource(id = R.string.searchTitle),
         fontSize = dpToSp(24.dp),
         color = Gray10,
@@ -114,7 +114,7 @@ private fun SearchTextView(
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (searchEdit, searchButton) = createRefs()
 
-            Text(
+            MyText(
                 text = hintText,
                 color = Gray6,
                 fontSize = dpToSp(14.dp),
@@ -182,7 +182,7 @@ private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boo
                 .size(48.dp)
                 .padding(bottom = 10.dp)
         )
-        Text(
+        MyText(
             text = item.category,
             fontSize = dpToSp(14.dp),
             color = Gray10,
@@ -277,7 +277,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                Text(text = type.toKorean(), fontSize = dpToSp(15.dp), color = Gray10)
+                MyText(text = type.toKorean(), fontSize = dpToSp(15.dp), color = Gray10)
             }
 
             TagListView(
@@ -335,7 +335,7 @@ fun RecommendBucketItemView(
             ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
                 val (bucketTitle, copiedIcon) = createRefs()
 
-                Text(
+                MyText(
                     text = item.title,
                     fontSize = dpToSp(14.dp),
                     color = Gray10,
@@ -392,7 +392,7 @@ fun KeyWordChangeButton(modifier: Modifier) {
                 .width(24.dp),
             contentScale = ContentScale.Crop
         )
-        Text(
+        MyText(
             text = stringResource(id = R.string.keywordRefresh),
             fontSize = dpToSp(13.dp),
             color = Gray9

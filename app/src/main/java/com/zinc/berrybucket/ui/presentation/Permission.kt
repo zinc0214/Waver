@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
@@ -21,6 +20,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.zinc.berrybucket.ui.presentation.common.MyText
 
 
 @ExperimentalPermissionsApi
@@ -35,7 +35,7 @@ fun CameraPermission(
                 data = Uri.fromParts("package", context.packageName, null)
             })
         }) {
-            Text("Open Settings")
+            MyText("Open Settings")
         }
     }, content = {
         isAvailable(true)
@@ -106,12 +106,12 @@ private fun RationaleDialog(
     text: String, onRequestPermission: () -> Unit
 ) {
     AlertDialog(onDismissRequest = { /* Don't */ }, title = {
-        Text(text = "Permission request")
+        MyText(text = "Permission request")
     }, text = {
-        Text(text)
+        MyText(text)
     }, confirmButton = {
         Button(onClick = onRequestPermission) {
-            Text("Ok")
+            MyText("Ok")
         }
     })
 }

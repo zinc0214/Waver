@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,7 @@ import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -65,7 +65,7 @@ private fun SimpleSuccessButton(
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Center
 ) {
-    Text(
+    MyText(
         text = stringResource(id = R.string.successButtonText),
         textAlign = textAlign,
         color = Gray1,
@@ -98,7 +98,7 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
 
 
 
-        Text(
+        MyText(
             text = successButtonInfo.userCount.toString(),
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
@@ -112,7 +112,7 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
                 }
         )
 
-        Text(
+        MyText(
             text = "/${successButtonInfo.userCount}",
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,

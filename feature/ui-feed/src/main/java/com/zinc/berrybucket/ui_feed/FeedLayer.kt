@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.FeedInfo
 
@@ -51,7 +51,7 @@ fun FeedLayer(feedItems: List<FeedInfo>) {
 
 @Composable
 private fun TitleView(modifier: Modifier = Modifier) {
-    Text(
+    MyText(
         text = stringResource(id = R.string.feedContentTitle),
         color = Gray10,
         fontSize = dpToSp(24.dp),

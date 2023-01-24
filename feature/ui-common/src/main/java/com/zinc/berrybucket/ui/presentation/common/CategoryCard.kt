@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -123,7 +122,7 @@ private fun CategoryRightView(modifier: Modifier = Modifier, count: String) {
 
 @Composable
 private fun CategoryCountView(modifier: Modifier = Modifier, count: String) {
-    Text(
+    MyText(
         modifier = modifier,
         text = count,
         color = Gray7,
@@ -146,7 +145,7 @@ private fun CategoryLeftView(modifier: Modifier = Modifier, name: String) {
 
 @Composable
 private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
-    Text(
+    MyText(
         modifier = modifier,
         text = name,
         color = Gray9,

@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,6 +39,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Sub_D2
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
@@ -174,7 +174,7 @@ private fun DdayBadgeView(info: UIBucketInfoSimple) {
         shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp),
         backgroundColor = info.dDayBadgeColor!!
     ) {
-        Text(
+        MyText(
             modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 3.dp, bottom = 3.dp),
             text = info.dDayText!!,
             fontSize = dpToSp(12.dp),
@@ -185,7 +185,7 @@ private fun DdayBadgeView(info: UIBucketInfoSimple) {
 
 @Composable
 private fun TitleTextView(title: String) {
-    Text(
+    MyText(
         text = title,
         color = Gray10,
         fontSize = dpToSp(14.dp),
@@ -219,12 +219,12 @@ private fun CountProgressView(
             countProgressColor
         )
         Spacer(modifier = Modifier.width(12.dp))
-        Text(
+        MyText(
             text = bucketCount.toString(),
             color = countProgressColor,
             fontSize = dpToSp(13.dp),
         )
-        Text(
+        MyText(
             text = "/${info.goalCountText()}",
             color = Gray4,
             fontSize = dpToSp(13.dp),

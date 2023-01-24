@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -36,9 +35,11 @@ import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.all.AllBucketLayer
 import com.zinc.berrybucket.ui_my.category.CategoryLayer
@@ -64,19 +65,21 @@ fun MyScreen(
     val pagerState = rememberPagerState()
 
     profileInfo?.let { profile ->
-        AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
-            MyView(context).apply {
-                setProfileInfo(profile)
-                setTabView(tabItems = tabItems,
-                    pagerState = pagerState,
-                    viewModel = viewModel,
-                    coroutineScope = coroutineScope,
-                    onBucketSelected = onBucketSelected,
-                    bottomSheetClicked = {
-                        bottomSheetClicked.invoke(it)
-                    })
-            }
-        })
+        BaseTheme {
+            AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
+                MyView(context).apply {
+                    setProfileInfo(profile)
+                    setTabView(tabItems = tabItems,
+                        pagerState = pagerState,
+                        viewModel = viewModel,
+                        coroutineScope = coroutineScope,
+                        onBucketSelected = onBucketSelected,
+                        bottomSheetClicked = {
+                            bottomSheetClicked.invoke(it)
+                        })
+                }
+            })
+        }
     }
 }
 
@@ -244,7 +247,7 @@ private fun MyTab(
         .clickable {
             isClicked(currentIndex)
         }) {
-        Text(text = stringResource(id = mySection.title),
+        MyText(text = stringResource(id = mySection.title),
             style = if (isSelected) textStyle.copy(color = Gray10)
             else textStyle.copy(color = Gray6),
             onTextLayout = { textLayoutResult ->

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -25,6 +24,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.category.CategoryViewModel
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo
@@ -71,7 +71,7 @@ private fun CategorySelectView(
                 items(items = categoryInfoList, key = { keyCategory ->
                     keyCategory.id
                 }, itemContent = { category ->
-                    Text(
+                    MyText(
                         text = category.name,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -94,7 +94,7 @@ private fun CategorySelectView(
                 }) {
 
                 Divider(color = Gray4, thickness = 1.dp)
-                Text(
+                MyText(
                     text = stringResource(id = R.string.optionCategoryAddButton),
                     color = Main4,
                     fontSize = dpToSp(dp = 15.dp),

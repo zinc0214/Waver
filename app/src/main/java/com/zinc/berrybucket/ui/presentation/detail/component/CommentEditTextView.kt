@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -31,6 +33,8 @@ import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.util.dpToSp
 
@@ -78,7 +82,7 @@ fun CommentEditTextView(
         ) {
             val (textField, addButton) = createRefs()
 
-            BasicTextField(
+            MyTextField(
                 modifier = Modifier
                     .padding(top = 8.dp, bottom = 8.dp, start = 10.dp, end = 8.dp)
                     .constrainAs(textField) {
@@ -101,7 +105,7 @@ fun CommentEditTextView(
                 maxLines = 3,
                 decorationBox = { innerTextField ->
                     if (commentText.text.isBlank()) {
-                        Text(text = hintText, color = Gray6, fontSize = dpToSp(14.dp))
+                        MyText(text = hintText, color = Gray6, fontSize = dpToSp(14.dp))
                     }
                     Row {
                         innerTextField()  //<-- Add this

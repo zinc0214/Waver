@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -20,6 +19,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 /**
@@ -55,14 +55,14 @@ fun CommentSelectedDialog(
                 .background(color = Gray1, shape = RoundedCornerShape(8.dp))
                 .padding(24.dp)
         ) {
-            Text(
+            MyText(
                 text = stringResource(id = R.string.commentOptionDialogTitle),
                 fontSize = dpToSp(14.dp),
                 fontWeight = FontWeight.Bold,
                 color = Gray10,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
-            Text(
+            MyText(
                 text = stringResource(id = if (commenter.isMine) R.string.commentEdit else R.string.commentHide),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
@@ -77,7 +77,7 @@ fun CommentSelectedDialog(
                         )
                     }
             )
-            Text(
+            MyText(
                 text = stringResource(id = if (commenter.isMine) R.string.commentDelete else R.string.commentReport),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,

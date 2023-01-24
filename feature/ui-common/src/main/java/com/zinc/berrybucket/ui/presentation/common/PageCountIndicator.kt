@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +31,7 @@ fun PageCountIndicator(
             .padding(vertical = 3.dp, horizontal = 8.dp),
         contentAlignment = Alignment.CenterStart
     ) {
-        Text(
+        MyText(
             text = "${pagerState.currentPage + 1}/${pagerState.pageCount}",
             color = Gray1,
             fontSize = dpToSp(12.dp),

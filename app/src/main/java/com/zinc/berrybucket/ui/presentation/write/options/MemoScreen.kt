@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +17,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -58,7 +58,7 @@ fun MemoScreen(
                 }
             })
 
-        BasicTextField(
+        MyTextField(
             modifier = modifier
                 .constrainAs(textField) {
                     top.linkTo(appBar.bottom)
@@ -73,13 +73,13 @@ fun MemoScreen(
             textStyle = TextStyle(
                 color = Gray10,
                 fontSize = dpToSp(24.dp),
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
             ),
             onValueChange = { currentMemo.value = it },
             decorationBox = { innerTextField ->
                 Row {
                     if (currentMemo.value.isEmpty()) {
-                        Text(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
+                        MyText(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
                         nextButtonClickable.value = false
                     } else {
                         nextButtonClickable.value = true

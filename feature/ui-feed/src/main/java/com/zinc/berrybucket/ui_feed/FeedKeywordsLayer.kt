@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +38,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.FeedKeyWord
@@ -108,7 +108,7 @@ private fun FeedCollapsingToolbar(
     val topPadding by animateDpAsState(targetValue = max(34.dp, 40.dp * scrollOffset))
     val bottomPadding by animateDpAsState(targetValue = max(14.dp, 40.dp * scrollOffset))
 
-    Text(
+    MyText(
         text = if (scrollOffset > 0.0 && !isScrolled) stringResource(id = R.string.feedRecommendTitle) else stringResource(
             id = R.string.feedRecommendSmallTitle
         ),
@@ -181,7 +181,7 @@ private fun BucketRecommendButton(modifier: Modifier = Modifier, recommendClicke
         .clickable {
             recommendClicked()
         }) {
-        Text(
+        MyText(
             text = stringResource(id = R.string.recommendBucketList),
             textAlign = TextAlign.Center,
             color = Gray1,

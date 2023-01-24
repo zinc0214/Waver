@@ -1,8 +1,11 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +16,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.TagListView
 import com.zinc.berrybucket.ui.util.dpToSp
 
@@ -53,7 +57,7 @@ private fun DdayView(modifier: Modifier = Modifier, dday: String) {
                     .size(65.dp, 22.dp)
                     .align(Alignment.Center)
             )
-            Text(
+            MyText(
                 text = dday,
                 color = Error2,
                 fontSize = dpToSp(14.dp),
@@ -65,7 +69,7 @@ private fun DdayView(modifier: Modifier = Modifier, dday: String) {
 
 @Composable
 private fun TitleView(modifier: Modifier = Modifier, title: String) {
-    Text(
+    MyText(
         text = title,
         color = Gray10,
         fontSize = dpToSp(24.dp),

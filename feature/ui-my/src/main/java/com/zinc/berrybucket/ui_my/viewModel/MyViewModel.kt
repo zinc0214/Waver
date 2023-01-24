@@ -77,7 +77,7 @@ class MyViewModel @Inject constructor(
 
     private fun loadDummyProfile() {
         val topProfile = TopProfile(
-            nickName = "HANA",
+            nickName = "한아로해봐",
             profileImg = "ddd",
             percent = 0.6f,
             badgeType = BadgeType.TRIP1,

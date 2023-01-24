@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,6 +20,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.LabelWithRadioView
 import com.zinc.berrybucket.ui_my.R
@@ -122,7 +122,7 @@ fun MyAllBucketFilterBottomScreen(
 private fun FilterTitleLabel(
     @StringRes labelText: Int, modifier: Modifier = Modifier
 ) {
-    Text(
+    MyText(
         modifier = modifier.padding(horizontal = 28.dp),
         text = stringResource(id = labelText),
         color = Gray7,

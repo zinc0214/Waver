@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -51,6 +49,8 @@ import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.common.CategoryListView
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.presentation.common.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
@@ -137,7 +137,7 @@ private fun TopAppBar(clickEvent: (MySearchClickEvent) -> Unit) {
                     clickEvent(MySearchClickEvent.CloseClicked)
                 })
     }, title = {
-        Text(text = "")
+        MyText(text = "")
     }, backgroundColor = Gray1, elevation = 0.dp
     )
 }
@@ -150,7 +150,7 @@ private fun SearchEditView(
     Row(
         modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
     ) {
-        Text(
+        MyText(
             text = stringResource(type.title),
             color = Main4,
             fontSize = dpToSp(20.dp),
@@ -170,7 +170,7 @@ private fun SearchEditView(
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf(TextFieldValue("")) }
 
-    BasicTextField(
+    MyTextField(
         value = searchText,
         textStyle = TextStyle(
             color = Gray10, fontSize = dpToSp(20.dp), fontWeight = FontWeight.Medium
@@ -185,7 +185,7 @@ private fun SearchEditView(
         decorationBox = { innerTextField ->
             Row {
                 if (searchText.text.isEmpty()) {
-                    Text(text = hintText, color = Gray6, fontSize = dpToSp(20.dp))
+                    MyText(text = hintText, color = Gray6, fontSize = dpToSp(20.dp))
                 }
                 innerTextField()  //<-- Add this
             }

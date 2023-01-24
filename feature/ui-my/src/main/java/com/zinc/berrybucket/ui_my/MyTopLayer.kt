@@ -18,7 +18,6 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabPosition
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,8 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -38,6 +39,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.ProfileCircularProgressBar
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.domain.models.TopProfile
@@ -106,7 +108,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
+        MyText(
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
@@ -116,23 +118,23 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
+        MyText(
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.nickName,
             fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Normal,
             fontSize = dpToSp(20.dp),
             color = Gray10,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
+        MyText(
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
             text = profileInfo.bio ?: "",
-            fontWeight = FontWeight.Bold,
             fontSize = dpToSp(14.dp),
             color = Gray7,
             textAlign = TextAlign.Center
@@ -159,7 +161,7 @@ private fun FollowStateLayer(topProfile: TopProfile, modifier: Modifier) {
 @Composable
 private fun FollowStateView(modifier: Modifier, count: String, text: String) {
     Row(modifier = modifier) {
-        Text(
+        MyText(
             text = text,
             fontSize = dpToSp(13.dp),
             color = Gray9,
@@ -167,7 +169,7 @@ private fun FollowStateView(modifier: Modifier, count: String, text: String) {
             modifier = Modifier.align(Alignment.CenterVertically)
         )
         Spacer(modifier = Modifier.width(8.dp))
-        Text(
+        MyText(
             text = count,
             fontSize = dpToSp(15.dp),
             color = Gray9,
@@ -215,7 +217,7 @@ fun Tabs(tabs: List<String>) {
             Tab(selected = tabIndex == index, onClick = {
                 tabIndex = index
             }, text = {
-                Text(text = title)
+                MyText(text = title)
             })
         }
     }
@@ -239,4 +241,21 @@ fun Modifier.customTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = indicatorOffset)
         .width(indicatorWidth)
+}
+
+@Composable
+@Preview
+private fun ProfileLayerPreview() {
+    ProfileLayer(
+        profileInfo = TopProfile(
+            nickName = "한아라고해",
+            profileImg = null,
+            percent = 0.0f,
+            badgeType = null,
+            titlePosition = "딩가딩가딩 딩가링가링",
+            bio = "안녕, 나를 한 아 라고 불러줘",
+            followerCount = "10",
+            followingCount = "20"
+        )
+    )
 }

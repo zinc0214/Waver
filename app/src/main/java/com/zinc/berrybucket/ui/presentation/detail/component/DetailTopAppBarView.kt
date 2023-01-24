@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,6 +17,7 @@ import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 
@@ -54,7 +54,7 @@ fun DetailTopAppBar(
         )
 
         if (isTitleScrolled) {
-            Text(
+            MyText(
                 color = Gray10,
                 fontSize = dpToSp(16.dp),
                 fontWeight = FontWeight.Bold,

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,7 +82,7 @@ fun BottomButtonView(
                     },
 
                 ) {
-                Text(
+                MyText(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(id = leftText),
                     color = if (leftButtonEnable) Main4 else Gray6,
@@ -107,7 +106,7 @@ fun BottomButtonView(
                     }
 
             ) {
-                Text(
+                MyText(
                     modifier = Modifier.align(Alignment.Center),
                     text = stringResource(id = rightText),
                     color = if (rightButtonEnable) Main4 else Gray6,

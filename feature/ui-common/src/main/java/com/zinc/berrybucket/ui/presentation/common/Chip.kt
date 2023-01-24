@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,7 +35,7 @@ fun RoundChip(
         modifier = modifier.clip(RoundedCornerShape(chipRadius)),
         elevation = 0.dp
     ) {
-        Text(
+        MyText(
             text = text,
             color = if (isSelected) selectedColor else unSelectedColor,
             fontSize = dpToSp(15.dp),
