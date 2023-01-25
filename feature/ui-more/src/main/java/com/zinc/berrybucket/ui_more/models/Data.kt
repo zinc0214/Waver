@@ -9,3 +9,12 @@ data class UIMoreMyProfileInfo(
     val badgeTitle: String,
     val bio: String
 )
+
+enum class MoreItemType {
+    ALARM, BLOCK, QNA, APP_INFO, LOGOUT
+}
+
+data class UIMoreItemData(
+    val text: String,
+    val type: MoreItemType
+)

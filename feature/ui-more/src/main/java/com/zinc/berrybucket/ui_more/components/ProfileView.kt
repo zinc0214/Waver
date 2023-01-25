@@ -45,7 +45,7 @@ import com.zinc.berrybucket.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.common.models.BadgeType
 
 @Composable
-internal fun ProfileView(info: UIMoreMyProfileInfo) {
+internal fun MoreTopProfileView(info: UIMoreMyProfileInfo) {
     ConstraintLayout(
         modifier = Modifier
             .padding(28.dp)
@@ -118,7 +118,7 @@ private fun ProfileTextView(modifier: Modifier, info: UIMoreMyProfileInfo) {
         )
 
         MyText(
-            text = info.name, color = Gray7, fontSize = dpToSp(dp = 14.dp),
+            text = info.bio, color = Gray7, fontSize = dpToSp(dp = 14.dp),
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)
         )
@@ -187,7 +187,7 @@ private fun ProfileImagePreview() {
 @Preview
 @Composable
 private fun ProfilePreview() {
-    ProfileView(
+    MoreTopProfileView(
         info = UIMoreMyProfileInfo(
             name = "한아라고",
             imgUrl = "",
