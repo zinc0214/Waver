@@ -7,11 +7,12 @@ import com.zinc.berrybucket.ui_more.components.BerryClubLabelView
 import com.zinc.berrybucket.ui_more.components.MoreItemsView
 import com.zinc.berrybucket.ui_more.components.MoreTitleView
 import com.zinc.berrybucket.ui_more.components.MoreTopProfileView
+import com.zinc.berrybucket.ui_more.models.MoreItemType
 import com.zinc.berrybucket.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.common.models.BadgeType
 
 @Composable
-fun MoreScreen(modifier: Modifier = Modifier) {
+fun MoreScreen(modifier: Modifier = Modifier, moreItemClicked: (MoreItemType) -> Unit) {
     Column {
         MoreTitleView()
         MoreTopProfileView(
@@ -28,7 +29,7 @@ fun MoreScreen(modifier: Modifier = Modifier) {
         }
 
         MoreItemsView {
-
+            moreItemClicked(it)
         }
     }
 

@@ -5,4 +5,17 @@
     <string name="goToBadgeChangeButtonText">변경</string>
     <string name="goToUpdateProfile">프로필 관리</string>
     <string name="goToJoinBerryClub">달콤베리 클럽 가입하기</string>
+    <string name="alarmSettingTitle">알림 설정</string>
+    <string name="alarmSettingServiceAlarm">서비스 알림</string>
+    <string name="alarmSettingNewFollower">새 팔로워</string>
+    <string name="alarmSettingLike">좋아요</string>
+    <string name="alarmSettingDday">디데이</string>
+    <string name="alarmSettingDdayDesc">디데이가 다가온 버킷리스트가 있을 경우 알림 수신</string>
+    <string name="alarmSettingComment">댓글</string>
+    <string name="alarmSettingCommentDesc">작성한 버킷리스트에 댓글이 작성될 경우,\n 멘션이 되었을 경우에 알림 수신</string>
+    <string name="alarmSettingFriends">함께한 친구들의 활동</string>
+    <string name="alarmSettingFriendsDesc"> 버킷리스트를 함께하는 경우,\n친구들의 진행상황 알림</string>
+    <string name="alarmSettingBenefitAlarm">혜택 알림</string>
+    <string name="alarmSettingEvent">이벤트</string>
+    <string name="alarmSettingUpdate">업데이트</string>
 </resources>

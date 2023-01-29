@@ -146,6 +146,12 @@ class BerryBucketAppState(
             )
         }
     }
+
+    fun navigateToMoreAlarmSetting(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MoreDestinations.ALARM_SETTING)
+        }
+    }
 }
 
 /**

@@ -33,6 +33,7 @@ import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
+import com.zinc.berrybucket.ui.presentation.MoreDestinations.ALARM_SETTING
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE1
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE2
@@ -46,6 +47,12 @@ import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
+import com.zinc.berrybucket.ui_more.AlarmSettingScreen
+import com.zinc.berrybucket.ui_more.models.MoreItemType.ALARM
+import com.zinc.berrybucket.ui_more.models.MoreItemType.APP_INFO
+import com.zinc.berrybucket.ui_more.models.MoreItemType.BLOCK
+import com.zinc.berrybucket.ui_more.models.MoreItemType.LOGOUT
+import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
@@ -84,7 +91,7 @@ fun BerryBucketApp(
                 }
 
             },
-            sheetShape = if (currentBottomSheet is com.zinc.berrybucket.ui_my.BottomSheetScreenType.FilterScreen) RoundedCornerShape(
+            sheetShape = if (currentBottomSheet is BottomSheetScreenType.FilterScreen) RoundedCornerShape(
                 topEnd = 16.dp, topStart = 16.dp
             ) else RoundedCornerShape(0.dp)
         ) {
@@ -111,34 +118,47 @@ fun BerryBucketApp(
                         modifier = Modifier.padding(innerPaddingModifier)
                     ) {
 
-                        addHomeGraph(onBucketSelected = { selected, nav ->
-                            when (selected) {
-                                is BucketSelected.GoToDetailBucket -> {
-                                    if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
-                                        appState.navigateToCloseBucketDetail(
-                                            selected.bucketInfo.id, nav
-                                        )
-                                    } else {
-                                        appState.navigateToOpenBucketDetail(
-                                            selected.bucketInfo.id, nav
-                                        )
+                        addHomeGraph(
+                            onBucketSelected = { selected, nav ->
+                                when (selected) {
+                                    is BucketSelected.GoToDetailBucket -> {
+                                        if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
+                                            appState.navigateToCloseBucketDetail(
+                                                selected.bucketInfo.id, nav
+                                            )
+                                        } else {
+                                            appState.navigateToOpenBucketDetail(
+                                                selected.bucketInfo.id, nav
+                                            )
+                                        }
                                     }
                                 }
-                            }
-                        }, onSearchEvent = { event, nav ->
-                            when (event) {
-                                SearchEvent.GoToSearch -> {
-                                    appState.navigateToSearch(nav)
+                            },
+                            onSearchEvent = { event, nav ->
+                                when (event) {
+                                    SearchEvent.GoToSearch -> {
+                                        appState.navigateToSearch(nav)
+                                    }
                                 }
-                            }
-                        }, bottomSheetClicked = { event, nav ->
-                            if (event is com.zinc.berrybucket.ui_my.BottomSheetScreenType.SearchScreen) {
-                                appState.navigateToMySearch(event.selectTab, nav)
-                            } else {
-                                currentBottomSheet = event
-                                isNeedToBottomSheetOpen.invoke(true)
-                            }
-                        })
+                            },
+                            bottomSheetClicked = { event, nav ->
+                                if (event is BottomSheetScreenType.SearchScreen) {
+                                    appState.navigateToMySearch(event.selectTab, nav)
+                                } else {
+                                    currentBottomSheet = event
+                                    isNeedToBottomSheetOpen.invoke(true)
+                                }
+                            },
+                            moreItemClicked = { type, nav ->
+                                when (type) {
+                                    ALARM -> appState.navigateToMoreAlarmSetting(nav)
+                                    BLOCK -> {}
+                                    QNA -> {}
+                                    APP_INFO -> {}
+                                    LOGOUT -> {}
+                                }
+                            },
+                        )
 
                         homeSearchNavGraph(backPress = appState::backPress)
 
@@ -162,6 +182,7 @@ fun BerryBucketApp(
                         writeNavGraph2(backPress = { nav, info ->
                             appState.navigateToWrite1(nav, info)
                         })
+                        moreAlarmNavGraph(backPress = appState::backPress)
                     }
                 }
             }
@@ -192,6 +213,10 @@ object WriteDestinations {
     const val GO_TO_WRITE1 = "go_to_write1"
     const val GO_TO_WRITE2 = "go_to_write2"
     const val WRITE_INFO = "write_info"
+}
+
+object MoreDestinations {
+    const val ALARM_SETTING = "alarm_setting"
 }
 
 sealed class SearchEvent {
@@ -313,5 +338,15 @@ private fun NavGraphBuilder.writeNavGraph2(
             writeInfo1 = writeInfo1,
             goToBack = { newInfo -> backPress(nav, newInfo) },
             goToAddBucket = {})
+    }
+}
+
+private fun NavGraphBuilder.moreAlarmNavGraph(
+    backPress: () -> Unit
+) {
+    composable(ALARM_SETTING) {
+        AlarmSettingScreen {
+            backPress()
+        }
     }
 }
