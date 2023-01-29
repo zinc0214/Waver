@@ -8,7 +8,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -42,9 +41,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ReportClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
@@ -52,7 +49,6 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main4
-import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -60,79 +56,6 @@ import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 import kotlinx.coroutines.launch
-
-
-@Composable
-fun ReportTopAppBar(
-    modifier: Modifier,
-    isDividerVisible: Boolean,
-    backButtonClicked: () -> Unit
-) {
-
-    ConstraintLayout(
-        modifier = modifier
-            .background(color = Gray1)
-            .height(52.dp)
-    ) {
-        val (backButton, title, bottomDivider) = createRefs()
-
-        IconButton(
-            onClick = { backButtonClicked() },
-            image = R.drawable.btn_40_back,
-            modifier = Modifier
-                .size(40.dp)
-                .padding(start = 14.dp)
-                .fillMaxHeight()
-                .constrainAs(backButton) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                },
-            contentDescription = stringResource(id = R.string.back)
-        )
-
-        MyText(
-            text = stringResource(id = R.string.commentReportTitle),
-            fontSize = dpToSp(16.dp),
-            color = Gray10,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .constrainAs(title) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
-        )
-
-
-        if (isDividerVisible) {
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(bottomDivider) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    },
-                color = Gray3
-            )
-        }
-    }
-
-}
-
-@Preview
-@Composable
-fun Test() {
-    ReportTopAppBar(
-        modifier = Modifier.fillMaxWidth(),
-        isDividerVisible = true,
-        backButtonClicked = {
-
-        }
-    )
-}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

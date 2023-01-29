@@ -15,7 +15,7 @@
     <string name="countChange">완료횟수변경</string>
     <string name="selected">선택 버튼</string>
     <string name="copy">버킷리스트 복사 버튼</string>
-    <string name="back">뒤로가기</string>
+    <string name="backDesc">뒤로가기</string>
     <string name="closeDesc">닫기</string>
     <string name="moreButtonDesc">더보기 버튼</string>
     <string name="nextButtonDesc">다음 버튼</string>
