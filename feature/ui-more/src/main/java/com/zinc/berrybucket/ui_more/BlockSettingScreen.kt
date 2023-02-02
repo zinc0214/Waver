@@ -22,12 +22,11 @@ fun BlockSettingScreen(onBackPressed: () -> Unit) {
             )
         }
     }
-    Column(modifier = Modifier.fillMaxWidth()) {
 
+    Column(modifier = Modifier.fillMaxWidth()) {
         BlockTitle {
             onBackPressed()
         }
-
         LazyColumn(contentPadding = PaddingValues(top = 16.dp)) {
             items(items = members, key = { member ->
                 member.id
@@ -35,6 +34,5 @@ fun BlockSettingScreen(onBackPressed: () -> Unit) {
                 BlockMemberView(member)
             })
         }
-
     }
 }
