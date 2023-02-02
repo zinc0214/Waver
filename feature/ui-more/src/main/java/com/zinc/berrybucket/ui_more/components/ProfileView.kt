@@ -100,13 +100,13 @@ private fun ProfileTextView(modifier: Modifier, info: UIMoreMyProfileInfo) {
                 color = Gray6,
                 fontSize = dpToSp(dp = 12.dp),
                 modifier = Modifier
-                    .background(shape = RoundedCornerShape(10.dp), color = Gray2)
-                    .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = Gray3)
-                    .clip(shape = RoundedCornerShape(10.dp))
+                    .background(shape = RoundedCornerShape(12.dp), color = Gray2)
+                    .border(width = 1.dp, shape = RoundedCornerShape(12.dp), color = Gray3)
+                    .clip(shape = RoundedCornerShape(12.dp))
                     .clickable(onClick = {
 
                     }, role = Role.Button)
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .padding(horizontal = 9.dp, vertical = 4.dp)
             )
         }
 

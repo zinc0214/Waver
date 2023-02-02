@@ -5,6 +5,8 @@
     <string name="goToBadgeChangeButtonText">변경</string>
     <string name="goToUpdateProfile">프로필 관리</string>
     <string name="goToJoinBerryClub">달콤베리 클럽 가입하기</string>
+
+    <!--알림 설정-->
     <string name="alarmSettingTitle">알림 설정</string>
     <string name="alarmSettingServiceAlarm">서비스 알림</string>
     <string name="alarmSettingNewFollower">새 팔로워</string>
@@ -18,4 +20,8 @@
     <string name="alarmSettingBenefitAlarm">혜택 알림</string>
     <string name="alarmSettingEvent">이벤트</string>
     <string name="alarmSettingUpdate">업데이트</string>
+
+    <!--차단 관리-->
+    <string name="blockSettingTitle">차단 관리</string>
+    <string name="nonBlocking">해제</string>
 </resources>

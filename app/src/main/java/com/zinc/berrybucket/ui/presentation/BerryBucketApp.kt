@@ -34,6 +34,7 @@ import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_RE
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.ALARM_SETTING
+import com.zinc.berrybucket.ui.presentation.MoreDestinations.BLOCK_SETTING
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE1
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE2
@@ -48,6 +49,7 @@ import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
+import com.zinc.berrybucket.ui_more.BlockSettingScreen
 import com.zinc.berrybucket.ui_more.models.MoreItemType.ALARM
 import com.zinc.berrybucket.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.berrybucket.ui_more.models.MoreItemType.BLOCK
@@ -152,7 +154,7 @@ fun BerryBucketApp(
                             moreItemClicked = { type, nav ->
                                 when (type) {
                                     ALARM -> appState.navigateToMoreAlarmSetting(nav)
-                                    BLOCK -> {}
+                                    BLOCK -> appState.navigateToMoreBlockSetting(nav)
                                     QNA -> {}
                                     APP_INFO -> {}
                                     LOGOUT -> {}
@@ -183,6 +185,7 @@ fun BerryBucketApp(
                             appState.navigateToWrite1(nav, info)
                         })
                         moreAlarmNavGraph(backPress = appState::backPress)
+                        moreBlockNavGraph(backPress = appState::backPress)
                     }
                 }
             }
@@ -217,6 +220,7 @@ object WriteDestinations {
 
 object MoreDestinations {
     const val ALARM_SETTING = "alarm_setting"
+    const val BLOCK_SETTING = "block_setting"
 }
 
 sealed class SearchEvent {
@@ -346,6 +350,16 @@ private fun NavGraphBuilder.moreAlarmNavGraph(
 ) {
     composable(ALARM_SETTING) {
         AlarmSettingScreen {
+            backPress()
+        }
+    }
+}
+
+private fun NavGraphBuilder.moreBlockNavGraph(
+    backPress: () -> Unit
+) {
+    composable(BLOCK_SETTING) {
+        BlockSettingScreen {
             backPress()
         }
     }

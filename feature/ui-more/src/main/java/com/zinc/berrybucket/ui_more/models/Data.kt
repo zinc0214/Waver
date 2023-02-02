@@ -71,3 +71,9 @@ data class AlarmSwitchState(
     val type: AlarmSettingType,
     var isOn: Boolean
 )
+
+data class BlockMemberData(
+    val profileUrl: String,
+    val nickName: String,
+    val id: String
+)

@@ -152,6 +152,12 @@ class BerryBucketAppState(
             navController.navigate(MoreDestinations.ALARM_SETTING)
         }
     }
+
+    fun navigateToMoreBlockSetting(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MoreDestinations.BLOCK_SETTING)
+        }
+    }
 }
 
 /**
