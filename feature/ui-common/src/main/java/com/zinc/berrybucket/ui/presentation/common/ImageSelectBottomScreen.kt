@@ -38,10 +38,11 @@ fun ImageSelectBottomScreen(
 
         MyText(
             modifier = Modifier
-                .padding(vertical = 16.dp)
+                .fillMaxWidth()
                 .clickable {
                     selectedType(AddImageType.CAMERA)
-                },
+                }
+                .padding(vertical = 16.dp),
             text = stringResource(id = R.string.selectCamera),
             fontSize = dpToSp(dp = 15.dp),
             color = Gray9
