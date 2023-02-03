@@ -3,7 +3,9 @@ package com.zinc.berrybucket.ui_more
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -24,8 +26,10 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
+import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
 import com.zinc.berrybucket.ui_more.components.ProfileUpdateView
+import com.zinc.berrybucket.ui_more.models.ProfileEditData
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -37,6 +41,19 @@ fun ProfileSettingScreen(
 
     val updateUri: MutableState<Uri?> = remember { mutableStateOf(null) }
     var showSelectCameraType by remember { mutableStateOf(false) }
+    val nickNameData = remember {
+        ProfileEditData(
+            title = "닉네임",
+            prevText = "맹꽁이"
+        )
+    }
+    val bioData = remember {
+        ProfileEditData(
+            title = "소개문구",
+            prevText = "맹꽁이라고 하거든, 반가웡"
+        )
+    }
+
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
@@ -95,17 +112,36 @@ fun ProfileSettingScreen(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ProfileSettingTitle {
                 onBackPressed()
             }
 
+            Spacer(modifier = Modifier.padding(top = 44.dp))
+
             ProfileUpdateView(
                 updateUri = updateUri,
                 imageUpdateButtonClicked = {
                     showSelectCameraType = true
+                })
+
+            Spacer(modifier = Modifier.padding(top = 41.dp))
+
+            ProfileEditView(
+                editData = nickNameData,
+                needLengthCheck = false,
+                dataChanged = { changedData ->
+                    nickNameData.copy(prevText = changedData)
+                })
+
+            ProfileEditView(
+                editData = bioData,
+                needLengthCheck = true,
+                dataChanged = { changedData ->
+                    bioData.copy(prevText = changedData)
                 })
         }
     }

@@ -5,15 +5,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,10 +36,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.design.theme.Gray5
+import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.common.MyTextField
 import com.zinc.berrybucket.ui.presentation.common.TitleIconType
 import com.zinc.berrybucket.ui.presentation.common.TitleView
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
+import com.zinc.berrybucket.ui_more.models.ProfileEditData
 import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 
 @Composable
@@ -124,5 +139,58 @@ internal fun ProfileUpdateView(
 internal fun CheckCameraPermission(isAvailable: (Boolean) -> Unit) {
     CameraPermission1 {
         isAvailable(it)
+    }
+}
+
+@Composable
+internal fun ProfileEditView(
+    editData: ProfileEditData,
+    needLengthCheck: Boolean,
+    dataChanged: (String) -> Unit
+) {
+
+    var currentText by remember { mutableStateOf(editData.prevText) }
+    var currentTextSize by remember { mutableStateOf(currentText.length) }
+    val maxLength = 30
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp)
+            .padding(horizontal = 28.dp)
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+
+            MyText(
+                text = editData.title,
+                color = Gray6,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+
+            if (needLengthCheck) {
+                Spacer(modifier = Modifier.weight(1f))
+                MyText(
+                    text = "$currentTextSize/$maxLength",
+                    color = Gray5,
+                    fontSize = dpToSp(dp = 12.dp)
+                )
+            }
+        }
+
+        MyTextField(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            value = currentText,
+            onValueChange = { changeText ->
+                currentText = if (changeText.length > 30) {
+                    val lastIndex = changeText.lastIndex
+                    changeText.removeRange(maxLength - 1, lastIndex)
+                } else {
+                    changeText
+                }
+                currentTextSize = currentText.length
+                dataChanged(changeText)
+            })
+        Divider(color = Gray5, thickness = 1.dp)
     }
 }

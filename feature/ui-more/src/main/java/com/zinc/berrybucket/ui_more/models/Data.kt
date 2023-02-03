@@ -77,3 +77,8 @@ data class BlockMemberData(
     val nickName: String,
     val id: String
 )
+
+data class ProfileEditData(
+    val title: String,
+    val prevText: String
+)
