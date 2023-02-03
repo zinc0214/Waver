@@ -22,8 +22,10 @@ fun MoreScreen(modifier: Modifier = Modifier, moreItemClicked: (MoreItemType) ->
                 badgeType = BadgeType.TRIP1,
                 badgeTitle = "이제 버킷리스트를 시작한",
                 bio = "나는 나는 멋쟁이 토마통"
+            ),
+            goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) },
+
             )
-        )
         BerryClubLabelView {
 
         }

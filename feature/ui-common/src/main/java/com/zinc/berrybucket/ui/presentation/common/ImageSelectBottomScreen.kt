@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.bottomScreens
+package com.zinc.berrybucket.ui.presentation.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -9,15 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.ui.design.theme.Gray9
-import com.zinc.berrybucket.ui.presentation.ActionWithActivity
-import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun ImageSelectBottomScreen(
-    selectedType: (ActionWithActivity.AddImageType) -> Unit
+    selectedType: (AddImageType) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -29,7 +28,7 @@ fun ImageSelectBottomScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    selectedType(ActionWithActivity.AddImageType.GALLERY)
+                    selectedType(AddImageType.GALLERY)
                 }
                 .padding(vertical = 16.dp),
             text = stringResource(id = R.string.selectGallery),
@@ -41,7 +40,7 @@ fun ImageSelectBottomScreen(
             modifier = Modifier
                 .padding(vertical = 16.dp)
                 .clickable {
-                    selectedType(ActionWithActivity.AddImageType.CAMERA)
+                    selectedType(AddImageType.CAMERA)
                 },
             text = stringResource(id = R.string.selectCamera),
             fontSize = dpToSp(dp = 15.dp),

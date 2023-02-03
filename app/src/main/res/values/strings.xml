@@ -52,8 +52,6 @@
     <string name="addGoalDesc">달성횟수 추가하기</string>
     <string name="writeSelectKeyWordGuide">키워드는 3개까지 선택 가능합니다.</string>
     <string name="showSelectedAllFriends">전체보기</string>
-    <string name="selectGallery">앨범에서 사진 선택</string>
-    <string name="selectCamera">사진 촬영</string>
     <string name="optionGoalCount">목표 달성 횟수(반복)</string>
     <string name="optionCategoryAddButton">카테고리 추가</string>
     <string name="optionCalendarSelect">달력으로 선택하기</string>

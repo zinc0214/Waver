@@ -7,4 +7,6 @@
     <string name="challengeTab">챌린지</string>
 
     <string name="profileImageDesc">프로필 이미지</string>
+    <string name="selectGallery">앨범에서 사진 선택</string>
+    <string name="selectCamera">사진 촬영</string>
 </resources>

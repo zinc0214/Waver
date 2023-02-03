@@ -12,7 +12,7 @@ data class UIMoreMyProfileInfo(
 )
 
 enum class MoreItemType {
-    ALARM, BLOCK, QNA, APP_INFO, LOGOUT
+    PROFILE, ALARM, BLOCK, QNA, APP_INFO, LOGOUT
 }
 
 data class UIMoreItemData(

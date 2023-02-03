@@ -42,15 +42,15 @@ import com.zinc.berrybucket.model.WriteOptionsType1.GOAL
 import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
 import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
-import com.zinc.berrybucket.ui.presentation.CameraPermission
+import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
+import com.zinc.berrybucket.ui.util.CameraPermission
 import com.zinc.berrybucket.util.parseWithDday
 import kotlinx.coroutines.launch
 import java.time.LocalDate

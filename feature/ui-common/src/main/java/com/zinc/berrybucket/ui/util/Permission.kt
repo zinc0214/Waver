@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation
+package com.zinc.berrybucket.ui.util
 
 import android.Manifest
 import android.content.Intent

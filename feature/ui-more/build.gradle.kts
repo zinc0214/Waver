@@ -44,9 +44,13 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.material)
     implementation(Dep.AndroidX.Compose.tooling)
     implementation(Dep.AndroidX.Compose.constraintLayout)
+    implementation(Dep.AndroidX.Compose.accompanist)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
     implementation(Dep.Dagger.Hilt.navigation)
     kapt(Dep.Dagger.Hilt.compiler)
+
+    // Coil
+    implementation(Dep.coil)
 }

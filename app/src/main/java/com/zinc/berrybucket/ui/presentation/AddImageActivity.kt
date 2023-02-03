@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.util.createImageFile
 import java.io.File
 import java.io.FileOutputStream
@@ -24,7 +25,7 @@ import java.io.OutputStream
 
 class AddImageActivity : AppCompatActivity() {
 
-    private var imageType: ActionWithActivity.AddImageType? = null
+    private var imageType: AddImageType? = null
     private var photoUri: Uri? = null
     private lateinit var takePhotoAction: ActionWithActivity.AddImage
 
@@ -131,7 +132,7 @@ class AddImageActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun startWithLauncher(context: Context, type: ActionWithActivity.AddImageType) {
+        fun startWithLauncher(context: Context, type: AddImageType) {
             val activity = AddImageActivity().apply {
                 imageType to type
             }

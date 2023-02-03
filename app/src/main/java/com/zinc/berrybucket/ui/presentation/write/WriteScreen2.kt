@@ -27,9 +27,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
-import com.zinc.berrybucket.model.WriteImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOption
@@ -215,7 +215,7 @@ private fun WriteScreen2ContentView(
             clickEvent = { it ->
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
-                        val newImage = mutableListOf<WriteImageInfo>()
+                        val newImage = mutableListOf<UserSeletedImageInfo>()
                         writeInfo1.getImages()?.let { infos ->
                             infos.forEach { info ->
                                 val image = info.copy(key = info.intKey() + infos.size)

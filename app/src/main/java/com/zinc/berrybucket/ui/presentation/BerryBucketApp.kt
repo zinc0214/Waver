@@ -25,9 +25,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
+import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
@@ -35,6 +37,7 @@ import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.ALARM_SETTING
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.BLOCK_SETTING
+import com.zinc.berrybucket.ui.presentation.MoreDestinations.PROFILE_SETTING
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE1
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE2
@@ -50,10 +53,12 @@ import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
 import com.zinc.berrybucket.ui_more.BlockSettingScreen
+import com.zinc.berrybucket.ui_more.ProfileSettingScreen
 import com.zinc.berrybucket.ui_more.models.MoreItemType.ALARM
 import com.zinc.berrybucket.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.berrybucket.ui_more.models.MoreItemType.BLOCK
 import com.zinc.berrybucket.ui_more.models.MoreItemType.LOGOUT
+import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
@@ -158,6 +163,7 @@ fun BerryBucketApp(
                                     QNA -> {}
                                     APP_INFO -> {}
                                     LOGOUT -> {}
+                                    PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 }
                             },
                         )
@@ -186,6 +192,16 @@ fun BerryBucketApp(
                         })
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)
+                        moreProfileNavGraph(
+                            backPress = {},
+                            imageUpdateButtonClicked = { type, fail, success ->
+                                action.invoke(
+                                    ActionWithActivity.AddImage(
+                                        type,
+                                        fail
+                                    ) { info -> success(info) })
+                            }
+                        )
                     }
                 }
             }
@@ -221,6 +237,7 @@ object WriteDestinations {
 object MoreDestinations {
     const val ALARM_SETTING = "alarm_setting"
     const val BLOCK_SETTING = "block_setting"
+    const val PROFILE_SETTING = "profile_setting"
 }
 
 sealed class SearchEvent {
@@ -362,5 +379,25 @@ private fun NavGraphBuilder.moreBlockNavGraph(
         BlockSettingScreen {
             backPress()
         }
+    }
+}
+
+private fun NavGraphBuilder.moreProfileNavGraph(
+    backPress: () -> Unit,
+    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSeletedImageInfo) -> Unit) -> Unit
+) {
+    composable(PROFILE_SETTING) {
+        ProfileSettingScreen(
+            onBackPressed = { backPress() },
+            imageUpdateButtonClicked = { type, fail, success ->
+                imageUpdateButtonClicked(
+                    type,
+                    fail
+                ) { info ->
+                    success(info)
+                }
+            },
+
+            )
     }
 }

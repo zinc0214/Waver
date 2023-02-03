@@ -45,7 +45,7 @@ import com.zinc.berrybucket.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.common.models.BadgeType
 
 @Composable
-internal fun MoreTopProfileView(info: UIMoreMyProfileInfo) {
+internal fun MoreTopProfileView(info: UIMoreMyProfileInfo, goToProfileUpdate: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .padding(28.dp)
@@ -76,9 +76,7 @@ internal fun MoreTopProfileView(info: UIMoreMyProfileInfo) {
                 end.linkTo(parent.end)
                 width = Dimension.fillToConstraints
             }
-            .fillMaxWidth()) {
-
-        }
+            .fillMaxWidth()) { goToProfileUpdate() }
     }
 }
 
@@ -194,6 +192,7 @@ private fun ProfilePreview() {
             badgeType = BadgeType.TRIP1,
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
-        )
+        ),
+        {}
     )
 }

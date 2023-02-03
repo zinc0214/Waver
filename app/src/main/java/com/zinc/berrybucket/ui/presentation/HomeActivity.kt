@@ -15,7 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import com.zinc.berrybucket.model.WriteImageInfo
+import com.zinc.berrybucket.model.AddImageType
+import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -35,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-    private var imageType: ActionWithActivity.AddImageType? = null
+    private var imageType: AddImageType? = null
     private var photoUri: Uri? = null
     private var imageCount = 0
     private lateinit var takePhotoAction: ActionWithActivity.AddImage
@@ -69,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
                     is ActionWithActivity.AddImage -> {
                         // AddImageActivity.startWithLauncher(this, it.type)
                         takePhotoAction = it
-                        if (it.type == ActionWithActivity.AddImageType.CAMERA) {
+                        if (it.type == AddImageType.CAMERA) {
                             takePhoto()
                         } else {
                             goToGallery()
@@ -139,7 +140,7 @@ class HomeActivity : AppCompatActivity() {
         val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
         if (photoUri != null) {
             takePhotoAction.succeed(
-                WriteImageInfo(
+                UserSeletedImageInfo(
                     key = imageCount++,
                     uri = photoUri!!, file = imageFile
                 )
@@ -167,10 +168,6 @@ class HomeActivity : AppCompatActivity() {
 
 sealed class ActionWithActivity {
     data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (WriteImageInfo) -> Unit
+        val type: AddImageType, val failed: () -> Unit, val succeed: (UserSeletedImageInfo) -> Unit
     ) : ActionWithActivity()
-
-    enum class AddImageType {
-        CAMERA, GALLERY
-    }
 }

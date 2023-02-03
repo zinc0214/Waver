@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.model
 
-import android.net.Uri
 import android.os.Parcelable
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
@@ -22,16 +21,6 @@ data class WriteOption(
             is WriteOption1Info.Images -> ""
         }
     }
-}
-
-@Parcelize
-data class WriteImageInfo(
-    private val key: Int,
-    val uri: Uri,
-    val file: File
-) : java.io.Serializable, Parcelable {
-    fun parseKey() = key.toString() + uri.toString()
-    fun intKey() = key
 }
 
 data class WriteAddOption(
@@ -62,7 +51,7 @@ data class WriteInfo1(
         return (goalCount.info as WriteOption1Info.GoalCount).goalCount
     }
 
-    fun getImages(): List<WriteImageInfo> {
+    fun getImages(): List<UserSeletedImageInfo> {
         val images =
             options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
         return (images.info as WriteOption1Info.Images).images
@@ -94,7 +83,7 @@ sealed class WriteOption1Info {
     data class Dday(val localDate: LocalDate, val dDayText: String = "") : WriteOption1Info()
     data class GoalCount(val goalCount: String = "1") : WriteOption1Info()
     data class Category(val categoryInfo: CategoryInfo) : WriteOption1Info()
-    data class Images(val images: List<WriteImageInfo> = emptyList()) : WriteOption1Info()
+    data class Images(val images: List<UserSeletedImageInfo> = emptyList()) : WriteOption1Info()
 }
 
 interface WriteOptionsType2 {
