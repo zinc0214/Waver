@@ -63,9 +63,9 @@ fun ReportScreen(
                     end.linkTo(parent.end)
                 },
                 title = stringResource(id = R.string.commentReportTitle),
-                iconType = TitleIconType.BACK,
+                leftIconType = TitleIconType.BACK,
                 isDividerVisible = isScrolled,
-                onIconClicked = {
+                onLeftIconClicked = {
                     backPress()
                 })
 

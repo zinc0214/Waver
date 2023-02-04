@@ -52,10 +52,14 @@ import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 internal fun ProfileSettingTitle(backClicked: () -> Unit) {
     TitleView(
         title = stringResource(id = R.string.profileSettingTitle),
-        iconType = TitleIconType.BACK,
+        leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
-        onIconClicked = {
+        onLeftIconClicked = {
             backClicked()
+        },
+        rightText = stringResource(id = R.string.finishDesc),
+        onRightTextClicked = {
+            // TODO : 알림 데이터 저장 필요
         }
     )
 }

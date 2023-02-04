@@ -35,9 +35,9 @@ import com.zinc.berrybucket.ui_more.models.BlockMemberData
 internal fun BlockTitle(backClicked: () -> Unit) {
     TitleView(
         title = stringResource(id = R.string.blockSettingTitle),
-        iconType = TitleIconType.BACK,
+        leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
-        onIconClicked = {
+        onLeftIconClicked = {
             backClicked()
         }
     )

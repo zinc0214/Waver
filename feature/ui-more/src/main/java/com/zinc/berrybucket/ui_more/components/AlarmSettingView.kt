@@ -27,10 +27,14 @@ import com.zinc.berrybucket.ui_more.models.AlarmSwitchState
 internal fun AlarmTitle(backClicked: () -> Unit) {
     TitleView(
         title = stringResource(id = R.string.alarmSettingTitle),
-        iconType = TitleIconType.BACK,
+        leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
-        onIconClicked = {
+        onLeftIconClicked = {
             backClicked()
+        },
+        rightText = stringResource(id = R.string.finishDesc),
+        onRightTextClicked = {
+            // TODO : 알림 데이터 저장 필요
         }
     )
 }
