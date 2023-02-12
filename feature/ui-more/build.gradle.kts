@@ -42,6 +42,8 @@ dependencies {
     // compose
     implementation(Dep.AndroidX.Compose.Bom.ui)
     implementation(Dep.AndroidX.Compose.Bom.material)
+    implementation(Dep.AndroidX.Compose.Bom.livedata)
+    implementation(Dep.AndroidX.Compose.Bom.runtime)
     implementation(Dep.AndroidX.Compose.tooling)
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.accompanist)

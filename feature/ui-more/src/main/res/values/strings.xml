@@ -21,11 +21,17 @@
     <string name="alarmSettingEvent">이벤트</string>
     <string name="alarmSettingUpdate">업데이트</string>
 
-    <!--차단 관리-->
+    <!-- 차단 관리-->
     <string name="blockSettingTitle">차단 관리</string>
     <string name="nonBlocking">해제</string>
 
     <!-- 프로필 관리 -->
     <string name="profileSettingTitle">프로필 관리</string>
     <string name="profileChangeDesc">프로필 이미지 변경</string>
+
+    <!-- 앱 정보 -->
+    <string name="appInfoTitle">앱 정보</string>
+    <string name="appName">베리버킷</string>
+    <string name="needToUpdateApp">최신 버전 업데이트</string>
+    <string name="alreadyUsedLatelyApp">최신 버전 사용 중</string>
 </resources>

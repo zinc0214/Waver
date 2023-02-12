@@ -44,6 +44,20 @@ private fun MoreItemView(
     itemClicked: (MoreItemType) -> Unit
 ) {
 
+    MoreItemView(
+        itemTitle = itemData.text,
+        itemClicked = {
+            itemClicked(itemData.type)
+        })
+
+}
+
+@Composable
+internal fun MoreItemView(
+    itemTitle: String,
+    itemClicked: () -> Unit
+
+) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Button(
             modifier = Modifier.fillMaxWidth(),
@@ -51,12 +65,12 @@ private fun MoreItemView(
             colors = ButtonDefaults.buttonColors(backgroundColor = Gray1, contentColor = Gray1),
             contentPadding = PaddingValues(0.dp),
             onClick = {
-                itemClicked(itemData.type)
+                itemClicked()
             },
             elevation = ButtonDefaults.elevation(defaultElevation = 0.dp, pressedElevation = 0.dp),
         ) {
             MyText(
-                text = itemData.text,
+                text = itemTitle,
                 fontSize = dpToSp(dp = 16.dp),
                 color = Gray10,
                 modifier = Modifier
@@ -67,7 +81,6 @@ private fun MoreItemView(
 
         Divider(color = Gray3, thickness = 1.dp)
     }
-
 }
 
 @Preview

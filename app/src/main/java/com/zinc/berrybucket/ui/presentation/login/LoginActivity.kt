@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.zinc.berrybucket.BuildConfig
 import com.zinc.berrybucket.ui.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.updateAppVersion(BuildConfig.VERSION_NAME)
         viewModel.joinBerryBucket()
 
         viewModel.joinResponse.observe(this) {
@@ -27,6 +29,5 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
         }
-
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
+import com.zinc.datastore.common.CommonDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.lgin.JoinBerryBucket
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val joinBerryBucket: JoinBerryBucket,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val commonDataStoreModule: CommonDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val _joinResponse = MutableLiveData<String>()
@@ -42,6 +44,13 @@ class LoginViewModel @Inject constructor(
             }
         } else {
             _failJoin.value = true
+        }
+    }
+
+    // TODO : Splash 등으로 옮겨야댐
+    fun updateAppVersion(appVersion: String) {
+        viewModelScope.launch {
+            commonDataStoreModule.setAppVersion(appVersion)
         }
     }
 }

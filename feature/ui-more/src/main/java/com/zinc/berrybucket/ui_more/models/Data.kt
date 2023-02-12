@@ -82,3 +82,12 @@ data class ProfileEditData(
     val title: String,
     val prevText: String
 )
+
+enum class AppInfoItemType {
+    USE_TERMS, PERSONAL_TERMS, OPEN_SOURCE
+}
+
+data class AppInfoItemData(
+    val text: String,
+    val type: AppInfoItemType
+)

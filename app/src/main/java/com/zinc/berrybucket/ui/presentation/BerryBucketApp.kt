@@ -37,6 +37,7 @@ import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.ALARM_SETTING
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.BLOCK_SETTING
+import com.zinc.berrybucket.ui.presentation.MoreDestinations.MORE_APP_INFO
 import com.zinc.berrybucket.ui.presentation.MoreDestinations.PROFILE_SETTING
 import com.zinc.berrybucket.ui.presentation.SearchDestinations.GO_TO_SEARCH
 import com.zinc.berrybucket.ui.presentation.WriteDestinations.GO_TO_WRITE1
@@ -52,8 +53,10 @@ import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
+import com.zinc.berrybucket.ui_more.AppInfoScreen
 import com.zinc.berrybucket.ui_more.BlockSettingScreen
 import com.zinc.berrybucket.ui_more.ProfileSettingScreen
+import com.zinc.berrybucket.ui_more.models.AppInfoItemType
 import com.zinc.berrybucket.ui_more.models.MoreItemType.ALARM
 import com.zinc.berrybucket.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.berrybucket.ui_more.models.MoreItemType.BLOCK
@@ -161,7 +164,10 @@ fun BerryBucketApp(
                                     ALARM -> appState.navigateToMoreAlarmSetting(nav)
                                     BLOCK -> appState.navigateToMoreBlockSetting(nav)
                                     QNA -> {}
-                                    APP_INFO -> {}
+                                    APP_INFO -> {
+                                        appState.navigateToMoreAppInfo(nav)
+                                    }
+
                                     LOGOUT -> {}
                                     PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 }
@@ -193,13 +199,19 @@ fun BerryBucketApp(
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)
                         moreProfileNavGraph(
-                            backPress = {},
+                            backPress = appState::backPress,
                             imageUpdateButtonClicked = { type, fail, success ->
                                 action.invoke(
                                     ActionWithActivity.AddImage(
                                         type,
                                         fail
                                     ) { info -> success(info) })
+                            }
+                        )
+                        moreAppInfoNavGraph(
+                            backPress = appState::backPress,
+                            moreItemClicked = {
+
                             }
                         )
                     }
@@ -238,6 +250,7 @@ object MoreDestinations {
     const val ALARM_SETTING = "alarm_setting"
     const val BLOCK_SETTING = "block_setting"
     const val PROFILE_SETTING = "profile_setting"
+    const val MORE_APP_INFO = "app_info"
 }
 
 sealed class SearchEvent {
@@ -396,8 +409,16 @@ private fun NavGraphBuilder.moreProfileNavGraph(
                 ) { info ->
                     success(info)
                 }
-            },
+            })
+    }
+}
 
-            )
+private fun NavGraphBuilder.moreAppInfoNavGraph(
+    backPress: () -> Unit,
+    moreItemClicked: (AppInfoItemType) -> Unit
+
+) {
+    composable(MORE_APP_INFO) {
+        AppInfoScreen(onBackClicked = { backPress() }, moreItemClicked = moreItemClicked)
     }
 }
