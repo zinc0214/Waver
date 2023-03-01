@@ -17,6 +17,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.UserSeletedImageInfo
+import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -27,19 +28,12 @@ import java.io.OutputStream
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
-    private val addImageLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val file = result.data?.getStringExtra("file")
-                val url = result.data?.getStringExtra("url")
-
-            }
-        }
-
-    private var imageType: AddImageType? = null
     private var photoUri: Uri? = null
     private var imageCount = 0
     private lateinit var takePhotoAction: ActionWithActivity.AddImage
+
+    private var isNeedToShowPermission = false
+    private lateinit var checkPermissionAction: ActionWithActivity.CheckPermission
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -65,6 +59,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+
             BerryBucketApp(action = {
                 when (it) {
                     is ActionWithActivity.AddImage -> {
@@ -76,8 +71,21 @@ class HomeActivity : AppCompatActivity() {
                             goToGallery()
                         }
                     }
+
+                    is ActionWithActivity.CheckPermission -> {
+                        checkPermissionAction = it
+                        isNeedToShowPermission = true
+
+                    }
                 }
             })
+
+            if (isNeedToShowPermission) {
+                CheckPermissionView(isAvailable = {
+                    checkPermissionAction.isAllGranted.invoke(it)
+                    isNeedToShowPermission = false
+                })
+            }
         }
     }
 
@@ -169,5 +177,9 @@ class HomeActivity : AppCompatActivity() {
 sealed class ActionWithActivity {
     data class AddImage(
         val type: AddImageType, val failed: () -> Unit, val succeed: (UserSeletedImageInfo) -> Unit
+    ) : ActionWithActivity()
+
+    data class CheckPermission(
+        val isAllGranted: (Boolean) -> Unit
     ) : ActionWithActivity()
 }

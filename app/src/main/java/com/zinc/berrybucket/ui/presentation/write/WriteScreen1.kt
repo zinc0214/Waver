@@ -162,7 +162,7 @@ fun WriteScreen1(
     }
 
     if (selectedOption == IMAGE) {
-        CameraPermission(modifier = Modifier, isAvailable = {
+        CameraPermission(isAvailable = {
             selectedOption = if (it) {
                 IMAGE
             } else {

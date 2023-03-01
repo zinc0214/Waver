@@ -27,7 +27,6 @@ class AddImageActivity : AppCompatActivity() {
 
     private var imageType: AddImageType? = null
     private var photoUri: Uri? = null
-    private lateinit var takePhotoAction: ActionWithActivity.AddImage
 
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
