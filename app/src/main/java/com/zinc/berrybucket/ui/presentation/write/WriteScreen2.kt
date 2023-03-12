@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.gestures.Orientation
@@ -32,11 +33,12 @@ import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.model.WriteKeyWord
+import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType2
-import com.zinc.berrybucket.ui.model.WriteOpenType
+import com.zinc.berrybucket.model.parseUIBucketListInfo
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
@@ -49,7 +51,7 @@ fun WriteScreen2(
     modifier: Modifier = Modifier,
     writeInfo1: WriteInfo1,
     goToBack: (WriteInfo1) -> Unit,
-    goToAddBucket: () -> Unit
+    addBucketSucceed: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -157,7 +159,9 @@ fun WriteScreen2(
                     val changedIndex = optionsList.indexOfFirst { it.type == changedOption.type }
                     optionsList[changedIndex] = changedOption
                 }
-            ) { }
+            ) {
+                addBucketSucceed()
+            }
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
@@ -191,7 +195,7 @@ private fun WriteScreen2ContentView(
     goToBack: (WriteInfo1) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
     optionValueChanged: (WriteAddOption) -> Unit,
-    goToAddBucket: () -> Unit,
+    addBucketSucceed: () -> Unit,
 ) {
 
     val isScrapAvailable by remember { mutableStateOf(selectedOpenType.value != WriteOpenType.PRIVATE) }
@@ -201,7 +205,6 @@ private fun WriteScreen2ContentView(
         val (appBar, contents) = createRefs()
         val viewModel: WriteViewModel = hiltViewModel()
         val scrapUsed = remember { mutableStateOf(false) }
-
         WriteAppBar(
             modifier = Modifier
                 .fillMaxWidth()
@@ -216,7 +219,7 @@ private fun WriteScreen2ContentView(
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
                         val newImage = mutableListOf<UserSeletedImageInfo>()
-                        writeInfo1.getImages()?.let { infos ->
+                        writeInfo1.getImages().let { infos ->
                             infos.forEach { info ->
                                 val image = info.copy(key = info.intKey() + infos.size)
                                 newImage.add(image)
@@ -238,8 +241,20 @@ private fun WriteScreen2ContentView(
                     }
 
                     WriteAppBarClickEvent.NextClicked -> {
-                        viewModel.addNewBucketList()
-                        // goToAddBucket(WriteResultInfo())
+                        Log.e("ayhan", "optionList: $optionsList")
+                        val scrapOption =
+                            (optionsList.find { it.type is WriteOptionsType2.SCRAP })?.type as WriteOptionsType2.SCRAP
+                        viewModel.addNewBucketList(
+                            parseUIBucketListInfo(
+                                writeInfo1 = writeInfo1,
+                                writeOpenType = selectedOpenType.value,
+                                keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.tagList.orEmpty(),
+                                tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.tagList.orEmpty(),
+                                isScrapAvailable = scrapOption.isScrapUsed
+                            )
+                        ) {
+                            if (it) addBucketSucceed() else addBucketSucceed()
+                        }
                     }
                 }
             })

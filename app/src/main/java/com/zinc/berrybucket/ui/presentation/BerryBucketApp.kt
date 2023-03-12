@@ -112,7 +112,10 @@ fun BerryBucketApp(
                             HomeBottomBar(
                                 tabs = appState.bottomBarTabs,
                                 currentRoute = appState.currentRoute!!,
-                                navigateToRoute = appState::navigateToBottomBarRoute
+                                navigateToRoute = {
+                                    appState.navigateToBottomBarRoute(it)
+                                    appState.currentHomeRoute.value = it
+                                }
                             ) {
                                 appState.navigateToWrite1(
                                     appState.navController.currentBackStackEntry!!,
@@ -193,9 +196,13 @@ fun BerryBucketApp(
                             }, goToNextWrite = { nav, info ->
                                 appState.navigateToWrite2(nav, info)
                             })
-                        writeNavGraph2(backPress = { nav, info ->
-                            appState.navigateToWrite1(nav, info)
-                        })
+                        writeNavGraph2(
+                            backPress = { nav, info ->
+                                appState.navigateToWrite1(nav, info)
+                            },
+                            goToHome = {
+                                appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
+                            })
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)
                         moreProfileNavGraph(
@@ -362,7 +369,8 @@ private fun NavGraphBuilder.writeNavGraph1(
 }
 
 private fun NavGraphBuilder.writeNavGraph2(
-    backPress: (NavBackStackEntry, WriteInfo1) -> Unit
+    backPress: (NavBackStackEntry, WriteInfo1) -> Unit,
+    goToHome: () -> Unit
 ) {
 
     composable(GO_TO_WRITE2) { nav ->
@@ -371,7 +379,7 @@ private fun NavGraphBuilder.writeNavGraph2(
         WriteScreen2(
             writeInfo1 = writeInfo1,
             goToBack = { newInfo -> backPress(nav, newInfo) },
-            goToAddBucket = {})
+            addBucketSucceed = { goToHome() })
     }
 }
 

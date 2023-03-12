@@ -2,23 +2,57 @@ package com.zinc.berrybucket.ui.presentation.write
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.model.UIAddBucketListInfo
 import com.zinc.berrybucket.model.WriteFriend
+import com.zinc.common.models.AddBucketListRequest
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.write.AddNewBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class WriteViewModel @Inject constructor(
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val addNewBucketList: AddNewBucketList
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val _searchFriendsResult = MutableLiveData<List<WriteFriend>>()
     val searchFriendsResult: LiveData<List<WriteFriend>> get() = _searchFriendsResult
 
+    private val _addNewBucketListResult = MutableLiveData<Boolean>()
+    val addNewBucketListResult: LiveData<Boolean> get() = _addNewBucketListResult
 
-    fun addNewBucketList() {
 
+    fun addNewBucketList(writeInfo: UIAddBucketListInfo, isSucceed: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            runCatching {
+                accessToken.value?.let { accessToken ->
+                    addNewBucketList.invoke(
+                        accessToken,
+                        addBucketListRequest = AddBucketListRequest(
+                            bucketType = writeInfo.bucketType,
+                            exposureStatus = writeInfo.exposureStatus,
+                            title = writeInfo.title,
+                            content = writeInfo.content,
+                            memo = writeInfo.memo,
+                            tags = writeInfo.tags,
+                            friendUserIds = writeInfo.friendUserIds,
+                            scrapYn = writeInfo.scrapYn,
+                            images = writeInfo.images,
+                            targetDate = writeInfo.targetDate,
+                            goalCount = writeInfo.goalCount,
+                            categoryId = writeInfo.categoryId
+                        )
+                    )
+                    isSucceed(true)
+                }
+            }.getOrElse {
+                isSucceed(false)
+            }
+        }
     }
 
     fun clearFriendsData() {

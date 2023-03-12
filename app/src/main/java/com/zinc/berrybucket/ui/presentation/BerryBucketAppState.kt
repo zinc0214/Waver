@@ -57,6 +57,8 @@ class BerryBucketAppState(
     // Navigation state source of truth
     // ----------------------------------------------------------
 
+    var currentHomeRoute = mutableStateOf(HomeSections.MY.route)
+
     val currentRoute: String?
         get() = navController.currentDestination?.route
 

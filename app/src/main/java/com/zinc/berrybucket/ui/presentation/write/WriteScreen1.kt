@@ -254,7 +254,7 @@ fun WriteScreen1(
 
                     GOAL -> {
                         GoalCountBottomScreen(
-                            originCount = originCount.value,
+                            originCount = originCount.value.toString(),
                             canceled = {
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
@@ -264,12 +264,12 @@ fun WriteScreen1(
                                     WriteOption(
                                         type = GOAL,
                                         title = "목표 달성 횟수",
-                                        info = WriteOption1Info.GoalCount(it)
+                                        info = WriteOption1Info.GoalCount(it.toInt())
                                     )
                                 )
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
-                                originCount.value = it
+                                originCount.value = it.toInt()
                             })
                         isNeedToBottomSheetOpen.invoke(true)
                     }

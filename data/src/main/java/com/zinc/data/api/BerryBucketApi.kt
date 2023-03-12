@@ -1,6 +1,5 @@
 package com.zinc.data.api
 
-import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AllBucketList
 import com.zinc.common.models.CategoryInfo
@@ -15,9 +14,11 @@ import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReportItems
 import com.zinc.common.models.SearchRecommendCategory
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
@@ -62,8 +63,20 @@ interface BerryBucketApi {
 
     // 버킷리스트 등록
     @POST("/bucketlist")
+    @Multipart
     suspend fun addNewBucketList(
         @Header("Authorization") token: String,
-        @Part request: AddBucketListRequest
+        @Part bucketType: MultipartBody.Part,
+        @Part exposureStatus: MultipartBody.Part, // 공개여부
+        @Part title: MultipartBody.Part,
+        @Part content: MultipartBody.Part, // 내용
+        @Part memo: MultipartBody.Part?, // 메모
+        @Part tags: MultipartBody.Part?, // 태그 목록(최대 5) - ","로 구분
+        @Part friendUserIds: List<MultipartBody.Part>?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
+        @Part scrapYn: MultipartBody.Part, // 스크랩 여부
+        @Part images: List<MultipartBody.Part>?, // 이미지 목록(최대 3)
+        @Part targetDate: MultipartBody.Part?, // 목표완료일(yyyy-MM-dd)
+        @Part goalCount: MultipartBody.Part, //  목표 횟수
+        @Part categoryId: MultipartBody.Part // 카테고리 ID
     ): AddBucketListResponse
 }

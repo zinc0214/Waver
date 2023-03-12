@@ -53,7 +53,6 @@ enum class BadgeType {
     TRIP1, TRIP2, TRIP3
 }
 
-
 enum class YesOrNo {
     Y, N
 }
