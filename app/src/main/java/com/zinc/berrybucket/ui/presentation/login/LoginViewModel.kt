@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.datastore.common.CommonDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
-import com.zinc.domain.usecases.lgin.JoinBerryBucket
+import com.zinc.domain.usecases.login.JoinBerryBucket
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

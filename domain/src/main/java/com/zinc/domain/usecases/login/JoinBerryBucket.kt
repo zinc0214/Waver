@@ -1,4 +1,4 @@
-package com.zinc.domain.usecases.lgin
+package com.zinc.domain.usecases.login
 
 import com.zinc.common.models.JoinRequest
 import com.zinc.domain.repository.LoginRepository
