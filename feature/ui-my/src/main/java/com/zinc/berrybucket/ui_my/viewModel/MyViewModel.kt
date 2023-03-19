@@ -8,8 +8,10 @@ import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
+import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
@@ -89,16 +91,22 @@ class MyViewModel @Inject constructor(
         _profileInfo.value = topProfile
     }
 
-    fun loadAllBucketList() {
+    fun loadAllBucketList(allBucketListRequest: AllBucketListRequest) {
         viewModelScope.launch {
-            kotlin.runCatching {
-                loadAllBucketList.invoke().apply {
-                    val uiALlBucketType = AllBucketList(
-                        processingCount = this.processingCount,
-                        succeedCount = this.succeedCount,
-                        bucketList = this.bucketList.parseToUI()
-                    )
-                    _allBucketItem.value = uiALlBucketType
+            runCatching {
+                accessToken.value?.let { token ->
+                    loadAllBucketList.invoke(
+                        token,
+                        allBucketListRequest
+                    ).apply {
+                        Log.e("ayhan", "allBucketList : $this")
+                        val uiALlBucketType = AllBucketList(
+                            processingCount = this.processingCount,
+                            succeedCount = this.succeedCount,
+                            bucketList = this.bucketList.parseToUI()
+                        )
+                        _allBucketItem.value = uiALlBucketType
+                    }
                 }
             }.getOrElse {
 
@@ -169,40 +177,47 @@ class MyViewModel @Inject constructor(
         BucketInfoSimple(
             id = "1",
             title = "아이스크림을 먹을테야 얍얍압얍",
-            currentCount = 1
+            currentCount = 1,
+            status = BucketStatus.PROGRESS
         ),
         BucketInfoSimple(
             id = "2",
             title = "아이스크림을 여행을 갈거란 말이야",
-            currentCount = 1
+            currentCount = 1,
+            status = BucketStatus.PROGRESS
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
             currentCount = 5,
             goalCount = 10,
-            dDay = -10
+            dDay = -10,
+            status = BucketStatus.PROGRESS
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
             currentCount = 5,
             goalCount = 10,
-            dDay = -10
+            dDay = -10,
+            status = BucketStatus.PROGRESS
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
             currentCount = 5,
             goalCount = 10,
-            dDay = -10
+            dDay = -10,
+            status = BucketStatus.PROGRESS
+
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
             currentCount = 5,
             goalCount = 10,
-            dDay = -10
+            dDay = -10,
+            status = BucketStatus.PROGRESS
         )
     )
 

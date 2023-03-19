@@ -7,6 +7,7 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
 
 data class AllBucketList(
@@ -31,7 +32,7 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
         currentCount = this.currentCount,
         goalCount = this.goalCount,
         dDay = this.dDay,
-        detailType = DetailType.values().find { it.text == this.detailType } ?: DetailType.MY_OPEN
+        status = this.status
     )
 }
 
@@ -42,7 +43,8 @@ data class UIBucketInfoSimple(
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
-    val detailType: DetailType = DetailType.MY_CLOSE
+    val detailType: DetailType = DetailType.MY_CLOSE,
+    val status: BucketStatus = BucketStatus.PROGRESS
 ) {
     val dDayText = dDay?.let {
         when {
@@ -62,6 +64,8 @@ data class UIBucketInfoSimple(
                 Sub_D3
             }
         }
+
+    val isProgress = status == BucketStatus.PROGRESS
 
     fun currentCountText() = currentCount.toString()
     fun goalCountText() = goalCount.toString()

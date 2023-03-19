@@ -2,8 +2,8 @@ package com.zinc.data.api
 
 import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AllBucketList
+import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.CategoryInfo
-import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
@@ -21,6 +21,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface BerryBucketApi {
 
@@ -32,10 +33,13 @@ interface BerryBucketApi {
     suspend fun loadMyProfileInfo(@Header("Authorization") token: String): MyProfileInfo
 
     @GET("/bucketList")
-    suspend fun loadMyDdayBucketList(): DdayBucketList
-
-    @GET("/bucketList")
-    suspend fun loadAllBucketList(): AllBucketList
+    suspend fun loadAllBucketList(
+        @Header("Authorization") token: String,
+        @Query("dDayBucketOnly") dDayBucketOnly: String,
+        @Query("isPassed") isPassed: String,
+        @Query("isCompleted") isCompleted: String,
+        @Query("sort") sort: AllBucketListSortType
+    ): AllBucketList
 
     @GET("/category")
     suspend fun loadCategoryList(@Header("Authorization") token: String): List<CategoryInfo>

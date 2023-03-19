@@ -42,3 +42,15 @@ data class AllBucketList(
     val bucketList: List<BucketInfoSimple>
 )
 
+@Serializable
+data class AllBucketListRequest(
+    val dDayBucketOnly: String, // d-day 버킷여부
+    val isPassed: String,
+    val isCompleted: String,
+    val sort: AllBucketListSortType
+)
+
+enum class AllBucketListSortType {
+    ORDERED, CREATED, CREATED_DESC, UPDATED, UPDATED_DESC
+}
+

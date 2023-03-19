@@ -36,6 +36,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Sub_D2
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
@@ -76,10 +77,15 @@ fun SimpleBucketCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(width = 1.dp, color = borderColor.value, shape = RoundedCornerShape(4.dp))
+            .border(
+                width = 1.dp,
+                color = if (bucket.value.isProgress) borderColor.value else Gray3,
+                shape = RoundedCornerShape(4.dp)
+            )
             .clickable { itemClicked(itemInfo) },
+        backgroundColor = if (bucket.value.isProgress) Gray1 else Gray3,
         shape = RoundedCornerShape(4.dp),
-        elevation = 2.dp
+        elevation = 0.5.dp
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -90,33 +96,35 @@ fun SimpleBucketCard(
             val (leftContent, rightContent) = createRefs()
 
             // Right Content = SuccessButton
-            Card(
-                shape = CircleShape,
-                elevation = 0.dp,
-                modifier = Modifier
-                    .constrainAs(rightContent) {
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .clickable { }
-            ) {
-                BucketCircularProgressBar(
-                    progressState = {
-                        if (it == BucketProgressState.PROGRESS_END) {
-                            if (tabType == MyTabType.ALL) {
-                                borderColor.value = Main2
-                            } else {
-                                borderColor.value = Sub_D2
-                            }
-                        } else if (it == BucketProgressState.FINISHED) {
-                            borderColor.value = Color.Transparent
-                            animFinishEvent.invoke(it)
-                            bucketCount += 1
+            if (itemInfo.isProgress) {
+                Card(
+                    shape = CircleShape,
+                    elevation = 0.dp,
+                    modifier = Modifier
+                        .constrainAs(rightContent) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
                         }
-                    },
-                    tabType = tabType
-                )
+                        .clickable { }
+                ) {
+                    BucketCircularProgressBar(
+                        progressState = {
+                            if (it == BucketProgressState.PROGRESS_END) {
+                                if (tabType == MyTabType.ALL) {
+                                    borderColor.value = Main2
+                                } else {
+                                    borderColor.value = Sub_D2
+                                }
+                            } else if (it == BucketProgressState.FINISHED) {
+                                borderColor.value = Color.Transparent
+                                animFinishEvent.invoke(it)
+                                bucketCount += 1
+                            }
+                        },
+                        tabType = tabType
+                    )
+                }
             }
 
             // Left Contents
@@ -140,7 +148,7 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.value.dDay != null) {
+                if (bucket.value.dDay != null && bucket.value.isProgress) {
                     DdayBadgeView(bucket.value)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
@@ -148,10 +156,10 @@ fun SimpleBucketCard(
                 }
 
                 // Title
-                TitleTextView(bucket.value.title)
+                TitleTextView(bucket.value.title, bucket.value.isProgress)
 
                 // Progress
-                if (bucket.value.goalCount > 0) {
+                if (bucket.value.goalCount > 0 && bucket.value.isProgress) {
                     CountProgressView(
                         info = bucket.value,
                         bucketCount = bucketCount,
@@ -184,10 +192,10 @@ private fun DdayBadgeView(info: UIBucketInfoSimple) {
 }
 
 @Composable
-private fun TitleTextView(title: String) {
+private fun TitleTextView(title: String, progress: Boolean) {
     MyText(
         text = title,
-        color = Gray10,
+        color = if (progress) Gray10 else Gray6,
         fontSize = dpToSp(14.dp),
     )
 }

@@ -1,7 +1,9 @@
 package com.zinc.data.repository
 
 import com.zinc.common.models.AllBucketList
+import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.MyProfileInfo
@@ -28,7 +30,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 1,
                     goalCount = 10,
                     dDay = 0,
-                    detailType = "MY_CLOSE"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "D_PLUS",
@@ -37,8 +39,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 2,
                     goalCount = 10,
                     dDay = 20,
-                    detailType = "MY_CLOSE"
-
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "D_MINUS",
@@ -47,14 +48,23 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_CLOSE"
+                    status = BucketStatus.PROGRESS
                 )
             )
         )
     }
 
-    override suspend fun loadAllBucketList(): AllBucketList {
-        // return berryBucketApi.loadAllBucketList()
+    override suspend fun loadAllBucketList(
+        token: String,
+        allBucketListRequest: AllBucketListRequest
+    ): AllBucketList {
+//        return berryBucketApi.loadAllBucketList(
+//            token = token,
+//            dDayBucketOnly = allBucketListRequest.dDayBucketOnly,
+//            isPassed = allBucketListRequest.isPassed,
+//            isCompleted = allBucketListRequest.isCompleted,
+//            sort = allBucketListRequest.sort
+        //)
         return AllBucketList(
             processingCount = "15",
             succeedCount = "20",
@@ -64,14 +74,14 @@ internal class MyRepositoryImpl @Inject constructor(
                     id = "1",
                     title = "아이스크림을 먹을테야 히힛",
                     currentCount = 1,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
                     id = "2",
                     title = "제주도 여행을 갈거란 말이야",
                     currentCount = 1,
-                    detailType = "MY_CLOSE"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -79,7 +89,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     title = "아이스크림을 먹을테야",
                     currentCount = 1,
                     goalCount = 5,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -88,7 +98,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = 20,
-                    detailType = "MY_CLOSE"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -97,7 +107,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -106,7 +116,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -115,7 +125,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.PROGRESS
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -124,7 +134,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -133,7 +143,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -142,7 +152,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -151,7 +161,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -160,7 +170,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -169,7 +179,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -178,7 +188,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -187,7 +197,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",
@@ -196,7 +206,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     currentCount = 5,
                     goalCount = 10,
                     dDay = -10,
-                    detailType = "MY_OPEN"
+                    status = BucketStatus.COMPLETE
                 )
             )
         )

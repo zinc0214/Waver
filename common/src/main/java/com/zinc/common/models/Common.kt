@@ -25,8 +25,13 @@ data class BucketInfoSimple(
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
-    val detailType: String = ""
+    val status: BucketStatus
 )
+
+@Serializable
+enum class BucketStatus {
+    COMPLETE, PROGRESS
+}
 
 @Serializable
 data class CategoryInfo(
