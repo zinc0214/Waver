@@ -32,6 +32,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
+import com.zinc.berrybucket.ui.presentation.AlarmDestinations.GO_TO_ALARM
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.BUCKET_COMMENT_REPORT
 import com.zinc.berrybucket.ui.presentation.BucketDestinations.REPORT_INFO
 import com.zinc.berrybucket.ui.presentation.MainDestinations.MY_SEARCH
@@ -64,6 +65,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
+import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.launch
@@ -175,6 +177,9 @@ fun BerryBucketApp(
                                     PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 }
                             },
+                            alarmClicked = { nav ->
+                                appState.navigateToAlarm(nav)
+                            }
                         )
 
                         homeSearchNavGraph(backPress = appState::backPress)
@@ -203,6 +208,7 @@ fun BerryBucketApp(
                             goToHome = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
                             })
+                        alarmNavGraph(backPress = appState::backPress)
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)
                         moreProfileNavGraph(
@@ -258,6 +264,10 @@ object MoreDestinations {
     const val BLOCK_SETTING = "block_setting"
     const val PROFILE_SETTING = "profile_setting"
     const val MORE_APP_INFO = "app_info"
+}
+
+object AlarmDestinations {
+    const val GO_TO_ALARM = "go_to_alarm"
 }
 
 sealed class SearchEvent {
@@ -380,6 +390,16 @@ private fun NavGraphBuilder.writeNavGraph2(
             writeInfo1 = writeInfo1,
             goToBack = { newInfo -> backPress(nav, newInfo) },
             addBucketSucceed = { goToHome() })
+    }
+}
+
+private fun NavGraphBuilder.alarmNavGraph(
+    backPress: () -> Unit
+) {
+    composable(GO_TO_ALARM) {
+        AlarmScreen {
+            backPress()
+        }
     }
 }
 

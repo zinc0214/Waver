@@ -172,6 +172,12 @@ class BerryBucketAppState(
             navController.navigate(MoreDestinations.MORE_APP_INFO)
         }
     }
+
+    fun navigateToAlarm(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(AlarmDestinations.GO_TO_ALARM)
+        }
+    }
 }
 
 /**

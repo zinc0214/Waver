@@ -48,12 +48,12 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyScreen(
     onBucketSelected: (BucketSelected) -> Unit,
-    bottomSheetClicked: (BottomSheetScreenType) -> Unit
+    bottomSheetClicked: (BottomSheetScreenType) -> Unit,
+    alarmClicked: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -68,7 +68,7 @@ fun MyScreen(
         BaseTheme {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
                 MyView(context).apply {
-                    setProfileInfo(profile)
+                    setProfileInfo(profile, alarmClicked)
                     setTabView(tabItems = tabItems,
                         pagerState = pagerState,
                         viewModel = viewModel,
@@ -141,6 +141,7 @@ fun MyViewPager(
                         is MyPagerClickEvent.BucketItemClicked -> {
                             onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
                         }
+
                         is MyPagerClickEvent.SearchClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
@@ -150,6 +151,7 @@ fun MyViewPager(
                                 )
                             }
                         }
+
                         MyPagerClickEvent.FilterClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
@@ -160,6 +162,7 @@ fun MyViewPager(
                                 )
                             }
                         }
+
                         else -> {
                             // Do Nothing
                         }
@@ -167,12 +170,14 @@ fun MyViewPager(
                 })
                 return@HorizontalPager
             }
+
             1 -> {
                 CategoryLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         MyPagerClickEvent.CategoryEditClicked -> {
                             // go to edit
                         }
+
                         is MyPagerClickEvent.SearchClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
@@ -182,9 +187,11 @@ fun MyViewPager(
                                 )
                             }
                         }
+
                         is MyPagerClickEvent.CategoryItemClicked -> {
                             // go to category item
                         }
+
                         else -> {
                             // Do Nothing
                         }
@@ -193,12 +200,14 @@ fun MyViewPager(
                 })
                 return@HorizontalPager
             }
+
             2 -> {
                 DdayBucketLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         is MyPagerClickEvent.BucketItemClicked -> {
                             onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
                         }
+
                         is MyPagerClickEvent.SearchClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
@@ -209,6 +218,7 @@ fun MyViewPager(
                                 )
                             }
                         }
+
                         MyPagerClickEvent.FilterClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
@@ -219,6 +229,7 @@ fun MyViewPager(
                                 )
                             }
                         }
+
                         else -> {
                             // Do Nothing
                         }

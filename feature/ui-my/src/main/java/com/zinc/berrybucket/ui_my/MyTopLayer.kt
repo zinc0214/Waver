@@ -46,7 +46,8 @@ import com.zinc.domain.models.TopProfile
 
 @Composable
 fun MyTopLayer(
-    profileInfo: TopProfile?
+    profileInfo: TopProfile?,
+    alarmClicked: () -> Unit
 ) {
 
     profileInfo?.let {
@@ -58,7 +59,10 @@ fun MyTopLayer(
             TopButtonLayer(
                 modifier = Modifier
                     .padding(top = 16.dp, end = 16.dp)
-                    .align(Alignment.End)
+                    .align(Alignment.End),
+                alarmClicked = {
+                    alarmClicked()
+                }
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -71,29 +75,17 @@ fun MyTopLayer(
 }
 
 @Composable
-private fun TopButtonLayer(modifier: Modifier) {
+private fun TopButtonLayer(modifier: Modifier, alarmClicked: () -> Unit) {
     Row(modifier = modifier) {
 
         IconButton(
             modifier = Modifier
                 .then(Modifier.size(32.dp)),
             onClick = {
-                /*TODO*/
+                alarmClicked()
             },
             image = R.drawable.alarm,
             contentDescription = stringResource(R.string.alarm)
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        IconButton(
-            modifier = Modifier
-                .then(Modifier.size(32.dp)),
-            onClick = {
-                /*TODO*/
-            },
-            image = R.drawable.more,
-            contentDescription = stringResource(R.string.more)
         )
     }
 }

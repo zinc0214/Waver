@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.common.models.CategoryInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
-import com.zinc.domain.category.LoadCategoryList
+import com.zinc.domain.usecases.category.LoadCategoryList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

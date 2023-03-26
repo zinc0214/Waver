@@ -45,9 +45,9 @@ class MyView @JvmOverloads constructor(
         }
     }
 
-    fun setProfileInfo(profileInfo: TopProfile?) {
+    fun setProfileInfo(profileInfo: TopProfile?, alarmClicked: () -> Unit) {
         binding.profileComposeView.setContent {
-            MyTopLayer(profileInfo = profileInfo)
+            MyTopLayer(profileInfo = profileInfo, alarmClicked = { alarmClicked() })
         }
     }
 

@@ -34,7 +34,8 @@ fun NavGraphBuilder.addHomeGraph(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit,
-    moreItemClicked: (MoreItemType, NavBackStackEntry) -> Unit
+    moreItemClicked: (MoreItemType, NavBackStackEntry) -> Unit,
+    alarmClicked: (NavBackStackEntry) -> Unit
 ) {
     composable(HomeSections.MY.route) { from ->
         MyScreen(
@@ -43,6 +44,9 @@ fun NavGraphBuilder.addHomeGraph(
             },
             bottomSheetClicked = {
                 bottomSheetClicked.invoke(it, from)
+            },
+            alarmClicked = {
+                alarmClicked.invoke(from)
             }
         )
     }

@@ -1,6 +1,7 @@
 package com.zinc.data.api
 
 import com.zinc.common.models.AddBucketListResponse
+import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketList
 import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.CategoryInfo
@@ -83,4 +84,7 @@ interface BerryBucketApi {
         @Part goalCount: MultipartBody.Part, //  목표 횟수
         @Part categoryId: MultipartBody.Part // 카테고리 ID
     ): AddBucketListResponse
+
+    @GET("/alarm")
+    suspend fun loadAlarmList(@Header("Authorization") token: String): AlarmList
 }

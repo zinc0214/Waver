@@ -1,4 +1,4 @@
-package com.zinc.domain.category
+package com.zinc.domain.usecases.category
 
 import com.zinc.domain.repository.CategoryRepository
 import javax.inject.Inject

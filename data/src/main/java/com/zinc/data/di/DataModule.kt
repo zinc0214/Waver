@@ -2,6 +2,7 @@ package com.zinc.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.repository.AlarmRepositoryImpl
 import com.zinc.data.repository.CategoryRepositoryImpl
 import com.zinc.data.repository.DetailRepositoryImpl
 import com.zinc.data.repository.FeedRepositoryImpl
@@ -10,6 +11,7 @@ import com.zinc.data.repository.MyRepositoryImpl
 import com.zinc.data.repository.ReportRepositoryImpl
 import com.zinc.data.repository.SearchRepositoryImpl
 import com.zinc.data.repository.WriteRepositoryImpl
+import com.zinc.domain.repository.AlarmRepository
 import com.zinc.domain.repository.CategoryRepository
 import com.zinc.domain.repository.DetailRepository
 import com.zinc.domain.repository.FeedRepository
@@ -71,6 +73,11 @@ internal abstract class DataModule {
     abstract fun bindWriteRepository(
         repository: WriteRepositoryImpl
     ): WriteRepository
+
+    @Binds
+    abstract fun bindAlarmRepository(
+        repository: AlarmRepositoryImpl
+    ): AlarmRepository
 
     @InstallIn(SingletonComponent::class)
     @Module

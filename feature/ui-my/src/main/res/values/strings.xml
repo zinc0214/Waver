@@ -45,4 +45,8 @@
     <!-- My > Search -->
     <string name="myBucketSearchHint">리스트를 검색하세요</string>
 
+    <!-- My > Alarm -->
+    <string name="alarmTitle">알림</string>
+    <string name="alarmIconDesc">알람 아이콘 이미지</string>
+
 </resources>
