@@ -20,11 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray1
-import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.design.theme.Main4
@@ -88,7 +88,7 @@ private fun AppLogoAndVersionView(
         Column(modifier = Modifier.padding(start = 12.dp)) {
             MyText(
                 text = stringResource(id = R.string.appName),
-                color = Gray10,
+                color = Gray9,
                 fontSize = dpToSp(dp = 16.dp)
             )
             MyText(
