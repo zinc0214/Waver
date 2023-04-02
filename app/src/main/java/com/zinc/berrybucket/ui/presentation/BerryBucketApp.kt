@@ -19,6 +19,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -77,7 +79,7 @@ fun BerryBucketApp(
 ) {
     BaseTheme {
         val coroutineScope = rememberCoroutineScope()
-        val appState = rememberBerryBucketkAppState()
+        val appState = rememberBerryBucketAppState()
         val bottomSheetScaffoldState = rememberModalBottomSheetState(
             initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
         )
@@ -449,4 +451,12 @@ private fun NavGraphBuilder.moreAppInfoNavGraph(
     composable(MORE_APP_INFO) {
         AppInfoScreen(onBackClicked = { backPress() }, moreItemClicked = moreItemClicked)
     }
+}
+
+fun NavController.popUpTo(destination: String) = navigate(destination) {
+    popUpTo(graph.findStartDestination().id) {
+        saveState = true
+    }
+    // Restore state when reselecting a previously selected item
+    restoreState = true
 }

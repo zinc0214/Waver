@@ -18,7 +18,7 @@ import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberBerryBucketkAppState(
+fun rememberBerryBucketAppState(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     navController: NavHostController = rememberNavController(),
     resources: Resources = resources(),
