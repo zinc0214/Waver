@@ -1,9 +1,11 @@
 package com.zinc.berrybucket.ui_feed
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 
@@ -11,19 +13,24 @@ import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 fun Feed() {
 
     val viewModel: FeedViewModel = hiltViewModel()
-    viewModel.loadKeyWordSelected()
+    val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
 
-    val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState(false)
+    if (isKeyWordSelected == null) {
+        viewModel.loadKeyWordSelected()
+    }
 
-    Scaffold { _ ->
-        if (isKeyWordSelected) {
-            viewModel.loadFeedItems()
+    Scaffold { padding ->
+        if (isKeyWordSelected != null && isKeyWordSelected == true) {
             val feedItems by viewModel.feedItems.observeAsState()
-            feedItems?.let {
-                FeedLayer(feedItems = it)
-                viewModel.loadFeedKeyWords()
+            if (feedItems == null) {
+                viewModel.loadFeedItems()
             }
-
+            feedItems?.let {
+                FeedLayer(
+                    modifier = Modifier.padding(padding),
+                    feedItems = it
+                )
+            }
         } else {
             viewModel.loadFeedKeyWords()
             val feedKeyWords by viewModel.feedKeyWords.observeAsState()
