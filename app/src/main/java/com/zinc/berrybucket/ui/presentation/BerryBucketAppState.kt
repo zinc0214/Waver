@@ -12,6 +12,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.ui.presentation.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.navigateWithArgument
 import com.zinc.common.models.ReportInfo
@@ -51,7 +52,9 @@ class BerryBucketAppState(
     // Not all routes need to show the bottom bar.
     val shouldShowBottomBar: Boolean
         @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes
+            .currentBackStackEntryAsState().value?.destination?.route in bottomBarRoutes ||
+                navController
+                    .currentBackStackEntryAsState().value?.destination?.route == HOME_ROUTE
 
     // ----------------------------------------------------------
     // Navigation state source of truth
@@ -60,7 +63,7 @@ class BerryBucketAppState(
     var currentHomeRoute = mutableStateOf(HomeSections.MY.route)
 
     val currentRoute: String?
-        get() = navController.currentDestination?.route
+        get() = if (navController.currentDestination?.route == HOME_ROUTE) HomeSections.MY.route else navController.currentDestination?.route
 
     fun backPress() {
         navController.navigateUp()

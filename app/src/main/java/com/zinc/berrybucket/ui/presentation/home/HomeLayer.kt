@@ -15,57 +15,9 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.BucketSelected
-import com.zinc.berrybucket.ui.presentation.SearchEvent
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
-import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
-import com.zinc.berrybucket.ui_feed.Feed
-import com.zinc.berrybucket.ui_more.MoreScreen
-import com.zinc.berrybucket.ui_more.models.MoreItemType
-import com.zinc.berrybucket.ui_my.BottomSheetScreenType
-import com.zinc.berrybucket.ui_my.MyScreen
-
-fun NavGraphBuilder.addHomeGraph(
-    onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
-    onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
-    bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit,
-    moreItemClicked: (MoreItemType, NavBackStackEntry) -> Unit,
-    alarmClicked: (NavBackStackEntry) -> Unit
-) {
-    composable(HomeSections.MY.route) { from ->
-        MyScreen(
-            onBucketSelected = {
-                onBucketSelected.invoke(it, from)
-            },
-            bottomSheetClicked = {
-                bottomSheetClicked.invoke(it, from)
-            },
-            alarmClicked = {
-                alarmClicked.invoke(from)
-            }
-        )
-    }
-    composable(HomeSections.FEED.route) { from ->
-        Feed()
-    }
-    composable(HomeSections.SEARCH.route) { from ->
-        RecommendScreen(
-            onSearchEvent = {
-                onSearchEvent.invoke(it, from)
-            }
-        )
-    }
-    composable(HomeSections.MORE.route) { from ->
-        MoreScreen(moreItemClicked = {
-            moreItemClicked.invoke(it, from)
-        })
-    }
-}
 
 enum class HomeSections(
     @StringRes val title: Int,
