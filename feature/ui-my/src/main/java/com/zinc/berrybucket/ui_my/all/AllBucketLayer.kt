@@ -37,15 +37,17 @@ fun AllBucketLayer(
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
 
-    viewModel.loadAllBucketList(
-        allBucketListRequest = AllBucketListRequest(
-            dDayBucketOnly = YesOrNo.N.name,
-            isPassed = YesOrNo.N.name,
-            isCompleted = YesOrNo.N.name,
-            sort = AllBucketListSortType.CREATED
-        )
-    )
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
+    if (allBucketInfo == null) {
+        viewModel.loadAllBucketList(
+            allBucketListRequest = AllBucketListRequest(
+                dDayBucketOnly = YesOrNo.N.name,
+                isPassed = YesOrNo.N.name,
+                isCompleted = YesOrNo.N.name,
+                sort = AllBucketListSortType.CREATED
+            )
+        )
+    }
 
     allBucketInfo?.let {
         Column {

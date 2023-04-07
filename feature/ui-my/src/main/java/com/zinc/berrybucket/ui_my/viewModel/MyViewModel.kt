@@ -14,6 +14,7 @@ import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
+import com.zinc.common.models.DetailType
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadAllBucketList
@@ -178,13 +179,15 @@ class MyViewModel @Inject constructor(
             id = "1",
             title = "아이스크림을 먹을테야 얍얍압얍",
             currentCount = 1,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
         ),
         BucketInfoSimple(
             id = "2",
             title = "아이스크림을 여행을 갈거란 말이야",
             currentCount = 1,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
         ),
         BucketInfoSimple(
             id = "3",
@@ -192,7 +195,8 @@ class MyViewModel @Inject constructor(
             currentCount = 5,
             goalCount = 10,
             dDay = -10,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
         ),
         BucketInfoSimple(
             id = "3",
@@ -200,7 +204,8 @@ class MyViewModel @Inject constructor(
             currentCount = 5,
             goalCount = 10,
             dDay = -10,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
         ),
         BucketInfoSimple(
             id = "3",
@@ -208,7 +213,8 @@ class MyViewModel @Inject constructor(
             currentCount = 5,
             goalCount = 10,
             dDay = -10,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
 
         ),
         BucketInfoSimple(
@@ -217,7 +223,8 @@ class MyViewModel @Inject constructor(
             currentCount = 5,
             goalCount = 10,
             dDay = -10,
-            status = BucketStatus.PROGRESS
+            status = BucketStatus.PROGRESS,
+            detailType = DetailType.MY_OPEN
         )
     )
 

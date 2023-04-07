@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.zinc.berrybucket.model.BucketSelected
-import com.zinc.berrybucket.model.DetailType
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
@@ -32,6 +31,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
+import com.zinc.common.models.DetailType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)

@@ -9,6 +9,7 @@ import com.zinc.berrybucket.ui_common.R
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
+import com.zinc.common.models.DetailType
 
 data class AllBucketList(
     val processingCount: String,
@@ -32,7 +33,8 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
         currentCount = this.currentCount,
         goalCount = this.goalCount,
         dDay = this.dDay,
-        status = this.status
+        status = this.status,
+        detailType = this.detailType
     )
 }
 
