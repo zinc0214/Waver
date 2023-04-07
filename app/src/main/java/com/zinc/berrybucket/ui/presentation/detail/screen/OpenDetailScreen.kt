@@ -22,14 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.CommentLongClicked
-import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
@@ -45,22 +43,22 @@ import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentCountView
+import com.zinc.berrybucket.ui.presentation.detail.component.CommentEditTextView
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentLine
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentOptionClicked
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentSelectedDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailCommentView
-import com.zinc.berrybucket.ui.presentation.detail.component.DetailCommenterTagDropDownView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
-import com.zinc.berrybucket.ui.presentation.detail.component.TaggableEditText
+import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailCommentEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
 @Composable
-fun OpenDetailLayer(
+fun OpenDetailScreen(
     detailId: String,
     goToEvent: (GoToBucketDetailEvent) -> Unit,
     backPress: () -> Unit
@@ -73,8 +71,8 @@ fun OpenDetailLayer(
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
     val originCommentTaggableList by viewModel.originCommentTaggableList.observeAsState()
 
-    val validTaggableList = remember {
-        mutableListOf<CommentTagInfo>()
+    val validMentionList = remember {
+        mutableListOf<CommentMentionInfo>()
     }
 
     vmDetailInfo?.let { detailInfo ->
@@ -108,12 +106,11 @@ fun OpenDetailLayer(
         // 전체 뷰 clickable 인데, 리플 효과 제거를 위해 사용
         val interactionSource = remember { MutableInteractionSource() }
 
-        // ComposeView 에서 observer 사용을 위해
-        val lifecycleOwner = LocalLifecycleOwner.current
+        // 댓글 값 저장
+        val commentText = remember { mutableStateOf("") }
 
         BaseTheme {
-            Scaffold { _ ->
-
+            Scaffold { padding ->
                 if (optionPopUpShowed.value) {
                     MyDetailAppBarMoreMenuDialog(optionPopUpShowed)
                 }
@@ -236,37 +233,56 @@ fun OpenDetailLayer(
                                 bottom.linkTo(parent.bottom)
                             }) {
                             AnimatedVisibility(isCommentViewShown || !isScrollable) {
-                                AndroidView(modifier = Modifier
-                                    .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
-                                    .fillMaxWidth(), factory = {
+//                                AndroidView(modifier = Modifier
+//                                    .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
+//                                    .fillMaxWidth(), factory = {
+//
+//                                    TaggableEditText(it).apply {
+//                                        setUpView(viewModel = viewModel,
+//                                            lifecycleOwner = lifecycleOwner,
+//                                            originCommentTaggableList = originCommentTaggableList
+//                                                ?: emptyList(),
+//                                            updateValidTaggableList = { validList ->
+//                                                validTaggableList.clear()
+//                                                validTaggableList.addAll(validList)
+//                                            },
+//                                            commentSendButtonClicked = {
+//                                                focusManager.clearFocus()
+//                                            })
+//                                    }
+//                                })
 
-                                    TaggableEditText(it).apply {
-                                        setUpView(viewModel = viewModel,
-                                            lifecycleOwner = lifecycleOwner,
-                                            originCommentTaggableList = originCommentTaggableList
-                                                ?: emptyList(),
-                                            updateValidTaggableList = { validList ->
-                                                validTaggableList.clear()
-                                                validTaggableList.addAll(validList)
-                                            },
-                                            commentSendButtonClicked = {
-                                                focusManager.clearFocus()
-                                            })
-                                    }
-                                })
+                                CommentEditTextView(
+                                    modifier = Modifier,
+                                    originText = commentText.value,
+                                    commentEvent = {
+                                        when (it) {
+                                            OpenDetailCommentEvent.MentaionButtonClicked -> {
+
+                                            }
+
+                                            is OpenDetailCommentEvent.SendComment -> {
+
+                                            }
+
+                                            is OpenDetailCommentEvent.TextChenaged -> {
+                                                commentText.value = it.updateText
+                                            }
+                                        }
+                                    })
                             }
                         }
                     }
                 }
 
-                // 유효한 태그가 있을 때만 노출
-                if (validTaggableList.isNotEmpty() && isKeyBoardOpened.value) {
-                    DetailCommenterTagDropDownView(
-                        commentTaggableList = validTaggableList,
-                        tagClicked = {
-                            viewModel.taggedClicked(it)
-                        })
-                }
+//                // 유효한 태그가 있을 때만 노출
+//                if (validMentionList.isNotEmpty() && isKeyBoardOpened.value) {
+//                    DetailCommenterTagDropDownView(
+//                        commentTaggableList = validMentionList,
+//                        tagClicked = {
+//                            viewModel.taggedClicked(it)
+//                        })
+//                }
             }
         }
     }

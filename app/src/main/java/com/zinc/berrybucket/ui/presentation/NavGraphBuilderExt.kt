@@ -12,7 +12,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.model.WriteInfo1
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
-import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailLayer
+import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
@@ -227,7 +227,7 @@ internal fun NavGraphBuilder.berryBucketNavGraph(
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
-        OpenDetailLayer(
+        OpenDetailScreen(
             detailId = detailId, goToEvent = {
                 when (it) {
                     is GoToBucketDetailEvent.GoToCommentReport -> {

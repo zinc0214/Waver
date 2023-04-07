@@ -21,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -35,25 +36,26 @@ import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.MyTextField
-import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
+import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailCommentEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CommentEditTextView(
+    originText: String,
     modifier: Modifier,
-    viewModel: DetailViewModel,
-    textChanged: (String, Int) -> Unit
+    commentEvent: (OpenDetailCommentEvent) -> Unit
 ) {
     val isKeyboardStatus by keyboardAsState()
     val hintText = stringResource(id = R.string.commentHintText)
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-    var commentText by remember { mutableStateOf(TextFieldValue("")) }
+    var commentText by remember { mutableStateOf(TextFieldValue(originText)) }
     val likedState = remember { mutableStateOf(false) }
 
     if (isKeyboardStatus == Keyboard.Closed) {
         focusManager.clearFocus()
+        keyboardController?.hide()
     }
 
     Row(
@@ -72,6 +74,17 @@ fun CommentEditTextView(
             },
             image = if (likedState.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
             contentDescription = stringResource(id = R.string.likeButtonDesc),
+        )
+
+        IconButton(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .padding(top = 11.dp, start = 4.dp, bottom = 11.dp)
+                .size(32.dp),
+            image = R.drawable.btn_32_mention,
+            contentDescription = stringResource(
+                id = R.string.commentButtonDesc
+            )
         )
 
         ConstraintLayout(
@@ -100,7 +113,7 @@ fun CommentEditTextView(
                 ),
                 onValueChange = {
                     commentText = it
-                    textChanged(it.text, it.selection.end)
+                    commentEvent.invoke(OpenDetailCommentEvent.TextChenaged(it.text))
                 },
                 maxLines = 3,
                 decorationBox = { innerTextField ->
@@ -113,17 +126,18 @@ fun CommentEditTextView(
                 },
             )
 
-            IconButton(
-                modifier = Modifier
-                    .padding(4.dp)
-                    .then(Modifier.size(28.dp))
-                    .constrainAs(addButton) {
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .alpha(if (isKeyboardStatus == Keyboard.Opened) 1f else 0f),
+            IconButton(modifier = Modifier
+                .padding(4.dp)
+                .then(Modifier.size(28.dp))
+                .constrainAs(addButton) {
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+                .alpha(if (isKeyboardStatus == Keyboard.Opened) 1f else 0f),
                 onClick = {
                     focusManager.clearFocus()
+                    commentEvent.invoke(OpenDetailCommentEvent.SendComment(commentText.text))
+
                 },
                 enabled = commentText.text.isNotBlank(),
                 image = if (commentText.text.isBlank()) R.drawable.comment_send_off else R.drawable.comment_send_on,
@@ -131,4 +145,13 @@ fun CommentEditTextView(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun CommentEditTextPreView() {
+    CommentEditTextView(
+        modifier = Modifier,
+        originText = "", commentEvent = {},
+    )
 }

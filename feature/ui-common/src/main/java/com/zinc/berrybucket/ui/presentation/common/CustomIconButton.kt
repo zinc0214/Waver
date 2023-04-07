@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
@@ -16,7 +17,8 @@ fun IconButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     @DrawableRes image: Int,
-    contentDescription: String
+    contentDescription: String,
+    colorFilter: ColorFilter? = null
 
 ) {
     IconButton(
@@ -29,7 +31,8 @@ fun IconButton(
     ) {
         Image(
             painter = painterResource(image),
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            colorFilter = colorFilter
         )
     }
 }

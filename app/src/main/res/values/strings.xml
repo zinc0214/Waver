@@ -12,10 +12,13 @@
     <!-- Detail -->
     <string name="successButtonText">달성 완료</string>
     <string name="likeButtonDesc">좋아요 버튼</string>
+    <string name="commentButtonDesc">태그 버튼</string>
     <string name="commentSendButtonDesc">댓글 전송 버튼</string>
     <string name="commentHintText">버킷리스트를 응원해주세요!</string>
     <string name="commentBlankText">버킷리스트 처음 응원자가 되어주세요</string>
     <string name="successButtonCount"><![CDATA[<font color="#ffffff">%s</font><font color="#a6c6ff">/%s</font>]]></string>
+    <string name="mentionHintText">닉네임을 선택헤주세요</string>
+    <string name="mentionFriendText">친구</string>
 
     <!-- Detail > Comment Option Dialog -->
     <string name="commentOptionDialogTitle">댓글</string>

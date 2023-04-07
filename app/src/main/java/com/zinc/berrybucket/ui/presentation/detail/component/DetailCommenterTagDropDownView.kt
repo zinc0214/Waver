@@ -24,15 +24,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailCommenterTagDropDownView(
-    commentTaggableList: List<CommentTagInfo>,
-    tagClicked: (CommentTagInfo) -> Unit
+    commentTaggableList: List<CommentMentionInfo>,
+    tagClicked: (CommentMentionInfo) -> Unit
 ) {
 
     Card(
@@ -64,7 +64,7 @@ fun DetailCommenterTagDropDownView(
 
 @Composable
 private fun TagDropDownItem(
-    modifier: Modifier, commentTagInfo: CommentTagInfo, tagClicked: (CommentTagInfo) -> Unit
+    modifier: Modifier, commentTagInfo: CommentMentionInfo, tagClicked: (CommentMentionInfo) -> Unit
 ) {
     Row(
         modifier = modifier

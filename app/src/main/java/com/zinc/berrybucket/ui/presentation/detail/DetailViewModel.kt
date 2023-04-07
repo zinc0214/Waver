@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zinc.berrybucket.model.CommentInfo
-import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.DetailInfo
@@ -26,17 +26,17 @@ class DetailViewModel @Inject constructor(
     private val _bucketDetailInfo = MutableLiveData<DetailInfo>()
     val bucketDetailInfo: LiveData<DetailInfo> get() = _bucketDetailInfo
 
-    private val _originCommentTaggableList = MutableLiveData<List<CommentTagInfo>>()
-    val originCommentTaggableList: LiveData<List<CommentTagInfo>> = _originCommentTaggableList
+    private val _originCommentTaggableList = MutableLiveData<List<CommentMentionInfo>>()
+    val originCommentTaggableList: LiveData<List<CommentMentionInfo>> = _originCommentTaggableList
 
-    private val _commentTaggedList = MutableLiveData<List<CommentTagInfo>>()
-    val commentTaggedList: LiveData<List<CommentTagInfo>> get() = _commentTaggedList
+    private val _commentTaggedList = MutableLiveData<List<CommentMentionInfo>>()
+    val commentTaggedList: LiveData<List<CommentMentionInfo>> get() = _commentTaggedList
 
     private val _commentEditString = MutableLiveData<String>()
     val commentEditString: LiveData<String> = _commentEditString
 
-    private val _commentTagClicked = MutableLiveData<CommentTagInfo>()
-    val commentTagClicked: LiveData<CommentTagInfo> = _commentTagClicked
+    private val _commentTagClicked = MutableLiveData<CommentMentionInfo>()
+    val commentTagClicked: LiveData<CommentMentionInfo> = _commentTagClicked
 
     private var commentEditOriginString = ""
 
@@ -54,20 +54,28 @@ class DetailViewModel @Inject constructor(
     }
 
     fun getCommentTaggableList() {
-        val tagableNickName = listOf(
-            CommentTagInfo("A", "승빈"),
-            CommentTagInfo("A", "승빈2"),
-            CommentTagInfo("B", "카시이")
-        )
+        val tagableNickName = mutableListOf<CommentMentionInfo>()
+
+        repeat(10) {
+            tagableNickName.add(
+                CommentMentionInfo(
+                    userId = "$it",
+                    profileImage = "",
+                    nickName = "가나다 $it",
+                    isFriend = false,
+                    isSelected = false
+                )
+            )
+        }
         _originCommentTaggableList.value = tagableNickName
     }
 
-    fun taggedClicked(commentTagInfo: CommentTagInfo) {
+    fun taggedClicked(commentTagInfo: CommentMentionInfo) {
         _commentTagClicked.value = commentTagInfo
     }
 
     fun addCommentTaggedItem(
-        commentTagInfo: CommentTagInfo,
+        commentTagInfo: CommentMentionInfo,
         cursorStartIndex: Int,
         cursorEndIndex: Int
     ) {
@@ -77,14 +85,14 @@ class DetailViewModel @Inject constructor(
         addCommentTaggedItemToEditString(commentTagInfo, cursorStartIndex, cursorEndIndex)
     }
 
-    fun removeCommentTaggedItem(commentTagInfo: CommentTagInfo) {
+    fun removeCommentTaggedItem(commentMentionInfo: CommentMentionInfo) {
         val taggedList = commentTaggedListToArray()
-        taggedList.remove(commentTagInfo)
+        taggedList.remove(commentMentionInfo)
         _commentTaggedList.value = taggedList
-        removeCommentTaggedItemToEditString(commentTagInfo)
+        removeCommentTaggedItemToEditString(commentMentionInfo)
     }
 
-    private fun commentTaggedListToArray(): ArrayList<CommentTagInfo> {
+    private fun commentTaggedListToArray(): ArrayList<CommentMentionInfo> {
         val taggedList = _commentTaggedList.value
         return if (taggedList.isNullOrEmpty()) {
             arrayListOf()
@@ -94,22 +102,22 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun addCommentTaggedItemToEditString(
-        commentTagInfo: CommentTagInfo,
+        commentMentionInfo: CommentMentionInfo,
         cursorStartIndex: Int, cursorEndIndex: Int
     ) {
         var editText = commentEditOriginString
         editText = editText.replaceRange(
             startIndex = cursorStartIndex,
             endIndex = cursorEndIndex,
-            replacement = "@${commentTagInfo.nickName}"
+            replacement = "@${commentMentionInfo.nickName}"
         )
         _commentEditString.value = editText
     }
 
-    private fun removeCommentTaggedItemToEditString(commentTagInfo: CommentTagInfo) {
+    private fun removeCommentTaggedItemToEditString(commentMentionInfo: CommentMentionInfo) {
         var editString = commentEditOriginString
         if (editString.isBlank()) return
-        editString = editString.removePrefix(commentTagInfo.nickName)
+        editString = editString.removePrefix(commentMentionInfo.nickName)
         _commentEditString.value = editString
     }
 

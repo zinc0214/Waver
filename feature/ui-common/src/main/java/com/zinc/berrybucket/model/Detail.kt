@@ -45,9 +45,12 @@ data class InnerSuccessButton(
     var isVisible: Boolean
 ) : DetailDescType()
 
-data class CommentTagInfo(
-    val profileImageView: String,
-    val nickName: String
+data class CommentMentionInfo(
+    val userId: String,
+    val profileImage: String,
+    val nickName: String,
+    val isFriend: Boolean,
+    val isSelected: Boolean
 )
 
 data class SuccessButtonInfo(

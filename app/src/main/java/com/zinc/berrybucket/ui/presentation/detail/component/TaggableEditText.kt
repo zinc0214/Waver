@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import androidx.lifecycle.LifecycleOwner
 import com.zinc.berrybucket.databinding.LayoutTaggableEdittextBinding
-import com.zinc.berrybucket.model.CommentTagInfo
+import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.util.nonNullObserve
 import com.zinc.berrybucket.util.onTextChanged
@@ -22,8 +22,8 @@ class TaggableEditText @JvmOverloads constructor(
     private var binding: LayoutTaggableEdittextBinding
     private var imm: InputMethodManager
 
-    private lateinit var originCommentTaggableList: List<CommentTagInfo>
-    private lateinit var updateValidTaggableList: (List<CommentTagInfo>) -> Unit
+    private lateinit var originCommentTaggableList: List<CommentMentionInfo>
+    private lateinit var updateValidTaggableList: (List<CommentMentionInfo>) -> Unit
     private lateinit var commentSendButtonClicked: () -> Unit
     private lateinit var viewModel: DetailViewModel
     private lateinit var lifecycleOwner: LifecycleOwner
@@ -37,8 +37,8 @@ class TaggableEditText @JvmOverloads constructor(
     fun setUpView(
         viewModel: DetailViewModel,
         lifecycleOwner: LifecycleOwner,
-        originCommentTaggableList: List<CommentTagInfo>,
-        updateValidTaggableList: ((List<CommentTagInfo>) -> Unit),
+        originCommentTaggableList: List<CommentMentionInfo>,
+        updateValidTaggableList: ((List<CommentMentionInfo>) -> Unit),
         commentSendButtonClicked: () -> Unit,
     ) {
         this.viewModel = viewModel
@@ -92,7 +92,7 @@ class TaggableEditText @JvmOverloads constructor(
     // 현재 커서가 위치한 EditText 블록에서 태그 가능한 리스트 확인
     private fun getCurrentBlockTaggableList(
         currentEditText: String
-    ): List<CommentTagInfo> {
+    ): List<CommentMentionInfo> {
         val currentCursorBlock = getCurrentEditTextBlock(currentEditText).currentBlockText
         if (currentCursorBlock.isEmpty()) return emptyList()
 
