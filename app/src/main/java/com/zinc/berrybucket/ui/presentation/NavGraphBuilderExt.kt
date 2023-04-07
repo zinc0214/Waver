@@ -100,12 +100,12 @@ internal fun NavGraphBuilder.bucketNavGraph(
 ) {
     navigation(
         route = MainDestinations.OPEN_BUCKET_DETAIL,
-        startDestination = BucketDestinations.BUCKET_COMMENT_REPORT
+        startDestination = BucketListDetailDestinations.BUCKET_COMMENT_REPORT
     ) {
-        composable(BucketDestinations.BUCKET_COMMENT_REPORT) { entry ->
+        composable(BucketListDetailDestinations.BUCKET_COMMENT_REPORT) { entry ->
             val arguments = requireNotNull(entry.arguments)
             val reportInfo =
-                arguments.getRequiredSerializableExtra<ReportInfo>(BucketDestinations.REPORT_INFO)
+                arguments.getRequiredSerializableExtra<ReportInfo>(BucketListDetailDestinations.REPORT_INFO)
             ReportScreen(reportInfo = reportInfo, backPress = backPress)
         }
     }
@@ -259,7 +259,7 @@ object MainDestinations {
     const val MY_SEARCH = "my_search"
 }
 
-object BucketDestinations {
+object BucketListDetailDestinations {
     const val BUCKET_COMMENT_REPORT = "bucket_comment_report"
     const val REPORT_INFO = "report_info"
 }

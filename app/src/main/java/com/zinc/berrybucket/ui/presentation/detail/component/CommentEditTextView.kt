@@ -77,7 +77,7 @@ fun CommentEditTextView(
         )
 
         IconButton(
-            onClick = { /*TODO*/ },
+            onClick = { commentEvent(OpenDetailCommentEvent.MentaionButtonClicked) },
             modifier = Modifier
                 .padding(top = 11.dp, start = 4.dp, bottom = 11.dp)
                 .size(32.dp),

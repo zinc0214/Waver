@@ -109,9 +109,9 @@ class BerryBucketAppState(
     fun navigateToCommentReport(reportInfo: ReportInfo, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigateWithArgument(
-                route = BucketDestinations.BUCKET_COMMENT_REPORT,
+                route = BucketListDetailDestinations.BUCKET_COMMENT_REPORT,
                 args = listOf(
-                    BucketDestinations.REPORT_INFO to reportInfo
+                    BucketListDetailDestinations.REPORT_INFO to reportInfo
                 )
             )
         }

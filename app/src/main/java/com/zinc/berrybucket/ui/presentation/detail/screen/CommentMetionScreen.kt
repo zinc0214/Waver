@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Divider
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
@@ -26,65 +27,76 @@ import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionedLi
 fun CommentMentionScreen(
     modifier: Modifier = Modifier,
     validMentionList: List<CommentMentionInfo>,
+    backPress: () -> Unit,
+    selectedFinish: (List<CommentMentionInfo>) -> Unit
 ) {
 
     val updateMentionList = remember {
         validMentionList.toMutableStateList()
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-
-        MentionTitleView(
-            closeClicked = { /*TODO*/ },
-            finishClicked = { /*TODO*/ },
-            isFinishAvailable = updateMentionList.any { it.isSelected }
-        )
-
-        MentionedListView(
-            mentionedList = updateMentionList.filter { it.isSelected },
-            removeMention = { item ->
-                val index = updateMentionList.indexOfFirst { it == item }
-                updateMentionList[index] = updateMentionList[index].copy(isSelected = false)
-            })
-
-        LazyColumn(
+    Scaffold { padding ->
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .scrollable(rememberScrollState(), orientation = Orientation.Vertical)
+                .fillMaxSize()
+                .padding(padding)
         ) {
 
+            MentionTitleView(
+                closeClicked = { backPress() },
+                finishClicked = { selectedFinish(updateMentionList) },
+                isFinishAvailable = updateMentionList.any { it.isSelected }
+            )
 
-            item {
-                MentionListView(
-                    isFriendsList = true,
-                    mentionList = updateMentionList.filter { it.isSelected.not() && it.isFriend },
-                    mentionSelected = { item ->
-                        val index = updateMentionList.indexOfFirst { it == item }
-                        updateMentionList[index] = updateMentionList[index].copy(isSelected = true)
-                    })
-            }
+            MentionedListView(
+                mentionedList = updateMentionList.filter { it.isSelected },
+                removeMention = { item ->
+                    val index = updateMentionList.indexOfFirst { it == item }
+                    updateMentionList[index] = updateMentionList[index].copy(isSelected = false)
+                })
 
-            item {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .scrollable(rememberScrollState(), orientation = Orientation.Vertical)
+            ) {
 
-                Divider(
-                    modifier = Modifier
-                        .padding(vertical = 28.dp, horizontal = 24.dp)
-                        .height(1.dp),
-                    color = Main1
-                )
-            }
 
-            item {
-                MentionListView(
-                    isFriendsList = false,
-                    mentionList = updateMentionList.filter { it.isSelected.not() && it.isFriend.not() },
-                    mentionSelected = { item ->
-                        val index = updateMentionList.indexOfFirst { it == item }
-                        updateMentionList[index] = updateMentionList[index].copy(isSelected = true)
-                    })
+                item {
+                    MentionListView(
+                        isFriendsList = true,
+                        mentionList = updateMentionList.filter { it.isSelected.not() && it.isFriend },
+                        mentionSelected = { item ->
+                            val index = updateMentionList.indexOfFirst { it == item }
+                            updateMentionList[index] =
+                                updateMentionList[index].copy(isSelected = true)
+                        })
+                }
+
+                item {
+
+                    Divider(
+                        modifier = Modifier
+                            .padding(vertical = 28.dp, horizontal = 24.dp)
+                            .height(1.dp),
+                        color = Main1
+                    )
+                }
+
+                item {
+                    MentionListView(
+                        isFriendsList = false,
+                        mentionList = updateMentionList.filter { it.isSelected.not() && it.isFriend.not() },
+                        mentionSelected = { item ->
+                            val index = updateMentionList.indexOfFirst { it == item }
+                            updateMentionList[index] =
+                                updateMentionList[index].copy(isSelected = true)
+                        })
+                }
             }
         }
     }
+
 }
 
 @Composable
@@ -116,5 +128,8 @@ private fun CommentMentionScreenPreview() {
         )
     }
 
-    CommentMentionScreen(validMentionList = tagableNickName)
+    CommentMentionScreen(validMentionList = tagableNickName,
+        modifier = Modifier,
+        backPress = {},
+        selectedFinish = {})
 }

@@ -27,7 +27,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.CommentLongClicked
-import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.DetailInfo
@@ -71,10 +70,6 @@ fun OpenDetailScreen(
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
     val originCommentTaggableList by viewModel.originCommentTaggableList.observeAsState()
 
-    val validMentionList = remember {
-        mutableListOf<CommentMentionInfo>()
-    }
-
     vmDetailInfo?.let { detailInfo ->
 
         // scroll 상태에 따른 버튼 상태
@@ -108,6 +103,9 @@ fun OpenDetailScreen(
 
         // 댓글 값 저장
         val commentText = remember { mutableStateOf("") }
+
+        // 멘션 선택 화면 노출
+        val isNeedToShowMentionScreen = remember { mutableStateOf(false) }
 
         BaseTheme {
             Scaffold { padding ->
@@ -258,7 +256,7 @@ fun OpenDetailScreen(
                                     commentEvent = {
                                         when (it) {
                                             OpenDetailCommentEvent.MentaionButtonClicked -> {
-
+                                                isNeedToShowMentionScreen.value = true
                                             }
 
                                             is OpenDetailCommentEvent.SendComment -> {
@@ -283,8 +281,23 @@ fun OpenDetailScreen(
 //                            viewModel.taggedClicked(it)
 //                        })
 //                }
+
+                if (isNeedToShowMentionScreen.value) {
+                    originCommentTaggableList?.let {
+                        CommentMentionScreen(
+                            validMentionList = it,
+                            backPress = { isNeedToShowMentionScreen.value = false },
+                            selectedFinish = {
+
+                            }
+                        )
+                    }
+
+                }
             }
         }
+
+
     }
 }
 
