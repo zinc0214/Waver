@@ -153,8 +153,6 @@ internal fun MentionedListView(
                 .height(1.dp)
         )
     }
-
-
 }
 
 @Composable
@@ -219,6 +217,5 @@ private fun MentionTextPreview() {
             )
         )
     }
-
     MentionedListView(mentionedList = tagableNickName, removeMention = {})
 }
