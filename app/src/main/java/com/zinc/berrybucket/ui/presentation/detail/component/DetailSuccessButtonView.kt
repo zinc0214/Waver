@@ -96,8 +96,6 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
             .padding(start = 24.dp),
             textAlign = TextAlign.Start)
 
-
-
         MyText(
             text = successButtonInfo.userCount.toString(),
             textAlign = TextAlign.End,
@@ -113,7 +111,7 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
         )
 
         MyText(
-            text = "/${successButtonInfo.userCount}",
+            text = "/${successButtonInfo.goalCount}",
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Bold,
             fontSize = dpToSp(16.dp),
