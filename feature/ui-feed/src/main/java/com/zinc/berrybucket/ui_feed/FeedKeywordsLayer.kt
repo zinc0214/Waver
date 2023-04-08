@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.selection.selectable
@@ -149,7 +150,7 @@ private fun BodyContent(
 private fun ChipBodyContent(
     modifier: Modifier = Modifier, state: LazyGridState, keywords: List<FeedKeyWord>
 ) {
-    androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+    LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 90.dp), state = state, modifier = modifier
     ) {
         items(items = keywords) { keywordItem ->
