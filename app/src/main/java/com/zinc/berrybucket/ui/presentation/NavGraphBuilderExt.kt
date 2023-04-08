@@ -19,7 +19,7 @@ import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
 import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
-import com.zinc.berrybucket.ui_feed.Feed
+import com.zinc.berrybucket.ui_feed.FeedScreen
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
 import com.zinc.berrybucket.ui_more.AppInfoScreen
 import com.zinc.berrybucket.ui_more.BlockSettingScreen
@@ -56,7 +56,7 @@ internal fun NavGraphBuilder.homeMy(
 
 internal fun NavGraphBuilder.homeFeed() {
     composable(HomeSections.FEED.route) { from ->
-        Feed()
+        FeedScreen()
     }
 }
 

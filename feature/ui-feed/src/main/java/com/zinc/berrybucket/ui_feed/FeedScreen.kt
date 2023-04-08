@@ -10,7 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 
 @Composable
-fun Feed() {
+fun FeedScreen() {
 
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()

@@ -159,6 +159,7 @@ private fun ChipBodyContent(
                     .padding(horizontal = 8.5.dp, vertical = 14.dp)
                     .padding(bottom = if (keywords.last() == keywordItem) 69.dp else 0.dp)
                     .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
+                    .clip(RoundedCornerShape(24.dp))
                     .selectable(selected = selected, onClick = {
                         selected = !selected
                     }),
@@ -175,21 +176,19 @@ private fun ChipBodyContent(
 
 @Composable
 private fun BucketRecommendButton(modifier: Modifier = Modifier, recommendClicked: () -> Unit) {
-    Box(modifier = modifier
-        .clip(RoundedCornerShape(12.dp))
-        .background(Main4)
-        .clickable {
-            recommendClicked()
-        }) {
-        MyText(
-            text = stringResource(id = R.string.recommendBucketList),
-            textAlign = TextAlign.Center,
-            color = Gray1,
-            fontWeight = FontWeight.Bold,
-            fontSize = dpToSp(16.dp),
-            modifier = Modifier
-                .padding(vertical = 14.dp, horizontal = 24.dp)
-                .fillMaxWidth()
-        )
-    }
+    MyText(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = Main4, shape = RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(12.dp))
+            .clickable {
+                recommendClicked()
+            }
+            .padding(vertical = 14.dp, horizontal = 24.dp),
+        text = stringResource(id = R.string.recommendBucketList),
+        textAlign = TextAlign.Center,
+        color = Gray1,
+        fontWeight = FontWeight.Bold,
+        fontSize = dpToSp(16.dp)
+    )
 }
