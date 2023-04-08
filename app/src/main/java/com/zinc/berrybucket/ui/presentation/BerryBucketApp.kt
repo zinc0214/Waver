@@ -96,7 +96,9 @@ fun BerryBucketApp(
                         startDestination = HomeSections.MY.route,
                         modifier = Modifier.padding(innerPaddingModifier)
                     ) {
-                        homeFeed()
+                        homeFeed(onFeedClicked = { id, nav ->
+                            appState.navigateToOpenBucketDetail(id, nav)
+                        })
                         homeSearch(
                             onSearchEvent = { event, nav ->
                                 when (event) {

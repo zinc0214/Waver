@@ -40,6 +40,7 @@ internal class FeedRepositoryImpl @Inject constructor(
         //return berryBucketApi.loadFeedItems()
         return listOf(
             FeedInfo(
+                bucketId = "1",
                 profileImage = "",
                 badgeImage = "",
                 "멋쟁이 여행가",
@@ -53,6 +54,7 @@ internal class FeedRepositoryImpl @Inject constructor(
                 false
             ),
             FeedInfo(
+                bucketId = "2",
                 profileImage = "",
                 badgeImage = "",
                 "노래방에 미친",
@@ -66,6 +68,7 @@ internal class FeedRepositoryImpl @Inject constructor(
                 false
             ),
             FeedInfo(
+                bucketId = "3",
                 profileImage = "",
                 badgeImage = "",
                 "노래방에 미친",
@@ -79,6 +82,7 @@ internal class FeedRepositoryImpl @Inject constructor(
                 true
             ),
             FeedInfo(
+                bucketId = "4",
                 profileImage = "",
                 badgeImage = "",
                 "노래방에 미친",
@@ -92,6 +96,7 @@ internal class FeedRepositoryImpl @Inject constructor(
                 true
             ),
             FeedInfo(
+                bucketId = "5",
                 profileImage = "",
                 badgeImage = "",
                 "노래방에 미친",

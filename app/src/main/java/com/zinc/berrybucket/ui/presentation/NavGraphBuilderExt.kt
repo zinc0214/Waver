@@ -54,9 +54,13 @@ internal fun NavGraphBuilder.homeMy(
     }
 }
 
-internal fun NavGraphBuilder.homeFeed() {
+internal fun NavGraphBuilder.homeFeed(
+    onFeedClicked: (String, NavBackStackEntry) -> Unit
+) {
     composable(HomeSections.FEED.route) { from ->
-        FeedScreen()
+        FeedScreen(feedClicked = {
+            onFeedClicked(it, from)
+        })
     }
 }
 

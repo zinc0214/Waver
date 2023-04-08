@@ -1,6 +1,8 @@
 package com.zinc.berrybucket.ui_feed
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,11 +39,18 @@ import com.zinc.common.models.FeedInfo
 
 
 @Composable
-fun FeedListView(modifier: Modifier = Modifier, feedItems: List<FeedInfo>) {
+fun FeedListView(
+    modifier: Modifier = Modifier,
+    feedItems: List<FeedInfo>,
+    feedClicked: (String) -> Unit
+) {
     Column(modifier = modifier) {
         feedItems.forEach { feed ->
             FeedCardView(
                 feedInfo = feed,
+                feedClicked = {
+                    feedClicked(it)
+                }
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -49,12 +59,20 @@ fun FeedListView(modifier: Modifier = Modifier, feedItems: List<FeedInfo>) {
 
 
 @Composable
-fun FeedCardView(feedInfo: FeedInfo) {
+fun FeedCardView(feedInfo: FeedInfo, feedClicked: (String) -> Unit) {
 
     Card(
         shape = RoundedCornerShape(8.dp),
-        elevation = 2.dp,
-        backgroundColor = Gray1
+        elevation = 0.5.dp,
+        backgroundColor = Gray1,
+        modifier = Modifier
+            .background(color = Gray1, shape = RoundedCornerShape(8.dp))
+            .clip(
+                RoundedCornerShape(8.dp)
+            )
+            .clickable {
+                feedClicked(feedInfo.bucketId)
+            }
     ) {
         Column {
             ProfileView(

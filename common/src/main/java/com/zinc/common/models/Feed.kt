@@ -11,6 +11,7 @@ data class FeedKeyWord(
 
 @Serializable
 data class FeedInfo(
+    val bucketId: String,
     val profileImage: String,
     val badgeImage: String,
     val titlePosition: String,

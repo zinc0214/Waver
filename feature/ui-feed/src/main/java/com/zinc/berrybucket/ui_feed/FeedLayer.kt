@@ -21,7 +21,8 @@ import com.zinc.common.models.FeedInfo
 @Composable
 fun FeedLayer(
     modifier: Modifier,
-    feedItems: List<FeedInfo>
+    feedItems: List<FeedInfo>,
+    feedClicked: (String) -> Unit
 ) {
 
     Column(
@@ -43,7 +44,10 @@ fun FeedLayer(
         FeedListView(
             modifier = Modifier
                 .padding(top = 24.dp),
-            feedItems = feedItems
+            feedItems = feedItems,
+            feedClicked = {
+                feedClicked(it)
+            }
         )
     }
 
