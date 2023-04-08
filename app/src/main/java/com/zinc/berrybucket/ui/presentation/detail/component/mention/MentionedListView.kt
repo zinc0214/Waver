@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail.component.mention
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -68,8 +67,6 @@ internal fun MentionedListView(
         mutableStateOf(0)
     }
 
-    Log.e("ayhan", "height :,  $columnHeightDp")
-
     Column {
         Box {
             Icon(
@@ -95,22 +92,39 @@ internal fun MentionedListView(
                         .onGloballyPositioned { coordinates ->
                             val updatedHeight =
                                 with(localDensity) { coordinates.size.height.toDp() }
+
                             if (currentSelectedSize != mentionedList.size) {
-                                if (updatedHeight - columnHeightDp > 0.dp) {
-                                    val newTextSize =
-                                        fontSize.value - (0.05 * (updatedHeight - columnHeightDp)).value
-                                    fontSize = newTextSize.dp
 
-                                    val newIconSize =
-                                        iconSize.value - (0.05 * (updatedHeight - columnHeightDp)).value
-                                    iconSize = newIconSize.dp
+                                var newTextSize = fontSize
+                                var newIconSize = iconSize
 
+                                if (mentionedList.size < 3) {
+                                    newTextSize = 22.dp
+                                    newIconSize = 28.dp
+                                } else if (updatedHeight - columnHeightDp > 10.dp) {
+                                    newTextSize =
+                                        fontSize - (0.05 * (updatedHeight - columnHeightDp))
+
+                                    newIconSize =
+                                        iconSize - (0.05 * (updatedHeight - columnHeightDp))
+
+
+                                } else if (columnHeightDp - updatedHeight > 10.dp) {
+                                    newTextSize =
+                                        fontSize + (0.05 * (columnHeightDp - updatedHeight))
+                                    newIconSize =
+                                        iconSize + (0.05 * (columnHeightDp - updatedHeight))
                                 }
-                                Log.e("ayhan", "fontSize : $fontSize")
+
+                                fontSize =
+                                    if (newTextSize > 22.dp) 22.dp else if (newTextSize < 14.dp) 14.dp else newTextSize
+
+                                iconSize =
+                                    if (newIconSize > 28.dp) 28.dp else if (newIconSize < 22.dp) 22.dp else newIconSize
+
                                 columnHeightDp = updatedHeight
                                 currentSelectedSize = mentionedList.size
                             }
-
                         }
                         .fillMaxWidth(),
                     mainAxisSpacing = 6.dp,
