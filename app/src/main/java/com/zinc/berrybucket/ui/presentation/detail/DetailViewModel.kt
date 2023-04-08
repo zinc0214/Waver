@@ -26,19 +26,8 @@ class DetailViewModel @Inject constructor(
     private val _bucketDetailInfo = MutableLiveData<DetailInfo>()
     val bucketDetailInfo: LiveData<DetailInfo> get() = _bucketDetailInfo
 
-    private val _originCommentTaggableList = MutableLiveData<List<CommentMentionInfo>>()
-    val originCommentTaggableList: LiveData<List<CommentMentionInfo>> = _originCommentTaggableList
-
-    private val _commentTaggedList = MutableLiveData<List<CommentMentionInfo>>()
-    val commentTaggedList: LiveData<List<CommentMentionInfo>> get() = _commentTaggedList
-
-    private val _commentEditString = MutableLiveData<String>()
-    val commentEditString: LiveData<String> = _commentEditString
-
-    private val _commentTagClicked = MutableLiveData<CommentMentionInfo>()
-    val commentTagClicked: LiveData<CommentMentionInfo> = _commentTagClicked
-
-    private var commentEditOriginString = ""
+    private val _validMentionList = MutableLiveData<List<CommentMentionInfo>>()
+    val validMentionList: LiveData<List<CommentMentionInfo>> = _validMentionList
 
 
     fun getBucketDetail(id: String) {
@@ -53,11 +42,11 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun getCommentTaggableList() {
-        val tagableNickName = mutableListOf<CommentMentionInfo>()
+    fun getValidMentionList() {
+        val validMentionList = mutableListOf<CommentMentionInfo>()
 
         repeat(10) {
-            tagableNickName.add(
+            validMentionList.add(
                 CommentMentionInfo(
                     userId = "$it",
                     profileImage = "",
@@ -67,62 +56,7 @@ class DetailViewModel @Inject constructor(
                 )
             )
         }
-        _originCommentTaggableList.value = tagableNickName
-    }
-
-    fun taggedClicked(commentTagInfo: CommentMentionInfo) {
-        _commentTagClicked.value = commentTagInfo
-    }
-
-    fun addCommentTaggedItem(
-        commentTagInfo: CommentMentionInfo,
-        cursorStartIndex: Int,
-        cursorEndIndex: Int
-    ) {
-        val taggedList = commentTaggedListToArray()
-        taggedList.add(commentTagInfo)
-        _commentTaggedList.value = taggedList
-        addCommentTaggedItemToEditString(commentTagInfo, cursorStartIndex, cursorEndIndex)
-    }
-
-    fun removeCommentTaggedItem(commentMentionInfo: CommentMentionInfo) {
-        val taggedList = commentTaggedListToArray()
-        taggedList.remove(commentMentionInfo)
-        _commentTaggedList.value = taggedList
-        removeCommentTaggedItemToEditString(commentMentionInfo)
-    }
-
-    private fun commentTaggedListToArray(): ArrayList<CommentMentionInfo> {
-        val taggedList = _commentTaggedList.value
-        return if (taggedList.isNullOrEmpty()) {
-            arrayListOf()
-        } else {
-            taggedList as ArrayList
-        }
-    }
-
-    private fun addCommentTaggedItemToEditString(
-        commentMentionInfo: CommentMentionInfo,
-        cursorStartIndex: Int, cursorEndIndex: Int
-    ) {
-        var editText = commentEditOriginString
-        editText = editText.replaceRange(
-            startIndex = cursorStartIndex,
-            endIndex = cursorEndIndex,
-            replacement = "@${commentMentionInfo.nickName}"
-        )
-        _commentEditString.value = editText
-    }
-
-    private fun removeCommentTaggedItemToEditString(commentMentionInfo: CommentMentionInfo) {
-        var editString = commentEditOriginString
-        if (editString.isBlank()) return
-        editString = editString.removePrefix(commentMentionInfo.nickName)
-        _commentEditString.value = editString
-    }
-
-    fun updateCommentEditString(editString: String) {
-        commentEditOriginString = editString
+        _validMentionList.value = validMentionList
     }
 
     private val detailInfo1 =

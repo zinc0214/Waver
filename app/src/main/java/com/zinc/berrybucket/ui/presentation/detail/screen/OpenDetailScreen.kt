@@ -65,10 +65,10 @@ fun OpenDetailScreen(
 
     val viewModel: DetailViewModel = hiltViewModel()
     viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
-    viewModel.getCommentTaggableList()
+    viewModel.getValidMentionList()
 
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
-    val originCommentTaggableList by viewModel.originCommentTaggableList.observeAsState()
+    val validMentionList by viewModel.validMentionList.observeAsState()
 
     vmDetailInfo?.let { detailInfo ->
 
@@ -231,25 +231,6 @@ fun OpenDetailScreen(
                                 bottom.linkTo(parent.bottom)
                             }) {
                             AnimatedVisibility(isCommentViewShown || !isScrollable) {
-//                                AndroidView(modifier = Modifier
-//                                    .height(if (isKeyBoardOpened.value) 52.dp else 68.dp)
-//                                    .fillMaxWidth(), factory = {
-//
-//                                    TaggableEditText(it).apply {
-//                                        setUpView(viewModel = viewModel,
-//                                            lifecycleOwner = lifecycleOwner,
-//                                            originCommentTaggableList = originCommentTaggableList
-//                                                ?: emptyList(),
-//                                            updateValidTaggableList = { validList ->
-//                                                validTaggableList.clear()
-//                                                validTaggableList.addAll(validList)
-//                                            },
-//                                            commentSendButtonClicked = {
-//                                                focusManager.clearFocus()
-//                                            })
-//                                    }
-//                                })
-
                                 CommentEditTextView(
                                     modifier = Modifier,
                                     originText = commentText.value,
@@ -272,18 +253,8 @@ fun OpenDetailScreen(
                         }
                     }
                 }
-
-//                // 유효한 태그가 있을 때만 노출
-//                if (validMentionList.isNotEmpty() && isKeyBoardOpened.value) {
-//                    DetailCommenterTagDropDownView(
-//                        commentTaggableList = validMentionList,
-//                        tagClicked = {
-//                            viewModel.taggedClicked(it)
-//                        })
-//                }
-
                 if (isNeedToShowMentionScreen.value) {
-                    originCommentTaggableList?.let {
+                    validMentionList?.let {
                         CommentMentionScreen(
                             validMentionList = it,
                             backPress = { isNeedToShowMentionScreen.value = false },
@@ -292,12 +263,9 @@ fun OpenDetailScreen(
                             }
                         )
                     }
-
                 }
             }
         }
-
-
     }
 }
 
