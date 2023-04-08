@@ -17,7 +17,7 @@ fun IconButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     @DrawableRes image: Int,
-    contentDescription: String,
+    contentDescription: String?,
     colorFilter: ColorFilter? = null
 
 ) {

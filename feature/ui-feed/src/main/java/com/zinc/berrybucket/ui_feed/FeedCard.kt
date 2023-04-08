@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui_feed
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,6 +27,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Main5
+import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicator
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
@@ -148,14 +148,14 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
                 mutableStateOf(feedInfo.liked)
             }
 
-            Image(
-                painter = painterResource(id = if (liked.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off),
+            IconButton(
+                image = if (liked.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
                 contentDescription = null,
+                onClick = {
+                    liked.value = !liked.value
+                },
                 modifier = Modifier
                     .size(32.dp)
-                    .clickable {
-                        liked.value = !liked.value
-                    }
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -170,14 +170,14 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Image(
-                painter = painterResource(id = R.drawable.btn_32_comment),
+            IconButton(
+                image = R.drawable.btn_32_comment,
                 contentDescription = null,
+                onClick = {
+                    // Go TO Comment!
+                },
                 modifier = Modifier
                     .size(32.dp)
-                    .clickable {
-                        // Go TO Comment!
-                    }
             )
 
             Spacer(modifier = Modifier.width(4.dp))
@@ -191,14 +191,14 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
             )
         }
 
-        Image(
-            painter = painterResource(id = if (feedInfo.copied) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off),
+        IconButton(
+            image = if (feedInfo.copied) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
             contentDescription = null,
+            onClick = {
+                // Go TO Comment!
+            },
             modifier = Modifier
                 .size(32.dp)
-                .clickable {
-                    // Go TO Comment!
-                }
                 .constrainAs(rightContent) {
                     end.linkTo(parent.end)
                     top.linkTo(parent.top)
