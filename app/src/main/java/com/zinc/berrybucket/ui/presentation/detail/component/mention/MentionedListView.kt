@@ -104,11 +104,8 @@ internal fun MentionedListView(
                                 } else if (updatedHeight - columnHeightDp > 10.dp) {
                                     newTextSize =
                                         fontSize - (0.05 * (updatedHeight - columnHeightDp))
-
                                     newIconSize =
                                         iconSize - (0.05 * (updatedHeight - columnHeightDp))
-
-
                                 } else if (columnHeightDp - updatedHeight > 10.dp) {
                                     newTextSize =
                                         fontSize + (0.05 * (columnHeightDp - updatedHeight))
