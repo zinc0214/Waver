@@ -50,12 +50,32 @@ class DetailViewModel @Inject constructor(
                 CommentMentionInfo(
                     userId = "$it",
                     profileImage = "",
-                    nickName = "가나다 $it",
+                    nickName = "가나다$it",
                     isFriend = false,
                     isSelected = false
                 )
             )
         }
+
+        validMentionList.add(
+            CommentMentionInfo(
+                userId = "a",
+                profileImage = "",
+                nickName = "나는우주야",
+                isFriend = false,
+                isSelected = false
+            )
+        )
+        validMentionList.add(
+            CommentMentionInfo(
+                userId = "b",
+                profileImage = "",
+                nickName = "한아",
+                isFriend = false,
+                isSelected = false
+            )
+        )
+
         _validMentionList.value = validMentionList
     }
 

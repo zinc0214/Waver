@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,7 +44,6 @@ import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentCountView
-import com.zinc.berrybucket.ui.presentation.detail.component.CommentEditTextView
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentLine
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentOptionClicked
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentSelectedDialog
@@ -52,7 +53,10 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
-import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailCommentEvent
+import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEditTextView2
+import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
+import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
+import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
@@ -86,6 +90,7 @@ fun OpenDetailScreen(
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
         val commentOptionPopUpShowed =
             remember { mutableStateOf(false to 0) } // 댓글 롱클릭 옵션 팝업 노출여부 + 댓글 index
+        val mentionPopupShowed = remember { mutableStateOf(false) } // 댓글 태그 팝업 노출 여부
 
         // 키보드 상태 확인
         val isKeyBoardOpened = remember { mutableStateOf(true) } // 키보드 오픈 상태 확인
@@ -94,6 +99,7 @@ fun OpenDetailScreen(
         if (isKeyboardStatus == Keyboard.Closed) {
             focusManager.clearFocus()
             isKeyBoardOpened.value = false
+            mentionPopupShowed.value = false
         } else {
             isKeyBoardOpened.value = true
         }
@@ -103,6 +109,12 @@ fun OpenDetailScreen(
 
         // 댓글 값 저장
         val commentText = remember { mutableStateOf("") }
+
+        // 텍스트가 검색된 경우
+        val needToFocusEnd = remember { mutableStateOf(false) }
+
+        // 검색할 텍스트와 관련된 정보들
+        val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
         // 멘션 선택 화면 노출
         val isNeedToShowMentionScreen = remember { mutableStateOf(false) }
@@ -222,6 +234,37 @@ fun OpenDetailScreen(
                             }
                         }
 
+                        mentionSearchInfo.value?.let { info ->
+                            if (info.searchText.isNotEmpty()) {
+                                val removePrefixText = info.searchText.replace("@", "")
+
+                                Log.e(
+                                    "ayhan",
+                                    "mentionSearchInfo : ${info.searchText}, $removePrefixText"
+                                )
+                                val searchedList =
+                                    validMentionList?.filter { it.nickName.contains(removePrefixText) }
+                                        .orEmpty()
+                                if (searchedList.isNotEmpty()) {
+                                    MentionSearchListPopup(
+                                        modifier = Modifier.padding(bottom = 40.dp),
+                                        searchedList = searchedList,
+                                        mentionSelected = {
+
+                                            val changeText = commentText.value.replaceRange(
+                                                info.startIndex,
+                                                info.endIndex,
+                                                "`@${it.nickName} `"
+                                            )
+                                            commentText.value = changeText
+
+                                            Log.e("ayhan", "commentText $commentText")
+                                            needToFocusEnd.value = true
+                                        }
+                                    )
+                                }
+                            }
+                        }
 
                         // 최하단 EditTextView
                         Column(modifier = Modifier
@@ -231,24 +274,72 @@ fun OpenDetailScreen(
                                 bottom.linkTo(parent.bottom)
                             }) {
                             AnimatedVisibility(isCommentViewShown || !isScrollable) {
-                                CommentEditTextView(
-                                    modifier = Modifier,
+                                CommentEditTextView2(
                                     originText = commentText.value,
                                     commentEvent = {
                                         when (it) {
-                                            OpenDetailCommentEvent.MentaionButtonClicked -> {
+                                            OpenDetailEditTextViewEvent.MentionButtonClicked -> {
                                                 isNeedToShowMentionScreen.value = true
                                             }
 
-                                            is OpenDetailCommentEvent.SendComment -> {
+                                            is OpenDetailEditTextViewEvent.SendComment -> {
 
                                             }
 
-                                            is OpenDetailCommentEvent.TextChenaged -> {
-                                                commentText.value = it.updateText
+                                            is OpenDetailEditTextViewEvent.TextChanged -> {
+                                                val textInfo = it
+                                                commentText.value = textInfo.updateText
+
+                                                // "@" 태그 위치 확인
+                                                val tagIndexMap = mutableListOf<Int>()
+                                                textInfo.updateText.mapIndexed { index, c ->
+                                                    if (c == '@') {
+                                                        tagIndexMap.add(index)
+                                                    }
+                                                }
+
+                                                Log.e("ayhan", "tagIndex : $tagIndexMap")
+
+                                                // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
+                                                if (tagIndexMap.isNotEmpty()) {
+                                                    tagIndexMap.lastOrNull { index ->
+                                                        it.index >= index
+                                                    }?.let { tagIndex ->
+
+                                                        if (textInfo.index + 1 > textInfo.updateText.length) {
+                                                            mentionSearchInfo.value = null
+                                                            return@CommentEditTextView2
+                                                        }
+
+                                                        val needToSearchText =
+                                                            textInfo.updateText.substring(
+                                                                tagIndex,
+                                                                textInfo.index + 1
+                                                            )
+
+                                                        Log.e(
+                                                            "ayhan",
+                                                            "tagIndex : $needToSearchText, ${textInfo.index + 1}"
+                                                        )
+
+                                                        if (needToSearchText.isNotEmpty()) {
+                                                            mentionSearchInfo.value =
+                                                                MentionSearchInfo(
+                                                                    needToSearchText,
+                                                                    tagIndex,
+                                                                    textInfo.index + 1
+                                                                )
+                                                        } else {
+                                                            mentionSearchInfo.value = null
+                                                        }
+
+                                                    }
+                                                }
                                             }
                                         }
-                                    })
+                                    }
+
+                                )
                             }
                         }
                     }

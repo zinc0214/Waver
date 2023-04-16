@@ -36,7 +36,7 @@ import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.IconToggleButton
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.MyTextField
-import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailCommentEvent
+import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -44,7 +44,7 @@ import com.zinc.berrybucket.ui.util.dpToSp
 fun CommentEditTextView(
     originText: String,
     modifier: Modifier,
-    commentEvent: (OpenDetailCommentEvent) -> Unit
+    commentEvent: (OpenDetailEditTextViewEvent) -> Unit
 ) {
     val isKeyboardStatus by keyboardAsState()
     val hintText = stringResource(id = R.string.commentHintText)
@@ -77,7 +77,7 @@ fun CommentEditTextView(
         )
 
         IconButton(
-            onClick = { commentEvent(OpenDetailCommentEvent.MentaionButtonClicked) },
+            onClick = { commentEvent(OpenDetailEditTextViewEvent.MentionButtonClicked) },
             modifier = Modifier
                 .padding(top = 11.dp, start = 4.dp, bottom = 11.dp)
                 .size(32.dp),
@@ -113,7 +113,7 @@ fun CommentEditTextView(
                 ),
                 onValueChange = {
                     commentText = it
-                    commentEvent.invoke(OpenDetailCommentEvent.TextChenaged(it.text))
+                    // commentEvent.invoke(OpenDetailEditTextViewEvent.TextChanged(it.text))
                 },
                 maxLines = 3,
                 decorationBox = { innerTextField ->
@@ -136,7 +136,7 @@ fun CommentEditTextView(
                 .alpha(if (isKeyboardStatus == Keyboard.Opened) 1f else 0f),
                 onClick = {
                     focusManager.clearFocus()
-                    commentEvent.invoke(OpenDetailCommentEvent.SendComment(commentText.text))
+                    commentEvent.invoke(OpenDetailEditTextViewEvent.SendComment(commentText.text))
 
                 },
                 enabled = commentText.text.isNotBlank(),
