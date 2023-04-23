@@ -67,6 +67,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                                 taggedString.startIndex,
                                 taggedString.endIndex + 1
                             )
+                            updateTaggedString(taggedString, false)
                             Log.e(
                                 "ayhan",
                                 "taggedStringRemoved _spannableString : $_spannableString"
@@ -74,11 +75,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                             updateText(getMakeTaggedText(removeText), isForceUpdate = true)
                         }
                     } else {
-                        if (s.toString().length > beforeText.length) {
-                            updateTaggedString(false, s.toString())
-                        } else if (s.toString().length < beforeText.length) {
-                            updateTaggedString(true, s.toString())
-                        }
+                        updateTaggedString(s.toString())
                         beforeText = s.toString()
                     }
 
@@ -120,7 +117,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
     }
 
     // 태그된 텍스트 사이로 다른 텍스트가 추가되었을 때, 그 텍스트 만큼 기존의 index 를 업데이트 하기 위함
-    private fun updateTaggedString(isAdd: Boolean, changeText: String) {
+    private fun updateTaggedString(changeText: String) {
         Log.e("ayhan", "updateTaggedString")
         var size = 0
 
@@ -201,11 +198,46 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         }
     }
 
+    // 앞의 태그가 지워진 경우, 뒤에 있는 태그의 index 값을 수정
+    private fun updateTaggedString(changedItem: TaggedTextInfo, isAdd: Boolean) {
+        val size = if (isAdd) changedItem.text.length else -(changedItem.text.length)
+
+        if (isAdd) {
+            // 추가된 경우
+            _spannableString.values.filter { it.startIndex >= changedItem.startIndex }.map {
+                it.copy(
+                    startIndex = it.startIndex + changedItem.endIndex,
+                    endIndex = it.endIndex + changedItem.endIndex
+                )
+            }.forEach { modifiedTaggedTextInfo ->
+                val id = modifiedTaggedTextInfo.id
+                _spannableString[id] = modifiedTaggedTextInfo
+
+                Log.e("ayhan", "modifiedTaggedTextInfo2 : $_spannableString")
+            }
+        } else {
+            // 삭제된 경우
+            _spannableString.values.filter { it.startIndex > changedItem.endIndex }.map {
+                it.copy(
+                    startIndex = it.startIndex + size,
+                    endIndex = it.endIndex + size
+                )
+            }.forEach { modifiedTaggedTextInfo ->
+                val id = modifiedTaggedTextInfo.id
+                _spannableString[id] = modifiedTaggedTextInfo
+
+                Log.e("ayhan", "modifiedTaggedTextInfo3 : $_spannableString")
+            }
+        }
+    }
+
     // 태그된 텍스트에 컬러를 입히기 위해 강제로 앞뒤에 특수한 문자열을 넣음
     private fun getMakeTaggedText(originText: String): String {
         var makeTaggedText = originText
+        val sortedList = _spannableString.values.sortedBy { it.startIndex }
+        Log.e("ayhan", "sortedList : $sortedList")
 
-        _spannableString.values.forEachIndexed { index, taggedTextInfo ->
+        sortedList.forEachIndexed { index, taggedTextInfo ->
             Log.e("ayhan", "getMakeTaggedText taggedTextInfo : $taggedTextInfo")
 
             // 첫번째 아이템이 아닌 경우, 위치가 변경되었을 거라서 값을 추가해야함
@@ -243,6 +275,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         Log.e("ayhan", "originText Sc : $originText")
 
         if (newTaggedInfo != null) {
+            updateTaggedString(newTaggedInfo, true)
             _spannableString[newTaggedInfo.id] = newTaggedInfo
         }
 
