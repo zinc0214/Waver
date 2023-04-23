@@ -60,6 +60,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewE
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
+import java.time.LocalTime
 
 @Composable
 fun OpenDetailScreen(
@@ -256,8 +257,11 @@ fun OpenDetailScreen(
                                                 nickName
                                             )
 
+                                            val currentTime = LocalTime.now()
+                                            val timeString = currentTime.toString().substring(0, 8)
+
                                             newTaggedText.value = TaggedTextInfo(
-                                                id = "${info.startIndex}${nickName}",
+                                                id = "${info.startIndex}${timeString}",
                                                 text = nickName,
                                                 startIndex = info.startIndex,
                                                 endIndex = info.startIndex + nickName.length - 1
