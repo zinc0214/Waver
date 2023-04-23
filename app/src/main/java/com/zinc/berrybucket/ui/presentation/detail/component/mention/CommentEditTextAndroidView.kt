@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.component.mention
 
 import android.content.Context
-import android.graphics.Color
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -11,6 +10,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.LayoutMentionTagViewBinding
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
@@ -51,13 +51,12 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                     changeStartIndex = start
 
                     val taggedString = _spannableString.values.firstOrNull {
-                        it.startIndex > changeStartIndex || changeStartIndex <= it.endIndex
+                        changeStartIndex in it.startIndex..it.endIndex
                     }
 
                     Log.e("ayhan", "remove taggedString  :$taggedString")
                     if (taggedString != null) {
                         if (s.toString().length > beforeText.length) {
-                            // _spannableString.remove(taggedString)
                             binding.commentEditTextView.setText(beforeText)
                             binding.commentEditTextView.setSelection(taggedString.endIndex)
                             updateText(getMakeTaggedText(beforeText), isForceUpdate = true)
@@ -75,6 +74,11 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                             updateText(getMakeTaggedText(removeText), isForceUpdate = true)
                         }
                     } else {
+                        if (s.toString().length > beforeText.length) {
+                            updateTaggedString(false, s.toString())
+                        } else if (s.toString().length < beforeText.length) {
+                            updateTaggedString(true, s.toString())
+                        }
                         beforeText = s.toString()
                     }
 
@@ -115,6 +119,89 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         this.commentEvent = commentEvent
     }
 
+    // 태그된 텍스트 사이로 다른 텍스트가 추가되었을 때, 그 텍스트 만큼 기존의 index 를 업데이트 하기 위함
+    private fun updateTaggedString(isAdd: Boolean, changeText: String) {
+        Log.e("ayhan", "updateTaggedString")
+        var size = 0
+
+        // 현재 수정된 Index 를 기반으로 앞쪽에서 가장 가까운 tag text
+        val lastTagged = _spannableString.values.lastOrNull { it.endIndex < changeStartIndex }
+        // 현재 수정된 Index 를 기반으로 뒤에서 가장 가까운 tag text
+        val firstTagged = _spannableString.values.firstOrNull { it.startIndex > changeStartIndex }
+
+        Log.e("ayhan", "lastTagged : $lastTagged, firstTagged $firstTagged")
+
+        // 태그 사이에 낀 텍스트인 경우
+        if (lastTagged != null && firstTagged != null) {
+
+            // 값이 추가된 경우
+            if (changeText.length > beforeText.length) {
+                // 변경된 텍스트
+                val betweenText = changeText.slice(lastTagged.endIndex + 1..firstTagged.startIndex)
+
+                // 기존 텍스트
+                val currentText =
+                    beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
+                Log.e("ayhan", "betweenText1 :$betweenText,$currentText")
+
+                size = betweenText.length - currentText.length
+            }
+            // 값이 삭제된 경우
+            else if (changeText.length < beforeText.length) {
+                // 변경된 텍스트
+                val betweenText =
+                    changeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex - 1)
+
+                // 기존 텍스트
+                val currentText =
+                    beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
+                Log.e("ayhan", "betweenText2 :$betweenText,$currentText")
+
+                size = betweenText.length - currentText.length
+            }
+
+        }
+
+        // 모든 태그 전에 수정된 텍스트인 경우
+        else if (firstTagged != null) {
+            // 값이 추가된 경우
+            if (changeText.length > beforeText.length) {
+                // 변경된 텍스트
+                val betweenText = changeText.slice(0..firstTagged.startIndex)
+
+                // 기존 텍스트
+                val currentText =
+                    beforeText.slice(0 until firstTagged.startIndex)
+                Log.e("ayhan", "betweenText3 :$betweenText,$currentText")
+
+                size = betweenText.length - currentText.length
+            }
+            // 값이 삭제된 경우
+            else if (changeText.length < beforeText.length) {
+                // 변경된 텍스트
+                val betweenText =
+                    changeText.slice(0 until firstTagged.startIndex)
+
+                // 기존 텍스트
+                val currentText =
+                    beforeText.slice(0..firstTagged.startIndex)
+                Log.e("ayhan", "betweenText4 :$betweenText,$currentText")
+
+                size = betweenText.length - currentText.length
+            }
+        }
+
+        _spannableString.values.filter { it.startIndex > changeStartIndex }.map {
+            it.copy(startIndex = it.startIndex + size, endIndex = it.endIndex + size)
+        }.forEach { modifiedTaggedTextInfo ->
+            val id = modifiedTaggedTextInfo.id
+            _spannableString[id] = modifiedTaggedTextInfo
+
+            Log.e("ayhan", "modifiedTaggedTextInfo : $_spannableString")
+        }
+    }
+
+    // 태그된 텍스트에 컬러를 입히기 위해 강제로 앞뒤에 특수한 문자열을 넣음
     private fun getMakeTaggedText(originText: String): String {
         var makeTaggedText = originText
 
@@ -185,7 +272,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 val end = endIndexList[i] // 태그된 곳 까지만
                 Log.e("ayhan", "index ::: $start, $end")
                 spannableString.setSpan(
-                    ForegroundColorSpan(Color.RED), // 변경할 색상 설정
+                    ForegroundColorSpan(context.getColor(R.color.main5)), // 변경할 색상 설정
                     start, // 시작 인덱스 설정
                     end, // 끝 인덱스 설정 (+2는 끝 인덱스를 inclusive로 포함하기 위함)
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE // 스팬 적용 범위 설정
