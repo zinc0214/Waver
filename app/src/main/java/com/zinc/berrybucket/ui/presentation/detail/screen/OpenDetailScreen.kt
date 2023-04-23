@@ -57,6 +57,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEdit
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
 import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
+import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 
@@ -110,8 +111,8 @@ fun OpenDetailScreen(
         // 댓글 값 저장
         val commentText = remember { mutableStateOf("") }
 
-        // 텍스트가 검색된 경우
-        val needToFocusEnd = remember { mutableStateOf(false) }
+        // 새로 선택된 태그 정보
+        val newTaggedText: MutableState<TaggedTextInfo?> = remember { mutableStateOf(null) }
 
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
@@ -237,11 +238,6 @@ fun OpenDetailScreen(
                         mentionSearchInfo.value?.let { info ->
                             if (info.searchText.isNotEmpty()) {
                                 val removePrefixText = info.searchText.replace("@", "")
-
-                                Log.e(
-                                    "ayhan",
-                                    "mentionSearchInfo : ${info.searchText}, $removePrefixText"
-                                )
                                 val searchedList =
                                     validMentionList?.filter { it.nickName.contains(removePrefixText) }
                                         .orEmpty()
@@ -251,15 +247,25 @@ fun OpenDetailScreen(
                                         searchedList = searchedList,
                                         mentionSelected = {
 
-                                            val changeText = commentText.value.replaceRange(
+                                            var makeTaggedText = commentText.value
+                                            val nickName = "@" + it.nickName + " "
+
+                                            makeTaggedText = makeTaggedText.replaceRange(
                                                 info.startIndex,
                                                 info.endIndex,
-                                                "`@${it.nickName} `"
+                                                nickName
                                             )
-                                            commentText.value = changeText
 
-                                            Log.e("ayhan", "commentText $commentText")
-                                            needToFocusEnd.value = true
+                                            newTaggedText.value = TaggedTextInfo(
+                                                id = "${info.startIndex}${nickName}",
+                                                text = nickName,
+                                                startIndex = info.startIndex,
+                                                endIndex = info.startIndex + nickName.length - 1
+                                            )
+                                            commentText.value = makeTaggedText
+                                            mentionSearchInfo.value = null
+
+                                            Log.e("ayhan", "newTaggedText ${newTaggedText.value}")
                                         }
                                     )
                                 }
@@ -276,6 +282,7 @@ fun OpenDetailScreen(
                             AnimatedVisibility(isCommentViewShown || !isScrollable) {
                                 CommentEditTextView2(
                                     originText = commentText.value,
+                                    newTaggedInfo = newTaggedText.value,
                                     commentEvent = {
                                         when (it) {
                                             OpenDetailEditTextViewEvent.MentionButtonClicked -> {
@@ -289,6 +296,7 @@ fun OpenDetailScreen(
                                             is OpenDetailEditTextViewEvent.TextChanged -> {
                                                 val textInfo = it
                                                 commentText.value = textInfo.updateText
+                                                newTaggedText.value = null
 
                                                 // "@" 태그 위치 확인
                                                 val tagIndexMap = mutableListOf<Int>()
@@ -303,10 +311,11 @@ fun OpenDetailScreen(
                                                 // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
                                                 if (tagIndexMap.isNotEmpty()) {
                                                     tagIndexMap.lastOrNull { index ->
-                                                        it.index >= index
+                                                        it.index > index
                                                     }?.let { tagIndex ->
 
-                                                        if (textInfo.index + 1 > textInfo.updateText.length) {
+                                                        // 커서의 위치가 전체 길이보다 뒤이면 리턴
+                                                        if (textInfo.index > textInfo.updateText.length) {
                                                             mentionSearchInfo.value = null
                                                             return@CommentEditTextView2
                                                         }
@@ -314,26 +323,31 @@ fun OpenDetailScreen(
                                                         val needToSearchText =
                                                             textInfo.updateText.substring(
                                                                 tagIndex,
-                                                                textInfo.index + 1
+                                                                textInfo.index
                                                             )
 
                                                         Log.e(
                                                             "ayhan",
-                                                            "tagIndex : $needToSearchText, ${textInfo.index + 1}"
+                                                            "tagIndex : $needToSearchText, ${textInfo.index}"
                                                         )
 
                                                         if (needToSearchText.isNotEmpty()) {
-                                                            mentionSearchInfo.value =
-                                                                MentionSearchInfo(
-                                                                    needToSearchText,
-                                                                    tagIndex,
-                                                                    textInfo.index + 1
-                                                                )
+                                                            val info = MentionSearchInfo(
+                                                                needToSearchText,
+                                                                tagIndex,
+                                                                textInfo.index,
+                                                                textInfo.taggedList
+                                                            )
+
+                                                            mentionSearchInfo.value = info
+
                                                         } else {
                                                             mentionSearchInfo.value = null
                                                         }
 
                                                     }
+                                                } else {
+                                                    mentionSearchInfo.value = null
                                                 }
                                             }
                                         }

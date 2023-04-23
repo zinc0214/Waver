@@ -8,15 +8,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
+import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 
 @Composable
 fun CommentEditTextView2(
     originText: String,
+    newTaggedInfo: TaggedTextInfo? = null,
     commentEvent: (OpenDetailEditTextViewEvent) -> Unit
 ) {
     Log.e("ayhan", "TextView2 originText1  :$originText")
     val updatedText = remember { mutableStateOf(originText) }
-
     Log.e("ayhan", "TextView2 originText  :${updatedText.value}")
 
 
@@ -29,6 +30,6 @@ fun CommentEditTextView2(
                 )
             }
         }, update = {
-            it.updateText(originText)
+            it.updateText(originText, newTaggedInfo = newTaggedInfo)
         })
 }

@@ -4,11 +4,12 @@ data class MentionSearchInfo(
     val searchText: String = "",
     val startIndex: Int = 0,
     val endIndex: Int = 0,
-    val index: Int = 0
+    val taggedList: List<TaggedTextInfo>
 )
 
-data class EditTextCommentInfo(
+data class TaggedTextInfo(
     val id: String,
     val text: String,
-    val tagged: Boolean
+    val startIndex: Int,
+    val endIndex: Int
 )
