@@ -126,8 +126,9 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             var sliceIndexEnd = taggedTextInfo.endIndex
 
             if (index > 0) {
-                sliceIndexStart += index + 1
-                sliceIndexEnd += index + 1
+                // 기존 index 값에 계속해서 추가된 텍스트를 더해줌. ("|" 와 "`")
+                sliceIndexStart += index + index
+                sliceIndexEnd += index + index
             }
 
             val originSliceText = makeTaggedText.slice(sliceIndexStart..sliceIndexEnd)
