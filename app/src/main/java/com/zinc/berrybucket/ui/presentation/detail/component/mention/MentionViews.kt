@@ -45,8 +45,8 @@ internal fun MentionTitleView(
     ) {
 
         IconButton(
-            image = R.drawable.btn_40_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
+            image = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close,
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
                 .size(40.dp),
@@ -56,7 +56,7 @@ internal fun MentionTitleView(
         Spacer(Modifier.weight(1F, fill = true))
 
         MyText(
-            text = stringResource(id = R.string.succeedText),
+            text = stringResource(id = com.zinc.berrybucket.ui_common.R.string.succeedText),
             color = if (isFinishAvailable) Main4 else Gray6,
             fontSize = dpToSp(dp = 18.dp),
             modifier = Modifier
@@ -121,9 +121,9 @@ private fun MentionItem(
             }, verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
             contentDescription = stringResource(
-                id = R.string.feedProfileImage
+                id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
             ),
             contentScale = ContentScale.Crop,
             modifier = Modifier

@@ -1,20 +1,34 @@
 package com.zinc.berrybucket.ui.presentation.write.options
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.ui.presentation.search.SearchEditView
-import com.zinc.berrybucket.ui.presentation.write.*
+import com.zinc.berrybucket.ui.presentation.write.AddedFriendItem
+import com.zinc.berrybucket.ui.presentation.write.ShowAllFriendItem
+import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
+import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
+import com.zinc.berrybucket.ui.presentation.write.WriteSelectFriendItem
+import com.zinc.berrybucket.ui.presentation.write.WriteViewModel
 
 @Composable
 fun WriteSelectFriendsScreen(
@@ -43,12 +57,13 @@ fun WriteSelectFriendsScreen(
         WriteAppBar(
             modifier = Modifier.fillMaxWidth(),
             nextButtonClickable = true,
-            rightText = R.string.addDesc,
+            rightText = com.zinc.berrybucket.ui_common.R.string.addDesc,
             clickEvent = {
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
                         closeClicked()
                     }
+
                     WriteAppBarClickEvent.NextClicked -> {
                         addFriendsClicked(updateFriends)
                     }

@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.common.R
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -99,8 +98,10 @@ private fun BucketStateView(
     proceedingBucketCount: String,
     succeedBucketCount: String
 ) {
-    val proceedingText = stringResource(R.string.proceedingText) + " " + proceedingBucketCount
-    val succeedingText = stringResource(R.string.succeedText) + " " + succeedBucketCount
+    val proceedingText =
+        stringResource(com.zinc.berrybucket.ui_common.R.string.proceedingText) + " " + proceedingBucketCount
+    val succeedingText =
+        stringResource(com.zinc.berrybucket.ui_common.R.string.succeedText) + " " + succeedBucketCount
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End

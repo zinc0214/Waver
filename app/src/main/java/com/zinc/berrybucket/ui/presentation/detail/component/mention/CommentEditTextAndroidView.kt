@@ -9,7 +9,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.databinding.LayoutMentionTagViewBinding
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
@@ -259,7 +258,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 val start = startIndexList[i] // @부터 시작
                 val end = endIndexList[i] // 태그된 곳 까지만
                 spannableString.setSpan(
-                    ForegroundColorSpan(context.getColor(R.color.main5)), // 변경할 색상 설정
+                    ForegroundColorSpan(context.getColor(com.zinc.berrybucket.ui_common.R.color.main5)), // 변경할 색상 설정
                     start, // 시작 인덱스 설정
                     end, // 끝 인덱스 설정 (+2는 끝 인덱스를 inclusive로 포함하기 위함)
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE // 스팬 적용 범위 설정

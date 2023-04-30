@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
-import com.zinc.berrybucket.common.R
+import com.zinc.berrybucket.ui_common.R
 
 
 @Composable

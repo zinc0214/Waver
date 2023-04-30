@@ -57,7 +57,7 @@ internal fun ProfileSettingTitle(backClicked: () -> Unit) {
         onLeftIconClicked = {
             backClicked()
         },
-        rightText = stringResource(id = R.string.finishDesc),
+        rightText = stringResource(id = com.zinc.berrybucket.ui_common.R.string.finishDesc),
         onRightTextClicked = {
             // TODO : 알림 데이터 저장 필요
         }
@@ -92,7 +92,7 @@ internal fun ProfileUpdateView(
         Image(
             painter = rememberAsyncImagePainter(
                 model = profileUri,
-                error = painterResource(id = R.drawable.test)
+                error = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test)
             ),
             contentDescription = stringResource(
                 id = R.string.moreProfileImageDesc

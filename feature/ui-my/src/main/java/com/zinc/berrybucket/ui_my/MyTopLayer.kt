@@ -174,10 +174,10 @@ private fun FollowStateView(modifier: Modifier, count: String, text: String) {
 @Composable
 private fun TabLayer() {
     val tabData = listOf(
-        stringResource(id = R.string.allTab),
-        stringResource(id = R.string.categoryTab),
-        stringResource(id = R.string.ddayTab),
-        stringResource(id = R.string.challengeTab)
+        stringResource(id = com.zinc.berrybucket.ui_common.R.string.allTab),
+        stringResource(id = com.zinc.berrybucket.ui_common.R.string.categoryTab),
+        stringResource(id = com.zinc.berrybucket.ui_common.R.string.ddayTab),
+        stringResource(id = com.zinc.berrybucket.ui_common.R.string.challengeTab)
     )
 
     Tabs(tabData)

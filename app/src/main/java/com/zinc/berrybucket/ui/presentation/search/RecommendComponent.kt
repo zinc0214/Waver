@@ -99,7 +99,7 @@ fun SearchTitle() {
 private fun SearchTextView(
     editViewClicked: () -> Unit
 ) {
-    val hintText = stringResource(id = R.string.myBucketSearchHint)
+    val hintText = stringResource(id = com.zinc.berrybucket.ui_my.R.string.myBucketSearchHint)
 
     Box(
         modifier = Modifier
@@ -137,7 +137,8 @@ private fun SearchTextView(
                         width = Dimension.fillToConstraints
                     })
 
-            Image(painter = painterResource(id = R.drawable.btn_32_search),
+            Image(
+                painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.btn_32_search),
                 contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
@@ -176,7 +177,7 @@ private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boo
             .width(48.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
             contentDescription = null,
             modifier = Modifier
                 .size(48.dp)
@@ -271,7 +272,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
         ) {
             Row {
                 Image(
-                    painter = if (type == RecommendType.POPULAR) painterResource(R.drawable.btn_32_like_on) else painterResource(
+                    painter = if (type == RecommendType.POPULAR) painterResource(com.zinc.berrybucket.ui_common.R.drawable.btn_32_like_on) else painterResource(
                         R.drawable.btn_32_star
                     ), contentDescription = null, modifier = Modifier
                         .size(24.dp)
@@ -324,7 +325,7 @@ fun RecommendBucketItemView(
         Column {
             if (item.thumbnail != null) {
                 Image(
-                    painter = painterResource(id = R.drawable.kakao),
+                    painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -360,8 +361,8 @@ fun RecommendBucketItemView(
                 IconButton(onClick = {
                     // can copied if is unCopied
                 },
-                    image = if (item.isCopied) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
-                    contentDescription = stringResource(id = R.string.copy),
+                    image = if (item.isCopied) com.zinc.berrybucket.ui_common.R.drawable.btn_32_copy_on else com.zinc.berrybucket.ui_common.R.drawable.btn_32_copy_off,
+                    contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.copy),
                     modifier = Modifier
                         .constrainAs(copiedIcon) {
                             top.linkTo(parent.top)
@@ -393,7 +394,7 @@ fun KeyWordChangeButton(modifier: Modifier) {
             contentScale = ContentScale.Crop
         )
         MyText(
-            text = stringResource(id = R.string.keywordRefresh),
+            text = stringResource(id = com.zinc.berrybucket.ui_feed.R.string.keywordRefresh),
             fontSize = dpToSp(13.dp),
             color = Gray9
         )

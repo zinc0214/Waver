@@ -131,7 +131,7 @@ fun MySearchBottomScreen(
 @Composable
 private fun TopAppBar(clickEvent: (MySearchClickEvent) -> Unit) {
     androidx.compose.material.TopAppBar(navigationIcon = {
-        Icon(painter = painterResource(id = R.drawable.btn_40_close),
+        Icon(painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close),
             contentDescription = null,
             modifier = Modifier
                 .padding(start = 14.dp, top = 8.dp)

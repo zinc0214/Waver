@@ -54,7 +54,7 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
     ) {
 
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
             contentDescription = stringResource(
                 id = R.string.moreProfileImageDesc
             ),

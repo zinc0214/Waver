@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.common.R
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -98,7 +97,7 @@ fun CalendarSelectBottomSheet(
                         confirmed(currentLocalDate)
                     }
                 }
-            }, rightText = R.string.confirm
+            }, rightText = com.zinc.berrybucket.ui_common.R.string.confirm
         )
     }
 }

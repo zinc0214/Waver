@@ -62,7 +62,7 @@ fun CommentCountView(commentCount: Int) {
         modifier = Modifier.padding(top = 28.dp, start = 20.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.btn_32_comment),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.btn_32_comment),
             contentDescription = null,
             modifier = Modifier
                 .size(32.dp)
@@ -113,9 +113,9 @@ private fun CommentDescView(
             .padding(start = 28.dp, end = 28.dp)
     ) {
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
             contentDescription = stringResource(
-                id = R.string.feedProfileImage
+                id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
             ),
             contentScale = ContentScale.Crop,
             modifier = Modifier

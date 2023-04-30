@@ -105,7 +105,7 @@ fun GoalCountBottomScreen(
         )
 
         BottomButtonView(
-            rightText = R.string.confirm,
+            rightText = com.zinc.berrybucket.ui_common.R.string.confirm,
             clickEvent = {
                 when (it) {
                     BottomButtonClickEvent.LeftButtonClicked -> canceled()

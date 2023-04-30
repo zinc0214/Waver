@@ -52,7 +52,7 @@ fun FilterAndSearchImageView(
                 clickEvent(MyPagerClickEvent.SearchClicked(tabType = tabType))
             },
             modifier = Modifier.size(32.dp),
-            image = R.drawable.btn_32_search,
+            image = com.zinc.berrybucket.ui_common.R.drawable.btn_32_search,
             contentDescription = if (tabType == MyTabType.ALL) stringResource(R.string.allSearchImageViewDesc)
             else stringResource(R.string.ddaySearchImageViewDesc)
         )

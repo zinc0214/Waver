@@ -19,14 +19,14 @@ import com.zinc.berrybucket.ui.presentation.common.Switch
 import com.zinc.berrybucket.ui.presentation.common.TitleIconType
 import com.zinc.berrybucket.ui.presentation.common.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_more.R
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_more.models.AlarmSettingType
 import com.zinc.berrybucket.ui_more.models.AlarmSwitchState
 
 @Composable
 internal fun AlarmTitle(backClicked: () -> Unit) {
     TitleView(
-        title = stringResource(id = R.string.alarmSettingTitle),
+        title = stringResource(id = com.zinc.berrybucket.ui_more.R.string.alarmSettingTitle),
         leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
         onLeftIconClicked = {

@@ -74,7 +74,7 @@ internal fun MentionedListView(
                     .padding(start = 19.dp)
                     .padding(top = 4.dp)
                     .size(32.dp),
-                painter = painterResource(id = R.drawable.btn_32_mention),
+                painter = painterResource(id = com.zinc.berrybucket.ui_my.R.drawable.btn_32_mention),
                 contentDescription = stringResource(
                     id = R.string.commentButtonDesc
                 ),

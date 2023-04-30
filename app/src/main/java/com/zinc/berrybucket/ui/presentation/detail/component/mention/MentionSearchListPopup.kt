@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray9
@@ -83,9 +82,9 @@ private fun MentionItem(
             }, verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
             contentDescription = stringResource(
-                id = R.string.feedProfileImage
+                id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
             ),
             contentScale = ContentScale.Crop,
             modifier = Modifier

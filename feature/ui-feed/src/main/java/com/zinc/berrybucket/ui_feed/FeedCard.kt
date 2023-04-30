@@ -35,6 +35,7 @@ import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerOutSideIndicato
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.presentation.common.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.common.models.FeedInfo
 
 
@@ -115,7 +116,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
     Box(modifier = modifier,
         content = {
             Image(
-                painter = painterResource(id = if (isProcessing) R.drawable.feed_process_img else R.drawable.feed_success_img),
+                painter = painterResource(id = if (isProcessing) com.zinc.berrybucket.ui_feed.R.drawable.feed_process_img else com.zinc.berrybucket.ui_feed.R.drawable.feed_success_img),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

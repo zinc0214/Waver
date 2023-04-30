@@ -18,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.MyText
@@ -52,7 +51,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
                         maxHeight = 36.dp
                     )
             ) {
-                PppUpText(R.string.edit)
+                PppUpText(com.zinc.berrybucket.ui_common.R.string.edit)
             }
             DropdownMenuItem(
                 onClick = {
@@ -64,7 +63,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
                         maxHeight = 36.dp
                     )
             ) {
-                PppUpText(R.string.countChange)
+                PppUpText(com.zinc.berrybucket.ui_common.R.string.countChange)
             }
             DropdownMenuItem(
                 onClick = {
@@ -76,7 +75,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
                         maxHeight = 36.dp
                     )
             ) {
-                PppUpText(R.string.delete)
+                PppUpText(com.zinc.berrybucket.ui_common.R.string.delete)
             }
         }
     }

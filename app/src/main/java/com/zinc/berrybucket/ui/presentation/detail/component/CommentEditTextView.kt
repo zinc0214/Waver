@@ -72,7 +72,8 @@ fun CommentEditTextView(
             onCheckedChange = {
                 likedState.value = !likedState.value
             },
-            image = if (likedState.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
+            image = if (likedState.value) com.zinc.berrybucket.ui_common.R.drawable.btn_32_like_on else
+                com.zinc.berrybucket.ui_common.R.drawable.btn_32_like_off,
             contentDescription = stringResource(id = R.string.likeButtonDesc),
         )
 
@@ -81,7 +82,7 @@ fun CommentEditTextView(
             modifier = Modifier
                 .padding(top = 11.dp, start = 4.dp, bottom = 11.dp)
                 .size(32.dp),
-            image = R.drawable.btn_32_mention,
+            image = com.zinc.berrybucket.ui_my.R.drawable.btn_32_mention,
             contentDescription = stringResource(
                 id = R.string.commentButtonDesc
             )

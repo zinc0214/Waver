@@ -205,7 +205,7 @@ fun AddedFriendItem(
                 deleteFriend(writeFriend)
             },
             image = R.drawable.btn_20_delete,
-            contentDescription = stringResource(id = R.string.deleteButtonDesc)
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.deleteButtonDesc)
         )
     }
 }
@@ -249,9 +249,9 @@ fun WriteSelectFriendItem(
             val (profileImage, nickNameView) = createRefs()
 
             Image(
-                painter = painterResource(id = R.drawable.kakao),
+                painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
                 contentDescription = stringResource(
-                    id = R.string.feedProfileImage
+                    id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
                 ),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

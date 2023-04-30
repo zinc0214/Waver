@@ -8,6 +8,9 @@ plugins {
 }
 
 android {
+
+    namespace = "com.zinc.berrybucket"
+
     compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools
 

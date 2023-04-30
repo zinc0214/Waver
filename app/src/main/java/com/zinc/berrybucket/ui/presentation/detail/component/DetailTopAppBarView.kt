@@ -40,8 +40,8 @@ fun DetailTopAppBar(
         val (closeButton, titleView, moreButton, divider) = createRefs()
 
         IconButton(
-            image = R.drawable.btn_40_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
+            image = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close,
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
                 .size(40.dp)
@@ -72,7 +72,7 @@ fun DetailTopAppBar(
 
         IconButton(
             image = R.drawable.btn32more,
-            contentDescription = stringResource(id = R.string.moreButtonDesc),
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.moreButtonDesc),
             modifier = Modifier
                 .padding(end = 14.dp, top = 10.dp, bottom = 10.dp)
                 .size(32.dp)

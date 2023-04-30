@@ -19,6 +19,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun EditButtonAndSearchImageView(
@@ -54,7 +55,7 @@ fun EditButtonAndSearchImageView(
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_search,
-            contentDescription = stringResource(R.string.categorySearchImageViewDesc)
+            contentDescription = stringResource(com.zinc.berrybucket.ui_my.R.string.categorySearchImageViewDesc)
         )
     }
 }

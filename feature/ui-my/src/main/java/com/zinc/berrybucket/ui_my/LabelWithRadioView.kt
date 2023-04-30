@@ -68,7 +68,7 @@ private fun RadioItemView(
             Image(
                 painter = painterResource(id = R.drawable.radio_check),
                 contentDescription = stringResource(
-                    id = R.string.selected
+                    id = com.zinc.berrybucket.ui_common.R.string.selected
                 )
             )
         }

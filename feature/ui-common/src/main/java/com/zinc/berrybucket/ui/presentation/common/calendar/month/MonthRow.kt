@@ -16,13 +16,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.common.R
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.presentation.common.IconButton
 import com.zinc.berrybucket.ui.presentation.common.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -120,8 +120,8 @@ private fun MonthRowPreview() {
     MonthWithYearView(
         year = 2022,
         navigateMonthDrawableIds = Pair(
-            com.zinc.berrybucket.ui_common.R.drawable.btn_28_left_circle,
-            com.zinc.berrybucket.ui_common.R.drawable.btn_28_right_circle
+            R.drawable.btn_28_left_circle,
+            R.drawable.btn_28_right_circle
         ),
         onNavigateMonthPressed = { a, b ->
 

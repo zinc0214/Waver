@@ -1,10 +1,10 @@
 package com.zinc.berrybucket.ui.presentation.login
 
+import BuildConfig
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.zinc.berrybucket.BuildConfig
 import com.zinc.berrybucket.ui.presentation.HomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 

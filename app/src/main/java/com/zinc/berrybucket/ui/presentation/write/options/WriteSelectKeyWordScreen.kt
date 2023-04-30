@@ -58,12 +58,13 @@ fun WriteSelectKeyWordScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             nextButtonClickable = true,
-            rightText = R.string.addDesc,
+            rightText = com.zinc.berrybucket.ui_common.R.string.addDesc,
             clickEvent = {
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
                         closeClicked()
                     }
+
                     WriteAppBarClickEvent.NextClicked -> {
                         addKeyWordClicked(updateKeyWords.value)
                     }
@@ -140,8 +141,8 @@ private fun WriteSelectKeyWordAppBarLayout(
             .fillMaxWidth()
             .height(52.dp)
     ) {
-        IconButton(image = R.drawable.btn_40_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
+        IconButton(image = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close,
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
                 .size(40.dp),
@@ -150,7 +151,7 @@ private fun WriteSelectKeyWordAppBarLayout(
             })
 
         MyText(
-            text = stringResource(id = R.string.addDesc),
+            text = stringResource(id = com.zinc.berrybucket.ui_common.R.string.addDesc),
             color = Main4,
             fontSize = dpToSp(14.dp),
             modifier = Modifier

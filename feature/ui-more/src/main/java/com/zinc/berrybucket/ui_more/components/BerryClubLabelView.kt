@@ -62,7 +62,7 @@ internal fun BerryClubLabelView(enterClubClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.weight(1f))
             Image(
-                painter = painterResource(R.drawable.ico_16_right),
+                painter = painterResource(com.zinc.berrybucket.ui_common.R.drawable.ico_16_right),
                 contentDescription = null,
                 modifier = Modifier
                     .sizeIn(16.dp)

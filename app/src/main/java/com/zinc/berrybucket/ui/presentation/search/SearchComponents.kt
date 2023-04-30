@@ -80,8 +80,8 @@ fun SearchTopAppBar(
     ) {
         val (closeButton, titleView) = createRefs()
 
-        IconButton(image = R.drawable.btn_40_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
+        IconButton(image = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close,
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
                 .size(40.dp)
@@ -318,7 +318,7 @@ private fun RecentSearchItem(
                 modifier = Modifier
                     .padding(start = 18.dp, end = 24.dp)
                     .sizeIn(24.dp),
-                contentDescription = stringResource(id = R.string.delete),
+                contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.delete),
                 alignment = Alignment.CenterEnd
             )
         }
@@ -470,9 +470,10 @@ fun SearchUserItemView(
             val (profileImage, nickNameView, followButton) = createRefs()
 
             if (item.profileImageUrl != null) {
-                Image(painter = painterResource(id = R.drawable.kakao),
+                Image(
+                    painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
                     contentDescription = stringResource(
-                        id = R.string.feedProfileImage
+                        id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
                     ),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -518,7 +519,7 @@ fun SearchUserItemView(
                 // can copied if is unCopied
             },
                 image = if (item.isFollowed) R.drawable.btn_32_following else R.drawable.btn_32_not_follow,
-                contentDescription = stringResource(id = R.string.copy),
+                contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.copy),
                 modifier = Modifier
                     .constrainAs(followButton) {
                         top.linkTo(parent.top)

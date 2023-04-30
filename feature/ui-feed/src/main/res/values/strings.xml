@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Feed > Content -->
+    <string name="feedContentTitle">마이 피드</string>
+    <string name="feedImageView">피드 이미지</string>
+    <string name="feedProfileImage">프로필 이미지</string>
+
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
     <string name="feedRecommendSmallTitle">관심 키워드 선택</string>
     <string name="recommendBucketList">버킷 추천받기</string>
     <string name="keywordRefresh">키워드 새로고침</string>
-
-    <!-- Feed > Content -->
-    <string name="feedContentTitle">마이 피드</string>
-    <string name="feedImageView">피드 이미지</string>
-    <string name="feedProfileImage">프로필 이미지</string>
 </resources>

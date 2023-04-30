@@ -61,8 +61,8 @@ fun WriteAppBar(
         val (closeButton, moreButton, divider) = createRefs()
 
         IconButton(
-            image = R.drawable.btn_40_close,
-            contentDescription = stringResource(id = R.string.closeDesc),
+            image = com.zinc.berrybucket.ui_common.R.drawable.btn_40_close,
+            contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
                 .size(40.dp)
