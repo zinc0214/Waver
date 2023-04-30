@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -251,9 +250,11 @@ fun OpenDetailScreen(
                                             var makeTaggedText = commentText.value
                                             val nickName = "@" + it.nickName + " "
 
+                                            val rangeEndIndex =
+                                                if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
                                             makeTaggedText = makeTaggedText.replaceRange(
                                                 info.startIndex,
-                                                info.endIndex,
+                                                rangeEndIndex,
                                                 nickName
                                             )
 
@@ -268,8 +269,6 @@ fun OpenDetailScreen(
                                             )
                                             commentText.value = makeTaggedText
                                             mentionSearchInfo.value = null
-
-                                            Log.e("ayhan", "newTaggedText ${newTaggedText.value}")
                                         }
                                     )
                                 }
@@ -310,8 +309,6 @@ fun OpenDetailScreen(
                                                     }
                                                 }
 
-                                                Log.e("ayhan", "tagIndex : $tagIndexMap")
-
                                                 // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
                                                 if (tagIndexMap.isNotEmpty()) {
                                                     tagIndexMap.lastOrNull { index ->
@@ -329,11 +326,6 @@ fun OpenDetailScreen(
                                                                 tagIndex,
                                                                 textInfo.index
                                                             )
-
-                                                        Log.e(
-                                                            "ayhan",
-                                                            "tagIndex : $needToSearchText, ${textInfo.index}"
-                                                        )
 
                                                         if (needToSearchText.isNotEmpty()) {
                                                             val info = MentionSearchInfo(

@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.zinc.berrybucket.R
@@ -44,8 +43,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.e("ayhan", "onTextChanged : $start $before $count $beforeText ${s}")
-
                 if (s.toString() != beforeText) {
 
                     changeStartIndex = start
@@ -54,13 +51,11 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                         changeStartIndex in it.startIndex..it.endIndex
                     }
 
-                    Log.e("ayhan", "remove taggedString  :$taggedString")
                     if (taggedString != null) {
                         if (s.toString().length > beforeText.length) {
                             binding.commentEditTextView.setText(beforeText)
                             binding.commentEditTextView.setSelection(taggedString.endIndex)
                             updateText(getMakeTaggedText(beforeText), isForceUpdate = true)
-                            Log.e("ayhan", "taggedStringRemoved ")
                         } else if (s.toString().length < beforeText.length) {
                             _spannableString.values.remove(taggedString)
                             val removeText = beforeText.removeRange(
@@ -68,27 +63,16 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                                 taggedString.endIndex + 1
                             )
                             updateTaggedString(taggedString, false)
-                            Log.e(
-                                "ayhan",
-                                "taggedStringRemoved _spannableString : $_spannableString"
-                            )
                             updateText(getMakeTaggedText(removeText), isForceUpdate = true)
                         }
                     } else {
                         updateTaggedString(s.toString())
                         beforeText = s.toString()
                     }
-
-                    Log.e("ayhan", "beforeText1  :$beforeText")
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-
-
-                // 만약 현재 수정한 값이 태그 위치인 경우, 태그를 제거한다.
-                Log.e("ayhan", "after s :$s,$changeStartIndex,${_spannableString},$beforeText")
-
 
                 // 커서 위치 조정
                 // 값이 커진 경우 start, 적어진 경우 start - 1
@@ -111,22 +95,18 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         originText: String,
         commentEvent: (OpenDetailEditTextViewEvent) -> Unit
     ) {
-        Log.e("ayhan", "originText : $originText")
         this.originText = originText
         this.commentEvent = commentEvent
     }
 
     // 태그된 텍스트 사이로 다른 텍스트가 추가되었을 때, 그 텍스트 만큼 기존의 index 를 업데이트 하기 위함
     private fun updateTaggedString(changeText: String) {
-        Log.e("ayhan", "updateTaggedString")
         var size = 0
 
         // 현재 수정된 Index 를 기반으로 앞쪽에서 가장 가까운 tag text
         val lastTagged = _spannableString.values.lastOrNull { it.endIndex < changeStartIndex }
         // 현재 수정된 Index 를 기반으로 뒤에서 가장 가까운 tag text
         val firstTagged = _spannableString.values.firstOrNull { it.startIndex > changeStartIndex }
-
-        Log.e("ayhan", "lastTagged : $lastTagged, firstTagged $firstTagged")
 
         // 태그 사이에 낀 텍스트인 경우
         if (lastTagged != null && firstTagged != null) {
@@ -139,7 +119,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 // 기존 텍스트
                 val currentText =
                     beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
-                Log.e("ayhan", "betweenText1 :$betweenText,$currentText")
 
                 size = betweenText.length - currentText.length
             }
@@ -152,7 +131,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 // 기존 텍스트
                 val currentText =
                     beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
-                Log.e("ayhan", "betweenText2 :$betweenText,$currentText")
 
                 size = betweenText.length - currentText.length
             }
@@ -169,7 +147,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 // 기존 텍스트
                 val currentText =
                     beforeText.slice(0 until firstTagged.startIndex)
-                Log.e("ayhan", "betweenText3 :$betweenText,$currentText")
 
                 size = betweenText.length - currentText.length
             }
@@ -182,7 +159,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                 // 기존 텍스트
                 val currentText =
                     beforeText.slice(0..firstTagged.startIndex)
-                Log.e("ayhan", "betweenText4 :$betweenText,$currentText")
 
                 size = betweenText.length - currentText.length
             }
@@ -193,8 +169,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         }.forEach { modifiedTaggedTextInfo ->
             val id = modifiedTaggedTextInfo.id
             _spannableString[id] = modifiedTaggedTextInfo
-
-            Log.e("ayhan", "modifiedTaggedTextInfo : $_spannableString")
         }
     }
 
@@ -212,8 +186,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             }.forEach { modifiedTaggedTextInfo ->
                 val id = modifiedTaggedTextInfo.id
                 _spannableString[id] = modifiedTaggedTextInfo
-
-                Log.e("ayhan", "modifiedTaggedTextInfo2 : $_spannableString")
             }
         } else {
             // 삭제된 경우
@@ -225,8 +197,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             }.forEach { modifiedTaggedTextInfo ->
                 val id = modifiedTaggedTextInfo.id
                 _spannableString[id] = modifiedTaggedTextInfo
-
-                Log.e("ayhan", "modifiedTaggedTextInfo3 : $_spannableString")
             }
         }
     }
@@ -235,10 +205,8 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
     private fun getMakeTaggedText(originText: String): String {
         var makeTaggedText = originText
         val sortedList = _spannableString.values.sortedBy { it.startIndex }
-        Log.e("ayhan", "sortedList : $sortedList")
 
         sortedList.forEachIndexed { index, taggedTextInfo ->
-            Log.e("ayhan", "getMakeTaggedText taggedTextInfo : $taggedTextInfo")
 
             // 첫번째 아이템이 아닌 경우, 위치가 변경되었을 거라서 값을 추가해야함
             var sliceIndexStart = taggedTextInfo.startIndex
@@ -252,15 +220,12 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
 
             val originSliceText = makeTaggedText.slice(sliceIndexStart..sliceIndexEnd)
 
-            Log.e("ayhan", "getMakeTaggedText originSliceText : $originSliceText")
-
             if (originSliceText == taggedTextInfo.text) {
                 makeTaggedText =
                     makeTaggedText.replaceRange(
                         sliceIndexStart..sliceIndexEnd,
                         "|${taggedTextInfo.text}`"
                     )
-                Log.e("ayhan", "getMakeTaggedText makeTaggedText : $makeTaggedText")
             }
         }
 
@@ -272,16 +237,12 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         newTaggedInfo: TaggedTextInfo? = null,
         isForceUpdate: Boolean = false
     ) {
-        Log.e("ayhan", "originText Sc : $originText")
-
         if (newTaggedInfo != null) {
             updateTaggedString(newTaggedInfo, true)
             _spannableString[newTaggedInfo.id] = newTaggedInfo
         }
 
         val reformatText = getMakeTaggedText(originText)
-
-        Log.e("ayhan", "reformatText Sc : $reformatText")
 
         if (binding.commentEditTextView.text.toString() != originText || isForceUpdate) {
 
@@ -303,21 +264,13 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             for (i in 0 until startIndexList.size) {
                 val start = startIndexList[i] // @부터 시작
                 val end = endIndexList[i] // 태그된 곳 까지만
-                Log.e("ayhan", "index ::: $start, $end")
                 spannableString.setSpan(
                     ForegroundColorSpan(context.getColor(R.color.main5)), // 변경할 색상 설정
                     start, // 시작 인덱스 설정
                     end, // 끝 인덱스 설정 (+2는 끝 인덱스를 inclusive로 포함하기 위함)
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE // 스팬 적용 범위 설정
                 )
-
-                val sliceStartIndex = start + 1
-                val sliceEndIndex = end - 1
-                val taggedText = reformatText.slice(sliceStartIndex..sliceEndIndex)
-                Log.e("ayhan", "taggedText  ;$taggedText, ${taggedText.length}")
             }
-
-            Log.e("ayhan", "_spannableString  ;$_spannableString")
 
             // "@" 문자열을 빈 문자열로 바꿉니다.
             var index = spannableString.indexOf("|")
@@ -335,8 +288,6 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
 
             val resultText =
                 spannableString.toString() // 제거된 텍스트로 업데이트된 SpannableStringBuilder를 다시 String으로 변환
-
-            Log.e("ayhan", "resultText :$resultText")
 
             beforeText = spannableString.toString()
             changeStartIndex = resultText.length
