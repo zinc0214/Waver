@@ -45,7 +45,8 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.toString() != beforeText) {
 
-                    changeStartIndex = start
+                    /// TODO: 스페이스 두 번 클릭시 . 으로 바뀌면서 강제로 글자수가 줄어드는 현상 해결 필요
+                    changeStartIndex = binding.commentEditTextView.selectionEnd
 
                     val taggedString = _spannableString.values.firstOrNull {
                         changeStartIndex in it.startIndex..it.endIndex
@@ -73,17 +74,10 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             }
 
             override fun afterTextChanged(s: Editable?) {
-
-                // 커서 위치 조정
-                // 값이 커진 경우 start, 적어진 경우 start - 1
-                val startIndex = if (beforeText.lastIndex <= (s?.lastIndex ?: 0)) {
-                    changeStartIndex
-                } else changeStartIndex - 1
-
                 commentEvent?.invoke(
                     OpenDetailEditTextViewEvent.TextChanged(
                         beforeText,
-                        startIndex + 1,
+                        changeStartIndex,
                         _spannableString.values.toList()
                     )
                 )
