@@ -52,7 +52,7 @@ fun DetailSuccessButtonView(
             ),
         contentAlignment = Alignment.Center
     ) {
-        if (successButtonInfo.goalCount > 0) {
+        if (successButtonInfo.goalCount > 1) {
             CountSuccessButton(successButtonInfo)
         } else {
             SimpleSuccessButton()
