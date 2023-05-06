@@ -52,6 +52,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
+import com.zinc.berrybucket.ui.presentation.detail.component.TogetherMemberView
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEditTextView2
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
 import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
@@ -86,6 +87,7 @@ fun OpenDetailScreen(
             visibleLastIndex > listScrollState.layoutInfo.totalItemsCount - 2 // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
         val isScrollable =
             if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
+        val flatButtonVisible = listScrollState.firstVisibleItemIndex >= flatButtonIndex
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
@@ -204,6 +206,7 @@ fun OpenDetailScreen(
                                 }
                             },
                             flatButtonIndex = flatButtonIndex,
+                            flatButtonVisible = flatButtonVisible,
                             isCommentViewShown = isCommentViewShown,
                             modifier = Modifier
                                 .constrainAs(contentView) {
@@ -216,7 +219,7 @@ fun OpenDetailScreen(
 
                         // 플로팅 완료 버튼 노출 조건
                         if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
-                            if ((listScrollState.layoutInfo.visibleItemsInfo.lastIndex < flatButtonIndex) && !isCommentViewShown) {
+                            if (flatButtonVisible.not()) {
                                 DetailSuccessButtonView(modifier = Modifier
                                     .constrainAs(
                                         floatingButtonView
@@ -378,6 +381,7 @@ private fun ContentView(
     listState: LazyListState,
     detailInfo: DetailInfo,
     flatButtonIndex: Int,
+    flatButtonVisible: Boolean,
     isCommentViewShown: Boolean,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
@@ -422,7 +426,7 @@ private fun ContentView(
             if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
                 return@item
             }
-            Box(modifier = Modifier.alpha(if (listState.layoutInfo.visibleItemsInfo.lastIndex >= flatButtonIndex || isCommentViewShown) 1f else 0f)) {
+            Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
                 DetailSuccessButtonView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
@@ -433,8 +437,15 @@ private fun ContentView(
                     modifier = Modifier.padding(top = 30.dp)
                 )
             }
+        }
 
-
+        item(key = "friendsView") {
+            if (detailInfo.togetherInfo != null) {
+                TogetherMemberView(
+                    modifier = Modifier.fillMaxWidth(),
+                    togetherInfo = detailInfo.togetherInfo!!
+                )
+            }
         }
 
         item(key = "spacer") {
@@ -470,12 +481,12 @@ fun ProfileView(profileInfo: ProfileInfo) {
 }
 
 private fun flatButtonIndex(detailInfo: DetailInfo): Int {
-    var index = 6
-    if (detailInfo.imageInfo == null) {
-        index -= 1
+    var index = 0
+    if (detailInfo.imageInfo != null) {
+        index += 1
     }
-    if (detailInfo.memoInfo == null) {
-        index -= 1
+    if (detailInfo.memoInfo != null) {
+        index += 1
     }
     return index
 }

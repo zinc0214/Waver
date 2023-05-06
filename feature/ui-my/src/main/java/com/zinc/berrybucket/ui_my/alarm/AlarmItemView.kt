@@ -62,7 +62,7 @@ private fun getAlarmIcon(type: AlarmType) = when (type) {
     DDAY -> R.drawable.btn_32_alarm_d_day
     INFO -> R.drawable.btn_32_app_noti
     EVENT -> R.drawable.btn_32_event
-    TOGETHER -> R.drawable.ico_36_together
+    TOGETHER -> com.zinc.berrybucket.ui_common.R.drawable.ico_36_together
     FRIEND -> null
 }
 

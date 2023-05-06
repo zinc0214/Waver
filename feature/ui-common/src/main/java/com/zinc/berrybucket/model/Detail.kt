@@ -41,6 +41,22 @@ data class Commenter(
     val isMine: Boolean = true
 )
 
+data class TogetherInfo(
+    val count: String,
+    val togetherMembers: List<TogetherMember>
+)
+
+data class TogetherMember(
+    val memberId: String = "",
+    val profileImage: String,
+    val nickName: String,
+    val isMine: Boolean,
+    val goalCount: Int,
+    val userCount: Int
+) {
+    fun isSucceed() = goalCount == userCount
+}
+
 data class InnerSuccessButton(
     var isVisible: Boolean
 ) : DetailDescType()
@@ -78,7 +94,8 @@ data class DetailInfo(
     val profileInfo: ProfileInfo,
     val descInfo: CommonDetailDescInfo,
     val memoInfo: MemoInfo? = null,
-    val commentInfo: CommentInfo? = null
+    val commentInfo: CommentInfo? = null,
+    val togetherInfo: TogetherInfo? = null
 )
 
 sealed class DetailAppBarClickEvent {

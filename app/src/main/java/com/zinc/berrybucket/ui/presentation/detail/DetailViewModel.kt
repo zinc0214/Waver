@@ -11,6 +11,8 @@ import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
 import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.TogetherInfo
+import com.zinc.berrybucket.model.TogetherMember
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -130,6 +132,35 @@ class DetailViewModel @Inject constructor(
                         "Contrary to popular belief",
                         "Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, "
                     ),
+                )
+            ),
+            togetherInfo = TogetherInfo(
+                count = "3",
+                togetherMembers = listOf(
+                    TogetherMember(
+                        memberId = "1",
+                        profileImage = "1",
+                        nickName = "난 싫어, 이런 삶, 한결 같은 내 모습",
+                        isMine = false,
+                        goalCount = 10,
+                        userCount = 1
+                    ),
+                    TogetherMember(
+                        memberId = "2",
+                        profileImage = "1",
+                        nickName = "눈부신 들판을 말 타고 달리기를",
+                        isMine = false,
+                        goalCount = 5,
+                        userCount = 5
+                    ),
+                    TogetherMember(
+                        memberId = "1",
+                        profileImage = "1",
+                        nickName = "나는 나만의 것",
+                        isMine = false,
+                        goalCount = 5,
+                        userCount = 0
+                    )
                 )
             )
         )

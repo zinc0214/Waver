@@ -241,7 +241,7 @@ private fun CountProgressView(
 }
 
 @Composable
-private fun HorizontalProgressBar(
+fun HorizontalProgressBar(
     modifier: Modifier = Modifier,
     currentCount: Int,
     goalCount: Int,
@@ -253,7 +253,8 @@ private fun HorizontalProgressBar(
     val progressAnimDuration = 1500
     val progressAnimation by animateFloatAsState(
         targetValue = indicatorProgress,
-        animationSpec = tween(durationMillis = progressAnimDuration, easing = FastOutSlowInEasing)
+        animationSpec = tween(durationMillis = progressAnimDuration, easing = FastOutSlowInEasing),
+        label = ""
     )
     LinearProgressIndicator(
         modifier = modifier
