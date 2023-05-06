@@ -66,4 +66,5 @@
     <string name="optionScrapInfoDesc">스크랩이란?</string>
     <string name="optionScrapNotAvailable">버킷리스트를 공개로 설정해주세요</string>
     <string name="optionIfFriendsNotEmptyOpenPrivateDetect">함께할 친구가 있다면 버킷리스트를 비공개로 설정할 수 없어요</string>
+    <string name="countIsNotValidToast">목표 달성 횟수는 최소 1 이상으로 설정해주세요</string>
 </resources>

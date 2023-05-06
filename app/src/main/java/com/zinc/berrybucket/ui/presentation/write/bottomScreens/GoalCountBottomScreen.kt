@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.write.bottomScreens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +47,10 @@ fun GoalCountBottomScreen(
     confirmed: (String) -> Unit
 ) {
     var editedGoalCount by remember { mutableStateOf(TextFieldValue(originCount)) }
+    val disableState =
+        originCount == editedGoalCount.text || editedGoalCount.text == "0" || editedGoalCount.text.isEmpty()
+    val context = LocalContext.current
+
     Column(modifier = Modifier.fillMaxWidth()) {
         MyText(
             modifier = Modifier
@@ -52,6 +58,7 @@ fun GoalCountBottomScreen(
                 .padding(horizontal = 30.dp, vertical = 28.dp),
             text = stringResource(id = R.string.optionGoalCount),
             fontSize = dpToSp(dp = 15.dp),
+            fontWeight = FontWeight.Bold,
             color = Gray10,
             textAlign = TextAlign.Center
         )
@@ -68,10 +75,11 @@ fun GoalCountBottomScreen(
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(4.dp),
-                    color = if (originCount == editedGoalCount.text || editedGoalCount.text == "0") Gray4 else Main3
+                    color = if (disableState) Gray4 else Main3
                 ),
             value = editedGoalCount,
             textStyle = TextStyle(
+                color = if (disableState) Gray7 else Gray10,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 fontSize = dpToSp(dp = 22.dp)
@@ -94,9 +102,10 @@ fun GoalCountBottomScreen(
                         MyText(
                             modifier = Modifier.fillMaxWidth(),
                             text = "0",
-                            color = if (originCount == editedGoalCount.text || editedGoalCount.text == "0") Gray7 else Gray10,
+                            color = if (disableState) Gray7 else Gray10,
                             fontSize = dpToSp(22.dp),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                     innerTextField()  //<-- Add this
@@ -109,7 +118,17 @@ fun GoalCountBottomScreen(
             clickEvent = {
                 when (it) {
                     BottomButtonClickEvent.LeftButtonClicked -> canceled()
-                    BottomButtonClickEvent.RightButtonClicked -> confirmed(editedGoalCount.text)
+                    BottomButtonClickEvent.RightButtonClicked -> {
+                        if (editedGoalCount.text == "0") {
+                            Toast.makeText(
+                                context,
+                                R.string.countIsNotValidToast,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            confirmed(editedGoalCount.text)
+                        }
+                    }
                 }
             })
     }

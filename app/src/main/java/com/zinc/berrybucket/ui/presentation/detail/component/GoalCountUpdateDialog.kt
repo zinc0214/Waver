@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -70,6 +72,7 @@ fun GoalCountUpdateDialog(
             var editedGoalCount by remember { mutableStateOf(TextFieldValue(currentCount)) }
             val disableState =
                 currentCount == editedGoalCount.text || editedGoalCount.text == "0" || editedGoalCount.text.isEmpty()
+            val context = LocalContext.current
             Column(modifier = Modifier.fillMaxWidth()) {
                 MyText(
                     modifier = Modifier
@@ -137,11 +140,20 @@ fun GoalCountUpdateDialog(
                     clickEvent = {
                         when (it) {
                             BottomButtonClickEvent.LeftButtonClicked -> event(GoalCountUpdateEvent.Close)
-                            BottomButtonClickEvent.RightButtonClicked -> event(
-                                GoalCountUpdateEvent.CountUpdate(
-                                    editedGoalCount.text
-                                )
-                            )
+                            BottomButtonClickEvent.RightButtonClicked ->
+                                if (editedGoalCount.text == "0") {
+                                    Toast.makeText(
+                                        context,
+                                        R.string.countIsNotValidToast,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    event(
+                                        GoalCountUpdateEvent.CountUpdate(
+                                            editedGoalCount.text
+                                        )
+                                    )
+                                }
                         }
                     })
             }
