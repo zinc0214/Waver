@@ -21,10 +21,14 @@ import androidx.compose.ui.window.PopupProperties
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.detail.screen.MyBucketMenuEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
-fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
+fun MyDetailAppBarMoreMenuDialog(
+    optionPopUpShowed: MutableState<Boolean>,
+    event: (MyBucketMenuEvent) -> Unit
+) {
 
     Card(
         modifier = Modifier
@@ -43,7 +47,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
         ) {
             DropdownMenuItem(
                 onClick = {
-                    // TODO : Go To Edit
+                    event(MyBucketMenuEvent.GoToEdit)
                 },
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier
@@ -55,7 +59,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
             }
             DropdownMenuItem(
                 onClick = {
-                    // TODO : Go To Count Change
+                    event(MyBucketMenuEvent.GoToGoalUpdate)
                 },
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier
@@ -67,7 +71,7 @@ fun MyDetailAppBarMoreMenuDialog(optionPopUpShowed: MutableState<Boolean>) {
             }
             DropdownMenuItem(
                 onClick = {
-                    // TODO : Go To Delete
+                    event(MyBucketMenuEvent.GoToDelete)
                 },
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier

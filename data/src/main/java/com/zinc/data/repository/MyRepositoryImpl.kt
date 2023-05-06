@@ -87,7 +87,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     title = "제주도 여행을 갈거란 말이야",
                     currentCount = 1,
                     status = BucketStatus.COMPLETE,
-                    detailType = DetailType.MY_OPEN
+                    detailType = DetailType.MY_CLOSE
                 ),
                 BucketInfoSimple(
                     type = "BASIC",

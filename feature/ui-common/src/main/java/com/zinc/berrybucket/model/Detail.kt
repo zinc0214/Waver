@@ -90,6 +90,7 @@ fun detailId(descType: DetailDescType): Int {
 }
 
 data class DetailInfo(
+    val bucketId: String,
     val imageInfo: ImageInfo? = null,
     val profileInfo: ProfileInfo,
     val descInfo: CommonDetailDescInfo,

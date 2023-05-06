@@ -37,11 +37,7 @@ class DetailViewModel @Inject constructor(
 //            loadBucketDetail(id)
 //        }
 
-        if (id == "open") {
-            _bucketDetailInfo.value = detailInfo1
-        } else {
-            _bucketDetailInfo.value = detailInfo1
-        }
+        _bucketDetailInfo.value = detailInfo1
     }
 
     fun getValidMentionList() {
@@ -81,8 +77,23 @@ class DetailViewModel @Inject constructor(
         _validMentionList.value = validMentionList
     }
 
+
+    fun goalCountUpdate(bucketId: String, goalCount: String) {
+        val updateInfo = detailInfo1.copy(
+            descInfo = CommonDetailDescInfo(
+                dDay = "D+201",
+                tagList = listOf("여행", "강남"),
+                title = "가나다라마바사",
+                goalCount = goalCount.toInt(),
+                userCount = 0
+            )
+        )
+        _bucketDetailInfo.value = updateInfo
+    }
+
     private val detailInfo1 =
         DetailInfo(
+            bucketId = "abc",
             imageInfo = ImageInfo(
                 imageList = listOf("A", "B", "C")
             ),
@@ -167,6 +178,7 @@ class DetailViewModel @Inject constructor(
 
     private val detailInfo2 =
         DetailInfo(
+            bucketId = "abc",
             profileInfo = ProfileInfo(
                 profileImage = "",
                 badgeImage = "",

@@ -51,10 +51,12 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
+import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.TogetherMemberView
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEditTextView2
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
+import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
@@ -70,11 +72,15 @@ fun OpenDetailScreen(
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
-    viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
+
     viewModel.getValidMentionList()
 
     val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
+
+    if (vmDetailInfo == null) {
+        viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
+    }
 
     vmDetailInfo?.let { detailInfo ->
 
@@ -94,6 +100,7 @@ fun OpenDetailScreen(
         val commentOptionPopUpShowed =
             remember { mutableStateOf(false to 0) } // 댓글 롱클릭 옵션 팝업 노출여부 + 댓글 index
         val mentionPopupShowed = remember { mutableStateOf(false) } // 댓글 태그 팝업 노출 여부
+        val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
 
         // 키보드 상태 확인
         val isKeyBoardOpened = remember { mutableStateOf(true) } // 키보드 오픈 상태 확인
@@ -122,9 +129,41 @@ fun OpenDetailScreen(
         BaseTheme {
             Scaffold { padding ->
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed)
+                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
+                        when (it) {
+                            MyBucketMenuEvent.GoToDelete -> {
+                                optionPopUpShowed.value = false
+                            }
+
+                            MyBucketMenuEvent.GoToEdit -> {
+                                optionPopUpShowed.value = false
+                            }
+
+                            MyBucketMenuEvent.GoToGoalUpdate -> {
+                                goalCountUpdatePopUpShowed.value = true
+                                optionPopUpShowed.value = false
+                            }
+                        }
+                    }
                 }
 
+                if (goalCountUpdatePopUpShowed.value) {
+                    GoalCountUpdateDialog(
+                        currentCount = detailInfo.descInfo.goalCount.toString()
+                    ) {
+                        when (it) {
+                            GoalCountUpdateEvent.Close -> {
+                                goalCountUpdatePopUpShowed.value = false
+                            }
+
+                            is GoalCountUpdateEvent.CountUpdate -> {
+                                // Todo : ViewModel Update!
+                                viewModel.goalCountUpdate(detailInfo.bucketId, it.count)
+                                goalCountUpdatePopUpShowed.value = false
+                            }
+                        }
+                    }
+                }
                 if (commentOptionPopUpShowed.value.first) {
                     val commenter = vmDetailInfo?.commentInfo?.commenterList?.getOrNull(
                         commentOptionPopUpShowed.value.second

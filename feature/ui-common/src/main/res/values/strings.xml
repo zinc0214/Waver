@@ -22,6 +22,7 @@
     <string name="deleteButtonDesc">삭제 버튼</string>
     <string name="addDesc">추가</string>
     <string name="confirm">확인</string>
+    <string name="update">변경</string>
 
     <string name="profileImgDesc">프로필 이미지</string>
 

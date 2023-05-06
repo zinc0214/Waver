@@ -57,7 +57,9 @@ fun CloseDetailLayer(
             Scaffold { _ ->
 
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed)
+                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
+
+                    }
                 }
 
                 Column(
