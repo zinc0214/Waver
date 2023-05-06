@@ -119,9 +119,6 @@ fun OpenDetailScreen(
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
-        // 멘션 선택 화면 노출
-        val isNeedToShowMentionScreen = remember { mutableStateOf(false) }
-
         BaseTheme {
             Scaffold { padding ->
                 if (optionPopUpShowed.value) {
@@ -252,10 +249,6 @@ fun OpenDetailScreen(
                                     newTaggedInfo = newTaggedText.value,
                                     commentEvent = {
                                         when (it) {
-                                            OpenDetailEditTextViewEvent.MentionButtonClicked -> {
-                                                isNeedToShowMentionScreen.value = true
-                                            }
-
                                             is OpenDetailEditTextViewEvent.SendComment -> {
 
                                             }
@@ -356,17 +349,6 @@ fun OpenDetailScreen(
                                 }
                             }
                         }
-                    }
-                }
-                if (isNeedToShowMentionScreen.value) {
-                    validMentionList?.let {
-                        CommentMentionScreen(
-                            validMentionList = it,
-                            backPress = { isNeedToShowMentionScreen.value = false },
-                            selectedFinish = {
-
-                            }
-                        )
                     }
                 }
             }

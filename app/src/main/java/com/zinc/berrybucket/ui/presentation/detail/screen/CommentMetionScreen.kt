@@ -23,6 +23,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionList
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionTitleView
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionedListView
 
+// TODO : 사용하지 않는 태그 기능. 추후 사용 가능성이 있어서 남겨둠.
 @Composable
 fun CommentMentionScreen(
     modifier: Modifier = Modifier,
