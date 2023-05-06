@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -35,14 +35,15 @@ import com.zinc.berrybucket.ui.util.dpToSp
 fun MentionSearchListPopup(
     searchedList: List<CommentMentionInfo>,
     mentionSelected: (CommentMentionInfo) -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
 
     Card(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.BottomCenter)
-            .padding(top = 8.dp, bottom = 8.dp),
+            .fillMaxWidth()
+            .padding(top = 3.dp, bottom = 60.dp, start = 16.dp, end = 16.dp),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Gray1,
         elevation = 3.dp
@@ -51,15 +52,16 @@ fun MentionSearchListPopup(
             modifier = modifier
                 .fillMaxWidth()
                 .background(color = Gray1)
-                .height(150.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+                .heightIn(max = 200.dp)
+                .padding(top = 16.dp, bottom = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             items(items = searchedList, itemContent = {
                 MentionItem(
                     modifier = Modifier.fillMaxWidth(),
                     item = it,
-                    itemClicked = {
-                        mentionSelected(it)
+                    itemClicked = { info ->
+                        mentionSelected(info)
                     })
             })
         }

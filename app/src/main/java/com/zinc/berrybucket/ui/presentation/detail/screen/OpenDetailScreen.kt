@@ -235,45 +235,6 @@ fun OpenDetailScreen(
                             }
                         }
 
-                        mentionSearchInfo.value?.let { info ->
-                            if (info.searchText.isNotEmpty()) {
-                                val removePrefixText = info.searchText.replace("@", "")
-                                val searchedList =
-                                    validMentionList?.filter { it.nickName.contains(removePrefixText) }
-                                        .orEmpty()
-                                if (searchedList.isNotEmpty()) {
-                                    MentionSearchListPopup(
-                                        modifier = Modifier.padding(bottom = 40.dp),
-                                        searchedList = searchedList,
-                                        mentionSelected = {
-
-                                            var makeTaggedText = commentText.value
-                                            val nickName = "@" + it.nickName + " "
-
-                                            val rangeEndIndex =
-                                                if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
-                                            makeTaggedText = makeTaggedText.replaceRange(
-                                                info.startIndex,
-                                                rangeEndIndex,
-                                                nickName
-                                            )
-
-                                            val currentTime = LocalTime.now()
-                                            val timeString = currentTime.toString().substring(0, 8)
-
-                                            newTaggedText.value = TaggedTextInfo(
-                                                id = "${info.startIndex}${timeString}",
-                                                text = nickName,
-                                                startIndex = info.startIndex,
-                                                endIndex = info.startIndex + nickName.length - 1
-                                            )
-                                            commentText.value = makeTaggedText
-                                            mentionSearchInfo.value = null
-                                        }
-                                    )
-                                }
-                            }
-                        }
 
                         // 최하단 EditTextView
                         Column(modifier = Modifier
@@ -350,6 +311,46 @@ fun OpenDetailScreen(
                                     }
 
                                 )
+                            }
+                        }
+
+
+                        mentionSearchInfo.value?.let { info ->
+                            if (info.searchText.isNotEmpty()) {
+                                val removePrefixText = info.searchText.replace("@", "")
+                                val searchedList =
+                                    validMentionList?.filter { it.nickName.contains(removePrefixText) }
+                                        .orEmpty()
+                                if (searchedList.isNotEmpty()) {
+                                    MentionSearchListPopup(
+                                        searchedList = searchedList,
+                                        mentionSelected = {
+
+                                            var makeTaggedText = commentText.value
+                                            val nickName = "@" + it.nickName + " "
+
+                                            val rangeEndIndex =
+                                                if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
+                                            makeTaggedText = makeTaggedText.replaceRange(
+                                                info.startIndex,
+                                                rangeEndIndex,
+                                                nickName
+                                            )
+
+                                            val currentTime = LocalTime.now()
+                                            val timeString = currentTime.toString().substring(0, 8)
+
+                                            newTaggedText.value = TaggedTextInfo(
+                                                id = "${info.startIndex}${timeString}",
+                                                text = nickName,
+                                                startIndex = info.startIndex,
+                                                endIndex = info.startIndex + nickName.length - 1
+                                            )
+                                            commentText.value = makeTaggedText
+                                            mentionSearchInfo.value = null
+                                        }
+                                    )
+                                }
                             }
                         }
                     }

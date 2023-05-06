@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray3"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible">
@@ -16,7 +17,6 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/feed_like_button"
             android:button="@android:color/transparent"
@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/comment_edit_text_bg">
 
             <EditText
@@ -53,19 +54,18 @@
 
             <ImageButton
                 android:id="@+id/commentSendButton"
+                style="?attr/borderlessButtonStyle"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@drawable/comment_send_button"
                 android:contentDescription="@string/commentSendButtonDesc"
-                android:visibility="gone"
+                android:src="@drawable/comment_send_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="1"
-                tools:visibility="visible" />
+                app:layout_constraintVertical_bias="1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

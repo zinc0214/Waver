@@ -34,6 +34,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
 
         binding = LayoutMentionTagViewBinding.inflate(LayoutInflater.from(context), this, true)
 
+        binding.commentSendButton.isEnabled = false
         binding.commentEditTextView.setText(originText)
         binding.commentEditTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -80,6 +81,8 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                         _spannableString.values.toList()
                     )
                 )
+
+                binding.commentSendButton.isEnabled = beforeText.isNotEmpty()
             }
         })
     }
