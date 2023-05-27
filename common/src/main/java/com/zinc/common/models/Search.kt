@@ -1,10 +1,5 @@
 package com.zinc.common.models
 
-data class SearchRecommendCategory(
-    val imageUrl: String,
-    val category: String
-)
-
 data class RecommendList(
     val items: List<RecommendItem>
 )

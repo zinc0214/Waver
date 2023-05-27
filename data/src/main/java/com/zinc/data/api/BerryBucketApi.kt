@@ -14,7 +14,6 @@ import com.zinc.common.models.MyProfileInfo
 import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReportItems
-import com.zinc.common.models.SearchRecommendCategory
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -56,9 +55,6 @@ interface BerryBucketApi {
 
     @GET("/feed")
     suspend fun loadFeedItems(): List<FeedInfo>
-
-    @GET("/search/recommendCategory")
-    suspend fun loadSearchRecommendCategoryItems(): List<SearchRecommendCategory>
 
     @GET("/search/recommendList")
     suspend fun loadRecommendList(): RecommendList

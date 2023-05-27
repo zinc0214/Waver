@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -16,25 +15,17 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.presentation.SearchEvent
-import kotlin.math.min
 
 @Composable
 fun RecommendScreen(
     onSearchEvent: (SearchEvent.GoToSearch) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
-    viewModel.loadSearchRecommendCategoryItems()
     viewModel.loadRecommendList()
-
-    val searchRecommendCategoryItems by viewModel.recommendCategoryItems.observeAsState()
     val recommendList by viewModel.recommendList.observeAsState()
 
-    val scrollState = rememberLazyListState()
-    val isScrolled = scrollState.firstVisibleItemIndex != 0
-    val scrollOffset: Float = min(1f, 1 - (scrollState.firstVisibleItemScrollOffset / 50f))
-
-    val maxAppBarHeight = 274.dp
-    val minAppBarHeight = 100.dp
+    val maxAppBarHeight = 156.dp
+    val minAppBarHeight = 106.dp
     var height by remember {
         mutableStateOf(0f)
     }
@@ -45,13 +36,10 @@ fun RecommendScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             height = animatedHeight,
-            recommendCategoryItemList = searchRecommendCategoryItems,
             editViewClicked = {
                 onSearchEvent.invoke(SearchEvent.GoToSearch)
             }
         )
-
-        RecommendDivider()
 
         recommendList?.let { list ->
             RecommendListView(

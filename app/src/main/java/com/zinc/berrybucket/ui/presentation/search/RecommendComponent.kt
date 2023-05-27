@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -32,7 +30,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -56,15 +53,13 @@ import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchBucketItem
-import com.zinc.common.models.SearchRecommendCategory
 
 
 @Composable
 fun RecommendTopBar(
     modifier: Modifier,
     editViewClicked: () -> Unit,
-    height: Dp,
-    recommendCategoryItemList: List<SearchRecommendCategory>?
+    height: Dp
 ) {
 
     Column(modifier = modifier.height(height)) {
@@ -74,10 +69,9 @@ fun RecommendTopBar(
         SearchTextView {
             editViewClicked.invoke()
         }
-        if (height >= 150.dp) {
-            recommendCategoryItemList?.let {
-                SearchRecommendCategoryItemsView(it)
-            }
+
+        if (height < 130.dp) {
+            RecommendDivider()
         }
     }
 }
@@ -155,45 +149,6 @@ private fun SearchTextView(
 }
 
 @Composable
-private fun SearchRecommendCategoryItemsView(items: List<SearchRecommendCategory>) {
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Gray1)
-            .padding(start = 32.dp, end = 32.dp, bottom = 32.dp),
-        horizontalArrangement = Arrangement.Center
-    ) {
-        items(items = items, itemContent = { item ->
-            RecommendCategoryItem(item = item, isLastItem = item == items.last())
-        })
-    }
-}
-
-@Composable
-private fun RecommendCategoryItem(item: SearchRecommendCategory, isLastItem: Boolean) {
-    Column(
-        modifier = Modifier
-            .padding(end = if (isLastItem) 0.dp else 35.dp)
-            .width(48.dp)
-    ) {
-        Image(
-            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
-            contentDescription = null,
-            modifier = Modifier
-                .size(48.dp)
-                .padding(bottom = 10.dp)
-        )
-        MyText(
-            text = item.category,
-            fontSize = dpToSp(14.dp),
-            color = Gray10,
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-    }
-}
-
-@Composable
 fun RecommendDivider(modifier: Modifier = Modifier) {
     Divider(
         color = Gray2,
@@ -232,7 +187,7 @@ fun RecommendListView(
             modifier = Modifier
                 .fillMaxWidth(),
             contentPadding = PaddingValues(
-                top = 32.dp, bottom = 32.dp
+                top = 16.dp, bottom = 32.dp
             )
         ) {
             items(

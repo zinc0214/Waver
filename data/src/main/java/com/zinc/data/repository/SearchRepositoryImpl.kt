@@ -3,7 +3,6 @@ package com.zinc.data.repository
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.SearchBucketItem
-import com.zinc.common.models.SearchRecommendCategory
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.SearchRepository
 import javax.inject.Inject
@@ -11,15 +10,6 @@ import javax.inject.Inject
 internal class SearchRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : SearchRepository {
-    override suspend fun loadSearchRecommendCategoryItems(): List<SearchRecommendCategory> {
-        //  return berryBucketApi.loadSarchRecommendCategroyItems()
-        return listOf(
-            SearchRecommendCategory("1", "여행"),
-            SearchRecommendCategory("2", "공부"),
-            SearchRecommendCategory("3", "문화"),
-            SearchRecommendCategory("4", "예술")
-        )
-    }
 
     override suspend fun loadRecommendList(): RecommendList {
         //  return berryBucketApi.loadRecommendList()
