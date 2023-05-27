@@ -10,7 +10,7 @@ import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UserSeletedImageInfo
-import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
@@ -128,12 +128,12 @@ internal fun NavGraphBuilder.searchNavGraph(
 internal fun NavGraphBuilder.writeNavGraph1(
     action: (ActionWithActivity) -> Unit,
     backPress: () -> Unit,
-    goToNextWrite: (NavBackStackEntry, WriteInfo1) -> Unit
+    goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit
 ) {
     composable(WriteDestinations.GO_TO_WRITE1) {
         val arguments = requireNotNull(it.arguments)
-        val writeInfo1 =
-            arguments.getRequiredSerializableExtra<WriteInfo1>(WriteDestinations.WRITE_INFO)
+        val totalInfo =
+            arguments.getRequiredSerializableExtra<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
 
         WriteScreen1(
             action = { actionType -> action(actionType) },
@@ -141,22 +141,22 @@ internal fun NavGraphBuilder.writeNavGraph1(
             goToNext = { info ->
                 goToNextWrite(it, info)
             },
-            originWriteInfo1 = writeInfo1
+            originWriteTotalInfo = totalInfo
         )
     }
 }
 
 internal fun NavGraphBuilder.writeNavGraph2(
-    backPress: (NavBackStackEntry, WriteInfo1) -> Unit,
+    backPress: (NavBackStackEntry, WriteTotalInfo) -> Unit,
     goToHome: () -> Unit
 ) {
 
     composable(WriteDestinations.GO_TO_WRITE2) { nav ->
         val arguments = requireNotNull(nav.arguments)
-        val writeInfo1 =
-            arguments.getRequiredSerializableExtra<WriteInfo1>(WriteDestinations.WRITE_INFO)
+        val writeTotalInfo =
+            arguments.getRequiredSerializableExtra<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
         WriteScreen2(
-            writeInfo1 = writeInfo1,
+            writeTotalInfo = writeTotalInfo,
             goToBack = { newInfo -> backPress(nav, newInfo) },
             addBucketSucceed = { goToHome() })
     }

@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -30,14 +29,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.UserSeletedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
-import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.model.WriteInfo2
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType2
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseUIBucketListInfo
 import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
@@ -49,20 +49,22 @@ import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScre
 @Composable
 fun WriteScreen2(
     modifier: Modifier = Modifier,
-    writeInfo1: WriteInfo1,
-    goToBack: (WriteInfo1) -> Unit,
+    writeTotalInfo: WriteTotalInfo,
+    goToBack: (WriteTotalInfo) -> Unit,
     addBucketSucceed: () -> Unit
 ) {
 
     val context = LocalContext.current
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
+    val writeInfo1 = writeTotalInfo.writeInfo1
+    val writeInfo2 = remember { mutableStateOf(writeTotalInfo.writeInfo2) }
 
     BackHandler(enabled = true) { // <-----
         if (optionScreenShow != null) {
             optionScreenShow = null
         } else {
-            goToBack(writeInfo1)
+            goToBack(writeTotalInfo.copy(writeInfo2 = writeInfo2.value))
         }
     }
 
@@ -73,22 +75,23 @@ fun WriteScreen2(
         }
     }
 
-    val selectedKeyWords = remember { mutableStateListOf<WriteKeyWord>() }
-    val selectedFriends = remember { mutableStateListOf<WriteFriend>() }
-    val selectedOpenType = remember { mutableStateOf(WriteOpenType.PUBLIC) }
+    val selectedKeyWords = remember { mutableStateOf(writeInfo2.value.keyWord) }
+    val selectedFriends = remember { mutableStateOf(writeInfo2.value.tagFriends) }
+    val selectedOpenType = remember { mutableStateOf(writeInfo2.value.writeOpenType) }
+    val isScrapUsed = remember { mutableStateOf(writeInfo2.value.isScrapUsed) }
 
     val optionsList = mutableListOf(
         WriteAddOption(
             type = WriteOptionsType2.TAG,
             title = "키워드 추가",
-            tagList = selectedKeyWords.map { "#${it.text}" },
+            tagList = selectedKeyWords.value.map { "#${it.text}" },
             clicked = {
                 optionScreenShow = it
             }),
         WriteAddOption(
             type = WriteOptionsType2.FRIENDS,
             title = "함께할 친구 추가하기",
-            tagList = selectedFriends.map { "@${it.nickname}" },
+            tagList = selectedFriends.value.map { "@${it.nickname}" },
             clicked = {
                 optionScreenShow = it
             }),
@@ -103,7 +106,7 @@ fun WriteScreen2(
         WriteAddOption(
             type = WriteOptionsType2.SCRAP(
                 isScrapAvailable = selectedOpenType.value != WriteOpenType.PRIVATE,
-                isScrapUsed = false
+                isScrapUsed = isScrapUsed.value
             ),
             title = "스크랩",
             tagList = emptyList(),
@@ -118,10 +121,9 @@ fun WriteScreen2(
                 WriteSelectKeyWordScreen(
                     closeClicked = { optionScreenShow = null },
                     originKeyWord = originKeyWord,
-                    selectedKeyWords = selectedKeyWords,
+                    selectedKeyWords = selectedKeyWords.value,
                     addKeyWordClicked = {
-                        selectedKeyWords.clear()
-                        selectedKeyWords.addAll(it)
+                        selectedKeyWords.value = it
                         optionScreenShow = null
                     }
                 )
@@ -130,11 +132,10 @@ fun WriteScreen2(
             WriteOptionsType2.FRIENDS -> {
                 WriteSelectFriendsScreen(
                     closeClicked = { optionScreenShow = null },
-                    selectedFriends = selectedFriends,
+                    selectedFriends = selectedFriends.value,
                     addFriendsClicked = {
-                        selectedFriends.clear()
-                        selectedFriends.addAll(it)
-                        if (selectedFriends.isNotEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {
+                        selectedFriends.value = it
+                        if (selectedFriends.value.isNotEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {
                             selectedOpenType.value = WriteOpenType.PUBLIC
                             Toast.makeText(
                                 context,
@@ -153,11 +154,28 @@ fun WriteScreen2(
             WriteScreen2ContentView(
                 writeInfo1 = writeInfo1,
                 optionsList = optionsList,
-                goToBack = { goToBack(writeInfo1) },
+                goToBack = {
+                    goToBack(
+                        writeTotalInfo.copy(
+                            writeInfo2 = WriteInfo2(
+                                writeOpenType = selectedOpenType.value,
+                                keyWord = selectedKeyWords.value,
+                                tagFriends = selectedFriends.value,
+                                isScrapUsed = isScrapUsed.value
+
+                            )
+                        )
+                    )
+                },
                 selectedOpenType = selectedOpenType,
                 optionValueChanged = { changedOption ->
                     val changedIndex = optionsList.indexOfFirst { it.type == changedOption.type }
                     optionsList[changedIndex] = changedOption
+
+                    if (changedOption.type is WriteOptionsType2.SCRAP) {
+                        isScrapUsed.value =
+                            (changedOption.type as WriteOptionsType2.SCRAP).isScrapUsed
+                    }
                 }
             ) {
                 addBucketSucceed()
@@ -165,7 +183,7 @@ fun WriteScreen2(
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
-                    isPrivateAvailable = selectedFriends.isEmpty(),
+                    isPrivateAvailable = selectedFriends.value.isEmpty(),
                     onDismissRequest = {
                         optionScreenShow = null
                     },
@@ -198,13 +216,10 @@ private fun WriteScreen2ContentView(
     addBucketSucceed: () -> Unit,
 ) {
 
-    val isScrapAvailable by remember { mutableStateOf(selectedOpenType.value != WriteOpenType.PRIVATE) }
-
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
         val viewModel: WriteViewModel = hiltViewModel()
-        val scrapUsed = remember { mutableStateOf(false) }
         WriteAppBar(
             modifier = Modifier
                 .fillMaxWidth()

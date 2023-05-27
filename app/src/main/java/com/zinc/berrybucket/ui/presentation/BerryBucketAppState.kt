@@ -11,7 +11,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.navigateWithArgument
@@ -123,7 +123,7 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToWrite1(from: NavBackStackEntry, writeInfo: WriteInfo1) {
+    fun navigateToWrite1(from: NavBackStackEntry, writeInfo: WriteTotalInfo) {
         if (from.lifecycleIsResumed()) {
             navController.navigateWithArgument(
                 route = WriteDestinations.GO_TO_WRITE1,
@@ -141,12 +141,12 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToWrite2(from: NavBackStackEntry, writeInfo: WriteInfo1) {
+    fun navigateToWrite2(from: NavBackStackEntry, totalInfo: WriteTotalInfo) {
         if (from.lifecycleIsResumed()) {
             navController.navigateWithArgument(
                 route = WriteDestinations.GO_TO_WRITE2,
                 args = listOf(
-                    WriteDestinations.WRITE_INFO to writeInfo
+                    WriteDestinations.WRITE_INFO to totalInfo
                 )
             )
         }

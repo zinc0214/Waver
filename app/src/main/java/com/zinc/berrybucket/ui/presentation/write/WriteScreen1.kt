@@ -41,6 +41,7 @@ import com.zinc.berrybucket.model.WriteOptionsType1.D_DAY
 import com.zinc.berrybucket.model.WriteOptionsType1.GOAL
 import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
 import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.common.gridItems
@@ -60,10 +61,11 @@ import java.time.LocalDate
 fun WriteScreen1(
     action: (ActionWithActivity) -> Unit,
     goToBack: () -> Unit,
-    goToNext: (WriteInfo1) -> Unit,
-    originWriteInfo1: WriteInfo1
+    goToNext: (WriteTotalInfo) -> Unit,
+    originWriteTotalInfo: WriteTotalInfo
 ) {
     val context = LocalContext.current
+
 
     // 지금 선택된 option
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
@@ -101,14 +103,17 @@ fun WriteScreen1(
         }
     }
 
-    val title = remember { mutableStateOf(originWriteInfo1.title) }
-    val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
-    val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
-    val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
-    val imageList = remember { mutableStateOf(originWriteInfo1.getImages()) }
+
+    val writeInfo1 = remember { mutableStateOf(originWriteTotalInfo.writeInfo1) }
+
+    val title = remember { mutableStateOf(writeInfo1.value.title) }
+    val originMemo = remember { mutableStateOf(writeInfo1.value.getMemo()) }
+    val originCount = remember { mutableStateOf(writeInfo1.value.getGoalCount()) }
+    val originDdayDate = remember { mutableStateOf(writeInfo1.value.getDday()) }
+    val imageList = remember { mutableStateOf(writeInfo1.value.getImages()) }
 
 // init
-    originWriteInfo1.apply {
+    writeInfo1.value.apply {
         nextButtonClickable.value = title.value.isNotEmpty()
         options.forEach {
             when (it.type) {
@@ -304,9 +309,11 @@ fun WriteScreen1(
 
                             WriteAppBarClickEvent.NextClicked -> {
                                 goToNext(
-                                    WriteInfo1(
-                                        title = title.value,
-                                        options = updatedWriteOptions.toList()
+                                    originWriteTotalInfo.copy(
+                                        writeInfo1 = WriteInfo1(
+                                            title = title.value,
+                                            options = updatedWriteOptions.toList()
+                                        )
                                     )
                                 )
                             }

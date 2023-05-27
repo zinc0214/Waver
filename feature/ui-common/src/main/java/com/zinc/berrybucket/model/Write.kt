@@ -66,16 +66,32 @@ data class WriteInfo1(
     }
 }
 
+@Parcelize
+data class WriteInfo2(
+    val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
+    val keyWord: List<WriteKeyWord> = emptyList(),
+    val tagFriends: List<WriteFriend> = emptyList(),
+    val isScrapUsed: Boolean = false
+) : java.io.Serializable, Parcelable
+
+@Parcelize
+data class WriteTotalInfo(
+    val writeInfo1: WriteInfo1,
+    val writeInfo2: WriteInfo2
+) : java.io.Serializable, Parcelable
+
+@Parcelize
 data class WriteKeyWord(
     val id: String,
     val text: String
-)
+) : java.io.Serializable, Parcelable
 
+@Parcelize
 data class WriteFriend(
     val id: String,
     val imageUrl: String,
     val nickname: String
-)
+) : java.io.Serializable, Parcelable
 
 enum class WriteOptionsType1 {
     MEMO, IMAGE, CATEGORY, D_DAY, GOAL
@@ -140,7 +156,8 @@ private fun parseMemo(options: List<WriteOption>): String? {
 }
 
 private fun parseImages(options: List<WriteOption>): List<File> {
-    val images = options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
+    val images =
+        options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
     val info = images.info as WriteOption1Info.Images
     return info.images.map { it.file }
 }
