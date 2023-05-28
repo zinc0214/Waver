@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -48,6 +49,7 @@ import com.zinc.berrybucket.ui.presentation.common.gridItems
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
+import com.zinc.berrybucket.ui.presentation.write.options.AddImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
 import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
@@ -104,30 +106,33 @@ fun WriteScreen1(
     }
 
 
-    val writeInfo1 = remember { mutableStateOf(originWriteTotalInfo.writeInfo1) }
+    val writeInfo1 = originWriteTotalInfo.writeInfo1
 
-    val title = remember { mutableStateOf(writeInfo1.value.title) }
-    val originMemo = remember { mutableStateOf(writeInfo1.value.getMemo()) }
-    val originCount = remember { mutableStateOf(writeInfo1.value.getGoalCount()) }
-    val originDdayDate = remember { mutableStateOf(writeInfo1.value.getDday()) }
-    val imageList = remember { mutableStateOf(writeInfo1.value.getImages()) }
+    val title = remember { mutableStateOf(writeInfo1.title) }
+    val originMemo = remember { mutableStateOf(writeInfo1.getMemo()) }
+    val originCount = remember { mutableStateOf(writeInfo1.getGoalCount()) }
+    val originDdayDate = remember { mutableStateOf(writeInfo1.getDday()) }
+    val imageList = remember { mutableStateOf(writeInfo1.getImages()) }
 
 // init
-    writeInfo1.value.apply {
-        nextButtonClickable.value = title.value.isNotEmpty()
-        options.forEach {
-            when (it.type) {
-                CATEGORY, D_DAY, GOAL -> {
-                    val isAlreadyAdded = updatedWriteOptions.indexOfFirst { t -> t.type == it.type }
-                    if (isAlreadyAdded != -1) {
-                        updatedWriteOptions[isAlreadyAdded] = it
-                    } else {
-                        updatedWriteOptions.add(it)
+    nextButtonClickable.value = title.value.isNotEmpty()
+    writeInfo1.apply {
+        if (updatedWriteOptions.isEmpty()) {
+            options.forEach {
+                when (it.type) {
+                    CATEGORY, D_DAY, GOAL, IMAGE, MEMO -> {
+                        val isAlreadyAdded =
+                            updatedWriteOptions.indexOfFirst { t -> t.type == it.type }
+                        if (isAlreadyAdded != -1) {
+                            updatedWriteOptions[isAlreadyAdded] = it
+                        } else {
+                            updatedWriteOptions.add(it)
+                        }
                     }
-                }
 
-                else -> {
-                    // Do Nothing
+                    else -> {
+                        // Do Nothing
+                    }
                 }
             }
         }
@@ -135,7 +140,7 @@ fun WriteScreen1(
 
 
 // 백키 이벤트
-    BackHandler() {
+    BackHandler {
         if (selectedOption == null) {
             goToBack()
         } else {
@@ -153,13 +158,7 @@ fun WriteScreen1(
             originMemo = originMemo.value,
             memoChanged = {
                 originMemo.value = it
-                updatedWriteOptions.add(
-                    WriteOption(
-                        type = MEMO,
-                        title = "메모",
-                        info = WriteOption1Info.Memo(it)
-                    )
-                )
+                updatedWriteOptions.add(addMemoOption(it))
                 selectedOption = null
             }, closeClicked = {
                 selectedOption = null
@@ -352,27 +351,38 @@ fun WriteScreen1(
                     }
 
                     item {
-                        gridItems(data = imageList.value,
-                            maxRow = 3,
-                            modifier = Modifier
-                                .padding(horizontal = 28.dp)
-                                .padding(top = 28.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalSpace = 28.dp,
-                            itemContent = {
-                                ImageItem(
-                                    imageInfo = it,
-                                    deleteImage = { removeImage ->
-                                        imageList.value -= removeImage
-                                        if (imageList.value.isEmpty()) {
-                                            updatedWriteOptions.removeIf { it.type == IMAGE }
+                        if (updatedWriteOptions.find { it.type == IMAGE } != null) {
+                            gridItems(data = imageList.value,
+                                maxRow = 3,
+                                modifier = Modifier
+                                    .padding(horizontal = 28.dp)
+                                    .padding(top = 28.dp)
+                                    .fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(
+                                    32.dp,
+                                    Alignment.CenterHorizontally
+                                ),
+                                verticalSpace = 28.dp,
+                                itemContent = {
+                                    ImageItem(
+                                        imageInfo = it,
+                                        deleteImage = { removeImage ->
+                                            imageList.value -= removeImage
+                                            if (imageList.value.isEmpty()) {
+                                                updatedWriteOptions.removeIf { it.type == IMAGE }
+                                            }
+                                        })
+
+                                    if (imageList.value.isNotEmpty() && imageList.value.size < 3 && it == imageList.value.last()) {
+                                        AddImageItem {
+                                            selectedOption = IMAGE
                                         }
-                                    })
-                            },
-                            emptyContent = {
-                                Spacer(modifier = Modifier.size(80.dp))
-                            })
+                                    }
+                                },
+                                emptyContent = {
+                                    Spacer(modifier = Modifier.size(80.dp))
+                                })
+                        }
                     }
 
                     item {
@@ -394,10 +404,7 @@ fun WriteScreen1(
                         val isAlreadySelected = updatedWriteOptions.find { it.type == option }
                         if (isAlreadySelected != null) {
                             when (option) {
-                                IMAGE -> {
-                                    selectedOption = option
-                                }
-
+                                IMAGE,
                                 MEMO,
                                 CATEGORY,
                                 D_DAY,
@@ -407,7 +414,21 @@ fun WriteScreen1(
                             }
                         } else {
                             when (option) {
-                                MEMO, IMAGE, CATEGORY, D_DAY, GOAL -> {
+                                IMAGE -> {
+                                    if (imageList.value.isEmpty()) {
+                                        selectedOption = option
+                                    } else {
+                                        updatedWriteOptions.add(
+                                            WriteOption(
+                                                type = IMAGE,
+                                                title = "이미지",
+                                                info = WriteOption1Info.Images(imageList.value)
+                                            )
+                                        )
+                                    }
+                                }
+
+                                MEMO, CATEGORY, D_DAY, GOAL -> {
                                     selectedOption = option
                                 }
                             }
@@ -417,5 +438,11 @@ fun WriteScreen1(
         }
     }
 }
+
+private fun addMemoOption(content: String) = WriteOption(
+    type = MEMO,
+    title = "메모",
+    info = WriteOption1Info.Memo(content)
+)
 
 
