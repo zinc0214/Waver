@@ -99,7 +99,9 @@ fun VerticalReorderList(
     val state = rememberReorderableLazyListState(onMove = { from, to ->
         data.value = data.value.toMutableList().apply {
             Log.e("ayhan", "from : $from to : $to")
-            add(to.index - 1, removeAt(from.index - 1))
+            val toIndex = if (to.index < 1) 1 else to.index - 1
+            val fromIndex = if (from.index < 1) 1 else from.index - 1
+            add(toIndex, removeAt(fromIndex))
         }
     })
     LazyColumn(
