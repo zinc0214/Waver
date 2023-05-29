@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.dialog
+package com.zinc.berrybucket.ui.presentation.component.dialog
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi

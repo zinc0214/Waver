@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.KeyboardType
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.ui.dialog.SingleTextFieldDialogEvent
-import com.zinc.berrybucket.ui.dialog.SingleTextFieldDialogView
-import com.zinc.berrybucket.ui.dialog.TextFieldArrangment
+import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
+import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
+import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldArrangment
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 
 @Composable

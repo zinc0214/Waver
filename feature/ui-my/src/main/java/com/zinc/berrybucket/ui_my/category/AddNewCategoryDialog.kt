@@ -6,9 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray5
-import com.zinc.berrybucket.ui.dialog.SingleTextFieldDialogEvent
-import com.zinc.berrybucket.ui.dialog.SingleTextFieldDialogView
-import com.zinc.berrybucket.ui.dialog.TextFieldArrangment
+import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
+import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
+import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldArrangment
 import com.zinc.berrybucket.ui_my.model.AddNewCategoryEvent
 import com.zinc.berrybucket.ui_common.R as CommonR
 

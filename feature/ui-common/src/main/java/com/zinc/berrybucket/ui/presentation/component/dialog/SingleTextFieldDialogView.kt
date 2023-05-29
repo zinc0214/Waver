@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.dialog
+package com.zinc.berrybucket.ui.presentation.component.dialog
 
 import android.widget.Toast
 import androidx.annotation.StringRes
