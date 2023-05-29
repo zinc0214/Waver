@@ -50,6 +50,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.indicator)
     implementation(Dep.AndroidX.Compose.flowlayout)
+    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
