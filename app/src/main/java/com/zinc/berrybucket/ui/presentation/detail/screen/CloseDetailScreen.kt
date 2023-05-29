@@ -33,7 +33,9 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
+import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
+import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 
 @Composable
 fun CloseDetailLayer(
@@ -47,6 +49,7 @@ fun CloseDetailLayer(
 
     val optionPopUpShowed = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
+    val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
 
     vmDetailInfo?.let { detailInfo ->
         val listScrollState = rememberLazyListState()
@@ -54,17 +57,50 @@ fun CloseDetailLayer(
         val titlePosition = 0
 
         BaseTheme {
-            Scaffold { _ ->
+            Scaffold { padding ->
 
                 if (optionPopUpShowed.value) {
                     MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
+                        when (it) {
+                            MyBucketMenuEvent.GoToDelete -> {
+                                optionPopUpShowed.value = false
+                            }
 
+                            MyBucketMenuEvent.GoToEdit -> {
+                                optionPopUpShowed.value = false
+                            }
+
+                            MyBucketMenuEvent.GoToGoalUpdate -> {
+                                goalCountUpdatePopUpShowed.value = true
+                                optionPopUpShowed.value = false
+                            }
+                        }
                     }
                 }
+
+                if (goalCountUpdatePopUpShowed.value) {
+                    GoalCountUpdateDialog(
+                        currentCount = detailInfo.descInfo.goalCount.toString()
+                    ) {
+                        when (it) {
+                            GoalCountUpdateEvent.Close -> {
+                                goalCountUpdatePopUpShowed.value = false
+                            }
+
+                            is GoalCountUpdateEvent.CountUpdate -> {
+                                // Todo : ViewModel Update!
+                                viewModel.goalCountUpdate(detailInfo.bucketId, it.count)
+                                goalCountUpdatePopUpShowed.value = false
+                            }
+                        }
+                    }
+                }
+
 
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
+                        .padding(padding)
                         .clickable(
                             interactionSource = interactionSource,
                             indication = null,
