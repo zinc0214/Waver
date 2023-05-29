@@ -56,7 +56,8 @@ import kotlinx.coroutines.launch
 fun MyScreen(
     onBucketSelected: (BucketSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-    alarmClicked: () -> Unit
+    alarmClicked: () -> Unit,
+    goToCategoryEdit: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -92,6 +93,9 @@ fun MyScreen(
                         onBucketSelected = onBucketSelected,
                         addNewCategory = {
                             addNewCategoryDialogShowAvailable.value = true
+                        },
+                        goToCategoryEdit = {
+                            goToCategoryEdit()
                         },
                         bottomSheetClicked = {
                             bottomSheetClicked.invoke(it)
@@ -146,7 +150,8 @@ fun MyViewPager(
     coroutineScope: CoroutineScope,
     onBucketSelected: (BucketSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-    addNewCategory: () -> Unit
+    addNewCategory: () -> Unit,
+    goToCategoryEdit: () -> Unit
 ) {
 
     HorizontalPager(
@@ -195,7 +200,7 @@ fun MyViewPager(
                 CategoryLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         MyPagerClickEvent.CategoryEditClicked -> {
-                            // go to edit
+                            goToCategoryEdit()
                         }
 
                         is MyPagerClickEvent.SearchClicked -> {

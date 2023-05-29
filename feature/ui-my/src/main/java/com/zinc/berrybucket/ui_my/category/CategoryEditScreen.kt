@@ -13,7 +13,7 @@ import com.zinc.common.models.YesOrNo
 
 @Composable
 fun CategoryEditScreen(
-    backClicked: (Boolean) -> Unit
+    backClicked: () -> Unit
 ) {
 
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부

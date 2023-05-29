@@ -151,11 +151,17 @@ fun BerryBucketApp(
 
                             alarmClicked = { nav ->
                                 appState.navigateToAlarm(nav)
+                            },
+
+                            goToCategoryEdit = { nav ->
+                                appState.navigateToCategoryEdit(nav)
                             }
                         )
 
 
                         homeSearchNavGraph(backPress = appState::backPress)
+
+                        homeCategoryEditNavGraph(backPress = appState::backPress)
 
                         berryBucketNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->

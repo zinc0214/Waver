@@ -30,6 +30,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
+import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 
@@ -37,7 +38,8 @@ import com.zinc.common.models.ReportInfo
 internal fun NavGraphBuilder.homeMy(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit,
-    alarmClicked: (NavBackStackEntry) -> Unit
+    alarmClicked: (NavBackStackEntry) -> Unit,
+    goToCategoryEdit: (NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.MY.route) { from ->
         MyScreen(
@@ -49,6 +51,9 @@ internal fun NavGraphBuilder.homeMy(
             },
             alarmClicked = {
                 alarmClicked.invoke(from)
+            },
+            goToCategoryEdit = {
+                goToCategoryEdit.invoke(from)
             }
         )
     }
@@ -96,6 +101,12 @@ internal fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
             }
         )
 
+    }
+}
+
+internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
+    composable(MainDestinations.MY_CATEGORY_EDIT) { entry ->
+        CategoryEditScreen(backClicked = backPress)
     }
 }
 
@@ -261,6 +272,7 @@ object MainDestinations {
     const val OPEN_BUCKET_DETAIL = "open_bucket_detail"
     const val BUCKET_ID_KEY = "bucketId"
     const val MY_SEARCH = "my_search"
+    const val MY_CATEGORY_EDIT = "my_category_edit"
 }
 
 object BucketListDetailDestinations {
