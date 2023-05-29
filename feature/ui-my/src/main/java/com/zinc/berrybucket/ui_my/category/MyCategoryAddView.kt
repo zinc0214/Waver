@@ -22,7 +22,7 @@ import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
 
 @Composable
-fun CategoryAddView(
+internal fun MyCategoryAddView(
     addCategory: () -> Unit
 ) {
     Box(

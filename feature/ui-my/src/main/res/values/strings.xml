@@ -6,7 +6,6 @@
     <string name="followerText">팔로워</string>
     <string name="followingText">팔로잉</string>
 
-
     <!-- My > All -->
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
@@ -48,5 +47,9 @@
     <!-- My > Alarm -->
     <string name="alarmTitle">알림</string>
     <string name="alarmIconDesc">알람 아이콘 이미지</string>
+
+    <!-- My > Category -->
+    <string name="categoryEditTitle">카테고리 편집</string>
+    <string name="categoryItemEdit">카테고리 편집</string>
 
 </resources>
