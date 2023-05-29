@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray9
-import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable

@@ -50,10 +50,10 @@ import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
-import com.zinc.berrybucket.ui.presentation.common.CategoryListView
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.MyTextField
-import com.zinc.berrybucket.ui.presentation.common.RoundChip
+import com.zinc.berrybucket.ui.presentation.component.CategoryListView
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyTextField
+import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import com.zinc.common.models.BucketInfoSimple

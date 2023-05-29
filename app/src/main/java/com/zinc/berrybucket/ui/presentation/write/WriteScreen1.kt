@@ -45,8 +45,8 @@ import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseWrite1Info
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
-import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
-import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
+import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen

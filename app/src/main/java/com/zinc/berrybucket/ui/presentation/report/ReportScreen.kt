@@ -23,8 +23,8 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
-import com.zinc.berrybucket.ui.presentation.common.TitleIconType
-import com.zinc.berrybucket.ui.presentation.common.TitleView
+import com.zinc.berrybucket.ui.presentation.component.TitleIconType
+import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItems
 

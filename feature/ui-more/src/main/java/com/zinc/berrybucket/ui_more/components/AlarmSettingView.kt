@@ -14,10 +14,10 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray6
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.Switch
-import com.zinc.berrybucket.ui.presentation.common.TitleIconType
-import com.zinc.berrybucket.ui.presentation.common.TitleView
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.Switch
+import com.zinc.berrybucket.ui.presentation.component.TitleIconType
+import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_more.models.AlarmSettingType

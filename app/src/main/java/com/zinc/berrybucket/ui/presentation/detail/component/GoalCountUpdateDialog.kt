@@ -39,9 +39,9 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main3
-import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.MyTextField
+import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 

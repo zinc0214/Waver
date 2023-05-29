@@ -18,9 +18,9 @@ import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
-import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
-import com.zinc.berrybucket.ui.presentation.common.LabelWithSwitchView
-import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
+import com.zinc.berrybucket.ui.presentation.component.LabelWithSwitchView
+import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.LabelWithRadioView
 import com.zinc.berrybucket.ui_my.R

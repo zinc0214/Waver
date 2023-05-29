@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.zinc.berrybucket.ui.presentation.common.PopUpView
+import com.zinc.berrybucket.ui.presentation.component.PopUpView
 import com.zinc.berrybucket.ui_more.components.BerryClubLabelView
 import com.zinc.berrybucket.ui_more.components.MoreItemsView
 import com.zinc.berrybucket.ui_more.components.MoreTitleView

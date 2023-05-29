@@ -17,8 +17,8 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.MyTextField
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
 import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
 import com.zinc.berrybucket.ui.util.dpToSp

@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.UserSelectedImageInfo
-import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
+import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
 import com.zinc.berrybucket.ui_more.components.ProfileUpdateView

@@ -27,7 +27,7 @@ import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.rememberScrollContext
-import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView

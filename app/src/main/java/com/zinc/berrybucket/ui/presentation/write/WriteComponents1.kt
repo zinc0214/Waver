@@ -40,9 +40,9 @@ import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main4
-import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.MyTextField
+import com.zinc.berrybucket.ui.presentation.component.IconButton
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable

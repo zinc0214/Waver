@@ -39,8 +39,8 @@ import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.design.util.visibleLastIndex
 import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
-import com.zinc.berrybucket.ui.presentation.common.ImageViewPagerInsideIndicator
-import com.zinc.berrybucket.ui.presentation.common.ProfileView
+import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentCountView
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentLine

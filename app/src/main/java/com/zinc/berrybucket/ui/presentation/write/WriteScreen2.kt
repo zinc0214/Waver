@@ -38,7 +38,7 @@ import com.zinc.berrybucket.model.WriteOptionsType2
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseUIBucketListInfo
 import com.zinc.berrybucket.model.parseWrite1Info
-import com.zinc.berrybucket.ui.presentation.common.gridItems
+import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
 import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScreen

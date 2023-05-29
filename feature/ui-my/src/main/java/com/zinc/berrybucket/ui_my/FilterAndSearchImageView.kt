@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui.design.theme.Gray4
-import com.zinc.berrybucket.ui.presentation.common.IconButton
+import com.zinc.berrybucket.ui.presentation.component.IconButton
 
 @Composable
 fun FilterAndSearchImageView(

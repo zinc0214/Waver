@@ -52,10 +52,10 @@ import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Main3
-import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.Switch
-import com.zinc.berrybucket.ui.presentation.common.SwitchOnlyView
+import com.zinc.berrybucket.ui.presentation.component.IconButton
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.Switch
+import com.zinc.berrybucket.ui.presentation.component.SwitchOnlyView
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable

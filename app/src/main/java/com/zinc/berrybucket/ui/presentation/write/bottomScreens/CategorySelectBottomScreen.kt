@@ -24,7 +24,7 @@ import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.category.CategoryViewModel
-import com.zinc.berrybucket.ui.presentation.common.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo

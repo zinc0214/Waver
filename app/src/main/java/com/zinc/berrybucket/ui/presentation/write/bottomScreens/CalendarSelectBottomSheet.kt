@@ -27,10 +27,10 @@ import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
-import com.zinc.berrybucket.ui.presentation.common.BottomButtonView
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.NumberPicker
-import com.zinc.berrybucket.ui.presentation.common.calendar.CalendarView
+import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.NumberPicker
+import com.zinc.berrybucket.ui.presentation.component.calendar.CalendarView
 import com.zinc.berrybucket.ui.presentation.write.DateViewModel
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.CALENDAR
 import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER

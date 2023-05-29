@@ -38,11 +38,11 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Gray6
-import com.zinc.berrybucket.ui.presentation.common.IconButton
-import com.zinc.berrybucket.ui.presentation.common.MyText
-import com.zinc.berrybucket.ui.presentation.common.MyTextField
-import com.zinc.berrybucket.ui.presentation.common.TitleIconType
-import com.zinc.berrybucket.ui.presentation.common.TitleView
+import com.zinc.berrybucket.ui.presentation.component.IconButton
+import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.MyTextField
+import com.zinc.berrybucket.ui.presentation.component.TitleIconType
+import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
 import com.zinc.berrybucket.ui_more.models.ProfileEditData
