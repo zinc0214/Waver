@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.ui_my.category
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -8,9 +9,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Main2
@@ -20,9 +21,10 @@ import com.zinc.berrybucket.ui.presentation.component.dashedBorder
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
 
-@Preview
 @Composable
-fun CategoryAddView() {
+fun CategoryAddView(
+    addCategory: () -> Unit
+) {
     Box(
         Modifier
             .fillMaxWidth()
@@ -34,7 +36,11 @@ fun CategoryAddView() {
                 on = 4.dp,
                 off = 4.dp
             )
-            .background(Gray1), contentAlignment = Alignment.Center
+            .background(Gray1)
+            .clip(MaterialTheme.shapes.medium)
+            .clickable {
+                addCategory()
+            }, contentAlignment = Alignment.Center
     ) {
         MyText(
             textAlign = TextAlign.Center,

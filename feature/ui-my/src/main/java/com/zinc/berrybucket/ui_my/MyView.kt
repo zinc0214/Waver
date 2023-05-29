@@ -58,7 +58,8 @@ class MyView @JvmOverloads constructor(
         viewModel: MyViewModel,
         coroutineScope: CoroutineScope,
         onBucketSelected: (BucketSelected) -> Unit,
-        bottomSheetClicked: (BottomSheetScreenType) -> Unit
+        bottomSheetClicked: (BottomSheetScreenType) -> Unit,
+        addNewCategory: () -> Unit
     ) {
         binding.tabComposeView.setContent {
             MyTabLayer(tabItems, pagerState, coroutineScope)
@@ -70,6 +71,7 @@ class MyView @JvmOverloads constructor(
                 viewModel = viewModel,
                 onBucketSelected = onBucketSelected,
                 bottomSheetClicked = bottomSheetClicked,
+                addNewCategory = addNewCategory,
                 coroutineScope = coroutineScope
             )
         }

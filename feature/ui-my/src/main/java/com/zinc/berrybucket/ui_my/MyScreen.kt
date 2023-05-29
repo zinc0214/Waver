@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -42,8 +43,10 @@ import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.all.AllBucketLayer
+import com.zinc.berrybucket.ui_my.category.AddNewCategoryDialog
 import com.zinc.berrybucket.ui_my.category.CategoryLayer
 import com.zinc.berrybucket.ui_my.dday.DdayBucketLayer
+import com.zinc.berrybucket.ui_my.model.AddNewCategoryEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -64,6 +67,19 @@ fun MyScreen(
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState()
 
+    val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
+
+    if (addNewCategoryDialogShowAvailable.value) {
+        AddNewCategoryDialog(event = {
+            when (it) {
+                is AddNewCategoryEvent.AddNewCategory -> {
+                    // add new category
+                }
+
+                AddNewCategoryEvent.Close -> addNewCategoryDialogShowAvailable.value = false
+            }
+        })
+    }
     profileInfo?.let { profile ->
         BaseTheme {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
@@ -74,6 +90,9 @@ fun MyScreen(
                         viewModel = viewModel,
                         coroutineScope = coroutineScope,
                         onBucketSelected = onBucketSelected,
+                        addNewCategory = {
+                            addNewCategoryDialogShowAvailable.value = true
+                        },
                         bottomSheetClicked = {
                             bottomSheetClicked.invoke(it)
                         })
@@ -126,7 +145,8 @@ fun MyViewPager(
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
     onBucketSelected: (BucketSelected) -> Unit,
-    bottomSheetClicked: (BottomSheetScreenType) -> Unit
+    bottomSheetClicked: (BottomSheetScreenType) -> Unit,
+    addNewCategory: () -> Unit
 ) {
 
     HorizontalPager(
@@ -190,6 +210,10 @@ fun MyViewPager(
 
                         is MyPagerClickEvent.CategoryItemClicked -> {
                             // go to category item
+                        }
+
+                        MyPagerClickEvent.AddNewCategory -> {
+                            addNewCategory()
                         }
 
                         else -> {

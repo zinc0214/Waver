@@ -41,4 +41,9 @@
 
     <!--타이틀뷰-->
     <string name="finishDesc">완료</string>
+
+    <!--카테고리-->
+    <string name="addNewCategoryTitle">카테고리 추가</string>
+    <string name="addNewCategoryHint">카테고리명 입력</string>
+    <string name="addNewCategoryNotAvailable">카테고리명을 입력해주세요!</string>
 </resources>
