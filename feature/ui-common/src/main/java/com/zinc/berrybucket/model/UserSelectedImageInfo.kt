@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.io.File
 
 @Parcelize
-data class UserSeletedImageInfo(
+data class UserSelectedImageInfo(
     private val key: Int,
     val uri: Uri,
     val file: File

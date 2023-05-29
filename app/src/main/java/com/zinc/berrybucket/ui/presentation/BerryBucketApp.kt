@@ -20,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.zinc.berrybucket.model.BucketSelected
-import com.zinc.berrybucket.model.WriteInfo1
-import com.zinc.berrybucket.model.WriteInfo2
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
@@ -87,10 +85,7 @@ fun BerryBucketApp(
                             ) {
                                 appState.navigateToWrite1(
                                     appState.navController.currentBackStackEntry!!,
-                                    WriteTotalInfo(
-                                        writeInfo1 = WriteInfo1(),
-                                        writeInfo2 = WriteInfo2()
-                                    )
+                                    WriteTotalInfo()
                                 )
                             }
                         }

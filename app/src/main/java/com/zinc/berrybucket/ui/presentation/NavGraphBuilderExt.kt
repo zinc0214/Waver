@@ -9,7 +9,7 @@ import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.model.UserSeletedImageInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
@@ -194,7 +194,7 @@ internal fun NavGraphBuilder.moreBlockNavGraph(
 
 internal fun NavGraphBuilder.moreProfileNavGraph(
     backPress: () -> Unit,
-    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSeletedImageInfo) -> Unit) -> Unit
+    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSelectedImageInfo) -> Unit) -> Unit
 ) {
     composable(MoreDestinations.PROFILE_SETTING) {
         ProfileSettingScreen(

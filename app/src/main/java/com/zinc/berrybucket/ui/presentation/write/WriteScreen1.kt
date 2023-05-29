@@ -33,7 +33,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.WriteInfo1
+import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
@@ -43,6 +43,7 @@ import com.zinc.berrybucket.model.WriteOptionsType1.GOAL
 import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
 import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
 import com.zinc.berrybucket.model.WriteTotalInfo
+import com.zinc.berrybucket.model.parseWrite1Info
 import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.common.gridItems
@@ -67,13 +68,21 @@ fun WriteScreen1(
     originWriteTotalInfo: WriteTotalInfo
 ) {
     val context = LocalContext.current
-
+    val originWriteInfo1 = originWriteTotalInfo.parseWrite1Info()
+    val initialized = remember { mutableStateOf(false) }
 
     // 지금 선택된 option
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
 
     // 저장된 option 값들
     val updatedWriteOptions = remember { mutableStateListOf<WriteOption>() }
+
+    if (!initialized.value) {
+        Log.e("ayhan", "WriteScreen1: {${initialized.value}, ${originWriteInfo1.options}")
+        updatedWriteOptions.addAll(originWriteInfo1.options)
+        initialized.value = true
+    }
+
 
     val nextButtonClickable = remember { mutableStateOf(false) }
 
@@ -106,38 +115,13 @@ fun WriteScreen1(
     }
 
 
-    val writeInfo1 = originWriteTotalInfo.writeInfo1
+    val title = remember { mutableStateOf(originWriteInfo1.title) }
+    val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
+    val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
+    val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
+    val imageList = remember { mutableStateOf(originWriteInfo1.getImages()) }
 
-    val title = remember { mutableStateOf(writeInfo1.title) }
-    val originMemo = remember { mutableStateOf(writeInfo1.getMemo()) }
-    val originCount = remember { mutableStateOf(writeInfo1.getGoalCount()) }
-    val originDdayDate = remember { mutableStateOf(writeInfo1.getDday()) }
-    val imageList = remember { mutableStateOf(writeInfo1.getImages()) }
-
-// init
     nextButtonClickable.value = title.value.isNotEmpty()
-    writeInfo1.apply {
-        if (updatedWriteOptions.isEmpty()) {
-            options.forEach {
-                when (it.type) {
-                    CATEGORY, D_DAY, GOAL, IMAGE, MEMO -> {
-                        val isAlreadyAdded =
-                            updatedWriteOptions.indexOfFirst { t -> t.type == it.type }
-                        if (isAlreadyAdded != -1) {
-                            updatedWriteOptions[isAlreadyAdded] = it
-                        } else {
-                            updatedWriteOptions.add(it)
-                        }
-                    }
-
-                    else -> {
-                        // Do Nothing
-                    }
-                }
-            }
-        }
-    }
-
 
 // 백키 이벤트
     BackHandler {
@@ -158,7 +142,13 @@ fun WriteScreen1(
             originMemo = originMemo.value,
             memoChanged = {
                 originMemo.value = it
-                updatedWriteOptions.add(addMemoOption(it))
+                updatedWriteOptions.add(
+                    WriteOption(
+                        type = MEMO,
+                        title = "메모",
+                        info = WriteOption1Info.Memo(it)
+                    )
+                )
                 selectedOption = null
             }, closeClicked = {
                 selectedOption = null
@@ -189,7 +179,7 @@ fun WriteScreen1(
             Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
                 when (selectedOption) {
                     IMAGE -> {
-                        ImageSelectBottomScreen(selectedType = {
+                        ImageSelectBottomScreen(selectedType = { it ->
                             action(
                                 ActionWithActivity.AddImage(
                                     type = it,
@@ -207,6 +197,12 @@ fun WriteScreen1(
                                         imageList.value += uri
                                         selectedOption = null
                                         isNeedToBottomSheetOpen.invoke(false)
+
+                                        val prevImageOption =
+                                            updatedWriteOptions.find { options -> options.type == IMAGE }
+                                        if (prevImageOption != null) {
+                                            updatedWriteOptions.remove(prevImageOption)
+                                        }
                                         updatedWriteOptions.add(
                                             WriteOption(
                                                 type = IMAGE,
@@ -227,7 +223,14 @@ fun WriteScreen1(
                                 WriteOption(
                                     type = CATEGORY,
                                     title = "카테고리",
-                                    info = WriteOption1Info.Category(category)
+                                    info = WriteOption1Info.Category(
+                                        WriteCategoryInfo(
+                                            category.id,
+                                            category.name,
+                                            category.defaultYn,
+                                            category.bucketlistCount
+                                        )
+                                    )
                                 )
                             )
                             selectedOption = null
@@ -307,12 +310,11 @@ fun WriteScreen1(
                             }
 
                             WriteAppBarClickEvent.NextClicked -> {
+                                Log.e("ayhan", "WriteScreen1: ${updatedWriteOptions.toList()}")
                                 goToNext(
                                     originWriteTotalInfo.copy(
-                                        writeInfo1 = WriteInfo1(
-                                            title = title.value,
-                                            options = updatedWriteOptions.toList()
-                                        )
+                                        title = title.value,
+                                        options = updatedWriteOptions.toList()
                                     )
                                 )
                             }
@@ -438,11 +440,5 @@ fun WriteScreen1(
         }
     }
 }
-
-private fun addMemoOption(content: String) = WriteOption(
-    type = MEMO,
-    title = "메모",
-    info = WriteOption1Info.Memo(content)
-)
 
 

@@ -16,7 +16,7 @@ import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.model.AddImageType
-import com.zinc.berrybucket.model.UserSeletedImageInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
         val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
         if (photoUri != null) {
             takePhotoAction.succeed(
-                UserSeletedImageInfo(
+                UserSelectedImageInfo(
                     key = imageCount++,
                     uri = photoUri!!, file = imageFile
                 )
@@ -176,7 +176,7 @@ class HomeActivity : AppCompatActivity() {
 
 sealed class ActionWithActivity {
     data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (UserSeletedImageInfo) -> Unit
+        val type: AddImageType, val failed: () -> Unit, val succeed: (UserSelectedImageInfo) -> Unit
     ) : ActionWithActivity()
 
     data class CheckPermission(

@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.UserSeletedImageInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
@@ -36,8 +36,8 @@ import com.zinc.berrybucket.ui.presentation.common.IconButton
 @Composable
 fun ImageScreen(
     modifier: Modifier = Modifier,
-    images: List<UserSeletedImageInfo>,
-    deleteImage: ((UserSeletedImageInfo) -> Unit)? = null
+    images: List<UserSelectedImageInfo>,
+    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
 ) {
 
     LazyVerticalGrid(
@@ -56,8 +56,8 @@ fun ImageScreen(
 
 @Composable
 fun ImageItem(
-    imageInfo: UserSeletedImageInfo,
-    deleteImage: ((UserSeletedImageInfo) -> Unit)? = null
+    imageInfo: UserSelectedImageInfo,
+    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
 ) {
     ConstraintLayout(
         modifier = Modifier

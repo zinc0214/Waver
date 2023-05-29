@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AddImageType
-import com.zinc.berrybucket.model.UserSeletedImageInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.presentation.common.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileSettingScreen(
     onBackPressed: () -> Unit,
-    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSeletedImageInfo) -> Unit) -> Unit
+    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSelectedImageInfo) -> Unit) -> Unit
 ) {
 
     val updateUri: MutableState<Uri?> = remember { mutableStateOf(null) }

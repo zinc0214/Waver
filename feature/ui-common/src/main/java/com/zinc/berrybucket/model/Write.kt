@@ -2,19 +2,20 @@ package com.zinc.berrybucket.model
 
 import android.os.Parcelable
 import com.zinc.common.models.BucketType
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.toYn
 import kotlinx.parcelize.Parcelize
 import java.io.File
+import java.io.Serializable
 import java.time.LocalDate
 
+@Parcelize
 data class WriteOption(
     val type: WriteOptionsType1,
     val title: String,
     val info: WriteOption1Info
-) : java.io.Serializable {
+) : Serializable, Parcelable {
     fun content(): String {
         return when (info) {
             is WriteOption1Info.Category -> info.categoryInfo.name
@@ -32,13 +33,27 @@ data class WriteAddOption(
     val tagList: List<String>,
     val showDivider: Boolean = false,
     val clicked: (WriteOptionsType2) -> Unit
-) : java.io.Serializable
+) : Serializable
+
 
 @Parcelize
+data class WriteTotalInfo(
+    val title: String = "",
+    val options: List<WriteOption> = emptyList(),
+    val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
+    val keyWord: List<WriteKeyWord> = emptyList(),
+    val tagFriends: List<WriteFriend> = emptyList(),
+    val isScrapUsed: Boolean = false
+) : Serializable, Parcelable {
+
+}
+
+fun WriteTotalInfo.parseWrite1Info() = WriteInfo1(this.title, this.options)
+
 data class WriteInfo1(
     val title: String = "",
     val options: List<WriteOption> = emptyList(),
-) : java.io.Serializable, Parcelable {
+) {
     fun getMemo(): String {
         val memoInfo = options.firstOrNull { it.info is WriteOption1Info.Memo } ?: return ""
         return (memoInfo.info as WriteOption1Info.Memo).memo
@@ -54,46 +69,32 @@ data class WriteInfo1(
         return (goalCount.info as WriteOption1Info.GoalCount).goalCount
     }
 
-    fun getImages(): List<UserSeletedImageInfo> {
+    fun getImages(): List<UserSelectedImageInfo> {
         val images =
             options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
         return (images.info as WriteOption1Info.Images).images
     }
 
-    fun getCategory(): CategoryInfo? {
+    fun getCategory(): WriteCategoryInfo {
         val categoryInfo = options.firstOrNull { it.info is WriteOption1Info.Category }
         return (categoryInfo?.info as WriteOption1Info.Category).categoryInfo
     }
 }
 
-@Parcelize
-data class WriteInfo2(
-    val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
-    val keyWord: List<WriteKeyWord> = emptyList(),
-    val tagFriends: List<WriteFriend> = emptyList(),
-    val isScrapUsed: Boolean = false
-) : java.io.Serializable, Parcelable
 
-@Parcelize
-data class WriteTotalInfo(
-    val writeInfo1: WriteInfo1,
-    val writeInfo2: WriteInfo2
-) : java.io.Serializable, Parcelable
-
-@Parcelize
 data class WriteKeyWord(
     val id: String,
     val text: String
-) : java.io.Serializable, Parcelable
+) : Serializable
 
-@Parcelize
+
 data class WriteFriend(
     val id: String,
     val imageUrl: String,
     val nickname: String
-) : java.io.Serializable, Parcelable
+) : Serializable
 
-enum class WriteOptionsType1 {
+enum class WriteOptionsType1 : Serializable {
     MEMO, IMAGE, CATEGORY, D_DAY, GOAL
 }
 
@@ -101,13 +102,22 @@ enum class WriteOpenType(val text: String) {
     PUBLIC("전체 공개"), PRIVATE("비공개"), FRIENDS_OPEN("친구에게만 공개")
 }
 
-sealed class WriteOption1Info {
+@Parcelize
+sealed class WriteOption1Info : Serializable, Parcelable {
     data class Memo(val memo: String = "") : WriteOption1Info()
     data class Dday(val localDate: LocalDate, val dDayText: String = "") : WriteOption1Info()
     data class GoalCount(val goalCount: Int = 1) : WriteOption1Info()
-    data class Category(val categoryInfo: CategoryInfo) : WriteOption1Info()
-    data class Images(val images: List<UserSeletedImageInfo> = emptyList()) : WriteOption1Info()
+    data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info()
+    data class Images(val images: List<UserSelectedImageInfo> = emptyList()) : WriteOption1Info()
 }
+
+@Parcelize
+data class WriteCategoryInfo(
+    val id: Int,
+    val name: String,
+    val defaultYn: YesOrNo = YesOrNo.Y,
+    val bucketlistCount: String
+) : Serializable, Parcelable
 
 interface WriteOptionsType2 {
     object TAG : WriteOptionsType2
@@ -120,20 +130,21 @@ interface WriteOptionsType2 {
 }
 
 fun parseUIBucketListInfo(
-    writeInfo1: WriteInfo1,
+    title: String = "",
+    options: List<WriteOption> = emptyList(),
     writeOpenType: WriteOpenType,
     keyWord: List<String>,
     tagFriends: List<String>,
     isScrapAvailable: Boolean = false
 ) = UIAddBucketListInfo(
     bucketType = BucketType.ORIGINAL,
-    title = writeInfo1.title,
-    content = writeInfo1.title,
-    memo = parseMemo(writeInfo1.options),
-    images = parseImages(writeInfo1.options),
-    targetDate = parseTargetDate(writeInfo1.options),
-    goalCount = parseGoalCount(writeInfo1.options),
-    categoryId = parseCategoryId(writeInfo1.options),
+    title = title,
+    content = title,
+    memo = parseMemo(options),
+    images = parseImages(options),
+    targetDate = parseTargetDate(options),
+    goalCount = parseGoalCount(options),
+    categoryId = parseCategoryId(options),
     tags = keyWord.joinToString(","),
     exposureStatus = parseOpenType(writeOpenType),
     friendUserIds = tagFriends,
