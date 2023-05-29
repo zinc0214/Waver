@@ -30,6 +30,10 @@
     <string name="categoryEdit">편집</string>
     <string name="categoryAdd">카테고리 추가하기</string>
     <string name="categorySearchImageViewDesc">카테고리 검색</string>
+    <string name="categoryEditTitle">카테고리 편집</string>
+    <string name="categoryItemEdit">카테고리 편집</string>
+    <string name="categoryNameEdit">이름 변경</string>
+    <string name="categoryDelete">삭제</string>
 
     <!-- My > Dday -->
     <string name="ddayComment">지난 Dday가 1개 있어요</string>
@@ -47,9 +51,5 @@
     <!-- My > Alarm -->
     <string name="alarmTitle">알림</string>
     <string name="alarmIconDesc">알람 아이콘 이미지</string>
-
-    <!-- My > Category -->
-    <string name="categoryEditTitle">카테고리 편집</string>
-    <string name="categoryItemEdit">카테고리 편집</string>
 
 </resources>

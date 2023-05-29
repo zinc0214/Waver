@@ -65,5 +65,8 @@ enum class BadgeType {
 }
 
 enum class YesOrNo {
-    Y, N
+    Y, N;
+
+    fun isYes() = this == Y
+    fun isNo() = this == N
 }

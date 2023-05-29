@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
@@ -21,10 +22,10 @@ fun GoalCountUpdateDialog(
     var updateGoalCount by remember { mutableStateOf(currentCount) }
 
     SingleTextFieldDialogView(
-        titleText = R.string.optionGoalCount,
+        titleText = stringResource(id = R.string.optionGoalCount),
         prevText = updateGoalCount,
-        filedHintText = R.string.zeroGoalCount,
-        saveNotAvailableToastText = R.string.countIsNotValidToast,
+        filedHintText = stringResource(id = R.string.zeroGoalCount),
+        saveNotAvailableToastText = stringResource(id = R.string.countIsNotValidToast),
         textFieldArrangement = TextFieldArrangment.CENTER,
         keyboardType = KeyboardType.Number,
         enableCondition = { currentCount != updateGoalCount && updateGoalCount != "0" && updateGoalCount.isNotEmpty() },

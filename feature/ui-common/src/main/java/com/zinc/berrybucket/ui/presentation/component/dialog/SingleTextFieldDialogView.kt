@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -66,12 +65,12 @@ enum class TextFieldArrangment {
  */
 @Composable
 fun SingleTextFieldDialogView(
-    @StringRes titleText: Int,
+    titleText: String,
     prevText: String,
-    @StringRes filedHintText: Int,
+    filedHintText: String,
     @StringRes leftButtonText: Int = R.string.cancel,
     @StringRes rightButtonText: Int = R.string.apply,
-    @StringRes saveNotAvailableToastText: Int,
+    saveNotAvailableToastText: String,
     fieldTextSize: Dp = 22.dp,
     textFieldArrangement: TextFieldArrangment,
     disableTextColor: Color = Gray7,
@@ -102,7 +101,7 @@ fun SingleTextFieldDialogView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp, vertical = 28.dp),
-                    text = stringResource(id = titleText),
+                    text = titleText,
                     fontSize = dpToSp(dp = 15.dp),
                     color = Gray10,
                     fontWeight = FontWeight.Bold,
@@ -157,7 +156,7 @@ fun SingleTextFieldDialogView(
                             if (updatedText.value.text.isEmpty()) {
                                 MyText(
                                     modifier = Modifier.fillMaxWidth(),
-                                    text = stringResource(id = filedHintText),
+                                    text = filedHintText,
                                     fontWeight = FontWeight.Bold,
                                     color = if (enableCondition()) Gray10 else disableTextColor,
                                     fontSize = dpToSp(fieldTextSize),

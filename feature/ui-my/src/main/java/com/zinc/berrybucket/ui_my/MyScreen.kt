@@ -46,7 +46,7 @@ import com.zinc.berrybucket.ui_my.all.AllBucketLayer
 import com.zinc.berrybucket.ui_my.category.AddNewCategoryDialog
 import com.zinc.berrybucket.ui_my.category.CategoryLayer
 import com.zinc.berrybucket.ui_my.dday.DdayBucketLayer
-import com.zinc.berrybucket.ui_my.model.AddNewCategoryEvent
+import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -73,11 +73,11 @@ fun MyScreen(
     if (addNewCategoryDialogShowAvailable.value) {
         AddNewCategoryDialog(event = {
             when (it) {
-                is AddNewCategoryEvent.AddNewCategory -> {
+                is AddCategoryEvent.AddNewAddCategory -> {
                     // add new category
                 }
 
-                AddNewCategoryEvent.Close -> addNewCategoryDialogShowAvailable.value = false
+                AddCategoryEvent.Close -> addNewCategoryDialogShowAvailable.value = false
             }
         })
     }

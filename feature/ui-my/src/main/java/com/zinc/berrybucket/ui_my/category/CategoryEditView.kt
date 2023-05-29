@@ -7,24 +7,35 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.PopupProperties
+import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
@@ -34,7 +45,9 @@ import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
+import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
+import com.zinc.berrybucket.ui_my.model.CategoryEditOptionEvent
 import com.zinc.common.models.CategoryInfo
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
@@ -93,7 +106,8 @@ internal fun CategoryEditAddView(
 @Composable
 fun VerticalReorderList(
     categoryList: List<CategoryInfo>,
-    addNewCategory: () -> Unit
+    addNewCategory: () -> Unit,
+    optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
     val data = remember { mutableStateOf(categoryList) }
     val state = rememberReorderableLazyListState(onMove = { from, to ->
@@ -114,16 +128,23 @@ fun VerticalReorderList(
         item {
             CategoryEditAddView(addNewCategory)
         }
-        items(data.value, { it.id }) { item ->
+        itemsIndexed(data.value, key = { index, item -> item.id }) { index, item ->
             ReorderableItem(state, key = item, orientationLocked = false) {
-                EditCategoryItemView(item)
+                EditCategoryItemView(index, item, optionEvent)
             }
         }
     }
 }
 
 @Composable
-private fun EditCategoryItemView(item: CategoryInfo) {
+private fun EditCategoryItemView(
+    index: Int,
+    item: CategoryInfo,
+    optionEvent: (CategoryEditOptionEvent) -> Unit
+) {
+
+    val expandedMenuIndex = remember { mutableStateOf(-1) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,9 +162,10 @@ private fun EditCategoryItemView(item: CategoryInfo) {
             IconButton(
                 modifier = Modifier
                     .padding(4.dp)
-                    .size(24.dp),
+                    .size(24.dp)
+                    .rotate(if (expandedMenuIndex.value == index) 180f else 0f),
                 onClick = {
-
+                    expandedMenuIndex.value = index
                 },
                 image = R.drawable.btn_24_more,
                 contentDescription = stringResource(id = R.string.categoryItemEdit)
@@ -161,6 +183,51 @@ private fun EditCategoryItemView(item: CategoryInfo) {
         }
 
         Divider(modifier = Modifier.fillMaxWidth(), thickness = 1.dp, color = Gray3)
+
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .wrapContentSize(Alignment.TopEnd),
+            shape = RoundedCornerShape(40.dp),
+            backgroundColor = Color.Transparent,
+            elevation = 3.dp
+        ) {
+            if (expandedMenuIndex.value == index) {
+                DropdownMenu(
+                    expanded = true,
+                    onDismissRequest = { expandedMenuIndex.value = -1 },
+                    offset = DpOffset(16.dp, 0.dp),
+                    properties = PopupProperties(clippingEnabled = false)
+                ) {
+
+                    DropdownMenuItem(onClick = {
+                        optionEvent.invoke(CategoryEditOptionEvent.EditCategoryName(item))
+                        expandedMenuIndex.value = -1
+                    }) {
+                        MyText(
+                            text = stringResource(id = R.string.categoryNameEdit),
+                            color = Gray10,
+                            fontSize = dpToSp(14.dp),
+                            modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+                        )
+                    }
+
+                    if (item.defaultYn.isNo()) {
+                        DropdownMenuItem(onClick = {
+                            optionEvent.invoke(CategoryEditOptionEvent.DeleteCategory(item))
+                            expandedMenuIndex.value = -1
+                        }) {
+                            MyText(
+                                text = stringResource(id = R.string.categoryDelete),
+                                color = Error2,
+                                fontSize = dpToSp(14.dp),
+                                modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

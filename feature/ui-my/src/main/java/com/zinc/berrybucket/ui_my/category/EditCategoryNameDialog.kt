@@ -10,22 +10,24 @@ import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
 import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldArrangment
-import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
+import com.zinc.berrybucket.ui_my.model.EditCategoryNameEvent
+import com.zinc.common.models.CategoryInfo
 import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
-fun AddNewCategoryDialog(
-    event: (AddCategoryEvent) -> Unit
+fun EditCategoryNameDialog(
+    originCategoryInfo: CategoryInfo,
+    event: (EditCategoryNameEvent) -> Unit
 ) {
 
-    val updatedText = remember { mutableStateOf("") }
+    val updatedText = remember { mutableStateOf(originCategoryInfo.name) }
 
     SingleTextFieldDialogView(
         titleText = stringResource(id = CommonR.string.addNewCategoryTitle),
-        prevText = "",
-        filedHintText = stringResource(id = CommonR.string.addNewCategoryHint),
-        rightButtonText = CommonR.string.addDesc,
-        saveNotAvailableToastText = stringResource(id = CommonR.string.addNewCategoryNotAvailable),
+        prevText = originCategoryInfo.name,
+        filedHintText = stringResource(id = CommonR.string.editCategoryNameTitle),
+        rightButtonText = CommonR.string.confirm,
+        saveNotAvailableToastText = stringResource(id = CommonR.string.editCategoryNameNotAvailable),
         textFieldArrangement = TextFieldArrangment.START,
         fieldTextSize = 14.dp,
         disableTextColor = Gray5,
@@ -35,7 +37,7 @@ fun AddNewCategoryDialog(
         event = {
             when (it) {
                 SingleTextFieldDialogEvent.Close -> {
-                    event.invoke(AddCategoryEvent.Close)
+                    event.invoke(EditCategoryNameEvent.Close)
                 }
 
                 is SingleTextFieldDialogEvent.TextChangedField -> {
@@ -43,7 +45,7 @@ fun AddNewCategoryDialog(
                 }
 
                 is SingleTextFieldDialogEvent.Update -> {
-                    event.invoke(AddCategoryEvent.AddNewAddCategory(updatedText.value))
+                    event.invoke(EditCategoryNameEvent.EditCategoryName(originCategoryInfo.copy(name = updatedText.value)))
 
                 }
             }
