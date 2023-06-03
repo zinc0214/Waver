@@ -18,7 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -188,40 +188,58 @@ private fun EditCategoryItemView(
             modifier = Modifier
                 .fillMaxSize()
                 .wrapContentSize(Alignment.TopEnd),
-            shape = RoundedCornerShape(40.dp),
             backgroundColor = Color.Transparent,
-            elevation = 3.dp
+            elevation = 2.dp
         ) {
-            if (expandedMenuIndex.value == index) {
-                DropdownMenu(
-                    expanded = true,
-                    onDismissRequest = { expandedMenuIndex.value = -1 },
-                    offset = DpOffset(16.dp, 0.dp),
-                    properties = PopupProperties(clippingEnabled = false)
-                ) {
+            MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
 
-                    DropdownMenuItem(onClick = {
-                        optionEvent.invoke(CategoryEditOptionEvent.EditCategoryName(item))
-                        expandedMenuIndex.value = -1
-                    }) {
+                if (expandedMenuIndex.value == index) {
+                    DropdownMenu(
+                        expanded = true,
+                        onDismissRequest = { expandedMenuIndex.value = -1 },
+                        offset = DpOffset(58.dp, (-30).dp),
+                        properties = PopupProperties(clippingEnabled = false)
+                    ) {
+
                         MyText(
                             text = stringResource(id = R.string.categoryNameEdit),
                             color = Gray10,
                             fontSize = dpToSp(14.dp),
-                            modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    optionEvent.invoke(CategoryEditOptionEvent.EditCategoryName(item))
+                                    expandedMenuIndex.value = -1
+                                }
+                                .padding(
+                                    start = 16.dp,
+                                    end = 38.dp,
+                                    top = 8.dp,
+                                    bottom = 8.dp
+                                )
                         )
-                    }
 
-                    if (item.defaultYn.isNo()) {
-                        DropdownMenuItem(onClick = {
-                            optionEvent.invoke(CategoryEditOptionEvent.DeleteCategory(item))
-                            expandedMenuIndex.value = -1
-                        }) {
+                        if (item.defaultYn.isNo()) {
                             MyText(
                                 text = stringResource(id = R.string.categoryDelete),
                                 color = Error2,
                                 fontSize = dpToSp(14.dp),
-                                modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        optionEvent.invoke(
+                                            CategoryEditOptionEvent.DeleteCategory(
+                                                item
+                                            )
+                                        )
+                                        expandedMenuIndex.value = -1
+                                    }
+                                    .padding(
+                                        start = 16.dp,
+                                        end = 38.dp,
+                                        top = 8.dp,
+                                        bottom = 8.dp
+                                    )
                             )
                         }
                     }
