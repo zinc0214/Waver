@@ -1,15 +1,15 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -23,6 +23,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.detail.screen.MyBucketMenuEvent
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun MyDetailAppBarMoreMenuDialog(
@@ -37,60 +38,42 @@ fun MyDetailAppBarMoreMenuDialog(
             .padding(top = 8.dp, bottom = 8.dp),
         shape = RoundedCornerShape(40.dp),
         backgroundColor = Gray1,
-        elevation = 3.dp
+        elevation = 2.dp
     ) {
-        DropdownMenu(
-            expanded = true,
-            onDismissRequest = { optionPopUpShowed.value = false },
-            offset = DpOffset(16.dp, 0.dp),
-            properties = PopupProperties(clippingEnabled = false)
-        ) {
-            DropdownMenuItem(
-                onClick = {
+        MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
+            DropdownMenu(
+                expanded = true,
+                onDismissRequest = { optionPopUpShowed.value = false },
+                offset = DpOffset(16.dp, 0.dp),
+                properties = PopupProperties(clippingEnabled = false)
+            ) {
+                PppUpText(R.string.edit) {
                     event(MyBucketMenuEvent.GoToEdit)
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(com.zinc.berrybucket.ui_common.R.string.edit)
-            }
-            DropdownMenuItem(
-                onClick = {
+                }
+
+                PppUpText(R.string.countChange) {
                     event(MyBucketMenuEvent.GoToGoalUpdate)
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(com.zinc.berrybucket.ui_common.R.string.countChange)
-            }
-            DropdownMenuItem(
-                onClick = {
+                }
+
+                PppUpText(R.string.delete) {
                     event(MyBucketMenuEvent.GoToDelete)
-                },
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .sizeIn(
-                        maxHeight = 36.dp
-                    )
-            ) {
-                PppUpText(com.zinc.berrybucket.ui_common.R.string.delete)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun PppUpText(@StringRes text: Int) {
+private fun PppUpText(@StringRes text: Int, clickEvent: () -> Unit) {
     MyText(
         text = stringResource(id = text),
         color = Gray10,
         fontSize = dpToSp(14.dp),
-        modifier = Modifier.padding(start = 16.dp, end = 24.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                clickEvent()
+            }
+            .padding(start = 16.dp, end = 24.dp, top = 8.dp, bottom = 8.dp)
     )
 }
