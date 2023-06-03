@@ -24,6 +24,7 @@ import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
+import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui_more.models.MoreItemType.ALARM
 import com.zinc.berrybucket.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.berrybucket.ui_more.models.MoreItemType.BLOCK

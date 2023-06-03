@@ -1,10 +1,10 @@
-package com.zinc.berrybucket.ui.presentation.write
+package com.zinc.berrybucket.ui_write.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel

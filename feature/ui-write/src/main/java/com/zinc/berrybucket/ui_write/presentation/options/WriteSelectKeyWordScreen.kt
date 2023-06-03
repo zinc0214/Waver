@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.options
+package com.zinc.berrybucket.ui_write.presentation.options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -34,9 +34,10 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.RoundChip
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBar
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBarClickEvent
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 // TODO : 스크롤 액션 수정 필요
 @Composable
@@ -58,7 +59,7 @@ fun WriteSelectKeyWordScreen(
             modifier = Modifier
                 .fillMaxWidth(),
             nextButtonClickable = true,
-            rightText = com.zinc.berrybucket.ui_common.R.string.addDesc,
+            rightText = CommonR.string.addDesc,
             clickEvent = {
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {

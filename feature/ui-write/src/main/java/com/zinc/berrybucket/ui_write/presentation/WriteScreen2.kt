@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write
+package com.zinc.berrybucket.ui_write.presentation
 
 import android.util.Log
 import android.widget.Toast
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteKeyWord
@@ -39,9 +39,10 @@ import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseUIBucketListInfo
 import com.zinc.berrybucket.model.parseWrite1Info
 import com.zinc.berrybucket.ui.presentation.component.gridItems
-import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
-import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectFriendsScreen
-import com.zinc.berrybucket.ui.presentation.write.options.WriteSelectKeyWordScreen
+import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
+import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectFriendsScreen
+import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectKeyWordScreen
+import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
 
 @Composable
 fun WriteScreen2(

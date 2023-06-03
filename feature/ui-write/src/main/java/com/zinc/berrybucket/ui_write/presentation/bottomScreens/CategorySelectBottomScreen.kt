@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.bottomScreens
+package com.zinc.berrybucket.ui_write.presentation.bottomScreens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main4
-import com.zinc.berrybucket.ui.presentation.category.CategoryViewModel
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_write.viewmodel.WriteCategoryViewModel
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo
 
@@ -33,7 +33,7 @@ import com.zinc.common.models.YesOrNo
 fun CategorySelectBottomScreen(
     confirmed: (CategoryInfo) -> Unit
 ) {
-    val viewModel: CategoryViewModel = hiltViewModel()
+    val viewModel: WriteCategoryViewModel = hiltViewModel()
     val categoryList by viewModel.categoryInfoList.observeAsState()
     viewModel.loadCategoryList()
 

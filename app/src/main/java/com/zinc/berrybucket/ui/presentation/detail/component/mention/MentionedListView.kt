@@ -42,6 +42,7 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 internal fun MentionedListView(
@@ -177,7 +178,7 @@ private fun CommentSelectedItemView(
         )
         IconButton(
             onClick = { delete(commenter) },
-            image = R.drawable.btn_20_delete,
+            image = CommonR.drawable.btn_20_delete,
             contentDescription = "지우기",
             modifier = Modifier
                 .padding(end = 2.dp)

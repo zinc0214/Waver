@@ -6,14 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.ui_my"
+    namespace = "com.hana.berrybucket.ui_write"
 
     defaultConfig {
         minSdk = Versions.minSdk
     }
 
     compileSdk = Versions.compileSdk
-    buildToolsVersion = Versions.buildTools
 
     composeOptions {
         kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.compilerVersion
@@ -29,7 +28,6 @@ android {
     }
 }
 
-
 dependencies {
 
     implementation(project(":common"))
@@ -42,22 +40,14 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    // androidX
-    implementation(Dep.AndroidX.coreKtx)
-    implementation(Dep.AndroidX.appcompat)
-    implementation(Dep.AndroidX.UI.material)
-
-    // compose
     implementation(Dep.AndroidX.Compose.Bom.ui)
     implementation(Dep.AndroidX.Compose.Bom.material)
     implementation(Dep.AndroidX.Compose.Bom.tooling)
     implementation(Dep.AndroidX.Compose.Bom.livedata)
-    implementation(Dep.AndroidX.Compose.Bom.runtime)
-    implementation(Dep.AndroidX.Compose.accompanist)
-    implementation(Dep.AndroidX.Compose.viewPager)
-    implementation(Dep.AndroidX.Compose.navigation)
+    implementation(Dep.AndroidX.Compose.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
-    implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+    implementation(Dep.AndroidX.Compose.accompanist)
+    implementation(Dep.AndroidX.Compose.flowlayout)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
@@ -66,4 +56,6 @@ dependencies {
 
     // Coil
     implementation(Dep.coil)
+
+
 }

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.options
+package com.zinc.berrybucket.ui_write.presentation.options
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -26,12 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.presentation.component.IconButton
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun ImageScreen(
@@ -84,7 +85,7 @@ fun ImageItem(
         if (deleteImage != null) {
             IconButton(
                 onClick = { deleteImage(imageInfo) },
-                image = R.drawable.btn_12_close,
+                image = CommonR.drawable.btn_12_close,
                 modifier = Modifier
                     .padding(5.dp)
                     .background(
@@ -119,7 +120,7 @@ fun AddImageItem(
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(
-                painter = painterResource(id = R.drawable.btn_20_add),
+                painter = painterResource(id = CommonR.drawable.btn_20_add),
                 contentDescription = stringResource(id = R.string.addImageDesc)
             )
         }
@@ -130,7 +131,7 @@ fun AddImageItem(
 @Preview
 @Composable
 private fun AddImageItemPreview() {
-    AddImageItem({
+    AddImageItem {
 
-    })
+    }
 }

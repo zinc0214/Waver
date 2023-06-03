@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.options
+package com.zinc.berrybucket.ui_write.presentation.options
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

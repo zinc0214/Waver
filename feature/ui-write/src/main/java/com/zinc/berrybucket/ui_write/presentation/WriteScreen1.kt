@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write
+package com.zinc.berrybucket.ui_write.presentation
 
 import android.util.Log
 import android.widget.Toast
@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
@@ -44,18 +44,18 @@ import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
 import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseWrite1Info
-import com.zinc.berrybucket.ui.presentation.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.component.gridItems
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarSelectBottomSheet
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CategorySelectBottomScreen
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.GoalCountBottomScreen
-import com.zinc.berrybucket.ui.presentation.write.options.AddImageItem
-import com.zinc.berrybucket.ui.presentation.write.options.ImageItem
-import com.zinc.berrybucket.ui.presentation.write.options.MemoScreen
-import com.zinc.berrybucket.ui.presentation.write.options.OptionScreen
+import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CameraPermission
-import com.zinc.berrybucket.util.parseWithDday
+import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarSelectBottomSheet
+import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CategorySelectBottomScreen
+import com.zinc.berrybucket.ui_write.presentation.bottomScreens.GoalCountBottomScreen
+import com.zinc.berrybucket.ui_write.presentation.options.AddImageItem
+import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
+import com.zinc.berrybucket.ui_write.presentation.options.MemoScreen
+import com.zinc.berrybucket.ui_write.presentation.options.OptionScreen
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write
+package com.zinc.berrybucket.ui_write.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -38,7 +38,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.flowlayout.FlowRow
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.model.WriteOpenType
@@ -57,6 +57,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.Switch
 import com.zinc.berrybucket.ui.presentation.component.SwitchOnlyView
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun WriteTitleView(
@@ -125,7 +126,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                     end.linkTo(parent.end)
                 }
                 .padding(20.dp),
-            painter = painterResource(R.drawable.ico_16_right),
+            painter = painterResource(CommonR.drawable.ico_16_right),
             contentDescription = null)
 
         MyText(
@@ -204,7 +205,7 @@ fun AddedFriendItem(
             onClick = {
                 deleteFriend(writeFriend)
             },
-            image = R.drawable.btn_20_delete,
+            image = CommonR.drawable.btn_20_delete,
             contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.deleteButtonDesc)
         )
     }
@@ -251,7 +252,7 @@ fun WriteSelectFriendItem(
             Image(
                 painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
                 contentDescription = stringResource(
-                    id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
+                    id = CommonR.string.profileImageDesc
                 ),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

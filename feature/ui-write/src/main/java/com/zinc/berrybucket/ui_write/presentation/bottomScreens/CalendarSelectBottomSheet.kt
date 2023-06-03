@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.bottomScreens
+package com.zinc.berrybucket.ui_write.presentation.bottomScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -31,10 +32,10 @@ import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.NumberPicker
 import com.zinc.berrybucket.ui.presentation.component.calendar.CalendarView
-import com.zinc.berrybucket.ui.presentation.write.DateViewModel
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.CALENDAR
-import com.zinc.berrybucket.ui.presentation.write.bottomScreens.CalendarViewType.PICKER
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarViewType.CALENDAR
+import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarViewType.PICKER
+import com.zinc.berrybucket.ui_write.viewmodel.DateViewModel
 import java.time.LocalDate
 import java.util.Calendar
 
@@ -153,7 +154,7 @@ private fun DatePickerView(
         }
 
         MyText(
-            text = stringResource(id = com.zinc.berrybucket.R.string.optionCalendarSelect),
+            text = stringResource(id = R.string.optionCalendarSelect),
             fontSize = dpToSp(dp = 18.dp),
             color = Gray10,
             fontWeight = FontWeight.Bold,

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write
+package com.zinc.berrybucket.ui_write.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

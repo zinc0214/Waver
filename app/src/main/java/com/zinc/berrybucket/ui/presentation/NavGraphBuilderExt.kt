@@ -14,11 +14,10 @@ import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
+import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
-import com.zinc.berrybucket.ui.presentation.write.WriteScreen1
-import com.zinc.berrybucket.ui.presentation.write.WriteScreen2
 import com.zinc.berrybucket.ui_feed.FeedScreen
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
 import com.zinc.berrybucket.ui_more.AppInfoScreen
@@ -31,6 +30,8 @@ import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
+import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 

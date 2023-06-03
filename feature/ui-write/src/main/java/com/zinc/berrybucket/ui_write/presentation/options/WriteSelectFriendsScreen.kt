@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.options
+package com.zinc.berrybucket.ui_write.presentation.options
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -22,13 +22,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.model.WriteFriend
-import com.zinc.berrybucket.ui.presentation.search.SearchEditView
-import com.zinc.berrybucket.ui.presentation.write.AddedFriendItem
-import com.zinc.berrybucket.ui.presentation.write.ShowAllFriendItem
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
-import com.zinc.berrybucket.ui.presentation.write.WriteSelectFriendItem
-import com.zinc.berrybucket.ui.presentation.write.WriteViewModel
+import com.zinc.berrybucket.ui.presentation.component.SearchEditView
+import com.zinc.berrybucket.ui_common.R
+import com.zinc.berrybucket.ui_write.presentation.AddedFriendItem
+import com.zinc.berrybucket.ui_write.presentation.ShowAllFriendItem
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBar
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBarClickEvent
+import com.zinc.berrybucket.ui_write.presentation.WriteSelectFriendItem
+import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
 
 @Composable
 fun WriteSelectFriendsScreen(
@@ -57,7 +58,7 @@ fun WriteSelectFriendsScreen(
         WriteAppBar(
             modifier = Modifier.fillMaxWidth(),
             nextButtonClickable = true,
-            rightText = com.zinc.berrybucket.ui_common.R.string.addDesc,
+            rightText = R.string.addDesc,
             clickEvent = {
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {

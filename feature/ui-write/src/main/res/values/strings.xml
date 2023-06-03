@@ -1,0 +1,23 @@
+<resources>
+    <string name="writeGoToNext">다음</string>
+    <string name="writeGoToFinish">완료</string>
+    <string name="writeTitleHintText">새로운 목표를 작성해보세요.</string>
+    <string name="writeMemoHintText">메모를 작성해주세요.</string>
+    <string name="addMemoDesc">메모 추가하기</string>
+    <string name="addImageDesc">이미지 추가하기</string>
+    <string name="addCategoryDesc">카테고리 추가하기</string>
+    <string name="addDdayDesc">디데이 추가하기</string>
+    <string name="addGoalDesc">달성횟수 추가하기</string>
+    <string name="writeSelectKeyWordGuide">키워드는 3개까지 선택 가능합니다.</string>
+    <string name="showSelectedAllFriends">전체보기</string>
+    <string name="optionCategoryAddButton">카테고리 추가</string>
+    <string name="optionCalendarSelect">달력으로 선택하기</string>
+    <string name="optionOpenType">공개설정</string>
+    <string name="optionOpenTypePublic">전체공개</string>
+    <string name="optionOpenTypeFriends">친구에게만 공개</string>
+    <string name="optionOpenTypePrivate">비공개</string>
+    <string name="optionScrap">스크랩</string>
+    <string name="optionScrapInfoDesc">스크랩이란?</string>
+    <string name="optionScrapNotAvailable">버킷리스트를 공개로 설정해주세요</string>
+    <string name="optionIfFriendsNotEmptyOpenPrivateDetect">함께할 친구가 있다면 버킷리스트를 비공개로 설정할 수 없어요</string>
+</resources>

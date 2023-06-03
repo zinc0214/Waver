@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.bottomScreens
+package com.zinc.berrybucket.ui_write.presentation.bottomScreens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -39,6 +38,7 @@ import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun GoalCountBottomScreen(
@@ -56,7 +56,7 @@ fun GoalCountBottomScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp, vertical = 28.dp),
-            text = stringResource(id = R.string.optionGoalCount),
+            text = stringResource(id = CommonR.string.optionGoalCount),
             fontSize = dpToSp(dp = 15.dp),
             fontWeight = FontWeight.Bold,
             color = Gray10,
@@ -122,7 +122,7 @@ fun GoalCountBottomScreen(
                         if (editedGoalCount.text == "0") {
                             Toast.makeText(
                                 context,
-                                R.string.countIsNotValidToast,
+                                CommonR.string.countIsNotValidToast,
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {

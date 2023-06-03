@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.write.options
+package com.zinc.berrybucket.ui_write.presentation.options
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,14 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.R
+import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBar
-import com.zinc.berrybucket.ui.presentation.write.WriteAppBarClickEvent
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBar
+import com.zinc.berrybucket.ui_write.presentation.WriteAppBarClickEvent
 
 @Composable
 fun MemoScreen(

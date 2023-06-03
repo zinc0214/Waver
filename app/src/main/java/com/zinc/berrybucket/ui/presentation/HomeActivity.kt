@@ -17,6 +17,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.UserSelectedImageInfo
+import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
@@ -172,14 +173,4 @@ class HomeActivity : AppCompatActivity() {
         return file
     }
 
-}
-
-sealed class ActionWithActivity {
-    data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (UserSelectedImageInfo) -> Unit
-    ) : ActionWithActivity()
-
-    data class CheckPermission(
-        val isAllGranted: (Boolean) -> Unit
-    ) : ActionWithActivity()
 }
