@@ -4,7 +4,6 @@ import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketList
 import com.zinc.common.models.AllBucketListSortType
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
@@ -14,6 +13,7 @@ import com.zinc.common.models.MyProfileInfo
 import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReportItems
+import com.zinc.data.model.LoadCategoryResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -42,7 +42,7 @@ interface BerryBucketApi {
     ): AllBucketList
 
     @GET("/category")
-    suspend fun loadCategoryList(@Header("Authorization") token: String): List<CategoryInfo>
+    suspend fun loadCategoryList(@Header("Authorization") token: String): LoadCategoryResponse
 
     @GET("/bucketList")
     suspend fun loadMyState(): MyState
