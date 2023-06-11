@@ -31,23 +31,28 @@ import com.zinc.common.models.YesOrNo
 
 @Composable
 fun CategorySelectBottomScreen(
-    confirmed: (CategoryInfo) -> Unit
+    confirmed: (CategoryInfo) -> Unit,
+    goToAddCategory: () -> Unit
 ) {
     val viewModel: WriteCategoryViewModel = hiltViewModel()
     val categoryList by viewModel.categoryInfoList.observeAsState()
     viewModel.loadCategoryList()
 
     categoryList?.let {
-        CategorySelectView(it) { category ->
-            confirmed(category)
-        }
+        CategorySelectView(it,
+            confirmed = { category ->
+                confirmed(category)
+            }, goToAddCategory = {
+                goToAddCategory()
+            })
     }
 }
 
 @Composable
 private fun CategorySelectView(
     categoryInfoList: List<CategoryInfo>,
-    confirmed: (CategoryInfo) -> Unit
+    confirmed: (CategoryInfo) -> Unit,
+    goToAddCategory: () -> Unit
 ) {
     if (categoryInfoList.isNotEmpty()) {
 
@@ -102,6 +107,9 @@ private fun CategorySelectView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 28.dp, vertical = 18.dp)
+                        .clickable {
+                            goToAddCategory()
+                        }
                 )
             }
         }
@@ -115,5 +123,5 @@ private fun CategorySelectBottomScreenPreview() {
     CategorySelectView(categoryInfoList = buildList {
         add(CategoryInfo(id = 0, name = "여행", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
         add(CategoryInfo(id = 11, name = "여행234", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
-    }, confirmed = {})
+    }, confirmed = {}, goToAddCategory = {})
 }

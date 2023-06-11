@@ -180,6 +180,8 @@ fun BerryBucketApp(
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
                             }, goToNextWrite = { nav, info ->
                                 appState.navigateToWrite2(nav, info)
+                            }, goToAddCategory = {
+                                appState.navigateToCategoryEdit(it)
                             })
                         writeNavGraph2(
                             backPress = { nav, info ->

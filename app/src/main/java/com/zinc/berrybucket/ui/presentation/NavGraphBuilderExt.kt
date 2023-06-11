@@ -30,6 +30,7 @@ import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
 import com.zinc.berrybucket.util.getRequiredSerializableExtra
@@ -140,18 +141,34 @@ internal fun NavGraphBuilder.searchNavGraph(
 internal fun NavGraphBuilder.writeNavGraph1(
     action: (ActionWithActivity) -> Unit,
     backPress: () -> Unit,
-    goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit
+    goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit,
+    goToAddCategory: (NavBackStackEntry) -> Unit
 ) {
-    composable(WriteDestinations.GO_TO_WRITE1) {
+    composable(WriteDestinations.GO_TO_WRITE1) { it ->
         val arguments = requireNotNull(it.arguments)
         val totalInfo =
             arguments.getRequiredSerializableExtra<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
 
         WriteScreen1(
-            action = { actionType -> action(actionType) },
-            goToBack = { backPress() },
-            goToNext = { info ->
-                goToNextWrite(it, info)
+            event = { event ->
+                when (event) {
+                    is Write1Event.ActivityAction -> {
+                        action(event.acton)
+                    }
+
+                    is Write1Event.GoToWrite2 -> {
+                        goToNextWrite(it, event.info)
+
+                    }
+
+                    Write1Event.GoToBack -> {
+                        backPress()
+                    }
+
+                    Write1Event.GoToAddCategory -> {
+                        goToAddCategory(it)
+                    }
+                }
             },
             originWriteTotalInfo = totalInfo
         )

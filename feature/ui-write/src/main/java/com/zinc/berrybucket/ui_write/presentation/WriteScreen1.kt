@@ -49,6 +49,7 @@ import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CameraPermission
 import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.GoalCountBottomScreen
@@ -62,9 +63,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun WriteScreen1(
-    action: (ActionWithActivity) -> Unit,
-    goToBack: () -> Unit,
-    goToNext: (WriteTotalInfo) -> Unit,
+    event: (Write1Event) -> Unit,
     originWriteTotalInfo: WriteTotalInfo
 ) {
     val context = LocalContext.current
@@ -82,7 +81,6 @@ fun WriteScreen1(
         updatedWriteOptions.addAll(originWriteInfo1.options)
         initialized.value = true
     }
-
 
     val nextButtonClickable = remember { mutableStateOf(false) }
 
@@ -126,7 +124,7 @@ fun WriteScreen1(
 // 백키 이벤트
     BackHandler {
         if (selectedOption == null) {
-            goToBack()
+            event.invoke(Write1Event.GoToBack)
         } else {
             coroutineScope.launch {
                 isNeedToBottomSheetOpen.invoke(false)
@@ -180,62 +178,70 @@ fun WriteScreen1(
                 when (selectedOption) {
                     IMAGE -> {
                         ImageSelectBottomScreen(selectedType = { it ->
-                            action(
-                                ActionWithActivity.AddImage(
-                                    type = it,
-                                    failed = {
-                                        Toast.makeText(
-                                            context,
-                                            "이미지 로드에 실패했습니다.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        selectedOption = null
-                                        isNeedToBottomSheetOpen.invoke(false)
-                                    },
-                                    succeed = { uri ->
-                                        Log.e("ayhan", "uri : $uri")
-                                        imageList.value += uri
-                                        selectedOption = null
-                                        isNeedToBottomSheetOpen.invoke(false)
+                            event.invoke(
+                                Write1Event.ActivityAction(
+                                    ActionWithActivity.AddImage(
+                                        type = it,
+                                        failed = {
+                                            Toast.makeText(
+                                                context,
+                                                "이미지 로드에 실패했습니다.",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                            selectedOption = null
+                                            isNeedToBottomSheetOpen.invoke(false)
+                                        },
+                                        succeed = { uri ->
+                                            Log.e("ayhan", "uri : $uri")
+                                            imageList.value += uri
+                                            selectedOption = null
+                                            isNeedToBottomSheetOpen.invoke(false)
 
-                                        val prevImageOption =
-                                            updatedWriteOptions.find { options -> options.type == IMAGE }
-                                        if (prevImageOption != null) {
-                                            updatedWriteOptions.remove(prevImageOption)
-                                        }
-                                        updatedWriteOptions.add(
-                                            WriteOption(
-                                                type = IMAGE,
-                                                title = "이미지",
-                                                info = WriteOption1Info.Images(imageList.value)
+                                            val prevImageOption =
+                                                updatedWriteOptions.find { options -> options.type == IMAGE }
+                                            if (prevImageOption != null) {
+                                                updatedWriteOptions.remove(prevImageOption)
+                                            }
+                                            updatedWriteOptions.add(
+                                                WriteOption(
+                                                    type = IMAGE,
+                                                    title = "이미지",
+                                                    info = WriteOption1Info.Images(imageList.value)
+                                                )
                                             )
-                                        )
-                                    })
+                                        })
+                                )
                             )
                         })
                         isNeedToBottomSheetOpen.invoke(true)
                     }
 
                     CATEGORY -> {
-                        CategorySelectBottomScreen(confirmed = { category ->
-                            deleteOption(CATEGORY)
-                            updatedWriteOptions.add(
-                                WriteOption(
-                                    type = CATEGORY,
-                                    title = "카테고리",
-                                    info = WriteOption1Info.Category(
-                                        WriteCategoryInfo(
-                                            category.id,
-                                            category.name,
-                                            category.defaultYn,
-                                            category.bucketlistCount
+                        CategorySelectBottomScreen(
+                            confirmed = { category ->
+                                deleteOption(CATEGORY)
+                                updatedWriteOptions.add(
+                                    WriteOption(
+                                        type = CATEGORY,
+                                        title = "카테고리",
+                                        info = WriteOption1Info.Category(
+                                            WriteCategoryInfo(
+                                                category.id,
+                                                category.name,
+                                                category.defaultYn,
+                                                category.bucketlistCount
+                                            )
                                         )
                                     )
                                 )
-                            )
-                            selectedOption = null
-                            isNeedToBottomSheetOpen.invoke(false)
-                        })
+                                selectedOption = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            },
+                            goToAddCategory = {
+                                event.invoke(Write1Event.GoToAddCategory)
+                                selectedOption = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            })
                         isNeedToBottomSheetOpen.invoke(true)
                     }
 
@@ -306,15 +312,17 @@ fun WriteScreen1(
                     clickEvent = {
                         when (it) {
                             WriteAppBarClickEvent.CloseClicked -> {
-                                goToBack()
+                                event.invoke(Write1Event.GoToBack)
                             }
 
                             WriteAppBarClickEvent.NextClicked -> {
                                 Log.e("ayhan", "WriteScreen1: ${updatedWriteOptions.toList()}")
-                                goToNext(
-                                    originWriteTotalInfo.copy(
-                                        title = title.value,
-                                        options = updatedWriteOptions.toList()
+                                event.invoke(
+                                    Write1Event.GoToWrite2(
+                                        originWriteTotalInfo.copy(
+                                            title = title.value,
+                                            options = updatedWriteOptions.toList()
+                                        )
                                     )
                                 )
                             }
