@@ -3,6 +3,14 @@ package com.zinc.common.models
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class MyProfileResponse(
+    val data: MyProfileInfo,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
+@Serializable
 data class MyProfileInfo(
     val name: String, // 프로필네임
     val imgUrl: String, // 프로필이미지

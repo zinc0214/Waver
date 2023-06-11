@@ -96,7 +96,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             ProfileCircularProgressBar(
                 percentage = profileInfo.percent,
-                profileImageUrl = profileInfo.profileImg ?: ""
+                profileImageUrl = profileInfo.imgUrl ?: ""
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -104,7 +104,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            text = profileInfo.titlePosition ?: "",
+            text = profileInfo.badgeTitle ?: "",
             fontSize = dpToSp(15.dp),
             color = Main3,
             textAlign = TextAlign.Center
@@ -114,7 +114,7 @@ private fun ProfileLayer(profileInfo: TopProfile) {
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            text = profileInfo.nickName,
+            text = profileInfo.name,
             fontWeight = FontWeight.Bold,
             fontStyle = FontStyle.Normal,
             fontSize = dpToSp(20.dp),
@@ -240,11 +240,11 @@ fun Modifier.customTabIndicatorOffset(
 private fun ProfileLayerPreview() {
     ProfileLayer(
         profileInfo = TopProfile(
-            nickName = "한아라고해",
-            profileImg = null,
+            name = "한아라고해",
+            imgUrl = null,
             percent = 0.0f,
             badgeType = null,
-            titlePosition = "딩가딩가딩 딩가링가링",
+            badgeTitle = "딩가딩가딩 딩가링가링",
             bio = "안녕, 나를 한 아 라고 불러줘",
             followerCount = "10",
             followingCount = "20"

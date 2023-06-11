@@ -56,20 +56,26 @@ class MyViewModel @Inject constructor(
                 accessToken.value?.let { token ->
                     Log.e("ayhan", "token : $token")
 
-                    val profileInfo = loadProfileInfo.invoke(token)
-                    Log.e("ayhan", "tokgen : $profileInfo")
+                    val response = loadProfileInfo.invoke(token)
+                    Log.e("ayhan", "tokgen : $response")
 
-                    val topProfile = TopProfile(
-                        nickName = profileInfo.name,
-                        profileImg = profileInfo.imgUrl,
-                        badgeType = profileInfo.badgeType,
-                        titlePosition = profileInfo.badgeTitle,
-                        bio = profileInfo.bio,
-                        followingCount = profileInfo.followingCount,
-                        followerCount = profileInfo.followerCount,
-                        percent = profileInfo.bucketInfo.grade()
-                    )
-                    _profileInfo.value = topProfile
+                    if (response.success) {
+                        val data = response.data
+                        val topProfile = TopProfile(
+                            name = data.name,
+                            imgUrl = data.imgUrl,
+                            badgeType = data.badgeType,
+                            badgeTitle = data.badgeTitle,
+                            bio = data.bio,
+                            followingCount = data.followingCount,
+                            followerCount = data.followerCount,
+                            percent = data.bucketInfo.grade()
+                        )
+                        _profileInfo.value = topProfile
+                    } else {
+                        Log.e("ayhan", "Fail Load Profile not success")
+                        loadDummyProfile()
+                    }
                 }
             }.getOrElse {
                 Log.e("ayhan", "Fail Load Profile : $it")
@@ -80,11 +86,11 @@ class MyViewModel @Inject constructor(
 
     private fun loadDummyProfile() {
         val topProfile = TopProfile(
-            nickName = "한아로해봐",
-            profileImg = "ddd",
+            name = "한아로해봐",
+            imgUrl = "ddd",
             percent = 0.6f,
             badgeType = BadgeType.TRIP1,
-            titlePosition = "안녕 반가우이잇",
+            badgeTitle = "안녕 반가우이잇",
             bio = "나는 ESFP 한아라고 불러줘?",
             followingCount = "20",
             followerCount = "10"
