@@ -100,7 +100,7 @@ fun CategoryEditScreen(
         }, optionEvent = { event ->
             when (event) {
                 is CategoryEditOptionEvent.DeleteCategory -> {
-
+                    viewModel.removeCategory(event.categoryInfo.id)
                 }
 
                 is CategoryEditOptionEvent.EditCategoryName -> {

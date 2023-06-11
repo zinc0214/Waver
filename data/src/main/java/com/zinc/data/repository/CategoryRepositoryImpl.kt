@@ -24,4 +24,8 @@ internal class CategoryRepositoryImpl @Inject constructor(
     override suspend fun editCategoryName(token: String, id: Int, name: String): CommonResponse {
         return berryBucketApi.editCategoryName(token, EditCategoryNameRequest(id, name))
     }
+
+    override suspend fun removeCategory(token: String, id: Int): CommonResponse {
+        return berryBucketApi.removeCategoryItem(token, id)
+    }
 }

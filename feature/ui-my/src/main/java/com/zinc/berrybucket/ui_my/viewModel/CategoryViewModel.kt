@@ -10,6 +10,7 @@ import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.AddNewCategory
 import com.zinc.domain.usecases.category.EditCategoryName
 import com.zinc.domain.usecases.category.LoadCategoryList
+import com.zinc.domain.usecases.category.RemoveCategoryItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class CategoryViewModel @Inject constructor(
     private val loadCategoryList: LoadCategoryList,
     private val addNewCategory: AddNewCategory,
     private val editCategoryName: EditCategoryName,
+    private val removeCategoryItem: RemoveCategoryItem,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -77,8 +79,19 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun removeCategory(categoryInfo: CategoryInfo) {
-
+    fun removeCategory(categoryId: Int) {
+        accessToken.value?.let { token ->
+            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            }) {
+                _apiFailed.value = null
+                val response = removeCategoryItem(token, categoryId)
+                if (response.success) {
+                    loadCategoryList()
+                } else {
+                    _apiFailed.value = "카테고리 삭제 실패" to response.message
+                }
+            }
+        }
     }
 
     fun reorderCategory(list: List<CategoryInfo>) {
