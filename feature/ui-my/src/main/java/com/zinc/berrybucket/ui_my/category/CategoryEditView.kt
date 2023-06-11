@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_my.category
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -120,11 +119,8 @@ fun VerticalReorderList(
         data = categoryList
     }
 
-    Log.e("ayhan", "VerticalReorderList: ${data} \n ")
-
     val state = rememberReorderableLazyListState(onMove = { from, to ->
         data = data.toMutableList().apply {
-            Log.e("ayhan", "from : $from to : $to")
             val toIndex = if (to.index < 1) 1 else to.index - 1
             val fromIndex = if (from.index < 1) 1 else from.index - 1
             add(toIndex, removeAt(fromIndex))

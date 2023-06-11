@@ -38,65 +38,60 @@ fun TitleAndMessageDialogView(
             dismissEvent()
         },
         content = {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 40.dp),
+                shape = RoundedCornerShape(8.dp),
+                backgroundColor = Gray1,
+                elevation = 3.dp
+            ) {
 
-            DialogView(dismissEvent = {
-                dismissEvent()
-            }, content = {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 40.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    backgroundColor = Gray1,
-                    elevation = 3.dp
-                ) {
+                Column(modifier = Modifier.fillMaxWidth()) {
 
-                    Column(modifier = Modifier.fillMaxWidth()) {
+                    // Title 영역
+                    MyText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp, vertical = 28.dp),
+                        text = title,
+                        fontSize = dpToSp(dp = 15.dp),
+                        color = Gray10,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
 
-                        // Title 영역
+                    // Message 영역
+                    MyText(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp),
+                        text = message,
+                        fontSize = dpToSp(dp = 12.dp),
+                        color = Gray10,
+                        textAlign = TextAlign.Center
+                    )
+
+
+                    Box(
+                        modifier = Modifier
+                            .height(56.dp)
+                            .fillMaxWidth()
+                            .clickable {
+                                dismissEvent()
+                            }
+
+                    ) {
                         MyText(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 32.dp, vertical = 28.dp),
-                            text = title,
-                            fontSize = dpToSp(dp = 15.dp),
-                            color = Gray10,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center
+                            modifier = Modifier.align(Alignment.Center),
+                            text = stringResource(id = R.string.confirm),
+                            color = Main4,
+                            textAlign = TextAlign.Center,
+                            fontSize = dpToSp(16.dp)
                         )
-
-                        // Message 영역
-                        MyText(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 16.dp),
-                            text = message,
-                            fontSize = dpToSp(dp = 12.dp),
-                            color = Gray10,
-                            textAlign = TextAlign.Center
-                        )
-
-
-                        Box(
-                            modifier = Modifier
-                                .height(56.dp)
-                                .fillMaxWidth()
-                                .clickable {
-                                    dismissEvent()
-                                }
-
-                        ) {
-                            MyText(
-                                modifier = Modifier.align(Alignment.Center),
-                                text = stringResource(id = R.string.confirm),
-                                color = Main4,
-                                textAlign = TextAlign.Center,
-                                fontSize = dpToSp(16.dp)
-                            )
-                        }
                     }
                 }
-            })
+            }
         }
     )
 }

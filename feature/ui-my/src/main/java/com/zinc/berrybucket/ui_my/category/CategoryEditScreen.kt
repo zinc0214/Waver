@@ -9,7 +9,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
@@ -20,10 +19,10 @@ import com.zinc.common.models.CategoryInfo
 
 @Composable
 fun CategoryEditScreen(
-    backClicked: () -> Unit
+    backClicked: () -> Unit,
+    viewModel: CategoryViewModel = hiltViewModel()
 ) {
 
-    val viewModel: CategoryViewModel = hiltViewModel()
     val categoryList by viewModel.categoryInfoList.observeAsState()
     val apiFailed by viewModel.apiFailed.observeAsState()
 
@@ -34,6 +33,7 @@ fun CategoryEditScreen(
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
     val editCategoryNameDialogShowAvailable =
         remember { mutableStateOf<CategoryInfo?>(null) } // 카테고리 이름 편집 팝업 노출 여부
+    val apiFailDialogShow = remember { mutableStateOf(false) }
     val apiFailState = remember { mutableStateOf(apiFailed) }
     val categoryItemState = remember { mutableStateOf(categoryList) }
 
@@ -42,13 +42,17 @@ fun CategoryEditScreen(
     }
 
     LaunchedEffect(apiFailed) {
-        apiFailState.value = apiFailed
+        if (apiFailed != null) {
+            apiFailDialogShow.value = true
+            apiFailState.value = apiFailed
+        }
     }
 
-
-    apiFailState.value?.let {
-        ApiFailDialog(it.first, it.second) {
-            apiFailState.value = null
+    if (apiFailDialogShow.value) {
+        apiFailState.value?.let { failData ->
+            ApiFailDialog(failData.first, failData.second) {
+                apiFailDialogShow.value = false
+            }
         }
     }
 
@@ -110,13 +114,4 @@ fun CategoryEditScreen(
         })
     }
 
-}
-
-
-@Composable
-@Preview
-private fun CategoryEditScreenPreview() {
-    CategoryEditScreen {
-
-    }
 }

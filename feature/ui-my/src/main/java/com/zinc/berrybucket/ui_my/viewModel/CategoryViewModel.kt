@@ -65,6 +65,7 @@ class CategoryViewModel @Inject constructor(
             viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
                 Log.e("ayhan", "load addNewCategory Fail 2 $throwable")
             }) {
+                _apiFailed.value = null
                 val response = addNewCategory(token, name)
 
                 Log.e("ayhan", "load addNewCategory 2 $response")
@@ -73,6 +74,7 @@ class CategoryViewModel @Inject constructor(
                     loadCategoryList()
                 } else {
                     _apiFailed.value = "카테고리 추가 실패" to response.message
+                    Log.e("ayhan", "load addNewCategory 3 $response")
                 }
             }
         }.runCatching {
