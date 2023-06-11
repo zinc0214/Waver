@@ -15,4 +15,5 @@ sealed interface EditCategoryNameEvent {
 sealed interface CategoryEditOptionEvent {
     data class EditCategoryName(val categoryInfo: CategoryInfo) : CategoryEditOptionEvent
     data class DeleteCategory(val categoryInfo: CategoryInfo) : CategoryEditOptionEvent
+    data class ReorderedCategory(val categoryList: List<CategoryInfo>) : CategoryEditOptionEvent
 }

@@ -11,6 +11,7 @@ import com.zinc.domain.usecases.category.AddNewCategory
 import com.zinc.domain.usecases.category.EditCategoryName
 import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.category.RemoveCategoryItem
+import com.zinc.domain.usecases.category.ReorderCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -22,6 +23,7 @@ class CategoryViewModel @Inject constructor(
     private val addNewCategory: AddNewCategory,
     private val editCategoryName: EditCategoryName,
     private val removeCategoryItem: RemoveCategoryItem,
+    private val reorderCategory: ReorderCategory,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -94,7 +96,26 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun reorderCategory(list: List<CategoryInfo>) {
+    fun reorderCategory() {
+        val updatedList = _categoryInfoList.value.orEmpty()
+        Log.d("ayhan", "reorderCategory: ${updatedList}")
+        accessToken.value?.let { token ->
+            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            }) {
+                _apiFailed.value = null
+                val response = reorderCategory(token, updatedList.map { it.id.toString() })
+                Log.d("ayhan", "reorderCategoryresponse: ${response}")
 
+                if (response.success) {
+                    loadCategoryList()
+                } else {
+                    _apiFailed.value = "카테고리 순서 편집 실패" to response.message
+                }
+            }
+        }
+    }
+
+    fun updateCategoryOrder(list: List<CategoryInfo>) {
+        _categoryInfoList.value = list
     }
 }

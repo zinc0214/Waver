@@ -17,6 +17,7 @@ import com.zinc.common.models.ReportItems
 import com.zinc.data.model.AddNewCategoryRequest
 import com.zinc.data.model.EditCategoryNameRequest
 import com.zinc.data.model.LoadCategoryResponse
+import com.zinc.data.model.ReorderedCategoryRequest
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -66,6 +67,12 @@ interface BerryBucketApi {
     suspend fun removeCategoryItem(
         @Header("Authorization") token: String,
         @Path("id") id: Int
+    ): CommonResponse
+
+    @PATCH("/category/seq")
+    suspend fun reorderedCategory(
+        @Header("Authorization") token: String,
+        @Body request: ReorderedCategoryRequest
     ): CommonResponse
 
     @GET("/bucketList")

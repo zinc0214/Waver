@@ -6,6 +6,7 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.model.AddNewCategoryRequest
 import com.zinc.data.model.EditCategoryNameRequest
+import com.zinc.data.model.ReorderedCategoryRequest
 import com.zinc.domain.repository.CategoryRepository
 import javax.inject.Inject
 
@@ -27,5 +28,9 @@ internal class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun removeCategory(token: String, id: Int): CommonResponse {
         return berryBucketApi.removeCategoryItem(token, id)
+    }
+
+    override suspend fun reorderCategory(token: String, orderedIds: List<String>): CommonResponse {
+        return berryBucketApi.reorderedCategory(token, ReorderedCategoryRequest(orderedIds))
     }
 }

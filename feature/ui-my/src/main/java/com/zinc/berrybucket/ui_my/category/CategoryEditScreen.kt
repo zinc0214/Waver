@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my.category
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -91,9 +92,9 @@ fun CategoryEditScreen(
 
         CategoryEditTitleView(backClicked = {
             backClicked()
-        }) {
-
-        }
+        }, updateCategoryOrder = {
+            viewModel.reorderCategory()
+        })
 
         VerticalReorderList(categoryList = categoryItemState.value.orEmpty(), addNewCategory = {
             addNewCategoryDialogShowAvailable.value = true
@@ -105,6 +106,11 @@ fun CategoryEditScreen(
 
                 is CategoryEditOptionEvent.EditCategoryName -> {
                     editCategoryNameDialogShowAvailable.value = event.categoryInfo
+                }
+
+                is CategoryEditOptionEvent.ReorderedCategory -> {
+                    Log.e("ayhan", "CategoryEditScreenReorder: ${event.categoryList}")
+                    viewModel.updateCategoryOrder(event.categoryList)
                 }
             }
         })

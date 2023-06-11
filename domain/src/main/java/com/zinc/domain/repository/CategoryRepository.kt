@@ -8,5 +8,6 @@ interface CategoryRepository {
     suspend fun addNewCategory(token: String, name: String): CommonResponse
     suspend fun editCategoryName(token: String, id: Int, name: String): CommonResponse
     suspend fun removeCategory(token: String, id: Int): CommonResponse
+    suspend fun reorderCategory(token: String, orderedIds: List<String>): CommonResponse
 }
 

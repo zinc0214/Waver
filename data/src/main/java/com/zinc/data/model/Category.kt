@@ -19,3 +19,7 @@ data class EditCategoryNameRequest(
     val id: Int,
     val name: String
 )
+
+data class ReorderedCategoryRequest(
+    val categoryIds: List<String>
+)

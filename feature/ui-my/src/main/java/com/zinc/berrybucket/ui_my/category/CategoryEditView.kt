@@ -71,7 +71,7 @@ internal fun CategoryEditTitleView(
         },
         rightText = stringResource(id = CommonR.string.finishDesc),
         onRightTextClicked = {
-            // TODO : 카테고리 편집 정보 저장 필요
+            updateCategoryOrder()
         }
     )
 }
@@ -125,6 +125,8 @@ fun VerticalReorderList(
             val fromIndex = if (from.index < 1) 1 else from.index - 1
             add(toIndex, removeAt(fromIndex))
         }
+    }, onDragEnd = { _, _ ->
+        optionEvent.invoke(CategoryEditOptionEvent.ReorderedCategory(data))
     })
     LazyColumn(
         state = state.listState,
