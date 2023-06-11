@@ -3,11 +3,11 @@ package com.zinc.berrybucket.ui_my.category
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,18 +26,25 @@ fun CategoryEditScreen(
     val viewModel: CategoryViewModel = hiltViewModel()
     val categoryList by viewModel.categoryInfoList.observeAsState()
     val apiFailed by viewModel.apiFailed.observeAsState()
-    viewModel.loadCategoryList()
+
+    if (categoryList.isNullOrEmpty()) {
+        viewModel.loadCategoryList()
+    }
 
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
     val editCategoryNameDialogShowAvailable =
         remember { mutableStateOf<CategoryInfo?>(null) } // 카테고리 이름 편집 팝업 노출 여부
-    val apiFailState = rememberSaveable { mutableStateOf(apiFailed) }
+    val apiFailState = remember { mutableStateOf(apiFailed) }
+    val categoryItemState = remember { mutableStateOf(categoryList) }
 
-    val categoryItemState = rememberSaveable { mutableStateOf(categoryList) }
-
-    categoryList?.let {
-        categoryItemState.value = it
+    LaunchedEffect(categoryList) {
+        categoryItemState.value = categoryList
     }
+
+    LaunchedEffect(apiFailed) {
+        apiFailState.value = apiFailed
+    }
+
 
     apiFailState.value?.let {
         ApiFailDialog(it.first, it.second) {

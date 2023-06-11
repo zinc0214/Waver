@@ -55,7 +55,7 @@ class CategoryViewModel @Inject constructor(
                 Log.e("ayhan", "loadCategoryList: ${_categoryInfoList.value}")
             }
         }.runCatching {
-            Log.e("ayhan", "load Category Fail 1")
+
         }
 
     }
@@ -67,12 +67,16 @@ class CategoryViewModel @Inject constructor(
             }) {
                 val response = addNewCategory(token, name)
 
+                Log.e("ayhan", "load addNewCategory 2 $response")
+
                 if (response.success) {
                     loadCategoryList()
                 } else {
                     _apiFailed.value = "카테고리 추가 실패" to response.message
                 }
             }
+        }.runCatching {
+
         }
     }
 
