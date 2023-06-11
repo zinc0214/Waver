@@ -80,11 +80,7 @@ fun CategoryEditScreen(
 
                     is EditCategoryNameEvent.EditCategoryName -> {
                         editCategoryNameDialogShowAvailable.value = null
-                        val updateCategory =
-                            categoryItemState.value?.firstOrNull { item -> item.id == it.categoryInfo.id }
-                        if (updateCategory != null) {
-                            viewModel.editCategory(updateCategory)
-                        }
+                        viewModel.editCategory(it.categoryInfo)
                     }
                 }
             })

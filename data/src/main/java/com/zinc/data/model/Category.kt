@@ -12,5 +12,10 @@ data class LoadCategoryResponse(
 
 @Serializable
 data class AddNewCategoryRequest(
+    val named: String
+)
+
+data class EditCategoryNameRequest(
+    val id: Int,
     val name: String
 )

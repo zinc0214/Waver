@@ -5,6 +5,7 @@ import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.CommonResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.model.AddNewCategoryRequest
+import com.zinc.data.model.EditCategoryNameRequest
 import com.zinc.domain.repository.CategoryRepository
 import javax.inject.Inject
 
@@ -18,5 +19,9 @@ internal class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun addNewCategory(token: String, name: String): CommonResponse {
         return berryBucketApi.addNewCategory(token, AddNewCategoryRequest(name))
+    }
+
+    override suspend fun editCategoryName(token: String, id: Int, name: String): CommonResponse {
+        return berryBucketApi.editCategoryName(token, EditCategoryNameRequest(id, name))
     }
 }
