@@ -122,7 +122,7 @@ fun BottomButtonView(
 @Composable
 private fun BottomButtonPreview() {
     BottomButtonView(
-        leftButtonEnable = true,
-        rightButtonEnable = false,
+        leftButtonEnable = false,
+        rightButtonEnable = true,
         clickEvent = {})
 }

@@ -20,8 +20,11 @@ import androidx.compose.material.Divider
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -109,9 +112,18 @@ fun VerticalReorderList(
     addNewCategory: () -> Unit,
     optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
-    val data = remember { mutableStateOf(categoryList) }
+
+    var data by remember { mutableStateOf(categoryList) }
+
+    // categoryList가 변경되는 시점에서 data 값을 업데이트
+    LaunchedEffect(categoryList) {
+        data = categoryList
+    }
+
+    Log.e("ayhan", "VerticalReorderList: ${data} \n ")
+
     val state = rememberReorderableLazyListState(onMove = { from, to ->
-        data.value = data.value.toMutableList().apply {
+        data = data.toMutableList().apply {
             Log.e("ayhan", "from : $from to : $to")
             val toIndex = if (to.index < 1) 1 else to.index - 1
             val fromIndex = if (from.index < 1) 1 else from.index - 1
@@ -128,7 +140,7 @@ fun VerticalReorderList(
         item {
             CategoryEditAddView(addNewCategory)
         }
-        itemsIndexed(data.value, key = { index, item -> item.id }) { index, item ->
+        itemsIndexed(data, key = { index, item -> item.id }) { index, item ->
             ReorderableItem(state, key = item, orientationLocked = false) {
                 EditCategoryItemView(index, item, optionEvent)
             }
