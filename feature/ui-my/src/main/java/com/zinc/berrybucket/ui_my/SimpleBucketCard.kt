@@ -3,8 +3,10 @@ package com.zinc.berrybucket.ui_my
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,12 +38,14 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Sub_D2
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.util.shadow
 
 @Composable
 fun SimpleBucketListView(
@@ -74,18 +78,26 @@ fun SimpleBucketCard(
     var bucketCount = bucket.value.currentCount
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
-    Card(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (bucket.value.isProgress) borderColor.value else Gray3,
+                color = if (bucket.value.isProgress) borderColor.value else Color.Transparent,
                 shape = RoundedCornerShape(4.dp)
             )
-            .clickable { itemClicked(itemInfo) },
-        backgroundColor = if (bucket.value.isProgress) Gray1 else Gray3,
-        shape = RoundedCornerShape(4.dp),
-        elevation = 0.5.dp
+            .shadow(
+                color = Gray5.copy(alpha = 0.2f),
+                offsetX = (0).dp,
+                offsetY = (0).dp,
+                blurRadius = 4.dp,
+            )
+            .clip(RoundedCornerShape(4.dp))
+            .clickable { itemClicked(itemInfo) }
+            .background(
+                color = if (bucket.value.isProgress) Gray1 else Gray3,
+                shape = RoundedCornerShape(4.dp)
+            ),
     ) {
         ConstraintLayout(
             modifier = Modifier
@@ -269,3 +281,4 @@ fun HorizontalProgressBar(
         progress = indicatorProgress
     }
 }
+
