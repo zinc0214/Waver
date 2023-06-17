@@ -41,6 +41,10 @@ fun BucketCircularProgressBar(
     var animationPlayed by remember {
         mutableStateOf(false)
     }
+
+    var checkBoxShow by remember {
+        mutableStateOf(false)
+    }
     val curPercentage = animateFloatAsState(
         targetValue = if (animationPlayed) 1f else 0f,
         animationSpec = tween(
@@ -50,9 +54,10 @@ fun BucketCircularProgressBar(
         finishedListener = {
             if (it == 1.0f) {
                 animationPlayed = false
+                checkBoxShow = true
                 progressState.invoke(BucketProgressState.PROGRESS_END)
             }
-        }, label = ""
+        }, label = "curPercentage"
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -72,13 +77,23 @@ fun BucketCircularProgressBar(
         }
 
         Canvas(modifier = Modifier.size(radius * 2f)) {
-            drawArc(
-                color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
-                startAngle = -90f,
-                sweepAngle = 360 * curPercentage.value,
-                useCenter = false,
-                style = Stroke(1.5.dp.toPx(), cap = StrokeCap.Round)
-            )
+            if (animationPlayed) {
+                drawArc(
+                    color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
+                    startAngle = -90f,
+                    sweepAngle = 360 * curPercentage.value,
+                    useCenter = false,
+                    style = Stroke(1.5.dp.toPx(), cap = StrokeCap.Round)
+                )
+            } else {
+                drawArc(
+                    color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
+                    startAngle = -90f,
+                    sweepAngle = if (checkBoxShow) 360f else 0f,
+                    useCenter = false,
+                    style = Stroke(1.5.dp.toPx(), cap = StrokeCap.Round)
+                )
+            }
         }
 
         Image(
@@ -89,7 +104,7 @@ fun BucketCircularProgressBar(
                 .width(32.dp)
         )
 
-        if ((curPercentage.value * 100).toInt() == 100) {
+        if (checkBoxShow) {
             Image(
                 painter =
                 if (tabType == MyTabType.ALL)
@@ -105,6 +120,7 @@ fun BucketCircularProgressBar(
 
         if ((curPercentage.value * 100).toInt() == 1) {
             progressState.invoke(BucketProgressState.FINISHED)
+            checkBoxShow = false
         }
     }
 }
