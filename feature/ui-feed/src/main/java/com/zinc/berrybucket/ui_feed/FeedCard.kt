@@ -28,6 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.model.profileInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Main5
 import com.zinc.berrybucket.ui.presentation.component.IconButton
@@ -36,6 +37,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
+import com.zinc.berrybucket.util.shadow
 import com.zinc.common.models.FeedInfo
 
 
@@ -64,10 +66,15 @@ fun FeedCardView(feedInfo: FeedInfo, feedClicked: (String) -> Unit) {
 
     Card(
         shape = RoundedCornerShape(8.dp),
-        elevation = 0.5.dp,
         backgroundColor = Gray1,
         modifier = Modifier
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
+            .shadow(
+                color = Gray5.copy(alpha = 0.2f),
+                offsetX = (0).dp,
+                offsetY = (0).dp,
+                blurRadius = 8.dp,
+            )
             .clip(
                 RoundedCornerShape(8.dp)
             )
