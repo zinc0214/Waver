@@ -17,15 +17,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.util.shadow
 import com.zinc.common.models.CategoryInfo
 
 @Composable
@@ -64,9 +67,15 @@ fun CategoryCard(categoryInfo: CategoryInfo, clicked: () -> Unit) {
                 }
                 true
             }
+            .shadow(
+                color = Gray5.copy(alpha = 0.2f),
+                offsetX = (0).dp,
+                offsetY = (0).dp,
+                blurRadius = 4.dp,
+            )
+            .clip(RoundedCornerShape(4.dp))
             .clickable { clicked() },
-        shape = RoundedCornerShape(4.dp),
-        elevation = 2.dp
+        shape = RoundedCornerShape(4.dp)
     ) {
         ConstraintLayout(
             modifier = Modifier
