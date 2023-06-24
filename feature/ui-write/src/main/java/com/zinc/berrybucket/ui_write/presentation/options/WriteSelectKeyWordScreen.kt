@@ -105,7 +105,8 @@ fun WriteSelectKeyWordScreen(
                         RoundChip(
                             chipRadius = 24.dp,
                             modifier = Modifier
-                                .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp)
+                                .defaultMinSize(minWidth = 90.dp, minHeight = 48.dp),
+                            textModifier = Modifier
                                 .selectable(
                                     selected = selected,
                                     onClick = {
@@ -117,8 +118,8 @@ fun WriteSelectKeyWordScreen(
                                             selected = !selected
                                         }
                                     }
-                                ),
-                            textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
+                                )
+                                .padding(horizontal = 8.dp, vertical = 14.dp),
                             selectedColor = Main3,
                             unSelectedColor = Gray7,
                             text = keywordItem.text,
