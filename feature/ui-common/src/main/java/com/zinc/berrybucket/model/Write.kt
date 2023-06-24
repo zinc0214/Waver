@@ -3,6 +3,7 @@ package com.zinc.berrybucket.model
 import android.os.Parcelable
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.ExposureStatus
+import com.zinc.common.models.KeywordInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.toYn
 import kotlinx.parcelize.Parcelize
@@ -81,9 +82,14 @@ data class WriteInfo1(
     }
 }
 
+fun List<KeywordInfo>.toUiModel(): List<WriteKeyWord> {
+    return map {
+        WriteKeyWord(it.id, it.name)
+    }
+}
 
 data class WriteKeyWord(
-    val id: String,
+    val id: Int,
     val text: String
 ) : Serializable
 

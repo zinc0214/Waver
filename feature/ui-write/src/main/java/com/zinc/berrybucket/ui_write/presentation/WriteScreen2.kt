@@ -15,8 +15,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
-import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
@@ -53,13 +54,20 @@ fun WriteScreen2(
 ) {
 
     val context = LocalContext.current
+    val viewModel: WriteViewModel = hiltViewModel()
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
+    val originKeyWords by viewModel.keywordList.observeAsState()
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
     val selectedFriends = remember { mutableStateOf(writeTotalInfo.tagFriends) }
     val selectedOpenType = remember { mutableStateOf(writeTotalInfo.writeOpenType) }
     val isScrapUsed = remember { mutableStateOf(writeTotalInfo.isScrapUsed) }
+    val keyWordList = remember { mutableStateOf(originKeyWords) }
+
+    LaunchedEffect(originKeyWords) {
+        keyWordList.value = originKeyWords
+    }
 
     BackHandler(enabled = true) { // <-----
         if (optionScreenShow != null) {
@@ -75,14 +83,6 @@ fun WriteScreen2(
             )
         }
     }
-
-    // TODO : 데이터 받아오도록 수정 필요
-    val originKeyWord = buildList {
-        repeat(50) {
-            add(WriteKeyWord(id = it.toString(), text = "여행 + $it"))
-        }
-    }
-
 
     val optionsList = mutableListOf(
         WriteAddOption(
@@ -122,9 +122,11 @@ fun WriteScreen2(
     if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
         when (optionScreenShow) {
             WriteOptionsType2.TAG -> {
+
+                viewModel.loadKeyword()
                 WriteSelectKeyWordScreen(
                     closeClicked = { optionScreenShow = null },
-                    originKeyWord = originKeyWord,
+                    originKeyWord = keyWordList.value.orEmpty(),
                     selectedKeyWords = selectedKeyWords.value,
                     addKeyWordClicked = {
                         selectedKeyWords.value = it
@@ -156,6 +158,7 @@ fun WriteScreen2(
         ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
             WriteScreen2ContentView(
+                viewModel = viewModel,
                 writeTotalInfo = writeTotalInfo,
                 optionsList = optionsList,
                 goToBack = {
@@ -209,6 +212,7 @@ fun WriteScreen2(
 @Composable
 private fun WriteScreen2ContentView(
     modifier: Modifier = Modifier,
+    viewModel: WriteViewModel,
     writeTotalInfo: WriteTotalInfo,
     optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,
@@ -221,7 +225,6 @@ private fun WriteScreen2ContentView(
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
-        val viewModel: WriteViewModel = hiltViewModel()
         WriteAppBar(
             modifier = Modifier
                 .fillMaxWidth()

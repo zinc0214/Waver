@@ -10,6 +10,7 @@ import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
 import com.zinc.common.models.JoinRequest
 import com.zinc.common.models.JoinResponse
+import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
@@ -114,4 +115,8 @@ interface BerryBucketApi {
 
     @GET("/alarm")
     suspend fun loadAlarmList(@Header("Authorization") token: String): AlarmList
+
+    @GET("/explore/keywords")
+    suspend fun loadKeywords(@Header("Authorization") token: String): KeywordResponse
+
 }
