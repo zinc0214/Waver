@@ -73,7 +73,7 @@ fun WriteScreen2(
     }
 
     LaunchedEffect(key1 = loadFail) {
-        if (loadFail.isNullOrEmpty().not()) {
+        if (loadFail?.first.isNullOrEmpty().not() && loadFail?.second.isNullOrEmpty().not()) {
             showApiFailDialog.value = true
         }
     }
@@ -214,10 +214,12 @@ fun WriteScreen2(
         }
 
         if (showApiFailDialog.value) {
-            ApiFailDialog(title = loadFail.orEmpty(), message = "데이터 로드에 실패했습니다", dismissEvent = {
-
-                showApiFailDialog.value = false
-            })
+            ApiFailDialog(
+                title = loadFail?.first.orEmpty(),
+                message = loadFail?.second.orEmpty(),
+                dismissEvent = {
+                    showApiFailDialog.value = false
+                })
         }
     }
 }

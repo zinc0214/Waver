@@ -34,8 +34,8 @@ class WriteViewModel @Inject constructor(
     private val _keywordList = MutableLiveData<List<WriteKeyWord>>()
     val keywordList: LiveData<List<WriteKeyWord>> get() = _keywordList
 
-    private val _loadFail = MutableLiveData<String>()
-    val loadFail: LiveData<String> get() = _loadFail
+    private val _loadFail = MutableLiveData<Pair<String, String>>()
+    val loadFail: LiveData<Pair<String, String>> get() = _loadFail
 
 
     fun addNewBucketList(writeInfo: UIAddBucketListInfo, isSucceed: (Boolean) -> Unit) {
@@ -63,6 +63,11 @@ class WriteViewModel @Inject constructor(
                         )
                     )
                     Log.e("ayhan", "addBucketResult : $result")
+                    if (result.success) {
+
+                    } else {
+                        _loadFail.value = "버킷리스트 생성 실패" to result.message
+                    }
                 }
             }.getOrElse {
                 isSucceed(false)
@@ -92,7 +97,7 @@ class WriteViewModel @Inject constructor(
 
     fun loadKeyword() {
         viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            _loadFail.value = "키워드 로딩 실패"
+            _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
         }) {
             runCatching {
                 accessToken.value?.let { token ->
@@ -100,11 +105,11 @@ class WriteViewModel @Inject constructor(
                     if (result.success) {
                         _keywordList.value = result.data?.toUiModel()
                     } else {
-                        _loadFail.value = "키워드 로딩 실패"
+                        _loadFail.value = "키워드 로딩 실패" to result.message
                     }
                 }
             }.getOrElse {
-                _loadFail.value = "키워드 로딩 실패"
+                _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
             }
         }
     }
