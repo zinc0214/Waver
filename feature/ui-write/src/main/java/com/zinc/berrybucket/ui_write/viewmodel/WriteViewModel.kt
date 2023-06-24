@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_write.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -38,10 +39,13 @@ class WriteViewModel @Inject constructor(
 
 
     fun addNewBucketList(writeInfo: UIAddBucketListInfo, isSucceed: (Boolean) -> Unit) {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+            isSucceed(false)
+            Log.e("ayhan", "addBucketResult fail1 : ${throwable.cause}")
+        }) {
             runCatching {
                 accessToken.value?.let { accessToken ->
-                    addNewBucketList.invoke(
+                    val result = addNewBucketList.invoke(
                         accessToken,
                         addBucketListRequest = AddBucketListRequest(
                             bucketType = writeInfo.bucketType,
@@ -58,10 +62,11 @@ class WriteViewModel @Inject constructor(
                             categoryId = writeInfo.categoryId
                         )
                     )
-                    isSucceed(true)
+                    Log.e("ayhan", "addBucketResult : $result")
                 }
             }.getOrElse {
                 isSucceed(false)
+                Log.e("ayhan", "addBucketResult : fail2 ${it.message}")
             }
         }
     }

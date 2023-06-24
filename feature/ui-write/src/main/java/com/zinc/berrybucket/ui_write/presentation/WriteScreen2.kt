@@ -39,6 +39,7 @@ import com.zinc.berrybucket.model.WriteOptionsType2
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseUIBucketListInfo
 import com.zinc.berrybucket.model.parseWrite1Info
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectFriendsScreen
@@ -58,15 +59,23 @@ fun WriteScreen2(
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
     val originKeyWords by viewModel.keywordList.observeAsState()
+    val loadFail by viewModel.loadFail.observeAsState()
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
     val selectedFriends = remember { mutableStateOf(writeTotalInfo.tagFriends) }
     val selectedOpenType = remember { mutableStateOf(writeTotalInfo.writeOpenType) }
     val isScrapUsed = remember { mutableStateOf(writeTotalInfo.isScrapUsed) }
     val keyWordList = remember { mutableStateOf(originKeyWords) }
+    val showApiFailDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(originKeyWords) {
         keyWordList.value = originKeyWords
+    }
+
+    LaunchedEffect(key1 = loadFail) {
+        if (loadFail.isNullOrEmpty().not()) {
+            showApiFailDialog.value = true
+        }
     }
 
     BackHandler(enabled = true) { // <-----
@@ -203,7 +212,13 @@ fun WriteScreen2(
                     }
                 )
             }
+        }
 
+        if (showApiFailDialog.value) {
+            ApiFailDialog(title = loadFail.orEmpty(), message = "데이터 로드에 실패했습니다", dismissEvent = {
+
+                showApiFailDialog.value = false
+            })
         }
     }
 }
