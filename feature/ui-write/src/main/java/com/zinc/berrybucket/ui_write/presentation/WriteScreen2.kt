@@ -131,7 +131,6 @@ fun WriteScreen2(
     if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
         when (optionScreenShow) {
             WriteOptionsType2.TAG -> {
-
                 viewModel.loadKeyword()
                 WriteSelectKeyWordScreen(
                     closeClicked = { optionScreenShow = null },

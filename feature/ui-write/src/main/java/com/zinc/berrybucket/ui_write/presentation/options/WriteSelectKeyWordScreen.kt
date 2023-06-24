@@ -111,10 +111,11 @@ fun WriteSelectKeyWordScreen(
                                     onClick = {
                                         if (selected) {
                                             updateKeyWords.value -= keywordItem
-                                        } else {
+                                            selected = !selected
+                                        } else if (updateKeyWords.value.size < 3) {
                                             updateKeyWords.value += keywordItem
+                                            selected = !selected
                                         }
-                                        selected = !selected
                                     }
                                 ),
                             textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
