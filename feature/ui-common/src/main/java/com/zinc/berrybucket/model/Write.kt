@@ -145,7 +145,6 @@ fun parseUIBucketListInfo(
 ) = UIAddBucketListInfo(
     bucketType = BucketType.ORIGINAL,
     title = title,
-    content = title,
     memo = parseMemo(options),
     images = parseImages(options),
     targetDate = parseTargetDate(options),
@@ -201,7 +200,6 @@ data class UIAddBucketListInfo(
     val bucketType: BucketType,
     val exposureStatus: ExposureStatus, // 공개여부
     val title: String,
-    val content: String, // 내용
     val memo: String?, // 메모
     val tags: String = "", // 태그 목록(최대 5) - ","로 구분
     val friendUserIds: List<String>?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)

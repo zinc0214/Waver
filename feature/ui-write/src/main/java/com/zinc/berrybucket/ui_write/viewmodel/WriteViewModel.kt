@@ -51,7 +51,6 @@ class WriteViewModel @Inject constructor(
                             bucketType = writeInfo.bucketType,
                             exposureStatus = writeInfo.exposureStatus,
                             title = writeInfo.title,
-                            content = writeInfo.content,
                             memo = writeInfo.memo,
                             tags = writeInfo.tags,
                             friendUserIds = writeInfo.friendUserIds,
