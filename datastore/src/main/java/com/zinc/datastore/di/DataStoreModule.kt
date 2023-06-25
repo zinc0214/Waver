@@ -1,6 +1,7 @@
 package com.zinc.datastore.di
 
 import android.content.Context
+import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.common.CommonDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import dagger.Module
@@ -17,6 +18,11 @@ class DataStoreModule {
     @Singleton
     fun loginPreferenceDataStoreModule(@ApplicationContext appContext: Context): LoginPreferenceDataStoreModule =
         LoginPreferenceDataStoreModule(appContext)
+
+    @Provides
+    @Singleton
+    fun filterPreferenceDataStoreModule(@ApplicationContext appContext: Context): FilterPreferenceDataStoreModule =
+        FilterPreferenceDataStoreModule(appContext)
 
     @Provides
     @Singleton
