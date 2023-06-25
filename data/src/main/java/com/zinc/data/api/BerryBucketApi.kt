@@ -2,8 +2,9 @@ package com.zinc.data.api
 
 import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AlarmList
-import com.zinc.common.models.AllBucketList
+import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.AllBucketListSortType
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.FeedInfo
@@ -45,9 +46,9 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Query("dDayBucketOnly") dDayBucketOnly: String,
         @Query("isPassed") isPassed: String,
-        @Query("isCompleted") isCompleted: String,
+        @Query("status") status: BucketStatus?,
         @Query("sort") sort: AllBucketListSortType
-    ): AllBucketList
+    ): AllBucketListResponse
 
     @GET("/category")
     suspend fun loadCategoryList(@Header("Authorization") token: String): LoadCategoryResponse

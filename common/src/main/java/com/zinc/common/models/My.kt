@@ -44,21 +44,35 @@ data class DdayBucketList(
 )
 
 @Serializable
+data class AllBucketListResponse(
+    val data: AllBucketList,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
+@Serializable
 data class AllBucketList(
-    val processingCount: String,
-    val succeedCount: String,
-    val bucketList: List<BucketInfoSimple>
+    val totalCount: Int,
+    val processingCount: Int,
+    val completedCount: Int,
+    val bucketlist: List<BucketInfoSimple>
 )
 
 @Serializable
 data class AllBucketListRequest(
     val dDayBucketOnly: String, // d-day 버킷여부
     val isPassed: String,
-    val isCompleted: String,
+    val status: BucketStatus?,
     val sort: AllBucketListSortType
 )
 
 enum class AllBucketListSortType {
     ORDERED, CREATED, CREATED_DESC, UPDATED, UPDATED_DESC
+}
+
+@Serializable
+enum class BucketStatus {
+    COMPLETE, PROGRESS
 }
 

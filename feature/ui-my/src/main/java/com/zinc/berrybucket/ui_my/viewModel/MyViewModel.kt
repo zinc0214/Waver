@@ -12,6 +12,7 @@ import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailType
@@ -106,13 +107,17 @@ class MyViewModel @Inject constructor(
                         token,
                         allBucketListRequest
                     ).apply {
-                        Log.e("ayhan", "allBucketList : $this")
-                        val uiALlBucketType = AllBucketList(
-                            processingCount = this.processingCount,
-                            succeedCount = this.succeedCount,
-                            bucketList = this.bucketList.parseToUI()
-                        )
-                        _allBucketItem.value = uiALlBucketType
+                        if (this.success) {
+                            val data = this.data
+                            Log.e("ayhan", "allBucketList : $this")
+                            val uiALlBucketType = AllBucketList(
+                                processingCount = data.processingCount.toString(),
+                                succeedCount = data.completedCount.toString(),
+                                bucketList = data.bucketlist.parseToUI()
+                            )
+                            _allBucketItem.value = uiALlBucketType
+                        }
+
                     }
                 }
             }.getOrElse {
@@ -184,53 +189,60 @@ class MyViewModel @Inject constructor(
         BucketInfoSimple(
             id = "1",
             title = "아이스크림을 먹을테야 얍얍압얍",
-            currentCount = 1,
+            userCount = 1,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
+
         ),
         BucketInfoSimple(
             id = "2",
             title = "아이스크림을 여행을 갈거란 말이야",
-            currentCount = 1,
+            userCount = 1,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
-            currentCount = 5,
+            userCount = 5,
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
-            currentCount = 5,
+            userCount = 5,
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
-            currentCount = 5,
+            userCount = 5,
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
 
         ),
         BucketInfoSimple(
             id = "3",
             title = "Dday가 있는 애22233",
-            currentCount = 5,
+            userCount = 5,
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN
+            detailType = DetailType.MY_OPEN,
+            bucketType = BucketType.ORIGINAL
         )
     )
 

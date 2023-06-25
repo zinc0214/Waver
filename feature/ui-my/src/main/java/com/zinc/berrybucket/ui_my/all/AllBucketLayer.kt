@@ -42,7 +42,7 @@ fun AllBucketLayer(
             allBucketListRequest = AllBucketListRequest(
                 dDayBucketOnly = YesOrNo.N.name,
                 isPassed = YesOrNo.N.name,
-                isCompleted = YesOrNo.N.name,
+                status = null,
                 sort = AllBucketListSortType.CREATED
             )
         )

@@ -1,7 +1,7 @@
 package com.zinc.domain.repository
 
-import com.zinc.common.models.AllBucketList
 import com.zinc.common.models.AllBucketListRequest
+import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.MyProfileResponse
@@ -15,5 +15,5 @@ interface MyRepository {
     suspend fun loadAllBucketList(
         token: String,
         allBucketListRequest: AllBucketListRequest
-    ): AllBucketList
+    ): AllBucketListResponse
 }

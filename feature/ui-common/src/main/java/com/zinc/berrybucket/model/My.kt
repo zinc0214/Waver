@@ -27,15 +27,22 @@ fun List<BucketInfoSimple>.parseToUI(): List<UIBucketInfoSimple> {
 
 fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
     return UIBucketInfoSimple(
-        type = BucketType.values().find { it.text == this.type } ?: BucketType.BASIC,
+        type = setBucketType(this.dDay),
         id = this.id,
         title = this.title,
-        currentCount = this.currentCount,
+        currentCount = this.userCount,
         goalCount = this.goalCount,
         dDay = this.dDay,
         status = this.status,
-        detailType = this.detailType
+        detailType = this.detailType ?: DetailType.MY_CLOSE
     )
+}
+
+private fun setBucketType(dDay: Int?): BucketType {
+    return if (dDay == null) BucketType.BASIC
+    else if (dDay < 0) BucketType.D_MINUS
+    else if (dDay == 0) BucketType.D_DAY
+    else BucketType.D_PLUS
 }
 
 data class UIBucketInfoSimple(
