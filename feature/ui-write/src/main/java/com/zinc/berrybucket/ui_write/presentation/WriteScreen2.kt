@@ -60,6 +60,7 @@ fun WriteScreen2(
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
     val originKeyWords by viewModel.keywordList.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
+    val addNewBucketListResult by viewModel.addNewBucketListResult.observeAsState()
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
     val selectedFriends = remember { mutableStateOf(writeTotalInfo.tagFriends) }
@@ -75,6 +76,17 @@ fun WriteScreen2(
     LaunchedEffect(key1 = loadFail) {
         if (loadFail?.first.isNullOrEmpty().not() && loadFail?.second.isNullOrEmpty().not()) {
             showApiFailDialog.value = true
+        }
+    }
+
+    LaunchedEffect(key1 = addNewBucketListResult) {
+        if (addNewBucketListResult == true) {
+            Toast.makeText(
+                context,
+                R.string.addBucketListSucceed,
+                Toast.LENGTH_SHORT
+            ).show()
+            addBucketSucceed()
         }
     }
 
@@ -189,9 +201,7 @@ fun WriteScreen2(
                             (changedOption.type as WriteOptionsType2.SCRAP).isScrapUsed
                     }
                 }
-            ) {
-                addBucketSucceed()
-            }
+            )
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
@@ -233,8 +243,7 @@ private fun WriteScreen2ContentView(
     optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
-    optionValueChanged: (WriteAddOption) -> Unit,
-    addBucketSucceed: () -> Unit,
+    optionValueChanged: (WriteAddOption) -> Unit
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
@@ -289,9 +298,7 @@ private fun WriteScreen2ContentView(
                                 tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.tagList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
                             )
-                        ) {
-                            if (it) addBucketSucceed() else addBucketSucceed()
-                        }
+                        )
                     }
                 }
             })

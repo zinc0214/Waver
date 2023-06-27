@@ -38,9 +38,9 @@ class WriteViewModel @Inject constructor(
     val loadFail: LiveData<Pair<String, String>> get() = _loadFail
 
 
-    fun addNewBucketList(writeInfo: UIAddBucketListInfo, isSucceed: (Boolean) -> Unit) {
+    fun addNewBucketList(writeInfo: UIAddBucketListInfo) {
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
-            isSucceed(false)
+            _loadFail.value = "버킷리스트 생성 실패" to "다시 시도해주세요"
             Log.e("ayhan", "addBucketResult fail1 : ${throwable.cause}")
         }) {
             runCatching {
@@ -63,13 +63,13 @@ class WriteViewModel @Inject constructor(
                     )
                     Log.e("ayhan", "addBucketResult : $result")
                     if (result.success) {
-
+                        _addNewBucketListResult.value = true
                     } else {
                         _loadFail.value = "버킷리스트 생성 실패" to result.message
                     }
                 }
             }.getOrElse {
-                isSucceed(false)
+                _loadFail.value = "버킷리스트 생성 실패" to it.message.toString()
                 Log.e("ayhan", "addBucketResult : fail2 ${it.message}")
             }
         }
