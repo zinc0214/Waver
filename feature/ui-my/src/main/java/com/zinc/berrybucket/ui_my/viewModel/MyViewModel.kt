@@ -16,6 +16,7 @@ import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailType
+import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadAllBucketList
@@ -23,6 +24,10 @@ import com.zinc.domain.usecases.my.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,6 +37,7 @@ class MyViewModel @Inject constructor(
     private val loadAllBucketList: LoadAllBucketList,
     private val loadCategoryList: LoadCategoryList,
     private val loadDdayBucketList: LoadDdayBucketList,
+    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -49,6 +55,62 @@ class MyViewModel @Inject constructor(
 
     private val _ddayBucketList = MutableLiveData<DdayBucketList>()
     val ddayBucketList: LiveData<DdayBucketList> = _ddayBucketList
+
+    private val _showProgress = MutableLiveData<Boolean>()
+    val showProgress: LiveData<Boolean> get() = _showProgress
+
+    private val _showSucceed = MutableLiveData<Boolean>()
+    val showSucceed: LiveData<Boolean> get() = _showSucceed
+
+    private val _orderType = MutableLiveData<Int>()
+    val orderType: LiveData<Int> get() = _orderType
+
+    private val _showDdayView = MutableLiveData<Boolean>()
+    val showDdayView: LiveData<Boolean> get() = _showDdayView
+
+    fun loadBucketFilter() {
+        viewModelScope.launch {
+            val job1: Deferred<Unit> = async { loadShowProgressDataStore() }
+            val job2: Deferred<Unit> = async { loadShowSucceedDataStore() }
+            val job3: Deferred<Unit> = async { loadOrderTypeDataStore() }
+            val job4: Deferred<Unit> = async { loadShowDdayDataStore() }
+
+            awaitAll(job1, job2, job3, job4)
+        }
+
+    }
+
+    private suspend fun loadShowProgressDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadIsProgress.collectLatest {
+                _showProgress.value = it
+            }
+        }
+    }
+
+    private suspend fun loadShowSucceedDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadIsSucceed.collectLatest {
+                _showSucceed.value = it
+            }
+        }
+    }
+
+    private suspend fun loadOrderTypeDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadOrderType.collectLatest {
+                _orderType.value = it
+            }
+        }
+    }
+
+    private suspend fun loadShowDdayDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadShowDday.collectLatest {
+                _showDdayView.value = it
+            }
+        }
+    }
 
 
     fun loadProfile() {
@@ -154,6 +216,30 @@ class MyViewModel @Inject constructor(
             MyTabType.DDAY -> searchDdayBucket(searchWord = searchWord)
             MyTabType.CATEGORY -> searchCategoryItems(searchWord = searchWord)
             MyTabType.CHALLENGE -> searchChallenge(searchWord = searchWord)
+        }
+    }
+
+    fun updateBucketFilter(
+        isProgress: Boolean?,
+        isSucceed: Boolean?,
+        orderType: Int?,
+        showDday: Boolean?
+    ) {
+        viewModelScope.launch {
+            filterPreferenceDataStoreModule.apply {
+                isProgress?.let {
+                    setProgress(isProgress)
+                }
+                isSucceed?.let {
+                    setSucceed(isSucceed)
+                }
+                orderType?.let {
+                    setOrderType(it)
+                }
+                showDday?.let {
+                    setShowDday(it)
+                }
+            }
         }
     }
 

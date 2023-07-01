@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.component
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
@@ -47,6 +48,7 @@ fun LabelWithSwitchView(
     checkedChanged: (Boolean) -> Unit
 ) {
 
+    Log.e("ayhan", "LabelWithSwitchView:isChecked:$isChecked")
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()

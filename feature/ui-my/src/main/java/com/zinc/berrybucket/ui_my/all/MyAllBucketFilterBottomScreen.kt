@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my.all
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,24 +32,64 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable
 fun MyAllBucketFilterBottomScreen(
+    isInit_: Boolean = true,
     viewModel: MyViewModel, clickEvent: (BottomButtonClickEvent) -> Unit
 ) {
 
+    val isInit = remember {
+        mutableStateOf(isInit_)
+    }
+
+    if (isInit.value) {
+        viewModel.loadBucketFilter()
+        isInit.value = false
+    }
+
+    val showProgressPref by viewModel.showProgress.observeAsState()
+    val showSucceedPref by viewModel.showSucceed.observeAsState()
+    val orderTypePref by viewModel.orderType.observeAsState()
+    val showDdayPref by viewModel.showDdayView.observeAsState()
+
     val proceedingBucketListSelectedState = remember {
-        mutableStateOf(false)
+        mutableStateOf(showProgressPref)
     }
 
     val succeedBucketListSelectedState = remember {
-        mutableStateOf(false)
+        mutableStateOf(showSucceedPref)
     }
 
     val sortSelectedState = remember {
-        mutableStateOf(0)
+        mutableStateOf(orderTypePref)
     }
 
     val ddayShowSelectedState = remember {
-        mutableStateOf(false)
+        mutableStateOf(showDdayPref)
     }
+
+    LaunchedEffect(key1 = showProgressPref, block = {
+        showProgressPref?.let {
+            proceedingBucketListSelectedState.value = it
+        }
+    })
+
+    LaunchedEffect(key1 = showSucceedPref, block = {
+        showSucceedPref?.let {
+            Log.e("ayhan", "showSucceedPref: $showSucceedPref")
+            succeedBucketListSelectedState.value = it
+        }
+    })
+
+    LaunchedEffect(key1 = orderTypePref, block = {
+        orderTypePref?.let {
+            sortSelectedState.value = it
+        }
+    })
+
+    LaunchedEffect(key1 = showDdayPref, block = {
+        showDdayPref?.let {
+            ddayShowSelectedState.value = it
+        }
+    })
 
     Column(
         modifier = Modifier.background(
@@ -58,17 +102,23 @@ fun MyAllBucketFilterBottomScreen(
             labelText = R.string.showBucketList,
             modifier = Modifier.padding(top = 32.dp, bottom = 15.dp)
         )
-        LabelWithSwitchView(modifier = Modifier.padding(bottom = 10.dp),
-            textLabel = R.string.proceedingBucketList,
-            isChecked = proceedingBucketListSelectedState.value,
-            checkedChanged = {
-                proceedingBucketListSelectedState.value = it
-            })
-        LabelWithSwitchView(textLabel = R.string.succeedBucketList,
-            isChecked = succeedBucketListSelectedState.value,
-            checkedChanged = {
-                succeedBucketListSelectedState.value = it
-            })
+        proceedingBucketListSelectedState.value?.let { isProceed ->
+            LabelWithSwitchView(modifier = Modifier.padding(bottom = 10.dp),
+                textLabel = R.string.proceedingBucketList,
+                isChecked = isProceed,
+                checkedChanged = {
+                    proceedingBucketListSelectedState.value = it
+                })
+        }
+
+        succeedBucketListSelectedState.value?.let { isSucceed ->
+            LabelWithSwitchView(textLabel = R.string.succeedBucketList,
+                isChecked = isSucceed,
+                checkedChanged = {
+                    succeedBucketListSelectedState.value = it
+                })
+        }
+
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,16 +128,21 @@ fun MyAllBucketFilterBottomScreen(
                 .background(color = Gray3)
 
         )
+
         FilterTitleLabel(
             modifier = Modifier.padding(bottom = 20.dp),
             labelText = R.string.sortStandard
         )
-        LabelWithRadioView(modifier = Modifier,
-            itemLabels = listOf(0 to R.string.sortByUpdate, 1 to R.string.sortByCreate),
-            selectedIndex = sortSelectedState.value,
-            changedSelectedItem = {
-                sortSelectedState.value = it
-            })
+
+        sortSelectedState.value?.let { sortType ->
+            LabelWithRadioView(modifier = Modifier,
+                itemLabels = listOf(0 to R.string.sortByUpdate, 1 to R.string.sortByCreate),
+                selectedIndex = sortType,
+                changedSelectedItem = {
+                    sortSelectedState.value = it
+                })
+        }
+
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
@@ -100,18 +155,38 @@ fun MyAllBucketFilterBottomScreen(
         FilterTitleLabel(
             labelText = R.string.showContent, modifier = Modifier.padding(bottom = 15.dp)
         )
-        LabelWithSwitchView(modifier = Modifier.padding(bottom = 30.dp),
-            textLabel = R.string.showDday,
-            isChecked = ddayShowSelectedState.value,
-            checkedChanged = {
-                ddayShowSelectedState.value = it
-            })
+
+        ddayShowSelectedState.value?.let { showDday ->
+            LabelWithSwitchView(modifier = Modifier.padding(bottom = 30.dp),
+                textLabel = R.string.showDday,
+                isChecked = showDday,
+                checkedChanged = {
+                    ddayShowSelectedState.value = it
+                })
+        }
+
         BottomButtonView(clickEvent = {
             when (it) {
-                BottomButtonClickEvent.LeftButtonClicked -> clickEvent.invoke(BottomButtonClickEvent.LeftButtonClicked)
-                BottomButtonClickEvent.RightButtonClicked -> clickEvent.invoke(
-                    BottomButtonClickEvent.RightButtonClicked
-                )
+                BottomButtonClickEvent.LeftButtonClicked -> {
+                    proceedingBucketListSelectedState.value = showProgressPref
+                    succeedBucketListSelectedState.value = showSucceedPref
+                    sortSelectedState.value = orderTypePref
+                    ddayShowSelectedState.value = showDdayPref
+                    clickEvent.invoke(BottomButtonClickEvent.LeftButtonClicked)
+                }
+
+                BottomButtonClickEvent.RightButtonClicked -> {
+                    viewModel.updateBucketFilter(
+                        isProgress = proceedingBucketListSelectedState.value,
+                        isSucceed = succeedBucketListSelectedState.value,
+                        orderType = sortSelectedState.value,
+                        showDday = ddayShowSelectedState.value
+                    )
+                    clickEvent.invoke(
+                        BottomButtonClickEvent.RightButtonClicked
+                    )
+                    isInit.value = true
+                }
             }
         })
     }

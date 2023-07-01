@@ -37,16 +37,14 @@ fun AllBucketLayer(
 ) {
 
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
-    if (allBucketInfo == null) {
-        viewModel.loadAllBucketList(
-            allBucketListRequest = AllBucketListRequest(
-                dDayBucketOnly = YesOrNo.N.name,
-                isPassed = YesOrNo.N.name,
-                status = null,
-                sort = AllBucketListSortType.CREATED
-            )
+    viewModel.loadAllBucketList(
+        allBucketListRequest = AllBucketListRequest(
+            dDayBucketOnly = YesOrNo.N.name,
+            isPassed = YesOrNo.N.name,
+            status = null,
+            sort = AllBucketListSortType.CREATED
         )
-    }
+    )
 
     allBucketInfo?.let {
         Column {

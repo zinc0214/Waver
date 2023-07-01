@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
@@ -11,6 +12,7 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +34,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
+import com.zinc.berrybucket.ui_my.MyBottomSheetScreen
 import com.zinc.common.models.DetailType
 import kotlinx.coroutines.launch
 
@@ -53,14 +56,34 @@ fun BerryBucketApp(
                     bottomSheetScaffoldState.show()
                 } else {
                     bottomSheetScaffoldState.hide()
+                    currentBottomSheet = null
                 }
             }
         }
+
+        LaunchedEffect(bottomSheetScaffoldState.isVisible) {
+            if (!bottomSheetScaffoldState.isVisible) {
+                currentBottomSheet = null
+            }
+        }
+
+
+        BackHandler {
+            coroutineScope.launch {
+                if (bottomSheetScaffoldState.isVisible) {
+                    bottomSheetScaffoldState.hide() // will trigger the LaunchedEffect
+                } else {
+                    appState.backPress()
+                }
+            }
+        }
+
+
         ModalBottomSheetLayout(
             sheetState = bottomSheetScaffoldState,
             sheetContent = {
                 Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
-                    com.zinc.berrybucket.ui_my.MyBottomSheetScreen(
+                    MyBottomSheetScreen(
                         currentScreen = currentBottomSheet,
                         isNeedToBottomSheetOpen = {
                             isNeedToBottomSheetOpen.invoke(it)

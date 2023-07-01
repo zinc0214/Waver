@@ -21,12 +21,14 @@ fun MyBottomSheetScreen(
                 isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
         }
+
         is BottomSheetScreenType.SearchScreen -> {
             SearchBottomView(
                 tab = currentScreen.selectTab,
                 isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
             )
         }
+
         else -> {
             // Do Nothing
         }
@@ -64,20 +66,28 @@ private fun FilterBottomView(
                     BottomButtonClickEvent.LeftButtonClicked -> {
                         isNeedToBottomSheetOpen.invoke(false)
                     }
-                    BottomButtonClickEvent.RightButtonClicked -> TODO()
+
+                    BottomButtonClickEvent.RightButtonClicked -> {
+                        isNeedToBottomSheetOpen.invoke(false)
+                    }
                 }
             })
         }
+
         MyTabType.DDAY -> {
             MyDdayBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
                 when (it) {
                     BottomButtonClickEvent.LeftButtonClicked -> {
                         isNeedToBottomSheetOpen.invoke(false)
                     }
-                    BottomButtonClickEvent.RightButtonClicked -> TODO()
+
+                    BottomButtonClickEvent.RightButtonClicked -> {
+                        isNeedToBottomSheetOpen.invoke(false)
+                    }
                 }
             })
         }
+
         MyTabType.CHALLENGE -> TODO()
         else -> {
             // Do Nothing

@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -19,8 +20,7 @@ class FilterPreferenceDataStoreModule @Inject constructor(@ApplicationContext co
 
     private val isProgressPref = booleanPreferencesKey("isProgress")
     private val isSucceedPref = booleanPreferencesKey("isSucceed")
-    private val orderUpdate = booleanPreferencesKey("orderUpdate")
-    private val orderCreate = booleanPreferencesKey("orderCreate")
+    private val orderTypePref = intPreferencesKey("orderType")
     private val showDday = booleanPreferencesKey("showDday")
     private val isDdayMinusPref = booleanPreferencesKey("isDdayMinus")
     private val isDdayPlusPref = booleanPreferencesKey("isDdayPlus")
@@ -45,23 +45,13 @@ class FilterPreferenceDataStoreModule @Inject constructor(@ApplicationContext co
         }
     }
 
-    val loadOrderUpdate: Flow<Boolean> = filterDataStore.data.map { preferences ->
-        preferences[orderUpdate] ?: true
+    val loadOrderType: Flow<Int> = filterDataStore.data.map { preferences ->
+        preferences[orderTypePref] ?: 0
     }
 
-    suspend fun setOrderUpdate(isUpdateUse: Boolean) {
+    suspend fun setOrderType(orderType: Int) {
         filterDataStore.edit { preferences ->
-            preferences[orderUpdate] = isUpdateUse
-        }
-    }
-
-    val loadOrderCreate: Flow<Boolean> = filterDataStore.data.map { preferences ->
-        preferences[orderCreate] ?: true
-    }
-
-    suspend fun setOrderCreate(isCreateUse: Boolean) {
-        filterDataStore.edit { preferences ->
-            preferences[orderCreate] = isCreateUse
+            preferences[orderTypePref] = orderType
         }
     }
 
