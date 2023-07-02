@@ -62,8 +62,8 @@ data class AllBucketList(
 @Serializable
 data class AllBucketListRequest(
     val dDayBucketOnly: String, // d-day 버킷여부
-    val isPassed: String,
-    val status: BucketStatus?,
+    val isPassed: String?, // d-day 지난 버킷 조회 여부
+    val status: BucketStatus?, // 진행상태
     val sort: AllBucketListSortType
 )
 

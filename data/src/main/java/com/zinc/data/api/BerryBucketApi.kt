@@ -45,7 +45,7 @@ interface BerryBucketApi {
     suspend fun loadAllBucketList(
         @Header("Authorization") token: String,
         @Query("dDayBucketOnly") dDayBucketOnly: String,
-        @Query("isPassed") isPassed: String,
+        @Query("isPassed") isPassed: String?,
         @Query("status") status: BucketStatus?,
         @Query("sort") sort: AllBucketListSortType
     ): AllBucketListResponse

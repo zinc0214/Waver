@@ -9,6 +9,7 @@ import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.AllBucketListRequest
+import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
@@ -16,6 +17,7 @@ import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailType
+import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
@@ -77,7 +79,6 @@ class MyViewModel @Inject constructor(
 
             awaitAll(job1, job2, job3, job4)
         }
-
     }
 
     private suspend fun loadShowProgressDataStore() {
@@ -147,6 +148,7 @@ class MyViewModel @Inject constructor(
         }
     }
 
+    // TODO : 제거
     private fun loadDummyProfile() {
         val topProfile = TopProfile(
             name = "한아로해봐",
@@ -161,7 +163,16 @@ class MyViewModel @Inject constructor(
         _profileInfo.value = topProfile
     }
 
-    fun loadAllBucketList(allBucketListRequest: AllBucketListRequest) {
+    fun loadAllBucketList() {
+        val allBucketListRequest = AllBucketListRequest(
+            dDayBucketOnly = YesOrNo.N.name,
+            isPassed = null,
+            status = loadStatusFilter(),
+            sort = loadSortFilter()
+        )
+
+        Log.e("ayhan", "allBucketListRequest : ${allBucketListRequest}")
+
         viewModelScope.launch {
             runCatching {
                 accessToken.value?.let { token ->
@@ -187,6 +198,15 @@ class MyViewModel @Inject constructor(
             }
         }
     }
+
+    private fun loadStatusFilter(): BucketStatus? =
+        if (_showSucceed.value == true && _showProgress.value == true) null
+        else if (_showSucceed.value == true) BucketStatus.COMPLETE
+        else if (_showProgress.value == true) BucketStatus.PROGRESS
+        else BucketStatus.PROGRESS
+
+    private fun loadSortFilter() =
+        if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 
     fun loadCategoryList() {
         viewModelScope.launch {

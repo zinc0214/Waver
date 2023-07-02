@@ -26,25 +26,17 @@ import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.FilterAndSearchImageView
 import com.zinc.berrybucket.ui_my.SimpleBucketListView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
-import com.zinc.common.models.AllBucketListRequest
-import com.zinc.common.models.AllBucketListSortType
-import com.zinc.common.models.YesOrNo
 
 @Composable
 fun AllBucketLayer(
     viewModel: MyViewModel,
-    clickEvent: (MyPagerClickEvent) -> Unit
+    clickEvent: (MyPagerClickEvent) -> Unit,
 ) {
 
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
-    viewModel.loadAllBucketList(
-        allBucketListRequest = AllBucketListRequest(
-            dDayBucketOnly = YesOrNo.N.name,
-            isPassed = YesOrNo.N.name,
-            status = null,
-            sort = AllBucketListSortType.CREATED
-        )
-    )
+
+    viewModel.loadBucketFilter()
+    viewModel.loadAllBucketList()
 
     allBucketInfo?.let {
         Column {
