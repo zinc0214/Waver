@@ -18,7 +18,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -105,7 +104,6 @@ fun MySearchBottomScreen(
 
         Box(
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
                 .padding(top = 20.dp)
                 .background(Gray2)
                 .fillMaxHeight()
@@ -234,9 +232,15 @@ private fun SearchResultView(
     } else {
         if (result.second.all { item -> item is BucketInfoSimple }) {
             val items = result.second as List<BucketInfoSimple>
-            SimpleBucketListView(items.parseToUI(), result.first, true, itemClicked = {
-                clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
-            })
+            SimpleBucketListView(
+                bucketList = items.parseToUI(),
+                tabType = result.first,
+                showDday = true,
+                nestedScrollInterop = null,
+                itemClicked = {
+                    clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
+                },
+            )
         }
     }
 }

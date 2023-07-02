@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
@@ -60,7 +61,8 @@ class MyView @JvmOverloads constructor(
         onBucketSelected: (BucketSelected) -> Unit,
         bottomSheetClicked: (BottomSheetScreenType) -> Unit,
         addNewCategory: () -> Unit,
-        goToCategoryEdit: () -> Unit
+        goToCategoryEdit: () -> Unit,
+        nestedScrollInterop: NestedScrollConnection
     ) {
         binding.tabComposeView.setContent {
             MyTabLayer(tabItems, pagerState, coroutineScope)
@@ -74,7 +76,8 @@ class MyView @JvmOverloads constructor(
                 bottomSheetClicked = bottomSheetClicked,
                 addNewCategory = addNewCategory,
                 goToCategoryEdit = goToCategoryEdit,
-                coroutineScope = coroutineScope
+                coroutineScope = coroutineScope,
+                nestedScrollInterop = nestedScrollInterop
             )
         }
     }

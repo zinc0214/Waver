@@ -74,7 +74,7 @@ data class UIBucketInfoSimple(
             }
         }
 
-    val isProgress = status == BucketStatus.PROGRESS
+    fun isProgress() = status == BucketStatus.PROGRESS
 
     fun currentCountText() = currentCount.toString()
     fun goalCountText() = goalCount.toString()

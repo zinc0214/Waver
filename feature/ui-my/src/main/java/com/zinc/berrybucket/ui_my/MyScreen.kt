@@ -21,7 +21,9 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -81,6 +83,9 @@ fun MyScreen(
             }
         })
     }
+
+    val nestedScrollInterop = rememberNestedScrollInteropConnection()
+
     profileInfo?.let { profile ->
         BaseTheme {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
@@ -91,6 +96,7 @@ fun MyScreen(
                         viewModel = viewModel,
                         coroutineScope = coroutineScope,
                         onBucketSelected = onBucketSelected,
+                        nestedScrollInterop = nestedScrollInterop,
                         addNewCategory = {
                             addNewCategoryDialogShowAvailable.value = true
                         },
@@ -148,10 +154,11 @@ fun MyViewPager(
     pagerState: PagerState,
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
+    nestedScrollInterop: NestedScrollConnection,
     onBucketSelected: (BucketSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     addNewCategory: () -> Unit,
-    goToCategoryEdit: () -> Unit
+    goToCategoryEdit: () -> Unit,
 ) {
 
     HorizontalPager(
@@ -161,38 +168,40 @@ fun MyViewPager(
     ) { page ->
         when (page) {
             0 -> {
-                AllBucketLayer(viewModel = viewModel, clickEvent = {
-                    when (it) {
-                        is MyPagerClickEvent.BucketItemClicked -> {
-                            onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
-                        }
+                AllBucketLayer(viewModel = viewModel,
+                    nestedScrollInterop = nestedScrollInterop,
+                    clickEvent = {
+                        when (it) {
+                            is MyPagerClickEvent.BucketItemClicked -> {
+                                onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
+                            }
 
-                        is MyPagerClickEvent.SearchClicked -> {
-                            coroutineScope.launch {
-                                bottomSheetClicked.invoke(
-                                    BottomSheetScreenType.SearchScreen(
-                                        selectTab = MyTabType.ALL, viewModel = viewModel
+                            is MyPagerClickEvent.SearchClicked -> {
+                                coroutineScope.launch {
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.SearchScreen(
+                                            selectTab = MyTabType.ALL, viewModel = viewModel
+                                        )
                                     )
-                                )
+                                }
+                            }
+
+                            MyPagerClickEvent.FilterClicked -> {
+                                coroutineScope.launch {
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.FilterScreen(
+                                            selectTab = MyTabType.ALL,
+                                            viewModel = viewModel
+                                        )
+                                    )
+                                }
+                            }
+
+                            else -> {
+                                // Do Nothing
                             }
                         }
-
-                        MyPagerClickEvent.FilterClicked -> {
-                            coroutineScope.launch {
-                                bottomSheetClicked.invoke(
-                                    BottomSheetScreenType.FilterScreen(
-                                        selectTab = MyTabType.ALL,
-                                        viewModel = viewModel
-                                    )
-                                )
-                            }
-                        }
-
-                        else -> {
-                            // Do Nothing
-                        }
-                    }
-                })
+                    })
                 return@HorizontalPager
             }
 

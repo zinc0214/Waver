@@ -6,14 +6,19 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -28,6 +33,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.model.BucketProgressState
@@ -52,10 +59,24 @@ fun SimpleBucketListView(
     bucketList: List<UIBucketInfoSimple>,
     tabType: MyTabType,
     showDday: Boolean,
-    itemClicked: (UIBucketInfoSimple) -> Unit
+    itemClicked: (UIBucketInfoSimple) -> Unit,
+    nestedScrollInterop: NestedScrollConnection?
 ) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-        bucketList.forEachIndexed { index, bucket ->
+
+    val columModifier = Modifier
+        .fillMaxSize()
+        .padding(horizontal = 16.dp)
+
+    if (nestedScrollInterop != null) {
+        columModifier.nestedScroll(nestedScrollInterop)
+    }
+
+    LazyColumn(
+        modifier = columModifier,
+        contentPadding = PaddingValues(bottom = 140.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items(items = bucketList, itemContent = { bucket ->
             SimpleBucketCard(
                 itemInfo = bucket,
                 tabType = tabType,
@@ -63,9 +84,14 @@ fun SimpleBucketListView(
                 animFinishEvent = {},
                 itemClicked = { itemClicked.invoke(it) }
             )
-            Spacer(modifier = Modifier.height(if (index == bucketList.lastIndex) 140.dp else 12.dp))
-        }
+        })
     }
+//    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+//        bucketList.forEachIndexed { index, bucket ->
+//
+//            Spacer(modifier = Modifier.height(if (index == bucketList.lastIndex) 140.dp else 12.dp))
+//        }
+//    }
 }
 
 @Composable
@@ -86,7 +112,7 @@ fun SimpleBucketCard(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (bucket.value.isProgress) borderColor.value else Color.Transparent,
+                color = if (bucket.value.isProgress()) borderColor.value else Color.Transparent,
                 shape = RoundedCornerShape(4.dp)
             )
             .shadow(
@@ -98,7 +124,7 @@ fun SimpleBucketCard(
             .clip(RoundedCornerShape(4.dp))
             .clickable { itemClicked(itemInfo) }
             .background(
-                color = if (bucket.value.isProgress) Gray1 else Gray3,
+                color = if (bucket.value.isProgress()) Gray1 else Gray3,
                 shape = RoundedCornerShape(4.dp)
             ),
     ) {
@@ -111,7 +137,7 @@ fun SimpleBucketCard(
             val (leftContent, rightContent) = createRefs()
 
             // Right Content = SuccessButton
-            if (itemInfo.isProgress) {
+            if (itemInfo.isProgress()) {
                 Card(
                     shape = CircleShape,
                     elevation = 0.dp,
@@ -163,7 +189,7 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.value.dDay != null && bucket.value.isProgress && isShowDday) {
+                if (bucket.value.dDay != null && bucket.value.isProgress() && isShowDday) {
                     DdayBadgeView(bucket.value)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
@@ -171,10 +197,10 @@ fun SimpleBucketCard(
                 }
 
                 // Title
-                TitleTextView(bucket.value.title, bucket.value.isProgress)
+                TitleTextView(bucket.value.title, bucket.value.isProgress())
 
                 // Progress
-                if (bucket.value.goalCount > 0 && bucket.value.isProgress) {
+                if (bucket.value.goalCount > 0 && bucket.value.isProgress()) {
                     CountProgressView(
                         info = bucket.value,
                         bucketCount = bucketCount,

@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AllBucketList
@@ -34,6 +35,7 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 fun AllBucketLayer(
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
+    nestedScrollInterop: NestedScrollConnection,
 ) {
 
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
@@ -68,9 +70,10 @@ fun AllBucketLayer(
             )
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
-                it.bucketList,
-                MyTabType.ALL,
-                ddayShow.value ?: true,
+                bucketList = it.bucketList,
+                tabType = MyTabType.ALL,
+                showDday = ddayShow.value ?: true,
+                nestedScrollInterop = nestedScrollInterop,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
                 })
