@@ -234,7 +234,7 @@ private fun SearchResultView(
     } else {
         if (result.second.all { item -> item is BucketInfoSimple }) {
             val items = result.second as List<BucketInfoSimple>
-            SimpleBucketListView(items.parseToUI(), result.first, itemClicked = {
+            SimpleBucketListView(items.parseToUI(), result.first, true, itemClicked = {
                 clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
             })
         }

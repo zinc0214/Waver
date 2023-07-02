@@ -51,6 +51,7 @@ import com.zinc.berrybucket.util.shadow
 fun SimpleBucketListView(
     bucketList: List<UIBucketInfoSimple>,
     tabType: MyTabType,
+    showDday: Boolean,
     itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
     Column(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -58,6 +59,7 @@ fun SimpleBucketListView(
             SimpleBucketCard(
                 itemInfo = bucket,
                 tabType = tabType,
+                isShowDday = showDday,
                 animFinishEvent = {},
                 itemClicked = { itemClicked.invoke(it) }
             )
@@ -70,6 +72,7 @@ fun SimpleBucketListView(
 fun SimpleBucketCard(
     itemInfo: UIBucketInfoSimple,
     tabType: MyTabType,
+    isShowDday: Boolean,
     animFinishEvent: (BucketProgressState) -> Unit,
     itemClicked: (UIBucketInfoSimple) -> Unit
 ) {
@@ -160,7 +163,7 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.value.dDay != null && bucket.value.isProgress) {
+                if (bucket.value.dDay != null && bucket.value.isProgress && isShowDday) {
                     DdayBadgeView(bucket.value)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {

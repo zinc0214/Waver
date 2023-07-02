@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,11 +37,29 @@ fun AllBucketLayer(
 ) {
 
     val allBucketInfo by viewModel.allBucketItem.observeAsState()
+    val ddayShowPref by viewModel.showDdayView.observeAsState()
+
+
+    val bucketInfo = remember {
+        mutableStateOf(allBucketInfo)
+    }
+    val ddayShow = remember {
+        mutableStateOf(ddayShowPref)
+    }
+
+    LaunchedEffect(key1 = ddayShowPref, block = {
+        ddayShow.value = ddayShowPref
+    })
+
+    LaunchedEffect(key1 = allBucketInfo, block = {
+        bucketInfo.value = allBucketInfo
+    })
+
 
     viewModel.loadBucketFilter()
     viewModel.loadAllBucketList()
 
-    allBucketInfo?.let {
+    bucketInfo.value?.let {
         Column {
             AllBucketTopView(
                 modifier = Modifier,
@@ -46,9 +67,13 @@ fun AllBucketLayer(
                 clickEvent = clickEvent
             )
             Spacer(modifier = Modifier.height(16.dp))
-            SimpleBucketListView(it.bucketList, MyTabType.ALL, itemClicked = {
-                clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
-            })
+            SimpleBucketListView(
+                it.bucketList,
+                MyTabType.ALL,
+                ddayShow.value ?: true,
+                itemClicked = {
+                    clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
+                })
         }
     }
 }

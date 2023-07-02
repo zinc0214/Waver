@@ -29,7 +29,7 @@ fun DdayBucketLayer(
         Column {
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
-            SimpleBucketListView(it.bucketList.parseToUI(), MyTabType.DDAY,
+            SimpleBucketListView(it.bucketList.parseToUI(), MyTabType.DDAY, true,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
                 })
