@@ -4,9 +4,9 @@ import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.AllBucketListSortType
+import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
-import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
 import com.zinc.common.models.JoinRequest
@@ -80,8 +80,11 @@ interface BerryBucketApi {
     @GET("/bucketList")
     suspend fun loadMyState(): MyState
 
-    @GET("/detail")
-    suspend fun loadBucketDetail(id: String): DetailInfo
+    @GET("/bucketList/{id}")
+    suspend fun loadBucketDetail(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): BucketDetailResponse
 
     @GET("/feed/keyWord")
     suspend fun loadFeedKeyword(): List<FeedKeyWord>

@@ -1,43 +1,82 @@
 package com.zinc.berrybucket.ui.presentation.detail
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.CommentMentionInfo
 import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
-import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.model.TogetherInfo
 import com.zinc.berrybucket.model.TogetherMember
+import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
+import com.zinc.common.models.DetailInfo
+import com.zinc.common.models.MyProfileInfo
+import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
+import com.zinc.domain.usecases.my.LoadProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val loadBucketDetail: LoadBucketDetail
-) : ViewModel() {
+    private val loadBucketDetail: LoadBucketDetail,
+    private val loadProfileInfo: LoadProfileInfo,
+    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+) : CommonViewModel(loginPreferenceDataStoreModule) {
 //
 //    private val _bucketDetailInfo = MutableLiveData<List<DetailDescType>>()
 //    val bucketDetailInfo: LiveData<List<DetailDescType>> get() = _bucketDetailInfo
 
-    private val _bucketDetailInfo = MutableLiveData<DetailInfo>()
-    val bucketDetailInfo: LiveData<DetailInfo> get() = _bucketDetailInfo
+    private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
+    val bucketBucketDetailUiInfo: LiveData<BucketDetailUiInfo> get() = _bucketBucketDetailUiInfo
 
     private val _validMentionList = MutableLiveData<List<CommentMentionInfo>>()
     val validMentionList: LiveData<List<CommentMentionInfo>> = _validMentionList
 
+    private lateinit var bucketDetailData: DetailInfo
+    private lateinit var profileInfo: MyProfileInfo
 
     fun getBucketDetail(id: String) {
-//        viewModelScope.launch {
-//            loadBucketDetail(id)
-//        }
 
-        _bucketDetailInfo.value = detailInfo1
+        accessToken.value?.let { token ->
+
+            viewModelScope.launch {
+
+                val job1 = async { getBucketDetailData(token, id) }
+                val job2 = async { getProfileInfo(token) }
+
+                joinAll(job1, job2).runCatching {
+                    Log.e("ayhan", "runCatching")
+                }.getOrElse {
+                    Log.e("ayhan", "getOrlElse, ${it.message}")
+                }
+
+                Log.e("ayhan", "getBucketDetail: $bucketDetailData , $profileInfo")
+
+                _bucketBucketDetailUiInfo.value =
+                    bucketDetailResponseToUiModel(bucketDetailData, profileInfo)
+            }
+        }
+
+        //   _bucketBucketDetailUiInfo.value = bucketDetailUiInfo1
+    }
+
+    private suspend fun getBucketDetailData(token: String, id: String) {
+        bucketDetailData = loadBucketDetail(token, id).data
+    }
+
+    private suspend fun getProfileInfo(token: String) {
+        profileInfo = loadProfileInfo(token).data
     }
 
     fun getValidMentionList() {
@@ -79,7 +118,7 @@ class DetailViewModel @Inject constructor(
 
 
     fun goalCountUpdate(bucketId: String, goalCount: String) {
-        val updateInfo = detailInfo1.copy(
+        val updateInfo = bucketDetailUiInfo1.copy(
             descInfo = CommonDetailDescInfo(
                 dDay = "D+201",
                 tagList = listOf("여행", "강남"),
@@ -88,11 +127,11 @@ class DetailViewModel @Inject constructor(
                 userCount = 0
             )
         )
-        _bucketDetailInfo.value = updateInfo
+        _bucketBucketDetailUiInfo.value = updateInfo
     }
 
-    private val detailInfo1 =
-        DetailInfo(
+    private val bucketDetailUiInfo1 =
+        BucketDetailUiInfo(
             bucketId = "abc",
             imageInfo = ImageInfo(
                 imageList = listOf("A", "B", "C")
@@ -176,8 +215,8 @@ class DetailViewModel @Inject constructor(
             )
         )
 
-    private val detailInfo2 =
-        DetailInfo(
+    private val bucketDetailUiInfo2 =
+        BucketDetailUiInfo(
             bucketId = "abc",
             profileInfo = ProfileInfo(
                 profileImage = "",

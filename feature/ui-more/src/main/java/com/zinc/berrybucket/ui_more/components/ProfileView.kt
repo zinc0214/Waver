@@ -42,7 +42,6 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
 import com.zinc.berrybucket.ui_more.models.UIMoreMyProfileInfo
-import com.zinc.common.models.BadgeType
 
 @Composable
 internal fun MoreTopProfileView(info: UIMoreMyProfileInfo, goToProfileUpdate: () -> Unit) {
@@ -168,7 +167,7 @@ private fun ProfileTextPreView() {
         info = UIMoreMyProfileInfo(
             name = "한아라고",
             imgUrl = "",
-            badgeType = BadgeType.TRIP1,
+            badgeUrl = "",
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
         ),
@@ -189,7 +188,7 @@ private fun ProfilePreview() {
         info = UIMoreMyProfileInfo(
             name = "한아라고",
             imgUrl = "",
-            badgeType = BadgeType.TRIP1,
+            badgeUrl = "BadgeType.TRIP1",
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
         ),

@@ -22,8 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
-import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.rememberScrollContext
@@ -44,8 +44,12 @@ fun CloseDetailLayer(
 ) {
 
     val viewModel: DetailViewModel = hiltViewModel()
-    viewModel.getBucketDetail(detailId)
-    val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
+
+    val vmDetailInfo by viewModel.bucketBucketDetailUiInfo.observeAsState()
+
+    if (vmDetailInfo == null) {
+        viewModel.getBucketDetail(detailId)
+    }
 
     val optionPopUpShowed = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -130,7 +134,7 @@ fun CloseDetailLayer(
 
                         ContentView(
                             listState = listScrollState,
-                            detailInfo = detailInfo,
+                            bucketDetailUiInfo = detailInfo,
                             modifier = Modifier.constrainAs(contentView) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
@@ -168,7 +172,7 @@ fun CloseDetailLayer(
 private fun ContentView(
     modifier: Modifier,
     listState: LazyListState,
-    detailInfo: DetailInfo
+    bucketDetailUiInfo: BucketDetailUiInfo
 ) {
 
     LazyColumn(
@@ -177,10 +181,10 @@ private fun ContentView(
     ) {
 
         item {
-            DetailDescView(detailInfo.descInfo)
+            DetailDescView(bucketDetailUiInfo.descInfo)
         }
 
-        detailInfo.memoInfo?.let {
+        bucketDetailUiInfo.memoInfo?.let {
             item {
                 DetailMemoView(
                     modifier = Modifier.padding(
@@ -193,7 +197,7 @@ private fun ContentView(
             }
         }
 
-        detailInfo.imageInfo?.let {
+        bucketDetailUiInfo.imageInfo?.let {
             item {
                 ImageViewPagerInsideIndicator(
                     modifier = Modifier

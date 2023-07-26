@@ -11,8 +11,8 @@ data class ImageInfo(
 ) : DetailDescType()
 
 data class CommonDetailDescInfo(
-    val dDay: String,
-    val tagList: List<String>,
+    val dDay: String?,
+    val tagList: List<String>?,
     val title: String,
     val goalCount: Int,
     val userCount: Int
@@ -89,7 +89,7 @@ fun detailId(descType: DetailDescType): Int {
     }
 }
 
-data class DetailInfo(
+data class BucketDetailUiInfo(
     val bucketId: String,
     val imageInfo: ImageInfo? = null,
     val profileInfo: ProfileInfo,

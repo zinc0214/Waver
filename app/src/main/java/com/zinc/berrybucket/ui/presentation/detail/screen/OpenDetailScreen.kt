@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentLongClicked
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
-import com.zinc.berrybucket.model.DetailInfo
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
@@ -75,11 +75,11 @@ fun OpenDetailScreen(
 
     viewModel.getValidMentionList()
 
-    val vmDetailInfo by viewModel.bucketDetailInfo.observeAsState()
+    val vmDetailInfo by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
 
     if (vmDetailInfo == null) {
-        viewModel.getBucketDetail("open") // TODO : 실제 DetailId 를 보는 것으로 수정 필요
+        viewModel.getBucketDetail(detailId) // TODO : 실제 DetailId 를 보는 것으로 수정 필요
     }
 
     vmDetailInfo?.let { detailInfo ->
@@ -230,8 +230,9 @@ fun OpenDetailScreen(
                     ) {
                         val (contentView, floatingButtonView, editView) = createRefs()
 
-                        ContentView(listState = listScrollState,
-                            detailInfo = detailInfo,
+                        ContentView(
+                            listState = listScrollState,
+                            bucketDetailUiInfo = detailInfo,
                             clickEvent = {
                                 when (it) {
                                     is CommentLongClicked -> {
@@ -400,7 +401,7 @@ fun OpenDetailScreen(
 private fun ContentView(
     modifier: Modifier,
     listState: LazyListState,
-    detailInfo: DetailInfo,
+    bucketDetailUiInfo: BucketDetailUiInfo,
     flatButtonIndex: Int,
     flatButtonVisible: Boolean,
     isCommentViewShown: Boolean,
@@ -410,7 +411,7 @@ private fun ContentView(
     LazyColumn(
         modifier = modifier, state = listState
     ) {
-        detailInfo.imageInfo?.let {
+        bucketDetailUiInfo.imageInfo?.let {
             item(key = "imageViewPager") {
                 ImageViewPagerInsideIndicator(
                     modifier = Modifier.fillMaxWidth(),
@@ -421,19 +422,19 @@ private fun ContentView(
         }
 
         item(key = "profileView") {
-            ProfileView(detailInfo.profileInfo)
+            ProfileView(bucketDetailUiInfo.profileInfo)
         }
 
         item(key = "detailDescLayer") {
-            DetailDescView(detailInfo.descInfo)
+            DetailDescView(bucketDetailUiInfo.descInfo)
         }
 
         item(key = "memoView") {
-            if (detailInfo.memoInfo != null) {
+            if (bucketDetailUiInfo.memoInfo != null) {
                 DetailMemoView(
                     modifier = Modifier.padding(
                         top = 24.dp, start = 28.dp, end = 28.dp
-                    ), memo = detailInfo.memoInfo!!.memo
+                    ), memo = bucketDetailUiInfo.memoInfo?.memo!!
                 )
             } else {
                 Spacer(modifier = Modifier.height(56.dp))
@@ -452,8 +453,8 @@ private fun ContentView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
                     }, successButtonInfo = SuccessButtonInfo(
-                        goalCount = detailInfo.descInfo.goalCount,
-                        userCount = detailInfo.descInfo.userCount
+                        goalCount = bucketDetailUiInfo.descInfo.goalCount,
+                        userCount = bucketDetailUiInfo.descInfo.userCount
                     ),
                     modifier = Modifier.padding(top = 30.dp)
                 )
@@ -461,10 +462,10 @@ private fun ContentView(
         }
 
         item(key = "friendsView") {
-            if (detailInfo.togetherInfo != null) {
+            if (bucketDetailUiInfo.togetherInfo != null) {
                 TogetherMemberView(
                     modifier = Modifier.fillMaxWidth(),
-                    togetherInfo = detailInfo.togetherInfo!!
+                    togetherInfo = bucketDetailUiInfo.togetherInfo!!
                 )
             }
         }
@@ -476,10 +477,10 @@ private fun ContentView(
             CommentLine()
         }
         item(key = "commentCountView") {
-            CommentCountView(detailInfo.commentInfo?.commentCount ?: 0)
+            CommentCountView(bucketDetailUiInfo.commentInfo?.commentCount ?: 0)
         }
         item(key = "commentLayer") {
-            DetailCommentView(commentInfo = detailInfo.commentInfo, commentLongClicked = {
+            DetailCommentView(commentInfo = bucketDetailUiInfo.commentInfo, commentLongClicked = {
                 clickEvent.invoke(CommentLongClicked(it))
             })
         }
@@ -501,12 +502,12 @@ fun ProfileView(profileInfo: ProfileInfo) {
     )
 }
 
-private fun flatButtonIndex(detailInfo: DetailInfo): Int {
+private fun flatButtonIndex(bucketDetailUiInfo: BucketDetailUiInfo): Int {
     var index = 0
-    if (detailInfo.imageInfo != null) {
+    if (bucketDetailUiInfo.imageInfo != null) {
         index += 1
     }
-    if (detailInfo.memoInfo != null) {
+    if (bucketDetailUiInfo.memoInfo != null) {
         index += 1
     }
     return index

@@ -10,7 +10,6 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListSortType
-import com.zinc.common.models.BadgeType
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
@@ -128,7 +127,7 @@ class MyViewModel @Inject constructor(
                         val topProfile = TopProfile(
                             name = data.name,
                             imgUrl = data.imgUrl,
-                            badgeType = data.badgeType,
+                            badgeType = data.badgeUrl,
                             badgeTitle = data.badgeTitle,
                             bio = data.bio,
                             followingCount = data.followingCount,
@@ -154,7 +153,7 @@ class MyViewModel @Inject constructor(
             name = "한아로해봐",
             imgUrl = "ddd",
             percent = 0.6f,
-            badgeType = BadgeType.TRIP1,
+            badgeType = "",
             badgeTitle = "안녕 반가우이잇",
             bio = "나는 ESFP 한아라고 불러줘?",
             followingCount = "20",

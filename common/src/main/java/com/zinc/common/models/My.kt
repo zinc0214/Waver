@@ -13,8 +13,8 @@ data class MyProfileResponse(
 @Serializable
 data class MyProfileInfo(
     val name: String, // 프로필네임
-    val imgUrl: String, // 프로필이미지
-    val badgeType: BadgeType,
+    val imgUrl: String?, // 프로필이미지
+    val badgeUrl: String?,
     val badgeTitle: String,
     val bio: String,
     val followingCount: String,

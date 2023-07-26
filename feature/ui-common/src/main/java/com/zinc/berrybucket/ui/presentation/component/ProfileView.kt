@@ -52,7 +52,7 @@ fun ProfileView(
             profileSize = profileSize,
             badgeSize = badgeSize,
             profileRadius = profileRadius,
-            profile = profileInfo.profileImage,
+            profileUrl = profileInfo.profileImage,
             badge = profileInfo.badgeImage
         )
         ProfileTextView(
@@ -76,7 +76,7 @@ private fun ProfileImageView(
     profileSize: Dp,
     profileRadius: Dp,
     badgeSize: Pair<Dp, Dp>,
-    profile: String,
+    profileUrl: String?,
     badge: String
 ) {
     Box(

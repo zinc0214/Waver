@@ -5,7 +5,7 @@ enum class AllType {
 }
 
 data class ProfileInfo(
-    val profileImage: String,
+    val profileImage: String?,
     val badgeImage: String,
     val titlePosition: String,
     val nickName: String

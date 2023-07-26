@@ -28,15 +28,19 @@ fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
             .padding(horizontal = 12.dp)
             .padding(top = 30.dp)
     ) {
-        DdayView(
-            modifier = Modifier.padding(start = 14.dp),
-            dday = detailDescInfo.dDay
-        )
+        detailDescInfo.dDay?.let { dDay ->
+            DdayView(
+                modifier = Modifier.padding(start = 14.dp),
+                dday = dDay
+            )
+        }
 
-        TagListView(
-            modifier = Modifier.padding(top = 26.dp, start = 14.dp),
-            tagList = detailDescInfo.tagList
-        )
+        detailDescInfo.tagList?.let { tagList ->
+            TagListView(
+                modifier = Modifier.padding(top = 26.dp, start = 14.dp),
+                tagList = tagList
+            )
+        }
 
         TitleView(
             modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
