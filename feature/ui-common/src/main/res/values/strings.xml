@@ -43,6 +43,7 @@
     <string name="profileImageDesc">프로필 이미지</string>
     <string name="selectGallery">앨범에서 사진 선택</string>
     <string name="selectCamera">사진 촬영</string>
+    <string name="bucketImage">이미지</string>
 
     <!--타이틀뷰-->
     <string name="finishDesc">완료</string>

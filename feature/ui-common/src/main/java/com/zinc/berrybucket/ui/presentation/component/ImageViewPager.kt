@@ -14,9 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -103,9 +107,15 @@ fun ImageViewPagerInsideIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) { page ->
-                        Image(
-                            painter = painterResource(id = R.drawable.kakao),
-                            contentDescription = "Test",
+
+                        AsyncImage(
+                            model = ImageRequest.Builder(LocalContext.current)
+                                .data(pagerState.currentPage)
+                                .crossfade(true)
+                                .build(),
+                            error = painterResource(R.drawable.kakao),
+                            placeholder = painterResource(R.drawable.kakao),
+                            contentDescription = stringResource(R.string.bucketImage),
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
