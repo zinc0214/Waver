@@ -1,7 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
-import android.net.Uri
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -20,12 +18,10 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.rememberAsyncImagePainter
 import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.SuccessButtonInfo
@@ -43,7 +39,6 @@ import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDial
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
-import java.io.File
 
 @Composable
 fun CloseDetailLayer(
@@ -228,28 +223,6 @@ private fun ContentView(
 
         item {
             Spacer(modifier = Modifier.height(28.dp))
-        }
-    }
-}
-
-@Composable
-private fun loadImages(images: List<String>): List<UserSelectedImageInfo> {
-
-    val context = LocalContext.current
-
-    return buildList {
-        images.forEachIndexed { index, url ->
-            val cacheFile = File(context.cacheDir, "${index}_$url")
-            Image(
-                rememberAsyncImagePainter(cacheFile),
-                contentDescription = "...",
-            )
-
-            add(
-                UserSelectedImageInfo(
-                    key = index, uri = Uri.parse(url), file = cacheFile
-                )
-            )
         }
     }
 }

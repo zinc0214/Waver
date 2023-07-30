@@ -34,7 +34,7 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
         goalCount = this.goalCount,
         dDay = this.dDay,
         status = this.status,
-        detailType = this.detailType ?: DetailType.MY_CLOSE
+        detailType = this.detailType ?: DetailType.MY_OPEN
     )
 }
 
@@ -52,7 +52,7 @@ data class UIBucketInfoSimple(
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
-    val detailType: DetailType = DetailType.MY_CLOSE,
+    val detailType: DetailType = DetailType.MY_OPEN,
     val status: BucketStatus = BucketStatus.PROGRESS
 ) {
     val dDayText = dDay?.let {

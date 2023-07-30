@@ -24,7 +24,7 @@ fun bucketDetailResponseToUiModel(
 ) = BucketDetailUiInfo(
     bucketId = bucketInfo.id,
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
-    imageInfo = if (bucketInfo.images != null) ImageInfo(bucketInfo.images!!) else null,
+    imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
     profileInfo = ProfileInfo(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeUrl.orEmpty(),

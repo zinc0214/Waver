@@ -108,8 +108,8 @@ fun BerryBucketApp(
                                 }
                             ) {
                                 appState.navigateToWrite1(
-                                    appState.navController.currentBackStackEntry!!,
-                                    WriteTotalInfo()
+                                    WriteTotalInfo(),
+                                    appState.navController.currentBackStackEntry!!
                                 )
                             }
                         }
@@ -193,10 +193,11 @@ fun BerryBucketApp(
                                     is GoToBucketDetailEvent.GoToCommentReport -> {
                                         appState.navigateToCommentReport(eventInfo.reportInfo, nav)
                                     }
+
+                                    is GoToBucketDetailEvent.GoToUpdate -> {
+                                        appState.navigateToWrite1(eventInfo.info, nav)
+                                    }
                                 }
-                            },
-                            goToUpdate = { writeInfo, nav ->
-                                appState.navigateToWrite1(nav, writeInfo)
                             },
                             backPress = appState::backPress
                         )
@@ -212,7 +213,7 @@ fun BerryBucketApp(
                             })
                         writeNavGraph2(
                             backPress = { nav, info ->
-                                appState.navigateToWrite1(nav, info)
+                                appState.navigateToWrite1(info, nav)
                             },
                             goToHome = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)

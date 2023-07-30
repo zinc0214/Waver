@@ -33,6 +33,7 @@ import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.util.Keyboard
@@ -60,6 +61,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
+import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
@@ -77,6 +79,7 @@ fun OpenDetailScreen(
 
     val vmDetailInfo by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
+    val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
 
     if (vmDetailInfo == null) {
         viewModel.getBucketDetail(detailId) // TODO : 실제 DetailId 를 보는 것으로 수정 필요
@@ -126,6 +129,10 @@ fun OpenDetailScreen(
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
+        if (imageInfos.isEmpty()) {
+            imageInfos.addAll(loadImages(detailInfo.imageInfo?.imageList.orEmpty()))
+        }
+
         BaseTheme {
             Scaffold { padding ->
                 if (optionPopUpShowed.value) {
@@ -137,6 +144,13 @@ fun OpenDetailScreen(
 
                             MyBucketMenuEvent.GoToEdit -> {
                                 optionPopUpShowed.value = false
+                                goToEvent.invoke(
+                                    GoToBucketDetailEvent.GoToUpdate(
+                                        detailInfo.toUpdateUiModel(
+                                            imageInfos
+                                        )
+                                    )
+                                )
                             }
 
                             MyBucketMenuEvent.GoToGoalUpdate -> {

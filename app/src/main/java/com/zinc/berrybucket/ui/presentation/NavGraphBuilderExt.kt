@@ -251,7 +251,6 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
 
 internal fun NavGraphBuilder.bucketDetailNavGraph(
     goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
-    goToUpdate: (WriteTotalInfo, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
     composable(
@@ -270,6 +269,12 @@ internal fun NavGraphBuilder.bucketDetailNavGraph(
                             GoToBucketDetailEvent.GoToCommentReport(it.reportInfo), backStackEntry
                         )
                     }
+
+                    is GoToBucketDetailEvent.GoToUpdate -> {
+                        goToBucketDetailEvent.invoke(
+                            GoToBucketDetailEvent.GoToUpdate(it.info), backStackEntry
+                        )
+                    }
                 }
             }, backPress = backPress
         )
@@ -283,7 +288,9 @@ internal fun NavGraphBuilder.bucketDetailNavGraph(
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         CloseDetailLayer(detailId, goToUpdate = {
-            goToUpdate(it, backStackEntry)
+            goToBucketDetailEvent.invoke(
+                GoToBucketDetailEvent.GoToUpdate(it), backStackEntry
+            )
         }, backPress = backPress)
     }
 }
@@ -333,5 +340,6 @@ sealed class WriteEvent {
 
 sealed class GoToBucketDetailEvent {
     data class GoToCommentReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
+    data class GoToUpdate(val info: WriteTotalInfo) : GoToBucketDetailEvent()
 }
 
