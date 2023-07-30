@@ -13,6 +13,7 @@ import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.MyProfileInfo
 import com.zinc.common.models.YesOrNo
@@ -42,9 +43,10 @@ fun bucketDetailResponseToUiModel(
         categoryInfo = WriteCategoryInfo(
             id = 0, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
         ),
-        isScrap = bucketInfo.scrapYn.isYes()
+        isScrap = bucketInfo.scrapYn.isYes(),
+        status = if (bucketInfo.status == DetailInfo.Status.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
     ),
-    memoInfo = if (bucketInfo.memo != null) MemoInfo(bucketInfo.memo!!) else null,
+    memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
     commentInfo = null,
     togetherInfo = null
 )

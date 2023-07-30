@@ -11,60 +11,87 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray10
+import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.design.theme.Main5
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.TagListView
+import com.zinc.berrybucket.ui.presentation.detail.model.StatusInfo
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.common.models.BucketStatus
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp)
-            .padding(top = 30.dp)
+            .padding(horizontal = 28.dp)
+            .padding(top = 23.dp)
     ) {
-        detailDescInfo.dDay?.let { dDay ->
-            DdayView(
-                modifier = Modifier.padding(start = 14.dp),
-                dday = dDay
-            )
-        }
+        StatusView(
+            modifier = Modifier.padding(bottom = 26.dp),
+            dday = detailDescInfo.dDay,
+            status = detailDescInfo.status
+        )
 
         detailDescInfo.keywordList?.let { tagList ->
             TagListView(
-                modifier = Modifier.padding(top = 26.dp, start = 14.dp),
+                modifier = Modifier.padding(top = 26.dp),
                 tagList = tagList.map { it.text }
             )
         }
 
         TitleView(
-            modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
             title = detailDescInfo.title
         )
     }
 }
 
 @Composable
-private fun DdayView(modifier: Modifier = Modifier, dday: String) {
-    Box(modifier = modifier,
+private fun StatusView(modifier: Modifier = Modifier, dday: String?, status: BucketStatus) {
+
+    val statusInfo = if (dday.isNullOrBlank().not()) {
+        StatusInfo(
+            backgroundImg = CommonR.drawable.ststus_dday_img,
+            text = dday.orEmpty(),
+            textColor = Error2
+        )
+
+    } else if (status == BucketStatus.PROGRESS) {
+        StatusInfo(
+            backgroundImg = CommonR.drawable.status_process_img,
+            text = stringResource(id = CommonR.string.proceedingText),
+            textColor = Main4
+        )
+    } else {
+        StatusInfo(
+            backgroundImg = CommonR.drawable.stauts_success_img,
+            text = stringResource(id = CommonR.string.succeedText),
+            textColor = Main5
+        )
+    }
+
+    Box(
+        modifier = modifier,
         content = {
             Image(
-                painter = painterResource(R.drawable.detail_dday_img),
+                painter = painterResource(statusInfo.backgroundImg),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(65.dp, 22.dp)
+                    .size(61.dp, 21.dp)
                     .align(Alignment.Center)
             )
             MyText(
-                text = dday,
-                color = Error2,
-                fontSize = dpToSp(14.dp),
+                text = statusInfo.text,
+                color = statusInfo.textColor,
+                fontSize = dpToSp(13.dp),
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -77,6 +104,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
         text = title,
         color = Gray10,
         fontSize = dpToSp(24.dp),
+        fontWeight = FontWeight.Bold,
         modifier = modifier
     )
 }

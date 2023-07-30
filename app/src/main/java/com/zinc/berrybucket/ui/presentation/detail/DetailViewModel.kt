@@ -19,6 +19,7 @@ import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.MyProfileInfo
 import com.zinc.common.models.YesOrNo
@@ -154,6 +155,7 @@ class DetailViewModel @Inject constructor(
                     defaultYn = YesOrNo.Y
                 ),
                 isScrap = false,
+                status = BucketStatus.PROGRESS,
 
                 ),
             memoInfo = MemoInfo(
@@ -243,7 +245,7 @@ class DetailViewModel @Inject constructor(
                     name = "업음",
                     defaultYn = YesOrNo.Y
                 ),
-                isScrap = false,
+                isScrap = false, status = BucketStatus.PROGRESS,
 
                 ),
             writeOpenType = WriteOpenType.PUBLIC,

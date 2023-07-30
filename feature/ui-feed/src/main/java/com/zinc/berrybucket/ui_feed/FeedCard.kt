@@ -123,7 +123,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
     Box(modifier = modifier,
         content = {
             Image(
-                painter = painterResource(id = if (isProcessing) com.zinc.berrybucket.ui_feed.R.drawable.feed_process_img else com.zinc.berrybucket.ui_feed.R.drawable.feed_success_img),
+                painter = painterResource(id = if (isProcessing) R.drawable.status_process_img else R.drawable.stauts_success_img),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

@@ -456,8 +456,6 @@ private fun ContentView(
 
         }
 
-        // TODO : 인터렉션 이슈 해결 필요
-
         item(key = "flatDetailSuccessButton") {
             if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
                 return@item
@@ -469,8 +467,7 @@ private fun ContentView(
                     }, successButtonInfo = SuccessButtonInfo(
                         goalCount = bucketDetailUiInfo.descInfo.goalCount,
                         userCount = bucketDetailUiInfo.descInfo.userCount
-                    ),
-                    modifier = Modifier.padding(top = 30.dp)
+                    )
                 )
             }
         }
@@ -504,7 +501,9 @@ private fun ContentView(
 @Composable
 fun ProfileView(profileInfo: ProfileInfo) {
     ProfileView(
-        modifier = Modifier.padding(top = 28.dp),
+        modifier = Modifier
+            .padding(top = 28.dp)
+            .padding(horizontal = 12.dp),
         imageSize = 48.dp,
         profileSize = 44.dp,
         profileRadius = 16.dp,
