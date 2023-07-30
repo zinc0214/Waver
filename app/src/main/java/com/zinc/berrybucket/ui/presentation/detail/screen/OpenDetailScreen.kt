@@ -1,9 +1,11 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,7 +23,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -96,7 +97,13 @@ fun OpenDetailScreen(
             visibleLastIndex > listScrollState.layoutInfo.totalItemsCount - 2 // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
         val isScrollable =
             if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
-        val flatButtonVisible = listScrollState.firstVisibleItemIndex >= flatButtonIndex
+
+
+        // 붙은버튼의 노출조건
+        // 1. 댓글이 노출되는 경우
+        // 2. 친구 또는 댓글의 영역이 노출되는 경우 (현재 마지막으로 보이는 Index 가 (2) 의 Index 인 경우)
+
+        val flatButtonVisible = isCommentViewShown || visibleLastIndex >= flatButtonIndex
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
@@ -270,8 +277,11 @@ fun OpenDetailScreen(
 
                         // 플로팅 완료 버튼 노출 조건
                         if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
-                            if (flatButtonVisible.not()) {
-                                DetailSuccessButtonView(modifier = Modifier
+                            this@Column.AnimatedVisibility(
+                                flatButtonVisible.not(),
+                                enter = expandVertically(),
+                                exit = shrinkVertically(),
+                                modifier = Modifier
                                     .constrainAs(
                                         floatingButtonView
                                     ) {
@@ -279,12 +289,16 @@ fun OpenDetailScreen(
                                         end.linkTo(parent.end)
                                         bottom.linkTo(parent.bottom)
                                     }
-                                    .padding(bottom = 30.dp), successClicked = {
-                                    // TODO : viewModel Scuccess
-                                }, successButtonInfo = SuccessButtonInfo(
-                                    goalCount = detailInfo.descInfo.goalCount,
-                                    userCount = detailInfo.descInfo.userCount
-                                )
+                            ) {
+                                DetailSuccessButtonView(
+                                    modifier = Modifier.padding(bottom = 30.dp),
+                                    successClicked = {
+                                        // TODO : viewModel Scuccess
+                                    },
+                                    successButtonInfo = SuccessButtonInfo(
+                                        goalCount = detailInfo.descInfo.goalCount,
+                                        userCount = detailInfo.descInfo.userCount
+                                    )
                                 )
                             }
                         }
@@ -411,6 +425,7 @@ fun OpenDetailScreen(
 }
 
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun ContentView(
     modifier: Modifier,
@@ -447,7 +462,7 @@ private fun ContentView(
             if (bucketDetailUiInfo.memoInfo != null) {
                 DetailMemoView(
                     modifier = Modifier.padding(
-                        top = 24.dp, start = 28.dp, end = 28.dp
+                        top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
                     ), memo = bucketDetailUiInfo.memoInfo?.memo!!
                 )
             } else {
@@ -460,7 +475,12 @@ private fun ContentView(
             if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
                 return@item
             }
-            Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
+            // Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
+            AnimatedVisibility(
+                flatButtonVisible,
+                enter = expandVertically(),
+                exit = shrinkVertically()
+            ) {
                 DetailSuccessButtonView(
                     successClicked = {
                         clickEvent.invoke(DetailClickEvent.SuccessClicked)
@@ -470,6 +490,7 @@ private fun ContentView(
                     )
                 )
             }
+            // }
         }
 
         item(key = "friendsView") {
@@ -516,7 +537,7 @@ fun ProfileView(profileInfo: ProfileInfo) {
 }
 
 private fun flatButtonIndex(bucketDetailUiInfo: BucketDetailUiInfo): Int {
-    var index = 0
+    var index = 2
     if (bucketDetailUiInfo.imageInfo != null) {
         index += 1
     }
