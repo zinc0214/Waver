@@ -1,5 +1,7 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -18,13 +20,17 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.SuccessButtonInfo
+import com.zinc.berrybucket.model.UserSelectedImageInfo
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.rememberScrollContext
 import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
@@ -36,10 +42,13 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
+import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
+import java.io.File
 
 @Composable
 fun CloseDetailLayer(
     detailId: String,
+    goToUpdate: (WriteTotalInfo) -> Unit,
     backPress: () -> Unit
 ) {
 
@@ -54,11 +63,16 @@ fun CloseDetailLayer(
     val optionPopUpShowed = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
+    val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
 
     vmDetailInfo?.let { detailInfo ->
         val listScrollState = rememberLazyListState()
         val scrollContext = rememberScrollContext(listScrollState)
         val titlePosition = 0
+
+        if (imageInfos.isEmpty()) {
+            imageInfos.addAll(loadImages(detailInfo.imageInfo?.imageList.orEmpty()))
+        }
 
         BaseTheme {
             Scaffold { padding ->
@@ -72,6 +86,7 @@ fun CloseDetailLayer(
 
                             MyBucketMenuEvent.GoToEdit -> {
                                 optionPopUpShowed.value = false
+                                goToUpdate(detailInfo.toUpdateUiModel(imageInfos))
                             }
 
                             MyBucketMenuEvent.GoToGoalUpdate -> {
@@ -120,6 +135,7 @@ fun CloseDetailLayer(
                                 DetailAppBarClickEvent.CloseClicked -> {
                                     backPress()
                                 }
+
                                 DetailAppBarClickEvent.MoreOptionClicked -> {
                                     optionPopUpShowed.value = true
                                 }
@@ -212,6 +228,28 @@ private fun ContentView(
 
         item {
             Spacer(modifier = Modifier.height(28.dp))
+        }
+    }
+}
+
+@Composable
+private fun loadImages(images: List<String>): List<UserSelectedImageInfo> {
+
+    val context = LocalContext.current
+
+    return buildList {
+        images.forEachIndexed { index, url ->
+            val cacheFile = File(context.cacheDir, "${index}_$url")
+            Image(
+                rememberAsyncImagePainter(cacheFile),
+                contentDescription = "...",
+            )
+
+            add(
+                UserSelectedImageInfo(
+                    key = index, uri = Uri.parse(url), file = cacheFile
+                )
+            )
         }
     }
 }

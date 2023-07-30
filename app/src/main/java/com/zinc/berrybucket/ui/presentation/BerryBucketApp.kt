@@ -187,14 +187,18 @@ fun BerryBucketApp(
 
                         homeCategoryEditNavGraph(backPress = appState::backPress)
 
-                        berryBucketNavGraph(
+                        bucketDetailNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->
                                 when (eventInfo) {
                                     is GoToBucketDetailEvent.GoToCommentReport -> {
                                         appState.navigateToCommentReport(eventInfo.reportInfo, nav)
                                     }
                                 }
-                            }, backPress = appState::backPress
+                            },
+                            goToUpdate = { writeInfo, nav ->
+                                appState.navigateToWrite1(nav, writeInfo)
+                            },
+                            backPress = appState::backPress
                         )
                         bucketNavGraph(backPress = appState::backPress)
                         searchNavGraph(backPress = appState::backPress)

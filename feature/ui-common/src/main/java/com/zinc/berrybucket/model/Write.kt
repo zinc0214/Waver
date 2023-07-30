@@ -11,23 +11,6 @@ import java.io.File
 import java.io.Serializable
 import java.time.LocalDate
 
-@Parcelize
-data class WriteOption(
-    val type: WriteOptionsType1,
-    val title: String,
-    val info: WriteOption1Info
-) : Serializable, Parcelable {
-    fun content(): String {
-        return when (info) {
-            is WriteOption1Info.Category -> info.categoryInfo.name
-            is WriteOption1Info.Dday -> info.dDayText
-            is WriteOption1Info.GoalCount -> info.goalCount.toString()
-            is WriteOption1Info.Memo -> info.memo
-            is WriteOption1Info.Images -> ""
-        }
-    }
-}
-
 data class WriteAddOption(
     val type: WriteOptionsType2,
     val title: String,
@@ -36,49 +19,47 @@ data class WriteAddOption(
     val clicked: (WriteOptionsType2) -> Unit
 ) : Serializable
 
-
 @Parcelize
 data class WriteTotalInfo(
+    val bucketId: String? = null,
     val title: String = "",
-    val options: List<WriteOption> = emptyList(),
+    val options: List<WriteOption1Info> = emptyList(),
     val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
     val keyWord: List<WriteKeyWord> = emptyList(),
     val tagFriends: List<WriteFriend> = emptyList(),
     val isScrapUsed: Boolean = false
-) : Serializable, Parcelable {
-
-}
+) : Serializable, Parcelable
 
 fun WriteTotalInfo.parseWrite1Info() = WriteInfo1(this.title, this.options)
 
 data class WriteInfo1(
     val title: String = "",
-    val options: List<WriteOption> = emptyList(),
+    val options: List<WriteOption1Info> = emptyList(),
 ) {
     fun getMemo(): String {
-        val memoInfo = options.firstOrNull { it.info is WriteOption1Info.Memo } ?: return ""
-        return (memoInfo.info as WriteOption1Info.Memo).memo
+        val memoInfo = options.firstOrNull { it is WriteOption1Info.Memo } ?: return ""
+        return (memoInfo as WriteOption1Info.Memo).memo
     }
 
     fun getDday(): WriteOption1Info.Dday? {
-        val dDayInfo = options.firstOrNull { it.info is WriteOption1Info.Dday } ?: return null
-        return (dDayInfo.info as WriteOption1Info.Dday)
+        val dDayInfo = options.firstOrNull { it is WriteOption1Info.Dday } ?: return null
+        return (dDayInfo as WriteOption1Info.Dday)
     }
 
     fun getGoalCount(): Int {
-        val goalCount = options.firstOrNull { it.info is WriteOption1Info.GoalCount } ?: return 1
-        return (goalCount.info as WriteOption1Info.GoalCount).goalCount
+        val goalCount = options.firstOrNull { it is WriteOption1Info.GoalCount } ?: return 1
+        return (goalCount as WriteOption1Info.GoalCount).goalCount
     }
 
     fun getImages(): List<UserSelectedImageInfo> {
         val images =
-            options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
-        return (images.info as WriteOption1Info.Images).images
+            options.firstOrNull { it is WriteOption1Info.Images } ?: return emptyList()
+        return (images as WriteOption1Info.Images).images
     }
 
     fun getCategory(): WriteCategoryInfo {
-        val categoryInfo = options.firstOrNull { it.info is WriteOption1Info.Category }
-        return (categoryInfo?.info as WriteOption1Info.Category).categoryInfo
+        val categoryInfo = options.firstOrNull { it is WriteOption1Info.Category }
+        return (categoryInfo as WriteOption1Info.Category).categoryInfo
     }
 }
 
@@ -115,14 +96,43 @@ sealed class WriteOption1Info : Serializable, Parcelable {
     data class GoalCount(val goalCount: Int = 1) : WriteOption1Info()
     data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info()
     data class Images(val images: List<UserSelectedImageInfo> = emptyList()) : WriteOption1Info()
+
+    fun content(): String {
+        return when (this) {
+            is Category -> categoryInfo.name
+            is Dday -> dDayText
+            is GoalCount -> goalCount.toString()
+            is Memo -> memo
+            is Images -> ""
+        }
+    }
+
+    fun title(): String {
+        return when (this) {
+            is Category -> "카테고리"
+            is Dday -> "디데이"
+            is GoalCount -> "목표 달성 횟수"
+            is Memo -> "메모"
+            is Images -> "이미지"
+        }
+    }
+
+    fun type(): WriteOptionsType1 {
+        return when (this) {
+            is Category -> WriteOptionsType1.CATEGORY
+            is Dday -> WriteOptionsType1.D_DAY
+            is GoalCount -> WriteOptionsType1.GOAL
+            is Images -> WriteOptionsType1.IMAGE
+            is Memo -> WriteOptionsType1.MEMO
+        }
+    }
 }
 
 @Parcelize
 data class WriteCategoryInfo(
     val id: Int,
     val name: String,
-    val defaultYn: YesOrNo = YesOrNo.Y,
-    val bucketlistCount: String
+    val defaultYn: YesOrNo = YesOrNo.Y
 ) : Serializable, Parcelable
 
 interface WriteOptionsType2 {
@@ -137,7 +147,7 @@ interface WriteOptionsType2 {
 
 fun parseUIBucketListInfo(
     title: String = "",
-    options: List<WriteOption> = emptyList(),
+    options: List<WriteOption1Info> = emptyList(),
     writeOpenType: WriteOpenType,
     keyWord: List<String>,
     tagFriends: List<String>,
@@ -165,35 +175,30 @@ private fun parseOpenType(openType: WriteOpenType): ExposureStatus {
     }
 }
 
-private fun parseMemo(options: List<WriteOption>): String? {
-    val memo = options.firstOrNull { it.info is WriteOption1Info.Memo } ?: return null
-    val info = memo.info as WriteOption1Info.Memo
-    return info.memo
+private fun parseMemo(options: List<WriteOption1Info>): String? {
+    return options.firstOrNull { it is WriteOption1Info.Memo }?.content()
 }
 
-private fun parseImages(options: List<WriteOption>): List<File> {
-    val images =
-        options.firstOrNull { it.info is WriteOption1Info.Images } ?: return emptyList()
-    val info = images.info as WriteOption1Info.Images
-    return info.images.map { it.file }
+private fun parseImages(options: List<WriteOption1Info>): List<File> {
+    return options.firstOrNull { it is WriteOption1Info.Images }?.let {
+        (it as WriteOption1Info.Images).images.map { images -> images.file }
+    }.orEmpty()
 }
 
-private fun parseTargetDate(options: List<WriteOption>): String? {
-    val dday = options.firstOrNull { it.info is WriteOption1Info.Dday } ?: return null
-    val info = dday.info as WriteOption1Info.Dday
-    return info.dDayText.replace(".", "-")
+private fun parseTargetDate(options: List<WriteOption1Info>): String? {
+    return options.firstOrNull { it is WriteOption1Info.Dday }?.content()?.replace(".", "-")
 }
 
-private fun parseGoalCount(options: List<WriteOption>): Int {
-    val goalCount = options.firstOrNull { it.info is WriteOption1Info.GoalCount } ?: return 1
-    val info = goalCount.info as WriteOption1Info.GoalCount
-    return info.goalCount
+private fun parseGoalCount(options: List<WriteOption1Info>): Int {
+    return options.firstOrNull { it is WriteOption1Info.GoalCount }?.let {
+        (it as WriteOption1Info.GoalCount).goalCount
+    } ?: 1
 }
 
-private fun parseCategoryId(options: List<WriteOption>): Int {
-    val category = options.firstOrNull { it.info is WriteOption1Info.Category } ?: return 0
-    val info = category.info as WriteOption1Info.Category
-    return info.categoryInfo.id
+private fun parseCategoryId(options: List<WriteOption1Info>): Int {
+    return options.firstOrNull { it is WriteOption1Info.Category }?.let {
+        (it as WriteOption1Info.Category).categoryInfo.id
+    } ?: 0
 }
 
 data class UIAddBucketListInfo(

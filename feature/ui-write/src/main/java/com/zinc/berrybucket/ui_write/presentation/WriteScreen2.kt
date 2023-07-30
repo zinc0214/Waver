@@ -32,7 +32,6 @@ import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteOpenType
-import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType2
@@ -271,15 +270,11 @@ private fun WriteScreen2ContentView(
                             }
                         }
                         val option =
-                            writeInfo1.options.find { option -> option.type == WriteOptionsType1.IMAGE }
+                            writeInfo1.options.find { option -> option.type() == WriteOptionsType1.IMAGE }
                         val optionUpdate = writeInfo1.options.toMutableList()
                         optionUpdate.remove(option)
                         optionUpdate.add(
-                            WriteOption(
-                                type = WriteOptionsType1.IMAGE,
-                                title = "이미지",
-                                info = WriteOption1Info.Images(newImage)
-                            )
+                            WriteOption1Info.Images(newImage)
                         )
                         goToBack(writeTotalInfo.copy(options = optionUpdate))
                         // TODO : 이미지

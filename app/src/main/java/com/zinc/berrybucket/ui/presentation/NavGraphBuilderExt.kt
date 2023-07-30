@@ -249,8 +249,10 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.berryBucketNavGraph(
-    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit, backPress: () -> Unit
+internal fun NavGraphBuilder.bucketDetailNavGraph(
+    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
+    goToUpdate: (WriteTotalInfo, NavBackStackEntry) -> Unit,
+    backPress: () -> Unit
 ) {
     composable(
         "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
@@ -280,7 +282,9 @@ internal fun NavGraphBuilder.berryBucketNavGraph(
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
-        CloseDetailLayer(detailId, backPress)
+        CloseDetailLayer(detailId, goToUpdate = {
+            goToUpdate(it, backStackEntry)
+        }, backPress = backPress)
     }
 }
 

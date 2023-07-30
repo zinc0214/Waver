@@ -34,7 +34,6 @@ import androidx.constraintlayout.compose.Dimension
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.WriteCategoryInfo
-import com.zinc.berrybucket.model.WriteOption
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.model.WriteOptionsType1.CATEGORY
@@ -74,7 +73,7 @@ fun WriteScreen1(
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
 
     // 저장된 option 값들
-    val updatedWriteOptions = remember { mutableStateListOf<WriteOption>() }
+    val updatedWriteOptions = remember { mutableStateListOf<WriteOption1Info>() }
 
     if (!initialized.value) {
         Log.e("ayhan", "WriteScreen1: {${initialized.value}, ${originWriteInfo1.options}")
@@ -141,11 +140,7 @@ fun WriteScreen1(
             memoChanged = {
                 originMemo.value = it
                 updatedWriteOptions.add(
-                    WriteOption(
-                        type = MEMO,
-                        title = "메모",
-                        info = WriteOption1Info.Memo(it)
-                    )
+                    WriteOption1Info.Memo(it)
                 )
                 selectedOption = null
             }, closeClicked = {
@@ -165,7 +160,7 @@ fun WriteScreen1(
 
     // 기존 option 값 제거?
     fun deleteOption(type: WriteOptionsType1) {
-        updatedWriteOptions.find { it.type == type }?.let {
+        updatedWriteOptions.find { it.type() == type }?.let {
             updatedWriteOptions.remove(it)
         }
     }
@@ -198,16 +193,12 @@ fun WriteScreen1(
                                             isNeedToBottomSheetOpen.invoke(false)
 
                                             val prevImageOption =
-                                                updatedWriteOptions.find { options -> options.type == IMAGE }
+                                                updatedWriteOptions.find { options -> options.type() == IMAGE }
                                             if (prevImageOption != null) {
                                                 updatedWriteOptions.remove(prevImageOption)
                                             }
                                             updatedWriteOptions.add(
-                                                WriteOption(
-                                                    type = IMAGE,
-                                                    title = "이미지",
-                                                    info = WriteOption1Info.Images(imageList.value)
-                                                )
+                                                WriteOption1Info.Images(imageList.value)
                                             )
                                         })
                                 )
@@ -221,16 +212,11 @@ fun WriteScreen1(
                             confirmed = { category ->
                                 deleteOption(CATEGORY)
                                 updatedWriteOptions.add(
-                                    WriteOption(
-                                        type = CATEGORY,
-                                        title = "카테고리",
-                                        info = WriteOption1Info.Category(
-                                            WriteCategoryInfo(
-                                                category.id,
-                                                category.name,
-                                                category.defaultYn,
-                                                category.bucketlistCount
-                                            )
+                                    WriteOption1Info.Category(
+                                        WriteCategoryInfo(
+                                            category.id,
+                                            category.name,
+                                            category.defaultYn
                                         )
                                     )
                                 )
@@ -249,11 +235,7 @@ fun WriteScreen1(
                         CalendarSelectBottomSheet(confirmed = {
                             deleteOption(D_DAY)
                             updatedWriteOptions.add(
-                                WriteOption(
-                                    type = D_DAY,
-                                    title = "디데이",
-                                    info = WriteOption1Info.Dday(it, it.parseWithDday())
-                                )
+                                WriteOption1Info.Dday(it, it.parseWithDday())
                             )
                             originDdayDate.value = WriteOption1Info.Dday(it, it.parseWithDday())
                             selectedOption = null
@@ -274,11 +256,7 @@ fun WriteScreen1(
                             }, confirmed = {
                                 deleteOption(GOAL)
                                 updatedWriteOptions.add(
-                                    WriteOption(
-                                        type = GOAL,
-                                        title = "목표 달성 횟수",
-                                        info = WriteOption1Info.GoalCount(it.toInt())
-                                    )
+                                    WriteOption1Info.GoalCount(it.toInt())
                                 )
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
@@ -352,7 +330,7 @@ fun WriteScreen1(
                     }
 
                     item {
-                        if (updatedWriteOptions.find { it.type == MEMO } != null) {
+                        if (updatedWriteOptions.find { it.type() == MEMO } != null) {
                             MemoOptionView(
                                 modifier = Modifier.padding(top = 28.dp),
                                 memoText = originMemo.value
@@ -361,8 +339,9 @@ fun WriteScreen1(
                     }
 
                     item {
-                        if (updatedWriteOptions.find { it.type == IMAGE } != null) {
-                            gridItems(data = imageList.value,
+                        if (updatedWriteOptions.find { it.type() == IMAGE } != null) {
+                            gridItems(
+                                data = imageList.value,
                                 maxRow = 3,
                                 modifier = Modifier
                                     .padding(horizontal = 28.dp)
@@ -379,7 +358,7 @@ fun WriteScreen1(
                                         deleteImage = { removeImage ->
                                             imageList.value -= removeImage
                                             if (imageList.value.isEmpty()) {
-                                                updatedWriteOptions.removeIf { it.type == IMAGE }
+                                                updatedWriteOptions.removeIf { it.type() == IMAGE }
                                             }
                                         })
 
@@ -400,18 +379,19 @@ fun WriteScreen1(
                     }
                 }
 
-                BottomOptionView(modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(
-                        option
-                    ) {
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
-                    },
-                    currentClickedOptions = updatedWriteOptions.map { it.type }.toSet(),
+                BottomOptionView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(
+                            option
+                        ) {
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(parent.bottom)
+                        },
+                    currentClickedOptions = updatedWriteOptions.map { it.type() }.toSet(),
                     optionClicked = { option ->
-                        val isAlreadySelected = updatedWriteOptions.find { it.type == option }
+                        val isAlreadySelected = updatedWriteOptions.find { it.type() == option }
                         if (isAlreadySelected != null) {
                             when (option) {
                                 IMAGE,
@@ -429,11 +409,7 @@ fun WriteScreen1(
                                         selectedOption = option
                                     } else {
                                         updatedWriteOptions.add(
-                                            WriteOption(
-                                                type = IMAGE,
-                                                title = "이미지",
-                                                info = WriteOption1Info.Images(imageList.value)
-                                            )
+                                            WriteOption1Info.Images(imageList.value)
                                         )
                                     }
                                 }

@@ -15,9 +15,13 @@ import com.zinc.berrybucket.model.MemoInfo
 import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.model.TogetherInfo
 import com.zinc.berrybucket.model.TogetherMember
+import com.zinc.berrybucket.model.WriteCategoryInfo
+import com.zinc.berrybucket.model.WriteKeyWord
+import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.my.LoadProfileInfo
@@ -118,14 +122,10 @@ class DetailViewModel @Inject constructor(
 
 
     fun goalCountUpdate(bucketId: String, goalCount: String) {
+        val descInfo = bucketDetailUiInfo1.descInfo
+        val updateGoalInfo = descInfo.copy(goalCount = descInfo.goalCount + 1)
         val updateInfo = bucketDetailUiInfo1.copy(
-            descInfo = CommonDetailDescInfo(
-                dDay = "D+201",
-                tagList = listOf("여행", "강남"),
-                title = "가나다라마바사",
-                goalCount = goalCount.toInt(),
-                userCount = 0
-            )
+            descInfo = updateGoalInfo
         )
         _bucketBucketDetailUiInfo.value = updateInfo
     }
@@ -144,11 +144,18 @@ class DetailViewModel @Inject constructor(
             ),
             descInfo = CommonDetailDescInfo(
                 dDay = "D+201",
-                tagList = listOf("여행", "강남"),
+                keywordList = listOf(WriteKeyWord(1, "여행"), WriteKeyWord(2, "강남")),
                 title = "가나다라마바사",
                 goalCount = 10,
-                userCount = 0
-            ),
+                userCount = 0,
+                categoryInfo = WriteCategoryInfo(
+                    id = 0,
+                    name = "없음",
+                    defaultYn = YesOrNo.Y
+                ),
+                isScrap = false,
+
+                ),
             memoInfo = MemoInfo(
                 memo = "▶ 첫째날\n" +
                         "도두해안도로 - 도두봉키세스존 - 이호테우해변 - 오설록티뮤지엄 \n" +
@@ -212,7 +219,8 @@ class DetailViewModel @Inject constructor(
                         userCount = 0
                     )
                 )
-            )
+            ),
+            writeOpenType = WriteOpenType.PUBLIC
         )
 
     private val bucketDetailUiInfo2 =
@@ -226,10 +234,23 @@ class DetailViewModel @Inject constructor(
             ),
             descInfo = CommonDetailDescInfo(
                 dDay = "D+201",
-                tagList = listOf("여행", "강남"),
+                keywordList = listOf(WriteKeyWord(1, "여행"), WriteKeyWord(2, "강남")),
                 title = "가나다라마바사",
                 goalCount = 0,
-                userCount = 0
+                userCount = 0,
+                categoryInfo = WriteCategoryInfo(
+                    id = 0,
+                    name = "업음",
+                    defaultYn = YesOrNo.Y
+                ),
+                isScrap = false,
+
+                ),
+            writeOpenType = WriteOpenType.PUBLIC,
+            imageInfo = null,
+            memoInfo = null,
+            commentInfo = null,
+            togetherInfo = null,
+
             )
-        )
 }

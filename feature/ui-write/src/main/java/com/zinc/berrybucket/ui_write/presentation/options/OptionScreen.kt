@@ -13,7 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.model.WriteOption
+import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteOptionsType1
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -23,7 +23,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
-fun OptionScreen(options: List<WriteOption>) {
+fun OptionScreen(options: List<WriteOption1Info>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun OptionScreen(options: List<WriteOption>) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         val showableOptions =
-            options.filterNot { it.type == WriteOptionsType1.IMAGE || it.type == WriteOptionsType1.MEMO }
+            options.filterNot { it.type() == WriteOptionsType1.IMAGE || it.type() == WriteOptionsType1.MEMO }
         showableOptions.forEach { option ->
             ConstraintLayout(
                 modifier = Modifier
@@ -51,7 +51,7 @@ fun OptionScreen(options: List<WriteOption>) {
                         },
                     fontSize = dpToSp(14.dp),
                     color = Gray8,
-                    text = option.title
+                    text = option.title()
                 )
 
                 MyText(

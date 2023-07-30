@@ -12,10 +12,12 @@ data class ImageInfo(
 
 data class CommonDetailDescInfo(
     val dDay: String?,
-    val tagList: List<String>?,
+    val keywordList: List<WriteKeyWord>?,
     val title: String,
     val goalCount: Int,
-    val userCount: Int
+    val userCount: Int,
+    val categoryInfo: WriteCategoryInfo,
+    val isScrap: Boolean
 ) : DetailDescType()
 
 data class CloseDetailDescInfo(
@@ -91,6 +93,7 @@ fun detailId(descType: DetailDescType): Int {
 
 data class BucketDetailUiInfo(
     val bucketId: String,
+    val writeOpenType: WriteOpenType,
     val imageInfo: ImageInfo? = null,
     val profileInfo: ProfileInfo,
     val descInfo: CommonDetailDescInfo,

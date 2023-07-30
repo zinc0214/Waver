@@ -18,12 +18,12 @@ data class DetailInfo(
     val memo: String?,
     val status: Status,
     val pin: String,
-    val scrapYn: String,
+    val scrapYn: YesOrNo,
     val categoryName: String,
     val goalCount: Int,
     val userCount: Int,
     val completedDt: String?,
-    val keywords: List<String>?,
+    val keywords: List<KeywordInfo>?,
     val images: List<String>?
 ) {
     enum class Status {
