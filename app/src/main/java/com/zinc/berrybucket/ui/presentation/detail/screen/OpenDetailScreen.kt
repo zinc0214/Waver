@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
@@ -40,7 +39,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.design.util.visibleLastIndex
-import com.zinc.berrybucket.ui.presentation.GoToBucketDetailEvent
+import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
@@ -263,9 +262,7 @@ fun OpenDetailScreen(
                                     DetailClickEvent.SuccessClicked -> TODO()
                                 }
                             },
-                            flatButtonIndex = flatButtonIndex,
                             flatButtonVisible = flatButtonVisible,
-                            isCommentViewShown = isCommentViewShown,
                             modifier = Modifier
                                 .constrainAs(contentView) {
                                     start.linkTo(parent.start)
@@ -425,15 +422,12 @@ fun OpenDetailScreen(
 }
 
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun ContentView(
     modifier: Modifier,
     listState: LazyListState,
     bucketDetailUiInfo: BucketDetailUiInfo,
-    flatButtonIndex: Int,
     flatButtonVisible: Boolean,
-    isCommentViewShown: Boolean,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
 

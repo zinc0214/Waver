@@ -60,7 +60,7 @@ private fun FilterBottomView(
     isNeedToBottomSheetOpen: (Boolean) -> Unit
 ) {
     when (tab) {
-        MyTabType.ALL -> {
+        is MyTabType.ALL -> {
             MyAllBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
                 when (it) {
                     BottomButtonClickEvent.LeftButtonClicked -> {
@@ -74,7 +74,7 @@ private fun FilterBottomView(
             })
         }
 
-        MyTabType.DDAY -> {
+        is MyTabType.DDAY -> {
             MyDdayBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
                 when (it) {
                     BottomButtonClickEvent.LeftButtonClicked -> {
@@ -88,7 +88,7 @@ private fun FilterBottomView(
             })
         }
 
-        MyTabType.CHALLENGE -> TODO()
+        is MyTabType.CHALLENGE -> TODO()
         else -> {
             // Do Nothing
         }

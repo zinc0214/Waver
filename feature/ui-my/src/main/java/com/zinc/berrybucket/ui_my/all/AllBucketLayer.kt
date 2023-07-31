@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.presentation.component.MyText
@@ -71,7 +72,7 @@ fun AllBucketLayer(
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
                 bucketList = it.bucketList,
-                tabType = MyTabType.ALL,
+                tabType = ALL(),
                 showDday = ddayShow.value ?: true,
                 nestedScrollInterop = nestedScrollInterop,
                 itemClicked = {
@@ -104,7 +105,7 @@ fun AllBucketTopView(
                 .align(Alignment.CenterVertically)
                 .fillMaxWidth(),
             clickEvent = clickEvent,
-            tabType = MyTabType.ALL
+            tabType = ALL()
         )
     }
 }

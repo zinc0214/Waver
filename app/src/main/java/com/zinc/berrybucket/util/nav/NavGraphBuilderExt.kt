@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation
+package com.zinc.berrybucket.util.nav
 
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
@@ -33,7 +33,6 @@ import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
-import com.zinc.berrybucket.util.getRequiredSerializableExtra
 import com.zinc.common.models.ReportInfo
 
 
@@ -92,18 +91,30 @@ internal fun NavGraphBuilder.homeMore(moreItemClicked: (MoreItemType, NavBackSta
 }
 
 internal fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
-    composable(MainDestinations.MY_SEARCH) { entry ->
-        val arguments = requireNotNull(entry.arguments)
-        val selectedTab =
-            arguments.getRequiredSerializableExtra<MyTabType>(MainDestinations.MY_SEARCH)
-        com.zinc.berrybucket.ui_my.SearchBottomView(
-            tab = selectedTab,
-            isNeedToBottomSheetOpen = {
-                backPress()
-            }
-        )
 
-    }
+    composable(
+        route = MainDestinations.MY_SEARCH + "/{${MainDestinations.SELECT_TAB}}",
+        arguments = listOf(
+            navArgument(MainDestinations.SELECT_TAB) {
+                type = SerializableType(
+                    type = MyTabType::class.java,
+                    parser = MyTabType::parseNavigationValue
+                )
+            }
+        ),
+        content = { entry ->
+            val arguments = requireNotNull(entry.arguments)
+            val selectedTab: MyTabType =
+                arguments.extraNotNullSerializable(MainDestinations.SELECT_TAB)
+
+            com.zinc.berrybucket.ui_my.SearchBottomView(
+                tab = selectedTab,
+                isNeedToBottomSheetOpen = {
+                    backPress()
+                }
+            )
+        }
+    )
 }
 
 internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
@@ -112,17 +123,18 @@ internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
     }
 }
 
+// 2
 internal fun NavGraphBuilder.bucketNavGraph(
     backPress: () -> Unit
 ) {
     navigation(
-        route = MainDestinations.OPEN_BUCKET_DETAIL,
+        route = MainDestinations.OPEN_BUCKET_DETAIL + "/{${BucketListDetailDestinations.REPORT_INFO}}",
         startDestination = BucketListDetailDestinations.BUCKET_COMMENT_REPORT
     ) {
-        composable(BucketListDetailDestinations.BUCKET_COMMENT_REPORT) { entry ->
+        composable(BucketListDetailDestinations.BUCKET_COMMENT_REPORT + "/{${BucketListDetailDestinations.REPORT_INFO}}") { entry ->
             val arguments = requireNotNull(entry.arguments)
             val reportInfo =
-                arguments.getRequiredSerializableExtra<ReportInfo>(BucketListDetailDestinations.REPORT_INFO)
+                arguments.extraNotNullSerializable<ReportInfo>(BucketListDetailDestinations.REPORT_INFO)
             ReportScreen(reportInfo = reportInfo, backPress = backPress)
         }
     }
@@ -138,57 +150,80 @@ internal fun NavGraphBuilder.searchNavGraph(
     }
 }
 
+// 3
 internal fun NavGraphBuilder.writeNavGraph1(
     action: (ActionWithActivity) -> Unit,
     backPress: () -> Unit,
     goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit,
     goToAddCategory: (NavBackStackEntry) -> Unit
 ) {
-    composable(WriteDestinations.GO_TO_WRITE1) { it ->
-        val arguments = requireNotNull(it.arguments)
-        val totalInfo =
-            arguments.getRequiredSerializableExtra<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
 
-        WriteScreen1(
-            event = { event ->
-                when (event) {
-                    is Write1Event.ActivityAction -> {
-                        action(event.acton)
+    composable(
+        route = WriteDestinations.GO_TO_WRITE1 + "/{${WriteDestinations.WRITE_INFO}}",
+        arguments = listOf(
+            navArgument(WriteDestinations.WRITE_INFO) {
+                type = SerializableType(
+                    type = WriteTotalInfo::class.java,
+                    parser = WriteTotalInfo::parseNavigationValue
+                )
+            }
+        ),
+        content = { entry ->
+            val arguments = requireNotNull(entry.arguments)
+            val totalInfo: WriteTotalInfo =
+                arguments.extraNotNullSerializable(WriteDestinations.WRITE_INFO)
+
+            WriteScreen1(
+                event = { event ->
+                    when (event) {
+                        is Write1Event.ActivityAction -> {
+                            action(event.acton)
+                        }
+
+                        is Write1Event.GoToWrite2 -> {
+                            goToNextWrite(entry, event.info)
+
+                        }
+
+                        Write1Event.GoToBack -> {
+                            backPress()
+                        }
+
+                        Write1Event.GoToAddCategory -> {
+                            goToAddCategory(entry)
+                        }
                     }
-
-                    is Write1Event.GoToWrite2 -> {
-                        goToNextWrite(it, event.info)
-
-                    }
-
-                    Write1Event.GoToBack -> {
-                        backPress()
-                    }
-
-                    Write1Event.GoToAddCategory -> {
-                        goToAddCategory(it)
-                    }
-                }
-            },
-            originWriteTotalInfo = totalInfo
-        )
-    }
+                },
+                originWriteTotalInfo = totalInfo
+            )
+        }
+    )
 }
 
 internal fun NavGraphBuilder.writeNavGraph2(
     backPress: (NavBackStackEntry, WriteTotalInfo) -> Unit,
     goToHome: () -> Unit
 ) {
-
-    composable(WriteDestinations.GO_TO_WRITE2) { nav ->
-        val arguments = requireNotNull(nav.arguments)
-        val writeTotalInfo =
-            arguments.getRequiredSerializableExtra<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
-        WriteScreen2(
-            writeTotalInfo = writeTotalInfo,
-            goToBack = { newInfo -> backPress(nav, newInfo) },
-            addBucketSucceed = { goToHome() })
-    }
+    composable(
+        route = WriteDestinations.GO_TO_WRITE2 + "/{${WriteDestinations.WRITE_INFO}}",
+        arguments = listOf(
+            navArgument(WriteDestinations.WRITE_INFO) {
+                type = SerializableType(
+                    type = WriteTotalInfo::class.java,
+                    parser = WriteTotalInfo::parseNavigationValue
+                )
+            }
+        ),
+        content = { nav ->
+            val arguments = requireNotNull(nav.arguments)
+            val writeTotalInfo =
+                arguments.extraNotNullSerializable<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
+            WriteScreen2(
+                writeTotalInfo = writeTotalInfo,
+                goToBack = { newInfo -> backPress(nav, newInfo) },
+                addBucketSucceed = { goToHome() })
+        }
+    )
 }
 
 internal fun NavGraphBuilder.alarmNavGraph(
@@ -302,6 +337,7 @@ object MainDestinations {
     const val BUCKET_ID_KEY = "bucketId"
     const val MY_SEARCH = "my_search"
     const val MY_CATEGORY_EDIT = "my_category_edit"
+    const val SELECT_TAB = "select_tab"
 }
 
 object BucketListDetailDestinations {

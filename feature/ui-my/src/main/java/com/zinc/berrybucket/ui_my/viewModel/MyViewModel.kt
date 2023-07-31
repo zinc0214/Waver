@@ -7,6 +7,10 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
+import com.zinc.berrybucket.model.MyTabType.CATEGORY
+import com.zinc.berrybucket.model.MyTabType.CHALLENGE
+import com.zinc.berrybucket.model.MyTabType.DDAY
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListSortType
@@ -231,10 +235,10 @@ class MyViewModel @Inject constructor(
 
     fun searchList(type: MyTabType, searchWord: String) {
         when (type) {
-            MyTabType.ALL -> searchAllBucket(searchWord = searchWord)
-            MyTabType.DDAY -> searchDdayBucket(searchWord = searchWord)
-            MyTabType.CATEGORY -> searchCategoryItems(searchWord = searchWord)
-            MyTabType.CHALLENGE -> searchChallenge(searchWord = searchWord)
+            is ALL -> searchAllBucket(searchWord = searchWord)
+            is DDAY -> searchDdayBucket(searchWord = searchWord)
+            is CATEGORY -> searchCategoryItems(searchWord = searchWord)
+            is CHALLENGE -> searchChallenge(searchWord = searchWord)
         }
     }
 
@@ -264,28 +268,28 @@ class MyViewModel @Inject constructor(
 
     private fun searchAllBucket(searchWord: String) {
         _searchBucketResult.value = Pair(
-            MyTabType.ALL,
+            ALL(),
             simpleTypeList
         )
     }
 
     private fun searchDdayBucket(searchWord: String) {
         _searchBucketResult.value = Pair(
-            MyTabType.DDAY,
+            DDAY(),
             simpleTypeList
         )
     }
 
     private fun searchCategoryItems(searchWord: String) {
         _searchBucketResult.value = Pair(
-            MyTabType.CATEGORY,
+            CATEGORY(),
             searchCategoryInfos
         )
     }
 
     private fun searchChallenge(searchWord: String) {
         _searchBucketResult.value = Pair(
-            MyTabType.CHALLENGE,
+            CHALLENGE(),
             simpleTypeList
         )
     }

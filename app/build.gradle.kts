@@ -57,6 +57,9 @@ android {
     kapt {
         correctErrorTypes = true
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -130,4 +133,6 @@ dependencies {
 
     // cropper
     implementation(Dep.cropper)
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }

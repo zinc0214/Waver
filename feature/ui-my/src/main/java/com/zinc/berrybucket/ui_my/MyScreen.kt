@@ -38,6 +38,9 @@ import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
+import com.zinc.berrybucket.model.MyTabType.CATEGORY
+import com.zinc.berrybucket.model.MyTabType.DDAY
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -116,7 +119,7 @@ fun MyScreen(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyTabLayer(
-    tabItems: Array<MyTabType>, pagerState: PagerState, coroutineScope: CoroutineScope
+    tabItems: List<MyTabType>, pagerState: PagerState, coroutineScope: CoroutineScope
 ) {
 
     val tabWidths = remember {
@@ -150,7 +153,7 @@ fun MyTabLayer(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyViewPager(
-    tabItems: Array<MyTabType>,
+    tabItems: List<MyTabType>,
     pagerState: PagerState,
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
@@ -180,7 +183,7 @@ fun MyViewPager(
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.SearchScreen(
-                                            selectTab = MyTabType.ALL, viewModel = viewModel
+                                            selectTab = ALL(), viewModel = viewModel
                                         )
                                     )
                                 }
@@ -190,7 +193,7 @@ fun MyViewPager(
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.FilterScreen(
-                                            selectTab = MyTabType.ALL,
+                                            selectTab = ALL(),
                                             viewModel = viewModel
                                         )
                                     )
@@ -216,7 +219,7 @@ fun MyViewPager(
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
                                     BottomSheetScreenType.SearchScreen(
-                                        selectTab = MyTabType.CATEGORY, viewModel = viewModel
+                                        selectTab = CATEGORY(), viewModel = viewModel
                                     )
                                 )
                             }
@@ -250,7 +253,7 @@ fun MyViewPager(
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
                                     BottomSheetScreenType.SearchScreen(
-                                        selectTab = MyTabType.DDAY,
+                                        selectTab = DDAY(),
                                         viewModel = viewModel
                                     )
                                 )
@@ -261,7 +264,7 @@ fun MyViewPager(
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
                                     BottomSheetScreenType.FilterScreen(
-                                        selectTab = MyTabType.DDAY,
+                                        selectTab = DDAY(),
                                         viewModel = viewModel
                                     )
                                 )

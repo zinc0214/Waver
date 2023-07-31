@@ -54,7 +54,7 @@ class MyView @JvmOverloads constructor(
 
     @OptIn(ExperimentalPagerApi::class)
     fun setTabView(
-        tabItems: Array<MyTabType>,
+        tabItems: List<MyTabType>,
         pagerState: PagerState,
         viewModel: MyViewModel,
         coroutineScope: CoroutineScope,

@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 
@@ -32,7 +33,7 @@ fun FilterAndSearchImageView(
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_filter,
-            contentDescription = if (tabType == MyTabType.ALL) stringResource(R.string.allFilterImageViewDesc)
+            contentDescription = if (tabType is ALL) stringResource(R.string.allFilterImageViewDesc)
             else stringResource(
                 R.string.ddayFilterImageViewDesc
             )
@@ -53,7 +54,7 @@ fun FilterAndSearchImageView(
             },
             modifier = Modifier.size(32.dp),
             image = com.zinc.berrybucket.ui_common.R.drawable.btn_32_search,
-            contentDescription = if (tabType == MyTabType.ALL) stringResource(R.string.allSearchImageViewDesc)
+            contentDescription = if (tabType is ALL) stringResource(R.string.allSearchImageViewDesc)
             else stringResource(R.string.ddaySearchImageViewDesc)
         )
 
@@ -63,5 +64,5 @@ fun FilterAndSearchImageView(
 @Preview
 @Composable
 private fun FilterAndSearchImagePreview() {
-    FilterAndSearchImageView(clickEvent = {}, tabType = MyTabType.ALL)
+    FilterAndSearchImageView(clickEvent = {}, tabType = ALL())
 }

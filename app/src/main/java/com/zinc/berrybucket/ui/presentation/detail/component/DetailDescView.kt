@@ -42,7 +42,7 @@ fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
 
         detailDescInfo.keywordList?.let { tagList ->
             TagListView(
-                modifier = Modifier.padding(top = 26.dp),
+                modifier = Modifier.padding(bottom = 26.dp),
                 tagList = tagList.map { it.text }
             )
         }

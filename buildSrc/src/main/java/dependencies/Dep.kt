@@ -2,7 +2,7 @@
 
 object Versions {
     const val compileSdk = 33
-    const val buildTools = "31.0.0"
+    const val buildTools = "33.0.1"
 
     const val minSdk = 26
     const val targetSdk = 33
@@ -12,7 +12,7 @@ object Versions {
 
 object Dep {
     object GradlePlugin {
-        private const val androidStudioGradlePluginVersion = "8.0.2"
+        private const val androidStudioGradlePluginVersion = "8.1.0-beta01"
         const val android = "com.android.tools.build:gradle:$androidStudioGradlePluginVersion"
         const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Kotlin.version}"
         const val kotlinSerialization =
@@ -43,7 +43,7 @@ object Dep {
 
         object Compose {
             const val compilerVersion = "1.3.2"
-            const val version = "1.4.0-alpha04"
+            const val version = "1.4.0-beta01"
 
             const val runtime = "androidx.compose.runtime:runtime:$version"
             const val ui = "androidx.compose.ui:ui:${version}"
@@ -51,7 +51,7 @@ object Dep {
             const val tooling = "androidx.compose.ui:ui-tooling:${version}"
             const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val foundation = "androidx.compose.foundation:foundation:$version"
-            const val navigation = "androidx.navigation:navigation-compose:2.5.3"
+            const val navigation = "androidx.navigation:navigation-compose:2.6.0"
             const val accompanist = "com.google.accompanist:accompanist-permissions:0.29.0-alpha"
             const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.29.0-alpha"
 

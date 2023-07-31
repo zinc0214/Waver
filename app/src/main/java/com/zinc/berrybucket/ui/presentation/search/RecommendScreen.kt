@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.presentation.SearchEvent
+import com.zinc.berrybucket.util.nav.SearchEvent
 
 @Composable
 fun RecommendScreen(

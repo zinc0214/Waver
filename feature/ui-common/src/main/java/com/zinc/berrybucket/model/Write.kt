@@ -1,12 +1,15 @@
 package com.zinc.berrybucket.model
 
 import android.os.Parcelable
+import com.zinc.berrybucket.util.parseNavigationValue
+import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.KeywordInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.toYn
 import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Contextual
 import java.io.File
 import java.io.Serializable
 import java.time.LocalDate
@@ -20,6 +23,7 @@ data class WriteAddOption(
 ) : Serializable
 
 @Parcelize
+@kotlinx.serialization.Serializable
 data class WriteTotalInfo(
     val bucketId: String? = null,
     val title: String = "",
@@ -28,7 +32,15 @@ data class WriteTotalInfo(
     val keyWord: List<WriteKeyWord> = emptyList(),
     val tagFriends: List<WriteFriend> = emptyList(),
     val isScrapUsed: Boolean = false
-) : Serializable, Parcelable
+) : Serializable, Parcelable {
+    companion object {
+        fun toNavigationValue(value: WriteTotalInfo): String =
+            value.toNavigationValue()
+
+        fun parseNavigationValue(value: String): WriteTotalInfo =
+            value.parseNavigationValue()
+    }
+}
 
 fun WriteTotalInfo.parseWrite1Info() = WriteInfo1(this.title, this.options)
 
@@ -69,12 +81,13 @@ fun List<KeywordInfo>.toUiModel(): List<WriteKeyWord> {
     }
 }
 
+@kotlinx.serialization.Serializable
 data class WriteKeyWord(
     val id: Int,
     val text: String
 ) : Serializable
 
-
+@kotlinx.serialization.Serializable
 data class WriteFriend(
     val id: String,
     val imageUrl: String,
@@ -90,12 +103,24 @@ enum class WriteOpenType(val text: String) {
 }
 
 @Parcelize
+@kotlinx.serialization.Serializable
 sealed class WriteOption1Info : Serializable, Parcelable {
-    data class Memo(val memo: String = "") : WriteOption1Info()
-    data class Dday(val localDate: LocalDate, val dDayText: String = "") : WriteOption1Info()
-    data class GoalCount(val goalCount: Int = 1) : WriteOption1Info()
-    data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info()
-    data class Images(val images: List<UserSelectedImageInfo> = emptyList()) : WriteOption1Info()
+    @kotlinx.serialization.Serializable
+    data class Memo(val memo: String = "") : WriteOption1Info(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class Dday(@Contextual val localDate: LocalDate, val dDayText: String = "") :
+        WriteOption1Info(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class GoalCount(val goalCount: Int = 1) : WriteOption1Info(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class Images(val images: List<UserSelectedImageInfo> = emptyList()) : WriteOption1Info(),
+        Serializable
 
     fun content(): String {
         return when (this) {
@@ -129,6 +154,7 @@ sealed class WriteOption1Info : Serializable, Parcelable {
 }
 
 @Parcelize
+@kotlinx.serialization.Serializable
 data class WriteCategoryInfo(
     val id: Int,
     val name: String,

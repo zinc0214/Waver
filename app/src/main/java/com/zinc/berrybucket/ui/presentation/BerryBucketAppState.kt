@@ -12,9 +12,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.WriteTotalInfo
-import com.zinc.berrybucket.ui.presentation.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
-import com.zinc.berrybucket.util.navigateWithArgument
+import com.zinc.berrybucket.util.nav.AlarmDestinations
+import com.zinc.berrybucket.util.nav.BucketListDetailDestinations
+import com.zinc.berrybucket.util.nav.MainDestinations
+import com.zinc.berrybucket.util.nav.MainDestinations.HOME_ROUTE
+import com.zinc.berrybucket.util.nav.MoreDestinations
+import com.zinc.berrybucket.util.nav.SearchDestinations
+import com.zinc.berrybucket.util.nav.WriteDestinations
 import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.CoroutineScope
 
@@ -85,35 +90,28 @@ class BerryBucketAppState(
 
     fun navigateToMySearch(tab: MyTabType, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigateWithArgument(
-                route = MainDestinations.MY_SEARCH,
-                args = listOf(MainDestinations.MY_SEARCH to tab)
-            )
+            val selectTab = MyTabType.toNavigationValue(tab)
+            navController.navigate("${MainDestinations.MY_SEARCH}/${selectTab}")
         }
     }
 
     fun navigateToOpenBucketDetail(bucketId: String, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/$bucketId")
+            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}")
         }
     }
 
     fun navigateToCloseBucketDetail(bucketId: String, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.CLOSE_BUCKET_DETAIL}/$bucketId")
+            navController.navigate("${MainDestinations.CLOSE_BUCKET_DETAIL}/${bucketId}")
         }
     }
 
     fun navigateToCommentReport(reportInfo: ReportInfo, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigateWithArgument(
-                route = BucketListDetailDestinations.BUCKET_COMMENT_REPORT,
-                args = listOf(
-                    BucketListDetailDestinations.REPORT_INFO to reportInfo
-                )
-            )
+            navController.navigate("${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/${reportInfo}")
         }
     }
 
@@ -125,30 +123,20 @@ class BerryBucketAppState(
 
     fun navigateToWrite1(writeInfo: WriteTotalInfo, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigateWithArgument(
-                route = WriteDestinations.GO_TO_WRITE1,
-                args = listOf(
-                    WriteDestinations.WRITE_INFO to writeInfo
-                ),
-                navOptions {
-                    // TODO : 백했을 때 홈이 항상 첫번째 탭으로 오는 문제 해결 필요
-                    popUpTo(findStartDestination(navController.graph).id) {
-                        inclusive = false
-                        saveState = true
-                    }
+            val info = WriteTotalInfo.toNavigationValue(writeInfo)
+            navController.navigate("${WriteDestinations.GO_TO_WRITE1}/${info}", navOptions {
+                popUpTo(findStartDestination(navController.graph).id) {
+                    inclusive = false
+                    saveState = true
                 }
-            )
+            })
         }
     }
 
     fun navigateToWrite2(from: NavBackStackEntry, totalInfo: WriteTotalInfo) {
         if (from.lifecycleIsResumed()) {
-            navController.navigateWithArgument(
-                route = WriteDestinations.GO_TO_WRITE2,
-                args = listOf(
-                    WriteDestinations.WRITE_INFO to totalInfo
-                )
-            )
+            val info = WriteTotalInfo.toNavigationValue(totalInfo)
+            navController.navigate("${WriteDestinations.GO_TO_WRITE2}/${info}")
         }
     }
 

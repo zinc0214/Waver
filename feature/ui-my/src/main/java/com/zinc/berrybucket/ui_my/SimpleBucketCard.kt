@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray1
@@ -152,7 +153,7 @@ fun SimpleBucketCard(
                     BucketCircularProgressBar(
                         progressState = {
                             if (it == BucketProgressState.PROGRESS_END) {
-                                if (tabType == MyTabType.ALL) {
+                                if (tabType is ALL) {
                                     borderColor.value = Main2
                                 } else {
                                     borderColor.value = Sub_D2
@@ -250,7 +251,7 @@ private fun CountProgressView(
 ) {
 
     val countProgressColor =
-        if (tabType == MyTabType.ALL) {
+        if (tabType is ALL) {
             Main2
         } else if (info.dDay != null && info.dDay!! > 0) {
             Error2

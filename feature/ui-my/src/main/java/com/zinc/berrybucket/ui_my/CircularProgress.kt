@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.BucketProgressState
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.design.theme.Sub_D2
@@ -79,7 +80,7 @@ fun BucketCircularProgressBar(
         Canvas(modifier = Modifier.size(radius * 2f)) {
             if (animationPlayed) {
                 drawArc(
-                    color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
+                    color = if (tabType is ALL) Main2 else Sub_D2,
                     startAngle = -90f,
                     sweepAngle = 360 * curPercentage.value,
                     useCenter = false,
@@ -87,7 +88,7 @@ fun BucketCircularProgressBar(
                 )
             } else {
                 drawArc(
-                    color = if (tabType == MyTabType.ALL) Main2 else Sub_D2,
+                    color = if (tabType is ALL) Main2 else Sub_D2,
                     startAngle = -90f,
                     sweepAngle = if (checkBoxShow) 360f else 0f,
                     useCenter = false,
@@ -107,7 +108,7 @@ fun BucketCircularProgressBar(
         if (checkBoxShow) {
             Image(
                 painter =
-                if (tabType == MyTabType.ALL)
+                if (tabType is ALL)
                     painterResource(R.drawable.check_succeed)
                 else
                     painterResource(R.drawable.check_succeed_dday),
@@ -129,6 +130,6 @@ fun BucketCircularProgressBar(
 @Composable
 private fun BucketCircularProgressBarPreview() {
     BucketCircularProgressBar(
-        progressState = {}, tabType = MyTabType.ALL,
+        progressState = {}, tabType = ALL(),
     )
 }

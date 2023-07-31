@@ -6,10 +6,14 @@ import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
 import com.zinc.berrybucket.ui_common.R
+import com.zinc.berrybucket.util.parseNavigationValue
+import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DetailType
+import kotlinx.serialization.Serializer
+import java.io.Serializable
 
 data class AllBucketList(
     val processingCount: String,
@@ -90,13 +94,33 @@ enum class BucketType(
     CHALLENGE("CHALLENGE")
 }
 
-enum class MyTabType(
-    @StringRes val title: Int
-) {
-    ALL(title = R.string.allTab),
-    CATEGORY(title = R.string.categoryTab),
-    DDAY(title = R.string.ddayTab),
-    CHALLENGE(title = R.string.challengeTab)
+@kotlinx.serialization.Serializable
+sealed class MyTabType : Serializable {
+
+    abstract val title: Int
+
+    @kotlinx.serialization.Serializable
+    data class ALL(override val title: Int = R.string.allTab) : MyTabType(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class CATEGORY(override val title: Int = R.string.categoryTab) : MyTabType(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class DDAY(override val title: Int = R.string.ddayTab) : MyTabType(), Serializable
+
+    @kotlinx.serialization.Serializable
+    data class CHALLENGE(override val title: Int = R.string.challengeTab) : MyTabType(),
+        Serializable
+
+    companion object {
+        fun toNavigationValue(value: MyTabType): String =
+            value.toNavigationValue()
+
+        fun parseNavigationValue(value: String): MyTabType =
+            value.parseNavigationValue()
+
+        fun values() = listOf(ALL(), CATEGORY(), DDAY(), CHALLENGE())
+    }
 }
 
 sealed class MyPagerClickEvent {

@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -224,7 +225,7 @@ fun ChipBodyContent(
 private fun SearchResultView(
     result: Pair<MyTabType, List<*>>, clickEvent: (MySearchClickEvent) -> Unit
 ) {
-    if (result.first == MyTabType.CATEGORY) {
+    if (result.first is CATEGORY) {
         if (result.second.all { item -> item is CategoryInfo }) {
             val items = result.second as List<CategoryInfo>
             CategoryListView(items)

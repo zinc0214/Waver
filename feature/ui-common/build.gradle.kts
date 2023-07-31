@@ -60,4 +60,5 @@ dependencies {
     // Coil
     implementation(Dep.coil)
 
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 }

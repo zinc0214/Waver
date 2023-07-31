@@ -35,6 +35,24 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyBottomSheetScreen
+import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
+import com.zinc.berrybucket.util.nav.SearchEvent
+import com.zinc.berrybucket.util.nav.alarmNavGraph
+import com.zinc.berrybucket.util.nav.bucketDetailNavGraph
+import com.zinc.berrybucket.util.nav.bucketNavGraph
+import com.zinc.berrybucket.util.nav.homeCategoryEditNavGraph
+import com.zinc.berrybucket.util.nav.homeFeed
+import com.zinc.berrybucket.util.nav.homeMore
+import com.zinc.berrybucket.util.nav.homeMy
+import com.zinc.berrybucket.util.nav.homeSearch
+import com.zinc.berrybucket.util.nav.homeSearchNavGraph
+import com.zinc.berrybucket.util.nav.moreAlarmNavGraph
+import com.zinc.berrybucket.util.nav.moreAppInfoNavGraph
+import com.zinc.berrybucket.util.nav.moreBlockNavGraph
+import com.zinc.berrybucket.util.nav.moreProfileNavGraph
+import com.zinc.berrybucket.util.nav.searchNavGraph
+import com.zinc.berrybucket.util.nav.writeNavGraph1
+import com.zinc.berrybucket.util.nav.writeNavGraph2
 import com.zinc.common.models.DetailType
 import kotlinx.coroutines.launch
 
