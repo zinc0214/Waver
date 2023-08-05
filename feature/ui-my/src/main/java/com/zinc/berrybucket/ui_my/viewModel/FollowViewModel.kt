@@ -9,6 +9,7 @@ import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.my.LoadFollowList
+import com.zinc.domain.usecases.my.RequestFollowUser
 import com.zinc.domain.usecases.my.RequestUnfollowUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class FollowViewModel @Inject constructor(
     private val loadFollowList: LoadFollowList,
     private val requestUnfollowUser: RequestUnfollowUser,
+    private val requestFollowUser: RequestFollowUser,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -86,6 +88,29 @@ class FollowViewModel @Inject constructor(
                                 list?.removeAt(removeIndex)
                                 _followingList.value = list
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun requestFollow(followUser: OtherProfileInfo) {
+        viewModelScope.launch {
+            accessToken.value?.let { token ->
+                runCatching {
+                    requestFollowUser.invoke(token, followUser.id).apply {
+                        if (success) {
+                            val updateList = _followerList.value?.toMutableList()
+                            val updateUser = followUser.copy(isAlreadyFollowing = YesOrNo.Y)
+                            updateList?.replaceAll {
+                                if (it.id == updateUser.id) {
+                                    updateUser
+                                } else {
+                                    it
+                                }
+                            }
+                            _followerList.value = updateList
                         }
                     }
                 }

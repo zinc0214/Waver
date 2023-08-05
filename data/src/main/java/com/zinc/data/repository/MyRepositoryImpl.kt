@@ -246,6 +246,10 @@ internal class MyRepositoryImpl @Inject constructor(
         return berryBucketApi.requestUnfollow(token, userId)
     }
 
+    override suspend fun requestFollow(token: String, userId: String): CommonResponse {
+        return berryBucketApi.requestFollow(token, userId)
+    }
+
     override suspend fun loadCategoryList(): List<CategoryInfo> {
         // return berryBucketApi.loadCategoryList()
         return listOf(

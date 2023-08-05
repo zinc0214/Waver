@@ -27,4 +27,9 @@ interface MyRepository {
         token: String,
         userId: String
     ): CommonResponse
+
+    suspend fun requestFollow(
+        token: String,
+        userId: String
+    ): CommonResponse
 }

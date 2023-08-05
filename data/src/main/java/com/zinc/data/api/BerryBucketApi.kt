@@ -131,4 +131,10 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Query("followUserId") followUserId: String
     ): CommonResponse
+
+    @POST("/follow")
+    suspend fun requestFollow(
+        @Header("Authorization") token: String,
+        @Query("followUserId") followUserId: String
+    ): CommonResponse
 }

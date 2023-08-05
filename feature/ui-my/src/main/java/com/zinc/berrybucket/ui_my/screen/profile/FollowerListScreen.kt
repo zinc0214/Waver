@@ -42,7 +42,6 @@ fun FollowerListScreen(
         viewModel.loadFollowList()
     }
 
-
     Column(modifier = Modifier.fillMaxSize()) {
         followerList?.let { followerList ->
             TitleView(
@@ -94,7 +93,7 @@ fun FollowerListScreen(
                                     .defaultMinSize(minWidth = 80.dp, minHeight = 30.dp)
                                     .clip(RoundedCornerShape(15.dp))
                                     .clickable {
-                                        viewModel.requestUnfollow(member)
+                                        viewModel.requestFollow(member)
                                     }
                                     .constrainAs(unFollowButton) {
                                         top.linkTo(parent.top)
