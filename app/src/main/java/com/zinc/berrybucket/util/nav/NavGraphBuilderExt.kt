@@ -31,11 +31,13 @@ import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.screen.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
+import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING
 import com.zinc.common.models.ReportInfo
@@ -154,6 +156,17 @@ internal fun NavGraphBuilder.myFollowingSettingNavGraph(
             }
         )
     }
+}
+
+internal fun NavGraphBuilder.myFollowerListNavGraph(
+    backPress: () -> Unit,
+    goToSetting: (NavBackStackEntry) -> Unit
+) {
+    composable(MY_FOLLOWER) { nav ->
+        FollowerListScreen(goToBack = { backPress() }, goToSetting = { goToSetting(nav) }
+        )
+    }
+
 }
 
 internal fun NavGraphBuilder.bucketNavGraph(
@@ -376,7 +389,10 @@ object MainDestinations {
         const val MY_FOLLOWING_SETTING = "my_following_setting"
     }
 
-
+    object FOLLOWER {
+        const val MY_FOLLOWER = "my_follower"
+        const val MY_FOLLOWER_SETTING = "my_follower_setting"
+    }
 }
 
 object BucketListDetailDestinations {

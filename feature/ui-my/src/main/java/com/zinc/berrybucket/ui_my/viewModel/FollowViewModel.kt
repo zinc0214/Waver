@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.common.models.OtherProfileInfo
+import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.my.LoadFollowList
 import com.zinc.domain.usecases.my.RequestUnfollowUser
@@ -33,7 +33,21 @@ class FollowViewModel @Inject constructor(
                 runCatching {
                     loadFollowList.invoke(token).apply {
                         Log.e("ayhan", "loadFollowList: $this")
-                        _followerList.value = this.data.followerUsers
+                        _followerList.value =
+                            buildList {
+                                repeat(40) {
+                                    add(
+                                        OtherProfileInfo(
+                                            id = it.toString(),
+                                            imgUrl = null,
+                                            name = "$it+가나다라마바사아자차가타파아azbdfdkop+$it",
+                                            isAlreadyFollowing = if (it < 10) YesOrNo.Y else YesOrNo.N
+                                        )
+                                    )
+                                }
+                            }
+
+                        //this.data.followerUsers
                         _followingList.value =
 
 //TODO : 코드제거

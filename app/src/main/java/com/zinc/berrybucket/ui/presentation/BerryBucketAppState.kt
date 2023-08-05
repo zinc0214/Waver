@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
-import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 import com.zinc.berrybucket.util.nav.AlarmDestinations
 import com.zinc.berrybucket.util.nav.BucketListDetailDestinations
 import com.zinc.berrybucket.util.nav.MainDestinations
@@ -21,7 +20,6 @@ import com.zinc.berrybucket.util.nav.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.util.nav.MoreDestinations
 import com.zinc.berrybucket.util.nav.SearchDestinations
 import com.zinc.berrybucket.util.nav.WriteDestinations
-import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.CoroutineScope
 
@@ -191,6 +189,13 @@ class BerryBucketAppState(
             navController.navigate(MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING)
         }
     }
+
+    fun navigateToFollowerList(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.FOLLOWER.MY_FOLLOWER)
+        }
+    }
+
 }
 
 /**

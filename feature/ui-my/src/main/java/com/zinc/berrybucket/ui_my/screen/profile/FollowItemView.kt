@@ -3,7 +3,6 @@ package com.zinc.berrybucket.ui_my.screen.profile
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -29,6 +28,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.common.models.OtherProfileInfo
+import com.zinc.common.models.YesOrNo
 
 @Composable
 fun FollowItemView(
@@ -78,7 +78,8 @@ private fun FollowItemPreview() {
         info = OtherProfileInfo(
             id = "1",
             imgUrl = "",
-            name = "프로필의 이름이 길면 점점점이 노출되어야 하니까 테스트 해볼까? "
+            name = "프로필의 이름이 길면 점점점이 노출되어야 하니까 테스트 해볼까? ",
+            isAlreadyFollowing = YesOrNo.Y
         )
     )
 }

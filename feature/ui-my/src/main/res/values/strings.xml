@@ -7,6 +7,7 @@
     <string name="followingText">팔로잉</string>
     <string name="unfollowingText">팔로잉 해제</string>
     <string name="unfollowingButton">해제</string>
+    <string name="followingButton">팔로잉</string>
     <string name="followingSetting">관리</string>
 
     <!-- My > All -->
