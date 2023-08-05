@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.ui_my.all.MyAllBucketFilterBottomScreen
-import com.zinc.berrybucket.ui_my.dday.MyDdayBucketFilterBottomScreen
+import com.zinc.berrybucket.ui_my.screen.all.MyAllBucketFilterBottomScreen
+import com.zinc.berrybucket.ui_my.screen.dday.MyDdayBucketFilterBottomScreen
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable

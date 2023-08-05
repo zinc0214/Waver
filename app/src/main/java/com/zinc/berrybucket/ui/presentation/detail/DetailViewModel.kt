@@ -12,7 +12,6 @@ import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
-import com.zinc.berrybucket.model.ProfileInfo
 import com.zinc.berrybucket.model.TogetherInfo
 import com.zinc.berrybucket.model.TogetherMember
 import com.zinc.berrybucket.model.WriteCategoryInfo
@@ -137,7 +136,7 @@ class DetailViewModel @Inject constructor(
             imageInfo = ImageInfo(
                 imageList = listOf("A", "B", "C")
             ),
-            profileInfo = ProfileInfo(
+            myProfileInfo = com.zinc.berrybucket.model.MyProfileInfoUi(
                 profileImage = "",
                 badgeImage = "",
                 titlePosition = "멋쟁이 여행가",
@@ -228,7 +227,7 @@ class DetailViewModel @Inject constructor(
     private val bucketDetailUiInfo2 =
         BucketDetailUiInfo(
             bucketId = "abc",
-            profileInfo = ProfileInfo(
+            myProfileInfo = com.zinc.berrybucket.model.MyProfileInfoUi(
                 profileImage = "",
                 badgeImage = "",
                 titlePosition = "멋쟁이 여행가",

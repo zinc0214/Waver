@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.alarm
+package com.zinc.berrybucket.ui_my.screen.alarm
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.ui_my.viewModel.AlarmViewModel
 
 @Composable
 fun AlarmScreen(onBackPressed: () -> Unit) {

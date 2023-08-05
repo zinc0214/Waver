@@ -4,7 +4,7 @@ enum class AllType {
     MY, FEED, SEARCH, MORE
 }
 
-data class ProfileInfo(
+data class MyProfileInfoUi(
     val profileImage: String?,
     val badgeImage: String,
     val titlePosition: String,

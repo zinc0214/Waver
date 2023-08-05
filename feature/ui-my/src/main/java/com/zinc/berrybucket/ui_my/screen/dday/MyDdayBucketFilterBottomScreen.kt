@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.dday
+package com.zinc.berrybucket.ui_my.screen.dday
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

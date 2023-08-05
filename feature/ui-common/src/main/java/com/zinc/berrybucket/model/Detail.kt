@@ -86,7 +86,7 @@ sealed class DetailDescType {
 fun detailId(descType: DetailDescType): Int {
     return when (descType) {
         is ImageInfo -> 0
-        is ProfileInfo -> 1
+        is MyProfileInfoUi -> 1
         is CommonDetailDescInfo, is CloseDetailDescInfo -> 2
         is MemoInfo -> 3
         is CommentInfo -> 4
@@ -98,7 +98,7 @@ data class BucketDetailUiInfo(
     val bucketId: String,
     val writeOpenType: WriteOpenType,
     val imageInfo: ImageInfo? = null,
-    val profileInfo: ProfileInfo,
+    val myProfileInfo: MyProfileInfoUi,
     val descInfo: CommonDetailDescInfo,
     val memoInfo: MemoInfo? = null,
     val commentInfo: CommentInfo? = null,

@@ -4,7 +4,7 @@ import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
-import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.MyProfileInfoUi
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteFriend
@@ -26,7 +26,7 @@ fun bucketDetailResponseToUiModel(
     bucketId = bucketInfo.id,
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
     imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
-    profileInfo = ProfileInfo(
+    myProfileInfo = MyProfileInfoUi(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeUrl.orEmpty(),
         titlePosition = profileInfo.bio,

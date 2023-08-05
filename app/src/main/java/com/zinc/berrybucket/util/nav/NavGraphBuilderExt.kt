@@ -28,12 +28,16 @@ import com.zinc.berrybucket.ui_more.models.AppInfoItemType
 import com.zinc.berrybucket.ui_more.models.MoreItemType
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
-import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
-import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
+import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
+import com.zinc.berrybucket.ui_my.screen.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
+import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
+import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
+import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING
 import com.zinc.common.models.ReportInfo
 
 
@@ -124,7 +128,34 @@ internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
     }
 }
 
-// 2
+internal fun NavGraphBuilder.myFollowingListNavGraph(
+    backPress: () -> Unit,
+    goToSetting: (NavBackStackEntry) -> Unit
+) {
+    composable(MY_FOLLOWING) { nav ->
+        FollowingListScreen(
+            goToBack = {
+                backPress()
+            },
+            goToSetting = {
+                goToSetting(nav)
+            }
+        )
+    }
+}
+
+internal fun NavGraphBuilder.myFollowingSettingNavGraph(
+    backPress: () -> Unit
+) {
+    composable(MY_FOLLOWING_SETTING) {
+        FollowingListSettingScreen(
+            goToBack = {
+                backPress()
+            }
+        )
+    }
+}
+
 internal fun NavGraphBuilder.bucketNavGraph(
     backPress: () -> Unit
 ) {
@@ -339,6 +370,13 @@ object MainDestinations {
     const val MY_SEARCH = "my_search"
     const val MY_CATEGORY_EDIT = "my_category_edit"
     const val SELECT_TAB = "select_tab"
+
+    object FOLLOWING {
+        const val MY_FOLLOWING = "my_following"
+        const val MY_FOLLOWING_SETTING = "my_following_setting"
+    }
+
+
 }
 
 object BucketListDetailDestinations {

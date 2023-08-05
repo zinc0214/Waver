@@ -9,6 +9,7 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
+import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.JoinRequest
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
@@ -122,4 +123,12 @@ interface BerryBucketApi {
     @GET("/explore/keywords")
     suspend fun loadKeywords(@Header("Authorization") token: String): KeywordResponse
 
+    @GET("/follow")
+    suspend fun loadFollowList(@Header("Authorization") token: String): FollowResponse
+
+    @POST("/follow/unfollow")
+    suspend fun requestUnfollow(
+        @Header("Authorization") token: String,
+        @Query("followUserId") followUserId: String
+    ): CommonResponse
 }

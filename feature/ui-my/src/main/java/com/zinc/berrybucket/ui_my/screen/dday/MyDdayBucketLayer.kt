@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.dday
+package com.zinc.berrybucket.ui_my.screen.dday
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

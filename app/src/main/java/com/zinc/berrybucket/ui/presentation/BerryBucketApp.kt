@@ -51,6 +51,8 @@ import com.zinc.berrybucket.util.nav.moreAlarmNavGraph
 import com.zinc.berrybucket.util.nav.moreAppInfoNavGraph
 import com.zinc.berrybucket.util.nav.moreBlockNavGraph
 import com.zinc.berrybucket.util.nav.moreProfileNavGraph
+import com.zinc.berrybucket.util.nav.myFollowingListNavGraph
+import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.searchNavGraph
 import com.zinc.berrybucket.util.nav.writeNavGraph1
 import com.zinc.berrybucket.util.nav.writeNavGraph2
@@ -197,7 +199,7 @@ fun BerryBucketApp(
                                     when (event) {
                                         MyTopEvent.Alarm -> appState.navigateToAlarm(nav)
                                         MyTopEvent.Follower -> TODO()
-                                        MyTopEvent.Following -> TODO()
+                                        MyTopEvent.Following -> appState.navigateToFollowingList(nav)
                                     }
                                 }
                             },
@@ -211,6 +213,14 @@ fun BerryBucketApp(
                         homeSearchNavGraph(backPress = appState::backPress)
 
                         homeCategoryEditNavGraph(backPress = appState::backPress)
+
+                        myFollowingListNavGraph(
+                            backPress = appState::backPress,
+                            goToSetting = { nav ->
+                                appState.navigateToFollowingSettingList(from = nav)
+                            })
+
+                        myFollowingSettingNavGraph(backPress = appState::backPress)
 
                         bucketDetailNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->

@@ -47,10 +47,10 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.all.AllBucketLayer
-import com.zinc.berrybucket.ui_my.category.AddNewCategoryDialog
-import com.zinc.berrybucket.ui_my.category.CategoryLayer
-import com.zinc.berrybucket.ui_my.dday.DdayBucketLayer
+import com.zinc.berrybucket.ui_my.screen.all.AllBucketLayer
+import com.zinc.berrybucket.ui_my.screen.category.AddNewCategoryDialog
+import com.zinc.berrybucket.ui_my.screen.category.CategoryLayer
+import com.zinc.berrybucket.ui_my.screen.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel

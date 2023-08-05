@@ -76,3 +76,16 @@ enum class BucketStatus {
     COMPLETE, PROGRESS
 }
 
+@Serializable
+data class FollowResponse(
+    val data: FollowData,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
+@Serializable
+data class FollowData(
+    val followingUsers: List<OtherProfileInfo>,
+    val followerUsers: List<OtherProfileInfo>
+)

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.all
+package com.zinc.berrybucket.ui_my.screen.all
 
 import android.util.Log
 import androidx.annotation.StringRes

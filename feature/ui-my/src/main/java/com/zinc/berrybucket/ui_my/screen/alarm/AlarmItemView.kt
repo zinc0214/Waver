@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.alarm
+package com.zinc.berrybucket.ui_my.screen.alarm
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

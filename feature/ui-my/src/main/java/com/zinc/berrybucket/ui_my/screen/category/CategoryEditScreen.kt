@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.category
+package com.zinc.berrybucket.ui_my.screen.category
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column

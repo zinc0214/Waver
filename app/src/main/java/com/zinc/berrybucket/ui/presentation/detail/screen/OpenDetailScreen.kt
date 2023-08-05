@@ -31,7 +31,7 @@ import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentLongClicked
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
-import com.zinc.berrybucket.model.ProfileInfo
+import com.zinc.berrybucket.model.MyProfileInfoUi
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
@@ -445,7 +445,7 @@ private fun ContentView(
         }
 
         item(key = "profileView") {
-            ProfileView(bucketDetailUiInfo.profileInfo)
+            ProfileView(bucketDetailUiInfo.myProfileInfo)
         }
 
         item(key = "detailDescLayer") {
@@ -514,7 +514,7 @@ private fun ContentView(
 }
 
 @Composable
-fun ProfileView(profileInfo: ProfileInfo) {
+fun ProfileView(myProfileInfo: MyProfileInfoUi) {
     ProfileView(
         modifier = Modifier
             .padding(top = 28.dp)
@@ -526,7 +526,7 @@ fun ProfileView(profileInfo: ProfileInfo) {
         nickNameTextSize = dpToSp(14.dp),
         titlePositionTextSize = dpToSp(13.dp),
         nickNameTextColor = Gray10,
-        profileInfo = profileInfo.toUi()
+        profileInfo = myProfileInfo.toUi()
     )
 }
 

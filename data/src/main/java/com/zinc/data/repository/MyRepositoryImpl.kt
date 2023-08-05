@@ -7,8 +7,10 @@ import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
+import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailType
+import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
 import com.zinc.data.api.BerryBucketApi
@@ -234,6 +236,14 @@ internal class MyRepositoryImpl @Inject constructor(
 //            )
 //        )
 
+    }
+
+    override suspend fun loadFollowList(token: String): FollowResponse {
+        return berryBucketApi.loadFollowList(token)
+    }
+
+    override suspend fun requestUnfollow(token: String, userId: String): CommonResponse {
+        return berryBucketApi.requestUnfollow(token, userId)
     }
 
     override suspend fun loadCategoryList(): List<CategoryInfo> {

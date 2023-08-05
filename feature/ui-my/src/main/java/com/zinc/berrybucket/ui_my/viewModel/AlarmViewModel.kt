@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.alarm
+package com.zinc.berrybucket.ui_my.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
