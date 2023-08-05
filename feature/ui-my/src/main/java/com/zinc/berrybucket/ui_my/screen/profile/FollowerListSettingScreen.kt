@@ -18,12 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.design.theme.Main4
+import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
@@ -31,11 +31,9 @@ import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 
 @Composable
-fun FollowerListScreen(
-    goToBack: () -> Unit,
-    goToSetting: () -> Unit
+fun FollowerListSettingScreen(
+    goToBack: () -> Unit
 ) {
-
     val viewModel: FollowViewModel = hiltViewModel()
     val followerList by viewModel.followerList.observeAsState()
     if (followerList.isNullOrEmpty()) {
@@ -46,15 +44,11 @@ fun FollowerListScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         followerList?.let { followerList ->
             TitleView(
-                title = stringResource(id = R.string.followerText) + " ${followerList.size}",
+                title = stringResource(id = R.string.followerSetting),
                 leftIconType = TitleIconType.BACK,
-                rightText = stringResource(id = R.string.followSetting),
                 isDividerVisible = true,
                 onLeftIconClicked = {
                     goToBack()
-                },
-                onRightTextClicked = {
-                    goToSetting()
                 }
             )
 
@@ -88,48 +82,36 @@ fun FollowerListScreen(
                                 }
                         )
 
-                        if (member.isAlreadyFollowing.isNo()) {
-                            RoundChip(
-                                modifier = Modifier
-                                    .defaultMinSize(minWidth = 80.dp, minHeight = 30.dp)
-                                    .clip(RoundedCornerShape(15.dp))
-                                    .clickable {
-                                        viewModel.requestUnfollow(member)
-                                    }
-                                    .constrainAs(unFollowButton) {
-                                        top.linkTo(parent.top)
-                                        end.linkTo(parent.end)
-                                        bottom.linkTo(parent.bottom)
+                        RoundChip(
+                            modifier = Modifier
+                                .defaultMinSize(minWidth = 56.dp, minHeight = 30.dp)
+                                .clip(RoundedCornerShape(15.dp))
+                                .clickable {
+                                    viewModel.requestUnfollow(member)
+                                }
+                                .constrainAs(unFollowButton) {
+                                    top.linkTo(parent.top)
+                                    end.linkTo(parent.end)
+                                    bottom.linkTo(parent.bottom)
 
-                                    },
-                                chipRadius = 15.dp,
-                                textModifier = Modifier.padding(
-                                    horizontal = 22.dp,
-                                    vertical = 5.dp
-                                ),
-                                selectedTextColor = Main4,
-                                unSelectedTextColor = Main4,
-                                unSelectedBorderColor = Main4,
-                                text = stringResource(id = R.string.followingButton),
-                                isSelected = false,
-                                fontWeight = FontWeight.Normal
-                            )
-                        }
+                                },
+                            chipRadius = 15.dp,
+                            textModifier = Modifier.padding(
+                                horizontal = 22.dp,
+                                vertical = 5.dp
+                            ),
+                            selectedTextColor = Gray9,
+                            unSelectedTextColor = Gray9,
+                            unSelectedBorderColor = Gray4,
+                            text = stringResource(id = R.string.followerBlockButton),
+                            isSelected = false,
+                            fontWeight = FontWeight.Normal
+                        )
+
                     }
 
                 })
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun FollowingListSettingScreenPreview() {
-    val viewModel: FollowViewModel = hiltViewModel()
-
-    FollowingListSettingScreen(
-        goToBack = {}
-
-    )
 }

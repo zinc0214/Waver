@@ -196,6 +196,11 @@ class BerryBucketAppState(
         }
     }
 
+    fun navigateToFollowerSettingList(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING)
+        }
+    }
 }
 
 /**

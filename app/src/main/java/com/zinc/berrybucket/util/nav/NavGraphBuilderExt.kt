@@ -32,12 +32,14 @@ import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.screen.category.CategoryEditScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
+import com.zinc.berrybucket.ui_my.screen.profile.FollowerListSettingScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
+import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING
 import com.zinc.common.models.ReportInfo
@@ -166,7 +168,14 @@ internal fun NavGraphBuilder.myFollowerListNavGraph(
         FollowerListScreen(goToBack = { backPress() }, goToSetting = { goToSetting(nav) }
         )
     }
+}
 
+internal fun NavGraphBuilder.myFollowerSettingNavGraph(
+    backPress: () -> Unit
+) {
+    composable(MY_FOLLOWER_SETTING) { nav ->
+        FollowerListSettingScreen(goToBack = { backPress() })
+    }
 }
 
 internal fun NavGraphBuilder.bucketNavGraph(

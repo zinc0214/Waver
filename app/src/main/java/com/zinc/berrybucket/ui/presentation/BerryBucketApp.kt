@@ -52,6 +52,7 @@ import com.zinc.berrybucket.util.nav.moreAppInfoNavGraph
 import com.zinc.berrybucket.util.nav.moreBlockNavGraph
 import com.zinc.berrybucket.util.nav.moreProfileNavGraph
 import com.zinc.berrybucket.util.nav.myFollowerListNavGraph
+import com.zinc.berrybucket.util.nav.myFollowerSettingNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingListNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.searchNavGraph
@@ -223,7 +224,11 @@ fun BerryBucketApp(
 
                         myFollowingSettingNavGraph(backPress = appState::backPress)
 
-                        myFollowerListNavGraph(backPress = appState::backPress, goToSetting = {})
+                        myFollowerListNavGraph(backPress = appState::backPress, goToSetting = {
+                            appState.navigateToFollowerSettingList(it)
+                        })
+
+                        myFollowerSettingNavGraph(backPress = appState::backPress)
 
                         bucketDetailNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->

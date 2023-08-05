@@ -14,12 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
-import com.zinc.common.models.OtherProfileInfo
 
 @Composable
 fun FollowingListScreen(
@@ -36,7 +34,7 @@ fun FollowingListScreen(
             TitleView(
                 title = stringResource(id = R.string.followingText) + " ${followingList.size}",
                 leftIconType = TitleIconType.BACK,
-                rightText = stringResource(id = R.string.followingSetting),
+                rightText = stringResource(id = R.string.followSetting),
                 isDividerVisible = true,
                 onLeftIconClicked = {
                     goToBack()
