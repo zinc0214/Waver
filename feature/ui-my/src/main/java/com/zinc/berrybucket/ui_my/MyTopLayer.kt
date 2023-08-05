@@ -3,6 +3,7 @@ package com.zinc.berrybucket.ui_my
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,12 +43,13 @@ import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileCircularProgressBar
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.domain.models.TopProfile
 
 @Composable
 fun MyTopLayer(
     profileInfo: TopProfile?,
-    alarmClicked: () -> Unit
+    myTopEvent: (MyTopEvent) -> Unit
 ) {
 
     profileInfo?.let {
@@ -61,7 +63,7 @@ fun MyTopLayer(
                     .padding(top = 16.dp, end = 16.dp)
                     .align(Alignment.End),
                 alarmClicked = {
-                    alarmClicked()
+                    myTopEvent(MyTopEvent.Alarm)
                 }
             )
 
@@ -69,7 +71,10 @@ fun MyTopLayer(
             ProfileLayer(profileInfo)
 
             Spacer(modifier = Modifier.height(24.dp))
-            FollowStateLayer(profileInfo, Modifier.align(Alignment.CenterHorizontally))
+            FollowStateLayer(
+                profileInfo,
+                Modifier.align(Alignment.CenterHorizontally)
+            ) { myTopEvent.invoke(it) }
         }
     }
 }
@@ -135,24 +140,33 @@ private fun ProfileLayer(profileInfo: TopProfile) {
 }
 
 @Composable
-private fun FollowStateLayer(topProfile: TopProfile, modifier: Modifier) {
+private fun FollowStateLayer(
+    topProfile: TopProfile,
+    modifier: Modifier,
+    followClicked: (MyTopEvent) -> Unit
+) {
     Row(modifier = modifier) {
         FollowStateView(
             modifier = Modifier.align(Alignment.CenterVertically),
             topProfile.followerCount,
             stringResource(id = R.string.followerText)
-        )
+        ) { followClicked(MyTopEvent.Follower) }
         Spacer(modifier = Modifier.width(70.dp))
         FollowStateView(
             modifier = Modifier.align(Alignment.CenterVertically),
             topProfile.followingCount, stringResource(id = R.string.followingText)
-        )
+        ) { followClicked(MyTopEvent.Following) }
     }
 }
 
 @Composable
-private fun FollowStateView(modifier: Modifier, count: String, text: String) {
-    Row(modifier = modifier) {
+private fun FollowStateView(
+    modifier: Modifier,
+    count: String,
+    text: String,
+    followClicked: () -> Unit
+) {
+    Row(modifier = modifier.clickable { followClicked() }) {
         MyText(
             text = text,
             fontSize = dpToSp(13.dp),

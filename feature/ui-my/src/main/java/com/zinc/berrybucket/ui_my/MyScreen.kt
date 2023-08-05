@@ -52,6 +52,7 @@ import com.zinc.berrybucket.ui_my.category.AddNewCategoryDialog
 import com.zinc.berrybucket.ui_my.category.CategoryLayer
 import com.zinc.berrybucket.ui_my.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ import kotlinx.coroutines.launch
 fun MyScreen(
     onBucketSelected: (BucketSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-    alarmClicked: () -> Unit,
+    myTopEvent: (MyTopEvent) -> Unit,
     goToCategoryEdit: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -93,8 +94,9 @@ fun MyScreen(
         BaseTheme {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
                 MyView(context).apply {
-                    setProfileInfo(profile, alarmClicked)
-                    setTabView(tabItems = tabItems,
+                    setProfileInfo(profile, myTopEvent)
+                    setTabView(
+                        tabItems = tabItems,
                         pagerState = pagerState,
                         viewModel = viewModel,
                         coroutineScope = coroutineScope,

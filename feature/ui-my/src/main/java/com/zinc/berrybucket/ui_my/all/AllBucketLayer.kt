@@ -22,14 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
-import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.FilterAndSearchImageView
 import com.zinc.berrybucket.ui_my.SimpleBucketListView
+import com.zinc.berrybucket.ui_my.view.FilterAndSearchImageView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable

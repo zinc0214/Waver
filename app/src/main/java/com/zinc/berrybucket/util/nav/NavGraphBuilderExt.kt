@@ -30,6 +30,7 @@ import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
@@ -39,7 +40,7 @@ import com.zinc.common.models.ReportInfo
 internal fun NavGraphBuilder.homeMy(
     onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit,
-    alarmClicked: (NavBackStackEntry) -> Unit,
+    myTopEvent: (MyTopEvent, NavBackStackEntry) -> Unit,
     goToCategoryEdit: (NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.MY.route) { from ->
@@ -50,8 +51,8 @@ internal fun NavGraphBuilder.homeMy(
             bottomSheetClicked = {
                 bottomSheetClicked.invoke(it, from)
             },
-            alarmClicked = {
-                alarmClicked.invoke(from)
+            myTopEvent = {
+                myTopEvent.invoke(it, from)
             },
             goToCategoryEdit = {
                 goToCategoryEdit.invoke(from)

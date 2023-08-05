@@ -53,6 +53,7 @@ import com.zinc.berrybucket.ui.design.theme.Sub_D2
 import com.zinc.berrybucket.ui.design.theme.Sub_D3
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_my.view.BucketCircularProgressBar
 import com.zinc.berrybucket.util.shadow
 
 @Composable

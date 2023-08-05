@@ -26,8 +26,8 @@ import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.LabelWithSwitchView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.LabelWithRadioView
 import com.zinc.berrybucket.ui_my.R
+import com.zinc.berrybucket.ui_my.view.LabelWithRadioView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable

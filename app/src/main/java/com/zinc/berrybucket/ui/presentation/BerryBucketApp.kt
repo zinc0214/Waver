@@ -35,6 +35,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyBottomSheetScreen
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
@@ -191,8 +192,14 @@ fun BerryBucketApp(
                                 }
                             },
 
-                            alarmClicked = { nav ->
-                                appState.navigateToAlarm(nav)
+                            myTopEvent = { event, nav ->
+                                run {
+                                    when (event) {
+                                        MyTopEvent.Alarm -> appState.navigateToAlarm(nav)
+                                        MyTopEvent.Follower -> TODO()
+                                        MyTopEvent.Following -> TODO()
+                                    }
+                                }
                             },
 
                             goToCategoryEdit = { nav ->

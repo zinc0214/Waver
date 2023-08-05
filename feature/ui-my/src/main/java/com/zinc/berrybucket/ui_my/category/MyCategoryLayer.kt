@@ -14,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
-import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.CategoryListView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.EditButtonAndSearchImageView
 import com.zinc.berrybucket.ui_my.R
+import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable

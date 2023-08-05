@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my
+package com.zinc.berrybucket.ui_my.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,6 +18,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
+import com.zinc.berrybucket.ui_my.R
 
 @Composable
 fun FilterAndSearchImageView(

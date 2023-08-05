@@ -11,6 +11,7 @@ import com.google.accompanist.pager.PagerState
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui_my.databinding.LayoutMyViewBinding
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import com.zinc.domain.models.TopProfile
 import kotlinx.coroutines.CoroutineScope
@@ -46,9 +47,11 @@ class MyView @JvmOverloads constructor(
         }
     }
 
-    fun setProfileInfo(profileInfo: TopProfile?, alarmClicked: () -> Unit) {
+    fun setProfileInfo(profileInfo: TopProfile?, myTopEvent: (MyTopEvent) -> Unit) {
         binding.profileComposeView.setContent {
-            MyTopLayer(profileInfo = profileInfo, alarmClicked = { alarmClicked() })
+            MyTopLayer(profileInfo = profileInfo) {
+                myTopEvent(it)
+            }
         }
     }
 
