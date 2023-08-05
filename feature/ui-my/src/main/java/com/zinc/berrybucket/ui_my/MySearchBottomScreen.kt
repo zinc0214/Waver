@@ -49,6 +49,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.CategoryListView
 import com.zinc.berrybucket.ui.presentation.component.MyText
@@ -214,7 +215,11 @@ fun ChipBodyContent(
                         }),
                 textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                 text = stringResource(id = tabType.title),
-                isSelected = currentTab.value == tabType
+                isSelected = currentTab.value == tabType,
+                fontSize = 13.dp,
+                selectedTextColor = Gray9,
+                unSelectedBorderColor = Gray9,
+                fontWeight = FontWeight.Bold
             )
         }
     }

@@ -21,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.flowlayout.FlowRow
@@ -120,10 +121,11 @@ fun WriteSelectKeyWordScreen(
                                     }
                                 )
                                 .padding(horizontal = 8.dp, vertical = 14.dp),
-                            selectedColor = Main3,
-                            unSelectedColor = Gray7,
+                            selectedTextColor = Main3,
+                            unSelectedTextColor = Gray7,
                             text = keywordItem.text,
-                            isSelected = selected
+                            isSelected = selected,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }

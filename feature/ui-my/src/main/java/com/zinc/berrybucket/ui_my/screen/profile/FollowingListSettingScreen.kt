@@ -4,13 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,19 +17,18 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
-import com.zinc.common.models.OtherProfileInfo
 
 @Composable
 fun FollowingListSettingScreen(
@@ -102,10 +98,11 @@ fun FollowingListSettingScreen(
                                 },
                             chipRadius = 15.dp,
                             textModifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
-                            selectedColor = Gray9,
-                            unSelectedColor = Gray9,
+                            selectedTextColor = Gray9,
+                            unSelectedTextColor = Gray9,
                             text = stringResource(id = R.string.unfollowingButton),
-                            isSelected = false
+                            isSelected = false,
+                            fontWeight = FontWeight.Normal
                         )
                     }
 

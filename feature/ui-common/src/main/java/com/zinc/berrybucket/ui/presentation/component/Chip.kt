@@ -24,23 +24,30 @@ fun RoundChip(
     modifier: Modifier = Modifier,
     chipRadius: Dp = 16.dp,
     textModifier: Modifier = Modifier,
-    selectedColor: Color = Main4,
-    unSelectedColor: Color = Gray6,
+    selectedTextColor: Color = Main4,
+    unSelectedTextColor: Color = Gray6,
+    selectedBorderColor: Color = Main4,
+    unSelectedBorderColor: Color = Gray4,
     text: String,
+    fontSize: Dp = 15.dp,
+    fontWeight: FontWeight,
     isSelected: Boolean
 ) {
     Card(
-        border = BorderStroke(color = if (isSelected) Main4 else Gray4, width = 1.dp),
+        border = BorderStroke(
+            color = if (isSelected) selectedBorderColor else unSelectedBorderColor,
+            width = 1.dp
+        ),
         shape = RoundedCornerShape(chipRadius),
         modifier = modifier.clip(RoundedCornerShape(chipRadius)),
         elevation = 0.dp
     ) {
         MyText(
             text = text,
-            color = if (isSelected) selectedColor else unSelectedColor,
-            fontSize = dpToSp(15.dp),
+            color = if (isSelected) selectedTextColor else unSelectedTextColor,
+            fontSize = dpToSp(fontSize),
             modifier = textModifier,
-            fontWeight = FontWeight.Bold,
+            fontWeight = fontWeight,
             textAlign = TextAlign.Center
         )
     }
@@ -53,6 +60,7 @@ private fun RoundChipPreview() {
         modifier = Modifier.defaultMinSize(minWidth = 90.dp, minHeight = 48.dp),
         textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
         text = "칩테스트",
-        isSelected = false
+        isSelected = false,
+        fontWeight = FontWeight.Bold
     )
 }

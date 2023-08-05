@@ -166,10 +166,11 @@ private fun ChipBodyContent(
                     }),
                 chipRadius = 24.dp,
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
-                selectedColor = Main3,
-                unSelectedColor = Gray7,
+                selectedTextColor = Main3,
+                unSelectedTextColor = Gray7,
                 text = keywordItem.ketWord,
-                isSelected = selected
+                isSelected = selected,
+                fontWeight = FontWeight.Bold
             )
         }
     }
