@@ -11,7 +11,7 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.DetailType
 import com.zinc.common.models.FollowResponse
-import com.zinc.common.models.MyProfileResponse
+import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.MyState
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.MyRepository
@@ -20,7 +20,7 @@ import javax.inject.Inject
 internal class MyRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MyRepository {
-    override suspend fun loadMyProfileInfo(token: String): MyProfileResponse {
+    override suspend fun loadMyHomeProfileInfo(token: String): HomeProfileResponse {
         return berryBucketApi.loadMyProfileInfo(token)
     }
 

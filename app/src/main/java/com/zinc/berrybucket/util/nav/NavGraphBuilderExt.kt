@@ -91,10 +91,15 @@ internal fun NavGraphBuilder.homeSearch(
     }
 }
 
-internal fun NavGraphBuilder.homeMore(moreItemClicked: (MoreItemType, NavBackStackEntry) -> Unit) {
+internal fun NavGraphBuilder.homeMore(
+    moreItemClicked: (MoreItemType, NavBackStackEntry) -> Unit,
+    backPress: () -> Unit
+) {
     composable(HomeSections.MORE.route) { from ->
         MoreScreen(moreItemClicked = {
             moreItemClicked.invoke(it, from)
+        }, goToBack = {
+            backPress()
         })
     }
 }

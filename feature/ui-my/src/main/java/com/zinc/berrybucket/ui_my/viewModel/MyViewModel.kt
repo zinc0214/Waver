@@ -27,7 +27,7 @@ import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
-import com.zinc.domain.usecases.my.LoadProfileInfo
+import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
@@ -38,7 +38,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyViewModel @Inject constructor(
-    private val loadProfileInfo: LoadProfileInfo,
+    private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val loadAllBucketList: LoadAllBucketList,
     private val loadCategoryList: LoadCategoryList,
     private val loadDdayBucketList: LoadDdayBucketList,
@@ -123,7 +123,7 @@ class MyViewModel @Inject constructor(
                 accessToken.value?.let { token ->
                     Log.e("ayhan", "token : $token")
 
-                    val response = loadProfileInfo.invoke(token)
+                    val response = loadHomeProfileInfo.invoke(token)
                     Log.e("ayhan", "tokgen : $response")
 
                     if (response.success) {

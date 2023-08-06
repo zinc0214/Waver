@@ -3,15 +3,15 @@ package com.zinc.common.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MyProfileResponse(
-    val data: MyProfileInfo,
+data class HomeProfileResponse(
+    val data: HomeProfileInfo,
     val success: Boolean,
     val code: String,
     val message: String
 )
 
 @Serializable
-data class MyProfileInfo(
+data class HomeProfileInfo(
     val name: String, // 프로필네임
     val imgUrl: String?, // 프로필이미지
     val badgeUrl: String?,
@@ -19,11 +19,11 @@ data class MyProfileInfo(
     val bio: String,
     val followingCount: String,
     val followerCount: String,
-    val bucketInfo: MyProfileBucketInfo
+    val bucketInfo: HomeProfileBucketInfo
 )
 
 @Serializable
-data class MyProfileBucketInfo(
+data class HomeProfileBucketInfo(
     val totalCount: Int,
     val completedCount: Int,
     val progressCount: Int

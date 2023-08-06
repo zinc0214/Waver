@@ -20,11 +20,11 @@ import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
-import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
-import com.zinc.domain.usecases.my.LoadProfileInfo
+import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.joinAll
@@ -34,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
-    private val loadProfileInfo: LoadProfileInfo,
+    private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 //
@@ -48,7 +48,7 @@ class DetailViewModel @Inject constructor(
     val validMentionList: LiveData<List<CommentMentionInfo>> = _validMentionList
 
     private lateinit var bucketDetailData: DetailInfo
-    private lateinit var profileInfo: MyProfileInfo
+    private lateinit var profileInfo: HomeProfileInfo
 
     fun getBucketDetail(id: String) {
 
@@ -80,7 +80,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private suspend fun getProfileInfo(token: String) {
-        profileInfo = loadProfileInfo(token).data
+        profileInfo = loadHomeProfileInfo(token).data
     }
 
     fun getValidMentionList() {

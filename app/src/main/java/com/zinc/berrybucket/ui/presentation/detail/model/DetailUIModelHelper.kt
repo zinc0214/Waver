@@ -15,13 +15,13 @@ import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.util.parseWithDday
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
-import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
 import java.time.LocalDate
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
-    profileInfo: MyProfileInfo
+    profileInfo: HomeProfileInfo
 ) = BucketDetailUiInfo(
     bucketId = bucketInfo.id,
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요

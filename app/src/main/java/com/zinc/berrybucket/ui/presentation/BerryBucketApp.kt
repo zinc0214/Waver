@@ -169,6 +169,7 @@ fun BerryBucketApp(
                                     PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 }
                             },
+                            backPress = appState::backPress
                         )
                         homeMy(
                             onBucketSelected = { selected, nav ->

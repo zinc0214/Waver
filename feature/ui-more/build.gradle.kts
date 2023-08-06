@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":datastore"))
     implementation(project(":feature:ui-common"))
+    implementation(project(":domain"))
 
     val composeBom = platform("androidx.compose:compose-bom:2022.10.00")
     implementation(composeBom)

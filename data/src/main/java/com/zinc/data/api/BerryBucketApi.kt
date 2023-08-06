@@ -10,6 +10,7 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
 import com.zinc.common.models.FollowResponse
+import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinRequest
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
@@ -40,7 +41,7 @@ interface BerryBucketApi {
     suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
     @GET("/my")
-    suspend fun loadMyProfileInfo(@Header("Authorization") token: String): MyProfileResponse
+    suspend fun loadMyProfileInfo(@Header("Authorization") token: String): HomeProfileResponse
 
     @GET("/bucketList")
     suspend fun loadAllBucketList(
@@ -137,4 +138,9 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Query("followUserId") followUserId: String
     ): CommonResponse
+
+    @GET("/user/profile")
+    suspend fun loadMyProfile(
+        @Header("Authorization") token: String,
+    ): MyProfileResponse
 }
