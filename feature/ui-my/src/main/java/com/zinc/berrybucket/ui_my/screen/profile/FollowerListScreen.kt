@@ -87,7 +87,7 @@ fun FollowerListScreen(
                                 }
                         )
 
-                        if (member.isAlreadyFollowing.isNo()) {
+                        if (member.mutualFollow.isNo()) {
                             RoundChip(
                                 modifier = Modifier
                                     .defaultMinSize(minWidth = 80.dp, minHeight = 30.dp)

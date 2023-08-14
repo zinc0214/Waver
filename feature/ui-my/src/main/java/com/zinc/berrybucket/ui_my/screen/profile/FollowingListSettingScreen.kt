@@ -12,8 +12,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -27,6 +30,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 
@@ -36,14 +40,38 @@ fun FollowingListSettingScreen(
 ) {
 
     val viewModel: FollowViewModel = hiltViewModel()
+    val apiFailed by viewModel.loadFail.observeAsState()
     val followingList by viewModel.followingList.observeAsState()
+    val apiFailDialogShow = remember { mutableStateOf(false) }
+    val apiFailState = remember { mutableStateOf(apiFailed) }
+    val followingListState = remember { mutableStateOf(followingList) }
+
     if (followingList.isNullOrEmpty()) {
         viewModel.loadFollowList()
     }
 
+    LaunchedEffect(followingList) {
+        followingListState.value = followingList
+    }
+
+    LaunchedEffect(apiFailed) {
+        if (apiFailed != null) {
+            apiFailDialogShow.value = true
+            apiFailState.value = apiFailed
+        }
+    }
+
+
+    if (apiFailDialogShow.value) {
+        apiFailState.value?.let { failData ->
+            ApiFailDialog(failData.first.orEmpty(), failData.second.orEmpty()) {
+                apiFailDialogShow.value = false
+            }
+        }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        followingList?.let { followingList ->
+        followingListState.value.let { followingList ->
             TitleView(
                 title = stringResource(id = R.string.unfollowingText),
                 leftIconType = TitleIconType.BACK,
@@ -63,7 +91,7 @@ fun FollowingListSettingScreen(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(items = followingList, key = { member ->
+                items(items = followingListState.value.orEmpty(), key = { member ->
                     member.id
                 }, itemContent = { member ->
 

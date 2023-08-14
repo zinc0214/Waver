@@ -4,7 +4,7 @@ data class OtherProfileInfo(
     val id: String,
     val imgUrl: String?,
     val name: String,
-    val isAlreadyFollowing: YesOrNo
+    val mutualFollow: YesOrNo
 )
 
 data class MyProfileResponse(

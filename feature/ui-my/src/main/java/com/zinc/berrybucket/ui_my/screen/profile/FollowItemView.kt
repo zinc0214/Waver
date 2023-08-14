@@ -79,7 +79,7 @@ private fun FollowItemPreview() {
             id = "1",
             imgUrl = "",
             name = "프로필의 이름이 길면 점점점이 노출되어야 하니까 테스트 해볼까? ",
-            isAlreadyFollowing = YesOrNo.Y
+            mutualFollow = YesOrNo.Y
         )
     )
 }
