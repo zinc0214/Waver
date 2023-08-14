@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_more.components
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,6 +45,7 @@ import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
 import com.zinc.berrybucket.ui_more.models.ProfileEditData
+import com.zinc.berrybucket.util.loadImage
 import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 
 @Composable
@@ -66,13 +66,14 @@ internal fun ProfileSettingTitle(backClicked: () -> Unit) {
 
 @Composable
 internal fun ProfileUpdateView(
-    updateUri: MutableState<Uri?>,
+    updatePath: MutableState<String?>,
     imageUpdateButtonClicked: () -> Unit
 ) {
 
-    val profileUri = updateUri.value
-    val showPermission = mutableStateOf(false)
-    val hasPermission = mutableStateOf(false)
+    val profileUri =
+        if (updatePath.value != null) loadImage(path = updatePath.value!!, index = 0).uri else null
+    val showPermission = remember { mutableStateOf(false) }
+    val hasPermission = remember { mutableStateOf(false) }
 
     if (showPermission.value) {
         CheckCameraPermission {

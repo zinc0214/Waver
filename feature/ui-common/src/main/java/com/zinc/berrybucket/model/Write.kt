@@ -13,6 +13,7 @@ import kotlinx.serialization.Contextual
 import java.io.File
 import java.io.Serializable
 import java.time.LocalDate
+import java.util.Date
 
 data class WriteAddOption(
     val type: WriteOptionsType2,
@@ -63,10 +64,10 @@ data class WriteInfo1(
         return (goalCount as WriteOption1Info.GoalCount).goalCount
     }
 
-    fun getImages(): List<UserSelectedImageInfo> {
+    fun getImagesPaths(): List<String> {
         val images =
             options.firstOrNull { it is WriteOption1Info.Images } ?: return emptyList()
-        return (images as WriteOption1Info.Images).images
+        return (images as WriteOption1Info.Images).imagePaths
     }
 
     fun getCategory(): WriteCategoryInfo {
@@ -109,7 +110,7 @@ sealed class WriteOption1Info : Serializable, Parcelable {
     data class Memo(val memo: String = "") : WriteOption1Info(), Serializable
 
     @kotlinx.serialization.Serializable
-    data class Dday(@Contextual val localDate: LocalDate, val dDayText: String = "") :
+    data class Dday(val localDate: String, val dDayText: String = "") :
         WriteOption1Info(), Serializable
 
     @kotlinx.serialization.Serializable
@@ -119,7 +120,7 @@ sealed class WriteOption1Info : Serializable, Parcelable {
     data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info(), Serializable
 
     @kotlinx.serialization.Serializable
-    data class Images(val images: List<UserSelectedImageInfo> = emptyList()) : WriteOption1Info(),
+    data class Images(val imagePaths: List<String> = emptyList()) : WriteOption1Info(),
         Serializable
 
     fun content(): String {
@@ -175,6 +176,7 @@ fun parseUIBucketListInfo(
     title: String = "",
     options: List<WriteOption1Info> = emptyList(),
     writeOpenType: WriteOpenType,
+    imageFiles: List<File>,
     keyWord: List<String>,
     tagFriends: List<String>,
     isScrapAvailable: Boolean = false
@@ -182,7 +184,7 @@ fun parseUIBucketListInfo(
     bucketType = BucketType.ORIGINAL,
     title = title,
     memo = parseMemo(options),
-    images = parseImages(options),
+    images = imageFiles,
     targetDate = parseTargetDate(options),
     goalCount = parseGoalCount(options),
     categoryId = parseCategoryId(options),
@@ -203,12 +205,6 @@ private fun parseOpenType(openType: WriteOpenType): ExposureStatus {
 
 private fun parseMemo(options: List<WriteOption1Info>): String? {
     return options.firstOrNull { it is WriteOption1Info.Memo }?.content()
-}
-
-private fun parseImages(options: List<WriteOption1Info>): List<File> {
-    return options.firstOrNull { it is WriteOption1Info.Images }?.let {
-        (it as WriteOption1Info.Images).images.map { images -> images.file }
-    }.orEmpty()
 }
 
 private fun parseTargetDate(options: List<WriteOption1Info>): String? {

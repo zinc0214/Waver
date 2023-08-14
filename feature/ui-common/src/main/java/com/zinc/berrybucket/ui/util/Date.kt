@@ -2,6 +2,7 @@ package com.zinc.berrybucket.ui.util
 
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 fun parseDateWithZero(month: Int): String {
@@ -18,6 +19,15 @@ fun LocalDate.parseWithDday(): String {
     val date = parseNumberWithZero(this.dayOfMonth)
 
     return "${year}.${month}.${date}(${this.getDday()})"
+}
+
+
+fun LocalDate.toStringData(): String {
+    return format(DateTimeFormatter.ISO_LOCAL_DATE)
+}
+
+fun String.toLocalData(): LocalDate {
+    return LocalDate.parse(this)
 }
 
 fun parseNumberWithZero(value: Int): String {

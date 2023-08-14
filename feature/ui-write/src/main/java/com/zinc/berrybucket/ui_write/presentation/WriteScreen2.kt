@@ -29,7 +29,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hana.berrybucket.ui_write.R
-import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption1Info
@@ -44,6 +43,10 @@ import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectFriendsScreen
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectKeyWordScreen
 import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
+import com.zinc.berrybucket.util.loadImage
+import com.zinc.berrybucket.util.loadImageFile
+import com.zinc.berrybucket.util.loadImageFiles
+import com.zinc.berrybucket.util.loadImages
 
 @Composable
 fun WriteScreen2(
@@ -246,6 +249,10 @@ private fun WriteScreen2ContentView(
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
+    val imagesInfo = loadImageFiles(images = writeInfo1.getImagesPaths())
+
+    Log.e("ayhan", "imagesInfo :${imagesInfo}")
+
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
         val (appBar, contents) = createRefs()
@@ -262,11 +269,10 @@ private fun WriteScreen2ContentView(
             clickEvent = { it ->
                 when (it) {
                     WriteAppBarClickEvent.CloseClicked -> {
-                        val newImage = mutableListOf<UserSelectedImageInfo>()
-                        writeInfo1.getImages().let { infos ->
+                        val newImage = mutableListOf<String>()
+                        writeInfo1.getImagesPaths().let { infos ->
                             infos.forEach { info ->
-                                val image = info.copy(key = info.intKey() + infos.size)
-                                newImage.add(image)
+                                newImage.add(info)
                             }
                         }
                         val option =
@@ -289,6 +295,7 @@ private fun WriteScreen2ContentView(
                                 title = writeTotalInfo.title,
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
+                                imageFiles = imagesInfo.map { it.file },
                                 keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.tagList.orEmpty(),
                                 tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.tagList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
@@ -318,7 +325,7 @@ private fun WriteScreen2ContentView(
             item {
                 WriteTitleView(
                     modifier = Modifier.padding(
-                        bottom = if (writeInfo1.getImages().isEmpty()) 150.dp else 32.dp
+                        bottom = if (writeInfo1.getImagesPaths().isEmpty()) 150.dp else 32.dp
                     ),
                     title = writeTotalInfo.title
                 )
@@ -326,7 +333,7 @@ private fun WriteScreen2ContentView(
 
             item {
                 gridItems(
-                    data = writeInfo1.getImages(),
+                    data = writeInfo1.getImagesPaths(),
                     maxRow = 3,
                     modifier = Modifier
                         .padding(horizontal = 28.dp)
@@ -335,7 +342,8 @@ private fun WriteScreen2ContentView(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalSpace = 28.dp,
                     itemContent = {
-                        ImageItem(imageInfo = it)
+                        val info = loadImage(path = it, index = 0)
+                        ImageItem(imageInfo = info)
                     },
                     emptyContent = {
                         Spacer(modifier = Modifier.size(80.dp))

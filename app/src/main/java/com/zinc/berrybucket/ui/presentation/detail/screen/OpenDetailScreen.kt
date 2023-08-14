@@ -65,6 +65,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
+import com.zinc.berrybucket.util.loadImages
 
 @Composable
 fun OpenDetailScreen(

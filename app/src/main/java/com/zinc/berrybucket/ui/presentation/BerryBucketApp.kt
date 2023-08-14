@@ -272,7 +272,7 @@ fun BerryBucketApp(
                                     ActionWithActivity.AddImage(
                                         type,
                                         fail
-                                    ) { info -> success(info) })
+                                    ) { info -> success(info.path) })
                             }
                         )
                         moreAppInfoNavGraph(

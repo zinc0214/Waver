@@ -8,11 +8,11 @@ import kotlinx.serialization.Serializable
 import java.io.File
 
 @Parcelize
-@Serializable
 data class UserSelectedImageInfo(
     private val key: Int,
-    @Contextual val uri: Uri,
-    @Contextual val file: File
+    val uri: Uri,
+    val file: File,
+    val path: String
 ) : java.io.Serializable, Parcelable {
     fun parseKey() = key.toString() + uri.toString()
     fun intKey() = key

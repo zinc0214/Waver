@@ -48,6 +48,8 @@ import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CameraPermission
 import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.berrybucket.ui.util.toLocalData
+import com.zinc.berrybucket.ui.util.toStringData
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CategorySelectBottomScreen
@@ -56,8 +58,11 @@ import com.zinc.berrybucket.ui_write.presentation.options.AddImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.MemoScreen
 import com.zinc.berrybucket.ui_write.presentation.options.OptionScreen
+import com.zinc.berrybucket.util.loadImage
+import com.zinc.berrybucket.util.loadImages
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -111,12 +116,13 @@ fun WriteScreen1(
         }
     }
 
+    val loadedImages = loadImages(images = originWriteInfo1.getImagesPaths())
 
     val title = remember { mutableStateOf(originWriteInfo1.title) }
     val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
     val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
     val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
-    val imageList = remember { mutableStateOf(originWriteInfo1.getImages()) }
+    val imageList = remember { mutableStateOf(loadedImages) }
 
     nextButtonClickable.value = title.value.isNotEmpty()
 
@@ -186,9 +192,9 @@ fun WriteScreen1(
                                             selectedOption = null
                                             isNeedToBottomSheetOpen.invoke(false)
                                         },
-                                        succeed = { uri ->
-                                            Log.e("ayhan", "uri : $uri")
-                                            imageList.value += uri
+                                        succeed = { imageInfo ->
+                                            Log.e("ayhan", "imageInfo : $imageInfo")
+                                            imageList.value += imageInfo
                                             selectedOption = null
                                             isNeedToBottomSheetOpen.invoke(false)
 
@@ -198,7 +204,7 @@ fun WriteScreen1(
                                                 updatedWriteOptions.remove(prevImageOption)
                                             }
                                             updatedWriteOptions.add(
-                                                WriteOption1Info.Images(imageList.value)
+                                                WriteOption1Info.Images(imageList.value.map { it.path })
                                             )
                                         })
                                 )
@@ -232,18 +238,29 @@ fun WriteScreen1(
                     }
 
                     D_DAY -> {
-                        CalendarSelectBottomSheet(confirmed = {
-                            deleteOption(D_DAY)
-                            updatedWriteOptions.add(
-                                WriteOption1Info.Dday(it, it.parseWithDday())
-                            )
-                            originDdayDate.value = WriteOption1Info.Dday(it, it.parseWithDday())
-                            selectedOption = null
-                            isNeedToBottomSheetOpen.invoke(false)
-                        }, canceled = {
-                            selectedOption = null
-                            isNeedToBottomSheetOpen.invoke(false)
-                        }, selectedDate = originDdayDate.value?.localDate ?: LocalDate.now())
+                        CalendarSelectBottomSheet(
+                            confirmed = {
+                                deleteOption(D_DAY)
+                                updatedWriteOptions.add(
+                                    WriteOption1Info.Dday(
+                                        it.toStringData(),
+                                        it.parseWithDday()
+                                    )
+                                )
+                                originDdayDate.value = WriteOption1Info.Dday(
+                                    it.toStringData(),
+                                    it.parseWithDday()
+                                )
+                                selectedOption = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            },
+                            canceled = {
+                                selectedOption = null
+                                isNeedToBottomSheetOpen.invoke(false)
+                            },
+                            selectedDate = originDdayDate.value?.localDate?.toLocalData()
+                                ?: LocalDate.now()
+                        )
                         isNeedToBottomSheetOpen.invoke(true)
                     }
 
@@ -409,7 +426,7 @@ fun WriteScreen1(
                                         selectedOption = option
                                     } else {
                                         updatedWriteOptions.add(
-                                            WriteOption1Info.Images(imageList.value)
+                                            WriteOption1Info.Images(imageList.value.map { it.path })
                                         )
                                     }
                                 }

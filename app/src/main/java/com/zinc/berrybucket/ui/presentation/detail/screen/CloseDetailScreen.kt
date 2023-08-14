@@ -39,6 +39,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDial
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
+import com.zinc.berrybucket.util.loadImages
 
 @Composable
 fun CloseDetailLayer(

@@ -13,11 +13,12 @@ import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.berrybucket.ui.util.toLocalData
+import com.zinc.berrybucket.ui.util.toStringData
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
-import java.time.LocalDate
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
@@ -78,9 +79,9 @@ private fun BucketDetailUiInfo.getOptions(imagesList: List<UserSelectedImageInfo
     }
 
     descInfo.dDay?.let {
-        val dDayLocalDate = LocalDate.of(2023, 10, 2)
+        val dDayLocalDate = it.toLocalData()
         optionsList.add(
-            WriteOption1Info.Dday(dDayLocalDate, dDayLocalDate.parseWithDday())
+            WriteOption1Info.Dday(dDayLocalDate.toStringData(), dDayLocalDate.parseWithDday())
         )
     }
 
@@ -93,7 +94,7 @@ private fun BucketDetailUiInfo.getOptions(imagesList: List<UserSelectedImageInfo
     )
 
     optionsList.add(
-        WriteOption1Info.Images(imagesList)
+        WriteOption1Info.Images(imagesList.map { it.path })
     )
 
     return optionsList

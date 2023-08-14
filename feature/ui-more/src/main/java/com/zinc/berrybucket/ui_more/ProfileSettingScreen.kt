@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_more
 
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.AddImageType
-import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
@@ -36,10 +34,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProfileSettingScreen(
     onBackPressed: () -> Unit,
-    imageUpdateButtonClicked: (AddImageType, () -> Unit, (UserSelectedImageInfo) -> Unit) -> Unit
+    imageUpdateButtonClicked: (AddImageType, () -> Unit, (String) -> Unit) -> Unit
 ) {
 
-    val updateUri: MutableState<Uri?> = remember { mutableStateOf(null) }
+    val updatePath: MutableState<String?> = remember { mutableStateOf(null) }
     var showSelectCameraType by remember { mutableStateOf(false) }
     val nickNameData = remember {
         ProfileEditData(
@@ -99,10 +97,10 @@ fun ProfileSettingScreen(
                             showSelectCameraType = false
                         },
                         // success
-                        { imageInfo ->
+                        { imagePath ->
                             isNeedToBottomSheetOpen.invoke(false)
                             showSelectCameraType = false
-                            updateUri.value = imageInfo.uri
+                            updatePath.value = imagePath
                         })
                 })
                 isNeedToBottomSheetOpen.invoke(true)
@@ -123,7 +121,7 @@ fun ProfileSettingScreen(
             Spacer(modifier = Modifier.padding(top = 44.dp))
 
             ProfileUpdateView(
-                updateUri = updateUri,
+                updatePath = updatePath,
                 imageUpdateButtonClicked = {
                     showSelectCameraType = true
                 })

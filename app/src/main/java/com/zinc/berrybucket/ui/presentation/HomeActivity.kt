@@ -20,6 +20,8 @@ import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
+import com.zinc.berrybucket.util.getImageFileWithImageInfo
+import com.zinc.berrybucket.util.saveBitmapAsFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FileOutputStream
@@ -144,33 +146,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun getFile() {
-        val src = BitmapFactory.decodeFile(photoUri?.path)
-        val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
-        val imageFile = saveBitmapAsFile(resized, photoUri?.path!!)
-        if (photoUri != null) {
-            takePhotoAction.succeed(
-                UserSelectedImageInfo(
-                    key = imageCount++,
-                    uri = photoUri!!, file = imageFile
-                )
-            )
-        } else {
+        if (photoUri == null) {
             Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+        } else {
+            val info = getImageFileWithImageInfo(photoUri!!, imageCount++)
+            if (photoUri == null) {
+                Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                takePhotoAction.succeed(info!!)
+            }
         }
     }
-
-    private fun saveBitmapAsFile(bitmap: Bitmap?, filePath: String): File {
-        val file = File(filePath)
-        val os: OutputStream
-        try {
-            file.createNewFile()
-            os = FileOutputStream(file)
-            bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, os)
-            os.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return file
-    }
-
 }

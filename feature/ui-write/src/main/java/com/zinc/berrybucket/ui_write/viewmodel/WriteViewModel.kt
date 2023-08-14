@@ -42,6 +42,7 @@ class WriteViewModel @Inject constructor(
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             _loadFail.value = "버킷리스트 생성 실패" to "다시 시도해주세요"
             Log.e("ayhan", "addBucketResult fail1 : ${throwable.cause}")
+            Log.e("ayhan", "Imagrs : ${writeInfo.images}")
         }) {
             runCatching {
                 accessToken.value?.let { accessToken ->
