@@ -9,7 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
-import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldArrangment
+import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldAlignment
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui_common.R as CommonR
 
@@ -26,7 +26,7 @@ fun GoalCountUpdateDialog(
         prevText = updateGoalCount,
         filedHintText = stringResource(id = CommonR.string.zeroGoalCount),
         saveNotAvailableToastText = stringResource(id = CommonR.string.countIsNotValidToast),
-        textFieldArrangement = TextFieldArrangment.CENTER,
+        textFieldAlignment = TextFieldAlignment.CENTER,
         keyboardType = KeyboardType.Number,
         enableCondition = { currentCount != updateGoalCount && updateGoalCount != "0" && updateGoalCount.isNotEmpty() },
         saveAvailableCondition = { updateGoalCount != "0" },

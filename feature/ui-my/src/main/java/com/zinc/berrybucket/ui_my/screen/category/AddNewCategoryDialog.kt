@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
-import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldArrangment
+import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldAlignment
 import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
 import com.zinc.berrybucket.ui_common.R as CommonR
 
@@ -26,7 +26,7 @@ fun AddNewCategoryDialog(
         filedHintText = stringResource(id = CommonR.string.addNewCategoryHint),
         rightButtonText = CommonR.string.addDesc,
         saveNotAvailableToastText = stringResource(id = CommonR.string.addNewCategoryNotAvailable),
-        textFieldArrangement = TextFieldArrangment.START,
+        textFieldAlignment = TextFieldAlignment.START,
         fieldTextSize = 14.dp,
         disableTextColor = Gray5,
         keyboardType = KeyboardType.Text,

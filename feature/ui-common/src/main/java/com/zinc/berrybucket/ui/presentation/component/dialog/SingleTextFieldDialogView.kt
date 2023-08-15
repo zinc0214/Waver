@@ -46,7 +46,7 @@ sealed interface SingleTextFieldDialogEvent {
     data class TextChangedField(val text: String) : SingleTextFieldDialogEvent
 }
 
-enum class TextFieldArrangment {
+enum class TextFieldAlignment {
     START, CENTER, END
 }
 
@@ -72,7 +72,7 @@ fun SingleTextFieldDialogView(
     @StringRes rightButtonText: Int = R.string.apply,
     saveNotAvailableToastText: String,
     fieldTextSize: Dp = 22.dp,
-    textFieldArrangement: TextFieldArrangment,
+    textFieldAlignment: TextFieldAlignment,
     disableTextColor: Color = Gray7,
     keyboardType: KeyboardType,
     enableCondition: () -> Boolean,
@@ -125,10 +125,10 @@ fun SingleTextFieldDialogView(
                     value = updatedText.value,
                     textStyle = TextStyle(
                         color = if (enableCondition()) Gray10 else disableTextColor,
-                        textAlign = when (textFieldArrangement) {
-                            TextFieldArrangment.START -> TextAlign.Start
-                            TextFieldArrangment.CENTER -> TextAlign.Center
-                            TextFieldArrangment.END -> TextAlign.End
+                        textAlign = when (textFieldAlignment) {
+                            TextFieldAlignment.START -> TextAlign.Start
+                            TextFieldAlignment.CENTER -> TextAlign.Center
+                            TextFieldAlignment.END -> TextAlign.End
                         },
                         fontWeight = FontWeight.Bold,
                         fontSize = dpToSp(dp = fieldTextSize)
@@ -144,10 +144,10 @@ fun SingleTextFieldDialogView(
                     ),
                     decorationBox = { innerTextField ->
                         Row(
-                            horizontalArrangement = when (textFieldArrangement) {
-                                TextFieldArrangment.START -> Arrangement.Start
-                                TextFieldArrangment.CENTER -> Arrangement.Center
-                                TextFieldArrangment.END -> Arrangement.End
+                            horizontalArrangement = when (textFieldAlignment) {
+                                TextFieldAlignment.START -> Arrangement.Start
+                                TextFieldAlignment.CENTER -> Arrangement.Center
+                                TextFieldAlignment.END -> Arrangement.End
                             },
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(horizontal = 16.dp)
@@ -160,10 +160,10 @@ fun SingleTextFieldDialogView(
                                     fontWeight = FontWeight.Bold,
                                     color = if (enableCondition()) Gray10 else disableTextColor,
                                     fontSize = dpToSp(fieldTextSize),
-                                    textAlign = when (textFieldArrangement) {
-                                        TextFieldArrangment.START -> TextAlign.Start
-                                        TextFieldArrangment.CENTER -> TextAlign.Center
-                                        TextFieldArrangment.END -> TextAlign.End
+                                    textAlign = when (textFieldAlignment) {
+                                        TextFieldAlignment.START -> TextAlign.Start
+                                        TextFieldAlignment.CENTER -> TextAlign.Center
+                                        TextFieldAlignment.END -> TextAlign.End
                                     }
                                 )
                             }
