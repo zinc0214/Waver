@@ -1,10 +1,10 @@
 package com.zinc.berrybucket.ui.presentation.component
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,9 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.model.BottomButtonClickEvent
+import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
@@ -29,11 +27,14 @@ import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun BottomButtonView(
-    leftButtonEnable: Boolean = false,
-    @StringRes leftText: Int = R.string.cancel,
-    rightButtonEnable: Boolean = true,
-    @StringRes rightText: Int = R.string.apply,
-    clickEvent: (BottomButtonClickEvent) -> Unit
+    negative: DialogButtonInfo? = DialogButtonInfo(
+        text = R.string.cancel, color = Gray6
+    ),
+    positive: DialogButtonInfo = DialogButtonInfo(
+        text = R.string.apply, color = Main4
+    ),
+    negativeEvent: (() -> Unit)? = null,
+    positiveEvent: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -48,68 +49,55 @@ fun BottomButtonView(
                 .background(color = colorResource(id = R.color._dbdbdb))
         )
 
-        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-            val (leftContent, divider, rightContent) = createRefs()
+        Row(modifier = Modifier.fillMaxWidth()) {
+            //  val (leftContent, divider, rightContent) = createRefs()
 
-            Divider(modifier = Modifier
-                .fillMaxHeight()
-                .width(0.6.dp)
-                .background(
-                    color = colorResource(
-                        id = R.color._dbdbdb
+            if (negativeEvent != null && negative != null) {
+                Box(
+                    modifier = Modifier
+                        .weight(3f, true)
+                        .fillMaxHeight()
+                        .fillMaxHeight()
+                        .clickable {
+                            negativeEvent()
+                        },
+
+                    ) {
+                    MyText(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = stringResource(id = negative.text),
+                        color = negative.color,
+                        textAlign = TextAlign.Center,
+                        fontSize = dpToSp(16.dp)
                     )
-                )
-                .constrainAs(divider) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                })
+                }
 
-            Box(
-                modifier = Modifier
-                    .constrainAs(leftContent) {
-                        start.linkTo(parent.start)
-                        end.linkTo(divider.start)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.fillToConstraints
-                    }
-                    .fillMaxHeight()
-                    .clickable {
-                        clickEvent.invoke(BottomButtonClickEvent.LeftButtonClicked)
-                    },
-
-                ) {
-                MyText(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(id = leftText),
-                    color = if (leftButtonEnable) Main4 else Gray6,
-                    textAlign = TextAlign.Center,
-                    fontSize = dpToSp(16.dp)
+                Divider(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(0.6.dp)
+                        .background(
+                            color = colorResource(
+                                id = R.color._dbdbdb
+                            )
+                        )
                 )
             }
 
+
             Box(
                 modifier = Modifier
-                    .constrainAs(rightContent) {
-                        start.linkTo(divider.end)
-                        end.linkTo(parent.end)
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        width = Dimension.fillToConstraints
-                    }
+                    .weight(3f, true)
                     .fillMaxHeight()
                     .clickable {
-                        clickEvent.invoke(BottomButtonClickEvent.RightButtonClicked)
+                        positiveEvent()
                     }
 
             ) {
                 MyText(
                     modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(id = rightText),
-                    color = if (rightButtonEnable) Main4 else Gray6,
+                    text = stringResource(id = positive.text),
+                    color = positive.color,
                     textAlign = TextAlign.Center,
                     fontSize = dpToSp(16.dp)
                 )
@@ -122,7 +110,10 @@ fun BottomButtonView(
 @Composable
 private fun BottomButtonPreview() {
     BottomButtonView(
-        leftButtonEnable = false,
-        rightButtonEnable = true,
-        clickEvent = {})
+        negative = null,
+        positive = DialogButtonInfo(
+            text = R.string.apply, color = Main4
+        ),
+        positiveEvent = {}
+    )
 }

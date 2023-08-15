@@ -28,12 +28,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.BottomButtonClickEvent
+import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main3
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
@@ -114,21 +115,22 @@ fun GoalCountBottomScreen(
         )
 
         BottomButtonView(
-            rightText = com.zinc.berrybucket.ui_common.R.string.confirm,
-            clickEvent = {
-                when (it) {
-                    BottomButtonClickEvent.LeftButtonClicked -> canceled()
-                    BottomButtonClickEvent.RightButtonClicked -> {
-                        if (editedGoalCount.text == "0") {
-                            Toast.makeText(
-                                context,
-                                CommonR.string.countIsNotValidToast,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            confirmed(editedGoalCount.text)
-                        }
-                    }
+            positive = DialogButtonInfo(
+                color = Main4,
+                text = com.zinc.berrybucket.ui_common.R.string.confirm
+            ),
+            negativeEvent = {
+                canceled()
+            },
+            positiveEvent = {
+                if (editedGoalCount.text == "0") {
+                    Toast.makeText(
+                        context,
+                        CommonR.string.countIsNotValidToast,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    confirmed(editedGoalCount.text)
                 }
             })
     }

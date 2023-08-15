@@ -28,12 +28,14 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.BottomButtonClickEvent
+import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray4
+import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main3
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
@@ -173,28 +175,31 @@ fun SingleTextFieldDialogView(
                 )
 
                 BottomButtonView(
-                    leftText = leftButtonText,
-                    rightText = rightButtonText,
-                    clickEvent = {
-                        when (it) {
-                            BottomButtonClickEvent.LeftButtonClicked -> event(
-                                SingleTextFieldDialogEvent.Close
+                    negative = DialogButtonInfo(
+                        text = leftButtonText,
+                        color = Gray6,
+                    ),
+                    negativeEvent = {
+                        event(SingleTextFieldDialogEvent.Close)
+                    },
+                    positive = DialogButtonInfo(
+                        text = rightButtonText,
+                        color = Main4
+                    ),
+                    positiveEvent = {
+                        if (saveAvailableCondition()) {
+                            event(
+                                SingleTextFieldDialogEvent.Update(text = updatedText.value.text)
                             )
-
-                            BottomButtonClickEvent.RightButtonClicked ->
-                                if (saveAvailableCondition()) {
-                                    event(
-                                        SingleTextFieldDialogEvent.Update(text = updatedText.value.text)
-                                    )
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        saveNotAvailableToastText,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                        } else {
+                            Toast.makeText(
+                                context,
+                                saveNotAvailableToastText,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    })
+                    }
+                )
             }
         }
     })

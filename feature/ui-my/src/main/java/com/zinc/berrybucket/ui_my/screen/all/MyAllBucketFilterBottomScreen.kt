@@ -18,7 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray7
@@ -33,7 +32,9 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 @Composable
 fun MyAllBucketFilterBottomScreen(
     isInit_: Boolean = true,
-    viewModel: MyViewModel, clickEvent: (BottomButtonClickEvent) -> Unit
+    viewModel: MyViewModel,
+    negativeEvent: () -> Unit,
+    positiveEvent: () -> Unit
 ) {
 
     val isInit = remember {
@@ -165,30 +166,24 @@ fun MyAllBucketFilterBottomScreen(
                 })
         }
 
-        BottomButtonView(clickEvent = {
-            when (it) {
-                BottomButtonClickEvent.LeftButtonClicked -> {
-                    proceedingBucketListSelectedState.value = showProgressPref
-                    succeedBucketListSelectedState.value = showSucceedPref
-                    sortSelectedState.value = orderTypePref
-                    ddayShowSelectedState.value = showDdayPref
-                    clickEvent.invoke(BottomButtonClickEvent.LeftButtonClicked)
-                }
-
-                BottomButtonClickEvent.RightButtonClicked -> {
-                    viewModel.updateBucketFilter(
-                        isProgress = proceedingBucketListSelectedState.value,
-                        isSucceed = succeedBucketListSelectedState.value,
-                        orderType = sortSelectedState.value,
-                        showDday = ddayShowSelectedState.value
-                    )
-                    clickEvent.invoke(
-                        BottomButtonClickEvent.RightButtonClicked
-                    )
-                    isInit.value = true
-                }
-            }
-        })
+        BottomButtonView(
+            positiveEvent = {
+                viewModel.updateBucketFilter(
+                    isProgress = proceedingBucketListSelectedState.value,
+                    isSucceed = succeedBucketListSelectedState.value,
+                    orderType = sortSelectedState.value,
+                    showDday = ddayShowSelectedState.value
+                )
+                positiveEvent()
+                isInit.value = true
+            },
+            negativeEvent = {
+                proceedingBucketListSelectedState.value = showProgressPref
+                succeedBucketListSelectedState.value = showSucceedPref
+                sortSelectedState.value = orderTypePref
+                ddayShowSelectedState.value = showDdayPref
+                negativeEvent()
+            })
     }
 
 }

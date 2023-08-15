@@ -13,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
@@ -21,11 +20,11 @@ import com.zinc.berrybucket.ui.presentation.component.LabelWithSwitchView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
-import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable
 fun MyDdayBucketFilterBottomScreen(
-    viewModel: MyViewModel, clickEvent: (BottomButtonClickEvent) -> Unit
+    negativeEvent: () -> Unit,
+    positiveEvent: () -> Unit
 ) {
 
     val proceedingBucketListSelectedState = remember {
@@ -59,14 +58,13 @@ fun MyDdayBucketFilterBottomScreen(
                 succeedBucketListSelectedState.value = it
             })
         Spacer(modifier = Modifier.height(40.dp))
-        BottomButtonView(clickEvent = {
-            when (it) {
-                BottomButtonClickEvent.LeftButtonClicked -> clickEvent.invoke(BottomButtonClickEvent.LeftButtonClicked)
-                BottomButtonClickEvent.RightButtonClicked -> clickEvent.invoke(
-                    BottomButtonClickEvent.RightButtonClicked
-                )
-            }
-        })
+        BottomButtonView(
+            negativeEvent = {
+                negativeEvent()
+            },
+            positiveEvent = {
+                positiveEvent()
+            })
     }
 }
 

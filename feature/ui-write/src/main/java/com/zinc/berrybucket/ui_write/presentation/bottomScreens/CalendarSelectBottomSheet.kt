@@ -24,10 +24,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.hana.berrybucket.ui_write.R
-import com.zinc.berrybucket.model.BottomButtonClickEvent
+import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main2
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.BottomButtonView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.NumberPicker
@@ -74,6 +75,7 @@ fun CalendarSelectBottomSheet(
                         viewType = it
                     })
             }
+
             PICKER -> {
                 DatePickerView(
                     currentDate = currentLocalDate,
@@ -91,14 +93,16 @@ fun CalendarSelectBottomSheet(
         }
 
         BottomButtonView(
-            clickEvent = {
-                when (it) {
-                    BottomButtonClickEvent.LeftButtonClicked -> canceled()
-                    BottomButtonClickEvent.RightButtonClicked -> {
-                        confirmed(currentLocalDate)
-                    }
-                }
-            }, rightText = com.zinc.berrybucket.ui_common.R.string.confirm
+            negativeEvent = {
+                canceled()
+            },
+            positive = DialogButtonInfo(
+                text = com.zinc.berrybucket.ui_common.R.string.confirm,
+                color = Main4
+            ),
+            positiveEvent = {
+                confirmed(currentLocalDate)
+            },
         )
     }
 }

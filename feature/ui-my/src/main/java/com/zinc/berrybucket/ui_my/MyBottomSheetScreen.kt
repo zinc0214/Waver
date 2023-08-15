@@ -1,7 +1,6 @@
 package com.zinc.berrybucket.ui_my
 
 import androidx.compose.runtime.Composable
-import com.zinc.berrybucket.model.BottomButtonClickEvent
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui_my.screen.all.MyAllBucketFilterBottomScreen
@@ -61,31 +60,24 @@ private fun FilterBottomView(
 ) {
     when (tab) {
         is MyTabType.ALL -> {
-            MyAllBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
-                when (it) {
-                    BottomButtonClickEvent.LeftButtonClicked -> {
-                        isNeedToBottomSheetOpen.invoke(false)
-                    }
-
-                    BottomButtonClickEvent.RightButtonClicked -> {
-                        isNeedToBottomSheetOpen.invoke(false)
-                    }
-                }
-            })
+            MyAllBucketFilterBottomScreen(
+                viewModel = viewModel,
+                negativeEvent = {
+                    isNeedToBottomSheetOpen.invoke(false)
+                },
+                positiveEvent = {
+                    isNeedToBottomSheetOpen.invoke(false)
+                })
         }
 
         is MyTabType.DDAY -> {
-            MyDdayBucketFilterBottomScreen(viewModel = viewModel, clickEvent = {
-                when (it) {
-                    BottomButtonClickEvent.LeftButtonClicked -> {
-                        isNeedToBottomSheetOpen.invoke(false)
-                    }
-
-                    BottomButtonClickEvent.RightButtonClicked -> {
-                        isNeedToBottomSheetOpen.invoke(false)
-                    }
-                }
-            })
+            MyDdayBucketFilterBottomScreen(
+                negativeEvent = {
+                    isNeedToBottomSheetOpen.invoke(false)
+                },
+                positiveEvent = {
+                    isNeedToBottomSheetOpen.invoke(false)
+                })
         }
 
         is MyTabType.CHALLENGE -> TODO()
