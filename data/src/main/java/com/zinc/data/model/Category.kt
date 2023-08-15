@@ -12,7 +12,7 @@ data class LoadCategoryResponse(
 
 @Serializable
 data class AddNewCategoryRequest(
-    val named: String
+    val name: String
 )
 
 data class EditCategoryNameRequest(
