@@ -9,7 +9,7 @@ import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.DdayBucketList
-import com.zinc.common.models.DetailType
+import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.MyState
@@ -35,7 +35,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     goalCount = 10,
                     dDay = 0,
                     status = BucketStatus.COMPLETE,
-                    detailType = DetailType.MY_OPEN,
+                    exposureStatus = ExposureStatus.PUBLIC,
                     bucketType = BucketType.ORIGINAL
                 ),
                 BucketInfoSimple(
@@ -45,7 +45,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     goalCount = 10,
                     dDay = 20,
                     status = BucketStatus.COMPLETE,
-                    detailType = DetailType.MY_OPEN,
+                    exposureStatus = ExposureStatus.PUBLIC,
                     bucketType = BucketType.ORIGINAL
                 ),
                 BucketInfoSimple(
@@ -55,7 +55,7 @@ internal class MyRepositoryImpl @Inject constructor(
                     goalCount = 10,
                     dDay = -10,
                     status = BucketStatus.PROGRESS,
-                    detailType = DetailType.MY_OPEN,
+                    exposureStatus = ExposureStatus.PUBLIC,
                     bucketType = BucketType.ORIGINAL
                 )
             )

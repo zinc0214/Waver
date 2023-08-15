@@ -89,3 +89,15 @@ data class FollowData(
     val followingUsers: List<OtherProfileInfo>,
     val followerUsers: List<OtherProfileInfo>
 )
+
+@Serializable
+data class BucketInfoSimple(
+    val id: String,
+    val bucketType: BucketType,
+    val title: String,
+    val status: BucketStatus,
+    val dDay: Int? = null,
+    var userCount: Int = 0,
+    val goalCount: Int = 0,
+    val exposureStatus: ExposureStatus
+)

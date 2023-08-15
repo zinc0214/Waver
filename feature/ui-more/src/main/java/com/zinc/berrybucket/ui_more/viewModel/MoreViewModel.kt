@@ -23,6 +23,7 @@ class MoreViewModel @Inject constructor(
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val CEH = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.e(TAG, "loadMyProfile: $throwable")
         _profileLoadFail.call()
     }
 
@@ -33,11 +34,10 @@ class MoreViewModel @Inject constructor(
     val profileLoadFail: LiveData<Nothing> get() = _profileLoadFail
 
     fun loadMyProfile() {
-        Log.e(TAG, "loadMyProfile: $1111")
-
         viewModelScope.launch(CEH) {
             runCatching {
                 accessToken.value?.let { token ->
+                    Log.e(TAG, "loadMyProfile1: $token")
                     loadProfileInfo.invoke(token).apply {
                         Log.e(TAG, "loadMyProfile: $this")
                         if (success) {
@@ -48,6 +48,7 @@ class MoreViewModel @Inject constructor(
                     }
                 }
             }.getOrElse {
+                Log.e(TAG, "loadMyProfile2: ${it.message}")
                 _profileLoadFail.call()
             }
         }

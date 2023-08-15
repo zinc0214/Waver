@@ -19,7 +19,7 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdayBucketList
-import com.zinc.common.models.DetailType
+import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
@@ -300,7 +300,7 @@ class MyViewModel @Inject constructor(
             title = "아이스크림을 먹을테야 얍얍압얍",
             userCount = 1,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
 
         ),
@@ -309,7 +309,7 @@ class MyViewModel @Inject constructor(
             title = "아이스크림을 여행을 갈거란 말이야",
             userCount = 1,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
@@ -319,7 +319,7 @@ class MyViewModel @Inject constructor(
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
@@ -329,7 +329,7 @@ class MyViewModel @Inject constructor(
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
@@ -339,7 +339,7 @@ class MyViewModel @Inject constructor(
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
 
         ),
@@ -350,7 +350,7 @@ class MyViewModel @Inject constructor(
             goalCount = 10,
             dDay = -10,
             status = BucketStatus.PROGRESS,
-            detailType = DetailType.MY_OPEN,
+            exposureStatus = ExposureStatus.PUBLIC,
             bucketType = BucketType.ORIGINAL
         )
     )

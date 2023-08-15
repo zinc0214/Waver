@@ -58,7 +58,7 @@ import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.searchNavGraph
 import com.zinc.berrybucket.util.nav.writeNavGraph1
 import com.zinc.berrybucket.util.nav.writeNavGraph2
-import com.zinc.common.models.DetailType
+import com.zinc.common.models.ExposureStatus
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -175,7 +175,7 @@ fun BerryBucketApp(
                             onBucketSelected = { selected, nav ->
                                 when (selected) {
                                     is BucketSelected.GoToDetailBucket -> {
-                                        if (selected.bucketInfo.detailType == DetailType.MY_CLOSE) {
+                                        if (selected.bucketInfo.exposureStatues == ExposureStatus.PRIVATE) {
                                             appState.navigateToCloseBucketDetail(
                                                 selected.bucketInfo.id, nav
                                             )

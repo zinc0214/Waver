@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.model
 
-import androidx.annotation.StringRes
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
@@ -11,8 +10,7 @@ import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CategoryInfo
-import com.zinc.common.models.DetailType
-import kotlinx.serialization.Serializer
+import com.zinc.common.models.ExposureStatus
 import java.io.Serializable
 
 data class AllBucketList(
@@ -38,7 +36,7 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
         goalCount = this.goalCount,
         dDay = this.dDay,
         status = this.status,
-        detailType = this.detailType ?: DetailType.MY_OPEN
+        exposureStatues = this.exposureStatus
     )
 }
 
@@ -56,7 +54,7 @@ data class UIBucketInfoSimple(
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
-    val detailType: DetailType = DetailType.MY_OPEN,
+    val exposureStatues: ExposureStatus,
     val status: BucketStatus = BucketStatus.PROGRESS
 ) {
     val dDayText = dDay?.let {
