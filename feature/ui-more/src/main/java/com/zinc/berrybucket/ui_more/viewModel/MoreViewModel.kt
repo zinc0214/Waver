@@ -24,14 +24,14 @@ class MoreViewModel @Inject constructor(
 
     private val CEH = CoroutineExceptionHandler { coroutineContext, throwable ->
         Log.e(TAG, "loadMyProfile: $throwable")
-        _profileLoadFail.call()
+        _profileLoadFail.value = true
     }
 
     private val _profileInfo = MutableLiveData<UIMoreMyProfileInfo>()
     val profileInfo: LiveData<UIMoreMyProfileInfo> get() = _profileInfo
 
-    private val _profileLoadFail = SingleLiveEvent<Nothing>()
-    val profileLoadFail: LiveData<Nothing> get() = _profileLoadFail
+    private val _profileLoadFail = SingleLiveEvent<Boolean>()
+    val profileLoadFail: LiveData<Boolean> get() = _profileLoadFail
 
     fun loadMyProfile() {
         viewModelScope.launch(CEH) {
@@ -43,13 +43,13 @@ class MoreViewModel @Inject constructor(
                         if (success) {
                             _profileInfo.value = data.toUi()
                         } else {
-                            _profileLoadFail.call()
+                            _profileLoadFail.value = true
                         }
                     }
                 }
             }.getOrElse {
                 Log.e(TAG, "loadMyProfile2: ${it.message}")
-                _profileLoadFail.call()
+                _profileLoadFail.value = true
             }
         }
     }

@@ -40,7 +40,7 @@ fun MoreScreen(
     }
 
     LaunchedEffect(key1 = loadProfileFail) {
-        showApiFailDialog.value = true
+        showApiFailDialog.value = loadProfileFail ?: false
     }
 
     Column {
@@ -48,17 +48,17 @@ fun MoreScreen(
 
         profileInfo?.let { info ->
             MoreTopProfileView(info, goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
-        }
 
-        BerryClubLabelView {
+            BerryClubLabelView {
 
-        }
+            }
 
-        MoreItemsView {
-            if (it == MoreItemType.LOGOUT) {
-                logoutPopupShow = true
-            } else {
-                moreItemClicked(it)
+            MoreItemsView {
+                if (it == MoreItemType.LOGOUT) {
+                    logoutPopupShow = true
+                } else {
+                    moreItemClicked(it)
+                }
             }
         }
     }
