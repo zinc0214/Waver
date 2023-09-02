@@ -63,7 +63,6 @@ class MyView @JvmOverloads constructor(
         coroutineScope: CoroutineScope,
         onBucketSelected: (BucketSelected) -> Unit,
         bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-        addNewCategory: () -> Unit,
         goToCategoryEdit: () -> Unit,
         nestedScrollInterop: NestedScrollConnection
     ) {
@@ -77,7 +76,6 @@ class MyView @JvmOverloads constructor(
                 viewModel = viewModel,
                 onBucketSelected = onBucketSelected,
                 bottomSheetClicked = bottomSheetClicked,
-                addNewCategory = addNewCategory,
                 goToCategoryEdit = goToCategoryEdit,
                 coroutineScope = coroutineScope,
                 nestedScrollInterop = nestedScrollInterop

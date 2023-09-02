@@ -6,13 +6,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.ui.design.theme.Gray8
@@ -21,29 +27,51 @@ import com.zinc.berrybucket.ui.presentation.component.CategoryListView
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
+import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
 import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
-import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
+import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 
 @Composable
 fun CategoryLayer(
     modifier: Modifier = Modifier,
-    viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     val recommendCategory = "여향"
 
+    val viewModel: CategoryViewModel = hiltViewModel()
+
     viewModel.loadCategoryList()
-    val categoryList by viewModel.categoryInfoItems.observeAsState()
+    val categoryList by viewModel.categoryInfoList.observeAsState()
+
+    val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
+
+    LaunchedEffect(key1 = categoryList, block = {
+        addNewCategoryDialogShowAvailable.value = false
+    })
 
     categoryList?.let {
+        if (addNewCategoryDialogShowAvailable.value) {
+            AddNewCategoryDialog(event = {
+                when (it) {
+                    is AddCategoryEvent.AddNewAddCategory -> {
+                        viewModel.addNewCategory(it.name)
+                    }
+
+                    AddCategoryEvent.Close -> {
+                        addNewCategoryDialogShowAvailable.value = false
+                    }
+                }
+            })
+        }
+
         Column(
-            modifier = modifier
+            modifier = modifier.verticalScroll(rememberScrollState())
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(it)
             MyCategoryAddView {
-                clickEvent.invoke(MyPagerClickEvent.AddNewCategory)
+                addNewCategoryDialogShowAvailable.value = true
             }
         }
     }

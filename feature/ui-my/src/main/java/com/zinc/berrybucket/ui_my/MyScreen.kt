@@ -14,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -47,12 +46,11 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.all.AllBucketLayer
-import com.zinc.berrybucket.ui_my.screen.category.AddNewCategoryDialog
 import com.zinc.berrybucket.ui_my.screen.category.CategoryLayer
 import com.zinc.berrybucket.ui_my.screen.dday.DdayBucketLayer
-import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
-import com.zinc.berrybucket.ui_my.model.MyTopEvent
+import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -68,25 +66,13 @@ fun MyScreen(
     val coroutineScope = rememberCoroutineScope()
 
     val viewModel: MyViewModel = hiltViewModel()
+    val categoryViewModel: CategoryViewModel = hiltViewModel()
+
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState()
-
-    val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
-
-    if (addNewCategoryDialogShowAvailable.value) {
-        AddNewCategoryDialog(event = {
-            when (it) {
-                is AddCategoryEvent.AddNewAddCategory -> {
-                    // add new category
-                }
-
-                AddCategoryEvent.Close -> addNewCategoryDialogShowAvailable.value = false
-            }
-        })
-    }
 
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
@@ -102,9 +88,6 @@ fun MyScreen(
                         coroutineScope = coroutineScope,
                         onBucketSelected = onBucketSelected,
                         nestedScrollInterop = nestedScrollInterop,
-                        addNewCategory = {
-                            addNewCategoryDialogShowAvailable.value = true
-                        },
                         goToCategoryEdit = {
                             goToCategoryEdit()
                         },
@@ -162,7 +145,6 @@ fun MyViewPager(
     nestedScrollInterop: NestedScrollConnection,
     onBucketSelected: (BucketSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
-    addNewCategory: () -> Unit,
     goToCategoryEdit: () -> Unit,
 ) {
 
@@ -211,7 +193,7 @@ fun MyViewPager(
             }
 
             1 -> {
-                CategoryLayer(viewModel = viewModel, clickEvent = {
+                CategoryLayer(clickEvent = {
                     when (it) {
                         MyPagerClickEvent.CategoryEditClicked -> {
                             goToCategoryEdit()
@@ -229,10 +211,6 @@ fun MyViewPager(
 
                         is MyPagerClickEvent.CategoryItemClicked -> {
                             // go to category item
-                        }
-
-                        MyPagerClickEvent.AddNewCategory -> {
-                            addNewCategory()
                         }
 
                         else -> {
