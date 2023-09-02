@@ -6,7 +6,6 @@ import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.DdayBucketList
 import com.zinc.common.models.ExposureStatus
@@ -248,28 +247,6 @@ internal class MyRepositoryImpl @Inject constructor(
 
     override suspend fun requestFollow(token: String, userId: String): CommonResponse {
         return berryBucketApi.requestFollow(token, userId)
-    }
-
-    override suspend fun loadCategoryList(): List<CategoryInfo> {
-        // return berryBucketApi.loadCategoryList()
-        return listOf(
-            CategoryInfo(
-                id = 1,
-                name = "여행",
-                bucketlistCount = "20"
-            ),
-            CategoryInfo(
-                id = 1,
-                name = "아주아주 맛있는 것을 먹으러 다니는 거야 냠냠쩝쩝 하면서 룰루리랄라 크크루삥봉",
-                bucketlistCount = "10"
-            ),
-            CategoryInfo(
-                id = 1,
-                name = "제주도여행을 갈거야",
-                bucketlistCount = "3"
-            )
-        )
-
     }
 
     override suspend fun loadMyState(): MyState {

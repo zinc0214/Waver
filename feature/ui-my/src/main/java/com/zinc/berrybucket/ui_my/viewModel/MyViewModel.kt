@@ -12,6 +12,7 @@ import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.model.MyTabType.CHALLENGE
 import com.zinc.berrybucket.model.MyTabType.DDAY
 import com.zinc.berrybucket.model.parseToUI
+import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.BucketInfoSimple
@@ -24,11 +25,12 @@ import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
+import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadAllBucketList
-import com.zinc.domain.usecases.my.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -72,6 +74,9 @@ class MyViewModel @Inject constructor(
 
     private val _showDdayView = MutableLiveData<Boolean>()
     val showDdayView: LiveData<Boolean> get() = _showDdayView
+
+    private val _dataLoadFailed = SingleLiveEvent<Nothing>()
+    val dataLoadFailed: LiveData<Nothing> get() = _dataLoadFailed
 
     fun loadBucketFilter() {
         viewModelScope.launch {
@@ -212,11 +217,21 @@ class MyViewModel @Inject constructor(
         if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 
     fun loadCategoryList() {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            _dataLoadFailed.call()
+        }) {
             kotlin.runCatching {
-                loadCategoryList.invoke().apply {
-                    _categoryInfoItems.value = this
+                accessToken.value?.let { token ->
+                    loadCategoryList.invoke(token).apply {
+                        if (this.isEmpty()) {
+                            _dataLoadFailed.call()
+                        } else {
+                            _categoryInfoItems.value = this
+                        }
+                    }
                 }
+            }.getOrElse {
+                _dataLoadFailed.call()
             }
         }
     }
