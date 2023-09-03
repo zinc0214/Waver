@@ -47,7 +47,7 @@ fun FollowingListSettingScreen(
     val followingListState = remember { mutableStateOf(followingList) }
 
     if (followingList.isNullOrEmpty()) {
-        viewModel.loadFollowList()
+        viewModel.loadFollowingList()
     }
 
     LaunchedEffect(followingList) {

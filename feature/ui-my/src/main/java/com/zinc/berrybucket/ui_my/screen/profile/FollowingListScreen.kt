@@ -26,7 +26,7 @@ fun FollowingListScreen(
 ) {
 
     val viewModel: FollowViewModel = hiltViewModel()
-    viewModel.loadFollowList()
+    viewModel.loadFollowingList()
     val followingList by viewModel.followingList.observeAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
