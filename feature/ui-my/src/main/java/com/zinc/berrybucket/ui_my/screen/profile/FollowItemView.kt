@@ -28,7 +28,6 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.common.models.OtherProfileInfo
-import com.zinc.common.models.YesOrNo
 
 @Composable
 fun FollowItemView(
@@ -79,7 +78,7 @@ private fun FollowItemPreview() {
             id = "1",
             imgUrl = "",
             name = "프로필의 이름이 길면 점점점이 노출되어야 하니까 테스트 해볼까? ",
-            mutualFollow = YesOrNo.Y
+            mutualFollow = false
         )
     )
 }

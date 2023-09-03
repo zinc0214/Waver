@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
 import com.zinc.common.models.OtherProfileInfo
-import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.cehCommonTitle
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.my.LoadFollowList
@@ -35,6 +34,7 @@ class FollowViewModel @Inject constructor(
     val loadFail: LiveData<Pair<String?, String?>> get() = _loadFail
 
     private val CEH = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.e("ayhan", "loadFollowList fail: $throwable")
         _loadFail.value = cehCommonTitle to null
     }
 
@@ -44,22 +44,9 @@ class FollowViewModel @Inject constructor(
                 runCatching {
                     loadFollowList.invoke(token).apply {
                         Log.e("ayhan", "loadFollowList: $this")
-                        _followerList.value =
-                            buildList {
-                                repeat(40) {
-                                    add(
-                                        OtherProfileInfo(
-                                            id = it.toString(),
-                                            imgUrl = null,
-                                            name = "$it+가나다라마바사아자차가타파아azbdfdkop+$it",
-                                            mutualFollow = if (it < 10) YesOrNo.Y else YesOrNo.N
-                                        )
-                                    )
-                                }
-                            }
-
+                        _followerList.value = this.data.followerUsers
                         //this.data.followerUsers
-                        _followingList.value =
+//                        _followingList.value =
 
 //TODO : 코드제거
 //                            buildList {
@@ -74,11 +61,26 @@ class FollowViewModel @Inject constructor(
 //                                }
 //                            }
 
-                            this.data.followingUsers
-
 
                     }
                 }.getOrElse {
+                    Log.e("ayhan", "loadFollowList fail2: ${it.message}")
+                    _loadFail.value = cehCommonTitle to null
+                }
+            }
+        }
+    }
+
+    fun loadFollowingList() {
+        viewModelScope.launch(CEH) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    loadFollowList.invoke(token).apply {
+                        Log.e("ayhan", "loadFollowList: $this")
+                        _followingList.value = this.data.followingUsers
+                    }
+                }.getOrElse {
+                    Log.e("ayhan", "loadFollowList fail2: ${it.message}")
                     _loadFail.value = cehCommonTitle to null
                 }
             }
@@ -115,7 +117,7 @@ class FollowViewModel @Inject constructor(
                     requestFollowUser.invoke(token, followUser.id).apply {
                         if (success) {
                             val updateList = _followerList.value?.toMutableList()
-                            val updateUser = followUser.copy(mutualFollow = YesOrNo.Y)
+                            val updateUser = followUser.copy(mutualFollow = true)
                             updateList?.replaceAll {
                                 if (it.id == updateUser.id) {
                                     updateUser
