@@ -45,23 +45,21 @@ class FollowViewModel @Inject constructor(
                     loadFollowList.invoke(token).apply {
                         Log.e("ayhan", "loadFollowList: $this")
                         _followerList.value = this.data.followerUsers
-                        //this.data.followerUsers
-//                        _followingList.value =
-
-//TODO : 코드제거
+//
+////TODO : 코드제거
 //                            buildList {
 //                                repeat(40) {
 //                                    add(
 //                                        OtherProfileInfo(
 //                                            id = it.toString(),
 //                                            imgUrl = null,
-//                                            name = "$it+가나다라마바사아자차가타파아azbdfdkop+$it"
+//                                            name = "$it+가나다라마바사아자차가타파아azbdfdkop+$it",
+//                                            mutualFollow = it > 10
 //                                        )
 //                                    )
 //                                }
 //                            }
-
-
+//                    }
                     }
                 }.getOrElse {
                     Log.e("ayhan", "loadFollowList fail2: ${it.message}")
