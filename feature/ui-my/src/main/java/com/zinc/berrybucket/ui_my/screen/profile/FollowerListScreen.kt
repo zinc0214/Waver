@@ -77,7 +77,7 @@ fun FollowerListScreen(
                         FollowItemView(
                             info = member,
                             modifier = Modifier
-                                .padding(end = 16.dp)
+                                .padding(end = if (member.mutualFollow) 16.dp else 0.dp)
                                 .constrainAs(followingMember) {
                                     top.linkTo(parent.top)
                                     start.linkTo(parent.start)
@@ -87,7 +87,7 @@ fun FollowerListScreen(
                                 }
                         )
 
-                        if (member.mutualFollow.isNo()) {
+                        if (member.mutualFollow) {
                             RoundChip(
                                 modifier = Modifier
                                     .defaultMinSize(minWidth = 80.dp, minHeight = 30.dp)
