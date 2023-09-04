@@ -42,7 +42,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.util.loadImages
 
 @Composable
-fun CloseDetailLayer(
+fun CloseDetailScreen(
     detailId: String,
     goToUpdate: (WriteTotalInfo) -> Unit,
     backPress: () -> Unit
