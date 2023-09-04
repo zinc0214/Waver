@@ -249,6 +249,10 @@ internal class MyRepositoryImpl @Inject constructor(
         return berryBucketApi.requestFollow(token, userId)
     }
 
+    override suspend fun searchAllBucketList(token: String, query: String): AllBucketListResponse {
+        return berryBucketApi.searchAllBucketList(token, query)
+    }
+
     override suspend fun loadMyState(): MyState {
         return berryBucketApi.loadMyState()
     }

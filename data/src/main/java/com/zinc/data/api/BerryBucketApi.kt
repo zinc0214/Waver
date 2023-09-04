@@ -143,4 +143,10 @@ interface BerryBucketApi {
     suspend fun loadMyProfile(
         @Header("Authorization") token: String,
     ): MyProfileResponse
+
+    @GET("/bucketList")
+    suspend fun searchAllBucketList(
+        @Header("Authorization") token: String,
+        @Query("query") query: String
+    ): AllBucketListResponse
 }

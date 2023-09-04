@@ -29,6 +29,7 @@ import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
+import com.zinc.domain.usecases.my.SearchAllBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Deferred
@@ -44,6 +45,7 @@ class MyViewModel @Inject constructor(
     private val loadAllBucketList: LoadAllBucketList,
     private val loadCategoryList: LoadCategoryList,
     private val loadDdayBucketList: LoadDdayBucketList,
+    private val searchAllBucketList: SearchAllBucketList,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
@@ -77,6 +79,14 @@ class MyViewModel @Inject constructor(
 
     private val _dataLoadFailed = SingleLiveEvent<Nothing>()
     val dataLoadFailed: LiveData<Nothing> get() = _dataLoadFailed
+
+    private val _searchFailed = SingleLiveEvent<Nothing>()
+    val searchFailed: LiveData<Nothing> get() = _searchFailed
+
+    private val searchCeh = CoroutineExceptionHandler { coroutineContext, throwable ->
+        Log.e("ayhan", "searchFail 1 : $throwable")
+        _searchFailed.call()
+    }
 
     fun loadBucketFilter() {
         viewModelScope.launch {
@@ -282,10 +292,28 @@ class MyViewModel @Inject constructor(
     }
 
     private fun searchAllBucket(searchWord: String) {
-        _searchBucketResult.value = Pair(
-            ALL(),
-            simpleTypeList
-        )
+        viewModelScope.launch(searchCeh) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    searchAllBucketList.invoke(token, searchWord).apply {
+                        if (this.success) {
+                            _searchBucketResult.value = Pair(
+                                ALL(),
+                                this.data.bucketlist
+                            )
+                        } else {
+                            Log.e("ayhan", "searchFail 3 : ${this.message}")
+                            _searchFailed.call()
+                        }
+
+                    }
+                }.getOrElse {
+                    Log.e("ayhan", "searchFail 2 : ${it.message}")
+                    _searchFailed.call()
+                }
+            }
+        }
+
     }
 
     private fun searchDdayBucket(searchWord: String) {

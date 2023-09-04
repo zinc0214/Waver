@@ -30,4 +30,9 @@ interface MyRepository {
         token: String,
         userId: String
     ): CommonResponse
+
+    suspend fun searchAllBucketList(
+        token: String,
+        query: String
+    ): AllBucketListResponse
 }
