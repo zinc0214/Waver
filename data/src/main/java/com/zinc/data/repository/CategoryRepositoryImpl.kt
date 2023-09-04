@@ -1,21 +1,19 @@
 package com.zinc.data.repository
 
-import android.util.Log
-import com.zinc.common.models.CategoryInfo
+import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.EditCategoryNameRequest
+import com.zinc.common.models.LoadCategoryResponse
+import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.data.api.BerryBucketApi
-import com.zinc.data.model.AddNewCategoryRequest
-import com.zinc.data.model.EditCategoryNameRequest
-import com.zinc.data.model.ReorderedCategoryRequest
 import com.zinc.domain.repository.CategoryRepository
 import javax.inject.Inject
 
 internal class CategoryRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : CategoryRepository {
-    override suspend fun loadCategoryList(token: String): List<CategoryInfo> {
-        Log.e("ayhan", "loadCategoryList impl : ${berryBucketApi.loadCategoryList(token)}")
-        return berryBucketApi.loadCategoryList(token).data
+    override suspend fun loadCategoryList(token: String): LoadCategoryResponse {
+        return berryBucketApi.loadCategoryList(token)
     }
 
     override suspend fun addNewCategory(token: String, name: String): CommonResponse {

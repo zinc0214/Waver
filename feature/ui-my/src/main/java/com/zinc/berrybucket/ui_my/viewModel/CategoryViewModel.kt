@@ -37,11 +37,18 @@ class CategoryViewModel @Inject constructor(
         accessToken.value?.let { token ->
             viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
                 Log.e("ayhan", "load Category Fail 2 $throwable")
+                _apiFailed.value = "카테고리 로드 실패" to ""
             }) {
-                _categoryInfoList.value = loadCategoryList.invoke(token)
+                loadCategoryList.invoke(token).apply {
+                    if (this.success) {
+                        _categoryInfoList.value = this.data
+                    } else {
+                        _apiFailed.value = "카테고리 로드 실패" to this.message
+                    }
+                }
             }
         }.runCatching {
-
+            _apiFailed.value = "카테고리 로드 실패" to ""
         }
 
     }

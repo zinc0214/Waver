@@ -45,8 +45,9 @@ class WriteCategoryViewModel @Inject constructor(
             viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
                 Log.e("ayhan", "load Category Fail 2 $throwable")
             }) {
-                _categoryInfoList.value = loadCategoryList.invoke(token)
-
+                loadCategoryList.invoke(token).apply {
+                    _categoryInfoList.value = this.data
+                }
                 Log.e("ayhan", "loadCategoryList: ${_categoryInfoList.value}")
             }
         }.runCatching {

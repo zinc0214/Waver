@@ -1,9 +1,7 @@
 package com.zinc.common.models
 
-import kotlinx.serialization.Serializable
 import java.io.File
 
-@Serializable
 data class AddBucketListRequest(
     val bucketType: BucketType,
     val exposureStatus: ExposureStatus, // 공개여부
@@ -30,7 +28,6 @@ enum class ExposureStatus {
     PRIVATE
 }
 
-@Serializable
 data class AddBucketListResponse(
     val data: AddBucketListItem?,
     val success: Boolean,

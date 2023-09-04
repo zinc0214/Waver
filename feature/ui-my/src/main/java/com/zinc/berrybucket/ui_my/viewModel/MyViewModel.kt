@@ -25,7 +25,6 @@ import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
-import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
@@ -43,7 +42,6 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val loadAllBucketList: LoadAllBucketList,
-    private val loadCategoryList: LoadCategoryList,
     private val loadDdayBucketList: LoadDdayBucketList,
     private val searchAllBucketList: SearchAllBucketList,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
@@ -225,26 +223,6 @@ class MyViewModel @Inject constructor(
 
     private fun loadSortFilter() =
         if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
-
-    fun loadCategoryList() {
-        viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            _dataLoadFailed.call()
-        }) {
-            kotlin.runCatching {
-                accessToken.value?.let { token ->
-                    loadCategoryList.invoke(token).apply {
-                        if (this.isEmpty()) {
-                            _dataLoadFailed.call()
-                        } else {
-                            _categoryInfoItems.value = this
-                        }
-                    }
-                }
-            }.getOrElse {
-                _dataLoadFailed.call()
-            }
-        }
-    }
 
     fun loadDdayBucketList() {
         viewModelScope.launch {

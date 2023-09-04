@@ -1,10 +1,10 @@
 package com.zinc.domain.repository
 
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.LoadCategoryResponse
 
 interface CategoryRepository {
-    suspend fun loadCategoryList(token: String): List<CategoryInfo>
+    suspend fun loadCategoryList(token: String): LoadCategoryResponse
     suspend fun addNewCategory(token: String, name: String): CommonResponse
     suspend fun editCategoryName(token: String, id: Int, name: String): CommonResponse
     suspend fun removeCategory(token: String, id: Int): CommonResponse

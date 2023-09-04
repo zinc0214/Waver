@@ -1,12 +1,14 @@
 package com.zinc.data.api
 
 import com.zinc.common.models.AddBucketListResponse
+import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
 import com.zinc.common.models.FollowResponse
@@ -14,14 +16,12 @@ import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinRequest
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
+import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
+import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
-import com.zinc.data.model.AddNewCategoryRequest
-import com.zinc.data.model.EditCategoryNameRequest
-import com.zinc.data.model.LoadCategoryResponse
-import com.zinc.data.model.ReorderedCategoryRequest
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
