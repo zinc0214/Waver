@@ -1,5 +1,8 @@
 package com.zinc.common.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class OtherProfileInfo(
     val id: String,
     val imgUrl: String?,
@@ -7,6 +10,7 @@ data class OtherProfileInfo(
     val mutualFollow: Boolean
 )
 
+@Serializable
 data class MyProfileResponse(
     val data: MyProfileInfo,
     val success: Boolean,
@@ -14,6 +18,7 @@ data class MyProfileResponse(
     val message: String
 )
 
+@Serializable
 data class MyProfileInfo(
     val email: String,
     val name: String,
