@@ -55,6 +55,12 @@ interface BerryBucketApi {
     @GET("/category")
     suspend fun loadCategoryList(@Header("Authorization") token: String): LoadCategoryResponse
 
+    @GET("/category")
+    suspend fun searchCategoryList(
+        @Header("Authorization") token: String,
+        @Query("query") query: String
+    ): LoadCategoryResponse
+
     @POST("/category")
     suspend fun addNewCategory(
         @Header("Authorization") token: String,

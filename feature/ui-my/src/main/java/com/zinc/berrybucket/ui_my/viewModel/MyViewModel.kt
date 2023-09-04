@@ -25,6 +25,7 @@ import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
+import com.zinc.domain.usecases.category.SearchCategoryList
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
@@ -44,6 +45,7 @@ class MyViewModel @Inject constructor(
     private val loadAllBucketList: LoadAllBucketList,
     private val loadDdayBucketList: LoadDdayBucketList,
     private val searchAllBucketList: SearchAllBucketList,
+    private val searchCategoryList: SearchCategoryList,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
@@ -302,10 +304,26 @@ class MyViewModel @Inject constructor(
     }
 
     private fun searchCategoryItems(searchWord: String) {
-        _searchBucketResult.value = Pair(
-            CATEGORY(),
-            searchCategoryInfos
-        )
+        viewModelScope.launch(searchCeh) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    searchCategoryList.invoke(token, searchWord).apply {
+                        if (this.success) {
+                            _searchBucketResult.value = Pair(
+                                CATEGORY(),
+                                data
+                            )
+                        } else {
+                            _searchFailed.call()
+                            Log.e("ayhan", "searchCategoryItems Fail3 : $message")
+                        }
+                    }
+                }.getOrElse {
+                    Log.e("ayhan", "searchCategoryItems Fail2 : ${it.message}")
+                    _searchFailed.call()
+                }
+            }
+        }
     }
 
     private fun searchChallenge(searchWord: String) {

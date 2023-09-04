@@ -31,4 +31,8 @@ internal class CategoryRepositoryImpl @Inject constructor(
     override suspend fun reorderCategory(token: String, orderedIds: List<String>): CommonResponse {
         return berryBucketApi.reorderedCategory(token, ReorderedCategoryRequest(orderedIds))
     }
+
+    override suspend fun searchCategoryList(token: String, query: String): LoadCategoryResponse {
+        return berryBucketApi.searchCategoryList(token, query)
+    }
 }
