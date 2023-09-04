@@ -8,9 +8,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.model.SearchRecommendType
-import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailLayer
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
@@ -105,7 +104,9 @@ internal fun NavGraphBuilder.homeMore(
     }
 }
 
-internal fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
+internal fun NavGraphBuilder.homeSearchNavGraph(
+    mySearchClickEvent: (MySearchClickEvent, NavBackStackEntry) -> Unit
+) {
 
     composable(
         route = MainDestinations.MY_SEARCH + "/{${MainDestinations.SELECT_TAB}}",
@@ -124,8 +125,8 @@ internal fun NavGraphBuilder.homeSearchNavGraph(backPress: () -> Unit) {
 
             com.zinc.berrybucket.ui_my.SearchBottomView(
                 tab = selectedTab,
-                isNeedToBottomSheetOpen = {
-                    backPress()
+                mySearchClickEvent = {
+                    mySearchClickEvent(it, entry)
                 }
             )
         }

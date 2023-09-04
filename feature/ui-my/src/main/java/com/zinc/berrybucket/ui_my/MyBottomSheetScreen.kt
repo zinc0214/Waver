@@ -21,13 +21,6 @@ fun MyBottomSheetScreen(
             )
         }
 
-        is BottomSheetScreenType.SearchScreen -> {
-            SearchBottomView(
-                tab = currentScreen.selectTab,
-                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
-            )
-        }
-
         else -> {
             // Do Nothing
         }
@@ -37,18 +30,10 @@ fun MyBottomSheetScreen(
 @Composable
 fun SearchBottomView(
     tab: MyTabType,
-    isNeedToBottomSheetOpen: (Boolean) -> Unit
+    mySearchClickEvent: (MySearchClickEvent) -> Unit,
 ) {
     MySearchBottomScreen(currentTabType = tab, clickEvent = {
-        when (it) {
-            MySearchClickEvent.CloseClicked -> {
-                isNeedToBottomSheetOpen(false)
-            }
-
-            is MySearchClickEvent.ItemClicked -> {
-
-            }
-        }
+        mySearchClickEvent(it)
     })
 }
 

@@ -69,7 +69,9 @@ fun CategoryLayer(
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
-            CategoryListView(it)
+            CategoryListView(it) {
+                MyPagerClickEvent.CategoryItemClicked(it)
+            }
             MyCategoryAddView {
                 addNewCategoryDialogShowAvailable.value = true
             }

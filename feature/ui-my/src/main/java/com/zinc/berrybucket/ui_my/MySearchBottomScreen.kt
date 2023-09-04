@@ -230,7 +230,9 @@ private fun SearchResultView(
     if (result.first is CATEGORY) {
         if (result.second.all { item -> item is CategoryInfo }) {
             val items = result.second as List<CategoryInfo>
-            CategoryListView(items)
+            CategoryListView(items) {
+                clickEvent.invoke(MySearchClickEvent.CategoryItemClicked(it.toString()))
+            }
         }
     } else {
         if (result.second.all { item -> item is BucketInfoSimple }) {
@@ -241,7 +243,12 @@ private fun SearchResultView(
                 showDday = true,
                 nestedScrollInterop = null,
                 itemClicked = {
-                    clickEvent.invoke(MySearchClickEvent.ItemClicked(it))
+                    clickEvent.invoke(
+                        MySearchClickEvent.BucketItemClicked(
+                            it.id,
+                            it.isPrivate()
+                        )
+                    )
                 },
             )
         }

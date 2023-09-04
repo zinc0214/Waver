@@ -9,7 +9,6 @@ import com.zinc.berrybucket.util.parseNavigationValue
 import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.ExposureStatus
 import java.io.Serializable
 
@@ -77,7 +76,7 @@ data class UIBucketInfoSimple(
         }
 
     fun isProgress() = status == BucketStatus.PROGRESS
-
+    fun isPrivate() = exposureStatues == ExposureStatus.PRIVATE
     fun currentCountText() = currentCount.toString()
     fun goalCountText() = goalCount.toString()
 }
@@ -126,11 +125,12 @@ sealed class MyPagerClickEvent {
     object CategoryEditClicked : MyPagerClickEvent()
     data class SearchClicked(val tabType: MyTabType) : MyPagerClickEvent()
     data class BucketItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
-    data class CategoryItemClicked(val categoryInfo: CategoryInfo) : MyPagerClickEvent()
+    data class CategoryItemClicked(val id: Int) : MyPagerClickEvent()
 }
 
 sealed class MySearchClickEvent {
     object CloseClicked : MySearchClickEvent()
-    data class ItemClicked(val info: UIBucketInfoSimple) : MySearchClickEvent()
+    data class BucketItemClicked(val id: String, val isPrivate: Boolean) : MySearchClickEvent()
+    data class CategoryItemClicked(val id: String) : MySearchClickEvent()
 }
 

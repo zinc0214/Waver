@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
@@ -213,7 +214,23 @@ fun BerryBucketApp(
                         )
 
 
-                        homeSearchNavGraph(backPress = appState::backPress)
+                        homeSearchNavGraph { event, nav ->
+                            when (event) {
+                                is MySearchClickEvent.BucketItemClicked -> {
+                                    if (event.isPrivate) {
+                                        appState.navigateToCloseBucketDetail(event.id, nav)
+                                    } else {
+                                        appState.navigateToOpenBucketDetail(event.id, nav)
+                                    }
+                                }
+
+                                is MySearchClickEvent.CategoryItemClicked -> TODO()
+                                MySearchClickEvent.CloseClicked -> {
+                                    isNeedToBottomSheetOpen.invoke(false)
+                                }
+                            }
+
+                        }
 
                         homeCategoryEditNavGraph(backPress = appState::backPress)
 

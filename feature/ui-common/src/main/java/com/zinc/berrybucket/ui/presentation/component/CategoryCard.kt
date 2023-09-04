@@ -3,11 +3,10 @@ package com.zinc.berrybucket.ui.presentation.component
 import android.view.MotionEvent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -32,14 +31,18 @@ import com.zinc.berrybucket.util.shadow
 import com.zinc.common.models.CategoryInfo
 
 @Composable
-fun CategoryListView(categoryInfoList: List<CategoryInfo>) {
-    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+fun CategoryListView(categoryInfoList: List<CategoryInfo>, clicked: (Int) -> Unit) {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
         categoryInfoList.forEach { category ->
             CategoryCard(
                 categoryInfo = category,
-                clicked = {}
+                clicked = {
+                    clicked(category.id)
+                }
             )
-            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
@@ -168,6 +171,8 @@ private fun CategoryListPreview() {
     CategoryListView(
         categoryInfoList = listOf(
             CategoryInfo(id = 1, name = "여행", bucketlistCount = "10")
-        )
+        ), {
+
+        }
     )
 }
