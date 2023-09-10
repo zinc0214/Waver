@@ -11,4 +11,6 @@ sealed class ActionWithActivity {
     data class CheckPermission(
         val isAllGranted: (Boolean) -> Unit
     ) : ActionWithActivity()
+
+    object AppFinish : ActionWithActivity()
 }

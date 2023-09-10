@@ -2,8 +2,6 @@ package com.zinc.berrybucket.ui.presentation
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
@@ -16,17 +14,13 @@ import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.model.AddImageType
-import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
 import com.zinc.berrybucket.util.getImageFileWithImageInfo
-import com.zinc.berrybucket.util.saveBitmapAsFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.OutputStream
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -79,6 +73,10 @@ class HomeActivity : AppCompatActivity() {
                         checkPermissionAction = it
                         isNeedToShowPermission = true
 
+                    }
+
+                    ActionWithActivity.AppFinish -> {
+                        finish()
                     }
                 }
             })

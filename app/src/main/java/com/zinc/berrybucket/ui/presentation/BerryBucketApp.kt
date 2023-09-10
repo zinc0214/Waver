@@ -97,7 +97,7 @@ fun BerryBucketApp(
                 if (bottomSheetScaffoldState.isVisible) {
                     bottomSheetScaffoldState.hide() // will trigger the LaunchedEffect
                 } else {
-                    appState.backPress()
+                    action.invoke(ActionWithActivity.AppFinish)
                 }
             }
         }
