@@ -12,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.model.MyTabType.DDAY
-import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.ui_my.SimpleBucketListView
 import com.zinc.berrybucket.ui_my.view.FilterAndSearchImageView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
@@ -23,7 +22,9 @@ fun DdayBucketLayer(
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
 
+    viewModel.loadBucketFilter()
     viewModel.loadDdayBucketList()
+
     val dDayBucketList by viewModel.ddayBucketList.observeAsState()
 
     dDayBucketList?.let {
@@ -31,7 +32,7 @@ fun DdayBucketLayer(
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
-                it.bucketList.parseToUI(), DDAY(), true,
+                it.bucketList, DDAY(), true,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
                 },

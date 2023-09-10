@@ -9,6 +9,7 @@ import com.zinc.berrybucket.util.parseNavigationValue
 import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.ExposureStatus
 import java.io.Serializable
 
@@ -74,6 +75,12 @@ data class UIBucketInfoSimple(
                 Sub_D3
             }
         }
+
+    fun getDdayType(): DdaySortType? = dDay?.let {
+        if (it == 0) DdaySortType.D_DAY
+        else if (it < 0) DdaySortType.MINUS
+        else DdaySortType.PLUS
+    }
 
     fun isProgress() = status == BucketStatus.PROGRESS
     fun isPrivate() = exposureStatues == ExposureStatus.PRIVATE

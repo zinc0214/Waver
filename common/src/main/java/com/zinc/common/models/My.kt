@@ -77,6 +77,11 @@ enum class BucketStatus {
 }
 
 @Serializable
+enum class DdaySortType {
+    MINUS, D_DAY, PLUS
+}
+
+@Serializable
 data class FollowResponse(
     val data: FollowData,
     val success: Boolean,

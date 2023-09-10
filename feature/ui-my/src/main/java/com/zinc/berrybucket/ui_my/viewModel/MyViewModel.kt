@@ -19,7 +19,7 @@ import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
-import com.zinc.common.models.DdayBucketList
+import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
@@ -62,8 +62,8 @@ class MyViewModel @Inject constructor(
     private val _categoryInfoItems = MutableLiveData<List<CategoryInfo>>()
     val categoryInfoItems: LiveData<List<CategoryInfo>> get() = _categoryInfoItems
 
-    private val _ddayBucketList = MutableLiveData<DdayBucketList>()
-    val ddayBucketList: LiveData<DdayBucketList> = _ddayBucketList
+    private val _ddayBucketList = MutableLiveData<AllBucketList>()
+    val ddayBucketList: LiveData<AllBucketList> = _ddayBucketList
 
     private val _showProgress = MutableLiveData<Boolean>()
     val showProgress: LiveData<Boolean> get() = _showProgress
@@ -79,6 +79,12 @@ class MyViewModel @Inject constructor(
 
     private val _isPrefChanged = MutableLiveData<Boolean>()
     val isPrefChanged: LiveData<Boolean> get() = _isPrefChanged
+
+    private val _isShowPlusDday = MutableLiveData<Boolean>()
+    val isShowPlusDday: LiveData<Boolean> get() = _isShowPlusDday
+
+    private val _isShownMinusDday = MutableLiveData<Boolean>()
+    val isShownMinusDday: LiveData<Boolean> get() = _isShownMinusDday
 
     private val _dataLoadFailed = SingleLiveEvent<Nothing>()
     val dataLoadFailed: LiveData<Nothing> get() = _dataLoadFailed
@@ -137,6 +143,25 @@ class MyViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun loadFilerDdayMinusDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadIsDdayMinus.collectLatest {
+                updatePrefChangeState(_isShownMinusDday.value != it)
+                _isShownMinusDday.value = it
+            }
+        }
+    }
+
+    private suspend fun loadFilerDdayPlusDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadIsPlusMinus.collectLatest {
+                updatePrefChangeState(_isShownMinusDday.value != it)
+                _isShownMinusDday.value = it
+            }
+        }
+    }
+
 
     fun updatePrefChangeState(changed: Boolean, isNeedClear: Boolean = false) {
         if (changed) {
@@ -242,10 +267,44 @@ class MyViewModel @Inject constructor(
         if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 
     fun loadDdayBucketList() {
+        val allBucketListRequest = AllBucketListRequest(
+            dDayBucketOnly = YesOrNo.Y.name,
+            isPassed = null,
+            status = null,
+            sort = loadSortFilter()
+        )
+
         viewModelScope.launch {
-            kotlin.runCatching {
-                loadDdayBucketList.invoke().apply {
-                    _ddayBucketList.value = this
+            runCatching {
+                accessToken.value?.let { token ->
+                    loadAllBucketList.invoke(
+                        token,
+                        allBucketListRequest
+                    ).apply {
+                        if (this.success) {
+                            val data = this.data
+                            Log.e("ayhan", "dDayBucketList : $this")
+                            val uiAllBucketList = AllBucketList(
+                                processingCount = data.processingCount.toString(),
+                                succeedCount = data.completedCount.toString(),
+                                bucketList = data.bucketlist.parseToUI()
+                            )
+
+                            val filteredList =
+                                if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
+                                    uiAllBucketList.bucketList
+                                } else if (_isShowPlusDday.value == true) {
+                                    uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
+                                } else if (_isShownMinusDday.value == true) {
+                                    uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
+                                } else {
+                                    uiAllBucketList.bucketList
+                                }
+
+                            _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
+                        }
+
+                    }
                 }
             }.getOrElse {
 
