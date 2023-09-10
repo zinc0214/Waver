@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -66,9 +67,17 @@ fun MySearchBottomScreen(
 ) {
 
     val viewModel: MyViewModel = hiltViewModel()
+    val searchResultAsResult = viewModel.searchResult.observeAsState()
+
     val selectTab = remember { mutableStateOf(currentTabType) }
     val searchedTab = remember { mutableStateOf(currentTabType) }
-    val searchResult = viewModel.searchResult.observeAsState()
+    val searchResult = remember { mutableStateOf(searchResultAsResult) }
+
+    LaunchedEffect(key1 = searchResultAsResult, block = {
+        if (searchResultAsResult.value != null) {
+            searchResult.value = searchResultAsResult
+        }
+    })
 
 
     Column {
@@ -109,7 +118,7 @@ fun MySearchBottomScreen(
                 .background(Gray2)
                 .fillMaxHeight()
         ) {
-            searchResult.value?.let {
+            searchResult.value.let {
                 if (searchedTab.value == selectTab.value) {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(20.dp),
@@ -117,9 +126,11 @@ fun MySearchBottomScreen(
                             .padding(top = 20.dp)
                             .fillMaxHeight()
                     ) {
-                        SearchResultView(it, clickEvent = { event ->
-                            clickEvent.invoke(event)
-                        })
+                        it.value?.let { result ->
+                            SearchResultView(result, clickEvent = { event ->
+                                clickEvent.invoke(event)
+                            })
+                        }
                     }
                 }
             }
