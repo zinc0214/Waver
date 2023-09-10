@@ -292,7 +292,6 @@ class MyViewModel @Inject constructor(
                     ).apply {
                         if (this.success) {
                             val data = this.data
-                            Log.e("ayhan", "dDayBucketList : $this")
                             val uiAllBucketList = AllBucketList(
                                 processingCount = data.processingCount.toString(),
                                 succeedCount = data.completedCount.toString(),
@@ -311,6 +310,7 @@ class MyViewModel @Inject constructor(
                                 }
 
                             _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
+                            Log.e("ayhan", "filteredList : $filteredList")
                         }
 
                     }

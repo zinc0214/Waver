@@ -1,12 +1,16 @@
 package com.zinc.berrybucket.ui_my.screen.dday
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -22,12 +26,36 @@ fun DdayBucketLayer(
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
 
-    viewModel.loadAllBucketFilter()
-    viewModel.loadDdayBucketList()
+    val dDayBucketListAsState by viewModel.ddayBucketList.observeAsState()
+    val isPrefChangeAsState by viewModel.isPrefChanged.observeAsState()
 
-    val dDayBucketList by viewModel.ddayBucketList.observeAsState()
+    val bucketInfo = remember {
+        mutableStateOf(dDayBucketListAsState)
+    }
 
-    dDayBucketList?.let {
+    LaunchedEffect(key1 = isPrefChangeAsState, block = {
+        Log.e("ayhan", "isPrefChange : ${isPrefChangeAsState}")
+
+        if (isPrefChangeAsState == true) {
+            // 값 초기화
+            viewModel.updatePrefChangeState(changed = false, isNeedClear = true)
+            if (bucketInfo.value != null) {
+                bucketInfo.value = null
+            }
+        }
+    })
+
+    LaunchedEffect(key1 = dDayBucketListAsState, block = {
+        bucketInfo.value = dDayBucketListAsState
+    })
+
+    if (bucketInfo.value == null) {
+        viewModel.loadDdayBucketFilter()
+        viewModel.loadDdayBucketList()
+    }
+
+
+    bucketInfo.value?.let {
         Column {
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
