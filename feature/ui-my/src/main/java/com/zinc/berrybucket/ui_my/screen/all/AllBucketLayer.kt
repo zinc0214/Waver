@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my.screen.all
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,28 +39,41 @@ fun AllBucketLayer(
     nestedScrollInterop: NestedScrollConnection,
 ) {
 
-    val allBucketInfo by viewModel.allBucketItem.observeAsState()
-    val ddayShowPref by viewModel.showDdayView.observeAsState()
-
+    val allBucketInfoAsState by viewModel.allBucketItem.observeAsState()
+    val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
+    val isPrefChangeAsState by viewModel.isPrefChanged.observeAsState()
 
     val bucketInfo = remember {
-        mutableStateOf(allBucketInfo)
+        mutableStateOf(allBucketInfoAsState)
     }
     val ddayShow = remember {
-        mutableStateOf(ddayShowPref)
+        mutableStateOf(ddayShowPrefAsState)
     }
 
-    LaunchedEffect(key1 = ddayShowPref, block = {
-        ddayShow.value = ddayShowPref
+    LaunchedEffect(key1 = ddayShowPrefAsState, block = {
+        ddayShow.value = ddayShowPrefAsState
     })
 
-    LaunchedEffect(key1 = allBucketInfo, block = {
-        bucketInfo.value = allBucketInfo
+    LaunchedEffect(key1 = allBucketInfoAsState, block = {
+        bucketInfo.value = allBucketInfoAsState
     })
 
+    LaunchedEffect(key1 = isPrefChangeAsState, block = {
+        Log.e("ayhan", "isPrefChange : ${isPrefChangeAsState}")
 
-    viewModel.loadBucketFilter()
-    viewModel.loadAllBucketList()
+        if (isPrefChangeAsState == true) {
+            // 값 초기화
+            viewModel.updatePrefChangeState(changed = false, isNeedClear = true)
+            if (bucketInfo.value != null) {
+                bucketInfo.value = null
+            }
+        }
+    })
+
+    if (bucketInfo.value == null) {
+        viewModel.loadBucketFilter()
+        viewModel.loadAllBucketList()
+    }
 
     bucketInfo.value?.let {
         Column {

@@ -88,12 +88,6 @@ fun SimpleBucketListView(
             )
         })
     }
-//    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-//        bucketList.forEachIndexed { index, bucket ->
-//
-//            Spacer(modifier = Modifier.height(if (index == bucketList.lastIndex) 140.dp else 12.dp))
-//        }
-//    }
 }
 
 @Composable

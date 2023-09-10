@@ -77,6 +77,9 @@ class MyViewModel @Inject constructor(
     private val _showDdayView = MutableLiveData<Boolean>()
     val showDdayView: LiveData<Boolean> get() = _showDdayView
 
+    private val _isPrefChanged = MutableLiveData<Boolean>()
+    val isPrefChanged: LiveData<Boolean> get() = _isPrefChanged
+
     private val _dataLoadFailed = SingleLiveEvent<Nothing>()
     val dataLoadFailed: LiveData<Nothing> get() = _dataLoadFailed
 
@@ -102,6 +105,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowProgressDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsProgress.collectLatest {
+                updatePrefChangeState(_showProgress.value != it)
                 _showProgress.value = it
             }
         }
@@ -110,6 +114,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowSucceedDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsSucceed.collectLatest {
+                updatePrefChangeState(_showSucceed.value != it)
                 _showSucceed.value = it
             }
         }
@@ -118,6 +123,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadOrderTypeDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadOrderType.collectLatest {
+                updatePrefChangeState(_orderType.value != it)
                 _orderType.value = it
             }
         }
@@ -126,11 +132,20 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowDdayDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadShowDday.collectLatest {
+                updatePrefChangeState(_showDdayView.value != it)
                 _showDdayView.value = it
             }
         }
     }
 
+    fun updatePrefChangeState(changed: Boolean, isNeedClear: Boolean = false) {
+        if (changed) {
+            _isPrefChanged.value = true
+        }
+        if (isNeedClear) {
+            _isPrefChanged.value = false
+        }
+    }
 
     fun loadProfile() {
         viewModelScope.launch {
