@@ -29,7 +29,6 @@ fun List<BucketInfoSimple>.parseToUI(): List<UIBucketInfoSimple> {
 
 fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
     return UIBucketInfoSimple(
-        type = setBucketType(this.dDay),
         id = this.id,
         title = this.title,
         currentCount = this.userCount,
@@ -40,22 +39,15 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
     )
 }
 
-private fun setBucketType(dDay: Int?): BucketType {
-    return if (dDay == null) BucketType.BASIC
-    else if (dDay < 0) BucketType.D_MINUS
-    else if (dDay == 0) BucketType.D_DAY
-    else BucketType.D_PLUS
-}
-
 data class UIBucketInfoSimple(
-    val type: BucketType = BucketType.BASIC,
     val id: String,
     val title: String,
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
     val exposureStatues: ExposureStatus,
-    val status: BucketStatus = BucketStatus.PROGRESS
+    val status: BucketStatus = BucketStatus.PROGRESS,
+    val isChallenge: Boolean = false
 ) {
     val dDayText = dDay?.let {
         when {
@@ -67,9 +59,9 @@ data class UIBucketInfoSimple(
 
     val dDayBadgeColor =
         dDay?.let {
-            if (type == BucketType.BASIC) {
+            if (isChallenge.not()) {
                 if (it <= 0) Sub_D3 else Error2
-            } else if (type == BucketType.CHALLENGE) {
+            } else if (isChallenge) {
                 if (it <= 0) Main4 else Gray6
             } else {
                 Sub_D3
@@ -86,16 +78,6 @@ data class UIBucketInfoSimple(
     fun isPrivate() = exposureStatues == ExposureStatus.PRIVATE
     fun currentCountText() = currentCount.toString()
     fun goalCountText() = goalCount.toString()
-}
-
-enum class BucketType(
-    val text: String
-) {
-    BASIC("BASIC"),
-    D_DAY("D_DAY"),
-    D_PLUS("D_PLUS"),
-    D_MINUS("D_MINUS"),
-    CHALLENGE("CHALLENGE")
 }
 
 @kotlinx.serialization.Serializable
