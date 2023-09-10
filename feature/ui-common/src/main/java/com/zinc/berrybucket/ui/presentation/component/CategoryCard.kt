@@ -33,7 +33,9 @@ import com.zinc.common.models.CategoryInfo
 @Composable
 fun CategoryListView(categoryInfoList: List<CategoryInfo>, clicked: (Int) -> Unit) {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .padding(bottom = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         categoryInfoList.forEach { category ->
