@@ -75,7 +75,7 @@ class FilterPreferenceDataStoreModule @Inject constructor(@ApplicationContext co
         }
     }
 
-    val loadIsPlusMinus: Flow<Boolean> = filterDataStore.data.map { preferences ->
+    val loadIsDdayPlus: Flow<Boolean> = filterDataStore.data.map { preferences ->
         preferences[isDdayPlusPref] ?: true
     }
 

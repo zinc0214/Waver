@@ -57,6 +57,7 @@ private fun FilterBottomView(
 
         is MyTabType.DDAY -> {
             MyDdayBucketFilterBottomScreen(
+                viewModel = viewModel,
                 negativeEvent = {
                     isNeedToBottomSheetOpen.invoke(false)
                 },

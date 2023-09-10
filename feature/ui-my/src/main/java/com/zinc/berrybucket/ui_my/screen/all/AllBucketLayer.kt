@@ -71,7 +71,7 @@ fun AllBucketLayer(
     })
 
     if (bucketInfo.value == null) {
-        viewModel.loadBucketFilter()
+        viewModel.loadAllBucketFilter()
         viewModel.loadAllBucketList()
     }
 

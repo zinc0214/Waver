@@ -42,7 +42,7 @@ fun MyAllBucketFilterBottomScreen(
     }
 
     if (isInit.value) {
-        viewModel.loadBucketFilter()
+        viewModel.loadAllBucketFilter()
         isInit.value = false
     }
 
@@ -168,7 +168,7 @@ fun MyAllBucketFilterBottomScreen(
 
         BottomButtonView(
             positiveEvent = {
-                viewModel.updateBucketFilter(
+                viewModel.updateAllBucketFilter(
                     isProgress = proceedingBucketListSelectedState.value,
                     isSucceed = succeedBucketListSelectedState.value,
                     orderType = sortSelectedState.value,

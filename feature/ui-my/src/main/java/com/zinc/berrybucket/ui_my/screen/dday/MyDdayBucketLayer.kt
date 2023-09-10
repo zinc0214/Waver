@@ -22,7 +22,7 @@ fun DdayBucketLayer(
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
 
-    viewModel.loadBucketFilter()
+    viewModel.loadAllBucketFilter()
     viewModel.loadDdayBucketList()
 
     val dDayBucketList by viewModel.ddayBucketList.observeAsState()

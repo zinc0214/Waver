@@ -97,7 +97,7 @@ class MyViewModel @Inject constructor(
         _searchFailed.call()
     }
 
-    fun loadBucketFilter() {
+    fun loadAllBucketFilter() {
         viewModelScope.launch {
             val job1: Deferred<Unit> = async { loadShowProgressDataStore() }
             val job2: Deferred<Unit> = async { loadShowSucceedDataStore() }
@@ -105,6 +105,15 @@ class MyViewModel @Inject constructor(
             val job4: Deferred<Unit> = async { loadShowDdayDataStore() }
 
             awaitAll(job1, job2, job3, job4)
+        }
+    }
+
+    fun loadDdayBucketFilter() {
+        viewModelScope.launch {
+            val job1: Deferred<Unit> = async { loadFilerDdayMinusDataStore() }
+            val job2: Deferred<Unit> = async { loadFilerDdayPlusDataStore() }
+
+            awaitAll(job1, job2)
         }
     }
 
@@ -155,9 +164,9 @@ class MyViewModel @Inject constructor(
 
     private suspend fun loadFilerDdayPlusDataStore() {
         filterPreferenceDataStoreModule.apply {
-            loadIsPlusMinus.collectLatest {
-                updatePrefChangeState(_isShownMinusDday.value != it)
-                _isShownMinusDday.value = it
+            loadIsDdayPlus.collectLatest {
+                updatePrefChangeState(_isShowPlusDday.value != it)
+                _isShowPlusDday.value = it
             }
         }
     }
@@ -321,7 +330,7 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    fun updateBucketFilter(
+    fun updateAllBucketFilter(
         isProgress: Boolean?,
         isSucceed: Boolean?,
         orderType: Int?,
@@ -340,6 +349,24 @@ class MyViewModel @Inject constructor(
                 }
                 showDday?.let {
                     setShowDday(it)
+                }
+            }
+        }
+    }
+
+    fun updateDdayBucketFilter(
+        isMinusShow: Boolean?,
+        isPlusShow: Boolean?
+    ) {
+        viewModelScope.launch {
+            filterPreferenceDataStoreModule.apply {
+                isMinusShow?.let {
+                    Log.e("ayhan", "minus :  $it")
+                    setShowDdayMinus(isMinusShow)
+                }
+                isPlusShow?.let {
+                    Log.e("ayhan", "plus :  $it")
+                    setShowDdayPlus(isPlusShow)
                 }
             }
         }
