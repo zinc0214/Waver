@@ -27,7 +27,6 @@ import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.category.SearchCategoryList
 import com.zinc.domain.usecases.my.LoadAllBucketList
-import com.zinc.domain.usecases.my.LoadDdayBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import com.zinc.domain.usecases.my.SearchAllBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,7 +42,6 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val loadAllBucketList: LoadAllBucketList,
-    private val loadDdayBucketList: LoadDdayBucketList,
     private val searchAllBucketList: SearchAllBucketList,
     private val searchCategoryList: SearchCategoryList,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,

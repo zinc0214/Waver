@@ -3,12 +3,7 @@ package com.zinc.data.repository
 import android.util.Log
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListResponse
-import com.zinc.common.models.BucketInfoSimple
-import com.zinc.common.models.BucketStatus
-import com.zinc.common.models.BucketType
 import com.zinc.common.models.CommonResponse
-import com.zinc.common.models.DdayBucketList
-import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.MyState
@@ -21,44 +16,6 @@ internal class MyRepositoryImpl @Inject constructor(
 ) : MyRepository {
     override suspend fun loadMyHomeProfileInfo(token: String): HomeProfileResponse {
         return berryBucketApi.loadMyProfileInfo(token)
-    }
-
-    override suspend fun loadMyDdayBucketList(): DdayBucketList {
-        //return berryBucketApi.loadMyDdayBucketList()
-        return DdayBucketList(
-            bucketList = listOf(
-                BucketInfoSimple(
-                    id = "3",
-                    title = "Dday가 있는 애 1, 아이스크림 냠냠 후루룹쨥짭",
-                    userCount = 1,
-                    goalCount = 10,
-                    dDay = 0,
-                    status = BucketStatus.COMPLETE,
-                    exposureStatus = ExposureStatus.PUBLIC,
-                    bucketType = BucketType.ORIGINAL
-                ),
-                BucketInfoSimple(
-                    id = "3",
-                    title = "Dday가 있는 애222",
-                    userCount = 2,
-                    goalCount = 10,
-                    dDay = 20,
-                    status = BucketStatus.COMPLETE,
-                    exposureStatus = ExposureStatus.PUBLIC,
-                    bucketType = BucketType.ORIGINAL
-                ),
-                BucketInfoSimple(
-                    id = "3",
-                    title = "Dday가 있는 애22233",
-                    userCount = 5,
-                    goalCount = 10,
-                    dDay = -10,
-                    status = BucketStatus.PROGRESS,
-                    exposureStatus = ExposureStatus.PUBLIC,
-                    bucketType = BucketType.ORIGINAL
-                )
-            )
-        )
     }
 
     override suspend fun loadAllBucketList(

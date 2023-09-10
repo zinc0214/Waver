@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_my.screen.dday
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,8 +33,6 @@ fun DdayBucketLayer(
     }
 
     LaunchedEffect(key1 = isPrefChangeAsState, block = {
-        Log.e("ayhan", "isPrefChange : ${isPrefChangeAsState}")
-
         if (isPrefChangeAsState == true) {
             // 값 초기화
             viewModel.updatePrefChangeState(changed = false, isNeedClear = true)
