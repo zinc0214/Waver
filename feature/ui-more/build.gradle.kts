@@ -36,7 +36,7 @@ dependencies {
     implementation(project(":feature:ui-common"))
     implementation(project(":domain"))
 
-    val composeBom = platform("androidx.compose:compose-bom:2022.10.00")
+    val composeBom = platform("androidx.compose:compose-bom:2023.01.00")
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
@@ -45,7 +45,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.material)
     implementation(Dep.AndroidX.Compose.Bom.livedata)
     implementation(Dep.AndroidX.Compose.Bom.runtime)
-    implementation(Dep.AndroidX.Compose.tooling)
+    implementation(Dep.AndroidX.Compose.Bom.tooling)
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.accompanist)
 

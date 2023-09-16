@@ -45,7 +45,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.ui)
     implementation(Dep.AndroidX.Compose.Bom.material)
     implementation(Dep.AndroidX.Compose.Bom.livedata)
-    implementation(Dep.AndroidX.Compose.foundation)
+    implementation(Dep.AndroidX.Compose.Bom.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
 
     // Hilt

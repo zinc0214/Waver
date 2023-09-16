@@ -44,7 +44,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.material)
     implementation(Dep.AndroidX.Compose.Bom.tooling)
     implementation(Dep.AndroidX.Compose.Bom.livedata)
-    implementation(Dep.AndroidX.Compose.foundation)
+    implementation(Dep.AndroidX.Compose.Bom.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.accompanist)
     implementation(Dep.AndroidX.Compose.flowlayout)

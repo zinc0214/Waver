@@ -22,7 +22,7 @@ object Dep {
 
     object AndroidX {
         object activity {
-            const val activityVersion = "1.5.1"
+            const val activityVersion = "1.7.0"
             const val activity = "androidx.activity:activity:$activityVersion"
             const val ktx = "androidx.activity:activity-ktx:$activityVersion"
         }
@@ -31,7 +31,7 @@ object Dep {
         const val coreKtx = "androidx.core:core-ktx:1.8.0"
 
         object Lifecycle {
-            private const val lifecycleVersion = "2.5.1"
+            private const val lifecycleVersion = "2.6.1"
             const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
             const val livedata = "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
             const val runTime = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
@@ -43,14 +43,8 @@ object Dep {
 
         object Compose {
             const val compilerVersion = "1.3.2"
-            const val version = "1.4.0-beta01"
+            const val version = "1.4.8"
 
-            const val runtime = "androidx.compose.runtime:runtime:$version"
-            const val ui = "androidx.compose.ui:ui:${version}"
-            const val material = "androidx.compose.material:material:${version}"
-            const val tooling = "androidx.compose.ui:ui-tooling:${version}"
-            const val livedata = "androidx.compose.runtime:runtime-livedata:$version"
-            const val foundation = "androidx.compose.foundation:foundation:$version"
             const val navigation = "androidx.navigation:navigation-compose:2.6.0"
             const val accompanist = "com.google.accompanist:accompanist-permissions:0.29.0-alpha"
             const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.29.0-alpha"
@@ -70,6 +64,7 @@ object Dep {
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val livedata = "androidx.compose.runtime:runtime-livedata"
                 const val foundation = "androidx.compose.foundation:foundation"
+                // const val navigation = "androidx.navigation:navigation-compose"
             }
         }
 

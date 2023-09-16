@@ -94,12 +94,12 @@ dependencies {
     androidTestImplementation(Dep.Test.Mockito.android)
 
     // compose
-    implementation(Dep.AndroidX.Compose.ui)
-    implementation(Dep.AndroidX.Compose.material)
-    implementation(Dep.AndroidX.Compose.tooling)
+    implementation(Dep.AndroidX.Compose.Bom.ui)
+    implementation(Dep.AndroidX.Compose.Bom.material)
+    implementation(Dep.AndroidX.Compose.Bom.tooling)
     implementation(Dep.AndroidX.Compose.activity)
-    implementation(Dep.AndroidX.Compose.livedata)
-    implementation(Dep.AndroidX.Compose.foundation)
+    implementation(Dep.AndroidX.Compose.Bom.livedata)
+    implementation(Dep.AndroidX.Compose.Bom.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.navigation)
     implementation(Dep.AndroidX.Compose.accompanist)
