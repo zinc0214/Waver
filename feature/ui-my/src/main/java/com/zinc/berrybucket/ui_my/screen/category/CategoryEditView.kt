@@ -158,7 +158,7 @@ private fun EditCategoryItemView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(elevation = 16.dp)
+            .shadow(elevation = 1.dp)
     ) {
         Row(
             modifier = Modifier
@@ -199,7 +199,7 @@ private fun EditCategoryItemView(
                 .fillMaxSize()
                 .wrapContentSize(Alignment.TopEnd),
             backgroundColor = Color.Transparent,
-            elevation = 2.dp
+            elevation = 1.dp
         ) {
             MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
 
