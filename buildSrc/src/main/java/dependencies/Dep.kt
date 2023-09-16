@@ -58,13 +58,13 @@ object Dep {
             const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.29.0-alpha"
 
             object Bom {
+                const val version = "androidx.compose:compose-bom:2023.01.00"
                 const val runtime = "androidx.compose.runtime:runtime"
                 const val ui = "androidx.compose.ui:ui"
                 const val material = "androidx.compose.material:material"
                 const val tooling = "androidx.compose.ui:ui-tooling"
                 const val livedata = "androidx.compose.runtime:runtime-livedata"
                 const val foundation = "androidx.compose.foundation:foundation"
-                // const val navigation = "androidx.navigation:navigation-compose"
             }
         }
 

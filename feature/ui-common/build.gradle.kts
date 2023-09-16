@@ -33,7 +33,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":datastore"))
 
-    val composeBom = platform("androidx.compose:compose-bom:2022.10.00")
+    val composeBom = platform(Dep.AndroidX.Compose.Bom.version)
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
