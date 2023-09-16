@@ -34,20 +34,22 @@ class CategoryViewModel @Inject constructor(
     val apiFailed: LiveData<Pair<String, String>> get() = _apiFailed
 
     fun loadCategoryList() {
-        accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-                Log.e("ayhan", "load Category Fail 2 $throwable")
-                _apiFailed.value = "카테고리 로드 실패" to ""
-            }) {
-                loadCategoryList.invoke(token).apply {
-                    if (this.success) {
-                        _categoryInfoList.value = this.data
-                    } else {
-                        _apiFailed.value = "카테고리 로드 실패" to this.message
+        runCatching {
+            accessToken.value?.let { token ->
+                viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+                    Log.e("ayhan", "load Category Fail 2 $throwable")
+                    _apiFailed.value = "카테고리 로드 실패" to ""
+                }) {
+                    loadCategoryList.invoke(token).apply {
+                        if (this.success) {
+                            _categoryInfoList.value = this.data
+                        } else {
+                            _apiFailed.value = "카테고리 로드 실패" to this.message
+                        }
                     }
                 }
             }
-        }.runCatching {
+        }.getOrElse {
             _apiFailed.value = "카테고리 로드 실패" to ""
         }
 
@@ -66,8 +68,6 @@ class CategoryViewModel @Inject constructor(
                     _apiFailed.value = "카테고리 추가 실패" to response.message
                 }
             }
-        }.runCatching {
-
         }
     }
 
@@ -83,8 +83,6 @@ class CategoryViewModel @Inject constructor(
                     _apiFailed.value = "카테고리 수정 실패" to response.message
                 }
             }
-        }.runCatching {
-
         }
     }
 
