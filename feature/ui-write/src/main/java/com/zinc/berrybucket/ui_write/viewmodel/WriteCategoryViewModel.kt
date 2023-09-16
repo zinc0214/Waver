@@ -41,16 +41,19 @@ class WriteCategoryViewModel @Inject constructor(
 //                bucketlistCount = "10"
 //            )
 //        )
-        accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-                Log.e("ayhan", "load Category Fail 2 $throwable")
-            }) {
-                loadCategoryList.invoke(token).apply {
-                    _categoryInfoList.value = this.data
+
+        runCatching {
+            accessToken.value?.let { token ->
+                viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+                    Log.e("ayhan", "load Category Fail 2 $throwable")
+                }) {
+                    loadCategoryList.invoke(token).apply {
+                        _categoryInfoList.value = this.data
+                    }
+                    Log.e("ayhan", "loadCategoryList: ${_categoryInfoList.value}")
                 }
-                Log.e("ayhan", "loadCategoryList: ${_categoryInfoList.value}")
             }
-        }.runCatching {
+        }.getOrElse {
             Log.e("ayhan", "load Category Fail 1")
         }
 
