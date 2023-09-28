@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -26,7 +27,7 @@ fun DdayBucketLayer(
 ) {
 
     val dDayBucketListAsState by viewModel.ddayBucketList.observeAsState()
-    val isPrefChangeAsState by viewModel.isPrefChanged.observeAsState()
+    val isPrefChangeAsState by viewModel.isNeedToUpdate.observeAsState()
 
     val bucketInfo = remember {
         mutableStateOf(dDayBucketListAsState)
@@ -57,9 +58,12 @@ fun DdayBucketLayer(
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
-                it.bucketList, DDAY(), true,
+                it.bucketList.toMutableStateList(), DDAY(), true,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
+                },
+                achieveClicked = {
+                    clickEvent.invoke(MyPagerClickEvent.AchieveBucketClicked(it))
                 },
                 nestedScrollInterop = null
             )

@@ -41,7 +41,8 @@ fun AllBucketLayer(
 
     val allBucketInfoAsState by viewModel.allBucketItem.observeAsState()
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
-    val isPrefChangeAsState by viewModel.isPrefChanged.observeAsState()
+    val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
+    val achieveSucceedAsState by viewModel.achieveSucceed.observeAsState()
 
     val bucketInfo = remember {
         mutableStateOf(allBucketInfoAsState)
@@ -58,10 +59,10 @@ fun AllBucketLayer(
         bucketInfo.value = allBucketInfoAsState
     })
 
-    LaunchedEffect(key1 = isPrefChangeAsState, block = {
-        Log.e("ayhan", "isPrefChange : ${isPrefChangeAsState}")
+    LaunchedEffect(key1 = isNeedToUpdate, block = {
+        Log.e("ayhan", "isPrefChange : ${isNeedToUpdate}")
 
-        if (isPrefChangeAsState == true) {
+        if (isNeedToUpdate == true) {
             // 값 초기화
             viewModel.updatePrefChangeState(changed = false, isNeedClear = true)
             if (bucketInfo.value != null) {
@@ -90,6 +91,9 @@ fun AllBucketLayer(
                 nestedScrollInterop = nestedScrollInterop,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
+                },
+                achieveClicked = {
+                    viewModel.achieveBucket(it, ALL())
                 })
         }
     }

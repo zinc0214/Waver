@@ -26,6 +26,7 @@ import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.category.SearchCategoryList
+import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import com.zinc.domain.usecases.my.SearchAllBucketList
@@ -44,6 +45,7 @@ class MyViewModel @Inject constructor(
     private val loadAllBucketList: LoadAllBucketList,
     private val searchAllBucketList: SearchAllBucketList,
     private val searchCategoryList: SearchCategoryList,
+    private val achieveMyBucket: AchieveMyBucket,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
@@ -75,8 +77,8 @@ class MyViewModel @Inject constructor(
     private val _showDdayView = MutableLiveData<Boolean>()
     val showDdayView: LiveData<Boolean> get() = _showDdayView
 
-    private val _isPrefChanged = MutableLiveData<Boolean>()
-    val isPrefChanged: LiveData<Boolean> get() = _isPrefChanged
+    private val _isNeedToUpdate = MutableLiveData<Boolean>()
+    val isNeedToUpdate: LiveData<Boolean> get() = _isNeedToUpdate
 
     private val _isShowPlusDday = MutableLiveData<Boolean>()
     val isShowPlusDday: LiveData<Boolean> get() = _isShowPlusDday
@@ -90,10 +92,21 @@ class MyViewModel @Inject constructor(
     private val _searchFailed = SingleLiveEvent<Nothing>()
     val searchFailed: LiveData<Nothing> get() = _searchFailed
 
+    private val _achieveBucketFail = SingleLiveEvent<Nothing>()
+    val achieveBucketFail: LiveData<Nothing> get() = _achieveBucketFail
+
+    private val _achieveSucceed = MutableLiveData<String>()
+    val achieveSucceed: LiveData<String> get() = _achieveSucceed
+
     private val searchCeh = CoroutineExceptionHandler { coroutineContext, throwable ->
         Log.e("ayhan", "searchFail 1 : $throwable")
         _searchFailed.call()
     }
+
+    private fun ceh(liveData: SingleLiveEvent<Nothing>) =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            liveData.call()
+        }
 
     fun loadAllBucketFilter() {
         viewModelScope.launch {
@@ -172,10 +185,10 @@ class MyViewModel @Inject constructor(
 
     fun updatePrefChangeState(changed: Boolean, isNeedClear: Boolean = false) {
         if (changed) {
-            _isPrefChanged.value = true
+            _isNeedToUpdate.value = true
         }
         if (isNeedClear) {
-            _isPrefChanged.value = false
+            _isNeedToUpdate.value = false
         }
     }
 
@@ -430,6 +443,32 @@ class MyViewModel @Inject constructor(
             CHALLENGE(),
             simpleTypeList
         )
+    }
+
+    fun achieveBucket(id: String, type: MyTabType) {
+        viewModelScope.launch(ceh(_achieveBucketFail)) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    val response = achieveMyBucket(token, id)
+                    Log.e("ayhan", "Achieve Response : $response")
+                    if (response.success) {
+                        when (type) {
+                            is ALL -> {
+                                loadAllBucketList()
+                            }
+
+                            is CATEGORY -> TODO()
+                            is CHALLENGE -> TODO()
+                            is DDAY -> loadDdayBucketList()
+                        }
+                    } else {
+                        _achieveBucketFail.call()
+                    }
+                }.getOrElse {
+                    _achieveBucketFail.call()
+                }
+            }
+        }
     }
 
     private val simpleTypeList = listOf(

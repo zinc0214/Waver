@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -18,7 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -62,8 +63,16 @@ fun SimpleBucketListView(
     tabType: MyTabType,
     showDday: Boolean,
     itemClicked: (UIBucketInfoSimple) -> Unit,
+    achieveClicked: (String) -> Unit,
     nestedScrollInterop: NestedScrollConnection?
 ) {
+
+    var data by remember { mutableStateOf(bucketList) }
+
+    LaunchedEffect(bucketList) {
+        data = bucketList
+        Log.e("ayhan", "simepleBucketLsit : $data")
+    }
 
     val columModifier = Modifier
         .fillMaxSize()
@@ -78,15 +87,15 @@ fun SimpleBucketListView(
         contentPadding = PaddingValues(bottom = 140.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(items = bucketList, itemContent = { bucket ->
+        itemsIndexed(data, key = { _, item -> item.id }) { _, bucket ->
             SimpleBucketCard(
                 itemInfo = bucket,
                 tabType = tabType,
                 isShowDday = showDday,
-                animFinishEvent = {},
-                itemClicked = { itemClicked.invoke(it) }
+                itemClicked = { itemClicked.invoke(it) },
+                achieveClicked = { achieveClicked.invoke(it) }
             )
-        })
+        }
     }
 }
 
@@ -95,12 +104,17 @@ fun SimpleBucketCard(
     itemInfo: UIBucketInfoSimple,
     tabType: MyTabType,
     isShowDday: Boolean,
-    animFinishEvent: (BucketProgressState) -> Unit,
-    itemClicked: (UIBucketInfoSimple) -> Unit
+    itemClicked: (UIBucketInfoSimple) -> Unit,
+    achieveClicked: (String) -> Unit
 ) {
 
-    val bucket = remember { mutableStateOf(itemInfo) }
-    var bucketCount = bucket.value.currentCount
+    var bucket by remember { mutableStateOf(itemInfo) }
+
+    LaunchedEffect(itemInfo) {
+        bucket = itemInfo
+    }
+
+    var bucketCount = bucket.currentCount
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
     Box(
@@ -108,7 +122,7 @@ fun SimpleBucketCard(
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (bucket.value.isProgress()) borderColor.value else Color.Transparent,
+                color = if (bucket.isProgress()) borderColor.value else Color.Transparent,
                 shape = RoundedCornerShape(4.dp)
             )
             .shadow(
@@ -120,7 +134,7 @@ fun SimpleBucketCard(
             .clip(RoundedCornerShape(4.dp))
             .clickable { itemClicked(itemInfo) }
             .background(
-                color = if (bucket.value.isProgress()) Gray1 else Gray3,
+                color = if (bucket.isProgress()) Gray1 else Gray3,
                 shape = RoundedCornerShape(4.dp)
             ),
     ) {
@@ -143,7 +157,6 @@ fun SimpleBucketCard(
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }
-                        .clickable { }
                 ) {
                     BucketCircularProgressBar(
                         progressState = {
@@ -155,8 +168,9 @@ fun SimpleBucketCard(
                                 }
                             } else if (it == BucketProgressState.FINISHED) {
                                 borderColor.value = Color.Transparent
-                                animFinishEvent.invoke(it)
                                 bucketCount += 1
+                            } else if (it == BucketProgressState.STARTED) {
+                                achieveClicked(itemInfo.id)
                             }
                         },
                         tabType = tabType
@@ -185,20 +199,20 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.value.dDay != null && bucket.value.isProgress() && isShowDday) {
-                    DdayBadgeView(bucket.value)
+                if (bucket.dDay != null && bucket.isProgress() && isShowDday) {
+                    DdayBadgeView(bucket)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
-                TitleTextView(bucket.value.title, bucket.value.isProgress())
+                TitleTextView(bucket.title, bucket.isProgress())
 
                 // Progress
-                if (bucket.value.goalCount > 0 && bucket.value.isProgress()) {
+                if (bucket.goalCount > 0 && bucket.isProgress()) {
                     CountProgressView(
-                        info = bucket.value,
+                        info = bucket,
                         bucketCount = bucketCount,
                         tabType = tabType
                     )

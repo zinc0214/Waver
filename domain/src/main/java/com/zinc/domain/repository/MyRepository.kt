@@ -33,4 +33,9 @@ interface MyRepository {
         token: String,
         query: String
     ): AllBucketListResponse
+
+    suspend fun achieveMyBucket(
+        token: String,
+        id: String
+    ): CommonResponse
 }

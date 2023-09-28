@@ -173,7 +173,7 @@ fun MyViewPager(
                                 }
                             }
 
-                            MyPagerClickEvent.FilterClicked -> {
+                            is MyPagerClickEvent.FilterClicked -> {
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.FilterScreen(
@@ -182,6 +182,10 @@ fun MyViewPager(
                                         )
                                     )
                                 }
+                            }
+
+                            is MyPagerClickEvent.AchieveBucketClicked -> {
+                                viewModel.achieveBucket(it.id, ALL())
                             }
 
                             else -> {
@@ -240,7 +244,7 @@ fun MyViewPager(
                             }
                         }
 
-                        MyPagerClickEvent.FilterClicked -> {
+                        is MyPagerClickEvent.FilterClicked -> {
                             coroutineScope.launch {
                                 bottomSheetClicked.invoke(
                                     BottomSheetScreenType.FilterScreen(
@@ -249,6 +253,10 @@ fun MyViewPager(
                                     )
                                 )
                             }
+                        }
+
+                        is MyPagerClickEvent.AchieveBucketClicked -> {
+                            viewModel.achieveBucket(it.id, DDAY())
                         }
 
                         else -> {

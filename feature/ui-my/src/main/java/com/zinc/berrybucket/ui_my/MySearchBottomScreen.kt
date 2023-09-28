@@ -28,6 +28,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -129,6 +130,8 @@ fun MySearchBottomScreen(
                         it.value?.let { result ->
                             SearchResultView(result, clickEvent = { event ->
                                 clickEvent.invoke(event)
+                            }, bucketAchieve = {
+                                viewModel.achieveBucket(it, currentTabType)
                             })
                         }
                     }
@@ -236,7 +239,9 @@ fun ChipBodyContent(
 
 @Composable
 private fun SearchResultView(
-    result: Pair<MyTabType, List<*>>, clickEvent: (MySearchClickEvent) -> Unit
+    result: Pair<MyTabType, List<*>>,
+    clickEvent: (MySearchClickEvent) -> Unit,
+    bucketAchieve: (String) -> Unit
 ) {
     if (result.first is CATEGORY) {
         if (result.second.all { item -> item is CategoryInfo }) {
@@ -249,7 +254,7 @@ private fun SearchResultView(
         if (result.second.all { item -> item is BucketInfoSimple }) {
             val items = result.second as List<BucketInfoSimple>
             SimpleBucketListView(
-                bucketList = items.parseToUI(),
+                bucketList = items.parseToUI().toMutableStateList(),
                 tabType = result.first,
                 showDday = true,
                 nestedScrollInterop = null,
@@ -261,6 +266,9 @@ private fun SearchResultView(
                         )
                     )
                 },
+                achieveClicked = {
+                    bucketAchieve(it)
+                }
             )
         }
     }

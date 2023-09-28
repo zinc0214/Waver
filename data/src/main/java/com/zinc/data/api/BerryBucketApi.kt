@@ -155,4 +155,10 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Query("query") query: String
     ): AllBucketListResponse
+
+    @GET("/bucketList/{id}/achieve")
+    suspend fun achieveBucket(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): CommonResponse
 }
