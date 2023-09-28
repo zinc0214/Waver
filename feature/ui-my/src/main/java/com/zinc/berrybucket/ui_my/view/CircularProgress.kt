@@ -56,9 +56,10 @@ fun BucketCircularProgressBar(
             if (it == 1.0f) {
                 animationPlayed = false
                 checkBoxShow = true
-                progressState.invoke(BucketProgressState.PROGRESS_END)
+                progressState.invoke(BucketProgressState.FINISHED)
             }
-        }, label = "curPercentage"
+        },
+        label = "curPercentage"
     )
     Box(
         contentAlignment = Alignment.Center,
@@ -120,7 +121,7 @@ fun BucketCircularProgressBar(
         }
 
         if ((curPercentage.value * 100).toInt() == 1) {
-            progressState.invoke(BucketProgressState.FINISHED)
+            progressState.invoke(BucketProgressState.PROGRESS_END)
             checkBoxShow = false
         }
     }

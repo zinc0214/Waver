@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui_my
 
-import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -71,7 +70,6 @@ fun SimpleBucketListView(
 
     LaunchedEffect(bucketList) {
         data = bucketList
-        Log.e("ayhan", "simepleBucketLsit : $data")
     }
 
     val columModifier = Modifier
@@ -116,6 +114,7 @@ fun SimpleBucketCard(
 
     var bucketCount = bucket.currentCount
     val borderColor = remember { mutableStateOf(Color.Transparent) }
+    val backgroundColor = remember { mutableStateOf(if (bucket.isProgress()) Gray1 else Gray3) }
 
     Box(
         modifier = Modifier
@@ -134,7 +133,7 @@ fun SimpleBucketCard(
             .clip(RoundedCornerShape(4.dp))
             .clickable { itemClicked(itemInfo) }
             .background(
-                color = if (bucket.isProgress()) Gray1 else Gray3,
+                color = backgroundColor.value,
                 shape = RoundedCornerShape(4.dp)
             ),
     ) {
@@ -161,16 +160,19 @@ fun SimpleBucketCard(
                     BucketCircularProgressBar(
                         progressState = {
                             if (it == BucketProgressState.PROGRESS_END) {
+                                borderColor.value = Color.Transparent
+                                if (itemInfo.goalCount == bucketCount) {
+                                    backgroundColor.value = Gray3
+                                }
+                            } else if (it == BucketProgressState.FINISHED) {
                                 if (tabType is ALL) {
                                     borderColor.value = Main2
                                 } else {
                                     borderColor.value = Sub_D2
                                 }
-                            } else if (it == BucketProgressState.FINISHED) {
-                                borderColor.value = Color.Transparent
-                                bucketCount += 1
-                            } else if (it == BucketProgressState.STARTED) {
                                 achieveClicked(itemInfo.id)
+                            } else if (it == BucketProgressState.STARTED) {
+                                bucketCount += 1
                             }
                         },
                         tabType = tabType
