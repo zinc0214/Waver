@@ -74,7 +74,7 @@ data class UIBucketInfoSimple(
         else DdaySortType.PLUS
     }
 
-    fun isProgress() = status == BucketStatus.PROGRESS
+    fun isProgress() = status == BucketStatus.PROGRESS || goalCount > currentCount
     fun isPrivate() = exposureStatues == ExposureStatus.PRIVATE
     fun currentCountText() = currentCount.toString()
     fun goalCountText() = goalCount.toString()

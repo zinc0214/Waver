@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my
 
+import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -112,16 +113,17 @@ fun SimpleBucketCard(
         bucket = itemInfo
     }
 
-    var bucketCount = bucket.currentCount
+    var bucketCount = remember { mutableStateOf(bucket.currentCount) }
     val borderColor = remember { mutableStateOf(Color.Transparent) }
-    val backgroundColor = remember { mutableStateOf(if (bucket.isProgress()) Gray1 else Gray3) }
+    val isProgress = remember { mutableStateOf(bucket.isProgress()) }
+    val backgroundColor = remember { mutableStateOf(if (isProgress.value) Gray1 else Gray3) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = if (bucket.isProgress()) borderColor.value else Color.Transparent,
+                color = if (isProgress.value) borderColor.value else Color.Transparent,
                 shape = RoundedCornerShape(4.dp)
             )
             .shadow(
@@ -146,7 +148,7 @@ fun SimpleBucketCard(
             val (leftContent, rightContent) = createRefs()
 
             // Right Content = SuccessButton
-            if (itemInfo.isProgress()) {
+            if (isProgress.value) {
                 Card(
                     shape = CircleShape,
                     elevation = 0.dp,
@@ -159,20 +161,21 @@ fun SimpleBucketCard(
                 ) {
                     BucketCircularProgressBar(
                         progressState = {
+                            Log.e("ayhan", "state : $it , $bucketCount, ${itemInfo.goalCount}")
                             if (it == BucketProgressState.PROGRESS_END) {
-                                borderColor.value = Color.Transparent
-                                if (itemInfo.goalCount == bucketCount) {
-                                    backgroundColor.value = Gray3
-                                }
-                            } else if (it == BucketProgressState.FINISHED) {
                                 if (tabType is ALL) {
                                     borderColor.value = Main2
                                 } else {
                                     borderColor.value = Sub_D2
                                 }
+                                bucketCount.value += 1
+                            } else if (it == BucketProgressState.FINISHED) {
+                                borderColor.value = Color.Transparent
+                                if (itemInfo.goalCount <= bucketCount.value) {
+                                    isProgress.value = false
+                                    backgroundColor.value = Gray3
+                                }
                                 achieveClicked(itemInfo.id)
-                            } else if (it == BucketProgressState.STARTED) {
-                                bucketCount += 1
                             }
                         },
                         tabType = tabType
@@ -201,7 +204,7 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.dDay != null && bucket.isProgress() && isShowDday) {
+                if (bucket.dDay != null && isProgress.value && isShowDday) {
                     DdayBadgeView(bucket)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
@@ -209,13 +212,13 @@ fun SimpleBucketCard(
                 }
 
                 // Title
-                TitleTextView(bucket.title, bucket.isProgress())
+                TitleTextView(bucket.title, isProgress.value)
 
                 // Progress
-                if (bucket.goalCount > 0 && bucket.isProgress()) {
+                if (bucket.goalCount > 0 && isProgress.value) {
                     CountProgressView(
                         info = bucket,
-                        bucketCount = bucketCount,
+                        bucketCount = bucketCount.value,
                         tabType = tabType
                     )
                     Spacer(modifier = Modifier.height(18.dp))

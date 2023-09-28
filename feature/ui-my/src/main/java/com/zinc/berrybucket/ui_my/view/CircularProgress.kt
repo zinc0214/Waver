@@ -46,6 +46,10 @@ fun BucketCircularProgressBar(
     var checkBoxShow by remember {
         mutableStateOf(false)
     }
+
+    var isAnimationFinished by remember {
+        mutableStateOf(false)
+    }
     val curPercentage = animateFloatAsState(
         targetValue = if (animationPlayed) 1f else 0f,
         animationSpec = tween(
@@ -56,7 +60,8 @@ fun BucketCircularProgressBar(
             if (it == 1.0f) {
                 animationPlayed = false
                 checkBoxShow = true
-                progressState.invoke(BucketProgressState.FINISHED)
+                progressState.invoke(BucketProgressState.PROGRESS_END)
+                isAnimationFinished = true
             }
         },
         label = "curPercentage"
@@ -121,7 +126,10 @@ fun BucketCircularProgressBar(
         }
 
         if ((curPercentage.value * 100).toInt() == 1) {
-            progressState.invoke(BucketProgressState.PROGRESS_END)
+            if (isAnimationFinished) {
+                progressState.invoke(BucketProgressState.FINISHED)
+                isAnimationFinished = false
+            }
             checkBoxShow = false
         }
     }
