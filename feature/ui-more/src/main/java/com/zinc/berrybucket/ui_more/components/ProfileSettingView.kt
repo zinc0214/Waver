@@ -175,11 +175,13 @@ internal fun ProfileEditView(
     var currentText by remember { mutableStateOf(editDataState.value.prevText) }
     var currentTextSize by remember { mutableStateOf(currentText.length) }
     val isAlreadyUsedNameState = remember { mutableStateOf(isAlreadyUsedName) }
-    val titleText = if (editDataState.value.dataType == ProfileEditData.ProfileDataType.NICKNAME) {
+    val isNickNameType = editDataState.value.dataType == ProfileEditData.ProfileDataType.NICKNAME
+    val titleText = if (isNickNameType) {
         stringResource(id = R.string.profileSettingNickNameTitle)
     } else {
         stringResource(id = R.string.profileSettingBioTitle)
     }
+
 
     LaunchedEffect(key1 = editData, block = {
         editDataState.value = editData
@@ -219,6 +221,7 @@ internal fun ProfileEditView(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             value = currentText,
+            singleLine = isNickNameType,
             textStyle = TextStyle(fontSize = dpToSp(dp = 20.dp)),
             onValueChange = { changeText ->
                 currentText = if (changeText.length > 30) {
