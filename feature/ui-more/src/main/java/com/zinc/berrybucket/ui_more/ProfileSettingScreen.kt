@@ -49,6 +49,7 @@ fun ProfileSettingScreen(
 
     val showApiFailDialog = remember { mutableStateOf(false) }
     val profileInfo = remember { mutableStateOf(profileInfoAsState) }
+    val isDataChanged = remember { mutableStateOf(false) }
 
     if (profileInfo.value == null) {
         viewModel.loadMyProfile()
@@ -81,6 +82,12 @@ fun ProfileSettingScreen(
         nickNameData.value = nickNameData.value.copy(prevText = profileInfo.value?.name.orEmpty())
         bioData.value = bioData.value.copy(prevText = profileInfo.value?.bio.orEmpty())
     }
+
+    LaunchedEffect(key1 = nickNameData.value, key2 = bioData.value, block = {
+        val isEmpty = nickNameData.value.prevText.isEmpty() || bioData.value.prevText.isEmpty()
+        isDataChanged.value = isEmpty.not() &&
+                (profileInfo.value?.name != nickNameData.value.prevText || profileInfo.value?.bio != bioData.value.prevText)
+    })
 
     val updatePath: MutableState<String?> = remember { mutableStateOf(null) }
     var showSelectCameraType by remember { mutableStateOf(false) }
@@ -148,9 +155,12 @@ fun ProfileSettingScreen(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProfileSettingTitle {
-                    onBackPressed()
-                }
+                ProfileSettingTitle(
+                    saveButtonEnable = isDataChanged.value,
+                    backClicked = {
+                        onBackPressed()
+                    }
+                )
 
                 Spacer(modifier = Modifier.padding(top = 44.dp))
 

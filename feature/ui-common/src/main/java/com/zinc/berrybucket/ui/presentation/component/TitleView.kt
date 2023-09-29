@@ -19,6 +19,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
+import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
@@ -33,6 +34,7 @@ fun TitleView(
     title: String,
     leftIconType: TitleIconType? = null,
     rightText: String? = null,
+    rightTextEnable: Boolean = true,
     isDividerVisible: Boolean = false,
     onLeftIconClicked: (() -> Unit)? = null,
     onRightTextClicked: (() -> Unit)? = null
@@ -81,7 +83,7 @@ fun TitleView(
         if (rightText != null) {
             MyText(
                 text = rightText,
-                color = Main4,
+                color = if (rightTextEnable) Main4 else Gray6,
                 fontSize = dpToSp(dp = 18.dp),
                 modifier = Modifier
                     .constrainAs(rightTextView) {

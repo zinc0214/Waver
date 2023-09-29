@@ -51,7 +51,19 @@ import com.zinc.berrybucket.util.loadImage
 import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 
 @Composable
-internal fun ProfileSettingTitle(backClicked: () -> Unit) {
+internal fun ProfileSettingTitle(
+    backClicked: () -> Unit,
+    saveButtonEnable: Boolean
+) {
+
+    val isSaveButtonEnable = remember {
+        mutableStateOf(saveButtonEnable)
+    }
+
+    LaunchedEffect(key1 = saveButtonEnable, block = {
+        isSaveButtonEnable.value = saveButtonEnable
+    })
+
     TitleView(
         title = stringResource(id = R.string.profileSettingTitle),
         leftIconType = TitleIconType.BACK,
@@ -60,6 +72,7 @@ internal fun ProfileSettingTitle(backClicked: () -> Unit) {
             backClicked()
         },
         rightText = stringResource(id = com.zinc.berrybucket.ui_common.R.string.finishDesc),
+        rightTextEnable = saveButtonEnable,
         onRightTextClicked = {
             // TODO : 알림 데이터 저장 필요
         }
