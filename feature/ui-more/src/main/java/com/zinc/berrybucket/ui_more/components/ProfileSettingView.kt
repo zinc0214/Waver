@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -135,7 +137,6 @@ internal fun ProfileUpdateView(
                 contentDescription = stringResource(id = R.string.profileChangeDesc)
             )
         }
-
     }
 }
 
@@ -151,11 +152,24 @@ internal fun CheckCameraPermission(isAvailable: (Boolean) -> Unit) {
 internal fun ProfileEditView(
     editData: ProfileEditData,
     needLengthCheck: Boolean,
-    dataChanged: (String) -> Unit
+    dataChanged: (String) -> Unit,
+    isAlreadyUsedName: Boolean
 ) {
 
-    var currentText by remember { mutableStateOf(editData.prevText) }
+    val editDataState = remember { mutableStateOf(editData) }
+    var currentText by remember { mutableStateOf(editDataState.value.prevText) }
     var currentTextSize by remember { mutableStateOf(currentText.length) }
+    val isAlreadyUsedNameState by remember { mutableStateOf(isAlreadyUsedName) }
+    val titleText = if (editDataState.value.dataType == ProfileEditData.ProfileDataType.NICKNAME) {
+        stringResource(id = R.string.profileSettingNickNameTitle)
+    } else {
+        stringResource(id = R.string.profileSettingBioTitle)
+    }
+
+    LaunchedEffect(key1 = editData, block = {
+        editDataState.value = editData
+    })
+
     val maxLength = 30
     Column(
         modifier = Modifier
@@ -166,7 +180,7 @@ internal fun ProfileEditView(
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
 
             MyText(
-                text = editData.title,
+                text = titleText,
                 color = Gray6,
                 fontSize = dpToSp(dp = 14.dp)
             )
@@ -196,6 +210,8 @@ internal fun ProfileEditView(
                 currentTextSize = currentText.length
                 dataChanged(changeText)
             })
-        Divider(color = Gray5, thickness = 1.dp)
+
+        Divider(color = if (isAlreadyUsedNameState) Error2 else Gray5, thickness = 1.dp)
     }
 }
+
