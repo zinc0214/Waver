@@ -30,23 +30,26 @@ fun MoreScreen(
     var logoutPopupShow by remember { mutableStateOf(false) }
     val viewModel: MoreViewModel = hiltViewModel()
 
-    val profileInfo by viewModel.profileInfo.observeAsState()
+    val profileInfoAsState by viewModel.profileInfo.observeAsState()
     val loadProfileFail by viewModel.profileLoadFail.observeAsState()
 
     val showApiFailDialog = remember { mutableStateOf(false) }
+    val profileInfo = remember { mutableStateOf(profileInfoAsState) }
 
-    if (profileInfo == null) {
-        viewModel.loadMyProfile()
-    }
+    viewModel.loadMyProfile()
 
     LaunchedEffect(key1 = loadProfileFail) {
         showApiFailDialog.value = loadProfileFail ?: false
     }
 
+    LaunchedEffect(key1 = profileInfoAsState) {
+        profileInfo.value = profileInfoAsState
+    }
+
     Column {
         MoreTitleView()
 
-        profileInfo?.let { info ->
+        profileInfo.value?.let { info ->
             MoreTopProfileView(info, goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
 
             BerryClubLabelView {
