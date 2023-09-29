@@ -150,6 +150,21 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
     ): MyProfileResponse
 
+    @PATCH("/user/profile")
+    @Multipart
+    suspend fun updateMyProfile(
+        @Header("Authorization") token: String,
+        @Part name: MultipartBody.Part,
+        @Part bio: MultipartBody.Part,
+        @Part profileImage: MultipartBody.Part?
+    ): CommonResponse
+
+    @GET("/user/profile/name")
+    suspend fun checkAlreadyUsedNickname(
+        @Header("Authorization") token: String,
+        @Query("name") name: String
+    ): CommonResponse
+
     @GET("/bucketList")
     suspend fun searchAllBucketList(
         @Header("Authorization") token: String,

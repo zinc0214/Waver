@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
@@ -52,8 +53,9 @@ import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 
 @Composable
 internal fun ProfileSettingTitle(
+    saveButtonEnable: Boolean,
     backClicked: () -> Unit,
-    saveButtonEnable: Boolean
+    saveClicked: () -> Unit
 ) {
 
     val isSaveButtonEnable = remember {
@@ -74,7 +76,7 @@ internal fun ProfileSettingTitle(
         rightText = stringResource(id = com.zinc.berrybucket.ui_common.R.string.finishDesc),
         rightTextEnable = saveButtonEnable,
         onRightTextClicked = {
-            // TODO : 알림 데이터 저장 필요
+            saveClicked()
         }
     )
 }
@@ -172,7 +174,7 @@ internal fun ProfileEditView(
     val editDataState = remember { mutableStateOf(editData) }
     var currentText by remember { mutableStateOf(editDataState.value.prevText) }
     var currentTextSize by remember { mutableStateOf(currentText.length) }
-    val isAlreadyUsedNameState by remember { mutableStateOf(isAlreadyUsedName) }
+    val isAlreadyUsedNameState = remember { mutableStateOf(isAlreadyUsedName) }
     val titleText = if (editDataState.value.dataType == ProfileEditData.ProfileDataType.NICKNAME) {
         stringResource(id = R.string.profileSettingNickNameTitle)
     } else {
@@ -182,6 +184,10 @@ internal fun ProfileEditView(
     LaunchedEffect(key1 = editData, block = {
         editDataState.value = editData
     })
+
+    LaunchedEffect(key1 = isAlreadyUsedName) {
+        isAlreadyUsedNameState.value = isAlreadyUsedName
+    }
 
     val maxLength = 30
     Column(
@@ -213,6 +219,7 @@ internal fun ProfileEditView(
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
             value = currentText,
+            textStyle = TextStyle(fontSize = dpToSp(dp = 20.dp)),
             onValueChange = { changeText ->
                 currentText = if (changeText.length > 30) {
                     val lastIndex = changeText.lastIndex
@@ -224,7 +231,20 @@ internal fun ProfileEditView(
                 dataChanged(changeText)
             })
 
-        Divider(color = if (isAlreadyUsedNameState) Error2 else Gray5, thickness = 1.dp)
+        Divider(
+            modifier = Modifier.padding(top = 15.5.dp),
+            color = if (isAlreadyUsedNameState.value) Error2 else Gray5,
+            thickness = 1.dp
+        )
+
+        if (isAlreadyUsedNameState.value) {
+            MyText(
+                modifier = Modifier.padding(top = 7.5.dp),
+                text = stringResource(id = R.string.alreadyUsedNickNameGuide),
+                color = Error2,
+                fontSize = dpToSp(dp = 12.dp)
+            )
+        }
     }
 }
 

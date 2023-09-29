@@ -26,8 +26,8 @@ import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun CommonDialogView(
-    title: String?,
-    message: String?,
+    title: String? = null,
+    message: String? = null,
     dismissAvailable: Boolean = true,
     negative: DialogButtonInfo? = null,
     positive: DialogButtonInfo,

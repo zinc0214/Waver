@@ -6,7 +6,7 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui_common.R
 
 @Composable
-fun ApiFailDialog(title: String, message: String, dismissEvent: () -> Unit) {
+fun ApiFailDialog(title: String? = null, message: String? = null, dismissEvent: () -> Unit) {
 
     CommonDialogView(
         title = title, message = message, dismissAvailable = true,

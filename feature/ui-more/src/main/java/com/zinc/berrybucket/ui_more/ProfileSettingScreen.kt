@@ -26,8 +26,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.DialogButtonInfo
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
@@ -36,6 +39,7 @@ import com.zinc.berrybucket.ui_more.models.ProfileEditData
 import com.zinc.berrybucket.ui_more.viewModel.MoreViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -48,10 +52,25 @@ fun ProfileSettingScreen(
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
     val loadProfileFail by viewModel.profileLoadFail.observeAsState()
+    val profileUpdateSucceedAsSate by viewModel.profileUpdateSucceed.observeAsState()
+    val profileUpdateFailAsState by viewModel.profileUpdateFail.observeAsState()
+    val checkAlreadyUsedNickname by viewModel.isAlreadyUsedNickName.observeAsState()
 
-    val showApiFailDialog = remember { mutableStateOf(false) }
     val profileInfo = remember { mutableStateOf(profileInfoAsState) }
     val isDataChanged = remember { mutableStateOf(false) }
+    val showApiFailDialog = remember { mutableStateOf(false) }
+    val showUpdateSucceedDialog = remember { mutableStateOf(false) }
+    val showUpdateFailDialog = remember { mutableStateOf(false) }
+    val isAlreadyUsedNickname = remember { mutableStateOf(false) }
+
+    val updateImagePath: MutableState<String?> = remember { mutableStateOf(null) }
+    val updateImageFile: MutableState<File?> = remember { mutableStateOf(null) }
+    var showSelectCameraType by remember { mutableStateOf(false) }
+
+    val coroutineScope = rememberCoroutineScope()
+    val bottomSheetScaffoldState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
+    )
 
     if (profileInfo.value == null) {
         viewModel.loadMyProfile()
@@ -79,6 +98,27 @@ fun ProfileSettingScreen(
         showApiFailDialog.value = loadProfileFail ?: false
     }
 
+    LaunchedEffect(key1 = profileUpdateSucceedAsSate) {
+        showUpdateSucceedDialog.value = profileUpdateSucceedAsSate ?: false
+    }
+
+    LaunchedEffect(key1 = profileUpdateFailAsState) {
+        showUpdateFailDialog.value = profileUpdateFailAsState ?: false
+    }
+
+    LaunchedEffect(key1 = checkAlreadyUsedNickname) {
+        isAlreadyUsedNickname.value = checkAlreadyUsedNickname ?: false
+        if (checkAlreadyUsedNickname == false) {
+            viewModel.updateMyProfile(
+                name = nickNameData.value.prevText,
+                bio = bioData.value.prevText,
+                profileImage = updateImageFile.value
+            )
+        } else {
+            isDataChanged.value = false
+        }
+    }
+
     LaunchedEffect(key1 = profileInfoAsState) {
         profileInfo.value = profileInfoAsState
         nickNameData.value = nickNameData.value.copy(prevText = profileInfo.value?.name.orEmpty())
@@ -91,14 +131,6 @@ fun ProfileSettingScreen(
                 (profileInfo.value?.name != nickNameData.value.prevText || profileInfo.value?.bio != bioData.value.prevText)
     })
 
-    val updateImagePath: MutableState<String?> = remember { mutableStateOf(null) }
-    val updateImageFile: MutableState<File?> = remember { mutableStateOf(null) }
-    var showSelectCameraType by remember { mutableStateOf(false) }
-
-    val coroutineScope = rememberCoroutineScope()
-    val bottomSheetScaffoldState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
-    )
     val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
         coroutineScope.launch {
             if (it) {
@@ -167,11 +199,7 @@ fun ProfileSettingScreen(
                         onBackPressed()
                     },
                     saveClicked = {
-                        viewModel.updateMyProfile(
-                            name = nickNameData.value.prevText,
-                            bio = bioData.value.prevText,
-                            profileImage = updateImageFile.value
-                        )
+                        viewModel.checkIsAlreadyUsedName(nickNameData.value.prevText)
                     }
                 )
 
@@ -191,7 +219,7 @@ fun ProfileSettingScreen(
                     dataChanged = { changedData ->
                         nickNameData.value = nickNameData.value.copy(prevText = changedData)
                     },
-                    isAlreadyUsedName = false
+                    isAlreadyUsedName = isAlreadyUsedNickname.value
                 )
 
                 ProfileEditView(
@@ -213,6 +241,25 @@ fun ProfileSettingScreen(
             dismissEvent = {
                 showApiFailDialog.value = false
                 onBackPressed()
+            })
+    }
+
+    if (showUpdateSucceedDialog.value) {
+        CommonDialogView(
+            message = stringResource(id = R.string.profileUpdateSuccessTitle),
+            dismissAvailable = false,
+            positive = DialogButtonInfo(text = CommonR.string.confirm, color = Main4),
+            positiveEvent = {
+                showUpdateSucceedDialog.value = false
+                onBackPressed()
+            })
+    }
+
+    if (showUpdateFailDialog.value) {
+        ApiFailDialog(
+            message = stringResource(id = R.string.profileUpdateFailTitle),
+            dismissEvent = {
+                showApiFailDialog.value = false
             })
     }
 }
