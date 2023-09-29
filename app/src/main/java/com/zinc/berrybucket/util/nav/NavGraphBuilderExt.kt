@@ -6,7 +6,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.model.BucketSelected
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -319,18 +318,13 @@ internal fun NavGraphBuilder.moreBlockNavGraph(
 
 internal fun NavGraphBuilder.moreProfileNavGraph(
     backPress: () -> Unit,
-    imageUpdateButtonClicked: (AddImageType, () -> Unit, (String) -> Unit) -> Unit
+    action: (ActionWithActivity) -> Unit,
 ) {
     composable(MoreDestinations.PROFILE_SETTING) {
         ProfileSettingScreen(
             onBackPressed = { backPress() },
-            imageUpdateButtonClicked = { type, fail, success ->
-                imageUpdateButtonClicked(
-                    type,
-                    fail
-                ) { info ->
-                    success(info)
-                }
+            addImageAction = {
+                action(it)
             })
     }
 }

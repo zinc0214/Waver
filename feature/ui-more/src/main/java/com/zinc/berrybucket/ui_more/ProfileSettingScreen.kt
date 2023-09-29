@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_more
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,21 +26,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.model.AddImageType
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui_more.components.ProfileEditView
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
 import com.zinc.berrybucket.ui_more.components.ProfileUpdateView
 import com.zinc.berrybucket.ui_more.models.ProfileEditData
 import com.zinc.berrybucket.ui_more.viewModel.MoreViewModel
 import kotlinx.coroutines.launch
+import java.io.File
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileSettingScreen(
     onBackPressed: () -> Unit,
-    imageUpdateButtonClicked: (AddImageType, () -> Unit, (String) -> Unit) -> Unit
+    addImageAction: (ActionWithActivity.AddImage) -> Unit,
 ) {
 
     val viewModel: MoreViewModel = hiltViewModel()
@@ -89,7 +91,8 @@ fun ProfileSettingScreen(
                 (profileInfo.value?.name != nickNameData.value.prevText || profileInfo.value?.bio != bioData.value.prevText)
     })
 
-    val updatePath: MutableState<String?> = remember { mutableStateOf(null) }
+    val updateImagePath: MutableState<String?> = remember { mutableStateOf(null) }
+    val updateImageFile: MutableState<File?> = remember { mutableStateOf(null) }
     var showSelectCameraType by remember { mutableStateOf(false) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -125,23 +128,26 @@ fun ProfileSettingScreen(
         sheetContent = {
             if (showSelectCameraType) {
                 ImageSelectBottomScreen(selectedType = {
-                    imageUpdateButtonClicked(it,
-                        // fail
-                        {
-                            Toast.makeText(
-                                context,
-                                "이미지 로드에 실패했습니다.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            isNeedToBottomSheetOpen.invoke(false)
-                            showSelectCameraType = false
-                        },
-                        // success
-                        { imagePath ->
-                            isNeedToBottomSheetOpen.invoke(false)
-                            showSelectCameraType = false
-                            updatePath.value = imagePath
-                        })
+                    addImageAction.invoke(
+                        ActionWithActivity.AddImage(
+                            type = it,
+                            failed = {
+                                Toast.makeText(
+                                    context,
+                                    "이미지 로드에 실패했습니다.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                isNeedToBottomSheetOpen.invoke(false)
+                            },
+                            succeed = { imageInfo ->
+                                Log.e("ayhan", "imageInfo : $imageInfo")
+
+                                isNeedToBottomSheetOpen.invoke(false)
+                                updateImagePath.value = imageInfo.path
+                                updateImageFile.value = imageInfo.file
+                            })
+                    )
+
                 })
                 isNeedToBottomSheetOpen.invoke(true)
             }
@@ -159,13 +165,20 @@ fun ProfileSettingScreen(
                     saveButtonEnable = isDataChanged.value,
                     backClicked = {
                         onBackPressed()
+                    },
+                    saveClicked = {
+                        viewModel.updateMyProfile(
+                            name = nickNameData.value.prevText,
+                            bio = bioData.value.prevText,
+                            profileImage = updateImageFile.value
+                        )
                     }
                 )
 
                 Spacer(modifier = Modifier.padding(top = 44.dp))
 
                 ProfileUpdateView(
-                    updatePath = updatePath,
+                    updatePath = updateImagePath,
                     imageUpdateButtonClicked = {
                         showSelectCameraType = true
                     })

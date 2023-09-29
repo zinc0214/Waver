@@ -284,12 +284,8 @@ fun BerryBucketApp(
                         moreBlockNavGraph(backPress = appState::backPress)
                         moreProfileNavGraph(
                             backPress = appState::backPress,
-                            imageUpdateButtonClicked = { type, fail, success ->
-                                action.invoke(
-                                    ActionWithActivity.AddImage(
-                                        type,
-                                        fail
-                                    ) { info -> success(info.path) })
+                            action = {
+                                action(it)
                             }
                         )
                         moreAppInfoNavGraph(
