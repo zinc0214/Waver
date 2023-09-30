@@ -22,7 +22,7 @@ object Dep {
 
     object AndroidX {
         object activity {
-            const val activityVersion = "1.7.0"
+            const val activityVersion = "1.7.2"
             const val activity = "androidx.activity:activity:$activityVersion"
             const val ktx = "androidx.activity:activity-ktx:$activityVersion"
         }
@@ -43,22 +43,25 @@ object Dep {
 
         object Compose {
             const val compilerVersion = "1.5.3"
-            const val version = "1.4.8"
+            const val accompanistVersion = "0.32.0"
 
-            const val navigation = "androidx.navigation:navigation-compose:2.6.0"
-            const val accompanist = "com.google.accompanist:accompanist-permissions:0.29.0-alpha"
-            const val flowlayout = "com.google.accompanist:accompanist-flowlayout:0.29.0-alpha"
+            const val navigation = "androidx.navigation:navigation-compose:2.7.3"
+            const val accompanist =
+                "com.google.accompanist:accompanist-permissions:$accompanistVersion"
+            const val flowlayout =
+                "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
 
             const val activity =
                 "androidx.activity:activity-compose:${AndroidX.activity.activityVersion}"
             const val constraintLayout =
-                "androidx.constraintlayout:constraintlayout-compose:1.0.0"
+                "androidx.constraintlayout:constraintlayout-compose:1.0.1"
             const val viewPager =
-                "com.google.accompanist:accompanist-pager:0.29.0-alpha"
-            const val indicator = "com.google.accompanist:accompanist-pager-indicators:0.29.0-alpha"
+                "com.google.accompanist:accompanist-pager:$accompanistVersion"
+            const val indicator =
+                "com.google.accompanist:accompanist-pager-indicators:$accompanistVersion"
 
             object Bom {
-                const val version = "androidx.compose:compose-bom:2023.01.00"
+                const val version = "androidx.compose:compose-bom:2023.09.02"
                 const val runtime = "androidx.compose.runtime:runtime"
                 const val ui = "androidx.compose.ui:ui"
                 const val material = "androidx.compose.material:material"
