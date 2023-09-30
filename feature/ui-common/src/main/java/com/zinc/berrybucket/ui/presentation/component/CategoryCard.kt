@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.component
 
+import android.util.Log
 import android.view.MotionEvent
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,7 +43,8 @@ fun CategoryListView(categoryInfoList: List<UICategoryInfo>, clicked: (UICategor
             CategoryCard(
                 categoryInfo = category,
                 clicked = {
-                    clicked(category)
+                    Log.e("ayhan", "cateogryt")
+                    clicked(it)
                 }
             )
         }
@@ -51,7 +53,7 @@ fun CategoryListView(categoryInfoList: List<UICategoryInfo>, clicked: (UICategor
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CategoryCard(categoryInfo: UICategoryInfo, clicked: () -> Unit) {
+private fun CategoryCard(categoryInfo: UICategoryInfo, clicked: (UICategoryInfo) -> Unit) {
 
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
@@ -65,7 +67,12 @@ fun CategoryCard(categoryInfo: UICategoryInfo, clicked: () -> Unit) {
                         borderColor.value = Main2
                     }
 
-                    MotionEvent.ACTION_UP,
+                    MotionEvent.ACTION_UP -> {
+                        borderColor.value = Color.Transparent
+                        Log.e("ayhan", "category click 1")
+                        clicked(categoryInfo)
+                    }
+
                     MotionEvent.ACTION_CANCEL -> {
                         borderColor.value = Color.Transparent
                     }
@@ -78,14 +85,17 @@ fun CategoryCard(categoryInfo: UICategoryInfo, clicked: () -> Unit) {
                 offsetY = (0).dp,
                 blurRadius = 4.dp,
             )
-            .clip(RoundedCornerShape(4.dp))
-            .clickable { clicked() },
+            .clip(RoundedCornerShape(4.dp)),
         shape = RoundedCornerShape(4.dp)
     ) {
         ConstraintLayout(
             modifier = Modifier
                 .padding(start = 16.dp, end = 20.dp, top = 21.dp, bottom = 21.dp)
                 .fillMaxWidth()
+                .clickable {
+                    Log.e("ayhan", "category click 1")
+                    clicked(categoryInfo)
+                }
         ) {
 
             val (leftContent, rightContent) = createRefs()

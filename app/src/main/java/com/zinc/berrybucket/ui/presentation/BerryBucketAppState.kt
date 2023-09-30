@@ -11,6 +11,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.nav.AlarmDestinations
@@ -106,6 +107,13 @@ class BerryBucketAppState(
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
             navController.navigate("${MainDestinations.CLOSE_BUCKET_DETAIL}/${bucketId}")
+        }
+    }
+
+    fun navigateToCategoryBucketList(categoryInfo: UICategoryInfo, from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            val infoParse = UICategoryInfo.toNavigationValue(categoryInfo)
+            navController.navigate("${MainDestinations.MY_CATEGORY_BUCKET_LIST}/${infoParse}")
         }
     }
 

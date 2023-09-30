@@ -21,7 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
-import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
@@ -42,6 +42,7 @@ import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
 import com.zinc.berrybucket.util.nav.bucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.bucketNavGraph
+import com.zinc.berrybucket.util.nav.homeCategoryBucketListNavGraph
 import com.zinc.berrybucket.util.nav.homeCategoryEditNavGraph
 import com.zinc.berrybucket.util.nav.homeFeed
 import com.zinc.berrybucket.util.nav.homeMore
@@ -175,7 +176,7 @@ fun BerryBucketApp(
                         homeMy(
                             onBucketSelected = { selected, nav ->
                                 when (selected) {
-                                    is BucketSelected.GoToDetailBucket -> {
+                                    is HomeItemSelected.GoToDetailHomeItem -> {
                                         if (selected.bucketInfo.exposureStatues == ExposureStatus.PRIVATE) {
                                             appState.navigateToCloseBucketDetail(
                                                 selected.bucketInfo.id, nav
@@ -185,6 +186,12 @@ fun BerryBucketApp(
                                                 selected.bucketInfo.id, nav
                                             )
                                         }
+                                    }
+
+                                    is HomeItemSelected.GoToCategoryBucketList -> {
+                                        appState.navigateToCategoryBucketList(
+                                            selected.categoryInfo, nav
+                                        )
                                     }
                                 }
                             },
@@ -225,12 +232,25 @@ fun BerryBucketApp(
                                 }
 
                                 is MySearchClickEvent.CategoryItemClicked -> TODO()
+
                                 MySearchClickEvent.CloseClicked -> {
                                     isNeedToBottomSheetOpen.invoke(false)
+                                    appState.backPress()
                                 }
                             }
 
                         }
+
+                        homeCategoryBucketListNavGraph(
+                            backPress = appState::backPress,
+                            bucketClicked = { id, isPrivate, nav ->
+                                if (isPrivate) {
+                                    appState.navigateToCloseBucketDetail(id, nav)
+                                } else {
+                                    appState.navigateToOpenBucketDetail(id, nav)
+                                }
+
+                            })
 
                         homeCategoryEditNavGraph(backPress = appState::backPress)
 

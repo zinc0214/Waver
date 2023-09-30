@@ -6,9 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailScreen
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
@@ -29,7 +30,8 @@ import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
-import com.zinc.berrybucket.ui_my.screen.category.CategoryEditScreen
+import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryBucketListScreen
+import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryEditScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListSettingScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
@@ -45,14 +47,14 @@ import com.zinc.common.models.ReportInfo
 
 
 internal fun NavGraphBuilder.homeMy(
-    onBucketSelected: (BucketSelected, NavBackStackEntry) -> Unit,
+    onBucketSelected: (HomeItemSelected, NavBackStackEntry) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType, NavBackStackEntry) -> Unit,
     myTopEvent: (MyTopEvent, NavBackStackEntry) -> Unit,
     goToCategoryEdit: (NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.MY.route) { from ->
         MyScreen(
-            onBucketSelected = {
+            itemSelected = {
                 onBucketSelected.invoke(it, from)
             },
             bottomSheetClicked = {
@@ -126,6 +128,36 @@ internal fun NavGraphBuilder.homeSearchNavGraph(
                 tab = selectedTab,
                 mySearchClickEvent = {
                     mySearchClickEvent(it, entry)
+                }
+            )
+        }
+    )
+}
+
+internal fun NavGraphBuilder.homeCategoryBucketListNavGraph(
+    backPress: () -> Unit,
+    bucketClicked: (String, Boolean, NavBackStackEntry) -> Unit,
+) {
+    composable(
+        route = "${MainDestinations.MY_CATEGORY_BUCKET_LIST}/{${MainDestinations.CATEGORY_INFO}}",
+        arguments = listOf(
+            navArgument(MainDestinations.CATEGORY_INFO) {
+                type = SerializableType(
+                    type = UICategoryInfo::class.java,
+                    parser = UICategoryInfo::parseNavigationValue
+                )
+            }
+        ),
+        content = { entry ->
+            val arguments = requireNotNull(entry.arguments)
+            val categoryInfo: UICategoryInfo =
+                arguments.extraNotNullSerializable(MainDestinations.CATEGORY_INFO)
+
+            CategoryBucketListScreen(
+                _categoryInfo = categoryInfo,
+                onBackPressed = backPress,
+                bucketItemClicked = { id, isPrivate ->
+                    bucketClicked(id, isPrivate, entry)
                 }
             )
         }
@@ -393,6 +425,8 @@ object MainDestinations {
     const val MY_SEARCH = "my_search"
     const val MY_CATEGORY_EDIT = "my_category_edit"
     const val SELECT_TAB = "select_tab"
+    const val MY_CATEGORY_BUCKET_LIST = "my_category_bucket_list"
+    const val CATEGORY_INFO = "category_info"
 
     object FOLLOWING {
         const val MY_FOLLOWING = "my_following"

@@ -40,6 +40,9 @@ class CategoryViewModel @Inject constructor(
     private val _apiFailed = MutableLiveData<Pair<String, String>>()
     val apiFailed: LiveData<Pair<String, String>> get() = _apiFailed
 
+    private val _categoryBucketList = MutableLiveData<List<UIBucketInfoSimple>>()
+    val categoryBucketList: LiveData<List<UIBucketInfoSimple>> get() = _categoryBucketList
+
     fun loadCategoryList() {
         runCatching {
             accessToken.value?.let { token ->
@@ -130,4 +133,126 @@ class CategoryViewModel @Inject constructor(
     fun updateCategoryOrder(list: List<UICategoryInfo>) {
         _categoryInfoList.value = list
     }
+
+    fun loadCategoryBucketList(categoryId: Int) {
+        accessToken.value?.let { token ->
+            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            }) {
+                _categoryBucketList.value = simpleTypeList.parseToUI()
+
+            }
+        }
+    }
+
+
+    private val simpleTypeList = listOf(
+        BucketInfoSimple(
+            id = "1",
+            title = "아이스크림을 먹을테야 얍얍압얍",
+            userCount = 1,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+
+        ),
+        BucketInfoSimple(
+            id = "2",
+            title = "아이스크림을 여행을 갈거란 말이야",
+            userCount = 1,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "3",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "4",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "5",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+
+        ),
+        BucketInfoSimple(
+            id = "6",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "61",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "16",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "26",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "36",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        ),
+        BucketInfoSimple(
+            id = "46",
+            title = "Dday가 있는 애22233",
+            userCount = 5,
+            goalCount = 10,
+            dDay = -10,
+            status = BucketStatus.PROGRESS,
+            exposureStatus = ExposureStatus.PUBLIC,
+            bucketType = BucketType.ORIGINAL
+        )
+    )
 }

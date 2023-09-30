@@ -4,7 +4,9 @@ import com.zinc.berrybucket.util.parseNavigationValue
 import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UICategoryInfo(
     val id: Int,
     val name: String,

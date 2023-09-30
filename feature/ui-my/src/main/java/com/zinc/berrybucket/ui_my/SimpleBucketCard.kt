@@ -64,7 +64,7 @@ fun SimpleBucketListView(
     showDday: Boolean,
     itemClicked: (UIBucketInfoSimple) -> Unit,
     achieveClicked: (String) -> Unit,
-    nestedScrollInterop: NestedScrollConnection?
+    nestedScrollInterop: NestedScrollConnection? = null
 ) {
 
     var data by remember { mutableStateOf(bucketList) }
