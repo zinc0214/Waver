@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="BerryBucket.app" target="19" />
       <module name="BerryBucket.buildSrc" target="19" />
       <module name="BerryBucket.buildSrc.main" target="19" />
       <module name="BerryBucket.buildSrc.test" target="19" />

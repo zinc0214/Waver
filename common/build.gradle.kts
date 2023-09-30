@@ -6,23 +6,16 @@ plugins {
 
 android {
     namespace = "com.zinc.berrybucket.common"
-    compileSdk = 32
 
     defaultConfig {
         minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
+    compileSdk = Versions.compileSdk
+    buildToolsVersion = Versions.buildTools
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 

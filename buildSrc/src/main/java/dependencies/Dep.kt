@@ -42,7 +42,7 @@ object Dep {
         }
 
         object Compose {
-            const val compilerVersion = "1.3.2"
+            const val compilerVersion = "1.5.3"
             const val version = "1.4.8"
 
             const val navigation = "androidx.navigation:navigation-compose:2.6.0"
@@ -85,7 +85,7 @@ object Dep {
     }
 
     object Dagger {
-        const val version = "2.43.2"
+        const val version = "2.47"
         const val dagger = "com.google.dagger:dagger:$version"
         const val compiler = "com.google.dagger:dagger-compiler:$version"
 
@@ -98,7 +98,7 @@ object Dep {
 
 
     object Kotlin {
-        const val version = "1.7.20"
+        const val version = "1.9.10"
         const val stdlibJvm = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$version"
 
         object coroutines {

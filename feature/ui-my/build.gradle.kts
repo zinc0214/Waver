@@ -23,9 +23,11 @@ android {
         compose = true
         viewBinding = true
     }
-
     kapt {
         correctErrorTypes = true
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 

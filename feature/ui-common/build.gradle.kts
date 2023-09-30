@@ -26,6 +26,9 @@ android {
     kapt {
         correctErrorTypes = true
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
