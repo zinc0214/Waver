@@ -59,6 +59,8 @@ object Dep {
                 "com.google.accompanist:accompanist-pager:$accompanistVersion"
             const val indicator =
                 "com.google.accompanist:accompanist-pager-indicators:$accompanistVersion"
+            const val systemUiController =
+                "com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion"
 
             object Bom {
                 const val version = "androidx.compose:compose-bom:2023.09.02"

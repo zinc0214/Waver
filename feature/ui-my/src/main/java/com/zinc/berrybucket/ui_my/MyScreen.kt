@@ -30,10 +30,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
@@ -50,12 +50,10 @@ import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.all.AllBucketLayer
 import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryLayer
 import com.zinc.berrybucket.ui_my.screen.dday.DdayBucketLayer
-import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyScreen(
     itemSelected: (HomeItemSelected) -> Unit,
@@ -64,9 +62,7 @@ fun MyScreen(
     goToCategoryEdit: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
-
     val viewModel: MyViewModel = hiltViewModel()
-    val categoryViewModel: CategoryViewModel = hiltViewModel()
 
     viewModel.loadProfile()
     val profileInfo by viewModel.profileInfo.observeAsState()
@@ -77,6 +73,7 @@ fun MyScreen(
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
     profileInfo?.let { profile ->
+        rememberSystemUiController().setSystemBarsColor(Gray1)
         BaseTheme {
             AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
                 MyView(context).apply {
@@ -101,7 +98,6 @@ fun MyScreen(
 }
 
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyTabLayer(
     tabItems: List<MyTabType>, pagerState: PagerState, coroutineScope: CoroutineScope
@@ -135,7 +131,6 @@ fun MyTabLayer(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyViewPager(
     tabItems: List<MyTabType>,

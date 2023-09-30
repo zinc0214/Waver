@@ -11,6 +11,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.presentation.component.PopUpView
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_more.components.BerryClubLabelView
@@ -26,7 +28,6 @@ fun MoreScreen(
     moreItemClicked: (MoreItemType) -> Unit,
     goToBack: () -> Unit
 ) {
-
     var logoutPopupShow by remember { mutableStateOf(false) }
     val viewModel: MoreViewModel = hiltViewModel()
 
@@ -47,6 +48,8 @@ fun MoreScreen(
     }
 
     Column {
+        rememberSystemUiController().setSystemBarsColor(Gray1)
+
         MoreTitleView()
 
         profileInfo.value?.let { info ->

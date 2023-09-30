@@ -73,6 +73,7 @@ dependencies {
     implementation(Dep.AndroidX.Arch.common)
     implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
+    implementation(Dep.AndroidX.Compose.systemUiController)
 
     // test
     testImplementation(Dep.Test.junit)

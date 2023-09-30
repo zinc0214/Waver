@@ -50,6 +50,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.livedata)
     implementation(Dep.AndroidX.Compose.Bom.foundation)
     implementation(Dep.AndroidX.Compose.constraintLayout)
+    implementation(Dep.AndroidX.Compose.systemUiController)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)

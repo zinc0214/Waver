@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 
 @Composable
@@ -20,6 +22,7 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
     }
 
     Scaffold { padding ->
+        rememberSystemUiController().setSystemBarsColor(Gray2)
         if (isKeyWordSelected != null && isKeyWordSelected == true) {
             val feedItems by viewModel.feedItems.observeAsState()
             if (feedItems == null) {

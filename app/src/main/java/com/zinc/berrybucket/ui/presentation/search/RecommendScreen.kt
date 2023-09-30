@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.util.nav.SearchEvent
 
 @Composable
@@ -32,6 +34,7 @@ fun RecommendScreen(
     val density = LocalDensity.current
     val animatedHeight by animateDpAsState(targetValue = with(density) { height.toDp() })
     Column(modifier = Modifier.fillMaxSize()) {
+        rememberSystemUiController().setSystemBarsColor(Gray1)
         RecommendTopBar(
             modifier = Modifier
                 .fillMaxWidth(),
