@@ -19,6 +19,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,10 +57,19 @@ fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit)
 
     ) {
         val scrollState = rememberLazyGridState()
-        val isScrolled = scrollState.firstVisibleItemIndex != 0
-        val scrollOffset: Float = min(
-            1f, 1 - (scrollState.firstVisibleItemScrollOffset / 150f)
-        )
+
+        val isScrolled by remember {
+            derivedStateOf {
+                scrollState.firstVisibleItemIndex > 0
+            }
+        }
+        val scrollOffset by remember {
+            derivedStateOf {
+                min(
+                    1f, 1 - (scrollState.firstVisibleItemScrollOffset / 150f)
+                )
+            }
+        }
 
         ConstraintLayout(modifier = Modifier.fillMaxSize()) {
             val (toolbar, divider, body) = createRefs()
@@ -105,9 +115,18 @@ fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit)
 private fun FeedCollapsingToolbar(
     scrollOffset: Float, isScrolled: Boolean, modifier: Modifier
 ) {
-    val textSize by animateDpAsState(targetValue = max(16.dp, 24.dp * scrollOffset))
-    val topPadding by animateDpAsState(targetValue = max(34.dp, 40.dp * scrollOffset))
-    val bottomPadding by animateDpAsState(targetValue = max(14.dp, 40.dp * scrollOffset))
+    val textSize by animateDpAsState(
+        targetValue = max(16.dp, 24.dp * scrollOffset),
+        label = "textSize"
+    )
+    val topPadding by animateDpAsState(
+        targetValue = max(34.dp, 40.dp * scrollOffset),
+        label = "topPadding"
+    )
+    val bottomPadding by animateDpAsState(
+        targetValue = max(14.dp, 40.dp * scrollOffset),
+        label = "bottomPadding"
+    )
 
     MyText(
         text = if (scrollOffset > 0.0 && !isScrolled) stringResource(id = R.string.feedRecommendTitle) else stringResource(
