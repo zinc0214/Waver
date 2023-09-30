@@ -34,7 +34,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.ALL
@@ -48,7 +48,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.all.AllBucketLayer
-import com.zinc.berrybucket.ui_my.screen.category.CategoryLayer
+import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryLayer
 import com.zinc.berrybucket.ui_my.screen.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
@@ -58,7 +58,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyScreen(
-    onBucketSelected: (BucketSelected) -> Unit,
+    itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     myTopEvent: (MyTopEvent) -> Unit,
     goToCategoryEdit: () -> Unit
@@ -86,7 +86,7 @@ fun MyScreen(
                         pagerState = pagerState,
                         viewModel = viewModel,
                         coroutineScope = coroutineScope,
-                        onBucketSelected = onBucketSelected,
+                        itemSelected = itemSelected,
                         nestedScrollInterop = nestedScrollInterop,
                         goToCategoryEdit = {
                             goToCategoryEdit()
@@ -143,7 +143,7 @@ fun MyViewPager(
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
     nestedScrollInterop: NestedScrollConnection,
-    onBucketSelected: (BucketSelected) -> Unit,
+    itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     goToCategoryEdit: () -> Unit,
 ) {
@@ -160,7 +160,7 @@ fun MyViewPager(
                     clickEvent = {
                         when (it) {
                             is MyPagerClickEvent.BucketItemClicked -> {
-                                onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
+                                itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
                             }
 
                             is MyPagerClickEvent.SearchClicked -> {
@@ -214,7 +214,7 @@ fun MyViewPager(
                         }
 
                         is MyPagerClickEvent.CategoryItemClicked -> {
-                            // go to category item
+                            itemSelected.invoke(HomeItemSelected.GoToCategoryBucketList(it.info))
                         }
 
                         else -> {
@@ -230,7 +230,7 @@ fun MyViewPager(
                 DdayBucketLayer(viewModel = viewModel, clickEvent = {
                     when (it) {
                         is MyPagerClickEvent.BucketItemClicked -> {
-                            onBucketSelected.invoke(BucketSelected.GoToDetailBucket(it.info))
+                            itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
                         }
 
                         is MyPagerClickEvent.SearchClicked -> {

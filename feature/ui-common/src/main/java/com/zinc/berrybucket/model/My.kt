@@ -114,7 +114,7 @@ sealed class MyPagerClickEvent {
     object CategoryEditClicked : MyPagerClickEvent()
     data class SearchClicked(val tabType: MyTabType) : MyPagerClickEvent()
     data class BucketItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
-    data class CategoryItemClicked(val id: Int) : MyPagerClickEvent()
+    data class CategoryItemClicked(val info: UICategoryInfo) : MyPagerClickEvent()
     data class AchieveBucketClicked(val id: String) : MyPagerClickEvent()
 }
 

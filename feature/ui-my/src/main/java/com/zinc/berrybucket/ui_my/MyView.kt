@@ -8,7 +8,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import com.zinc.berrybucket.model.BucketSelected
+import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui_my.databinding.LayoutMyViewBinding
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
@@ -61,7 +61,7 @@ class MyView @JvmOverloads constructor(
         pagerState: PagerState,
         viewModel: MyViewModel,
         coroutineScope: CoroutineScope,
-        onBucketSelected: (BucketSelected) -> Unit,
+        itemSelected: (HomeItemSelected) -> Unit,
         bottomSheetClicked: (BottomSheetScreenType) -> Unit,
         goToCategoryEdit: () -> Unit,
         nestedScrollInterop: NestedScrollConnection
@@ -74,7 +74,7 @@ class MyView @JvmOverloads constructor(
                 tabItems = tabItems,
                 pagerState = pagerState,
                 viewModel = viewModel,
-                onBucketSelected = onBucketSelected,
+                itemSelected = itemSelected,
                 bottomSheetClicked = bottomSheetClicked,
                 goToCategoryEdit = goToCategoryEdit,
                 coroutineScope = coroutineScope,

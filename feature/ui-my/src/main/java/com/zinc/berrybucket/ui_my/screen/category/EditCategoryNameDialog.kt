@@ -6,17 +6,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogEvent
 import com.zinc.berrybucket.ui.presentation.component.dialog.SingleTextFieldDialogView
 import com.zinc.berrybucket.ui.presentation.component.dialog.TextFieldAlignment
 import com.zinc.berrybucket.ui_my.model.EditCategoryNameEvent
-import com.zinc.common.models.CategoryInfo
 import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun EditCategoryNameDialog(
-    originCategoryInfo: CategoryInfo,
+    originCategoryInfo: UICategoryInfo,
     event: (EditCategoryNameEvent) -> Unit
 ) {
 

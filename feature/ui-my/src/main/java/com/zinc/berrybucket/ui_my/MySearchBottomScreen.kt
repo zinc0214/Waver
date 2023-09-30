@@ -45,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -59,7 +60,6 @@ import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import com.zinc.common.models.BucketInfoSimple
-import com.zinc.common.models.CategoryInfo
 
 @Composable
 fun MySearchBottomScreen(
@@ -244,8 +244,8 @@ private fun SearchResultView(
     bucketAchieve: (String) -> Unit
 ) {
     if (result.first is CATEGORY) {
-        if (result.second.all { item -> item is CategoryInfo }) {
-            val items = result.second as List<CategoryInfo>
+        if (result.second.all { item -> item is UICategoryInfo }) {
+            val items = result.second as List<UICategoryInfo>
             CategoryListView(items) {
                 clickEvent.invoke(MySearchClickEvent.CategoryItemClicked(it.toString()))
             }

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.screen.category
+package com.zinc.berrybucket.ui_my.screen.category.screen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -11,12 +11,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
 import com.zinc.berrybucket.ui_my.model.CategoryEditOptionEvent
 import com.zinc.berrybucket.ui_my.model.EditCategoryNameEvent
+import com.zinc.berrybucket.ui_my.screen.category.AddNewCategoryDialog
+import com.zinc.berrybucket.ui_my.screen.category.CategoryEditTitleView
+import com.zinc.berrybucket.ui_my.screen.category.EditCategoryNameDialog
+import com.zinc.berrybucket.ui_my.screen.category.VerticalReorderList
 import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
-import com.zinc.common.models.CategoryInfo
 
 @Composable
 fun CategoryEditScreen(
@@ -33,7 +37,7 @@ fun CategoryEditScreen(
 
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
     val editCategoryNameDialogShowAvailable =
-        remember { mutableStateOf<CategoryInfo?>(null) } // 카테고리 이름 편집 팝업 노출 여부
+        remember { mutableStateOf<UICategoryInfo?>(null) } // 카테고리 이름 편집 팝업 노출 여부
     val apiFailDialogShow = remember { mutableStateOf(false) }
     val apiFailState = remember { mutableStateOf(apiFailed) }
     val categoryItemState = remember { mutableStateOf(categoryList) }

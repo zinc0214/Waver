@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -50,7 +51,6 @@ import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.model.CategoryEditOptionEvent
-import com.zinc.common.models.CategoryInfo
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
@@ -107,7 +107,7 @@ internal fun CategoryEditAddView(
 
 @Composable
 fun VerticalReorderList(
-    categoryList: List<CategoryInfo>,
+    categoryList: List<UICategoryInfo>,
     addNewCategory: () -> Unit,
     optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
@@ -149,7 +149,7 @@ fun VerticalReorderList(
 @Composable
 private fun EditCategoryItemView(
     index: Int,
-    item: CategoryInfo,
+    item: UICategoryInfo,
     optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
 

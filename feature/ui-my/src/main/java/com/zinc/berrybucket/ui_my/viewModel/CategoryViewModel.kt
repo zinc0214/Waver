@@ -5,7 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
-import com.zinc.common.models.CategoryInfo
+import com.zinc.berrybucket.model.UIBucketInfoSimple
+import com.zinc.berrybucket.model.UICategoryInfo
+import com.zinc.berrybucket.model.parseToUI
+import com.zinc.berrybucket.model.parseUI
+import com.zinc.common.models.BucketInfoSimple
+import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.BucketType
+import com.zinc.common.models.ExposureStatus
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.AddNewCategory
 import com.zinc.domain.usecases.category.EditCategoryName
@@ -27,8 +34,8 @@ class CategoryViewModel @Inject constructor(
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
-    private val _categoryInfoList = MutableLiveData<List<CategoryInfo>>()
-    val categoryInfoList: LiveData<List<CategoryInfo>> get() = _categoryInfoList
+    private val _categoryInfoList = MutableLiveData<List<UICategoryInfo>>()
+    val categoryInfoList: LiveData<List<UICategoryInfo>> get() = _categoryInfoList
 
     private val _apiFailed = MutableLiveData<Pair<String, String>>()
     val apiFailed: LiveData<Pair<String, String>> get() = _apiFailed
@@ -42,7 +49,7 @@ class CategoryViewModel @Inject constructor(
                 }) {
                     loadCategoryList.invoke(token).apply {
                         if (this.success) {
-                            _categoryInfoList.value = this.data
+                            _categoryInfoList.value = this.data.parseUI()
                         } else {
                             _apiFailed.value = "카테고리 로드 실패" to this.message
                         }
@@ -71,7 +78,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun editCategory(categoryInfo: CategoryInfo) {
+    fun editCategory(categoryInfo: UICategoryInfo) {
         accessToken.value?.let { token ->
             viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
             }) {
@@ -120,7 +127,7 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun updateCategoryOrder(list: List<CategoryInfo>) {
+    fun updateCategoryOrder(list: List<UICategoryInfo>) {
         _categoryInfoList.value = list
     }
 }

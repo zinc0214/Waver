@@ -22,16 +22,16 @@ import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main2
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.util.shadow
-import com.zinc.common.models.CategoryInfo
 
 @Composable
-fun CategoryListView(categoryInfoList: List<CategoryInfo>, clicked: (Int) -> Unit) {
+fun CategoryListView(categoryInfoList: List<UICategoryInfo>, clicked: (UICategoryInfo) -> Unit) {
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -42,7 +42,7 @@ fun CategoryListView(categoryInfoList: List<CategoryInfo>, clicked: (Int) -> Uni
             CategoryCard(
                 categoryInfo = category,
                 clicked = {
-                    clicked(category.id)
+                    clicked(category)
                 }
             )
         }
@@ -51,7 +51,7 @@ fun CategoryListView(categoryInfoList: List<CategoryInfo>, clicked: (Int) -> Uni
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CategoryCard(categoryInfo: CategoryInfo, clicked: () -> Unit) {
+fun CategoryCard(categoryInfo: UICategoryInfo, clicked: () -> Unit) {
 
     val borderColor = remember { mutableStateOf(Color.Transparent) }
 
@@ -97,7 +97,7 @@ fun CategoryCard(categoryInfo: CategoryInfo, clicked: () -> Unit) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 },
-                count = categoryInfo.bucketlistCount
+                count = categoryInfo.count
             )
 
             // Left Contents
@@ -172,9 +172,9 @@ private fun CategoryTextView(modifier: Modifier = Modifier, name: String) {
 private fun CategoryListPreview() {
     CategoryListView(
         categoryInfoList = listOf(
-            CategoryInfo(id = 1, name = "여행", bucketlistCount = "10")
-        ), {
+            UICategoryInfo(id = 1, name = "여행", count = "10")
+        )
+    ) {
 
-        }
-    )
+    }
 }
