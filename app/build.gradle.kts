@@ -78,7 +78,6 @@ dependencies {
     testImplementation(Dep.Test.junit)
     androidTestImplementation(Dep.Test.androidJunit)
     androidTestImplementation(Dep.Test.espressoCore)
-    androidTestImplementation(Dep.Test.compose)
 
     // test - mockito
     testImplementation(Dep.Test.Mockito.core)

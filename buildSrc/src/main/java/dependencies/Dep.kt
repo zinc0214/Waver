@@ -138,8 +138,6 @@ object Dep {
         const val junit = "junit:junit:4.13.2"
         const val androidJunit = "androidx.test.ext:junit:1.1.3"
         const val espressoCore = "androidx.test.espresso:espresso-core:3.4.0"
-        const val fragment = "androidx.fragment:fragment-testing:1.3.6"
-        const val compose = "androidx.compose.ui:ui-test-junit4:${AndroidX.Compose.version}"
 
         object Mockito {
             private const val version = "3.2.4"
