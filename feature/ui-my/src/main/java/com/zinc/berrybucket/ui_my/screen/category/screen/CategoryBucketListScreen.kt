@@ -70,7 +70,7 @@ fun CategoryBucketListScreen(
         bucketList.value?.let { data ->
             LazyColumn(
                 contentPadding = PaddingValues(
-                    bottom = 140.dp,
+                    bottom = 60.dp,
                     top = 24.dp,
                     start = 16.dp,
                     end = 16.dp
