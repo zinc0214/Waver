@@ -48,11 +48,11 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.FeedKeyWord
+import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
 
 
 @Composable
-fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit) {
+fun FeedKeywordsLayer(keywords: List<UIFeedKeyword>, recommendClicked: () -> Unit) {
 
     Column(
         modifier = Modifier
@@ -155,7 +155,7 @@ private fun FeedCollapsingToolbar(
 @Composable
 private fun BodyContent(
     state: LazyGridState,
-    keywords: List<FeedKeyWord>,
+    keywords: List<UIFeedKeyword>,
     recommendClicked: () -> Unit,
     modifier: Modifier,
     scrollChanged: (Float) -> Unit
@@ -179,7 +179,7 @@ private fun BodyContent(
 private fun ChipBodyContent(
     modifier: Modifier = Modifier,
     state: LazyGridState,
-    keywords: List<FeedKeyWord>,
+    keywords: List<UIFeedKeyword>,
     scrollChanged: (Float) -> Unit
 ) {
     LazyVerticalGrid(
@@ -207,7 +207,7 @@ private fun ChipBodyContent(
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
                 selectedTextColor = Main3,
                 unSelectedTextColor = Gray7,
-                text = keywordItem.name,
+                text = keywordItem.keyword,
                 isSelected = selected,
                 fontWeight = FontWeight.Bold
             )

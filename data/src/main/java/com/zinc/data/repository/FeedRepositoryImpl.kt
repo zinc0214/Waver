@@ -1,8 +1,8 @@
 package com.zinc.data.repository
 
 import com.zinc.common.models.FeedInfo
-import com.zinc.common.models.FeedKeywordResponse
 import com.zinc.data.api.BerryBucketApi
+import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.repository.FeedRepository
 import javax.inject.Inject
 

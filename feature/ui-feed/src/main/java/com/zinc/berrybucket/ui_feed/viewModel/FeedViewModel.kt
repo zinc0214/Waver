@@ -5,9 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
+import com.zinc.berrybucket.ui_feed.models.parseUI
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.FeedInfo
-import com.zinc.common.models.FeedKeyWord
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
@@ -25,8 +26,8 @@ class FeedViewModel @Inject constructor(
     private val _isKeyWordSelected = MutableLiveData<Boolean>()
     val isKeyWordSelected: LiveData<Boolean> get() = _isKeyWordSelected
 
-    private val _feedKeyWords = MutableLiveData<List<FeedKeyWord>>()
-    val feedKeyWords: LiveData<List<FeedKeyWord>> get() = _feedKeyWords
+    private val _feedKeyWords = MutableLiveData<List<UIFeedKeyword>>()
+    val feedKeyWords: LiveData<List<UIFeedKeyword>> get() = _feedKeyWords
 
     private val _feedItems = MutableLiveData<List<FeedInfo>>()
     val feedItems: LiveData<List<FeedInfo>> get() = _feedItems
@@ -46,7 +47,7 @@ class FeedViewModel @Inject constructor(
                 loadFeedKeyWords.invoke().apply {
                     Log.e("ayhan", "feed response : $this")
                     if (success) {
-                        _feedKeyWords.value = data
+                        _feedKeyWords.value = data.parseUI()
                         _loadFail.value = false
                     } else {
                         _loadFail.value = true

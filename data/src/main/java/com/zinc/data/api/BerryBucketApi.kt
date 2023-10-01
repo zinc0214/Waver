@@ -10,7 +10,6 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.FeedInfo
-import com.zinc.common.models.FeedKeywordResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinRequest
@@ -22,6 +21,7 @@ import com.zinc.common.models.MyState
 import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
+import com.zinc.domain.models.FeedKeywordResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
