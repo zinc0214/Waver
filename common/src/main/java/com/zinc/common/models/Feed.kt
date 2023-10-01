@@ -3,10 +3,17 @@ package com.zinc.common.models
 import kotlinx.serialization.Serializable
 import org.jetbrains.annotations.Nullable
 
+data class FeedKeywordResponse(
+    val data: List<FeedKeyWord>,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
 @Serializable
 data class FeedKeyWord(
     val id: String,
-    val ketWord: String
+    val name: String
 )
 
 @Serializable

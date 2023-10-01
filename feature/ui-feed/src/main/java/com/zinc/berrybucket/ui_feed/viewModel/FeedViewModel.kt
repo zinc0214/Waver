@@ -1,15 +1,18 @@
 package com.zinc.berrybucket.ui_feed.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.FeedInfo
 import com.zinc.common.models.FeedKeyWord
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,18 +31,29 @@ class FeedViewModel @Inject constructor(
     private val _feedItems = MutableLiveData<List<FeedInfo>>()
     val feedItems: LiveData<List<FeedInfo>> get() = _feedItems
 
+    private val _loadFail = SingleLiveEvent<Boolean>()
+    val loadFail: LiveData<Boolean> get() = _loadFail
+
     fun loadKeyWordSelected() {
         _isKeyWordSelected.value = false
     }
 
     fun loadFeedKeyWords() {
-        viewModelScope.launch {
+        viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
+            _loadFail.value = true
+        }) {
             runCatching {
                 loadFeedKeyWords.invoke().apply {
-                    _feedKeyWords.value = this
+                    Log.e("ayhan", "feed response : $this")
+                    if (success) {
+                        _feedKeyWords.value = data
+                        _loadFail.value = false
+                    } else {
+                        _loadFail.value = true
+                    }
                 }
             }.getOrElse {
-
+                _loadFail.value = true
             }
         }
     }

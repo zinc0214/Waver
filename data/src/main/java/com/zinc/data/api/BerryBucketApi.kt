@@ -10,7 +10,7 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.FeedInfo
-import com.zinc.common.models.FeedKeyWord
+import com.zinc.common.models.FeedKeywordResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinRequest
@@ -94,8 +94,8 @@ interface BerryBucketApi {
         @Path("id") id: String
     ): BucketDetailResponse
 
-    @GET("/feed/keyWord")
-    suspend fun loadFeedKeyword(): List<FeedKeyWord>
+    @GET("/explore/keywords")
+    suspend fun loadFeedKeyword(): FeedKeywordResponse
 
     @GET("/feed")
     suspend fun loadFeedItems(): List<FeedInfo>

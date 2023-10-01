@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,8 +61,8 @@ fun FeedKeywordsLayer(keywords: List<FeedKeyWord>, recommendClicked: () -> Unit)
 
     ) {
         val scrollState = rememberLazyGridState()
-        var offset by remember { mutableStateOf(0f) }
-        var prevOffset by remember { mutableStateOf(0f) }
+        var offset by remember { mutableFloatStateOf(0f) }
+        var prevOffset by remember { mutableFloatStateOf(0f) }
 
         val firstVisibleIndex by remember {
             derivedStateOf { scrollState.firstVisibleItemIndex }
@@ -206,7 +207,7 @@ private fun ChipBodyContent(
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
                 selectedTextColor = Main3,
                 unSelectedTextColor = Gray7,
-                text = keywordItem.ketWord,
+                text = keywordItem.name,
                 isSelected = selected,
                 fontWeight = FontWeight.Bold
             )
