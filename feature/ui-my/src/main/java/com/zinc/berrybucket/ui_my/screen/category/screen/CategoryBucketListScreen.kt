@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -14,6 +15,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.MyTabType
@@ -21,6 +23,8 @@ import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_my.SimpleBucketCard
 import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
@@ -35,12 +39,16 @@ fun CategoryBucketListScreen(
 ) {
 
     val _bucketList by viewModel.categoryBucketList.observeAsState()
+    val apiFailed by viewModel.apiFailed2.observeAsState()
 
     val categoryInfo = remember {
         mutableStateOf(_categoryInfo)
     }
     val bucketList = remember {
         mutableStateOf(_bucketList)
+    }
+    val showApiFail = remember {
+        mutableStateOf(false)
     }
 
     LaunchedEffect(key1 = _categoryInfo) {
@@ -51,23 +59,32 @@ fun CategoryBucketListScreen(
         bucketList.value = _bucketList
     }
 
-    viewModel.loadCategoryBucketList(categoryInfo.value.id)
+    LaunchedEffect(key1 = apiFailed) {
+        if (apiFailed == true) {
+            showApiFail.value = true
+        }
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
+    if (bucketList.value.isNullOrEmpty()) {
+        viewModel.loadCategoryBucketList(categoryInfo.value.id)
+    }
 
-        TitleView(
-            title = categoryInfo.value.name,
-            leftIconType = TitleIconType.BACK,
-            isDividerVisible = true,
-            onLeftIconClicked = {
-                onBackPressed()
-            }
-        )
+    bucketList.value?.let { data ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .background(Gray2)
+        ) {
+            TitleView(
+                title = categoryInfo.value.name,
+                leftIconType = TitleIconType.BACK,
+                isDividerVisible = true,
+                onLeftIconClicked = {
+                    onBackPressed()
+                }
+            )
 
-        bucketList.value?.let { data ->
             LazyColumn(
                 contentPadding = PaddingValues(
                     bottom = 60.dp,
@@ -75,8 +92,7 @@ fun CategoryBucketListScreen(
                     start = 16.dp,
                     end = 16.dp
                 ),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = Modifier.background(Gray2)
+                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 itemsIndexed(data, key = { _, item -> item.id }) { _, bucket ->
                     SimpleBucketCard(
@@ -96,4 +112,13 @@ fun CategoryBucketListScreen(
         }
     }
 
+    if (showApiFail.value) {
+        ApiFailDialog(
+            title = stringResource(R.string.apiFailTitle),
+            message = stringResource(id = R.string.apiFailMessage),
+            dismissEvent = {
+                showApiFail.value = false
+                onBackPressed()
+            })
+    }
 }

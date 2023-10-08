@@ -28,7 +28,8 @@ internal class MyRepositoryImpl @Inject constructor(
             dDayBucketOnly = allBucketListRequest.dDayBucketOnly,
             isPassed = allBucketListRequest.isPassed,
             status = allBucketListRequest.status,
-            sort = allBucketListRequest.sort
+            sort = allBucketListRequest.sort,
+            categoryId = null
         )
 //        return AllBucketList(
 //            processingCount = "15",

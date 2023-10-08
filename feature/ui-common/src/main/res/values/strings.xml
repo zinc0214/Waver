@@ -24,6 +24,8 @@
     <string name="confirm">확인</string>
     <string name="update">변경</string>
     <string name="searchHint">검색어를 입력해주세요.</string>
+    <string name="apiFailTitle">데이터 로드 실패</string>
+    <string name="apiFailMessage">다시 시도해주세요.</string>
 
     <string name="optionGoalCount">목표 달성 횟수(반복)</string>
     <string name="zeroGoalCount">0</string>

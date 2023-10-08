@@ -1,6 +1,7 @@
 package com.zinc.data.repository
 
 import com.zinc.common.models.AddNewCategoryRequest
+import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.LoadCategoryResponse
@@ -34,5 +35,15 @@ internal class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun searchCategoryList(token: String, query: String): LoadCategoryResponse {
         return berryBucketApi.searchCategoryList(token, query)
+    }
+
+    override suspend fun loadCategoryBucketList(
+        token: String,
+        categoryId: String
+    ): AllBucketListResponse {
+        return berryBucketApi.loadAllBucketList(
+            token = token,
+            categoryId = categoryId
+        )
     }
 }

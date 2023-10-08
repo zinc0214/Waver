@@ -9,7 +9,7 @@ import com.zinc.berrybucket.ui_common.R
 fun ApiFailDialog(title: String? = null, message: String? = null, dismissEvent: () -> Unit) {
 
     CommonDialogView(
-        title = title, message = message, dismissAvailable = true,
+        title = title, message = message, dismissAvailable = false,
         positive = DialogButtonInfo(
             text = R.string.confirm,
             color = Main4

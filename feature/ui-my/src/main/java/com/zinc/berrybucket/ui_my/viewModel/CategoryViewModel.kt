@@ -9,13 +9,10 @@ import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.model.parseUI
-import com.zinc.common.models.BucketInfoSimple
-import com.zinc.common.models.BucketStatus
-import com.zinc.common.models.BucketType
-import com.zinc.common.models.ExposureStatus
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.AddNewCategory
 import com.zinc.domain.usecases.category.EditCategoryName
+import com.zinc.domain.usecases.category.LoadCategoryBucketList
 import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.category.RemoveCategoryItem
 import com.zinc.domain.usecases.category.ReorderCategory
@@ -31,6 +28,7 @@ class CategoryViewModel @Inject constructor(
     private val editCategoryName: EditCategoryName,
     private val removeCategoryItem: RemoveCategoryItem,
     private val reorderCategory: ReorderCategory,
+    private val loadCategoryBucketList: LoadCategoryBucketList,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -42,6 +40,14 @@ class CategoryViewModel @Inject constructor(
 
     private val _categoryBucketList = MutableLiveData<List<UIBucketInfoSimple>>()
     val categoryBucketList: LiveData<List<UIBucketInfoSimple>> get() = _categoryBucketList
+
+    private val _apiFailed2 = MutableLiveData<Boolean>()
+    val apiFailed2: LiveData<Boolean> get() = _apiFailed2
+
+    private fun ceh(liveData: MutableLiveData<Boolean>, data: Boolean) =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            liveData.value = data
+        }
 
     fun loadCategoryList() {
         runCatching {
@@ -136,123 +142,20 @@ class CategoryViewModel @Inject constructor(
 
     fun loadCategoryBucketList(categoryId: Int) {
         accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            }) {
-                _categoryBucketList.value = simpleTypeList.parseToUI()
-
+            runCatching {
+                viewModelScope.launch(ceh(_apiFailed2, true)) {
+                    val response = loadCategoryBucketList.invoke(token, categoryId.toString())
+                    Log.e("ayhan", "loadCategoryBucketList response : ${response.success}")
+                    if (response.success) {
+                        _apiFailed2.value = false
+                        _categoryBucketList.value = response.data.bucketlist.parseToUI()
+                    } else {
+                        _apiFailed2.value = true
+                    }
+                }
+            }.getOrElse {
+                _apiFailed2.value = true
             }
         }
     }
-
-
-    private val simpleTypeList = listOf(
-        BucketInfoSimple(
-            id = "1",
-            title = "아이스크림을 먹을테야 얍얍압얍",
-            userCount = 1,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-
-        ),
-        BucketInfoSimple(
-            id = "2",
-            title = "아이스크림을 여행을 갈거란 말이야",
-            userCount = 1,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "3",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "4",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "5",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-
-        ),
-        BucketInfoSimple(
-            id = "6",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "61",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "16",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "26",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "36",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "46",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        )
-    )
 }
