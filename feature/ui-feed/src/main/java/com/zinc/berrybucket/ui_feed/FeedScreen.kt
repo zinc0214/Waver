@@ -22,6 +22,7 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
     val apiLoadFail by viewModel.loadFail.observeAsState()
+    val savedKeywordSucceed by viewModel.savedKeywordSucceed.observeAsState()
 
     val showLoadFailDialog = remember {
         mutableStateOf(false)
@@ -33,6 +34,14 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
 
     LaunchedEffect(key1 = apiLoadFail) {
         showLoadFailDialog.value = apiLoadFail == true
+    }
+
+    LaunchedEffect(key1 = savedKeywordSucceed) {
+        if (savedKeywordSucceed == true) {
+            viewModel.setKeyWordSelected()
+        } else if (savedKeywordSucceed == false) {
+            showLoadFailDialog.value = true
+        }
     }
 
     Scaffold { padding ->
@@ -53,8 +62,8 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
             viewModel.loadFeedKeyWords()
             val feedKeyWords by viewModel.feedKeyWords.observeAsState()
             feedKeyWords?.let {
-                FeedKeywordsLayer(keywords = it, recommendClicked = {
-                    viewModel.setKeyWordSelected()
+                FeedKeywordsLayer(keywords = it, recommendClicked = { list ->
+                    viewModel.savedKeywordList(list)
                 })
             }
         }
@@ -63,14 +72,14 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
     if (showLoadFailDialog.value) {
         ApiFailDialog(
             title = stringResource(id = R.string.feedLoadFailTitle),
-            message = stringResource(id = R.string.feedContentTitle)
+            message = stringResource(id = R.string.feedLoadFailContent)
         ) {
             if (isKeyWordSelected == true) {
                 viewModel.loadFeedItems()
             } else {
                 viewModel.loadFeedKeyWords()
             }
+            showLoadFailDialog.value = false
         }
     }
-
 }

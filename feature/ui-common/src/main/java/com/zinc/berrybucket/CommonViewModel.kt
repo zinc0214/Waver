@@ -1,11 +1,15 @@
 package com.zinc.berrybucket
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.util.SingleLiveEvent
+import com.zinc.common.utils.TAG
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,6 +23,13 @@ open class CommonViewModel @Inject constructor(
 
     private val _error = SingleLiveEvent<Nothing>()
     val error: LiveData<Nothing> get() = _error
+
+    fun <T> CEH(event: MutableLiveData<T>, value: T) =
+        CoroutineExceptionHandler { coroutineContext, throwable ->
+            Log.e(TAG, "loadMyProfile: $throwable")
+            event.value = value
+        }
+
 
     init {
         loadToken()

@@ -12,6 +12,7 @@ import com.zinc.common.models.FeedInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
+import com.zinc.domain.usecases.feed.SavedKeywordItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class FeedViewModel @Inject constructor(
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
+    private val savedKeywordItems: SavedKeywordItems,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
     private val _isKeyWordSelected = MutableLiveData<Boolean>()
@@ -34,6 +36,9 @@ class FeedViewModel @Inject constructor(
 
     private val _loadFail = SingleLiveEvent<Boolean>()
     val loadFail: LiveData<Boolean> get() = _loadFail
+
+    private val _savedKeywordSucceed = MutableLiveData<Boolean>()
+    val savedKeywordSucceed: LiveData<Boolean> get() = _savedKeywordSucceed
 
     fun loadKeyWordSelected() {
         _isKeyWordSelected.value = false
@@ -72,5 +77,18 @@ class FeedViewModel @Inject constructor(
 
     fun setKeyWordSelected() {
         _isKeyWordSelected.value = true
+    }
+
+    fun savedKeywordList(list: List<String>) {
+        viewModelScope.launch(CEH(_savedKeywordSucceed, false)) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    val response = savedKeywordItems.invoke(token, list)
+                    _savedKeywordSucceed.value = response.success
+                }.getOrElse {
+                    _savedKeywordSucceed.value = false
+                }
+            }
+        }
     }
 }

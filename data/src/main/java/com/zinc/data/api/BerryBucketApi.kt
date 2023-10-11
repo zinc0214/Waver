@@ -22,6 +22,7 @@ import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
 import com.zinc.domain.models.FeedKeywordResponse
+import com.zinc.domain.models.SavedKeywordItemsRequest
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -98,8 +99,15 @@ interface BerryBucketApi {
     @GET("/explore/keywords")
     suspend fun loadFeedKeyword(): FeedKeywordResponse
 
+    @POST("/explore/feeds/keyword")
+    suspend fun savedFeedKeywords(
+        @Header("Authorization") token: String,
+        @Body request: SavedKeywordItemsRequest
+    ): CommonResponse
+
     @GET("/feed")
     suspend fun loadFeedItems(): List<FeedInfo>
+
 
     @GET("/search/recommendList")
     suspend fun loadRecommendList(): RecommendList

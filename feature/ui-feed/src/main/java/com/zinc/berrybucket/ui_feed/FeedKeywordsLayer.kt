@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_feed
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,9 +51,15 @@ import com.zinc.berrybucket.ui.presentation.component.RoundChip
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
 
-
 @Composable
-fun FeedKeywordsLayer(keywords: List<UIFeedKeyword>, recommendClicked: () -> Unit) {
+fun FeedKeywordsLayer(
+    keywords: List<UIFeedKeyword>,
+    recommendClicked: (MutableList<String>) -> Unit
+) {
+
+    val selectedKeywordsList = remember { mutableListOf<String>() }
+
+    Log.e("ayhan", "selectedKeywordsList :$selectedKeywordsList")
 
     Column(
         modifier = Modifier
@@ -106,7 +113,9 @@ fun FeedKeywordsLayer(keywords: List<UIFeedKeyword>, recommendClicked: () -> Uni
 
             BodyContent(state = scrollState,
                 keywords = keywords,
-                recommendClicked = recommendClicked,
+                recommendClicked = {
+                    recommendClicked.invoke(selectedKeywordsList)
+                },
                 modifier = Modifier
                     .constrainAs(body) {
                         top.linkTo(toolbar.bottom)
@@ -116,6 +125,15 @@ fun FeedKeywordsLayer(keywords: List<UIFeedKeyword>, recommendClicked: () -> Uni
                         height = Dimension.fillToConstraints
                     }
                     .padding(horizontal = 28.dp),
+                updateSelectedKeyword = { id, selected ->
+                    if (selected) {
+                        selectedKeywordsList.add(id)
+                    } else {
+                        selectedKeywordsList.remove(id)
+                    }
+
+                    Log.e("ayhan", "selectedKeywordsList :$selectedKeywordsList")
+                },
                 scrollChanged = {
                     offset += it
                 }
@@ -158,14 +176,21 @@ private fun BodyContent(
     keywords: List<UIFeedKeyword>,
     recommendClicked: () -> Unit,
     modifier: Modifier,
+    updateSelectedKeyword: (String, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     Box(modifier = modifier, content = {
         ChipBodyContent(
-            modifier = Modifier.padding(bottom = 100.dp), state = state, keywords = keywords
-        ) {
-            scrollChanged(it)
-        }
+            modifier = Modifier.padding(bottom = 100.dp),
+            state = state,
+            keywords = keywords,
+            updateSelectedKeyword = { id, selected ->
+                updateSelectedKeyword(id, selected)
+            },
+            scrollChanged = {
+                scrollChanged(it)
+            }
+        )
         BucketRecommendButton(
             modifier = Modifier
                 .fillMaxWidth()
@@ -180,6 +205,7 @@ private fun ChipBodyContent(
     modifier: Modifier = Modifier,
     state: LazyGridState,
     keywords: List<UIFeedKeyword>,
+    updateSelectedKeyword: (String, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     LazyVerticalGrid(
@@ -202,6 +228,7 @@ private fun ChipBodyContent(
                     .clip(RoundedCornerShape(24.dp))
                     .selectable(selected = selected, onClick = {
                         selected = !selected
+                        updateSelectedKeyword(keywordItem.id, selected)
                     }),
                 chipRadius = 24.dp,
                 textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),

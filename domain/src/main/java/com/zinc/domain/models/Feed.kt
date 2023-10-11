@@ -11,3 +11,7 @@ data class FeedKeyWord(
     val id: String,
     val name: String
 )
+
+data class SavedKeywordItemsRequest(
+    val keywordIds: List<String>
+)
