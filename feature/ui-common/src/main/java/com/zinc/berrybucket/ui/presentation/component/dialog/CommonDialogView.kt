@@ -81,7 +81,7 @@ fun CommonDialogView(
                                 .padding(horizontal = 28.dp)
                                 .padding(top = 16.dp),
                             text = message,
-                            fontSize = dpToSp(dp = 12.dp),
+                            fontSize = dpToSp(dp = 16.dp),
                             color = Gray9,
                             textAlign = TextAlign.Start
                         )
