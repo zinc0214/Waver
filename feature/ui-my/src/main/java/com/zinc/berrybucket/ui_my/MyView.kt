@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui_my.databinding.LayoutMyViewBinding
@@ -55,7 +55,7 @@ class MyView @JvmOverloads constructor(
         }
     }
 
-    @OptIn(ExperimentalPagerApi::class)
+    @OptIn(ExperimentalFoundationApi::class)
     fun setTabView(
         tabItems: List<MyTabType>,
         pagerState: PagerState,
@@ -71,7 +71,6 @@ class MyView @JvmOverloads constructor(
         }
         binding.pagerComposeView.setContent {
             MyViewPager(
-                tabItems = tabItems,
                 pagerState = pagerState,
                 viewModel = viewModel,
                 itemSelected = itemSelected,

@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,7 +22,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
@@ -30,9 +34,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -54,6 +55,7 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyScreen(
     itemSelected: (HomeItemSelected) -> Unit,
@@ -68,7 +70,7 @@ fun MyScreen(
     val profileInfo by viewModel.profileInfo.observeAsState()
 
     val tabItems = MyTabType.values()
-    val pagerState = rememberPagerState()
+    val pagerState = rememberPagerState(pageCount = { tabItems.size })
 
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
@@ -98,6 +100,7 @@ fun MyScreen(
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyTabLayer(
     tabItems: List<MyTabType>, pagerState: PagerState, coroutineScope: CoroutineScope
@@ -131,9 +134,9 @@ fun MyTabLayer(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyViewPager(
-    tabItems: List<MyTabType>,
     pagerState: PagerState,
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
@@ -144,15 +147,84 @@ fun MyViewPager(
 ) {
 
     HorizontalPager(
-        count = tabItems.size,
+        modifier = Modifier,
         state = pagerState,
-        verticalAlignment = Alignment.Top
-    ) { page ->
-        when (page) {
-            0 -> {
-                AllBucketLayer(viewModel = viewModel,
-                    nestedScrollInterop = nestedScrollInterop,
-                    clickEvent = {
+        pageSize = PageSize.Fill,
+        key = { count -> count },
+        pageContent = { page ->
+            when (page) {
+                0 -> {
+                    AllBucketLayer(viewModel = viewModel,
+                        nestedScrollInterop = nestedScrollInterop,
+                        clickEvent = {
+                            when (it) {
+                                is MyPagerClickEvent.BucketItemClicked -> {
+                                    itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
+                                }
+
+                                is MyPagerClickEvent.SearchClicked -> {
+                                    coroutineScope.launch {
+                                        bottomSheetClicked.invoke(
+                                            BottomSheetScreenType.SearchScreen(
+                                                selectTab = ALL(), viewModel = viewModel
+                                            )
+                                        )
+                                    }
+                                }
+
+                                is MyPagerClickEvent.FilterClicked -> {
+                                    coroutineScope.launch {
+                                        bottomSheetClicked.invoke(
+                                            BottomSheetScreenType.FilterScreen(
+                                                selectTab = ALL(),
+                                                viewModel = viewModel
+                                            )
+                                        )
+                                    }
+                                }
+
+                                is MyPagerClickEvent.AchieveBucketClicked -> {
+                                    viewModel.achieveBucket(it.id, ALL())
+                                }
+
+                                else -> {
+                                    // Do Nothing
+                                }
+                            }
+                        })
+                }
+
+                1 -> {
+                    CategoryLayer(clickEvent = {
+                        when (it) {
+                            MyPagerClickEvent.CategoryEditClicked -> {
+                                goToCategoryEdit()
+                            }
+
+                            is MyPagerClickEvent.SearchClicked -> {
+                                coroutineScope.launch {
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.SearchScreen(
+                                            selectTab = CATEGORY(), viewModel = viewModel
+                                        )
+                                    )
+                                }
+                            }
+
+                            is MyPagerClickEvent.CategoryItemClicked -> {
+                                itemSelected.invoke(HomeItemSelected.GoToCategoryBucketList(it.info))
+                            }
+
+                            else -> {
+                                // Do Nothing
+                            }
+
+                        }
+                    })
+                }
+
+                2 -> {
+                    DdayBucketLayer(viewModel = viewModel, clickEvent = {
                         when (it) {
                             is MyPagerClickEvent.BucketItemClicked -> {
                                 itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
@@ -162,7 +234,8 @@ fun MyViewPager(
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.SearchScreen(
-                                            selectTab = ALL(), viewModel = viewModel
+                                            selectTab = DDAY(),
+                                            viewModel = viewModel
                                         )
                                     )
                                 }
@@ -172,7 +245,7 @@ fun MyViewPager(
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.FilterScreen(
-                                            selectTab = ALL(),
+                                            selectTab = DDAY(),
                                             viewModel = viewModel
                                         )
                                     )
@@ -180,7 +253,7 @@ fun MyViewPager(
                             }
 
                             is MyPagerClickEvent.AchieveBucketClicked -> {
-                                viewModel.achieveBucket(it.id, ALL())
+                                viewModel.achieveBucket(it.id, DDAY())
                             }
 
                             else -> {
@@ -188,81 +261,10 @@ fun MyViewPager(
                             }
                         }
                     })
-                return@HorizontalPager
-            }
-
-            1 -> {
-                CategoryLayer(clickEvent = {
-                    when (it) {
-                        MyPagerClickEvent.CategoryEditClicked -> {
-                            goToCategoryEdit()
-                        }
-
-                        is MyPagerClickEvent.SearchClicked -> {
-                            coroutineScope.launch {
-                                bottomSheetClicked.invoke(
-                                    BottomSheetScreenType.SearchScreen(
-                                        selectTab = CATEGORY(), viewModel = viewModel
-                                    )
-                                )
-                            }
-                        }
-
-                        is MyPagerClickEvent.CategoryItemClicked -> {
-                            itemSelected.invoke(HomeItemSelected.GoToCategoryBucketList(it.info))
-                        }
-
-                        else -> {
-                            // Do Nothing
-                        }
-
-                    }
-                })
-                return@HorizontalPager
-            }
-
-            2 -> {
-                DdayBucketLayer(viewModel = viewModel, clickEvent = {
-                    when (it) {
-                        is MyPagerClickEvent.BucketItemClicked -> {
-                            itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
-                        }
-
-                        is MyPagerClickEvent.SearchClicked -> {
-                            coroutineScope.launch {
-                                bottomSheetClicked.invoke(
-                                    BottomSheetScreenType.SearchScreen(
-                                        selectTab = DDAY(),
-                                        viewModel = viewModel
-                                    )
-                                )
-                            }
-                        }
-
-                        is MyPagerClickEvent.FilterClicked -> {
-                            coroutineScope.launch {
-                                bottomSheetClicked.invoke(
-                                    BottomSheetScreenType.FilterScreen(
-                                        selectTab = DDAY(),
-                                        viewModel = viewModel
-                                    )
-                                )
-                            }
-                        }
-
-                        is MyPagerClickEvent.AchieveBucketClicked -> {
-                            viewModel.achieveBucket(it.id, DDAY())
-                        }
-
-                        else -> {
-                            // Do Nothing
-                        }
-                    }
-                })
-                return@HorizontalPager
+                }
             }
         }
-    }
+    )
 }
 
 @Composable
