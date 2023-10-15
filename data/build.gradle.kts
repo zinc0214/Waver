@@ -1,7 +1,7 @@
 plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
-    kotlin("android")
+    id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
 }
@@ -20,9 +20,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kapt {
-        correctErrorTypes = true
-    }
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -31,10 +28,6 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
-
-    testImplementation(Dep.Test.junit)
-    androidTestImplementation(Dep.Test.androidJunit)
-    androidTestImplementation(Dep.Test.espressoCore)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)
