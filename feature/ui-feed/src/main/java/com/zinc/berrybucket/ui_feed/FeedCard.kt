@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.zinc.berrybucket.model.profileInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray5
@@ -37,14 +36,15 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
+import com.zinc.berrybucket.ui_feed.models.UIFeedInfo
+import com.zinc.berrybucket.ui_feed.models.profileInfo
 import com.zinc.berrybucket.util.shadow
-import com.zinc.common.models.FeedInfo
 
 
 @Composable
 fun FeedListView(
     modifier: Modifier = Modifier,
-    feedItems: List<FeedInfo>,
+    feedItems: List<UIFeedInfo>,
     feedClicked: (String) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -62,7 +62,7 @@ fun FeedListView(
 
 
 @Composable
-fun FeedCardView(feedInfo: FeedInfo, feedClicked: (String) -> Unit) {
+fun FeedCardView(feedInfo: UIFeedInfo, feedClicked: (String) -> Unit) {
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -98,12 +98,12 @@ fun FeedCardView(feedInfo: FeedInfo, feedClicked: (String) -> Unit) {
                 title = feedInfo.title
             )
 
-            feedInfo.imageList?.let {
+            if (feedInfo.imageList.isNullOrEmpty().not()) {
                 ImageView(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(top = 20.dp),
-                    imageList = it
+                    imageList = feedInfo.imageList.orEmpty()
                 )
             }
 
@@ -161,7 +161,7 @@ private fun ImageView(modifier: Modifier = Modifier, imageList: List<String>) {
 }
 
 @Composable
-private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
+private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: UIFeedInfo) {
     ConstraintLayout(modifier = modifier) {
         val (leftContent, rightContent) = createRefs()
 
@@ -187,7 +187,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
             Spacer(modifier = Modifier.width(4.dp))
 
             MyText(
-                text = feedInfo.likeCount,
+                text = feedInfo.likeCount.toString(),
                 color = Gray10,
                 fontSize = dpToSp(12.dp),
                 modifier = Modifier
@@ -209,7 +209,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
             Spacer(modifier = Modifier.width(4.dp))
 
             MyText(
-                text = feedInfo.commentCount,
+                text = feedInfo.commentCount.toString(),
                 color = Gray10,
                 fontSize = dpToSp(12.dp),
                 modifier = Modifier
@@ -218,7 +218,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: FeedInfo) {
         }
 
         IconButton(
-            image = if (feedInfo.copied) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
+            image = if (feedInfo.isScraped) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
             contentDescription = null,
             onClick = {
                 // Go TO Comment!

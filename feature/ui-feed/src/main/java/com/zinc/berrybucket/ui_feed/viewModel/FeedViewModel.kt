@@ -5,10 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.ui_feed.models.UIFeedInfo
 import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
 import com.zinc.berrybucket.ui_feed.models.parseUI
+import com.zinc.berrybucket.ui_feed.models.toUIModel
 import com.zinc.berrybucket.util.SingleLiveEvent
-import com.zinc.common.models.FeedInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
@@ -31,8 +32,8 @@ class FeedViewModel @Inject constructor(
     private val _feedKeyWords = MutableLiveData<List<UIFeedKeyword>>()
     val feedKeyWords: LiveData<List<UIFeedKeyword>> get() = _feedKeyWords
 
-    private val _feedItems = MutableLiveData<List<FeedInfo>>()
-    val feedItems: LiveData<List<FeedInfo>> get() = _feedItems
+    private val _feedItems = MutableLiveData<List<UIFeedInfo>>()
+    val feedItems: LiveData<List<UIFeedInfo>> get() = _feedItems
 
     private val _loadFail = SingleLiveEvent<Boolean>()
     val loadFail: LiveData<Boolean> get() = _loadFail
@@ -65,12 +66,24 @@ class FeedViewModel @Inject constructor(
     }
 
     fun loadFeedItems() {
-        viewModelScope.launch {
+        viewModelScope.launch(CEH(_loadFail, true)) {
             kotlin.runCatching {
-                loadFeedItems.invoke().apply {
-                    _feedItems.value = this
+                accessToken.value?.let { token ->
+                    loadFeedItems.invoke(token).apply {
+                        Log.e("ayhan", "feedListResponse : $this")
+                        if (this.success.not()) {
+                            _loadFail.value = true
+                        } else if (this.code == "5000") {
+                            _isKeyWordSelected.value = false
+                        } else {
+                            _feedItems.value = this.data.toUIModel()
+                        }
+                    }
                 }
-            }.getOrElse { }
+
+            }.getOrElse {
+                _loadFail.value = true
+            }
 
         }
     }

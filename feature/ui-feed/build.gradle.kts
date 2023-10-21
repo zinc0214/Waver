@@ -3,6 +3,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -56,4 +57,6 @@ dependencies {
     implementation(Dep.Dagger.Hilt.android)
     implementation(Dep.Dagger.Hilt.navigation)
     kapt(Dep.Dagger.Hilt.compiler)
+
+    implementation(Dep.Retrofit.serialization)
 }

@@ -15,3 +15,36 @@ data class FeedKeyWord(
 data class SavedKeywordItemsRequest(
     val keywordIds: List<String>
 )
+
+data class FeedListResponse(
+    val success: Boolean,
+    val code: String,
+    val message: String,
+    val data: FeedData
+) {
+    data class FeedData(
+        val list: List<FeedItemResponse>
+    )
+
+    data class FeedItemResponse(
+        val id: String,
+        val status: FeedItemBucketStatus,
+        val title: String,
+        val images: List<String>,
+        val user: UserInfo,
+        val like: Int,
+        val commentCount: Int,
+        val isScraped: Boolean = false
+
+    ) {
+        enum class FeedItemBucketStatus {
+            COMPLETE, PROGRESS
+        }
+
+        data class UserInfo(
+            val name: String,
+            val imgUrl: String
+        )
+    }
+}
+

@@ -16,12 +16,12 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.FeedInfo
+import com.zinc.berrybucket.ui_feed.models.UIFeedInfo
 
 @Composable
 fun FeedLayer(
     modifier: Modifier,
-    feedItems: List<FeedInfo>,
+    feedItems: List<UIFeedInfo>,
     feedClicked: (String) -> Unit
 ) {
 
