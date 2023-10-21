@@ -20,6 +20,11 @@ object Dep {
         const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Dagger.version}"
     }
 
+    object ComposeLib {
+        const val reorderable = "org.burnoutcrew.composereorderable:reorderable:0.9.6"
+        const val toolbar = "me.onebone:toolbar-compose:2.3.5"
+    }
+
     object AndroidX {
         object activity {
             const val activityVersion = "1.7.2"
