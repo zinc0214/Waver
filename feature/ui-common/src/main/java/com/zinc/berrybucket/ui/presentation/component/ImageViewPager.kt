@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -21,13 +24,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
 import com.zinc.berrybucket.ui_common.R
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageViewPagerOutSideIndicator(
     modifier: Modifier = Modifier,
@@ -39,7 +39,7 @@ fun ImageViewPagerOutSideIndicator(
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        val pagerState = rememberPagerState()
+        val pagerState = rememberPagerState(pageCount = { imageList.size })
 
         Card(
             modifier = Modifier
@@ -52,7 +52,6 @@ fun ImageViewPagerOutSideIndicator(
             content = {
                 // Display 10 items
                 HorizontalPager(
-                    count = imageList.size,
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -79,7 +78,7 @@ fun ImageViewPagerOutSideIndicator(
 }
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ImageViewPagerInsideIndicator(
     modifier: Modifier = Modifier,
@@ -92,7 +91,7 @@ fun ImageViewPagerInsideIndicator(
             .fillMaxWidth()
             .wrapContentHeight(),
         content = {
-            val pagerState = rememberPagerState()
+            val pagerState = rememberPagerState(pageCount = { imageList.size })
 
             Card(
                 modifier = Modifier
@@ -104,7 +103,6 @@ fun ImageViewPagerInsideIndicator(
                 elevation = 0.dp,
                 content = {
                     HorizontalPager(
-                        count = imageList.size,
                         state = pagerState,
                         modifier = Modifier
                             .fillMaxWidth()

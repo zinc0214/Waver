@@ -1,11 +1,13 @@
 package com.zinc.berrybucket.ui.presentation.component
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,12 +18,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerState
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Main3
 
-@ExperimentalPagerApi
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalPagerIndicator(
     pagerState: PagerState,
@@ -57,13 +57,14 @@ fun HorizontalPagerIndicator(
         Box(
             Modifier
                 .offset {
-                    val scrollPosition = (pagerState.currentPage + pagerState.currentPageOffset)
-                        .coerceIn(
-                            0f,
-                            (pagerState.pageCount - 1)
-                                .coerceAtLeast(0)
-                                .toFloat()
-                        )
+                    val scrollPosition =
+                        (pagerState.currentPage + pagerState.currentPageOffsetFraction)
+                            .coerceIn(
+                                0f,
+                                (pagerState.pageCount - 1)
+                                    .coerceAtLeast(0)
+                                    .toFloat()
+                            )
                     IntOffset(
                         x = ((spacingPx + indicatorWidthPx) * scrollPosition).toInt(),
                         y = 0
