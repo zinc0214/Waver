@@ -34,6 +34,7 @@ android {
 dependencies {
 
     implementation(project(":common"))
+    implementation(project(":domain"))
     implementation(project(":datastore"))
 
     val composeBom = platform(Dep.AndroidX.Compose.Bom.version)
