@@ -67,12 +67,14 @@ fun ImageViewPagerOutSideIndicator(
             }
         )
 
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(top = 4.dp),
-        )
+        if (imageList.size > 1) {
+            HorizontalPagerIndicator(
+                pagerState = pagerState,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(top = 4.dp),
+            )
+        }
     }
 }
 
