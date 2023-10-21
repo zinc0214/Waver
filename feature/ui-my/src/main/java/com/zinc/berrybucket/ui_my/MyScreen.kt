@@ -32,7 +32,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.model.HomeItemSelected
@@ -41,7 +40,6 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.ALL
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.model.MyTabType.DDAY
-import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
@@ -54,6 +52,9 @@ import com.zinc.berrybucket.ui_my.screen.dday.DdayBucketLayer
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -74,27 +75,33 @@ fun MyScreen(
 
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
-    profileInfo?.let { profile ->
+    profileInfo?.let {
         rememberSystemUiController().setSystemBarsColor(Gray1)
-        BaseTheme {
-            AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
-                MyView(context).apply {
-                    setProfileInfo(profile, myTopEvent)
-                    setTabView(
-                        tabItems = tabItems,
-                        pagerState = pagerState,
-                        viewModel = viewModel,
-                        coroutineScope = coroutineScope,
-                        itemSelected = itemSelected,
-                        nestedScrollInterop = nestedScrollInterop,
-                        goToCategoryEdit = {
-                            goToCategoryEdit()
-                        },
-                        bottomSheetClicked = {
-                            bottomSheetClicked.invoke(it)
-                        })
+        CollapsingToolbarScaffold(
+            modifier = Modifier.fillMaxSize(),
+            state = rememberCollapsingToolbarScaffoldState(),
+            scrollStrategy = ScrollStrategy.EnterAlways,
+            toolbar = {
+                Column {
+                    MyTopLayer(profileInfo = profileInfo) {
+                        myTopEvent(it)
+                    }
+
                 }
-            })
+            }
+        ) {
+            Column {
+                MyTabLayer(tabItems, pagerState, coroutineScope)
+                MyViewPager(
+                    pagerState = pagerState,
+                    viewModel = viewModel,
+                    itemSelected = itemSelected,
+                    bottomSheetClicked = bottomSheetClicked,
+                    goToCategoryEdit = goToCategoryEdit,
+                    coroutineScope = coroutineScope,
+                    nestedScrollInterop = nestedScrollInterop
+                )
+            }
         }
     }
 }
@@ -159,7 +166,11 @@ fun MyViewPager(
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.BucketItemClicked -> {
-                                    itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
+                                    itemSelected.invoke(
+                                        HomeItemSelected.GoToDetailHomeItem(
+                                            it.info
+                                        )
+                                    )
                                 }
 
                                 is MyPagerClickEvent.SearchClicked -> {
@@ -212,7 +223,11 @@ fun MyViewPager(
                             }
 
                             is MyPagerClickEvent.CategoryItemClicked -> {
-                                itemSelected.invoke(HomeItemSelected.GoToCategoryBucketList(it.info))
+                                itemSelected.invoke(
+                                    HomeItemSelected.GoToCategoryBucketList(
+                                        it.info
+                                    )
+                                )
                             }
 
                             else -> {
@@ -288,7 +303,8 @@ private fun MyTab(
             style = if (isSelected) textStyle.copy(color = Gray10)
             else textStyle.copy(color = Gray6),
             onTextLayout = { textLayoutResult ->
-                tabWidths[currentIndex] = with(density) { textLayoutResult.size.width.toDp() }
+                tabWidths[currentIndex] =
+                    with(density) { textLayoutResult.size.width.toDp() }
             })
 
         Box(

@@ -81,6 +81,17 @@ fun SimpleBucketListView(
         columModifier.nestedScroll(nestedScrollInterop)
     }
 
+//    Column(modifier = columModifier) {
+//        data.forEach { bucket ->
+//            SimpleBucketCard(
+//                itemInfo = bucket,
+//                tabType = tabType,
+//                isShowDday = showDday,
+//                itemClicked = { itemClicked.invoke(it) },
+//                achieveClicked = { achieveClicked.invoke(it) }
+//            )
+//        }
+//    }
     LazyColumn(
         modifier = columModifier,
         contentPadding = PaddingValues(bottom = 140.dp),

@@ -61,6 +61,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.AndroidX.Compose.systemUiController)
     implementation("org.burnoutcrew.composereorderable:reorderable:0.9.6")
+    implementation("me.onebone:toolbar-compose:2.3.5")
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)

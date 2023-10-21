@@ -16,6 +16,7 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 import com.zinc.domain.models.TopProfile
 import kotlinx.coroutines.CoroutineScope
 
+// TODO : 제거예정
 class MyView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
