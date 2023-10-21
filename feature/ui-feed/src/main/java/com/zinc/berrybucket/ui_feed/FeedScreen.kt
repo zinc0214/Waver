@@ -22,35 +22,34 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
     val apiLoadFail by viewModel.loadFail.observeAsState()
-    val savedKeywordSucceed by viewModel.savedKeywordSucceed.observeAsState()
+    val feedItems by viewModel.feedItems.observeAsState()
+    val feedKeyWords by viewModel.feedKeyWords.observeAsState()
 
     val showLoadFailDialog = remember {
         mutableStateOf(false)
     }
+    val isAlreadyKeywordSelected = remember {
+        mutableStateOf(false)
+    }
 
-    if (isKeyWordSelected == null) {
-        viewModel.loadKeyWordSelected()
+    if (feedItems.isNullOrEmpty()) {
+        viewModel.loadFeedItems()
+    }
+
+    LaunchedEffect(key1 = isKeyWordSelected) {
+        if (isKeyWordSelected == false) {
+            viewModel.loadFeedKeyWords()
+        }
+        isAlreadyKeywordSelected.value = isKeyWordSelected == true
     }
 
     LaunchedEffect(key1 = apiLoadFail) {
         showLoadFailDialog.value = apiLoadFail == true
     }
 
-    LaunchedEffect(key1 = savedKeywordSucceed) {
-        if (savedKeywordSucceed == true) {
-            viewModel.setKeyWordSelected()
-        } else if (savedKeywordSucceed == false) {
-            showLoadFailDialog.value = true
-        }
-    }
-
     Scaffold { padding ->
         rememberSystemUiController().setSystemBarsColor(Gray2)
-        if (isKeyWordSelected == true) {
-            val feedItems by viewModel.feedItems.observeAsState()
-            if (feedItems == null) {
-                viewModel.loadFeedItems()
-            }
+        if (isAlreadyKeywordSelected.value) {
             feedItems?.let {
                 FeedLayer(
                     modifier = Modifier.padding(padding),
@@ -59,8 +58,6 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
                 )
             }
         } else {
-            viewModel.loadFeedKeyWords()
-            val feedKeyWords by viewModel.feedKeyWords.observeAsState()
             feedKeyWords?.let {
                 FeedKeywordsLayer(keywords = it, recommendClicked = { list ->
                     viewModel.savedKeywordList(list)

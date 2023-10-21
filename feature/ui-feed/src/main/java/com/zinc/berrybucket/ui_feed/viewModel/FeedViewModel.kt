@@ -38,13 +38,6 @@ class FeedViewModel @Inject constructor(
     private val _loadFail = SingleLiveEvent<Boolean>()
     val loadFail: LiveData<Boolean> get() = _loadFail
 
-    private val _savedKeywordSucceed = MutableLiveData<Boolean>()
-    val savedKeywordSucceed: LiveData<Boolean> get() = _savedKeywordSucceed
-
-    fun loadKeyWordSelected() {
-        _isKeyWordSelected.value = false
-    }
-
     fun loadFeedKeyWords() {
         viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
             _loadFail.value = true
@@ -76,11 +69,11 @@ class FeedViewModel @Inject constructor(
                         } else if (this.code == "5000") {
                             _isKeyWordSelected.value = false
                         } else {
+                            _isKeyWordSelected.value = true
                             _feedItems.value = this.data.toUIModel()
                         }
                     }
                 }
-
             }.getOrElse {
                 _loadFail.value = true
             }
@@ -88,18 +81,14 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun setKeyWordSelected() {
-        _isKeyWordSelected.value = true
-    }
-
     fun savedKeywordList(list: List<String>) {
-        viewModelScope.launch(CEH(_savedKeywordSucceed, false)) {
+        viewModelScope.launch(CEH(_isKeyWordSelected, false)) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = savedKeywordItems.invoke(token, list)
-                    _savedKeywordSucceed.value = response.success
+                    _isKeyWordSelected.value = response.success
                 }.getOrElse {
-                    _savedKeywordSucceed.value = false
+                    _loadFail.value = true
                 }
             }
         }
