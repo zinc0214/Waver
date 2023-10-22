@@ -19,6 +19,7 @@ import com.zinc.berrybucket.util.nav.BucketListDetailDestinations
 import com.zinc.berrybucket.util.nav.MainDestinations
 import com.zinc.berrybucket.util.nav.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.util.nav.MoreDestinations
+import com.zinc.berrybucket.util.nav.OtherDestinations
 import com.zinc.berrybucket.util.nav.SearchDestinations
 import com.zinc.berrybucket.util.nav.WriteDestinations
 import com.zinc.common.models.ReportInfo
@@ -207,6 +208,12 @@ class BerryBucketAppState(
     fun navigateToFollowerSettingList(from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate(MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING)
+        }
+    }
+
+    fun navigateToOtherHome(from: NavBackStackEntry, userId: String) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate("${OtherDestinations.GO_TO_OTHER_HOME}/${userId}")
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.ui_my.screen.profile
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,10 +33,13 @@ import com.zinc.common.models.OtherProfileInfo
 @Composable
 fun FollowItemView(
     modifier: Modifier,
-    info: OtherProfileInfo
+    info: OtherProfileInfo,
+    goToOtherHome: (String) -> Unit
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier.clickable {
+            goToOtherHome(info.id)
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -79,6 +83,7 @@ private fun FollowItemPreview() {
             imgUrl = "",
             name = "프로필의 이름이 길면 점점점이 노출되어야 하니까 테스트 해볼까? ",
             mutualFollow = false
-        )
+        ),
+        {}
     )
 }

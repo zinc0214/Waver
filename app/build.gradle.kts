@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":feature:ui-feed"))
     implementation(project(":feature:ui-more"))
     implementation(project(":feature:ui-write"))
+    implementation(project(":feature:ui-other"))
 
     // android X
     implementation(Dep.AndroidX.coreKtx)

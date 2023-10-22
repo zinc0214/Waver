@@ -22,7 +22,8 @@ import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 @Composable
 fun FollowingListScreen(
     goToBack: () -> Unit,
-    goToSetting: () -> Unit
+    goToSetting: () -> Unit,
+    goToOtherHome: (String) -> Unit
 ) {
 
     val viewModel: FollowViewModel = hiltViewModel()
@@ -51,7 +52,7 @@ fun FollowingListScreen(
                 items(items = followingList, key = { member ->
                     member.id
                 }, itemContent = { member ->
-                    FollowItemView(modifier = Modifier.fillMaxWidth(), info = member)
+                    FollowItemView(modifier = Modifier.fillMaxWidth(), info = member, goToOtherHome)
                 })
             }
         }

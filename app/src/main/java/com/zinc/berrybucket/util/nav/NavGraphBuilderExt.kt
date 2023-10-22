@@ -36,6 +36,7 @@ import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListSettingScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
+import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
 import com.zinc.berrybucket.ui_write.model.Write1Event
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
@@ -172,7 +173,8 @@ internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
 
 internal fun NavGraphBuilder.myFollowingListNavGraph(
     backPress: () -> Unit,
-    goToSetting: (NavBackStackEntry) -> Unit
+    goToSetting: (NavBackStackEntry) -> Unit,
+    goToOtherHome: (NavBackStackEntry, String) -> Unit
 ) {
     composable(MY_FOLLOWING) { nav ->
         FollowingListScreen(
@@ -181,38 +183,50 @@ internal fun NavGraphBuilder.myFollowingListNavGraph(
             },
             goToSetting = {
                 goToSetting(nav)
+            },
+            goToOtherHome = { id ->
+                goToOtherHome(nav, id)
             }
         )
     }
 }
 
 internal fun NavGraphBuilder.myFollowingSettingNavGraph(
-    backPress: () -> Unit
+    backPress: () -> Unit,
+    goToOtherHome: (NavBackStackEntry, String) -> Unit
 ) {
-    composable(MY_FOLLOWING_SETTING) {
+    composable(MY_FOLLOWING_SETTING) { nav ->
         FollowingListSettingScreen(
             goToBack = {
                 backPress()
-            }
+            },
+            goToOtherHome = { id -> goToOtherHome(nav, id) }
         )
     }
 }
 
 internal fun NavGraphBuilder.myFollowerListNavGraph(
     backPress: () -> Unit,
-    goToSetting: (NavBackStackEntry) -> Unit
+    goToSetting: (NavBackStackEntry) -> Unit,
+    goToOtherHome: (NavBackStackEntry, String) -> Unit
 ) {
     composable(MY_FOLLOWER) { nav ->
-        FollowerListScreen(goToBack = { backPress() }, goToSetting = { goToSetting(nav) }
+        FollowerListScreen(
+            goToBack = { backPress() },
+            goToSetting = { goToSetting(nav) },
+            goToOtherHome = { id -> goToOtherHome(nav, id) }
         )
     }
 }
 
 internal fun NavGraphBuilder.myFollowerSettingNavGraph(
-    backPress: () -> Unit
+    backPress: () -> Unit,
+    goToOtherHome: (NavBackStackEntry, String) -> Unit
 ) {
     composable(MY_FOLLOWER_SETTING) { nav ->
-        FollowerListSettingScreen(goToBack = { backPress() })
+        FollowerListSettingScreen(
+            goToBack = { backPress() },
+            goToOtherHome = { id -> goToOtherHome(nav, id) })
     }
 }
 
@@ -417,6 +431,23 @@ internal fun NavGraphBuilder.bucketDetailNavGraph(
     }
 }
 
+internal fun NavGraphBuilder.goToOtherHomeNavGraph(
+    backPress: () -> Unit
+) {
+    composable(
+        "${OtherDestinations.GO_TO_OTHER_HOME}/{${OtherDestinations.OTHER_USER_ID}}",
+        arguments = listOf(navArgument(OtherDestinations.OTHER_USER_ID) {
+            type = NavType.StringType
+        })
+    ) { backStackEntry ->
+        val arguments = requireNotNull(backStackEntry.arguments)
+        val otherId = arguments.getString(OtherDestinations.OTHER_USER_ID) ?: ""
+        OtherHomeScreen(userId = otherId) {
+            backPress()
+        }
+    }
+}
+
 object MainDestinations {
     const val HOME_ROUTE = "home"
     const val CLOSE_BUCKET_DETAIL = "close_bucket_detail"
@@ -463,6 +494,11 @@ object MoreDestinations {
 
 object AlarmDestinations {
     const val GO_TO_ALARM = "go_to_alarm"
+}
+
+object OtherDestinations {
+    const val GO_TO_OTHER_HOME = "go_to_other_home"
+    const val OTHER_USER_ID = "other_user_id"
 }
 
 sealed class SearchEvent {

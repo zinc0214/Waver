@@ -42,6 +42,7 @@ import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
 import com.zinc.berrybucket.util.nav.bucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.bucketNavGraph
+import com.zinc.berrybucket.util.nav.goToOtherHomeNavGraph
 import com.zinc.berrybucket.util.nav.homeCategoryBucketListNavGraph
 import com.zinc.berrybucket.util.nav.homeCategoryEditNavGraph
 import com.zinc.berrybucket.util.nav.homeFeed
@@ -258,15 +259,29 @@ fun BerryBucketApp(
                             backPress = appState::backPress,
                             goToSetting = { nav ->
                                 appState.navigateToFollowingSettingList(from = nav)
+                            },
+                            goToOtherHome = { nav, id ->
+                                appState.navigateToOtherHome(nav, id)
                             })
 
-                        myFollowingSettingNavGraph(backPress = appState::backPress)
+                        myFollowingSettingNavGraph(backPress = appState::backPress,
+                            goToOtherHome = { nav, id ->
+                                appState.navigateToOtherHome(nav, id)
+                            })
 
-                        myFollowerListNavGraph(backPress = appState::backPress, goToSetting = {
-                            appState.navigateToFollowerSettingList(it)
-                        })
+                        myFollowerListNavGraph(
+                            backPress = appState::backPress,
+                            goToSetting = {
+                                appState.navigateToFollowerSettingList(it)
+                            },
+                            goToOtherHome = { nav, id ->
+                                appState.navigateToOtherHome(nav, id)
+                            })
 
-                        myFollowerSettingNavGraph(backPress = appState::backPress)
+                        myFollowerSettingNavGraph(backPress = appState::backPress,
+                            goToOtherHome = { nav, id ->
+                                appState.navigateToOtherHome(nav, id)
+                            })
 
                         bucketDetailNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->
@@ -313,6 +328,9 @@ fun BerryBucketApp(
                             moreItemClicked = {
 
                             }
+                        )
+                        goToOtherHomeNavGraph(
+                            backPress = appState::backPress,
                         )
                     }
                 }

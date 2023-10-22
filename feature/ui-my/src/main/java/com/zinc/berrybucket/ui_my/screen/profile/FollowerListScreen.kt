@@ -33,7 +33,8 @@ import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 @Composable
 fun FollowerListScreen(
     goToBack: () -> Unit,
-    goToSetting: () -> Unit
+    goToSetting: () -> Unit,
+    goToOtherHome: (String) -> Unit
 ) {
 
     val viewModel: FollowViewModel = hiltViewModel()
@@ -84,7 +85,8 @@ fun FollowerListScreen(
                                     bottom.linkTo(parent.bottom)
                                     end.linkTo(unFollowButton.start)
                                     width = Dimension.fillToConstraints
-                                }
+                                },
+                            goToOtherHome = goToOtherHome
                         )
 
                         if (member.mutualFollow) {
@@ -128,7 +130,8 @@ private fun FollowingListSettingScreenPreview() {
     val viewModel: FollowViewModel = hiltViewModel()
 
     FollowingListSettingScreen(
-        goToBack = {}
+        goToBack = {},
+        {}
 
     )
 }

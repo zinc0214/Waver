@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="followerText">팔로워</string>
+    <string name="followingText">팔로잉</string>
+    <string name="otherFollow">팔로우</string>
+    <string name="otherFollowed">팔로잉</string>
+</resources>

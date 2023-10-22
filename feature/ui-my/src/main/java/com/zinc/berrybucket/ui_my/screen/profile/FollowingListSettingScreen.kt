@@ -36,7 +36,9 @@ import com.zinc.berrybucket.ui_my.viewModel.FollowViewModel
 
 @Composable
 fun FollowingListSettingScreen(
-    goToBack: () -> Unit
+    goToBack: () -> Unit,
+    goToOtherHome: (String) -> Unit
+
 ) {
 
     val viewModel: FollowViewModel = hiltViewModel()
@@ -108,7 +110,8 @@ fun FollowingListSettingScreen(
                                     bottom.linkTo(parent.bottom)
                                     end.linkTo(unFollowButton.start)
                                     width = Dimension.fillToConstraints
-                                }
+                                },
+                            goToOtherHome = goToOtherHome
                         )
 
                         RoundChip(
@@ -146,7 +149,8 @@ private fun FollowingListSettingScreenPreview() {
     val viewModel: FollowViewModel = hiltViewModel()
 
     FollowingListSettingScreen(
-        goToBack = {}
+        goToBack = {},
+        goToOtherHome = {}
 
     )
 }
