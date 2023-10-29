@@ -41,6 +41,17 @@ interface BerryBucketApi {
     @POST("/user/join")
     suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
 
+    // 프로필생성
+    @POST("/user/profile")
+    @Multipart
+    suspend fun crateProfile(
+        @Header("Authorization") token: String,
+        @Part accountType: MultipartBody.Part, // 기기 유형
+        @Part name: MultipartBody.Part,
+        @Part bio: MultipartBody.Part?,
+        @Part profileImage: MultipartBody.Part?
+    ): CommonResponse
+
     @GET("/my")
     suspend fun loadMyProfileInfo(@Header("Authorization") token: String): HomeProfileResponse
 

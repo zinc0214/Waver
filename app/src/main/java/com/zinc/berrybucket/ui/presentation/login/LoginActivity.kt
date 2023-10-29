@@ -17,7 +17,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel.updateAppVersion(BuildConfig.VERSION_NAME)
-        viewModel.joinBerryBucket()
+        viewModel.loginBerryBucket()
 
         viewModel.joinResponse.observe(this) {
             startActivity(Intent(this, HomeActivity::class.java))
@@ -28,6 +28,10 @@ class LoginActivity : AppCompatActivity() {
         viewModel.failJoin.observe(this) {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
+        }
+
+        viewModel.canGoToLogin.observe(this) {
+            viewModel.loginBerryBucket()
         }
     }
 }
