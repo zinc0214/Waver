@@ -51,6 +51,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.Bom.runtime)
     implementation(Dep.AndroidX.Compose.accompanist)
     implementation(Dep.AndroidX.Compose.systemUiController)
+    implementation(Dep.AndroidX.Compose.constraintLayout)
     implementation(Dep.ComposeLib.toolbar)
 
     // Hilt
