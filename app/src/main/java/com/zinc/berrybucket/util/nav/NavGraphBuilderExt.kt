@@ -230,7 +230,7 @@ internal fun NavGraphBuilder.myFollowerSettingNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.bucketNavGraph(
+internal fun NavGraphBuilder.openBucketReportNavGraph(
     backPress: () -> Unit
 ) {
     navigation(
@@ -385,7 +385,7 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.bucketDetailNavGraph(
+internal fun NavGraphBuilder.openBucketDetailNavGraph(
     goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
@@ -415,6 +415,12 @@ internal fun NavGraphBuilder.bucketDetailNavGraph(
             }, backPress = backPress
         )
     }
+}
+
+internal fun NavGraphBuilder.closeBucketDetailNavGraph(
+    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
+    backPress: () -> Unit
+) {
     composable(
         "${MainDestinations.CLOSE_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
         arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {

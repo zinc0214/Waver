@@ -40,8 +40,7 @@ import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
-import com.zinc.berrybucket.util.nav.bucketDetailNavGraph
-import com.zinc.berrybucket.util.nav.bucketNavGraph
+import com.zinc.berrybucket.util.nav.closeBucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.goToOtherHomeNavGraph
 import com.zinc.berrybucket.util.nav.homeCategoryBucketListNavGraph
 import com.zinc.berrybucket.util.nav.homeCategoryEditNavGraph
@@ -58,6 +57,8 @@ import com.zinc.berrybucket.util.nav.myFollowerListNavGraph
 import com.zinc.berrybucket.util.nav.myFollowerSettingNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingListNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
+import com.zinc.berrybucket.util.nav.openBucketDetailNavGraph
+import com.zinc.berrybucket.util.nav.openBucketReportNavGraph
 import com.zinc.berrybucket.util.nav.searchNavGraph
 import com.zinc.berrybucket.util.nav.writeNavGraph1
 import com.zinc.berrybucket.util.nav.writeNavGraph2
@@ -283,7 +284,7 @@ fun BerryBucketApp(
                                 appState.navigateToOtherHome(nav, id)
                             })
 
-                        bucketDetailNavGraph(
+                        openBucketDetailNavGraph(
                             goToBucketDetailEvent = { eventInfo, nav ->
                                 when (eventInfo) {
                                     is GoToBucketDetailEvent.GoToCommentReport -> {
@@ -297,7 +298,22 @@ fun BerryBucketApp(
                             },
                             backPress = appState::backPress
                         )
-                        bucketNavGraph(backPress = appState::backPress)
+
+                        closeBucketDetailNavGraph(
+                            goToBucketDetailEvent = { eventInfo, nav ->
+                                when (eventInfo) {
+                                    is GoToBucketDetailEvent.GoToCommentReport -> {
+                                        appState.navigateToCommentReport(eventInfo.reportInfo, nav)
+                                    }
+
+                                    is GoToBucketDetailEvent.GoToUpdate -> {
+                                        appState.navigateToWrite1(eventInfo.info, nav)
+                                    }
+                                }
+                            },
+                            backPress = appState::backPress
+                        )
+                        openBucketReportNavGraph(backPress = appState::backPress)
                         searchNavGraph(backPress = appState::backPress)
                         writeNavGraph1(action = { actionType -> action(actionType) },
                             backPress = {
