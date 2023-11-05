@@ -110,13 +110,13 @@ interface BerryBucketApi {
     @GET("/explore/keywords")
     suspend fun loadFeedKeyword(): FeedKeywordResponse
 
-    @POST("/explore/feeds/keyword")
+    @POST("/feeds/keyword")
     suspend fun savedFeedKeywords(
         @Header("Authorization") token: String,
         @Body request: SavedKeywordItemsRequest
     ): CommonResponse
 
-    @GET("/explore/feeds/keywords")
+    @GET("/feeds/keywords")
     suspend fun loadFeedItems(@Header("Authorization") token: String): FeedListResponse
 
     @GET("/search/recommendList")
