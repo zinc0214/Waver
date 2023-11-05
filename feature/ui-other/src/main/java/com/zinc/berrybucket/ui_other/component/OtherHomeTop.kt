@@ -1,25 +1,31 @@
 package com.zinc.berrybucket.ui_other.component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.ui.design.theme.Gray1
-import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileLayer
@@ -67,21 +73,26 @@ private fun OtherProfileStatus(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 50.dp),
+            .heightIn(min = 42.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.width(32.dp))
         FollowCountTextView(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier.weight(2.5f),
             stringResource(id = R.string.followerText),
             followerCount
         )
+        Spacer(modifier = Modifier.width(16.dp))
         FollowCountTextView(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier.weight(2.5f),
             stringResource(id = R.string.followingText), followingCount
         )
+        Spacer(modifier = Modifier.width(24.dp))
         FollowedStatusButton(
-            modifier = Modifier.weight(4f),
+            modifier = Modifier
+                .weight(5f)
+                .fillMaxHeight(),
             isAlreadyFollowed, changeFollowStatus
         )
     }
@@ -91,17 +102,27 @@ private fun OtherProfileStatus(
 private fun FollowCountTextView(modifier: Modifier, text: String, number: String) {
     Row(
         modifier = modifier
-            .wrapContentWidth(),
+            .wrapContentWidth()
+            .heightIn(min = 42.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
         MyText(
             text = text,
-            color = Gray10,
-            fontSize = dpToSp(dp = 15.dp),
-            modifier = Modifier.padding(end = 4.dp)
+            color = Gray9,
+            fontSize = dpToSp(dp = 13.dp),
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .align(Alignment.CenterVertically)
         )
-        MyText(text = number, color = Gray10, fontSize = dpToSp(dp = 17.dp))
+        MyText(
+            text = number,
+            color = Gray9,
+            fontSize = dpToSp(dp = 15.dp),
+            modifier = Modifier
+                .widthIn(min = 28.dp)
+                .align(Alignment.CenterVertically)
+        )
     }
 }
 
@@ -117,11 +138,29 @@ private fun FollowedStatusButton(
     val bgColor = if (isAlreadyFollowed) Gray7 else Main4
     Row(
         modifier = modifier
-            .fillMaxHeight(),
+            .background(color = bgColor)
+            .fillMaxWidth()
+            .heightIn(min = 42.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        MyText(text = text, modifier = modifier.background(color = bgColor), color = Gray1)
+        val painter =
+            if (isAlreadyFollowed) R.drawable.ico_20_other_followed else R.drawable.ico_20_other_follow
+        Image(
+            painter = painterResource(id = painter),
+            contentDescription = null,
+            modifier = Modifier
+                .size(20.dp)
+                .align(Alignment.CenterVertically)
+        )
+        MyText(
+            text = text,
+            color = Gray1,
+            fontSize = dpToSp(dp = 15.dp),
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .fillMaxHeight()
+        )
     }
 }
 
