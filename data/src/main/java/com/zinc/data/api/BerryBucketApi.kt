@@ -23,6 +23,7 @@ import com.zinc.common.models.ReportItems
 import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.SavedKeywordItemsRequest
+import com.zinc.domain.models.SearchResultResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -195,4 +196,10 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): CommonResponse
+
+    @GET("/explore")
+    suspend fun loadSearchResult(
+        @Header("Authorization") token: String,
+        @Query("query") query: String
+    ): SearchResultResponse
 }

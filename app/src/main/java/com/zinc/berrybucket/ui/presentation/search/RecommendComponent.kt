@@ -36,8 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.RecommendType
-import com.zinc.berrybucket.model.toKorean
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -52,6 +50,7 @@ import com.zinc.berrybucket.ui.presentation.component.rememberNestedScrollConnec
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
+import com.zinc.common.models.RecommendType
 import com.zinc.common.models.SearchBucketItem
 
 
@@ -206,8 +205,7 @@ fun RecommendListView(
 
 @Composable
 private fun RecommendTitleView(recommendItem: RecommendItem) {
-    val type =
-        RecommendType.values().find { it.title == recommendItem.type } ?: RecommendType.RECOMMEND
+    val type = recommendItem.type
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -233,7 +231,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                MyText(text = type.toKorean(), fontSize = dpToSp(15.dp), color = Gray10)
+                MyText(text = "인기", fontSize = dpToSp(15.dp), color = Gray10)
             }
 
             TagListView(

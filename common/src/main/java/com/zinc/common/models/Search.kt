@@ -4,8 +4,16 @@ data class RecommendList(
     val items: List<RecommendItem>
 )
 
+enum class RecommendType() {
+    POPULAR, RECOMMEND
+}
+
+enum class SearchRecommendType {
+    RECENT, RECOMMEND
+}
+
 data class RecommendItem(
-    val type: String,
+    val type: RecommendType,
     val tagList: List<String>,
     val items: List<SearchBucketItem>
 )
@@ -40,7 +48,7 @@ data class SearchResultItems(
 
 data class UserItem(
     val userId: String,
-    val profileImageUrl: String? = null,
+    val profileImageUrl: String? = "null",
     val nickName: String,
     val isFollowed: Boolean
 )

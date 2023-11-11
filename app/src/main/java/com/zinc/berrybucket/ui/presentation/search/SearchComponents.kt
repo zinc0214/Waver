@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.SearchRecommendType
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -54,6 +53,7 @@ import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.common.models.KeyWordItem
 import com.zinc.common.models.RecentItem
 import com.zinc.common.models.SearchRecommendItems
+import com.zinc.common.models.SearchRecommendType
 import com.zinc.common.models.SearchResultItems
 import com.zinc.common.models.UserItem
 
@@ -317,11 +317,13 @@ fun SearchResultView(
             }
         }
 
-        Divider(
-            color = Gray3, modifier = Modifier.padding(
-                top = if (needBucketMoreButtonShow) 0.dp else 28.dp, bottom = 15.dp
+        if (resultItems.bucketItems.isNotEmpty() && resultItems.userItems.isNotEmpty()) {
+            Divider(
+                color = Gray3, modifier = Modifier.padding(
+                    top = if (needBucketMoreButtonShow) 0.dp else 28.dp, bottom = 15.dp
+                )
             )
-        )
+        }
 
         userVisibleItem.forEach {
             SearchUserItemView(
@@ -377,29 +379,26 @@ fun SearchUserItemView(
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
             val (profileImage, nickNameView, followButton) = createRefs()
 
-            if (item.profileImageUrl != null) {
-                Image(
-                    painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
-                    contentDescription = stringResource(
-                        id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
-                    ),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .padding(start = 12.dp)
-                        .size(32.dp)
-                        .aspectRatio(1f)
-                        .clip(shape = RoundedCornerShape(12.dp))
-                        .constrainAs(profileImage) {
-                            linkTo(
-                                top = parent.top,
-                                bottom = parent.bottom,
-                                topMargin = 16.dp,
-                                bottomMargin = 16.dp
-                            )
-                            start.linkTo(parent.start)
-                        })
-            }
-
+            Image(
+                painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
+                contentDescription = stringResource(
+                    id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
+                ),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(32.dp)
+                    .aspectRatio(1f)
+                    .clip(shape = RoundedCornerShape(12.dp))
+                    .constrainAs(profileImage) {
+                        linkTo(
+                            top = parent.top,
+                            bottom = parent.bottom,
+                            topMargin = 16.dp,
+                            bottomMargin = 16.dp
+                        )
+                        start.linkTo(parent.start)
+                    })
 
             MyText(
                 text = item.nickName,
@@ -407,6 +406,7 @@ fun SearchUserItemView(
                 color = Gray10,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 2,
+                textAlign = TextAlign.Start,
                 modifier = Modifier.constrainAs(nickNameView) {
                     linkTo(
                         top = parent.top,

@@ -2,8 +2,10 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.RecommendItem
 import com.zinc.common.models.RecommendList
+import com.zinc.common.models.RecommendType
 import com.zinc.common.models.SearchBucketItem
 import com.zinc.data.api.BerryBucketApi
+import com.zinc.domain.models.SearchResultResponse
 import com.zinc.domain.repository.SearchRepository
 import javax.inject.Inject
 
@@ -39,17 +41,21 @@ internal class SearchRepositoryImpl @Inject constructor(
         )
 
         val popularItem = RecommendItem(
-            type = "popular",
+            type = RecommendType.POPULAR,
             tagList = listOf("여행", "공부", "문화"),
             items = bucketItem
         )
 
         val recommendItem = RecommendItem(
-            type = "recommend",
+            type = RecommendType.RECOMMEND,
             tagList = listOf("제주도", "1박2일", "가족여행"),
             items = bucketItem
         )
 
         return RecommendList(listOf(popularItem, recommendItem))
+    }
+
+    override suspend fun loadSearchResult(token: String, searchWord: String): SearchResultResponse {
+        return berryBucketApi.loadSearchResult(token, searchWord)
     }
 }

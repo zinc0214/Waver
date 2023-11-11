@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,12 @@ fun SearchEditView(
     val hintText = stringResource(id = R.string.searchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
     var searchText by remember { mutableStateOf(currentSearchWord.value) }
+
+    LaunchedEffect(key1 = currentSearchWord.value) {
+        if (currentSearchWord.value != searchText) {
+            searchText = currentSearchWord.value
+        }
+    }
 
     ConstraintLayout(
         modifier = Modifier
@@ -103,6 +110,7 @@ fun SearchEditView(
                     }
                     .clickable {
                         searchText = ""
+                        searchTextChange.invoke("")
                     })
         }
 
