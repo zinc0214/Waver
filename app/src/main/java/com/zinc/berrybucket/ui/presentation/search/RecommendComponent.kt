@@ -163,7 +163,8 @@ fun RecommendListView(
     onOffsetChanged: (Float) -> Unit,
     maxAppBarHeight: Dp,
     minAppBarHeight: Dp,
-    recommendList: RecommendList
+    recommendList: RecommendList,
+    bucketClicked: (String) -> Unit
 ) {
 
     val maxAppBarPixelValue = with(LocalDensity.current) { maxAppBarHeight.toPx() }
@@ -194,7 +195,7 @@ fun RecommendListView(
                 key = { it.type },
                 itemContent = {
                     RecommendTitleView(it)
-                    RecommendBucketListView(it.items)
+                    RecommendBucketListView(it.items, bucketClicked = bucketClicked)
                     if (recommendList.items.last() != it) {
                         RecommendDivider(modifier = Modifier.padding(vertical = 32.dp))
                     }
@@ -249,7 +250,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
 
 
 @Composable
-fun RecommendBucketListView(list: List<SearchBucketItem>) {
+fun RecommendBucketListView(list: List<SearchBucketItem>, bucketClicked: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -257,7 +258,7 @@ fun RecommendBucketListView(list: List<SearchBucketItem>) {
     ) {
         list.forEach {
             RecommendBucketItemView(
-                item = it
+                item = it, bucketClicked = bucketClicked
             )
         }
     }
@@ -266,14 +267,19 @@ fun RecommendBucketListView(list: List<SearchBucketItem>) {
 @Composable
 fun RecommendBucketItemView(
     modifier: Modifier = Modifier,
-    item: SearchBucketItem
+    item: SearchBucketItem,
+    bucketClicked: (String) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, Gray3),
         elevation = 0.dp,
-        modifier = modifier.padding(top = 12.dp)
+        modifier = modifier
+            .padding(top = 12.dp)
+            .clickable {
+                bucketClicked(item.id)
+            }
     ) {
         Column {
             if (item.thumbnail != null) {

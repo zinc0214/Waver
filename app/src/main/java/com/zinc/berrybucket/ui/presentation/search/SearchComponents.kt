@@ -50,6 +50,7 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.common.models.KeyWordItem
 import com.zinc.common.models.RecentItem
 import com.zinc.common.models.SearchRecommendItems
@@ -285,7 +286,9 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
 
 @Composable
 fun SearchResultView(
-    resultItems: SearchResultItems, modifier: Modifier
+    resultItems: SearchResultItems,
+    modifier: Modifier,
+    clickEvent: (SearchEvent) -> Unit
 ) {
     var needBucketMoreButtonShow by remember {
         mutableStateOf(resultItems.bucketItems.size > 3)
@@ -307,7 +310,10 @@ fun SearchResultView(
     ) {
 
         bucketVisibleItem.forEach {
-            RecommendBucketItemView(item = it)
+            RecommendBucketItemView(item = it,
+                bucketClicked = { id ->
+                    clickEvent.invoke(SearchEvent.GoToOpenBucket(id))
+                })
         }
 
         if (needBucketMoreButtonShow) {
@@ -327,7 +333,11 @@ fun SearchResultView(
 
         userVisibleItem.forEach {
             SearchUserItemView(
-                item = it
+                item = it,
+                userClicked = { id ->
+                    clickEvent.invoke(SearchEvent.GoToOtherUser(id))
+                }
+
             )
         }
 
@@ -366,14 +376,18 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
 
 @Composable
 fun SearchUserItemView(
-    modifier: Modifier = Modifier, item: UserItem
+    modifier: Modifier = Modifier, item: UserItem, userClicked: (String) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
         shape = RoundedCornerShape(4.dp),
         border = BorderStroke(1.dp, Gray3),
         elevation = 0.dp,
-        modifier = modifier.padding(top = 12.dp)
+        modifier = modifier
+            .padding(top = 12.dp)
+            .clickable {
+                userClicked(item.userId)
+            }
     ) {
 
         ConstraintLayout(modifier = Modifier.fillMaxWidth()) {

@@ -247,12 +247,16 @@ internal fun NavGraphBuilder.openBucketReportNavGraph(
 }
 
 internal fun NavGraphBuilder.searchNavGraph(
-    backPress: () -> Unit
+    backPress: () -> Unit,
+    searchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
 ) {
-    composable(SearchDestinations.GO_TO_SEARCH) {
-        SearchScreen {
-            backPress()
-        }
+    composable(SearchDestinations.GO_TO_SEARCH) { nav ->
+        SearchScreen(
+            closeEvent = backPress,
+            searchEvent = {
+                searchEvent.invoke(it, nav)
+            }
+        )
     }
 }
 
@@ -508,11 +512,13 @@ object OtherDestinations {
 }
 
 sealed class SearchEvent {
-    object GoToSearch : SearchEvent()
+    data object GoToSearch : SearchEvent()
+    data class GoToOpenBucket(val id: String) : SearchEvent()
+    data class GoToOtherUser(val id: String) : SearchEvent()
 }
 
 sealed class WriteEvent {
-    object GoToWrite : WriteEvent()
+    data object GoToWrite : WriteEvent()
 }
 
 sealed class GoToBucketDetailEvent {

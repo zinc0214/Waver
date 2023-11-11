@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ import com.zinc.berrybucket.util.nav.SearchEvent
 
 @Composable
 fun RecommendScreen(
-    onSearchEvent: (SearchEvent.GoToSearch) -> Unit
+    onSearchEvent: (SearchEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     viewModel.loadRecommendList()
@@ -29,10 +29,13 @@ fun RecommendScreen(
     val maxAppBarHeight = 156.dp
     val minAppBarHeight = 106.dp
     var height by remember {
-        mutableStateOf(0f)
+        mutableFloatStateOf(0f)
     }
     val density = LocalDensity.current
-    val animatedHeight by animateDpAsState(targetValue = with(density) { height.toDp() })
+    val animatedHeight by animateDpAsState(
+        targetValue = with(density) { height.toDp() },
+        label = "animatedHeight"
+    )
     Column(modifier = Modifier.fillMaxSize()) {
         rememberSystemUiController().setSystemBarsColor(Gray1)
         RecommendTopBar(
@@ -55,6 +58,9 @@ fun RecommendScreen(
                 maxAppBarHeight = maxAppBarHeight,
                 minAppBarHeight = minAppBarHeight,
                 recommendList = list,
+                bucketClicked = {
+                    onSearchEvent.invoke(SearchEvent.GoToOpenBucket(it))
+                }
             )
         }
     }

@@ -18,11 +18,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.ui.presentation.component.SearchEditView
+import com.zinc.berrybucket.util.nav.SearchEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
-    goTGoEvent: () -> Unit
+    closeEvent: () -> Unit,
+    searchEvent: (SearchEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItems by viewModel.searchRecommendItems.observeAsState()
@@ -50,7 +52,7 @@ fun SearchScreen(
             listState = listScrollState,
             title = searchWord.value,
             closeClicked = {
-                goTGoEvent.invoke()
+                closeEvent.invoke()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -111,6 +113,7 @@ fun SearchScreen(
                     SearchResultView(
                         resultItems = it,
                         modifier = Modifier.animateItemPlacement(),
+                        clickEvent = searchEvent
                     )
                 }
             }

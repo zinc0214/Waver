@@ -156,6 +156,14 @@ fun BerryBucketApp(
                                     SearchEvent.GoToSearch -> {
                                         appState.navigateToSearch(nav)
                                     }
+
+                                    is SearchEvent.GoToOpenBucket -> {
+                                        appState.navigateToOpenBucketDetail(event.id, nav)
+                                    }
+
+                                    is SearchEvent.GoToOtherUser -> {
+                                        appState.navigateToOtherHome(nav, event.id)
+                                    }
                                 }
                             },
                         )
@@ -314,7 +322,22 @@ fun BerryBucketApp(
                             backPress = appState::backPress
                         )
                         openBucketReportNavGraph(backPress = appState::backPress)
-                        searchNavGraph(backPress = appState::backPress)
+                        searchNavGraph(backPress = appState::backPress, searchEvent =
+                        { event, nav ->
+                            when (event) {
+                                SearchEvent.GoToSearch -> {
+                                    appState.navigateToSearch(nav)
+                                }
+
+                                is SearchEvent.GoToOpenBucket -> {
+                                    appState.navigateToOpenBucketDetail(event.id, nav)
+                                }
+
+                                is SearchEvent.GoToOtherUser -> {
+                                    appState.navigateToOtherHome(nav, event.id)
+                                }
+                            }
+                        })
                         writeNavGraph1(action = { actionType -> action(actionType) },
                             backPress = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
