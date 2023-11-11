@@ -14,10 +14,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui_feed.models.FeedClickEvent
 import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 
 @Composable
-fun FeedScreen(feedClicked: (String) -> Unit) {
+fun FeedScreen(goToBucket: (String) -> Unit) {
 
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
@@ -54,7 +55,13 @@ fun FeedScreen(feedClicked: (String) -> Unit) {
                 FeedLayer(
                     modifier = Modifier.padding(padding),
                     feedItems = it,
-                    feedClicked = { id -> feedClicked(id) }
+                    feedClicked = { event ->
+                        when (event) {
+                            is FeedClickEvent.GoToBucket -> goToBucket(event.id)
+                            is FeedClickEvent.Like -> TODO()
+                            is FeedClickEvent.Scrap -> TODO()
+                        }
+                    }
                 )
             }
         } else {

@@ -57,3 +57,10 @@ fun UIFeedInfo.profileInfo(): MyProfileInfoUi {
         nickName = this.nickName
     )
 }
+
+sealed interface FeedClickEvent {
+    data class Like(val isLike: Boolean, val id: String) : FeedClickEvent
+    data class Scrap(val id: String) : FeedClickEvent
+    data class GoToBucket(val id: String) : FeedClickEvent
+
+}

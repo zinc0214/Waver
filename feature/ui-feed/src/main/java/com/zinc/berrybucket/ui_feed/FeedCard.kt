@@ -36,6 +36,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
+import com.zinc.berrybucket.ui_feed.models.FeedClickEvent
 import com.zinc.berrybucket.ui_feed.models.UIFeedInfo
 import com.zinc.berrybucket.ui_feed.models.profileInfo
 import com.zinc.berrybucket.util.shadow
@@ -45,15 +46,13 @@ import com.zinc.berrybucket.util.shadow
 fun FeedListView(
     modifier: Modifier = Modifier,
     feedItems: List<UIFeedInfo>,
-    feedClicked: (String) -> Unit
+    feedClicked: (FeedClickEvent) -> Unit
 ) {
     Column(modifier = modifier) {
         feedItems.forEach { feed ->
             FeedCardView(
                 feedInfo = feed,
-                feedClicked = {
-                    feedClicked(it)
-                }
+                clickEvent = feedClicked
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
@@ -62,7 +61,10 @@ fun FeedListView(
 
 
 @Composable
-fun FeedCardView(feedInfo: UIFeedInfo, feedClicked: (String) -> Unit) {
+fun FeedCardView(
+    feedInfo: UIFeedInfo,
+    clickEvent: (FeedClickEvent) -> Unit
+) {
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -79,7 +81,7 @@ fun FeedCardView(feedInfo: UIFeedInfo, feedClicked: (String) -> Unit) {
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-                feedClicked(feedInfo.bucketId)
+                clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId))
             }
     ) {
         Column {
@@ -112,7 +114,8 @@ fun FeedCardView(feedInfo: UIFeedInfo, feedClicked: (String) -> Unit) {
                     .padding(horizontal = 14.dp)
                     .padding(top = 12.dp, bottom = 20.dp)
                     .fillMaxWidth(),
-                feedInfo = feedInfo
+                feedInfo = feedInfo,
+                clickEvent = clickEvent
             )
         }
     }
@@ -161,7 +164,11 @@ private fun ImageView(modifier: Modifier = Modifier, imageList: List<String>) {
 }
 
 @Composable
-private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: UIFeedInfo) {
+private fun BottomStateView(
+    modifier: Modifier = Modifier,
+    feedInfo: UIFeedInfo,
+    clickEvent: (FeedClickEvent) -> Unit
+) {
     ConstraintLayout(modifier = modifier) {
         val (leftContent, rightContent) = createRefs()
 
@@ -178,7 +185,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: UIFeedInfo)
                 image = if (liked.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
                 contentDescription = null,
                 onClick = {
-                    liked.value = !liked.value
+                    clickEvent.invoke(FeedClickEvent.Like(!liked.value, feedInfo.bucketId))
                 },
                 modifier = Modifier
                     .size(32.dp)
@@ -200,7 +207,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: UIFeedInfo)
                 image = R.drawable.btn_32_comment,
                 contentDescription = null,
                 onClick = {
-                    // Go TO Comment!
+                    clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId))
                 },
                 modifier = Modifier
                     .size(32.dp)
@@ -221,7 +228,7 @@ private fun BottomStateView(modifier: Modifier = Modifier, feedInfo: UIFeedInfo)
             image = if (feedInfo.isScraped) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
             contentDescription = null,
             onClick = {
-                // Go TO Comment!
+                clickEvent.invoke(FeedClickEvent.Scrap(feedInfo.bucketId))
             },
             modifier = Modifier
                 .size(32.dp)

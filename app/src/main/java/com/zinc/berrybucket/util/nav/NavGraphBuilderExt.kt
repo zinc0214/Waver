@@ -75,7 +75,7 @@ internal fun NavGraphBuilder.homeFeed(
     onFeedClicked: (String, NavBackStackEntry) -> Unit
 ) {
     composable(HomeSections.FEED.route) { from ->
-        FeedScreen(feedClicked = {
+        FeedScreen(goToBucket = {
             onFeedClicked(it, from)
         })
     }

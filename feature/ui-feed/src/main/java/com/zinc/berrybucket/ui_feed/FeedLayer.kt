@@ -16,13 +16,14 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_feed.models.FeedClickEvent
 import com.zinc.berrybucket.ui_feed.models.UIFeedInfo
 
 @Composable
 fun FeedLayer(
     modifier: Modifier,
     feedItems: List<UIFeedInfo>,
-    feedClicked: (String) -> Unit
+    feedClicked: (FeedClickEvent) -> Unit
 ) {
 
     Column(
@@ -45,9 +46,7 @@ fun FeedLayer(
             modifier = Modifier
                 .padding(top = 24.dp),
             feedItems = feedItems,
-            feedClicked = {
-                feedClicked(it)
-            }
+            feedClicked = feedClicked
         )
     }
 
