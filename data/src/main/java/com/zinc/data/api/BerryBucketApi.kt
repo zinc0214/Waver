@@ -17,12 +17,12 @@ import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
-import com.zinc.common.models.RecommendList
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
 import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.SavedKeywordItemsRequest
+import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
@@ -120,8 +120,8 @@ interface BerryBucketApi {
     @GET("/feeds/keywords")
     suspend fun loadFeedItems(@Header("Authorization") token: String): FeedListResponse
 
-    @GET("/search/recommendList")
-    suspend fun loadRecommendList(): RecommendList
+//    @GET("/search/recommendList")
+//    suspend fun loadRecommendList(): RecommendList
 
     @GET("/report/comment")
     suspend fun loadReportItems(): ReportItems
@@ -202,4 +202,9 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Query("query") query: String
     ): SearchResultResponse
+
+    @GET("/explore/searchOptions")
+    suspend fun loadSearchRecommend(
+        @Header("Authorization") token: String,
+    ): SearchRecommendResponse
 }

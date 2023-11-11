@@ -36,6 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.RecommendItem
+import com.zinc.berrybucket.model.RecommendList
+import com.zinc.berrybucket.model.RecommendType
+import com.zinc.berrybucket.model.SearchBucketItem
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -48,10 +52,6 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.TagListView
 import com.zinc.berrybucket.ui.presentation.component.rememberNestedScrollConnection
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.RecommendItem
-import com.zinc.common.models.RecommendList
-import com.zinc.common.models.RecommendType
-import com.zinc.common.models.SearchBucketItem
 
 
 @Composable

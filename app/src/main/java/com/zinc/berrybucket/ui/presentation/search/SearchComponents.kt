@@ -39,6 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.KeyWordItem
+import com.zinc.berrybucket.model.SearchRecommendItems
+import com.zinc.berrybucket.model.SearchRecommendType
+import com.zinc.berrybucket.model.SearchResultItems
+import com.zinc.berrybucket.model.UserItem
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -51,12 +56,6 @@ import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.util.nav.SearchEvent
-import com.zinc.common.models.KeyWordItem
-import com.zinc.common.models.RecentItem
-import com.zinc.common.models.SearchRecommendItems
-import com.zinc.common.models.SearchRecommendType
-import com.zinc.common.models.SearchResultItems
-import com.zinc.common.models.UserItem
 
 
 @Composable
@@ -112,7 +111,7 @@ fun SearchTopAppBar(
 fun RecommendKeyWordView(
     searchItems: SearchRecommendItems,
     itemClicked: (String) -> Unit,
-    recentItemDelete: (RecentItem) -> Unit
+    recentItemDelete: (String) -> Unit
 ) {
     var selectType by remember { mutableStateOf(SearchRecommendType.RECENT) }
 
@@ -167,9 +166,9 @@ fun RecommendKeyWordView(
 
 @Composable
 private fun RecentSearchView(
-    recentItems: List<RecentItem>,
+    recentItems: List<String>,
     itemClicked: (String) -> Unit,
-    recentItemDelete: (RecentItem) -> Unit
+    recentItemDelete: (String) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         recentItems.forEach {
@@ -180,7 +179,7 @@ private fun RecentSearchView(
 
 @Composable
 private fun RecentSearchItem(
-    recentItem: RecentItem, itemClicked: (String) -> Unit, recentItemDelete: (RecentItem) -> Unit
+    recentItem: String, itemClicked: (String) -> Unit, recentItemDelete: (String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -190,7 +189,7 @@ private fun RecentSearchItem(
         val (textView, deleteView) = createRefs()
 
         MyText(
-            text = recentItem.word,
+            text = recentItem,
             fontSize = dpToSp(15.dp),
             color = Gray9,
             modifier = Modifier
@@ -203,7 +202,7 @@ private fun RecentSearchItem(
                     width = Dimension.fillToConstraints
                 }
                 .clickable {
-                    itemClicked(recentItem.word)
+                    itemClicked(recentItem)
                 }
                 .padding(start = 24.dp)
                 .wrapContentHeight(align = Alignment.CenterVertically),

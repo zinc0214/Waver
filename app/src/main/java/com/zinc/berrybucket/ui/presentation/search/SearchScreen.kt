@@ -27,22 +27,32 @@ fun SearchScreen(
     searchEvent: (SearchEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
-    val searchRecommendItems by viewModel.searchRecommendItems.observeAsState()
+    val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
-    viewModel.loadSearchRecommendItems()
+
 
     val listScrollState = rememberLazyListState()
     val searchResultItems = remember { mutableStateOf(searchResultItemsAsState) }
+    val searchRecommendItems = remember { mutableStateOf(searchRecommendItemsAsState) }
     val searchWord = remember { mutableStateOf("") }
+    val isClosed = remember { mutableStateOf(false) }
 
     LaunchedEffect(searchResultItemsAsState) {
         searchResultItems.value = searchResultItemsAsState
+    }
+
+    LaunchedEffect(searchRecommendItemsAsState) {
+        searchRecommendItems.value = searchRecommendItemsAsState
     }
 
     LaunchedEffect(searchWord.value) {
         if (searchWord.value.isEmpty()) {
             searchResultItems.value = null
         }
+    }
+
+    if (searchRecommendItems.value == null && !isClosed.value) {
+        viewModel.loadSearchRecommendItems()
     }
 
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
@@ -52,6 +62,7 @@ fun SearchScreen(
             listState = listScrollState,
             title = searchWord.value,
             closeClicked = {
+                isClosed.value = true
                 closeEvent.invoke()
             },
             modifier = Modifier
@@ -92,7 +103,7 @@ fun SearchScreen(
             // 최근 검색어 + 추천 키워드 화면
             item {
                 if (searchWord.value.isEmpty() && searchResultItems.value == null) {
-                    searchRecommendItems?.let {
+                    searchRecommendItems.value?.let {
                         RecommendKeyWordView(
                             searchItems = it,
                             itemClicked = { selectWord ->
