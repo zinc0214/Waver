@@ -13,12 +13,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.presentation.component.SearchEditView
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.util.nav.SearchEvent
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -29,6 +33,7 @@ fun SearchScreen(
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
+    val loadFail by viewModel.loadFail.observeAsState()
 
 
     val listScrollState = rememberLazyListState()
@@ -36,6 +41,7 @@ fun SearchScreen(
     val searchRecommendItems = remember { mutableStateOf(searchRecommendItemsAsState) }
     val searchWord = remember { mutableStateOf("") }
     val isClosed = remember { mutableStateOf(false) }
+    val showFailDialog = remember { mutableStateOf(null as String?) }
 
     LaunchedEffect(searchResultItemsAsState) {
         searchResultItems.value = searchResultItemsAsState
@@ -48,6 +54,12 @@ fun SearchScreen(
     LaunchedEffect(searchWord.value) {
         if (searchWord.value.isEmpty()) {
             searchResultItems.value = null
+        }
+    }
+
+    LaunchedEffect(key1 = loadFail) {
+        if (loadFail != null) {
+            showFailDialog.value = loadFail
         }
     }
 
@@ -129,5 +141,17 @@ fun SearchScreen(
                 }
             }
         }
+    }
+
+    if (showFailDialog.value != null) {
+        val message =
+            if (showFailDialog.value.isNullOrBlank()) stringResource(CommonR.string.retryDesc) else showFailDialog.value
+        ApiFailDialog(
+            title = stringResource(id = R.string.searchLoadFail),
+            message = message,
+            dismissEvent = {
+                showFailDialog.value = null
+                closeEvent()
+            })
     }
 }

@@ -11,7 +11,6 @@ import com.zinc.berrybucket.model.SearchBucketItem
 import com.zinc.berrybucket.model.SearchRecommendItems
 import com.zinc.berrybucket.model.SearchResultItems
 import com.zinc.berrybucket.model.parseUI
-import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.search.LoadSearchRecommend
 import com.zinc.domain.usecases.search.LoadSearchResult
@@ -36,8 +35,8 @@ class SearchViewModel @Inject constructor(
     private val _searchResultItems = MutableLiveData<SearchResultItems>()
     val searchResultItems: LiveData<SearchResultItems> get() = _searchResultItems
 
-    private val _loadFail = SingleLiveEvent<Boolean>()
-    val loadFail: LiveData<Boolean> get() = _loadFail
+    private val _loadFail = MutableLiveData<String?>(null)
+    val loadFail: LiveData<String?> get() = _loadFail
 
     fun loadRecommendList() {
         viewModelScope.launch {
@@ -48,34 +47,34 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadSearchRecommendItems() {
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        viewModelScope.launch(CEH(_loadFail, "")) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = loadSearchRecommend.invoke(token)
                     if (response.success) {
                         _searchRecommendItems.value = response.data.parseUI()
                     } else {
-                        _loadFail.value = true
+                        _loadFail.value = response.message
                     }
                 }.getOrElse {
-                    _loadFail.value = true
+                    _loadFail.value = ""
                 }
             }
         }
     }
 
     fun loadSearchResult(searchWord: String) {
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        viewModelScope.launch(CEH(_loadFail, "")) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = loadSearchResult.invoke(token, searchWord)
                     if (response.success) {
                         _searchResultItems.value = response.data.parseUI()
                     } else {
-                        _loadFail.value = true
+                        _loadFail.value = response.message
                     }
                 }.getOrElse {
-                    _loadFail.value = true
+                    _loadFail.value = ""
                 }
             }
         }

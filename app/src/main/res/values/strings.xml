@@ -41,5 +41,6 @@
     <string name="recentSearch">최근 검색어</string>
     <string name="recommendSearch">추천 키워드</string>
     <string name="showMore">더보기</string>
+    <string name="searchLoadFail">검색 로드 실패</string>
 
 </resources>

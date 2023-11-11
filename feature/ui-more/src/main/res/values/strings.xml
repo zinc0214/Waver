@@ -33,14 +33,11 @@
     <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
     <string name="profileUpdateFailTitle">변경이 싫패했습니다.\n다시 시도해주세요.</string>
     <string name="alreadyUsedNickNameGuide">사용 중인 닉네임입니다.</string>
+    <string name="loadFailProfile">프로필 로드 실패</string>
 
     <!-- 앱 정보 -->
     <string name="appInfoTitle">앱 정보</string>
     <string name="appName">베리버킷</string>
     <string name="needToUpdateApp">최신 버전 업데이트</string>
     <string name="alreadyUsedLatelyApp">최신 버전 사용 중</string>
-
-    <!-- 로드 실패 -->
-    <string name="loadFailProfile">프로필 로드 실패</string>
-    <string name="retryDesc">다시 시도해주세요</string>
 </resources>

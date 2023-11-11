@@ -21,6 +21,7 @@ import com.zinc.berrybucket.ui_more.components.MoreTitleView
 import com.zinc.berrybucket.ui_more.components.MoreTopProfileView
 import com.zinc.berrybucket.ui_more.models.MoreItemType
 import com.zinc.berrybucket.ui_more.viewModel.MoreViewModel
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun MoreScreen(
@@ -88,7 +89,7 @@ fun MoreScreen(
     if (showApiFailDialog.value) {
         ApiFailDialog(
             title = stringResource(id = R.string.loadFailProfile),
-            message = stringResource(id = R.string.retryDesc),
+            message = stringResource(id = CommonR.string.retryDesc),
             dismissEvent = {
                 showApiFailDialog.value = false
                 goToBack()
