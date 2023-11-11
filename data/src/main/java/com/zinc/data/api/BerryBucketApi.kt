@@ -26,6 +26,7 @@ import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Header
@@ -207,4 +208,10 @@ interface BerryBucketApi {
     suspend fun loadSearchRecommend(
         @Header("Authorization") token: String,
     ): SearchRecommendResponse
+
+    @DELETE("/explore/recentSearch/{keyword}")
+    suspend fun deleteSearchRecentWord(
+        @Header("Authorization") token: String,
+        @Path("keyword") keyword: String
+    ): CommonResponse
 }

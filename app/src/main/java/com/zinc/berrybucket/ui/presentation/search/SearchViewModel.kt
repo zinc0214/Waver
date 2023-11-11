@@ -12,6 +12,7 @@ import com.zinc.berrybucket.model.SearchRecommendItems
 import com.zinc.berrybucket.model.SearchResultItems
 import com.zinc.berrybucket.model.parseUI
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.search.DeleteRecentWord
 import com.zinc.domain.usecases.search.LoadSearchRecommend
 import com.zinc.domain.usecases.search.LoadSearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +24,7 @@ class SearchViewModel @Inject constructor(
 //    private val loadRecommendList: LoadRecommendList,
     private val loadSearchResult: LoadSearchResult,
     private val loadSearchRecommend: LoadSearchRecommend,
+    private val deleteRecentWord: DeleteRecentWord,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -114,11 +116,25 @@ class SearchViewModel @Inject constructor(
     }
 
     fun deleteRecentWord(deleteWord: String) {
-        val originRecentWords = _searchRecommendItems.value?.recentWords?.toMutableList()
-        originRecentWords?.remove(deleteWord)
-        _searchRecommendItems.value = _searchRecommendItems.value?.copy(
-            recentWords = originRecentWords.orEmpty()
-        )
+        viewModelScope.launch(CEH(_loadFail, "")) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    val response = deleteRecentWord.invoke(token, deleteWord)
+                    if (response.success) {
+                        val originRecentWords =
+                            _searchRecommendItems.value?.recentWords?.toMutableList()
+                        originRecentWords?.remove(deleteWord)
+                        _searchRecommendItems.value = _searchRecommendItems.value?.copy(
+                            recentWords = originRecentWords.orEmpty()
+                        )
+                    } else {
+                        _loadFail.value = response.message
+                    }
+                }.getOrElse {
+                    _loadFail.value = ""
+                }
+            }
+        }
     }
 
     private fun loadRecommendListDummy(): RecommendList {

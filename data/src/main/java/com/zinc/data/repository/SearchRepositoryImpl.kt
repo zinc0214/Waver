@@ -1,5 +1,6 @@
 package com.zinc.data.repository
 
+import com.zinc.common.models.CommonResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
@@ -20,5 +21,9 @@ internal class SearchRepositoryImpl @Inject constructor(
 
     override suspend fun loadSearchRecommendList(token: String): SearchRecommendResponse {
         return berryBucketApi.loadSearchRecommend(token)
+    }
+
+    override suspend fun deleteSearchRecentWord(token: String, word: String): CommonResponse {
+        return berryBucketApi.deleteSearchRecentWord(token, word)
     }
 }
