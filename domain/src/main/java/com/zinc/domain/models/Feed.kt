@@ -1,5 +1,7 @@
 package com.zinc.domain.models
 
+import com.zinc.common.models.YesOrNo
+
 data class FeedKeywordResponse(
     val data: List<FeedKeyWord>,
     val success: Boolean,
@@ -34,7 +36,8 @@ data class FeedListResponse(
         val user: UserInfo,
         val like: Int,
         val commentCount: Int,
-        val isScraped: Boolean = false
+        val isScraped: Boolean = false,
+        val likeYn: YesOrNo
 
     ) {
         enum class FeedItemBucketStatus {

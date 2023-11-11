@@ -42,7 +42,7 @@ fun FeedListResponse.FeedData.toUIModel() = this.list.map { item ->
         imageList = item.images,
         isProcessing = item.status == FeedListResponse.FeedItemResponse.FeedItemBucketStatus.PROGRESS,
         title = item.title,
-        liked = false,
+        liked = item.likeYn.isYes(),
         likeCount = item.like,
         commentCount = item.commentCount,
         isScraped = item.isScraped
