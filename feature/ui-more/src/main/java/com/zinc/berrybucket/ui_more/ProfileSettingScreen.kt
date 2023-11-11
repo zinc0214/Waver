@@ -187,7 +187,7 @@ fun ProfileSettingScreen(
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
-        profileInfo.value?.let {
+        profileInfo.value?.let { profile ->
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -199,7 +199,15 @@ fun ProfileSettingScreen(
                         onBackPressed()
                     },
                     saveClicked = {
-                        viewModel.checkIsAlreadyUsedName(nickNameData.value.prevText)
+                        if (profile.name != nickNameData.value.prevText) {
+                            viewModel.checkIsAlreadyUsedName(nickNameData.value.prevText)
+                        } else {
+                            viewModel.updateMyProfile(
+                                name = nickNameData.value.prevText,
+                                bio = bioData.value.prevText,
+                                profileImage = updateImageFile.value
+                            )
+                        }
                     }
                 )
 
