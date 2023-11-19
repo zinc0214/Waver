@@ -214,4 +214,11 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("keyword") keyword: String
     ): CommonResponse
+
+    @POST("/feed/{id}/like")
+    suspend fun saveBucketLike(
+        @Header("Authorization") token: String,
+        @Query("id") id: String
+    ): CommonResponse
+
 }

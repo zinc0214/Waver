@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.repository.AlarmRepositoryImpl
 import com.zinc.data.repository.CategoryRepositoryImpl
+import com.zinc.data.repository.CommonRepositoryImpl
 import com.zinc.data.repository.DetailRepositoryImpl
 import com.zinc.data.repository.FeedRepositoryImpl
 import com.zinc.data.repository.KeywordRepositoryImpl
@@ -15,6 +16,7 @@ import com.zinc.data.repository.SearchRepositoryImpl
 import com.zinc.data.repository.WriteRepositoryImpl
 import com.zinc.domain.repository.AlarmRepository
 import com.zinc.domain.repository.CategoryRepository
+import com.zinc.domain.repository.CommonRepository
 import com.zinc.domain.repository.DetailRepository
 import com.zinc.domain.repository.FeedRepository
 import com.zinc.domain.repository.KeywordRepository
@@ -29,6 +31,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Converter
@@ -38,6 +41,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module(includes = [DataModule.ApiModule::class])
 internal abstract class DataModule {
+    @Binds
+    abstract fun bindCommonRepository(
+        repository: CommonRepositoryImpl
+    ): CommonRepository
+
     @Binds
     abstract fun bindLoginRepository(
         repository: LoginRepositoryImpl
@@ -96,6 +104,7 @@ internal abstract class DataModule {
     @InstallIn(SingletonComponent::class)
     @Module
     internal object ApiModule {
+        @OptIn(ExperimentalSerializationApi::class)
         @Provides
         @Singleton
         fun provideConverter(): Converter.Factory {
