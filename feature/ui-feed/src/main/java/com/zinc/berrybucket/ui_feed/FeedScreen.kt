@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_feed
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -16,20 +18,27 @@ import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_feed.models.FeedClickEvent
 import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun FeedScreen(goToBucket: (String) -> Unit) {
+
+    val context = LocalContext.current
 
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
     val apiLoadFail by viewModel.loadFail.observeAsState()
     val feedItems by viewModel.feedItems.observeAsState()
     val feedKeyWords by viewModel.feedKeyWords.observeAsState()
+    val likeFailAsState by viewModel.likeFail.observeAsState()
 
     val showLoadFailDialog = remember {
         mutableStateOf(false)
     }
     val isAlreadyKeywordSelected = remember {
+        mutableStateOf(false)
+    }
+    val showLikeFailToast = remember {
         mutableStateOf(false)
     }
 
@@ -48,6 +57,10 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
         showLoadFailDialog.value = apiLoadFail == true
     }
 
+    LaunchedEffect(key1 = likeFailAsState) {
+        showLikeFailToast.value = likeFailAsState == true
+    }
+
     Scaffold { padding ->
         rememberSystemUiController().setSystemBarsColor(Gray2)
         if (isAlreadyKeywordSelected.value) {
@@ -58,7 +71,10 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
                     feedClicked = { event ->
                         when (event) {
                             is FeedClickEvent.GoToBucket -> goToBucket(event.id)
-                            is FeedClickEvent.Like -> TODO()
+                            is FeedClickEvent.Like -> {
+                                viewModel.saveBucketLike(event.id)
+                            }
+
                             is FeedClickEvent.Scrap -> TODO()
                         }
                     }
@@ -85,5 +101,14 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
             }
             showLoadFailDialog.value = false
         }
+    }
+
+    if (showLikeFailToast.value) {
+        Toast.makeText(
+            context,
+            CommonR.string.requestFailDesc,
+            Toast.LENGTH_SHORT
+        ).show()
+        showLikeFailToast.value = false
     }
 }

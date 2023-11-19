@@ -11,6 +11,7 @@ import com.zinc.berrybucket.ui_feed.models.parseUI
 import com.zinc.berrybucket.ui_feed.models.toUIModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
 import com.zinc.domain.usecases.feed.SavedKeywordItems
@@ -24,6 +25,7 @@ class FeedViewModel @Inject constructor(
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
+    private val saveBucketLike: SaveBucketLike,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
     private val _isKeyWordSelected = MutableLiveData<Boolean>()
@@ -37,6 +39,9 @@ class FeedViewModel @Inject constructor(
 
     private val _loadFail = SingleLiveEvent<Boolean>()
     val loadFail: LiveData<Boolean> get() = _loadFail
+
+    private val _likeFail = MutableLiveData<Boolean>()
+    val likeFail: LiveData<Boolean> get() = _likeFail
 
     fun loadFeedKeyWords() {
         viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -89,6 +94,25 @@ class FeedViewModel @Inject constructor(
                     _isKeyWordSelected.value = response.success
                 }.getOrElse {
                     _loadFail.value = true
+                }
+            }
+        }
+    }
+
+    fun saveBucketLike(bucketId: String) {
+        viewModelScope.launch(CEH(_likeFail, true)) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    val response = saveBucketLike.invoke(token, bucketId)
+                    Log.e("ayhan", "response : $response")
+                    if (response.success) {
+                        loadFeedItems()
+                        _likeFail.value = false
+                    } else {
+                        _likeFail.value = true
+                    }
+                }.getOrElse {
+                    _likeFail.value = true
                 }
             }
         }

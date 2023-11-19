@@ -59,4 +59,5 @@
 
     <!-- 로드 실패 -->
     <string name="retryDesc">다시 시도해주세요</string>
+    <string name="requestFailDesc">요청에 실패했습니다</string>
 </resources>
