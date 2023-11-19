@@ -169,6 +169,7 @@ private fun BottomStateView(
     feedInfo: UIFeedInfo,
     clickEvent: (FeedClickEvent) -> Unit
 ) {
+    val likeImage = if (feedInfo.liked) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off
     ConstraintLayout(modifier = modifier) {
         val (leftContent, rightContent) = createRefs()
 
@@ -182,7 +183,7 @@ private fun BottomStateView(
             }
 
             IconButton(
-                image = if (liked.value) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off,
+                image = likeImage,
                 contentDescription = null,
                 onClick = {
                     clickEvent.invoke(FeedClickEvent.Like(!liked.value, feedInfo.bucketId))

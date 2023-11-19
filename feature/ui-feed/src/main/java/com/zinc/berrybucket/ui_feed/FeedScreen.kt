@@ -28,7 +28,7 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
     val apiLoadFail by viewModel.loadFail.observeAsState()
-    val feedItems by viewModel.feedItems.observeAsState()
+    val feedItemsAsState by viewModel.feedItems.observeAsState()
     val feedKeyWords by viewModel.feedKeyWords.observeAsState()
     val likeFailAsState by viewModel.likeFail.observeAsState()
 
@@ -41,8 +41,11 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
     val showLikeFailToast = remember {
         mutableStateOf(false)
     }
+    val feedItems = remember {
+        mutableStateOf(feedItemsAsState)
+    }
 
-    if (feedItems.isNullOrEmpty()) {
+    if (feedItemsAsState.isNullOrEmpty()) {
         viewModel.loadFeedItems()
     }
 
@@ -61,10 +64,14 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
         showLikeFailToast.value = likeFailAsState == true
     }
 
+    LaunchedEffect(key1 = feedItemsAsState) {
+        feedItems.value = feedItemsAsState
+    }
+
     Scaffold { padding ->
         rememberSystemUiController().setSystemBarsColor(Gray2)
         if (isAlreadyKeywordSelected.value) {
-            feedItems?.let {
+            feedItems.value?.let {
                 FeedLayer(
                     modifier = Modifier.padding(padding),
                     feedItems = it,
