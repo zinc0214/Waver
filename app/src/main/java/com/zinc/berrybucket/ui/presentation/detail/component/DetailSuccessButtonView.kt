@@ -85,16 +85,17 @@ private fun CountSuccessButton(successButtonInfo: SuccessButtonInfo) {
     ) {
         val (titleView, userCountView, goalCountView) = createRefs()
 
-        SimpleSuccessButton(modifier = Modifier
-            .constrainAs(titleView) {
-                start.linkTo(parent.start)
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                end.linkTo(userCountView.start)
-            }
-
-            .padding(start = 24.dp),
-            textAlign = TextAlign.Start)
+        SimpleSuccessButton(
+            modifier = Modifier
+                .padding(start = 24.dp)
+                .constrainAs(titleView) {
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(userCountView.start)
+                },
+            textAlign = TextAlign.Start
+        )
 
         MyText(
             text = successButtonInfo.userCount.toString(),
