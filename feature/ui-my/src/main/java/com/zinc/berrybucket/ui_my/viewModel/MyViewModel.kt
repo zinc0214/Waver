@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.MyTabType.ALL
@@ -12,6 +11,7 @@ import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.model.MyTabType.CHALLENGE
 import com.zinc.berrybucket.model.MyTabType.DDAY
 import com.zinc.berrybucket.model.parseToUI
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListSortType

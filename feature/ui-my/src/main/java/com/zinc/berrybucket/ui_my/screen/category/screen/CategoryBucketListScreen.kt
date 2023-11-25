@@ -24,9 +24,9 @@ import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_my.SimpleBucketCard
-import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable

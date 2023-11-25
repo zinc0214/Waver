@@ -56,8 +56,15 @@
     <string name="addNewCategoryNotAvailable">카테고리명을 입력해주세요!</string>
     <string name="editCategoryNameTitle">카테고리명 변경</string>
     <string name="editCategoryNameNotAvailable">카테고리명을 수정 또는 입력해주세요!</string>
+    <string name="categoryEditTitle">카테고리 편집</string>
+    <string name="categoryItemEdit">카테고리 편집</string>
+    <string name="categoryNameEdit">이름 변경</string>
+    <string name="categoryDelete">삭제</string>
+    <string name="categoryAddSucceed">카테고리가 추가되었습니다.</string>
+    <string name="categoryAdd">카테고리 추가하기</string>
 
     <!-- 로드 실패 -->
     <string name="retryDesc">다시 시도해주세요</string>
     <string name="requestFailDesc">요청에 실패했습니다</string>
+
 </resources>

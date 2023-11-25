@@ -19,7 +19,7 @@ import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.dashedBorder
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.R
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 internal fun MyCategoryAddView(
@@ -44,7 +44,7 @@ internal fun MyCategoryAddView(
     ) {
         MyText(
             textAlign = TextAlign.Center,
-            text = stringResource(id = R.string.categoryAdd),
+            text = stringResource(id = CommonR.string.categoryAdd),
             fontSize = dpToSp(14.dp),
             color = Main3,
             modifier = Modifier.padding(vertical = 22.dp, horizontal = 20.dp)

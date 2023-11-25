@@ -25,13 +25,13 @@ import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.CategoryListView
 import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.screen.category.component.AddNewCategoryDialog
+import com.zinc.berrybucket.ui.presentation.screen.category.model.AddCategoryEvent
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.R
-import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
-import com.zinc.berrybucket.ui_my.screen.category.AddNewCategoryDialog
 import com.zinc.berrybucket.ui_my.screen.category.MyCategoryAddView
 import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
-import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
 
 @Composable
 fun CategoryLayer(

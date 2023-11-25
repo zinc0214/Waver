@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.screen.category.screen
+package com.zinc.berrybucket.ui.presentation.screen.category
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column
@@ -13,14 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
-import com.zinc.berrybucket.ui_my.model.AddCategoryEvent
-import com.zinc.berrybucket.ui_my.model.CategoryEditOptionEvent
-import com.zinc.berrybucket.ui_my.model.EditCategoryNameEvent
-import com.zinc.berrybucket.ui_my.screen.category.AddNewCategoryDialog
-import com.zinc.berrybucket.ui_my.screen.category.CategoryEditTitleView
-import com.zinc.berrybucket.ui_my.screen.category.EditCategoryNameDialog
-import com.zinc.berrybucket.ui_my.screen.category.VerticalReorderList
-import com.zinc.berrybucket.ui_my.viewModel.CategoryViewModel
+import com.zinc.berrybucket.ui.presentation.screen.category.component.AddNewCategoryDialog
+import com.zinc.berrybucket.ui.presentation.screen.category.component.CategoryEditTitleView
+import com.zinc.berrybucket.ui.presentation.screen.category.component.EditCategoryNameDialog
+import com.zinc.berrybucket.ui.presentation.screen.category.component.VerticalReorderList
+import com.zinc.berrybucket.ui.presentation.screen.category.model.AddCategoryEvent
+import com.zinc.berrybucket.ui.presentation.screen.category.model.CategoryEditOptionEvent
+import com.zinc.berrybucket.ui.presentation.screen.category.model.EditCategoryNameEvent
+import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 
 @Composable
 fun CategoryEditScreen(

@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.screen.category
+package com.zinc.berrybucket.ui.presentation.screen.category.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -48,9 +48,8 @@ import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
+import com.zinc.berrybucket.ui.presentation.screen.category.model.CategoryEditOptionEvent
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_my.R
-import com.zinc.berrybucket.ui_my.model.CategoryEditOptionEvent
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
@@ -63,7 +62,7 @@ internal fun CategoryEditTitleView(
     updateCategoryOrder: () -> Unit
 ) {
     TitleView(
-        title = stringResource(id = R.string.categoryEditTitle),
+        title = stringResource(id = CommonR.string.categoryEditTitle),
         leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
         onLeftIconClicked = {
@@ -92,7 +91,7 @@ internal fun CategoryEditAddView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ico_20_add),
+            painter = painterResource(id = CommonR.drawable.ico_20_add),
             contentDescription = null
         )
         MyText(
@@ -100,7 +99,7 @@ internal fun CategoryEditAddView(
             fontSize = 16.sp,
             color = Main4,
             fontWeight = FontWeight.Bold,
-            text = stringResource(id = R.string.categoryAdd)
+            text = stringResource(id = CommonR.string.categoryAdd)
         )
     }
 }
@@ -177,8 +176,8 @@ private fun EditCategoryItemView(
                 onClick = {
                     expandedMenuIndex.value = index
                 },
-                image = R.drawable.btn_24_more,
-                contentDescription = stringResource(id = R.string.categoryItemEdit)
+                image = CommonR.drawable.btn_24_more,
+                contentDescription = stringResource(id = CommonR.string.categoryItemEdit)
             )
             IconButton(
                 modifier = Modifier
@@ -187,8 +186,8 @@ private fun EditCategoryItemView(
                 onClick = {
                     // 드래그 ...
                 },
-                image = R.drawable.btn_24_move,
-                contentDescription = stringResource(id = R.string.categoryItemEdit)
+                image = CommonR.drawable.btn_24_move,
+                contentDescription = stringResource(id = CommonR.string.categoryItemEdit)
             )
         }
 
@@ -212,7 +211,7 @@ private fun EditCategoryItemView(
                     ) {
 
                         MyText(
-                            text = stringResource(id = R.string.categoryNameEdit),
+                            text = stringResource(id = CommonR.string.categoryNameEdit),
                             color = Gray10,
                             fontSize = dpToSp(14.dp),
                             modifier = Modifier
@@ -231,7 +230,7 @@ private fun EditCategoryItemView(
 
                         if (item.defaultYn.isNo()) {
                             MyText(
-                                text = stringResource(id = R.string.categoryDelete),
+                                text = stringResource(id = CommonR.string.categoryDelete),
                                 color = Error2,
                                 fontSize = dpToSp(14.dp),
                                 modifier = Modifier

@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.util.nav
 
+import android.util.Log
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -16,6 +17,7 @@ import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
+import com.zinc.berrybucket.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui_feed.FeedScreen
@@ -31,15 +33,14 @@ import com.zinc.berrybucket.ui_my.MyScreen
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryBucketListScreen
-import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryEditScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListSettingScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
-import com.zinc.berrybucket.ui_write.model.Write1Event
+import com.zinc.berrybucket.ui_write.model.WriteEvent
+import com.zinc.berrybucket.ui_write.presentation.WriteScreen
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
-import com.zinc.berrybucket.ui_write.presentation.WriteScreen2
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
@@ -260,6 +261,46 @@ internal fun NavGraphBuilder.searchNavGraph(
     }
 }
 
+internal fun NavGraphBuilder.writeNavGraph(
+    action: (ActionWithActivity) -> Unit,
+    backPress: () -> Unit,
+    goToAddCategory: (NavBackStackEntry) -> Unit,
+    goToHome: () -> Unit
+) {
+    composable(
+        route = "${WriteDestinations.GO_TO_WRITE}/{${WriteDestinations.UPDATE_ID}}",
+        arguments = listOf(
+            navArgument(WriteDestinations.UPDATE_ID) {
+                type = NavType.StringType
+            }
+        )) { entry ->
+        val arguments = entry.arguments
+        val bucketId = arguments?.getString(WriteDestinations.UPDATE_ID) ?: ""
+        WriteScreen(
+            id = bucketId,
+            event = { event ->
+                when (event) {
+                    is WriteEvent.ActivityAction -> {
+                        action(event.acton)
+                    }
+
+                    WriteEvent.GoToBack -> {
+                        backPress()
+                    }
+
+                    WriteEvent.GoToAddCategory -> {
+                        goToAddCategory(entry)
+                    }
+                }
+            },
+            addBucketSucceed = {
+                goToHome()
+            }
+        )
+    }
+}
+
+
 // 3
 internal fun NavGraphBuilder.writeNavGraph1(
     action: (ActionWithActivity) -> Unit,
@@ -283,28 +324,30 @@ internal fun NavGraphBuilder.writeNavGraph1(
             val totalInfo: WriteTotalInfo =
                 arguments.extraNotNullSerializable(WriteDestinations.WRITE_INFO)
 
+            Log.e("ayhan", "writeNavGraph1 totalInfo $totalInfo")
             WriteScreen1(
                 event = { event ->
                     when (event) {
-                        is Write1Event.ActivityAction -> {
+                        is WriteEvent.ActivityAction -> {
                             action(event.acton)
                         }
 
-                        is Write1Event.GoToWrite2 -> {
-                            goToNextWrite(entry, event.info)
+//                        is WriteEvent.GoToWrite2 -> {
+//                            goToNextWrite(entry, event.info)
+//
+//                        }
 
-                        }
-
-                        Write1Event.GoToBack -> {
+                        WriteEvent.GoToBack -> {
                             backPress()
                         }
 
-                        Write1Event.GoToAddCategory -> {
+                        WriteEvent.GoToAddCategory -> {
                             goToAddCategory(entry)
                         }
                     }
                 },
-                originWriteTotalInfo = totalInfo
+                originWriteTotalInfo = totalInfo,
+                goToNextPage = {}
             )
         }
     )
@@ -328,10 +371,13 @@ internal fun NavGraphBuilder.writeNavGraph2(
             val arguments = requireNotNull(nav.arguments)
             val writeTotalInfo =
                 arguments.extraNotNullSerializable<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
-            WriteScreen2(
-                writeTotalInfo = writeTotalInfo,
-                goToBack = { newInfo -> backPress(nav, newInfo) },
-                addBucketSucceed = { goToHome() })
+
+            Log.e("ayhan", "writeNavGraph2 totalInfo $writeTotalInfo")
+
+//            WriteScreen2(
+//                writeTotalInfo = writeTotalInfo,
+//                goToBack = { newInfo -> backPress(nav, newInfo) },
+//                addBucketSucceed = { goToHome() })
         }
     )
 }
@@ -406,7 +452,8 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
                 when (it) {
                     is GoToBucketDetailEvent.GoToCommentReport -> {
                         goToBucketDetailEvent.invoke(
-                            GoToBucketDetailEvent.GoToCommentReport(it.reportInfo), backStackEntry
+                            GoToBucketDetailEvent.GoToCommentReport(it.reportInfo),
+                            backStackEntry
                         )
                     }
 
@@ -494,7 +541,9 @@ object SearchDestinations {
 object WriteDestinations {
     const val GO_TO_WRITE1 = "go_to_write1"
     const val GO_TO_WRITE2 = "go_to_write2"
+    const val GO_TO_WRITE = "go_to_write"
     const val WRITE_INFO = "write_info"
+    const val UPDATE_ID = "update_id"
 }
 
 object MoreDestinations {
@@ -517,10 +566,6 @@ sealed class SearchEvent {
     data object GoToSearch : SearchEvent()
     data class GoToOpenBucket(val id: String) : SearchEvent()
     data class GoToOtherUser(val id: String) : SearchEvent()
-}
-
-sealed class WriteEvent {
-    data object GoToWrite : WriteEvent()
 }
 
 sealed class GoToBucketDetailEvent {

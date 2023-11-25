@@ -1,10 +1,9 @@
-package com.zinc.berrybucket.ui_my.viewModel
+package com.zinc.berrybucket.ui.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.parseToUI

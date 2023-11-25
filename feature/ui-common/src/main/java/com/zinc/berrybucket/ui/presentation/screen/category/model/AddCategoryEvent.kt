@@ -1,14 +1,14 @@
-package com.zinc.berrybucket.ui_my.model
+package com.zinc.berrybucket.ui.presentation.screen.category.model
 
 import com.zinc.berrybucket.model.UICategoryInfo
 
 sealed interface AddCategoryEvent {
-    object Close : AddCategoryEvent
+    data object Close : AddCategoryEvent
     data class AddNewAddCategory(val name: String) : AddCategoryEvent
 }
 
 sealed interface EditCategoryNameEvent {
-    object Close : EditCategoryNameEvent
+    data object Close : EditCategoryNameEvent
     data class EditCategoryName(val categoryInfo: UICategoryInfo) : EditCategoryNameEvent
 }
 
