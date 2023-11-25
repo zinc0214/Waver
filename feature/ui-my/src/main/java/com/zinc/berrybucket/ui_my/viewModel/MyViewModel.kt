@@ -98,6 +98,8 @@ class MyViewModel @Inject constructor(
     private val _achieveSucceed = MutableLiveData<String>()
     val achieveSucceed: LiveData<String> get() = _achieveSucceed
 
+    private var isPrefChanged = false
+
     private val searchCeh = CoroutineExceptionHandler { coroutineContext, throwable ->
         Log.e("ayhan", "searchFail 1 : $throwable")
         _searchFailed.call()
@@ -116,6 +118,7 @@ class MyViewModel @Inject constructor(
             val job4: Deferred<Unit> = async { loadShowDdayDataStore() }
 
             awaitAll(job1, job2, job3, job4)
+            needToReload(isPrefChanged)
         }
     }
 
@@ -131,7 +134,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowProgressDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsProgress.collectLatest {
-                updatePrefChangeState(_showProgress.value != it)
+                isPrefChanged = isPrefChanged || _showProgress.value != it
                 _showProgress.value = it
             }
         }
@@ -140,7 +143,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowSucceedDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsSucceed.collectLatest {
-                updatePrefChangeState(_showSucceed.value != it)
+                isPrefChanged = isPrefChanged || _showSucceed.value != it
                 _showSucceed.value = it
             }
         }
@@ -149,7 +152,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadOrderTypeDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadOrderType.collectLatest {
-                updatePrefChangeState(_orderType.value != it)
+                isPrefChanged = isPrefChanged || _orderType.value != it
                 _orderType.value = it
             }
         }
@@ -158,7 +161,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadShowDdayDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadShowDday.collectLatest {
-                updatePrefChangeState(_showDdayView.value != it)
+                isPrefChanged = isPrefChanged || _showDdayView.value != it
                 _showDdayView.value = it
             }
         }
@@ -167,7 +170,7 @@ class MyViewModel @Inject constructor(
     private suspend fun loadFilerDdayMinusDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsDdayMinus.collectLatest {
-                updatePrefChangeState(_isShownMinusDday.value != it)
+                isPrefChanged = isPrefChanged || _isShownMinusDday.value != it
                 _isShownMinusDday.value = it
             }
         }
@@ -176,10 +179,14 @@ class MyViewModel @Inject constructor(
     private suspend fun loadFilerDdayPlusDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadIsDdayPlus.collectLatest {
-                updatePrefChangeState(_isShowPlusDday.value != it)
+                isPrefChanged = isPrefChanged || _isShowPlusDday.value != it
                 _isShowPlusDday.value = it
             }
         }
+    }
+
+    fun needToReload(isNeed: Boolean) {
+        _isNeedToUpdate.value = isNeed
     }
 
 

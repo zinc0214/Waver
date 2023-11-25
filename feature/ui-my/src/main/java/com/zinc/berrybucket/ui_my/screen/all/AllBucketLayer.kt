@@ -11,16 +11,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.ALL
@@ -43,12 +49,30 @@ fun AllBucketLayer(
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val achieveSucceedAsState by viewModel.achieveSucceed.observeAsState()
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { owner, event ->
+            Log.e("ayhan", "event  :$event")
+            if (event == Lifecycle.Event.ON_CREATE) {
+                viewModel.needToReload(true)
+            }
+        }
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
 
     val bucketInfo = remember {
         mutableStateOf(allBucketInfoAsState)
     }
     val ddayShow = remember {
         mutableStateOf(ddayShowPrefAsState)
+    }
+    val isFilterDialogShown = remember {
+        mutableStateOf(false)
     }
 
     LaunchedEffect(key1 = ddayShowPrefAsState, block = {
@@ -60,20 +84,19 @@ fun AllBucketLayer(
     })
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
-        Log.e("ayhan", "isPrefChange : ${isNeedToUpdate}")
+        Log.e("ayhan", "isNeedToUpdate : ${isNeedToUpdate}")
 
         if (isNeedToUpdate == true) {
+            viewModel.needToReload(false)
+            viewModel.loadAllBucketFilter()
+            viewModel.loadAllBucketList()
             // 값 초기화
-            viewModel.updatePrefChangeState(changed = false, isNeedClear = true)
-            if (bucketInfo.value != null) {
-                bucketInfo.value = null
-            }
         }
     })
 
-    if (bucketInfo.value == null) {
+    Log.e("ayhan", "isFilterDialogShown : ${isFilterDialogShown.value}")
+    if (isFilterDialogShown.value) {
         viewModel.loadAllBucketFilter()
-        viewModel.loadAllBucketList()
     }
 
     bucketInfo.value?.let {
@@ -81,7 +104,13 @@ fun AllBucketLayer(
             AllBucketTopView(
                 modifier = Modifier,
                 allBucketInfo = it,
-                clickEvent = clickEvent
+                clickEvent = {
+                    clickEvent(it)
+
+                    if (it == MyPagerClickEvent.FilterClicked) {
+                        isFilterDialogShown.value = true
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
@@ -105,6 +134,12 @@ fun AllBucketTopView(
     allBucketInfo: AllBucketList,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
+    var data by remember { mutableStateOf(allBucketInfo) }
+
+    LaunchedEffect(allBucketInfo) {
+        data = allBucketInfo
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -113,8 +148,8 @@ fun AllBucketTopView(
             modifier = Modifier
                 .padding(top = 16.dp, start = 22.dp)
                 .align(Alignment.CenterVertically),
-            proceedingBucketCount = allBucketInfo.processingCount,
-            succeedBucketCount = allBucketInfo.succeedCount
+            proceedingBucketCount = data.processingCount,
+            succeedBucketCount = data.succeedCount
         )
 
         FilterAndSearchImageView(

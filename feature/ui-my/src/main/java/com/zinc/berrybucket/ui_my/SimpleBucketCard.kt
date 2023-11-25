@@ -27,6 +27,7 @@ import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -81,17 +82,6 @@ fun SimpleBucketListView(
         columModifier.nestedScroll(nestedScrollInterop)
     }
 
-//    Column(modifier = columModifier) {
-//        data.forEach { bucket ->
-//            SimpleBucketCard(
-//                itemInfo = bucket,
-//                tabType = tabType,
-//                isShowDday = showDday,
-//                itemClicked = { itemClicked.invoke(it) },
-//                achieveClicked = { achieveClicked.invoke(it) }
-//            )
-//        }
-//    }
     LazyColumn(
         modifier = columModifier,
         contentPadding = PaddingValues(bottom = 140.dp),
@@ -118,15 +108,19 @@ fun SimpleBucketCard(
     achieveClicked: (String) -> Unit
 ) {
 
-    var bucket by remember { mutableStateOf(itemInfo) }
+    val bucket = remember { mutableStateOf(itemInfo) }
 
     LaunchedEffect(itemInfo) {
-        bucket = itemInfo
+        Log.e("ayhan", "UpdatedBucket :LaunchedEffect!")
+
+        bucket.value = itemInfo
     }
 
-    var bucketCount = remember { mutableStateOf(bucket.currentCount) }
+    Log.e("ayhan", "UpdatedBucket : $bucket, $itemInfo")
+
+    val bucketCount = remember { mutableIntStateOf(bucket.value.currentCount) }
     val borderColor = remember { mutableStateOf(Color.Transparent) }
-    val isProgress = remember { mutableStateOf(bucket.isProgress()) }
+    val isProgress = remember { mutableStateOf(bucket.value.isProgress()) }
     val backgroundColor = remember { mutableStateOf(if (isProgress.value) Gray1 else Gray3) }
 
     Box(
@@ -144,7 +138,7 @@ fun SimpleBucketCard(
                 blurRadius = 4.dp,
             )
             .clip(RoundedCornerShape(4.dp))
-            .clickable { itemClicked(itemInfo) }
+            .clickable { itemClicked(bucket.value) }
             .background(
                 color = backgroundColor.value,
                 shape = RoundedCornerShape(4.dp)
@@ -172,21 +166,21 @@ fun SimpleBucketCard(
                 ) {
                     BucketCircularProgressBar(
                         progressState = {
-                            Log.e("ayhan", "state : $it , $bucketCount, ${itemInfo.goalCount}")
+                            Log.e("ayhan", "state : $it , $bucketCount, ${bucket.value.goalCount}")
                             if (it == BucketProgressState.PROGRESS_END) {
                                 if (tabType is ALL) {
                                     borderColor.value = Main2
                                 } else {
                                     borderColor.value = Sub_D2
                                 }
-                                bucketCount.value += 1
+                                bucketCount.intValue += 1
                             } else if (it == BucketProgressState.FINISHED) {
                                 borderColor.value = Color.Transparent
-                                if (itemInfo.goalCount <= bucketCount.value) {
+                                if (bucket.value.goalCount <= bucketCount.intValue) {
                                     isProgress.value = false
                                     backgroundColor.value = Gray3
                                 }
-                                achieveClicked(itemInfo.id)
+                                achieveClicked(bucket.value.id)
                             }
                         },
                         tabType = tabType
@@ -215,21 +209,20 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.dDay != null && isProgress.value && isShowDday) {
-                    DdayBadgeView(bucket)
+                if (bucket.value.dDay != null && isProgress.value && isShowDday) {
+                    DdayBadgeView(bucket.value)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
-                TitleTextView(bucket.title, isProgress.value)
+                TitleTextView(bucket.value.title, isProgress.value)
 
                 // Progress
-                if (bucket.goalCount > 0 && isProgress.value) {
+                if (bucket.value.goalCount > 0 && isProgress.value) {
                     CountProgressView(
-                        info = bucket,
-                        bucketCount = bucketCount.value,
+                        _info = bucket.value,
                         tabType = tabType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
@@ -243,7 +236,13 @@ fun SimpleBucketCard(
 
 
 @Composable
-private fun DdayBadgeView(info: UIBucketInfoSimple) {
+private fun DdayBadgeView(_info: UIBucketInfoSimple) {
+    var info by remember { mutableStateOf(_info) }
+
+    LaunchedEffect(_info) {
+        info = _info
+    }
+
     Card(
         elevation = 0.dp,
         shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp),
@@ -260,9 +259,20 @@ private fun DdayBadgeView(info: UIBucketInfoSimple) {
 
 @Composable
 private fun TitleTextView(title: String, progress: Boolean) {
+    var currentTitle by remember { mutableStateOf(title) }
+    var currentProgress by remember { mutableStateOf(progress) }
+
+    LaunchedEffect(title) {
+        currentTitle = title
+    }
+
+    LaunchedEffect(progress) {
+        currentProgress = progress
+    }
+
     MyText(
-        text = title,
-        color = if (progress) Gray10 else Gray6,
+        text = currentTitle,
+        color = if (currentProgress) Gray10 else Gray6,
         fontSize = dpToSp(14.dp),
     )
 }
@@ -270,10 +280,16 @@ private fun TitleTextView(title: String, progress: Boolean) {
 @Composable
 private fun CountProgressView(
     modifier: Modifier = Modifier,
-    info: UIBucketInfoSimple,
-    bucketCount: Int,
+    _info: UIBucketInfoSimple,
     tabType: MyTabType
 ) {
+    var info by remember { mutableStateOf(_info) }
+
+    LaunchedEffect(_info) {
+        info = _info
+    }
+
+    Log.e("ayhan", "updateItem : $info")
 
     val countProgressColor =
         if (tabType is ALL) {
@@ -289,13 +305,13 @@ private fun CountProgressView(
             Modifier
                 .align(Alignment.CenterVertically)
                 .height(8.dp),
-            bucketCount,
+            info.currentCount,
             info.goalCount,
             countProgressColor
         )
         Spacer(modifier = Modifier.width(12.dp))
         MyText(
-            text = bucketCount.toString(),
+            text = "${info.currentCount}",
             color = countProgressColor,
             fontSize = dpToSp(13.dp),
         )
@@ -310,10 +326,26 @@ private fun CountProgressView(
 @Composable
 fun HorizontalProgressBar(
     modifier: Modifier = Modifier,
-    currentCount: Int,
-    goalCount: Int,
-    countProgressColor: Color
+    _currentCount: Int,
+    _goalCount: Int,
+    _countProgressColor: Color
 ) {
+    var currentCount by remember { mutableIntStateOf(_currentCount) }
+    var goalCount by remember { mutableIntStateOf(_goalCount) }
+    var countProgressColor by remember { mutableStateOf(_countProgressColor) }
+
+    LaunchedEffect(_currentCount) {
+        currentCount = _currentCount
+    }
+
+    LaunchedEffect(_goalCount) {
+        goalCount = _goalCount
+    }
+
+    LaunchedEffect(_countProgressColor) {
+        countProgressColor = _countProgressColor
+    }
+
     var progress by remember { mutableStateOf(0f) }
     val indicatorProgress =
         if (currentCount == 0) 0.0f else (currentCount.toFloat() / goalCount.toFloat())
