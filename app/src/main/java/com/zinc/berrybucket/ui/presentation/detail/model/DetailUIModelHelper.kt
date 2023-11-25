@@ -66,7 +66,8 @@ fun BucketDetailUiInfo.toUpdateUiModel(
             id = it.memberId, imageUrl = it.profileImage, nickname = it.nickName
         )
     }.orEmpty(),
-    isScrapUsed = this.descInfo.isScrap
+    isScrapUsed = this.descInfo.isScrap,
+    isForUpdate = false
 )
 
 private fun BucketDetailUiInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List<WriteOption1Info> {

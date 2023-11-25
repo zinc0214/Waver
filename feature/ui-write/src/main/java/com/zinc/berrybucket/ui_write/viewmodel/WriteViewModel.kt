@@ -31,6 +31,9 @@ class WriteViewModel @Inject constructor(
     private val _addNewBucketListResult = MutableLiveData<Boolean>()
     val addNewBucketListResult: LiveData<Boolean> get() = _addNewBucketListResult
 
+    private val _updateBucketListResult = MutableLiveData<Boolean>()
+    val updateBucketListResult: LiveData<Boolean> get() = _updateBucketListResult
+
     private val _keywordList = MutableLiveData<List<WriteKeyWord>>()
     val keywordList: LiveData<List<WriteKeyWord>> get() = _keywordList
 
@@ -38,7 +41,7 @@ class WriteViewModel @Inject constructor(
     val loadFail: LiveData<Pair<String, String>> get() = _loadFail
 
 
-    fun addNewBucketList(writeInfo: UIAddBucketListInfo) {
+    fun addNewBucketList(writeInfo: UIAddBucketListInfo, isForUpdate: Boolean) {
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             _loadFail.value = "버킷리스트 생성 실패" to "다시 시도해주세요"
             Log.e("ayhan", "addBucketResult fail1 : ${throwable.cause}")
@@ -49,6 +52,7 @@ class WriteViewModel @Inject constructor(
                     val result = addNewBucketList.invoke(
                         accessToken,
                         addBucketListRequest = AddBucketListRequest(
+                            bucketId = writeInfo.bucketId,
                             bucketType = writeInfo.bucketType,
                             exposureStatus = writeInfo.exposureStatus,
                             title = writeInfo.title,
@@ -60,7 +64,8 @@ class WriteViewModel @Inject constructor(
                             targetDate = writeInfo.targetDate,
                             goalCount = writeInfo.goalCount,
                             categoryId = writeInfo.categoryId
-                        )
+                        ),
+                        isForUpdate = isForUpdate
                     )
                     Log.e("ayhan", "addBucketResult : $result")
                     if (result.success) {

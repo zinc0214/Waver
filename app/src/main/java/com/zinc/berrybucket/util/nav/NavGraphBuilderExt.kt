@@ -411,8 +411,9 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
                     }
 
                     is GoToBucketDetailEvent.GoToUpdate -> {
+                        val info = it.info.copy(isForUpdate = true)
                         goToBucketDetailEvent.invoke(
-                            GoToBucketDetailEvent.GoToUpdate(it.info), backStackEntry
+                            GoToBucketDetailEvent.GoToUpdate(info), backStackEntry
                         )
                     }
                 }
@@ -434,8 +435,9 @@ internal fun NavGraphBuilder.closeBucketDetailNavGraph(
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         CloseDetailScreen(detailId, goToUpdate = {
+            val info = it.copy(isForUpdate = true)
             goToBucketDetailEvent.invoke(
-                GoToBucketDetailEvent.GoToUpdate(it), backStackEntry
+                GoToBucketDetailEvent.GoToUpdate(info), backStackEntry
             )
         }, backPress = backPress)
     }

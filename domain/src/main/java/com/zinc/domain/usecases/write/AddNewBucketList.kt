@@ -9,6 +9,7 @@ class AddNewBucketList @Inject constructor(
 ) {
     suspend operator fun invoke(
         token: String,
-        addBucketListRequest: AddBucketListRequest
-    ) = writeRepository.addNewBucketList(token, addBucketListRequest)
+        addBucketListRequest: AddBucketListRequest,
+        isForUpdate: Boolean
+    ) = writeRepository.addNewBucketList(token, addBucketListRequest, isForUpdate)
 }

@@ -135,7 +135,7 @@ fun BerryBucketApp(
                                 }
                             ) {
                                 appState.navigateToWrite1(
-                                    WriteTotalInfo(),
+                                    WriteTotalInfo(isForUpdate = false),
                                     appState.navController.currentBackStackEntry!!
                                 )
                             }

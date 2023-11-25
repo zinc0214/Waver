@@ -9,11 +9,8 @@ import com.zinc.common.models.KeywordInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.toYn
 import kotlinx.parcelize.Parcelize
-import kotlinx.serialization.Contextual
 import java.io.File
 import java.io.Serializable
-import java.time.LocalDate
-import java.util.Date
 
 data class WriteAddOption(
     val type: WriteOptionsType2,
@@ -32,7 +29,8 @@ data class WriteTotalInfo(
     val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
     val keyWord: List<WriteKeyWord> = emptyList(),
     val tagFriends: List<WriteFriend> = emptyList(),
-    val isScrapUsed: Boolean = false
+    val isScrapUsed: Boolean = false,
+    val isForUpdate: Boolean = false,
 ) : Serializable, Parcelable {
     companion object {
         fun toNavigationValue(value: WriteTotalInfo): String =
@@ -173,6 +171,7 @@ interface WriteOptionsType2 {
 }
 
 fun parseUIBucketListInfo(
+    bucketId: String? = null,
     title: String = "",
     options: List<WriteOption1Info> = emptyList(),
     writeOpenType: WriteOpenType,
@@ -181,6 +180,7 @@ fun parseUIBucketListInfo(
     tagFriends: List<String>,
     isScrapAvailable: Boolean = false
 ) = UIAddBucketListInfo(
+    bucketId = bucketId,
     bucketType = BucketType.ORIGINAL,
     title = title,
     memo = parseMemo(options),
@@ -224,6 +224,7 @@ private fun parseCategoryId(options: List<WriteOption1Info>): Int {
 }
 
 data class UIAddBucketListInfo(
+    val bucketId: String?,
     val bucketType: BucketType,
     val exposureStatus: ExposureStatus, // 공개여부
     val title: String,

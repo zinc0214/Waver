@@ -1,6 +1,5 @@
 package com.zinc.data.api
 
-import com.zinc.common.models.AddBucketListResponse
 import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
@@ -143,7 +142,26 @@ interface BerryBucketApi {
         @Part targetDate: MultipartBody.Part?, // 목표완료일(yyyy-MM-dd)
         @Part goalCount: MultipartBody.Part, //  목표 횟수
         @Part categoryId: MultipartBody.Part // 카테고리 ID
-    ): AddBucketListResponse
+    ): CommonResponse
+
+    // 버킷리스트 등록
+    @POST("/bucketlist/{id}")
+    @Multipart
+    suspend fun updateBucketList(
+        @Header("Authorization") token: String,
+        @Part bucketType: MultipartBody.Part,
+        @Part exposureStatus: MultipartBody.Part, // 공개여부
+        @Part title: MultipartBody.Part,
+        @Part memo: MultipartBody.Part?, // 메모
+        @Part keywordIds: MultipartBody.Part?, // 키워드 (태그) 키워드 목록(최대 5) - ","로 구분
+        @Part friendUserIds: List<MultipartBody.Part>?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
+        @Part scrapYn: MultipartBody.Part, // 스크랩 여부
+        @Part images: List<MultipartBody.Part>?, // 이미지 목록(최대 3)
+        @Part targetDate: MultipartBody.Part?, // 목표완료일(yyyy-MM-dd)
+        @Part goalCount: MultipartBody.Part, //  목표 횟수
+        @Part categoryId: MultipartBody.Part, // 카테고리 ID
+        @Path("id") id: String
+    ): CommonResponse
 
     @GET("/alarm")
     suspend fun loadAlarmList(@Header("Authorization") token: String): AlarmList

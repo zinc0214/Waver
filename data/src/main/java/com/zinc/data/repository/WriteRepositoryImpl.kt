@@ -1,7 +1,8 @@
 package com.zinc.data.repository
 
+import android.util.Log
 import com.zinc.common.models.AddBucketListRequest
-import com.zinc.common.models.AddBucketListResponse
+import com.zinc.common.models.CommonResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
@@ -13,8 +14,10 @@ internal class WriteRepositoryImpl @Inject constructor(
 ) : WriteRepository {
     override suspend fun addNewBucketList(
         token: String,
-        addBucketListRequest: AddBucketListRequest
-    ): AddBucketListResponse {
+        addBucketListRequest: AddBucketListRequest,
+        isForUpdate: Boolean
+    ): CommonResponse {
+        Log.e("ayhan", "addBucketListRequest : $addBucketListRequest\n isForUpdate : $isForUpdate")
 
         val bucketType = addBucketListRequest.bucketType.toMultipartFile("bucketType")
         val exposureStatus = addBucketListRequest.exposureStatus.toMultipartFile("exposureStatus")
@@ -32,19 +35,37 @@ internal class WriteRepositoryImpl @Inject constructor(
         val goalCount = addBucketListRequest.goalCount.toMultipartFile("goalCount")
         val categoryId = addBucketListRequest.categoryId.toMultipartFile("categoryId")
 
-        return berryBucketApi.addNewBucketList(
-            token,
-            bucketType,
-            exposureStatus,
-            title,
-            memo,
-            keywordIds,
-            friendUserIds,
-            scrapYn,
-            images,
-            targetDate,
-            goalCount,
-            categoryId
-        )
+        if (isForUpdate) {
+            return berryBucketApi.updateBucketList(
+                token,
+                bucketType,
+                exposureStatus,
+                title,
+                memo,
+                keywordIds,
+                friendUserIds,
+                scrapYn,
+                images,
+                targetDate,
+                goalCount,
+                categoryId,
+                addBucketListRequest.bucketId.orEmpty()
+            )
+        } else {
+            return berryBucketApi.addNewBucketList(
+                token,
+                bucketType,
+                exposureStatus,
+                title,
+                memo,
+                keywordIds,
+                friendUserIds,
+                scrapYn,
+                images,
+                targetDate,
+                goalCount,
+                categoryId
+            )
+        }
     }
 }

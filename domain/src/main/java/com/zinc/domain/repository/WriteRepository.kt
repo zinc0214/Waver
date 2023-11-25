@@ -1,11 +1,12 @@
 package com.zinc.domain.repository
 
 import com.zinc.common.models.AddBucketListRequest
-import com.zinc.common.models.AddBucketListResponse
+import com.zinc.common.models.CommonResponse
 
 interface WriteRepository {
     suspend fun addNewBucketList(
         token: String,
-        addBucketListRequest: AddBucketListRequest
-    ): AddBucketListResponse
+        addBucketListRequest: AddBucketListRequest,
+        isForUpdate: Boolean
+    ): CommonResponse
 }

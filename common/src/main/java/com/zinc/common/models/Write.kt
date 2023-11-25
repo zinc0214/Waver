@@ -3,6 +3,7 @@ package com.zinc.common.models
 import java.io.File
 
 data class AddBucketListRequest(
+    val bucketId: String? = null,
     val bucketType: BucketType,
     val exposureStatus: ExposureStatus, // 공개여부
     val title: String,

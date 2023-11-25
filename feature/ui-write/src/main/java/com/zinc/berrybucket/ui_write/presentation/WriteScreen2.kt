@@ -44,9 +44,7 @@ import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectFriendsScre
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectKeyWordScreen
 import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
 import com.zinc.berrybucket.util.loadImage
-import com.zinc.berrybucket.util.loadImageFile
 import com.zinc.berrybucket.util.loadImageFiles
-import com.zinc.berrybucket.util.loadImages
 
 @Composable
 fun WriteScreen2(
@@ -292,6 +290,7 @@ private fun WriteScreen2ContentView(
                             (optionsList.find { it.type is WriteOptionsType2.SCRAP })?.type as WriteOptionsType2.SCRAP
                         viewModel.addNewBucketList(
                             parseUIBucketListInfo(
+                                bucketId = writeTotalInfo.bucketId,
                                 title = writeTotalInfo.title,
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
@@ -299,7 +298,8 @@ private fun WriteScreen2ContentView(
                                 keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.tagList.orEmpty(),
                                 tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.tagList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
-                            )
+                            ),
+                            isForUpdate = writeTotalInfo.isForUpdate
                         )
                     }
                 }

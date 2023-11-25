@@ -58,11 +58,9 @@ import com.zinc.berrybucket.ui_write.presentation.options.AddImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.MemoScreen
 import com.zinc.berrybucket.ui_write.presentation.options.OptionScreen
-import com.zinc.berrybucket.util.loadImage
 import com.zinc.berrybucket.util.loadImages
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
