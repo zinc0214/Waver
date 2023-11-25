@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -50,24 +51,29 @@ fun CloseDetailScreen(
 
     val viewModel: DetailViewModel = hiltViewModel()
 
-    val vmDetailInfo by viewModel.bucketBucketDetailUiInfo.observeAsState()
+    val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
 
-    if (vmDetailInfo == null) {
+    if (vmDetailInfoAsState == null) {
         viewModel.getBucketDetail(detailId)
     }
 
+    val detailInfo = remember { mutableStateOf(vmDetailInfoAsState) }
     val optionPopUpShowed = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
     val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
 
-    vmDetailInfo?.let { detailInfo ->
+    LaunchedEffect(key1 = vmDetailInfoAsState) {
+        detailInfo.value = vmDetailInfoAsState
+    }
+
+    detailInfo.value?.let { info ->
         val listScrollState = rememberLazyListState()
         val scrollContext = rememberScrollContext(listScrollState)
         val titlePosition = 0
 
         if (imageInfos.isEmpty()) {
-            imageInfos.addAll(loadImages(detailInfo.imageInfo?.imageList.orEmpty()))
+            imageInfos.addAll(loadImages(info.imageInfo?.imageList.orEmpty()))
         }
 
         BaseTheme {
@@ -82,7 +88,7 @@ fun CloseDetailScreen(
 
                             MyBucketMenuEvent.GoToEdit -> {
                                 optionPopUpShowed.value = false
-                                goToUpdate(detailInfo.toUpdateUiModel(imageInfos))
+                                goToUpdate(info.toUpdateUiModel(imageInfos))
                             }
 
                             MyBucketMenuEvent.GoToGoalUpdate -> {
@@ -95,7 +101,7 @@ fun CloseDetailScreen(
 
                 if (goalCountUpdatePopUpShowed.value) {
                     GoalCountUpdateDialog(
-                        currentCount = detailInfo.descInfo.goalCount.toString()
+                        currentCount = info.descInfo.goalCount.toString()
                     ) {
                         when (it) {
                             GoalCountUpdateEvent.Close -> {
@@ -104,7 +110,7 @@ fun CloseDetailScreen(
 
                             is GoalCountUpdateEvent.CountUpdate -> {
                                 // Todo : ViewModel Update!
-                                viewModel.goalCountUpdate(detailInfo.bucketId, it.count)
+                                viewModel.goalCountUpdate(info.bucketId, it.count)
                                 goalCountUpdatePopUpShowed.value = false
                             }
                         }
@@ -125,7 +131,7 @@ fun CloseDetailScreen(
                     DetailTopAppBar(
                         listState = listScrollState,
                         titlePosition = titlePosition,
-                        title = detailInfo.descInfo.title,
+                        title = info.descInfo.title,
                         clickEvent = {
                             when (it) {
                                 DetailAppBarClickEvent.CloseClicked -> {
@@ -146,7 +152,7 @@ fun CloseDetailScreen(
 
                         ContentView(
                             listState = listScrollState,
-                            bucketDetailUiInfo = detailInfo,
+                            bucketDetailUiInfo = info,
                             modifier = Modifier.constrainAs(contentView) {
                                 start.linkTo(parent.start)
                                 end.linkTo(parent.end)
@@ -163,11 +169,11 @@ fun CloseDetailScreen(
                                 }
                                 .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
                             successClicked = {
-                                //clickEvent.invoke(DetailClickEvent.SuccessClicked)
+                                viewModel.achieveMyBucket(info.bucketId)
                             },
                             successButtonInfo = SuccessButtonInfo(
-                                goalCount = detailInfo.descInfo.goalCount,
-                                userCount = detailInfo.descInfo.userCount
+                                goalCount = info.descInfo.goalCount,
+                                userCount = info.descInfo.userCount
                             ),
                             isWide = !scrollContext.isBottom
                         )

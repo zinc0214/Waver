@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -39,7 +40,6 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.design.util.visibleLastIndex
-import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
@@ -63,9 +63,10 @@ import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewE
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.util.loadImages
+import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
-import com.zinc.berrybucket.util.loadImages
 
 @Composable
 fun OpenDetailScreen(
@@ -78,20 +79,28 @@ fun OpenDetailScreen(
 
     viewModel.getValidMentionList()
 
-    val vmDetailInfo by viewModel.bucketBucketDetailUiInfo.observeAsState()
+    val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
     val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
 
-    if (vmDetailInfo == null) {
-        viewModel.getBucketDetail(detailId) // TODO : 실제 DetailId 를 보는 것으로 수정 필요
+    val detailInfo = remember {
+        mutableStateOf(vmDetailInfoAsState)
     }
 
-    vmDetailInfo?.let { detailInfo ->
+    if (detailInfo.value == null) {
+        viewModel.getBucketDetail(detailId)
+    }
+
+    LaunchedEffect(key1 = vmDetailInfoAsState) {
+        detailInfo.value = vmDetailInfoAsState
+    }
+
+    detailInfo.value?.let { info ->
 
         // scroll 상태에 따른 버튼 상태
         val listScrollState = rememberLazyListState()
-        val titleIndex = if (detailInfo.imageInfo == null) 1 else 2 // 타이틀의 위치
-        val flatButtonIndex = flatButtonIndex(detailInfo) // 붙는 버튼의 위치
+        val titleIndex = if (info.imageInfo == null) 1 else 2 // 타이틀의 위치
+        val flatButtonIndex = flatButtonIndex(info) // 붙는 버튼의 위치
         val visibleLastIndex = listScrollState.visibleLastIndex() // 현재 보여지는 마지막 아이템의 index
         val isCommentViewShown =
             visibleLastIndex > listScrollState.layoutInfo.totalItemsCount - 2 // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
@@ -137,7 +146,7 @@ fun OpenDetailScreen(
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
         if (imageInfos.isEmpty()) {
-            imageInfos.addAll(loadImages(detailInfo.imageInfo?.imageList.orEmpty()))
+            imageInfos.addAll(loadImages(info.imageInfo?.imageList.orEmpty()))
         }
 
         BaseTheme {
@@ -153,7 +162,7 @@ fun OpenDetailScreen(
                                 optionPopUpShowed.value = false
                                 goToEvent.invoke(
                                     GoToBucketDetailEvent.GoToUpdate(
-                                        detailInfo.toUpdateUiModel(
+                                        info.toUpdateUiModel(
                                             imageInfos
                                         )
                                     )
@@ -170,7 +179,7 @@ fun OpenDetailScreen(
 
                 if (goalCountUpdatePopUpShowed.value) {
                     GoalCountUpdateDialog(
-                        currentCount = detailInfo.descInfo.goalCount.toString()
+                        currentCount = info.descInfo.goalCount.toString()
                     ) {
                         when (it) {
                             GoalCountUpdateEvent.Close -> {
@@ -179,14 +188,14 @@ fun OpenDetailScreen(
 
                             is GoalCountUpdateEvent.CountUpdate -> {
                                 // Todo : ViewModel Update!
-                                viewModel.goalCountUpdate(detailInfo.bucketId, it.count)
+                                viewModel.goalCountUpdate(info.bucketId, it.count)
                                 goalCountUpdatePopUpShowed.value = false
                             }
                         }
                     }
                 }
                 if (commentOptionPopUpShowed.value.first) {
-                    val commenter = vmDetailInfo?.commentInfo?.commenterList?.getOrNull(
+                    val commenter = vmDetailInfoAsState?.commentInfo?.commenterList?.getOrNull(
                         commentOptionPopUpShowed.value.second
                     )
 
@@ -233,7 +242,7 @@ fun OpenDetailScreen(
                     DetailTopAppBar(
                         listState = listScrollState,
                         titlePosition = titleIndex,
-                        title = detailInfo.descInfo.title,
+                        title = info.descInfo.title,
                         clickEvent = {
                             when (it) {
                                 DetailAppBarClickEvent.CloseClicked -> {
@@ -253,14 +262,16 @@ fun OpenDetailScreen(
 
                         ContentView(
                             listState = listScrollState,
-                            bucketDetailUiInfo = detailInfo,
+                            bucketDetailUiInfo = info,
                             clickEvent = {
                                 when (it) {
                                     is CommentLongClicked -> {
                                         commentOptionPopUpShowed.value = true to it.commentIndex
                                     }
 
-                                    DetailClickEvent.SuccessClicked -> TODO()
+                                    is DetailClickEvent.SuccessClicked -> {
+                                        viewModel.achieveMyBucket(it.id)
+                                    }
                                 }
                             },
                             flatButtonVisible = flatButtonVisible,
@@ -291,11 +302,11 @@ fun OpenDetailScreen(
                                 DetailSuccessButtonView(
                                     modifier = Modifier.padding(bottom = 30.dp),
                                     successClicked = {
-                                        // TODO : viewModel Scuccess
+                                        viewModel.achieveMyBucket(info.bucketId)
                                     },
                                     successButtonInfo = SuccessButtonInfo(
-                                        goalCount = detailInfo.descInfo.goalCount,
-                                        userCount = detailInfo.descInfo.userCount
+                                        goalCount = info.descInfo.goalCount,
+                                        userCount = info.descInfo.userCount
                                     )
                                 )
                             }
@@ -478,7 +489,7 @@ private fun ContentView(
             ) {
                 DetailSuccessButtonView(
                     successClicked = {
-                        clickEvent.invoke(DetailClickEvent.SuccessClicked)
+                        clickEvent.invoke(DetailClickEvent.SuccessClicked(bucketDetailUiInfo.bucketId))
                     }, successButtonInfo = SuccessButtonInfo(
                         goalCount = bucketDetailUiInfo.descInfo.goalCount,
                         userCount = bucketDetailUiInfo.descInfo.userCount

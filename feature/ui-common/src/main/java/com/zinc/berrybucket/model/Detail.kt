@@ -111,7 +111,7 @@ sealed class DetailAppBarClickEvent {
 }
 
 sealed class DetailClickEvent {
-    object SuccessClicked : DetailClickEvent()
+    data class SuccessClicked(val id: String) : DetailClickEvent()
 }
 
 data class CommentLongClicked(val commentIndex: Int) : DetailClickEvent()

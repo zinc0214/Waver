@@ -24,6 +24,7 @@ import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
+import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -35,6 +36,7 @@ import javax.inject.Inject
 class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
+    private val achieveMyBucket: AchieveMyBucket,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 //
@@ -46,6 +48,9 @@ class DetailViewModel @Inject constructor(
 
     private val _validMentionList = MutableLiveData<List<CommentMentionInfo>>()
     val validMentionList: LiveData<List<CommentMentionInfo>> = _validMentionList
+
+    private val _achieveFail = MutableLiveData<Boolean>()
+    val achieveFail: LiveData<Boolean> get() = _achieveFail
 
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: HomeProfileInfo
@@ -73,6 +78,25 @@ class DetailViewModel @Inject constructor(
         }
 
         //   _bucketBucketDetailUiInfo.value = bucketDetailUiInfo1
+    }
+
+    fun achieveMyBucket(id: String) {
+        viewModelScope.launch(CEH(_achieveFail, true))
+        {
+            runCatching {
+                accessToken.value?.let { token ->
+                    val response = achieveMyBucket(token, id)
+                    if (response.success) {
+                        _achieveFail.value = false
+                        getBucketDetail(id)
+                    } else {
+                        _achieveFail.value = true
+                    }
+                }
+            }.getOrElse {
+                _achieveFail.value = true
+            }
+        }
     }
 
     private suspend fun getBucketDetailData(token: String, id: String) {
