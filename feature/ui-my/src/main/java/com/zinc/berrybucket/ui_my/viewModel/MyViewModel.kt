@@ -30,6 +30,7 @@ import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadAllBucketList
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import com.zinc.domain.usecases.my.SearchAllBucketList
+import com.zinc.domain.usecases.my.SearchDdayBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +44,7 @@ class MyViewModel @Inject constructor(
     private val loadAllBucketList: LoadAllBucketList,
     private val searchAllBucketList: SearchAllBucketList,
     private val searchCategoryList: SearchCategoryList,
+    private val searchDdayBucketList: SearchDdayBucketList,
     private val achieveMyBucket: AchieveMyBucket,
     private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
@@ -451,10 +453,27 @@ class MyViewModel @Inject constructor(
     }
 
     private fun searchDdayBucket(searchWord: String) {
-        _searchBucketResult.value = Pair(
-            DDAY,
-            simpleTypeList
-        )
+        viewModelScope.launch(searchCeh) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    searchDdayBucketList.invoke(token, searchWord).apply {
+                        if (this.success) {
+                            _searchBucketResult.value = Pair(
+                                DDAY,
+                                this.data.bucketlist
+                            )
+                        } else {
+                            Log.e("ayhan", "searchFail 3 : ${this.message}")
+                            _searchFailed.call()
+                        }
+
+                    }
+                }.getOrElse {
+                    Log.e("ayhan", "searchFail 2 : ${it.message}")
+                    _searchFailed.call()
+                }
+            }
+        }
     }
 
     private fun searchCategoryItems(searchWord: String) {
@@ -542,7 +561,7 @@ class MyViewModel @Inject constructor(
             bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
-            id = "3",
+            id = "4",
             title = "Dday가 있는 애22233",
             userCount = 5,
             goalCount = 10,
@@ -552,7 +571,7 @@ class MyViewModel @Inject constructor(
             bucketType = BucketType.ORIGINAL
         ),
         BucketInfoSimple(
-            id = "3",
+            id = "5",
             title = "Dday가 있는 애22233",
             userCount = 5,
             goalCount = 10,
@@ -563,7 +582,7 @@ class MyViewModel @Inject constructor(
 
         ),
         BucketInfoSimple(
-            id = "3",
+            id = "6",
             title = "Dday가 있는 애22233",
             userCount = 5,
             goalCount = 10,
@@ -581,22 +600,22 @@ class MyViewModel @Inject constructor(
             bucketlistCount = "20"
         ),
         CategoryInfo(
-            id = 1,
+            id = 2,
             name = "아주아주 맛있는 것을 먹으러 다니는 거야 냠냠쩝쩝 하면서 룰루리랄라 크크루삥봉",
             bucketlistCount = "10"
         ),
         CategoryInfo(
-            id = 1,
+            id = 3,
             name = "제주도여행을 갈거야",
             bucketlistCount = "3"
         ),
         CategoryInfo(
-            id = 1,
+            id = 4,
             name = "제주도여행을 갈거야",
             bucketlistCount = "5"
         ),
         CategoryInfo(
-            id = 1,
+            id = 5,
             name = "검색한 갈거야",
             bucketlistCount = "35"
         )

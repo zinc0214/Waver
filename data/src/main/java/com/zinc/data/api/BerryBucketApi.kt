@@ -18,6 +18,7 @@ import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
+import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.SavedKeywordItemsRequest
@@ -208,6 +209,12 @@ interface BerryBucketApi {
     suspend fun searchAllBucketList(
         @Header("Authorization") token: String,
         @Query("query") query: String
+    ): AllBucketListResponse
+
+    @GET("/bucketList")
+    suspend fun searchDdayBucketList(
+        @Header("Authorization") token: String,
+        @Query("dDayBucketOnly") dDayBucketOnly: String? = YesOrNo.Y.name
     ): AllBucketListResponse
 
     @GET("/bucketList/{id}/achieve")

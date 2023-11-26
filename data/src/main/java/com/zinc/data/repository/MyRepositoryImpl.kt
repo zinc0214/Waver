@@ -31,168 +31,6 @@ internal class MyRepositoryImpl @Inject constructor(
             sort = allBucketListRequest.sort,
             categoryId = null
         )
-//        return AllBucketList(
-//            processingCount = "15",
-//            succeedCount = "20",
-//            bucketList = listOf(
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "1",
-//                    title = "아이스크림을 먹을테야 히힛",
-//                    currentCount = 1,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_CLOSE
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "2",
-//                    title = "제주도 여행을 갈거란 말이야",
-//                    currentCount = 1,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_CLOSE
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "1",
-//                    title = "아이스크림을 먹을테야",
-//                    currentCount = 1,
-//                    goalCount = 5,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애222",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = 20,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.PROGRESS,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                ),
-//                BucketInfoSimple(
-//                    type = "BASIC",
-//                    id = "3",
-//                    title = "Dday가 있는 애22233",
-//                    currentCount = 5,
-//                    goalCount = 10,
-//                    dDay = -10,
-//                    status = BucketStatus.COMPLETE,
-//                    detailType = DetailType.MY_OPEN
-//                )
-//            )
-//        )
-
     }
 
     override suspend fun loadFollowList(token: String): FollowResponse {
@@ -209,6 +47,10 @@ internal class MyRepositoryImpl @Inject constructor(
 
     override suspend fun searchAllBucketList(token: String, query: String): AllBucketListResponse {
         return berryBucketApi.searchAllBucketList(token, query)
+    }
+
+    override suspend fun searchDdayBucketList(token: String, query: String): AllBucketListResponse {
+        return berryBucketApi.searchDdayBucketList(token)
     }
 
     override suspend fun achieveMyBucket(token: String, id: String): CommonResponse {

@@ -34,6 +34,11 @@ interface MyRepository {
         query: String
     ): AllBucketListResponse
 
+    suspend fun searchDdayBucketList(
+        token: String,
+        query: String
+    ): AllBucketListResponse
+
     suspend fun achieveMyBucket(
         token: String,
         id: String
