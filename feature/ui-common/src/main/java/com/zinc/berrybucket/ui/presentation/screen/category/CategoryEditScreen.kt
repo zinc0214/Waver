@@ -1,8 +1,9 @@
 package com.zinc.berrybucket.ui.presentation.screen.category
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.model.UICategoryInfo
+import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.screen.category.component.AddNewCategoryDialog
 import com.zinc.berrybucket.ui.presentation.screen.category.component.CategoryEditTitleView
@@ -92,7 +94,9 @@ fun CategoryEditScreen(
     }
 
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Gray1)) {
 
         CategoryEditTitleView(backClicked = {
             backClicked()

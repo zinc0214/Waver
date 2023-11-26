@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MySearchClickEvent
-import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.presentation.home.HomeBottomBar
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
@@ -60,8 +59,7 @@ import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.openBucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.openBucketReportNavGraph
 import com.zinc.berrybucket.util.nav.searchNavGraph
-import com.zinc.berrybucket.util.nav.writeNavGraph1
-import com.zinc.berrybucket.util.nav.writeNavGraph2
+import com.zinc.berrybucket.util.nav.writeNavGraph
 import com.zinc.common.models.ExposureStatus
 import kotlinx.coroutines.launch
 
@@ -134,8 +132,8 @@ fun BerryBucketApp(
                                     appState.currentHomeRoute.value = it
                                 }
                             ) {
-                                appState.navigateToWrite1(
-                                    WriteTotalInfo(isForUpdate = false),
+                                appState.navigateToWrite(
+                                    "NoId",
                                     appState.navController.currentBackStackEntry!!
                                 )
                             }
@@ -300,7 +298,10 @@ fun BerryBucketApp(
                                     }
 
                                     is GoToBucketDetailEvent.GoToUpdate -> {
-                                        appState.navigateToWrite1(eventInfo.info, nav)
+                                        appState.navigateToWrite(
+                                            eventInfo.info.bucketId ?: "NoId",
+                                            appState.navController.currentBackStackEntry!!
+                                        )
                                     }
                                 }
                             },
@@ -315,7 +316,10 @@ fun BerryBucketApp(
                                     }
 
                                     is GoToBucketDetailEvent.GoToUpdate -> {
-                                        appState.navigateToWrite1(eventInfo.info, nav)
+                                        appState.navigateToWrite(
+                                            eventInfo.info.bucketId ?: "NoId",
+                                            appState.navController.currentBackStackEntry!!
+                                        )
                                     }
                                 }
                             },
@@ -338,21 +342,32 @@ fun BerryBucketApp(
                                 }
                             }
                         })
-                        writeNavGraph1(action = { actionType -> action(actionType) },
+                        writeNavGraph(action = { actionType -> action(actionType) },
                             backPress = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
-                            }, goToNextWrite = { nav, info ->
-                                appState.navigateToWrite2(nav, info)
-                            }, goToAddCategory = {
+                            },
+                            goToAddCategory = {
                                 appState.navigateToCategoryEdit(it)
-                            })
-                        writeNavGraph2(
-                            backPress = { nav, info ->
-                                appState.navigateToWrite1(info, nav)
                             },
                             goToHome = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
                             })
+
+//                        writeNavGraph1(action = { actionType -> action(actionType) },
+//                            backPress = {
+//                                appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
+//                            }, goToNextWrite = { nav, info ->
+//                                appState.navigateToWrite2(nav, info)
+//                            }, goToAddCategory = {
+//                                appState.navigateToCategoryEdit(it)
+//                            })
+//                        writeNavGraph2(
+//                            backPress = { nav, info ->
+//                                appState.navigateToWrite1(info, nav)
+//                            },
+//                            goToHome = {
+//                                appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
+//                            })
                         alarmNavGraph(backPress = appState::backPress)
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)

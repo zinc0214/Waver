@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -48,7 +49,7 @@ import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
 import com.zinc.berrybucket.ui_more.models.ProfileEditData
-import com.zinc.berrybucket.util.loadImage
+import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.ui.util.CameraPermission as CameraPermission1
 
 @Composable
@@ -87,8 +88,13 @@ internal fun ProfileUpdateView(
     imageUpdateButtonClicked: () -> Unit
 ) {
 
+    val context = LocalContext.current
     val profileUri =
-        if (updatePath.value != null) loadImage(path = updatePath.value!!, index = 0).uri else null
+        if (updatePath.value != null) createImageInfoWithPath(
+            context = context,
+            path = updatePath.value!!,
+            index = 0
+        ).uri else null
     val showPermission = remember { mutableStateOf(false) }
     val hasPermission = remember { mutableStateOf(false) }
 

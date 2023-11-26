@@ -23,6 +23,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -63,7 +64,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewE
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.util.loadImages
+import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
@@ -74,7 +75,7 @@ fun OpenDetailScreen(
     goToEvent: (GoToBucketDetailEvent) -> Unit,
     backPress: () -> Unit
 ) {
-
+    val context = LocalContext.current
     val viewModel: DetailViewModel = hiltViewModel()
 
     viewModel.getValidMentionList()
@@ -146,7 +147,7 @@ fun OpenDetailScreen(
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
         if (imageInfos.isEmpty()) {
-            imageInfos.addAll(loadImages(info.imageInfo?.imageList.orEmpty()))
+            imageInfos.addAll(createImageInfoWithPath(context, info.imageInfo?.imageList.orEmpty()))
         }
 
         BaseTheme {

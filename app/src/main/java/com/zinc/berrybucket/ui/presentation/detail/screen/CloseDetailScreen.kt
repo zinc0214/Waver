@@ -19,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -40,7 +41,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDial
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
-import com.zinc.berrybucket.util.loadImages
+import com.zinc.berrybucket.util.createImageInfoWithPath
 
 @Composable
 fun CloseDetailScreen(
@@ -49,6 +50,7 @@ fun CloseDetailScreen(
     backPress: () -> Unit
 ) {
 
+    val context = LocalContext.current
     val viewModel: DetailViewModel = hiltViewModel()
 
     val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
@@ -73,7 +75,7 @@ fun CloseDetailScreen(
         val titlePosition = 0
 
         if (imageInfos.isEmpty()) {
-            imageInfos.addAll(loadImages(info.imageInfo?.imageList.orEmpty()))
+            imageInfos.addAll(createImageInfoWithPath(context, info.imageInfo?.imageList.orEmpty()))
         }
 
         BaseTheme {

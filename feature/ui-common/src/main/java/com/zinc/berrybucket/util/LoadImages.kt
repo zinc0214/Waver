@@ -1,36 +1,28 @@
 package com.zinc.berrybucket.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
-import coil.compose.rememberAsyncImagePainter
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStream
 
-@Composable
-fun loadImages(images: List<String>): List<UserSelectedImageInfo> {
+// 로컬파일 저장 목적
+fun createImageInfoWithPath(context: Context, images: List<String>): List<UserSelectedImageInfo> {
 
     return buildList {
         images.forEachIndexed { index, url ->
-            val a = loadImage(path = url, index = index)
+            val a = createImageInfoWithPath(context = context, path = url, index = index)
             Log.e("ayhan", "loadImage aaa  $a")
             add(
-                loadImage(url, index)
+                createImageInfoWithPath(context, url, index)
             )
         }
     }
 }
 
-@Composable
-fun loadImage(path: String, index: Int): UserSelectedImageInfo {
-    val context = LocalContext.current
-
+fun createImageInfoWithPath(context: Context, path: String, index: Int): UserSelectedImageInfo {
     val cacheFile = File(context.cacheDir, "${index}_${path}")
 
     return UserSelectedImageInfo(
@@ -38,11 +30,11 @@ fun loadImage(path: String, index: Int): UserSelectedImageInfo {
     )
 }
 
-@Composable
-fun loadImageFiles(images: List<String>): List<UserSelectedImageInfo> {
+// 서버의 Url 을 받아서 저정하는 목적
+fun loadImageFiles(context: Context, images: List<String>): List<UserSelectedImageInfo> {
     return buildList {
         images.forEachIndexed { index, url ->
-            val a = loadImage(path = url, index = index)
+            val a = createImageInfoWithPath(context = context, path = url, index = index)
             Log.e("ayhan", "loadImage aaa  $a")
             val info = loadImageFile(path = url, index = index)
             info?.let {
@@ -52,9 +44,9 @@ fun loadImageFiles(images: List<String>): List<UserSelectedImageInfo> {
     }
 }
 
-@Composable
 fun loadImageFile(path: String, index: Int): UserSelectedImageInfo? {
-    val src = BitmapFactory.decodeFile(path)
+    val src = BitmapFactory.decodeFile(path) ?: return null
+
     val resized = Bitmap.createScaledBitmap(src, 700, 700, true)
     val imageFile = saveBitmapAsFile(resized, path)
 

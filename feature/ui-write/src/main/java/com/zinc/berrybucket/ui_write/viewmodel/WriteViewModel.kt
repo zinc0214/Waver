@@ -4,13 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.UIAddBucketListInfo
 import com.zinc.berrybucket.model.WriteFriend
 import com.zinc.berrybucket.model.WriteKeyWord
+import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.toUiModel
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.AddBucketListRequest
+import com.zinc.common.models.DetailInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.keyword.LoadKeyWord
 import com.zinc.domain.usecases.write.AddNewBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +25,15 @@ import javax.inject.Inject
 class WriteViewModel @Inject constructor(
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
     private val addNewBucketList: AddNewBucketList,
+    private val loadBucketDetail: LoadBucketDetail,
     private val loadKeyWord: LoadKeyWord
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
+
+    private val _savedWriteData = MutableLiveData<WriteTotalInfo>()
+    val savedWriteData: LiveData<WriteTotalInfo> get() = _savedWriteData
+
+    private val _prevWriteDataForUpdate = MutableLiveData<DetailInfo>()
+    val prevWriteDataForUpdate: LiveData<DetailInfo> get() = _prevWriteDataForUpdate
 
     private val _searchFriendsResult = MutableLiveData<List<WriteFriend>>()
     val searchFriendsResult: LiveData<List<WriteFriend>> get() = _searchFriendsResult
@@ -117,5 +127,34 @@ class WriteViewModel @Inject constructor(
                 _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
             }
         }
+    }
+
+    fun savedWriteData(data: WriteTotalInfo?) {
+        _savedWriteData.value = data ?: WriteTotalInfo()
+    }
+
+    fun getBucketDetailData(bucketId: String) {
+        if (bucketId.isBlank().not() && bucketId != "NoId") {
+            viewModelScope.launch(CEH(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
+                runCatching {
+                    accessToken.value?.let { token ->
+                        val result = loadBucketDetail(token, bucketId)
+
+                        Log.e("ayhan", "loadBucketDetai; $result")
+                        if (result.success) {
+                            _prevWriteDataForUpdate.value = result.data
+                        } else {
+                            _loadFail.value = "버킷리스트 로드 실패" to "데이터 로드에 실패했습니다."
+                        }
+                    }
+                }.getOrElse {
+                    _loadFail.value = "버킷리스트 로드 실패" to "데이터 로드에 실패했습니다."
+                }
+
+            }
+        } else {
+            _savedWriteData.value = WriteTotalInfo()
+        }
+
     }
 }

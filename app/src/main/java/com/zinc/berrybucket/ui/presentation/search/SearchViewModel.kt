@@ -3,7 +3,6 @@ package com.zinc.berrybucket.ui.presentation.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.RecommendItem
 import com.zinc.berrybucket.model.RecommendList
 import com.zinc.berrybucket.model.RecommendType
@@ -11,6 +10,7 @@ import com.zinc.berrybucket.model.SearchBucketItem
 import com.zinc.berrybucket.model.SearchRecommendItems
 import com.zinc.berrybucket.model.SearchResultItems
 import com.zinc.berrybucket.model.parseUI
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.search.DeleteRecentWord
 import com.zinc.domain.usecases.search.LoadSearchRecommend

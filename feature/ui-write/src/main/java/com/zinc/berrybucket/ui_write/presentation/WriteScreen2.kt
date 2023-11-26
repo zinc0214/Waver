@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_write.presentation
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -27,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.hana.berrybucket.ui_write.R
 import com.zinc.berrybucket.model.WriteAddOption
 import com.zinc.berrybucket.model.WriteOpenType
@@ -43,19 +43,19 @@ import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectFriendsScreen
 import com.zinc.berrybucket.ui_write.presentation.options.WriteSelectKeyWordScreen
 import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
-import com.zinc.berrybucket.util.loadImage
+import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.loadImageFiles
 
 @Composable
 fun WriteScreen2(
     modifier: Modifier = Modifier,
     writeTotalInfo: WriteTotalInfo,
+    viewModel: WriteViewModel,
     goToBack: (WriteTotalInfo) -> Unit,
     addBucketSucceed: () -> Unit
 ) {
 
     val context = LocalContext.current
-    val viewModel: WriteViewModel = hiltViewModel()
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
     val originKeyWords by viewModel.keywordList.observeAsState()
@@ -179,6 +179,7 @@ fun WriteScreen2(
 
             WriteScreen2ContentView(
                 viewModel = viewModel,
+                context = context,
                 writeTotalInfo = writeTotalInfo,
                 optionsList = optionsList,
                 goToBack = {
@@ -238,6 +239,7 @@ fun WriteScreen2(
 @Composable
 private fun WriteScreen2ContentView(
     modifier: Modifier = Modifier,
+    context: Context,
     viewModel: WriteViewModel,
     writeTotalInfo: WriteTotalInfo,
     optionsList: List<WriteAddOption>,
@@ -247,7 +249,7 @@ private fun WriteScreen2ContentView(
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
-    val imagesInfo = loadImageFiles(images = writeInfo1.getImagesPaths())
+    val imagesInfo = loadImageFiles(context, images = writeInfo1.getImagesPaths())
 
     Log.e("ayhan", "imagesInfo :${imagesInfo}")
 
@@ -342,7 +344,7 @@ private fun WriteScreen2ContentView(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalSpace = 28.dp,
                     itemContent = {
-                        val info = loadImage(path = it, index = 0)
+                        val info = createImageInfoWithPath(context = context, path = it, index = 0)
                         ImageItem(imageInfo = info)
                     },
                     emptyContent = {

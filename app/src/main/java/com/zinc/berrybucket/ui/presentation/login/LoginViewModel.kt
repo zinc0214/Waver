@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.CreateProfileRequest
 import com.zinc.datastore.common.CommonDataStoreModule

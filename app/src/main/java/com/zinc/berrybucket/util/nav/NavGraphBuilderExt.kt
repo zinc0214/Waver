@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.util.nav
 
-import android.util.Log
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -40,7 +39,6 @@ import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
 import com.zinc.berrybucket.ui_write.model.WriteEvent
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen
-import com.zinc.berrybucket.ui_write.presentation.WriteScreen1
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
@@ -301,86 +299,86 @@ internal fun NavGraphBuilder.writeNavGraph(
 }
 
 
-// 3
-internal fun NavGraphBuilder.writeNavGraph1(
-    action: (ActionWithActivity) -> Unit,
-    backPress: () -> Unit,
-    goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit,
-    goToAddCategory: (NavBackStackEntry) -> Unit
-) {
-
-    composable(
-        route = WriteDestinations.GO_TO_WRITE1 + "/{${WriteDestinations.WRITE_INFO}}",
-        arguments = listOf(
-            navArgument(WriteDestinations.WRITE_INFO) {
-                type = SerializableType(
-                    type = WriteTotalInfo::class.java,
-                    parser = WriteTotalInfo::parseNavigationValue
-                )
-            }
-        ),
-        content = { entry ->
-            val arguments = requireNotNull(entry.arguments)
-            val totalInfo: WriteTotalInfo =
-                arguments.extraNotNullSerializable(WriteDestinations.WRITE_INFO)
-
-            Log.e("ayhan", "writeNavGraph1 totalInfo $totalInfo")
-            WriteScreen1(
-                event = { event ->
-                    when (event) {
-                        is WriteEvent.ActivityAction -> {
-                            action(event.acton)
-                        }
-
-//                        is WriteEvent.GoToWrite2 -> {
-//                            goToNextWrite(entry, event.info)
+//// 3
+//internal fun NavGraphBuilder.writeNavGraph1(
+//    action: (ActionWithActivity) -> Unit,
+//    backPress: () -> Unit,
+//    goToNextWrite: (NavBackStackEntry, WriteTotalInfo) -> Unit,
+//    goToAddCategory: (NavBackStackEntry) -> Unit
+//) {
 //
+//    composable(
+//        route = WriteDestinations.GO_TO_WRITE1 + "/{${WriteDestinations.WRITE_INFO}}",
+//        arguments = listOf(
+//            navArgument(WriteDestinations.WRITE_INFO) {
+//                type = SerializableType(
+//                    type = WriteTotalInfo::class.java,
+//                    parser = WriteTotalInfo::parseNavigationValue
+//                )
+//            }
+//        ),
+//        content = { entry ->
+//            val arguments = requireNotNull(entry.arguments)
+//            val totalInfo: WriteTotalInfo =
+//                arguments.extraNotNullSerializable(WriteDestinations.WRITE_INFO)
+//
+//            Log.e("ayhan", "writeNavGraph1 totalInfo $totalInfo")
+//            WriteScreen1(
+//                event = { event ->
+//                    when (event) {
+//                        is WriteEvent.ActivityAction -> {
+//                            action(event.acton)
 //                        }
-
-                        WriteEvent.GoToBack -> {
-                            backPress()
-                        }
-
-                        WriteEvent.GoToAddCategory -> {
-                            goToAddCategory(entry)
-                        }
-                    }
-                },
-                originWriteTotalInfo = totalInfo,
-                goToNextPage = {}
-            )
-        }
-    )
-}
-
-internal fun NavGraphBuilder.writeNavGraph2(
-    backPress: (NavBackStackEntry, WriteTotalInfo) -> Unit,
-    goToHome: () -> Unit
-) {
-    composable(
-        route = WriteDestinations.GO_TO_WRITE2 + "/{${WriteDestinations.WRITE_INFO}}",
-        arguments = listOf(
-            navArgument(WriteDestinations.WRITE_INFO) {
-                type = SerializableType(
-                    type = WriteTotalInfo::class.java,
-                    parser = WriteTotalInfo::parseNavigationValue
-                )
-            }
-        ),
-        content = { nav ->
-            val arguments = requireNotNull(nav.arguments)
-            val writeTotalInfo =
-                arguments.extraNotNullSerializable<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
-
-            Log.e("ayhan", "writeNavGraph2 totalInfo $writeTotalInfo")
-
-//            WriteScreen2(
-//                writeTotalInfo = writeTotalInfo,
-//                goToBack = { newInfo -> backPress(nav, newInfo) },
-//                addBucketSucceed = { goToHome() })
-        }
-    )
-}
+//
+////                        is WriteEvent.GoToWrite2 -> {
+////                            goToNextWrite(entry, event.info)
+////
+////                        }
+//
+//                        WriteEvent.GoToBack -> {
+//                            backPress()
+//                        }
+//
+//                        WriteEvent.GoToAddCategory -> {
+//                            goToAddCategory(entry)
+//                        }
+//                    }
+//                },
+//                originWriteTotalInfo = totalInfo,
+//                goToNextPage = {}
+//            )
+//        }
+//    )
+//}
+//
+//internal fun NavGraphBuilder.writeNavGraph2(
+//    backPress: (NavBackStackEntry, WriteTotalInfo) -> Unit,
+//    goToHome: () -> Unit
+//) {
+//    composable(
+//        route = WriteDestinations.GO_TO_WRITE2 + "/{${WriteDestinations.WRITE_INFO}}",
+//        arguments = listOf(
+//            navArgument(WriteDestinations.WRITE_INFO) {
+//                type = SerializableType(
+//                    type = WriteTotalInfo::class.java,
+//                    parser = WriteTotalInfo::parseNavigationValue
+//                )
+//            }
+//        ),
+//        content = { nav ->
+//            val arguments = requireNotNull(nav.arguments)
+//            val writeTotalInfo =
+//                arguments.extraNotNullSerializable<WriteTotalInfo>(WriteDestinations.WRITE_INFO)
+//
+//            Log.e("ayhan", "writeNavGraph2 totalInfo $writeTotalInfo")
+//
+////            WriteScreen2(
+////                writeTotalInfo = writeTotalInfo,
+////                goToBack = { newInfo -> backPress(nav, newInfo) },
+////                addBucketSucceed = { goToHome() })
+//        }
+//    )
+//}
 
 internal fun NavGraphBuilder.alarmNavGraph(
     backPress: () -> Unit
@@ -539,10 +537,7 @@ object SearchDestinations {
 }
 
 object WriteDestinations {
-    const val GO_TO_WRITE1 = "go_to_write1"
-    const val GO_TO_WRITE2 = "go_to_write2"
     const val GO_TO_WRITE = "go_to_write"
-    const val WRITE_INFO = "write_info"
     const val UPDATE_ID = "update_id"
 }
 

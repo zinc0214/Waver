@@ -1,9 +1,13 @@
 package com.zinc.berrybucket.model
 
 import android.os.Parcelable
+import com.zinc.berrybucket.ui.util.parseWithDday
+import com.zinc.berrybucket.ui.util.toLocalData
+import com.zinc.berrybucket.ui.util.toStringData
 import com.zinc.berrybucket.util.parseNavigationValue
 import com.zinc.berrybucket.util.toNavigationValue
 import com.zinc.common.models.BucketType
+import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.KeywordInfo
 import com.zinc.common.models.YesOrNo
@@ -237,3 +241,59 @@ data class UIAddBucketListInfo(
     val goalCount: Int = 0, //  목표 횟수
     val categoryId: Int = 0 // 카테고리 ID
 )
+
+
+fun DetailInfo.toUpdateUiModel(
+    imagesList: List<UserSelectedImageInfo>
+) = WriteTotalInfo(
+    bucketId = this.id,
+    title = this.title,
+    options = getOptions(imagesList),
+    writeOpenType = WriteOpenType.PUBLIC, // TODO : 서버
+    keyWord = this.keywords?.parseUI().orEmpty(),
+    tagFriends = emptyList(), // TODO : 서버
+    isScrapUsed = this.scrapYn.isYes(),
+    isForUpdate = true
+)
+
+private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List<WriteOption1Info> {
+    val optionsList = mutableListOf<WriteOption1Info>()
+
+    memo?.let {
+        optionsList.add(
+            WriteOption1Info.Memo(it)
+        )
+    }
+
+    completedDt?.let {
+        val dDayLocalDate = it.toLocalData()
+        optionsList.add(
+            WriteOption1Info.Dday(dDayLocalDate.toStringData(), dDayLocalDate.parseWithDday())
+        )
+    }
+
+    optionsList.add(
+        WriteOption1Info.GoalCount(goalCount)
+    )
+
+    optionsList.add(
+        WriteOption1Info.Category(
+            WriteCategoryInfo(
+                id = 0, name = categoryName, defaultYn = YesOrNo.N
+            )
+        )
+    )
+
+    optionsList.add(
+        WriteOption1Info.Images(imagesList.map { it.path })
+    )
+
+    return optionsList
+}
+
+
+private fun List<KeywordInfo>.parseUI() = map { keyword ->
+    WriteKeyWord(
+        id = keyword.id, text = keyword.name
+    )
+}

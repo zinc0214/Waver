@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.CategoryInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.LoadCategoryList

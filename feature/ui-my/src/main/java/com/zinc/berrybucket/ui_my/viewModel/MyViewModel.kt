@@ -189,16 +189,6 @@ class MyViewModel @Inject constructor(
         _isNeedToUpdate.value = isNeed
     }
 
-
-    fun updatePrefChangeState(changed: Boolean, isNeedClear: Boolean = false) {
-        if (changed) {
-            _isNeedToUpdate.value = true
-        }
-        if (isNeedClear) {
-            _isNeedToUpdate.value = false
-        }
-    }
-
     fun loadProfile() {
         viewModelScope.launch {
             runCatching {

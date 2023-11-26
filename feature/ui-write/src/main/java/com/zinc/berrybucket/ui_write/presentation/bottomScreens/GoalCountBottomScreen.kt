@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -86,13 +87,14 @@ fun GoalCountBottomScreen(
                 fontSize = dpToSp(dp = 22.dp)
             ),
             onValueChange = {
-                editedGoalCount = it
+                if (it.text.isDigitsOnly()) editedGoalCount = it
             },
             maxLines = 1,
             keyboardOptions = KeyboardOptions.Default.copy(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Number
             ),
+            //  onValueChange = { if (it.isDigitsOnly()) text = it },
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.Center,

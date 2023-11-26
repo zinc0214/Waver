@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.CommonViewModel
 import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentInfo
 import com.zinc.berrybucket.model.CommentMentionInfo
@@ -18,6 +17,7 @@ import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
+import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.HomeProfileInfo

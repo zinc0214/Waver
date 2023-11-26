@@ -20,14 +20,18 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -43,6 +47,8 @@ import com.zinc.berrybucket.model.WriteOptionsType1.IMAGE
 import com.zinc.berrybucket.model.WriteOptionsType1.MEMO
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.model.parseWrite1Info
+import com.zinc.berrybucket.ui.design.util.Keyboard
+import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.component.gridItems
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
@@ -50,7 +56,7 @@ import com.zinc.berrybucket.ui.util.CameraPermission
 import com.zinc.berrybucket.ui.util.parseWithDday
 import com.zinc.berrybucket.ui.util.toLocalData
 import com.zinc.berrybucket.ui.util.toStringData
-import com.zinc.berrybucket.ui_write.model.Write1Event
+import com.zinc.berrybucket.ui_write.model.WriteEvent
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CalendarSelectBottomSheet
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.CategorySelectBottomScreen
 import com.zinc.berrybucket.ui_write.presentation.bottomScreens.GoalCountBottomScreen
@@ -58,19 +64,26 @@ import com.zinc.berrybucket.ui_write.presentation.options.AddImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.ImageItem
 import com.zinc.berrybucket.ui_write.presentation.options.MemoScreen
 import com.zinc.berrybucket.ui_write.presentation.options.OptionScreen
-import com.zinc.berrybucket.util.loadImages
+import com.zinc.berrybucket.util.createImageInfoWithPath
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class,
+    ExperimentalComposeUiApi::class
+)
 @Composable
 fun WriteScreen1(
-    event: (Write1Event) -> Unit,
-    originWriteTotalInfo: WriteTotalInfo
+    originWriteTotalInfo: WriteTotalInfo,
+    event: (WriteEvent) -> Unit,
+    goToNextPage: (WriteTotalInfo) -> Unit
 ) {
     val context = LocalContext.current
     val originWriteInfo1 = originWriteTotalInfo.parseWrite1Info()
     val initialized = remember { mutableStateOf(false) }
+    val isKeyboardStatus by keyboardAsState()
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     // 지금 선택된 option
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
@@ -114,20 +127,20 @@ fun WriteScreen1(
         }
     }
 
-    val loadedImages = loadImages(images = originWriteInfo1.getImagesPaths())
+    // 키보드 이벤트
+    if (isKeyboardStatus == Keyboard.Closed || selectedOption != null) {
+        if (selectedOption == MEMO || selectedOption == GOAL) {
+            // Do Nothing
+        } else {
+            focusManager.clearFocus()
+            keyboardController?.hide()
+        }
+    }
 
-    val title = remember { mutableStateOf(originWriteInfo1.title) }
-    val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
-    val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
-    val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
-    val imageList = remember { mutableStateOf(loadedImages) }
-
-    nextButtonClickable.value = title.value.isNotEmpty()
-
-// 백키 이벤트
+    // 백키 이벤트
     BackHandler {
         if (selectedOption == null) {
-            event.invoke(Write1Event.GoToBack)
+            event.invoke(WriteEvent.GoToBack)
         } else {
             coroutineScope.launch {
                 isNeedToBottomSheetOpen.invoke(false)
@@ -135,6 +148,16 @@ fun WriteScreen1(
             selectedOption = null
         }
     }
+
+    val loadedImages = createImageInfoWithPath(context, images = originWriteInfo1.getImagesPaths())
+
+    val title = remember { mutableStateOf(originWriteInfo1.title) }
+    val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
+    val originCount = remember { mutableIntStateOf(originWriteInfo1.getGoalCount()) }
+    val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
+    val imageList = remember { mutableStateOf(loadedImages) }
+
+    nextButtonClickable.value = title.value.isNotEmpty()
 
 
 // 각 option 값이 들어왔을 때 해야하는 것들 정리
@@ -178,7 +201,7 @@ fun WriteScreen1(
                     IMAGE -> {
                         ImageSelectBottomScreen(selectedType = { it ->
                             event.invoke(
-                                Write1Event.ActivityAction(
+                                WriteEvent.ActivityAction(
                                     ActionWithActivity.AddImage(
                                         type = it,
                                         failed = {
@@ -228,7 +251,7 @@ fun WriteScreen1(
                                 isNeedToBottomSheetOpen.invoke(false)
                             },
                             goToAddCategory = {
-                                event.invoke(Write1Event.GoToAddCategory)
+                                event.invoke(WriteEvent.GoToAddCategory)
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
                             })
@@ -305,17 +328,15 @@ fun WriteScreen1(
                     clickEvent = {
                         when (it) {
                             WriteAppBarClickEvent.CloseClicked -> {
-                                event.invoke(Write1Event.GoToBack)
+                                event.invoke(WriteEvent.GoToBack)
                             }
 
                             WriteAppBarClickEvent.NextClicked -> {
                                 Log.e("ayhan", "WriteScreen1: ${updatedWriteOptions.toList()}")
-                                event.invoke(
-                                    Write1Event.GoToWrite2(
-                                        originWriteTotalInfo.copy(
-                                            title = title.value,
-                                            options = updatedWriteOptions.toList()
-                                        )
+                                goToNextPage(
+                                    originWriteTotalInfo.copy(
+                                        title = title.value,
+                                        options = updatedWriteOptions.toList()
                                     )
                                 )
                             }
