@@ -7,35 +7,15 @@ import com.zinc.berrybucket.ui_my.screen.all.MyAllBucketFilterBottomScreen
 import com.zinc.berrybucket.ui_my.screen.dday.MyDdayBucketFilterBottomScreen
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
-//
-//@Composable
-//fun MyBottomSheetScreen(
-//    currentScreen: BottomSheetScreenType?,
-//    isNeedToBottomSheetOpen: (Boolean) -> Unit
-//) {
-//    when (currentScreen) {
-//        is BottomSheetScreenType.FilterScreen -> {
-//            FilterBottomView(
-//                tab = currentScreen.selectTab,
-//                viewModel = currentScreen.viewModel,
-//                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
-//            )
-//        }
-//
-//        else -> {
-//            // Do Nothing
-//        }
-//    }
-//}
-
 @Composable
 fun SearchBottomView(
     tab: MyTabType,
     mySearchClickEvent: (MySearchClickEvent) -> Unit,
 ) {
-    MySearchBottomScreen(currentTabType = tab, clickEvent = {
-        mySearchClickEvent(it)
-    })
+    MySearchBottomScreen(currentTabType = tab,
+        clickEvent = {
+            mySearchClickEvent(it)
+        })
 }
 
 @Composable

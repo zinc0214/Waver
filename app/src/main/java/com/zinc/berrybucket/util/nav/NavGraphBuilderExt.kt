@@ -29,6 +29,7 @@ import com.zinc.berrybucket.ui_more.models.AppInfoItemType
 import com.zinc.berrybucket.ui_more.models.MoreItemType
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.MyScreen
+import com.zinc.berrybucket.ui_my.SearchBottomView
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.screen.alarm.AlarmScreen
 import com.zinc.berrybucket.ui_my.screen.category.screen.CategoryBucketListScreen
@@ -124,7 +125,7 @@ internal fun NavGraphBuilder.homeSearchNavGraph(
             val selectedTab: MyTabType =
                 arguments.extraNotNullSerializable(MainDestinations.SELECT_TAB)
 
-            com.zinc.berrybucket.ui_my.SearchBottomView(
+            SearchBottomView(
                 tab = selectedTab,
                 mySearchClickEvent = {
                     mySearchClickEvent(it, entry)

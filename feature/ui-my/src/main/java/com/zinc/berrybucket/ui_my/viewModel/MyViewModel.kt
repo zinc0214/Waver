@@ -11,6 +11,7 @@ import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.model.MyTabType.CHALLENGE
 import com.zinc.berrybucket.model.MyTabType.DDAY
 import com.zinc.berrybucket.model.parseToUI
+import com.zinc.berrybucket.model.parseUI
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AllBucketListRequest
@@ -55,6 +56,9 @@ class MyViewModel @Inject constructor(
 
     private val _searchBucketResult = MutableLiveData<Pair<MyTabType, List<*>>>()
     val searchResult: LiveData<Pair<MyTabType, List<*>>> get() = _searchBucketResult
+
+    private val _prevSearchedResult = MutableLiveData<Pair<MyTabType, String>>()
+    val prevSearchedResult: LiveData<Pair<MyTabType, String>> get() = _prevSearchedResult
 
     private val _allBucketItem = MutableLiveData<AllBucketList>()
     val allBucketItem: LiveData<AllBucketList> get() = _allBucketItem
@@ -357,6 +361,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun searchList(type: MyTabType, searchWord: String) {
+        _prevSearchedResult.value = type to searchWord
         when (type) {
             is ALL -> searchAllBucket(searchWord = searchWord)
             is DDAY -> searchDdayBucket(searchWord = searchWord)
@@ -481,10 +486,12 @@ class MyViewModel @Inject constructor(
             accessToken.value?.let { token ->
                 runCatching {
                     searchCategoryList.invoke(token, searchWord).apply {
+                        Log.e("ayhan", "category : $this")
                         if (this.success) {
+                            val parseData = data.parseUI()
                             _searchBucketResult.value = Pair(
                                 CATEGORY,
-                                data
+                                parseData
                             )
                         } else {
                             _searchFailed.call()

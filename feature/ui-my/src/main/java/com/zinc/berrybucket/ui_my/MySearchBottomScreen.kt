@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -68,24 +69,48 @@ fun MySearchBottomScreen(
 ) {
 
     val viewModel: MyViewModel = hiltViewModel()
-    val searchResultAsResult = viewModel.searchResult.observeAsState()
+    val searchResultAsState by viewModel.searchResult.observeAsState()
+    val prevSearchInfoAsState by viewModel.prevSearchedResult.observeAsState()
 
     val selectTab = remember { mutableStateOf(currentTabType) }
     val searchedTab = remember { mutableStateOf(currentTabType) }
-    val searchResult = remember { mutableStateOf(searchResultAsResult) }
+    val searchResult = remember { mutableStateOf(searchResultAsState) }
+    val prevSearchResult = remember { mutableStateOf(prevSearchInfoAsState) }
 
-    LaunchedEffect(key1 = searchResultAsResult, block = {
-        if (searchResultAsResult.value != null) {
-            searchResult.value = searchResultAsResult
+    Log.e("ayhan", "prevSearchText  :${prevSearchResult.value}")
+
+    LaunchedEffect(key1 = searchResultAsState, block = {
+        if (searchResultAsState != null) {
+            searchResult.value = searchResultAsState
         }
     })
 
+    LaunchedEffect(key1 = prevSearchInfoAsState) {
+        // 이전 데이터가 있는지 확인
+        if (prevSearchInfoAsState != null) {
+            prevSearchResult.value = prevSearchInfoAsState
+
+            // 이전에 지정된 탭
+            val type = prevSearchResult.value?.first
+            if (type != null) {
+                selectTab.value = type
+            }
+
+            // 이전에 지정된 단어
+            val word = prevSearchResult.value?.second
+            if (word?.isNotEmpty() == true && selectTab.value != searchedTab.value && type != null) {
+                viewModel.searchList(type, word)
+                searchedTab.value = type
+            }
+        }
+    }
 
     Column {
         TopAppBar(clickEvent = clickEvent)
 
         SearchEditView(
             type = selectTab.value,
+            prevText = prevSearchResult.value?.second.orEmpty(),
             onImeAction = { word ->
                 if (word.isNotEmpty()) {
                     viewModel.searchList(selectTab.value, word)
@@ -110,7 +135,13 @@ fun MySearchBottomScreen(
         ChipBodyContent(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             list = MyTabType.values().toList(),
-            currentTab = selectTab
+            currentTab = selectTab,
+            tabChanged = {
+                if (searchedTab.value != selectTab.value) {
+                    viewModel.searchList(selectTab.value, prevSearchResult.value?.second.orEmpty())
+                    searchedTab.value = selectTab.value
+                }
+            }
         )
 
         Box(
@@ -127,7 +158,7 @@ fun MySearchBottomScreen(
                             .padding(top = 20.dp)
                             .fillMaxHeight()
                     ) {
-                        it.value?.let { result ->
+                        it?.let { result ->
                             SearchResultView(result, clickEvent = { event ->
                                 clickEvent.invoke(event)
                             }, bucketAchieve = {
@@ -159,7 +190,7 @@ private fun TopAppBar(clickEvent: (MySearchClickEvent) -> Unit) {
 
 @Composable
 private fun SearchEditView(
-    type: MyTabType, onImeAction: (String) -> Unit
+    type: MyTabType, prevText: String, onImeAction: (String) -> Unit
 ) {
 
     Row(
@@ -172,18 +203,19 @@ private fun SearchEditView(
             fontWeight = FontWeight.Medium
         )
         Spacer(modifier = Modifier.width(12.dp))
-        SearchEditView(onImeAction)
+        SearchEditView(prevText, onImeAction)
     }
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun SearchEditView(
+    prevText: String,
     onImeAction: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.myBucketSearchHint)
     val keyboardController = LocalSoftwareKeyboardController.current
-    var searchText by remember { mutableStateOf(TextFieldValue("")) }
+    var searchText by remember { mutableStateOf(TextFieldValue(prevText)) }
 
     MyTextField(
         value = searchText,
@@ -210,8 +242,11 @@ private fun SearchEditView(
 
 
 @Composable
-fun ChipBodyContent(
-    modifier: Modifier = Modifier, list: List<MyTabType>, currentTab: MutableState<MyTabType>
+private fun ChipBodyContent(
+    modifier: Modifier = Modifier,
+    list: List<MyTabType>,
+    currentTab: MutableState<MyTabType>,
+    tabChanged: () -> Unit
 ) {
     Row(
         modifier = modifier.horizontalScroll(rememberScrollState())
@@ -225,6 +260,7 @@ fun ChipBodyContent(
                         selected = (currentTab.value == tabType),
                         onClick = {
                             currentTab.value = tabType
+                            tabChanged()
                         }),
                 textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
                 text = stringResource(id = tabType.getTitle()),
