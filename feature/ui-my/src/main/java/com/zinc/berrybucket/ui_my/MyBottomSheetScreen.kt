@@ -7,25 +7,26 @@ import com.zinc.berrybucket.ui_my.screen.all.MyAllBucketFilterBottomScreen
 import com.zinc.berrybucket.ui_my.screen.dday.MyDdayBucketFilterBottomScreen
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
-@Composable
-fun MyBottomSheetScreen(
-    currentScreen: BottomSheetScreenType?,
-    isNeedToBottomSheetOpen: (Boolean) -> Unit
-) {
-    when (currentScreen) {
-        is BottomSheetScreenType.FilterScreen -> {
-            FilterBottomView(
-                tab = currentScreen.selectTab,
-                viewModel = currentScreen.viewModel,
-                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
-            )
-        }
-
-        else -> {
-            // Do Nothing
-        }
-    }
-}
+//
+//@Composable
+//fun MyBottomSheetScreen(
+//    currentScreen: BottomSheetScreenType?,
+//    isNeedToBottomSheetOpen: (Boolean) -> Unit
+//) {
+//    when (currentScreen) {
+//        is BottomSheetScreenType.FilterScreen -> {
+//            FilterBottomView(
+//                tab = currentScreen.selectTab,
+//                viewModel = currentScreen.viewModel,
+//                isNeedToBottomSheetOpen = isNeedToBottomSheetOpen
+//            )
+//        }
+//
+//        else -> {
+//            // Do Nothing
+//        }
+//    }
+//}
 
 @Composable
 fun SearchBottomView(
@@ -38,20 +39,20 @@ fun SearchBottomView(
 }
 
 @Composable
-private fun FilterBottomView(
+fun FilterBottomView(
     tab: MyTabType,
     viewModel: MyViewModel,
-    isNeedToBottomSheetOpen: (Boolean) -> Unit
+    isNeedToUpdated: (Boolean) -> Unit
 ) {
     when (tab) {
         is MyTabType.ALL -> {
             MyAllBucketFilterBottomScreen(
                 viewModel = viewModel,
                 negativeEvent = {
-                    isNeedToBottomSheetOpen.invoke(false)
+                    isNeedToUpdated.invoke(false)
                 },
                 positiveEvent = {
-                    isNeedToBottomSheetOpen.invoke(false)
+                    isNeedToUpdated.invoke(true)
                 })
         }
 
@@ -59,10 +60,10 @@ private fun FilterBottomView(
             MyDdayBucketFilterBottomScreen(
                 viewModel = viewModel,
                 negativeEvent = {
-                    isNeedToBottomSheetOpen.invoke(false)
+                    isNeedToUpdated.invoke(false)
                 },
                 positiveEvent = {
-                    isNeedToBottomSheetOpen.invoke(false)
+                    isNeedToUpdated.invoke(true)
                 })
         }
 
@@ -81,6 +82,6 @@ sealed class BottomSheetScreenType {
     ) : BottomSheetScreenType()
 
     data class FilterScreen(
-        val selectTab: MyTabType, val viewModel: MyViewModel
+        val selectTab: MyTabType
     ) : BottomSheetScreenType()
 }

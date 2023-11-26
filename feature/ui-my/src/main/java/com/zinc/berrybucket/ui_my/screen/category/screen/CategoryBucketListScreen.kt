@@ -97,7 +97,7 @@ fun CategoryBucketListScreen(
                 itemsIndexed(data, key = { _, item -> item.id }) { _, bucket ->
                     SimpleBucketCard(
                         itemInfo = bucket,
-                        tabType = MyTabType.ALL(),
+                        tabType = MyTabType.ALL,
                         isShowDday = false,
                         itemClicked = { item ->
                             bucketItemClicked.invoke(
@@ -105,7 +105,7 @@ fun CategoryBucketListScreen(
                                 item.isPrivate()
                             )
                         },
-                        achieveClicked = { myViewModel.achieveBucket(it, MyTabType.ALL()) }
+                        achieveClicked = { myViewModel.achieveBucket(it, MyTabType.ALL) }
                     )
                 }
             }

@@ -71,15 +71,16 @@ class MyView @JvmOverloads constructor(
             MyTabLayer(tabItems, pagerState, coroutineScope)
         }
         binding.pagerComposeView.setContent {
-            MyViewPager(
-                pagerState = pagerState,
-                viewModel = viewModel,
-                itemSelected = itemSelected,
-                bottomSheetClicked = bottomSheetClicked,
-                goToCategoryEdit = goToCategoryEdit,
-                coroutineScope = coroutineScope,
-                nestedScrollInterop = nestedScrollInterop
-            )
+//            MyViewPager(
+//                pagerState = pagerState,
+//                viewModel = viewModel,
+//                itemSelected = itemSelected,
+//                bottomSheetClicked = bottomSheetClicked,
+//                goToCategoryEdit = goToCategoryEdit,
+//                coroutineScope = coroutineScope,
+//                nestedScrollInterop = nestedScrollInterop,
+//                isFilterDialogShown = false
+//            )
         }
     }
 

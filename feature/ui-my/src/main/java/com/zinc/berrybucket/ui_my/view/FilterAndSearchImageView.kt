@@ -22,7 +22,9 @@ import com.zinc.berrybucket.ui_my.R
 
 @Composable
 fun FilterAndSearchImageView(
-    modifier: Modifier = Modifier, clickEvent: (MyPagerClickEvent) -> Unit, tabType: MyTabType
+    modifier: Modifier = Modifier,
+    clickEvent: (MyPagerClickEvent) -> Unit,
+    tabType: MyTabType
 ) {
     Row(
         modifier = modifier.padding(top = 16.dp, end = 16.dp),
@@ -30,7 +32,7 @@ fun FilterAndSearchImageView(
     ) {
         IconButton(
             onClick = {
-                clickEvent(MyPagerClickEvent.FilterClicked)
+                clickEvent(MyPagerClickEvent.BottomSheet.FilterClicked(tabType, true))
             },
             modifier = Modifier.size(32.dp),
             image = R.drawable.btn_32_filter,
@@ -51,7 +53,7 @@ fun FilterAndSearchImageView(
 
         IconButton(
             onClick = {
-                clickEvent(MyPagerClickEvent.SearchClicked(tabType = tabType))
+                clickEvent(MyPagerClickEvent.BottomSheet.SearchClicked(tabType = tabType, true))
             },
             modifier = Modifier.size(32.dp),
             image = com.zinc.berrybucket.ui_common.R.drawable.btn_32_search,
@@ -65,5 +67,5 @@ fun FilterAndSearchImageView(
 @Preview
 @Composable
 private fun FilterAndSearchImagePreview() {
-    FilterAndSearchImageView(clickEvent = {}, tabType = ALL())
+    FilterAndSearchImageView(clickEvent = {}, tabType = ALL)
 }

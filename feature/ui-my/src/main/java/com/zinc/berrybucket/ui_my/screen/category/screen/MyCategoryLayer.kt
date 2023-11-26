@@ -72,7 +72,7 @@ fun CategoryLayer(
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
             CategoryListView(it) {
-                clickEvent.invoke(MyPagerClickEvent.CategoryItemClicked(it))
+                clickEvent.invoke(MyPagerClickEvent.GoTo.CategoryItemClicked(it))
             }
             MyCategoryAddView {
                 addNewCategoryDialogShowAvailable.value = true
@@ -126,10 +126,10 @@ private fun TopRightView(modifier: Modifier = Modifier, clickEvent: (MyPagerClic
         modifier = modifier
             .fillMaxWidth(),
         editClicked = {
-            clickEvent(MyPagerClickEvent.CategoryEditClicked)
+            clickEvent(MyPagerClickEvent.GoTo.CategoryEditClicked)
         },
         searchClicked = {
-            clickEvent(MyPagerClickEvent.SearchClicked(tabType = CATEGORY()))
+            clickEvent(MyPagerClickEvent.BottomSheet.SearchClicked(tabType = CATEGORY, true))
         }
     )
 }

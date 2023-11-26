@@ -32,9 +32,6 @@ import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import com.zinc.domain.usecases.my.SearchAllBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -99,8 +96,17 @@ class MyViewModel @Inject constructor(
     private val _achieveSucceed = MutableLiveData<String>()
     val achieveSucceed: LiveData<String> get() = _achieveSucceed
 
-    private val _filterLoadFinished = MutableLiveData<Boolean>()
-    val filterLoadFinished: LiveData<Boolean> get() = _filterLoadFinished
+    private val _allFilterLoadFinished = MutableLiveData<Boolean>()
+    val allFilterLoadFinished: LiveData<Boolean> get() = _allFilterLoadFinished
+
+    private val _ddayFilterLoadFinished = MutableLiveData<Boolean>()
+    val ddayFilterLoadFinished: LiveData<Boolean> get() = _ddayFilterLoadFinished
+
+    private val _allFilterSavedFinished = MutableLiveData<Boolean>()
+    val allFilterSavedFinished: LiveData<Boolean> get() = _allFilterSavedFinished
+
+    private val _ddayFilterSavedFinished = MutableLiveData<Boolean>()
+    val ddayFilterSavedFinished: LiveData<Boolean> get() = _ddayFilterSavedFinished
 
     private var isPrefChanged = false
 
@@ -116,12 +122,17 @@ class MyViewModel @Inject constructor(
 
     fun loadAllBucketFilter() {
         viewModelScope.launch {
+
+            Log.e(
+                "ayhan",
+                "status check : ${_showProgress.value} , ${_showSucceed.value}, ${_showDdayView.value}"
+            )
             val job1 = launch { loadShowProgressDataStore() }
             val job2 = launch { loadShowSucceedDataStore() }
             val job3 = launch { loadOrderTypeDataStore() }
             val job4 = launch { loadShowDdayDataStore() }
             val job5 = launch {
-                _filterLoadFinished.value = true
+                _allFilterLoadFinished.value = true
             }
             joinAll(job1, job2, job3, job4, job5)
         }
@@ -129,10 +140,13 @@ class MyViewModel @Inject constructor(
 
     fun loadDdayBucketFilter() {
         viewModelScope.launch {
-            val job1: Deferred<Unit> = async { loadFilerDdayMinusDataStore() }
-            val job2: Deferred<Unit> = async { loadFilerDdayPlusDataStore() }
+            val job1 = launch { loadFilerDdayMinusDataStore() }
+            val job2 = launch { loadFilerDdayPlusDataStore() }
+            val job3 = launch {
+                _ddayFilterLoadFinished.value = true
+            }
 
-            awaitAll(job1, job2)
+            joinAll(job1, job2, job3)
         }
     }
 
@@ -273,6 +287,7 @@ class MyViewModel @Inject constructor(
                                 bucketList = data.bucketlist.parseToUI()
                             )
                             _allBucketItem.value = uiALlBucketType
+                            _allFilterLoadFinished.value = false
                         }
 
                     }
@@ -327,6 +342,7 @@ class MyViewModel @Inject constructor(
                                 }
 
                             _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
+                            _ddayFilterLoadFinished.value = false
                             Log.e("ayhan", "filteredList : $filteredList")
                         }
 
@@ -357,17 +373,28 @@ class MyViewModel @Inject constructor(
             filterPreferenceDataStoreModule.apply {
                 isProgress?.let {
                     setProgress(isProgress)
+                    _showProgress.value = it
                 }
                 isSucceed?.let {
                     setSucceed(isSucceed)
+                    _showSucceed.value = it
                 }
                 orderType?.let {
                     setOrderType(it)
+                    _orderType.value = it
                 }
                 showDday?.let {
                     setShowDday(it)
+                    _showDdayView.value = it
                 }
             }
+
+            Log.e(
+                "ayhan",
+                "status check2 : ${_showProgress.value} , ${_showSucceed.value}, ${_showDdayView.value}"
+            )
+            _allFilterSavedFinished.value = true
+            _isNeedToUpdate.value = true
         }
     }
 
@@ -380,13 +407,22 @@ class MyViewModel @Inject constructor(
                 isMinusShow?.let {
                     Log.e("ayhan", "minus :  $it")
                     setShowDdayMinus(isMinusShow)
+                    _isShownMinusDday.value = it
                 }
                 isPlusShow?.let {
                     Log.e("ayhan", "plus :  $it")
                     setShowDdayPlus(isPlusShow)
+                    _isShowPlusDday.value = it
                 }
             }
+            _ddayFilterSavedFinished.value = true
+            _isNeedToUpdate.value = true
         }
+    }
+
+    fun clearFilterSavedStatus() {
+        _allFilterSavedFinished.value = false
+        _ddayFilterSavedFinished.value = false
     }
 
     private fun searchAllBucket(searchWord: String) {
@@ -396,7 +432,7 @@ class MyViewModel @Inject constructor(
                     searchAllBucketList.invoke(token, searchWord).apply {
                         if (this.success) {
                             _searchBucketResult.value = Pair(
-                                ALL(),
+                                ALL,
                                 this.data.bucketlist
                             )
                         } else {
@@ -416,7 +452,7 @@ class MyViewModel @Inject constructor(
 
     private fun searchDdayBucket(searchWord: String) {
         _searchBucketResult.value = Pair(
-            DDAY(),
+            DDAY,
             simpleTypeList
         )
     }
@@ -428,7 +464,7 @@ class MyViewModel @Inject constructor(
                     searchCategoryList.invoke(token, searchWord).apply {
                         if (this.success) {
                             _searchBucketResult.value = Pair(
-                                CATEGORY(),
+                                CATEGORY,
                                 data
                             )
                         } else {
@@ -446,7 +482,7 @@ class MyViewModel @Inject constructor(
 
     private fun searchChallenge(searchWord: String) {
         _searchBucketResult.value = Pair(
-            CHALLENGE(),
+            CHALLENGE,
             simpleTypeList
         )
     }

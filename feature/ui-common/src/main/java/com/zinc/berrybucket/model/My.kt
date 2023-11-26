@@ -81,22 +81,27 @@ data class UIBucketInfoSimple(
 }
 
 @kotlinx.serialization.Serializable
-sealed class MyTabType : Serializable {
-
-    abstract val title: Int
+sealed interface MyTabType : Serializable {
 
     @kotlinx.serialization.Serializable
-    data class ALL(override val title: Int = R.string.allTab) : MyTabType(), Serializable
+    data object ALL : MyTabType, Serializable
 
     @kotlinx.serialization.Serializable
-    data class CATEGORY(override val title: Int = R.string.categoryTab) : MyTabType(), Serializable
+    data object CATEGORY : MyTabType, Serializable
 
     @kotlinx.serialization.Serializable
-    data class DDAY(override val title: Int = R.string.ddayTab) : MyTabType(), Serializable
+    data object DDAY : MyTabType, Serializable
 
     @kotlinx.serialization.Serializable
-    data class CHALLENGE(override val title: Int = R.string.challengeTab) : MyTabType(),
-        Serializable
+    data object CHALLENGE : MyTabType, Serializable
+
+    fun getTitle() = when (this) {
+        is ALL -> R.string.allTab
+        is CATEGORY -> R.string.categoryTab
+        is CHALLENGE -> R.string.challengeTab
+        is DDAY -> R.string.ddayTab
+    }
+
 
     companion object {
         fun toNavigationValue(value: MyTabType): String =
@@ -105,17 +110,25 @@ sealed class MyTabType : Serializable {
         fun parseNavigationValue(value: String): MyTabType =
             value.parseNavigationValue()
 
-        fun values() = listOf(ALL(), CATEGORY(), DDAY(), CHALLENGE())
+        fun values() = listOf(ALL, CATEGORY, DDAY, CHALLENGE)
+
     }
 }
 
-sealed class MyPagerClickEvent {
-    object FilterClicked : MyPagerClickEvent()
-    object CategoryEditClicked : MyPagerClickEvent()
-    data class SearchClicked(val tabType: MyTabType) : MyPagerClickEvent()
-    data class BucketItemClicked(val info: UIBucketInfoSimple) : MyPagerClickEvent()
-    data class CategoryItemClicked(val info: UICategoryInfo) : MyPagerClickEvent()
-    data class AchieveBucketClicked(val id: String) : MyPagerClickEvent()
+sealed interface MyPagerClickEvent {
+    data class AchieveBucketClicked(val id: String) : MyPagerClickEvent
+
+
+    sealed interface BottomSheet : MyPagerClickEvent {
+        data class FilterClicked(val tabType: MyTabType, val isOpened: Boolean) : BottomSheet
+        data class SearchClicked(val tabType: MyTabType, val isOpened: Boolean) : BottomSheet
+    }
+
+    sealed interface GoTo : MyPagerClickEvent {
+        data class BucketItemClicked(val info: UIBucketInfoSimple) : GoTo
+        data class CategoryItemClicked(val info: UICategoryInfo) : GoTo
+        data object CategoryEditClicked : GoTo
+    }
 }
 
 sealed class MySearchClickEvent {

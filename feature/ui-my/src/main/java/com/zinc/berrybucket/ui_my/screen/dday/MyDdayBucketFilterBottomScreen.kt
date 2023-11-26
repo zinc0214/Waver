@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_my.screen.dday
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -27,23 +28,14 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable
 fun MyDdayBucketFilterBottomScreen(
-    isInit_: Boolean = true,
     viewModel: MyViewModel,
     negativeEvent: () -> Unit,
     positiveEvent: () -> Unit
 ) {
 
-    val isInit = remember {
-        mutableStateOf(isInit_)
-    }
-
-    if (isInit.value) {
-        viewModel.loadDdayBucketFilter()
-        isInit.value = false
-    }
-
     val showMinusPref by viewModel.isShownMinusDday.observeAsState()
     val showPlusPref by viewModel.isShowPlusDday.observeAsState()
+    val filterSavedFinished by viewModel.ddayFilterSavedFinished.observeAsState()
 
     val minusBucketListSelectedState = remember {
         mutableStateOf(showMinusPref)
@@ -65,6 +57,14 @@ fun MyDdayBucketFilterBottomScreen(
             plusBucketListSelectedState.value = it
         }
     })
+
+    LaunchedEffect(key1 = filterSavedFinished) {
+        if (filterSavedFinished == true) {
+            viewModel.clearFilterSavedStatus()
+            positiveEvent()
+            Log.e("ayhan", "filterSavedFinished")
+        }
+    }
 
     Column(
         modifier = Modifier.background(
@@ -104,8 +104,6 @@ fun MyDdayBucketFilterBottomScreen(
                     isMinusShow = minusBucketListSelectedState.value,
                     isPlusShow = plusBucketListSelectedState.value
                 )
-                positiveEvent()
-                isInit.value = true
             })
     }
 }

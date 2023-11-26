@@ -1,6 +1,7 @@
 package com.zinc.berrybucket.ui_my.screen.all
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.berrybucket.model.AllBucketList
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.ALL
+import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.presentation.component.MyText
@@ -43,15 +45,26 @@ fun AllBucketLayer(
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
     nestedScrollInterop: NestedScrollConnection,
+    _isFilterUpdated: Boolean
 ) {
 
     val allBucketInfoAsState by viewModel.allBucketItem.observeAsState()
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val achieveSucceedAsState by viewModel.achieveSucceed.observeAsState()
-    val filterLoadFinishedAsState by viewModel.filterLoadFinished.observeAsState()
+    val filterLoadFinishedAsState by viewModel.allFilterLoadFinished.observeAsState()
 
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+
+    val bucketInfo = remember {
+        mutableStateOf(allBucketInfoAsState)
+    }
+    val ddayShow = remember {
+        mutableStateOf(ddayShowPrefAsState)
+    }
+    val isFilterUpdated = remember {
+        mutableStateOf(_isFilterUpdated)
+    }
 
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
@@ -67,21 +80,11 @@ fun AllBucketLayer(
         }
     }
 
-    val bucketInfo = remember {
-        mutableStateOf(allBucketInfoAsState)
-    }
-    val ddayShow = remember {
-        mutableStateOf(ddayShowPrefAsState)
-    }
-    val isFilterDialogShown = remember {
-        mutableStateOf(false)
-    }
-
     LaunchedEffect(key1 = filterLoadFinishedAsState) {
         Log.e("ayhan", "filterLoadFinishedAsState : $filterLoadFinishedAsState")
         if (filterLoadFinishedAsState == true) {
             viewModel.loadAllBucketList()
-            isFilterDialogShown.value = false
+            // isFilterDialogShown.value = false
         }
     }
     LaunchedEffect(key1 = ddayShowPrefAsState, block = {
@@ -98,43 +101,49 @@ fun AllBucketLayer(
         if (isNeedToUpdate == true) {
             viewModel.needToReload(false)
             viewModel.loadAllBucketFilter()
+            isFilterUpdated.value = false
             // 값 초기화
         }
     })
 
-    Log.e("ayhan", "isFilterDialogShown : ${isFilterDialogShown.value}")
-    if (isFilterDialogShown.value) {
-        viewModel.loadAllBucketFilter()
+    if (isFilterUpdated.value != _isFilterUpdated) {
+        isFilterUpdated.value = _isFilterUpdated
+        if (isFilterUpdated.value) {
+            viewModel.loadAllBucketFilter()
+            // viewModel.loadAllBucketList()
+            Log.e("ayhan", "isFilterUpdated")
+        }
     }
 
     bucketInfo.value?.let {
-        Column {
+        Column(Modifier.background(Gray2)) {
             AllBucketTopView(
                 modifier = Modifier,
                 allBucketInfo = it,
                 clickEvent = {
                     clickEvent(it)
 
-                    if (it == MyPagerClickEvent.FilterClicked) {
-                        isFilterDialogShown.value = true
+                    if (it is MyPagerClickEvent.BottomSheet.FilterClicked) {
+                        isFilterUpdated.value = false
                     }
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
             SimpleBucketListView(
                 bucketList = it.bucketList,
-                tabType = ALL(),
+                tabType = ALL,
                 showDday = ddayShow.value ?: true,
                 nestedScrollInterop = nestedScrollInterop,
                 itemClicked = {
-                    clickEvent.invoke(MyPagerClickEvent.BucketItemClicked(it))
+                    clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
                 },
                 achieveClicked = {
-                    viewModel.achieveBucket(it, ALL())
+                    viewModel.achieveBucket(it, ALL)
                 })
         }
     }
 }
+
 
 @Composable
 fun AllBucketTopView(
@@ -165,7 +174,7 @@ fun AllBucketTopView(
                 .align(Alignment.CenterVertically)
                 .fillMaxWidth(),
             clickEvent = clickEvent,
-            tabType = ALL()
+            tabType = ALL
         )
     }
 }

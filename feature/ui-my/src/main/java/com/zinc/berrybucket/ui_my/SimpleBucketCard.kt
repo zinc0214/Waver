@@ -111,12 +111,8 @@ fun SimpleBucketCard(
     val bucket = remember { mutableStateOf(itemInfo) }
 
     LaunchedEffect(itemInfo) {
-        Log.e("ayhan", "UpdatedBucket :LaunchedEffect!")
-
         bucket.value = itemInfo
     }
-
-    Log.e("ayhan", "UpdatedBucket : $bucket, $itemInfo")
 
     val bucketCount = remember { mutableIntStateOf(bucket.value.currentCount) }
     val borderColor = remember { mutableStateOf(Color.Transparent) }
@@ -288,8 +284,6 @@ private fun CountProgressView(
     LaunchedEffect(_info) {
         info = _info
     }
-
-    Log.e("ayhan", "updateItem : $info")
 
     val countProgressColor =
         if (tabType is ALL) {

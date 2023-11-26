@@ -31,25 +31,17 @@ import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable
 fun MyAllBucketFilterBottomScreen(
-    isInit_: Boolean = true,
     viewModel: MyViewModel,
     negativeEvent: () -> Unit,
     positiveEvent: () -> Unit
 ) {
 
-    val isInit = remember {
-        mutableStateOf(isInit_)
-    }
-
-    if (isInit.value) {
-        viewModel.loadAllBucketFilter()
-        isInit.value = false
-    }
-
     val showProgressPref by viewModel.showProgress.observeAsState()
     val showSucceedPref by viewModel.showSucceed.observeAsState()
     val orderTypePref by viewModel.orderType.observeAsState()
     val showDdayPref by viewModel.showDdayView.observeAsState()
+
+    val filterSavedFinished by viewModel.allFilterSavedFinished.observeAsState()
 
     val proceedingBucketListSelectedState = remember {
         mutableStateOf(showProgressPref)
@@ -91,6 +83,14 @@ fun MyAllBucketFilterBottomScreen(
             ddayShowSelectedState.value = it
         }
     })
+
+    LaunchedEffect(key1 = filterSavedFinished) {
+        if (filterSavedFinished == true) {
+            viewModel.clearFilterSavedStatus()
+            positiveEvent()
+            Log.e("ayhan", "filterSavedFinished")
+        }
+    }
 
     Column(
         modifier = Modifier.background(
@@ -174,8 +174,6 @@ fun MyAllBucketFilterBottomScreen(
                     orderType = sortSelectedState.value,
                     showDday = ddayShowSelectedState.value
                 )
-                positiveEvent()
-                isInit.value = true
             },
             negativeEvent = {
                 proceedingBucketListSelectedState.value = showProgressPref

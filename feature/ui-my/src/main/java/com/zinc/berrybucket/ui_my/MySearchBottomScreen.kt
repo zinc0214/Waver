@@ -166,7 +166,7 @@ private fun SearchEditView(
         modifier = Modifier.padding(start = 28.dp, end = 28.dp, top = 24.dp)
     ) {
         MyText(
-            text = stringResource(type.title),
+            text = stringResource(type.getTitle()),
             color = Main4,
             fontSize = dpToSp(20.dp),
             fontWeight = FontWeight.Medium
@@ -227,7 +227,7 @@ fun ChipBodyContent(
                             currentTab.value = tabType
                         }),
                 textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                text = stringResource(id = tabType.title),
+                text = stringResource(id = tabType.getTitle()),
                 isSelected = currentTab.value == tabType,
                 fontSize = 13.dp,
                 fontWeight = FontWeight.Bold

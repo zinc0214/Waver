@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,10 +16,16 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -56,7 +63,7 @@ import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MyScreen(
     itemSelected: (HomeItemSelected) -> Unit,
@@ -75,32 +82,82 @@ fun MyScreen(
 
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
-    profileInfo?.let {
-        rememberSystemUiController().setSystemBarsColor(Gray1)
-        CollapsingToolbarScaffold(
-            modifier = Modifier.fillMaxSize(),
-            state = rememberCollapsingToolbarScaffoldState(),
-            scrollStrategy = ScrollStrategy.EnterAlways,
-            toolbar = {
-                Column {
-                    MyTopLayer(profileInfo = profileInfo) {
-                        myTopEvent(it)
-                    }
 
-                }
+    ////////////////////////////
+    ////BottomSheet////////////
+    ///////////////////////////
+    val isFilterUpdated = remember {
+        mutableStateOf(false)
+    }
+    val myTabType = remember {
+        mutableStateOf(0)
+    }
+    val bottomSheetScaffoldState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
+    )
+    val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
+        coroutineScope.launch {
+            if (it) {
+                bottomSheetScaffoldState.show()
+            } else {
+                bottomSheetScaffoldState.hide()
             }
-        ) {
-            Column {
-                MyTabLayer(tabItems, pagerState, coroutineScope)
-                MyViewPager(
-                    pagerState = pagerState,
+        }
+    }
+
+    ModalBottomSheetLayout(
+        sheetState = bottomSheetScaffoldState,
+        sheetContent = {
+            Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
+                FilterBottomView(
+                    tab = if (myTabType.value == 0) ALL else DDAY,
                     viewModel = viewModel,
-                    itemSelected = itemSelected,
-                    bottomSheetClicked = bottomSheetClicked,
-                    goToCategoryEdit = goToCategoryEdit,
-                    coroutineScope = coroutineScope,
-                    nestedScrollInterop = nestedScrollInterop
+                    isNeedToUpdated = {
+                        isNeedToBottomSheetOpen.invoke(false)
+                        isFilterUpdated.value = it
+                    }
                 )
+            }
+
+        },
+        sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
+    ) {
+        profileInfo?.let {
+            rememberSystemUiController().setSystemBarsColor(Gray1)
+            CollapsingToolbarScaffold(
+                modifier = Modifier.fillMaxSize(),
+                state = rememberCollapsingToolbarScaffoldState(),
+                scrollStrategy = ScrollStrategy.EnterAlways,
+                toolbar = {
+                    Column {
+                        MyTopLayer(profileInfo = profileInfo) {
+                            myTopEvent(it)
+                        }
+
+                    }
+                }
+            ) {
+                Column {
+                    MyTabLayer(tabItems, pagerState, coroutineScope)
+                    MyViewPager(
+                        pagerState = pagerState,
+                        viewModel = viewModel,
+                        isFilterUpdated = isFilterUpdated.value,
+                        itemSelected = itemSelected,
+                        bottomSheetClicked = {
+                            bottomSheetClicked(it)
+
+                            if (it is BottomSheetScreenType.FilterScreen) {
+                                myTabType.value = if (it.selectTab == ALL) 0 else 2
+                                isNeedToBottomSheetOpen.invoke(true)
+
+                            }
+                        },
+                        goToCategoryEdit = goToCategoryEdit,
+                        coroutineScope = coroutineScope,
+                        nestedScrollInterop = nestedScrollInterop
+                    )
+                }
             }
         }
     }
@@ -148,6 +205,7 @@ fun MyViewPager(
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
     nestedScrollInterop: NestedScrollConnection,
+    isFilterUpdated: Boolean,
     itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     goToCategoryEdit: () -> Unit,
@@ -161,11 +219,13 @@ fun MyViewPager(
         pageContent = { page ->
             when (page) {
                 0 -> {
-                    AllBucketLayer(viewModel = viewModel,
+                    AllBucketLayer(
+                        viewModel = viewModel,
                         nestedScrollInterop = nestedScrollInterop,
+                        _isFilterUpdated = isFilterUpdated,
                         clickEvent = {
                             when (it) {
-                                is MyPagerClickEvent.BucketItemClicked -> {
+                                is MyPagerClickEvent.GoTo.BucketItemClicked -> {
                                     itemSelected.invoke(
                                         HomeItemSelected.GoToDetailHomeItem(
                                             it.info
@@ -173,29 +233,26 @@ fun MyViewPager(
                                     )
                                 }
 
-                                is MyPagerClickEvent.SearchClicked -> {
+                                is MyPagerClickEvent.BottomSheet.SearchClicked -> {
                                     coroutineScope.launch {
                                         bottomSheetClicked.invoke(
                                             BottomSheetScreenType.SearchScreen(
-                                                selectTab = ALL(), viewModel = viewModel
+                                                selectTab = ALL, viewModel = viewModel
                                             )
                                         )
                                     }
                                 }
 
-                                is MyPagerClickEvent.FilterClicked -> {
+                                is MyPagerClickEvent.BottomSheet.FilterClicked -> {
                                     coroutineScope.launch {
                                         bottomSheetClicked.invoke(
-                                            BottomSheetScreenType.FilterScreen(
-                                                selectTab = ALL(),
-                                                viewModel = viewModel
-                                            )
+                                            BottomSheetScreenType.FilterScreen(ALL)
                                         )
                                     }
                                 }
 
                                 is MyPagerClickEvent.AchieveBucketClicked -> {
-                                    viewModel.achieveBucket(it.id, ALL())
+                                    viewModel.achieveBucket(it.id, ALL)
                                 }
 
                                 else -> {
@@ -208,21 +265,21 @@ fun MyViewPager(
                 1 -> {
                     CategoryLayer(clickEvent = {
                         when (it) {
-                            MyPagerClickEvent.CategoryEditClicked -> {
+                            is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
                                 goToCategoryEdit()
                             }
 
-                            is MyPagerClickEvent.SearchClicked -> {
+                            is MyPagerClickEvent.BottomSheet.SearchClicked -> {
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
                                         BottomSheetScreenType.SearchScreen(
-                                            selectTab = CATEGORY(), viewModel = viewModel
+                                            selectTab = CATEGORY, viewModel = viewModel
                                         )
                                     )
                                 }
                             }
 
-                            is MyPagerClickEvent.CategoryItemClicked -> {
+                            is MyPagerClickEvent.GoTo.CategoryItemClicked -> {
                                 itemSelected.invoke(
                                     HomeItemSelected.GoToCategoryBucketList(
                                         it.info
@@ -239,43 +296,42 @@ fun MyViewPager(
                 }
 
                 2 -> {
-                    DdayBucketLayer(viewModel = viewModel, clickEvent = {
-                        when (it) {
-                            is MyPagerClickEvent.BucketItemClicked -> {
-                                itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
-                            }
+                    DdayBucketLayer(viewModel = viewModel,
+                        _isFilterUpdated = isFilterUpdated,
+                        clickEvent = {
+                            when (it) {
+                                is MyPagerClickEvent.GoTo.BucketItemClicked -> {
+                                    itemSelected.invoke(HomeItemSelected.GoToDetailHomeItem(it.info))
+                                }
 
-                            is MyPagerClickEvent.SearchClicked -> {
-                                coroutineScope.launch {
-                                    bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.SearchScreen(
-                                            selectTab = DDAY(),
-                                            viewModel = viewModel
+                                is MyPagerClickEvent.BottomSheet.SearchClicked -> {
+                                    coroutineScope.launch {
+                                        bottomSheetClicked.invoke(
+                                            BottomSheetScreenType.SearchScreen(
+                                                selectTab = DDAY,
+                                                viewModel = viewModel
+                                            )
                                         )
-                                    )
+                                    }
+                                }
+
+                                is MyPagerClickEvent.BottomSheet.FilterClicked -> {
+                                    coroutineScope.launch {
+                                        bottomSheetClicked.invoke(
+                                            BottomSheetScreenType.FilterScreen(DDAY)
+                                        )
+                                    }
+                                }
+
+                                is MyPagerClickEvent.AchieveBucketClicked -> {
+                                    viewModel.achieveBucket(it.id, DDAY)
+                                }
+
+                                else -> {
+                                    // Do Nothing
                                 }
                             }
-
-                            is MyPagerClickEvent.FilterClicked -> {
-                                coroutineScope.launch {
-                                    bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.FilterScreen(
-                                            selectTab = DDAY(),
-                                            viewModel = viewModel
-                                        )
-                                    )
-                                }
-                            }
-
-                            is MyPagerClickEvent.AchieveBucketClicked -> {
-                                viewModel.achieveBucket(it.id, DDAY())
-                            }
-
-                            else -> {
-                                // Do Nothing
-                            }
-                        }
-                    })
+                        })
                 }
             }
         }
@@ -299,7 +355,7 @@ private fun MyTab(
         .clickable {
             isClicked(currentIndex)
         }) {
-        MyText(text = stringResource(id = mySection.title),
+        MyText(text = stringResource(id = mySection.getTitle()),
             style = if (isSelected) textStyle.copy(color = Gray10)
             else textStyle.copy(color = Gray6),
             onTextLayout = { textLayoutResult ->

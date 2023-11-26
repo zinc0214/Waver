@@ -139,6 +139,6 @@ fun BucketCircularProgressBar(
 @Composable
 private fun BucketCircularProgressBarPreview() {
     BucketCircularProgressBar(
-        progressState = {}, tabType = ALL(),
+        progressState = {}, tabType = ALL,
     )
 }
