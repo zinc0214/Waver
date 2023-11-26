@@ -352,22 +352,6 @@ fun BerryBucketApp(
                             goToHome = {
                                 appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
                             })
-
-//                        writeNavGraph1(action = { actionType -> action(actionType) },
-//                            backPress = {
-//                                appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
-//                            }, goToNextWrite = { nav, info ->
-//                                appState.navigateToWrite2(nav, info)
-//                            }, goToAddCategory = {
-//                                appState.navigateToCategoryEdit(it)
-//                            })
-//                        writeNavGraph2(
-//                            backPress = { nav, info ->
-//                                appState.navigateToWrite1(info, nav)
-//                            },
-//                            goToHome = {
-//                                appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
-//                            })
                         alarmNavGraph(backPress = appState::backPress)
                         moreAlarmNavGraph(backPress = appState::backPress)
                         moreBlockNavGraph(backPress = appState::backPress)
