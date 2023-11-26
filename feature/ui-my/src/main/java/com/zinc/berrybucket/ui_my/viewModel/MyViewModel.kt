@@ -36,6 +36,7 @@ import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -98,6 +99,9 @@ class MyViewModel @Inject constructor(
     private val _achieveSucceed = MutableLiveData<String>()
     val achieveSucceed: LiveData<String> get() = _achieveSucceed
 
+    private val _filterLoadFinished = MutableLiveData<Boolean>()
+    val filterLoadFinished: LiveData<Boolean> get() = _filterLoadFinished
+
     private var isPrefChanged = false
 
     private val searchCeh = CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -112,13 +116,14 @@ class MyViewModel @Inject constructor(
 
     fun loadAllBucketFilter() {
         viewModelScope.launch {
-            val job1: Deferred<Unit> = async { loadShowProgressDataStore() }
-            val job2: Deferred<Unit> = async { loadShowSucceedDataStore() }
-            val job3: Deferred<Unit> = async { loadOrderTypeDataStore() }
-            val job4: Deferred<Unit> = async { loadShowDdayDataStore() }
-
-            awaitAll(job1, job2, job3, job4)
-            needToReload(isPrefChanged)
+            val job1 = launch { loadShowProgressDataStore() }
+            val job2 = launch { loadShowSucceedDataStore() }
+            val job3 = launch { loadOrderTypeDataStore() }
+            val job4 = launch { loadShowDdayDataStore() }
+            val job5 = launch {
+                _filterLoadFinished.value = true
+            }
+            joinAll(job1, job2, job3, job4, job5)
         }
     }
 
@@ -136,6 +141,7 @@ class MyViewModel @Inject constructor(
             loadIsProgress.collectLatest {
                 isPrefChanged = isPrefChanged || _showProgress.value != it
                 _showProgress.value = it
+                Log.e("ayhan", "loadShowProgressDataStore")
             }
         }
     }
@@ -145,6 +151,7 @@ class MyViewModel @Inject constructor(
             loadIsSucceed.collectLatest {
                 isPrefChanged = isPrefChanged || _showSucceed.value != it
                 _showSucceed.value = it
+                Log.e("ayhan", "loadShowSucceedDataStore")
             }
         }
     }
@@ -154,6 +161,7 @@ class MyViewModel @Inject constructor(
             loadOrderType.collectLatest {
                 isPrefChanged = isPrefChanged || _orderType.value != it
                 _orderType.value = it
+                Log.e("ayhan", "loadOrderTypeDataStore")
             }
         }
     }
@@ -163,6 +171,7 @@ class MyViewModel @Inject constructor(
             loadShowDday.collectLatest {
                 isPrefChanged = isPrefChanged || _showDdayView.value != it
                 _showDdayView.value = it
+                Log.e("ayhan", "loadShowDdayDataStore")
             }
         }
     }

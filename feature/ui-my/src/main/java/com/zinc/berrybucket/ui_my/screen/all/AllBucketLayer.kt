@@ -49,6 +49,8 @@ fun AllBucketLayer(
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val achieveSucceedAsState by viewModel.achieveSucceed.observeAsState()
+    val filterLoadFinishedAsState by viewModel.filterLoadFinished.observeAsState()
+
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     DisposableEffect(lifecycleOwner.value) {
@@ -75,6 +77,13 @@ fun AllBucketLayer(
         mutableStateOf(false)
     }
 
+    LaunchedEffect(key1 = filterLoadFinishedAsState) {
+        Log.e("ayhan", "filterLoadFinishedAsState : $filterLoadFinishedAsState")
+        if (filterLoadFinishedAsState == true) {
+            viewModel.loadAllBucketList()
+            isFilterDialogShown.value = false
+        }
+    }
     LaunchedEffect(key1 = ddayShowPrefAsState, block = {
         ddayShow.value = ddayShowPrefAsState
     })
@@ -89,7 +98,6 @@ fun AllBucketLayer(
         if (isNeedToUpdate == true) {
             viewModel.needToReload(false)
             viewModel.loadAllBucketFilter()
-            viewModel.loadAllBucketList()
             // 값 초기화
         }
     })
