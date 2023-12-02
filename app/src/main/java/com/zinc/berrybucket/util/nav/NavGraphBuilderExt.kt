@@ -354,7 +354,7 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
 }
 
 internal fun NavGraphBuilder.openBucketDetailNavGraph(
-    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
+    goToBucketDetailEvent: (OpenBucketDetailEvent, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
     composable(
@@ -373,21 +373,21 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
             isMine = isMine,
             goToEvent = {
                 when (it) {
-                    is GoToBucketDetailEvent.GoToCommentReport -> {
+                    is OpenBucketDetailEvent.CommentReport -> {
                         goToBucketDetailEvent.invoke(
-                            GoToBucketDetailEvent.GoToCommentReport(it.reportInfo),
+                            OpenBucketDetailEvent.CommentReport(it.reportInfo),
                             backStackEntry
                         )
                     }
 
-                    is GoToBucketDetailEvent.GoToUpdate -> {
+                    is OpenBucketDetailEvent.Update -> {
                         val info = it.info.copy(isForUpdate = true)
                         goToBucketDetailEvent.invoke(
-                            GoToBucketDetailEvent.GoToUpdate(info), backStackEntry
+                            OpenBucketDetailEvent.Update(info), backStackEntry
                         )
                     }
 
-                    is GoToBucketDetailEvent.GoToBucketReport -> TODO()
+                    is OpenBucketDetailEvent.BucketReport -> TODO()
                 }
             }, backPress = backPress
         )
@@ -395,7 +395,7 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
 }
 
 internal fun NavGraphBuilder.closeBucketDetailNavGraph(
-    goToBucketDetailEvent: (GoToBucketDetailEvent, NavBackStackEntry) -> Unit,
+    goToBucketDetailEvent: (CloseBucketDetailEvent, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
     composable(
@@ -409,7 +409,7 @@ internal fun NavGraphBuilder.closeBucketDetailNavGraph(
         CloseDetailScreen(detailId, goToUpdate = {
             val info = it.copy(isForUpdate = true)
             goToBucketDetailEvent.invoke(
-                GoToBucketDetailEvent.GoToUpdate(info), backStackEntry
+                CloseBucketDetailEvent.Update(info), backStackEntry
             )
         }, backPress = backPress)
     }
@@ -491,9 +491,12 @@ sealed class SearchEvent {
     data class GoToOtherUser(val id: String) : SearchEvent()
 }
 
-sealed class GoToBucketDetailEvent {
-    data class GoToCommentReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
-    data class GoToBucketReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
-    data class GoToUpdate(val info: WriteTotalInfo) : GoToBucketDetailEvent()
+sealed interface OpenBucketDetailEvent {
+    data class CommentReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
+    data class BucketReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
+    data class Update(val info: WriteTotalInfo) : OpenBucketDetailEvent
 }
 
+sealed interface CloseBucketDetailEvent {
+    data class Update(val info: WriteTotalInfo) : CloseBucketDetailEvent
+}

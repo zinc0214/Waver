@@ -17,9 +17,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -51,15 +53,16 @@ import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewE
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.util.createImageInfoWithPath
-import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
+import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun OpenDetailScreen(
     detailId: String,
     isMine: Boolean,
-    goToEvent: (GoToBucketDetailEvent) -> Unit,
+    goToEvent: (OpenBucketDetailEvent) -> Unit,
     backPress: () -> Unit
 ) {
     val context = LocalContext.current
@@ -110,15 +113,12 @@ fun OpenDetailScreen(
         val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
 
         // 키보드 상태 확인
-        val isKeyBoardOpened = remember { mutableStateOf(true) } // 키보드 오픈 상태 확인
         val isKeyboardStatus by keyboardAsState()
+        val keyboardController = LocalSoftwareKeyboardController.current
         val focusManager = LocalFocusManager.current
         if (isKeyboardStatus == Keyboard.Closed) {
             focusManager.clearFocus()
-            isKeyBoardOpened.value = false
-            mentionPopupShowed.value = false
-        } else {
-            isKeyBoardOpened.value = true
+            keyboardController?.hide()
         }
 
         // 전체 뷰 clickable 인데, 리플 효과 제거를 위해 사용
@@ -150,7 +150,7 @@ fun OpenDetailScreen(
                                 MyBucketMenuEvent.GoToEdit -> {
                                     optionPopUpShowed.value = false
                                     goToEvent.invoke(
-                                        GoToBucketDetailEvent.GoToUpdate(
+                                        OpenBucketDetailEvent.Update(
                                             info.toUpdateUiModel(
                                                 imageInfos
                                             )
@@ -223,7 +223,7 @@ fun OpenDetailScreen(
 
                                             // 신고이벤트
                                             goToEvent.invoke(
-                                                GoToBucketDetailEvent.GoToCommentReport(reportInfo)
+                                                OpenBucketDetailEvent.CommentReport(reportInfo)
                                             )
                                         }
                                     }
@@ -329,7 +329,7 @@ fun OpenDetailScreen(
                                     commentEvent = {
                                         when (it) {
                                             is OpenDetailEditTextViewEvent.SendComment -> {
-
+                                                keyboardController?.hide()
                                             }
 
                                             is OpenDetailEditTextViewEvent.TextChanged -> {

@@ -23,7 +23,8 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
-import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
+import com.zinc.berrybucket.util.nav.CloseBucketDetailEvent
+import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
 import com.zinc.berrybucket.util.nav.closeBucketDetailNavGraph
@@ -243,15 +244,19 @@ fun BerryBucketApp(
                     openBucketDetailNavGraph(
                         goToBucketDetailEvent = { eventInfo, nav ->
                             when (eventInfo) {
-                                is GoToBucketDetailEvent.GoToCommentReport -> {
+                                is OpenBucketDetailEvent.CommentReport -> {
                                     appState.navigateToCommentReport(eventInfo.reportInfo, nav)
                                 }
 
-                                is GoToBucketDetailEvent.GoToUpdate -> {
+                                is OpenBucketDetailEvent.Update -> {
                                     appState.navigateToWrite(
                                         eventInfo.info.bucketId ?: "NoId",
                                         appState.navController.currentBackStackEntry!!
                                     )
+                                }
+
+                                is OpenBucketDetailEvent.BucketReport -> {
+
                                 }
                             }
                         },
@@ -261,11 +266,7 @@ fun BerryBucketApp(
                     closeBucketDetailNavGraph(
                         goToBucketDetailEvent = { eventInfo, nav ->
                             when (eventInfo) {
-                                is GoToBucketDetailEvent.GoToCommentReport -> {
-                                    appState.navigateToCommentReport(eventInfo.reportInfo, nav)
-                                }
-
-                                is GoToBucketDetailEvent.GoToUpdate -> {
+                                is CloseBucketDetailEvent.Update -> {
                                     appState.navigateToWrite(
                                         eventInfo.info.bucketId ?: "NoId",
                                         appState.navController.currentBackStackEntry!!
@@ -288,11 +289,11 @@ fun BerryBucketApp(
                                     appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
-                            is SearchEvent.GoToOtherUser -> {
-                                appState.navigateToOtherHome(nav, event.id)
+                                is SearchEvent.GoToOtherUser -> {
+                                    appState.navigateToOtherHome(nav, event.id)
+                                }
                             }
-                        }
-                    })
+                        })
                     writeNavGraph(action = { actionType -> action(actionType) },
                         backPress = {
                             appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
