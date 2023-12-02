@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,12 +28,53 @@ import com.zinc.berrybucket.ui.util.dpToSp
  * @param onDismissRequest
  * @param commentOptionClicked
  */
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun CommentSelectedDialog(
+fun MyCommentSelectedDialog(
     commenter: Commenter,
     onDismissRequest: (Boolean) -> Unit,
-    commentOptionClicked: (CommentOptionClicked) -> Unit
+    commentOptionClicked: (MyCommentOptionClicked) -> Unit
+) {
+    CommentSelectedDialog(commenter, onDismissRequest) {
+        when (it) {
+            is InnerCommentOptionClicked.FirstOptionClickedInner ->
+                commentOptionClicked(MyCommentOptionClicked.Edit(it.commentId))
+
+            is InnerCommentOptionClicked.SecondOptionClickedInner ->
+                commentOptionClicked(MyCommentOptionClicked.Delete(it.commentId))
+        }
+    }
+}
+
+/**
+ * 댓글 롱크릭 시 노출되는 팝업
+ *
+ * @param commenter 댓글 정보
+ * @param onDismissRequest
+ * @param commentOptionClicked
+ */
+@Composable
+fun OtherCommentSelectedDialog(
+    commenter: Commenter,
+    onDismissRequest: (Boolean) -> Unit,
+    commentOptionClicked: (OtherCommentOptionClicked) -> Unit
+) {
+    CommentSelectedDialog(commenter, onDismissRequest) {
+        when (it) {
+            is InnerCommentOptionClicked.FirstOptionClickedInner ->
+                commentOptionClicked(OtherCommentOptionClicked.Hide(it.commentId))
+
+            is InnerCommentOptionClicked.SecondOptionClickedInner ->
+                commentOptionClicked(OtherCommentOptionClicked.Report(it.commentId))
+        }
+    }
+}
+
+
+@Composable
+private fun CommentSelectedDialog(
+    commenter: Commenter,
+    onDismissRequest: (Boolean) -> Unit,
+    commentOptionClicked: (InnerCommentOptionClicked) -> Unit
 ) {
 
     val dialogProperties = DialogProperties(
@@ -71,7 +111,7 @@ fun CommentSelectedDialog(
                     .fillMaxWidth()
                     .clickable {
                         commentOptionClicked.invoke(
-                            CommentOptionClicked.FirstOptionClicked(
+                            InnerCommentOptionClicked.FirstOptionClickedInner(
                                 commenter.commentId
                             )
                         )
@@ -86,7 +126,7 @@ fun CommentSelectedDialog(
                     .fillMaxWidth()
                     .clickable {
                         commentOptionClicked.invoke(
-                            CommentOptionClicked.SecondOptionClicked(
+                            InnerCommentOptionClicked.SecondOptionClickedInner(
                                 commenter.commentId
                             )
                         )
@@ -94,15 +134,26 @@ fun CommentSelectedDialog(
             )
         }
     }
-
 }
 
-sealed class CommentOptionClicked {
-    data class FirstOptionClicked(
-        val commentId: String
-    ) : CommentOptionClicked()
 
-    data class SecondOptionClicked(
+private sealed class InnerCommentOptionClicked {
+    data class FirstOptionClickedInner(
         val commentId: String
-    ) : CommentOptionClicked()
+    ) : InnerCommentOptionClicked()
+
+    data class SecondOptionClickedInner(
+        val commentId: String
+    ) : InnerCommentOptionClicked()
+}
+
+
+sealed interface MyCommentOptionClicked {
+    data class Edit(val commentId: String) : MyCommentOptionClicked
+    data class Delete(val commentId: String) : MyCommentOptionClicked
+}
+
+sealed interface OtherCommentOptionClicked {
+    data class Hide(val commentId: String) : OtherCommentOptionClicked
+    data class Report(val commentId: String) : OtherCommentOptionClicked
 }
