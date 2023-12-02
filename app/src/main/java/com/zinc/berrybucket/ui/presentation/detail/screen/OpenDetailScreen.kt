@@ -54,6 +54,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
+import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
 
@@ -129,6 +130,9 @@ fun OpenDetailScreen(
 
         // 새로 선택된 태그 정보
         val newTaggedText: MutableState<TaggedTextInfo?> = remember { mutableStateOf(null) }
+
+        // 태그된 사람들
+        val taggedMemberList = mutableListOf<String>()
 
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
@@ -347,13 +351,22 @@ fun OpenDetailScreen(
                             commentEvent = {
                                 when (it) {
                                     is OpenDetailEditTextViewEvent.SendComment -> {
-                                        keyboardController?.hide()
+                                        viewModel.addBucketComment(
+                                            request = AddBucketCommentRequest(
+                                                bucketlistId = detailId.toInt(),
+                                                content = it.sendText,
+                                                mentionIds = "" //TODO : 수정필요
+                                            )
+                                        )
                                     }
 
                                     is OpenDetailEditTextViewEvent.TextChanged -> {
                                         val textInfo = it
                                         commentText.value = textInfo.updateText
                                         newTaggedText.value = null
+
+                                        taggedMemberList.clear()
+                                        taggedMemberList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
 
                                         // "@" 태그 위치 확인
                                         val tagIndexMap = mutableListOf<Int>()

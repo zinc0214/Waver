@@ -19,11 +19,13 @@ import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
+import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
@@ -38,6 +40,7 @@ class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val achieveMyBucket: AchieveMyBucket,
+    private val addBucketComment: AddBucketComment,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -56,7 +59,13 @@ class DetailViewModel @Inject constructor(
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: HomeProfileInfo
 
+    private var userId: String? = null
+    private var isMine: Boolean? = true
+
     fun getBucketDetail(id: String, isMine: Boolean) {
+
+        userId = id
+        this.isMine = isMine
 
         accessToken.value?.let { token ->
 
@@ -154,6 +163,22 @@ class DetailViewModel @Inject constructor(
             descInfo = updateGoalInfo
         )
         _bucketBucketDetailUiInfo.value = updateInfo
+    }
+
+    fun addBucketComment(request: AddBucketCommentRequest) {
+        Log.e("ayhan", "comment request : $request")
+        _loadFail.value = false
+        viewModelScope.launch(CEH(_loadFail, true)) {
+            accessToken.value?.let { token ->
+                val result = addBucketComment(token, request)
+                Log.e("ayhan", "comment Result : $result")
+                if (result.success) {
+                    getBucketDetail(userId!!, isMine!!)
+                } else {
+                    _loadFail.value = true
+                }
+            }
+        }
     }
 
     private val bucketDetailUiInfo1: BucketDetailUiInfo =

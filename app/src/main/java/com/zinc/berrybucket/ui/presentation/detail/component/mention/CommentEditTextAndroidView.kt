@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import com.zinc.berrybucket.databinding.LayoutMentionTagViewBinding
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
@@ -16,13 +17,13 @@ import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 class CommentEditTextAndroidView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
+    val originText: String,
+    val commentEvent: (OpenDetailEditTextViewEvent) -> Unit
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     private lateinit var binding: LayoutMentionTagViewBinding
-    private var commentEvent: ((OpenDetailEditTextViewEvent) -> Unit)? = null
-    private var originText: String = ""
-    private var beforeText: String = originText
+    private var savedText: String = originText
     private var _spannableString = mutableMapOf<String, TaggedTextInfo>()
     private var changeStartIndex = 0
 
@@ -35,6 +36,13 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         binding = LayoutMentionTagViewBinding.inflate(LayoutInflater.from(context), this, true)
 
         binding.commentSendButton.isEnabled = false
+        binding.commentSendButton.setOnClickListener {
+            commentEvent.invoke(OpenDetailEditTextViewEvent.SendComment(savedText))
+            hideKeyboard()
+            binding.commentEditTextView.clearFocus()
+            binding.commentEditTextView.setText("")
+        }
+
         binding.commentEditTextView.setText(originText)
         binding.commentEditTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -43,7 +51,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s.toString() != beforeText) {
+                if (s.toString() != savedText) {
 
                     /// TODO: 스페이스 두 번 클릭시 . 으로 바뀌면서 강제로 글자수가 줄어드는 현상 해결 필요
                     changeStartIndex = binding.commentEditTextView.selectionEnd
@@ -53,13 +61,13 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                     }
 
                     if (taggedString != null) {
-                        if (s.toString().length > beforeText.length) {
-                            binding.commentEditTextView.setText(beforeText)
+                        if (s.toString().length > savedText.length) {
+                            binding.commentEditTextView.setText(savedText)
                             binding.commentEditTextView.setSelection(taggedString.endIndex)
-                            updateText(getMakeTaggedText(beforeText), isForceUpdate = true)
-                        } else if (s.toString().length < beforeText.length) {
+                            updateText(getMakeTaggedText(savedText), isForceUpdate = true)
+                        } else if (s.toString().length < savedText.length) {
                             _spannableString.values.remove(taggedString)
-                            val removeText = beforeText.removeRange(
+                            val removeText = savedText.removeRange(
                                 taggedString.startIndex,
                                 taggedString.endIndex + 1
                             )
@@ -68,32 +76,33 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
                         }
                     } else {
                         updateTaggedString(s.toString())
-                        beforeText = s.toString()
+                        savedText = s.toString()
                     }
                 }
             }
 
             override fun afterTextChanged(s: Editable?) {
-                commentEvent?.invoke(
+                commentEvent.invoke(
                     OpenDetailEditTextViewEvent.TextChanged(
-                        beforeText,
+                        savedText,
                         changeStartIndex,
                         _spannableString.values.toList()
                     )
                 )
 
-                binding.commentSendButton.isEnabled = beforeText.isNotEmpty()
+                binding.commentSendButton.isEnabled = savedText.isNotEmpty()
             }
         })
     }
-
-    fun setData(
-        originText: String,
-        commentEvent: (OpenDetailEditTextViewEvent) -> Unit
-    ) {
-        this.originText = originText
-        this.commentEvent = commentEvent
-    }
+//
+//    fun setData(
+//        originText: String,
+//        commentEvent: (OpenDetailEditTextViewEvent) -> Unit
+//    ) {
+//        this.originText = originText
+//        this.commentEvent = commentEvent
+//        setUpViews()
+//    }
 
     // 태그된 텍스트 사이로 다른 텍스트가 추가되었을 때, 그 텍스트 만큼 기존의 index 를 업데이트 하기 위함
     private fun updateTaggedString(changeText: String) {
@@ -108,25 +117,25 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         if (lastTagged != null && firstTagged != null) {
 
             // 값이 추가된 경우
-            if (changeText.length > beforeText.length) {
+            if (changeText.length > savedText.length) {
                 // 변경된 텍스트
                 val betweenText = changeText.slice(lastTagged.endIndex + 1..firstTagged.startIndex)
 
                 // 기존 텍스트
                 val currentText =
-                    beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
+                    savedText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
 
                 size = betweenText.length - currentText.length
             }
             // 값이 삭제된 경우
-            else if (changeText.length < beforeText.length) {
+            else if (changeText.length < savedText.length) {
                 // 변경된 텍스트
                 val betweenText =
                     changeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex - 1)
 
                 // 기존 텍스트
                 val currentText =
-                    beforeText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
+                    savedText.slice(lastTagged.endIndex + 1 until firstTagged.startIndex)
 
                 size = betweenText.length - currentText.length
             }
@@ -136,25 +145,25 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
         // 모든 태그 전에 수정된 텍스트인 경우
         else if (firstTagged != null) {
             // 값이 추가된 경우
-            if (changeText.length > beforeText.length) {
+            if (changeText.length > savedText.length) {
                 // 변경된 텍스트
                 val betweenText = changeText.slice(0..firstTagged.startIndex)
 
                 // 기존 텍스트
                 val currentText =
-                    beforeText.slice(0 until firstTagged.startIndex)
+                    savedText.slice(0 until firstTagged.startIndex)
 
                 size = betweenText.length - currentText.length
             }
             // 값이 삭제된 경우
-            else if (changeText.length < beforeText.length) {
+            else if (changeText.length < savedText.length) {
                 // 변경된 텍스트
                 val betweenText =
                     changeText.slice(0 until firstTagged.startIndex)
 
                 // 기존 텍스트
                 val currentText =
-                    beforeText.slice(0..firstTagged.startIndex)
+                    savedText.slice(0..firstTagged.startIndex)
 
                 size = betweenText.length - currentText.length
             }
@@ -285,12 +294,16 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             val resultText =
                 spannableString.toString() // 제거된 텍스트로 업데이트된 SpannableStringBuilder를 다시 String으로 변환
 
-            beforeText = spannableString.toString()
+            savedText = spannableString.toString()
             changeStartIndex = resultText.length
             binding.commentEditTextView.text = spannableString
             binding.commentEditTextView.setSelection(resultText.length)
 
         }
+    }
 
+    fun hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 }

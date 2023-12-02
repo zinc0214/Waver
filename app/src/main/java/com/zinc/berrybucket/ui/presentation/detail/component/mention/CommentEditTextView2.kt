@@ -15,12 +15,11 @@ fun CommentEditTextView2(
 ) {
     AndroidView(modifier = Modifier.fillMaxWidth(),
         factory = { context ->
-            CommentEditTextAndroidView(context).apply {
-                setData(
-                    originText = originText,
-                    commentEvent = commentEvent
-                )
-            }
+            CommentEditTextAndroidView(
+                context,
+                originText = originText,
+                commentEvent = commentEvent
+            )
         }, update = {
             it.updateText(originText, newTaggedInfo = newTaggedInfo)
         })

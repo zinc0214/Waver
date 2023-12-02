@@ -1,5 +1,6 @@
 package com.zinc.data.api
 
+import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
@@ -251,5 +252,11 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): BucketDetailResponse
+
+    @POST("/comment")
+    suspend fun addBucketComment(
+        @Header("Authorization") token: String,
+        @Body request: AddBucketCommentRequest
+    ): CommonResponse
 
 }
