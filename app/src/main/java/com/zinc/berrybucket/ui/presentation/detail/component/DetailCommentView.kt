@@ -103,14 +103,14 @@ private fun CommentDescView(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = if (isLastItem) 140.dp else 36.dp)
+            .padding(bottom = if (isLastItem) 120.dp else 16.dp)
             .combinedClickable(
                 onClick = { },
                 onLongClick = {
                     commentLongClicked(commentIndex)
                 },
             )
-            .padding(start = 28.dp, end = 28.dp)
+            .padding(start = 28.dp, end = 28.dp, top = 10.dp, bottom = 10.dp)
     ) {
         Image(
             painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
