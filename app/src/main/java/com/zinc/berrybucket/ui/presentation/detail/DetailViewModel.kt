@@ -38,11 +38,8 @@ class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val achieveMyBucket: AchieveMyBucket,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
-//
-//    private val _bucketDetailInfo = MutableLiveData<List<DetailDescType>>()
-//    val bucketDetailInfo: LiveData<List<DetailDescType>> get() = _bucketDetailInfo
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
     val bucketBucketDetailUiInfo: LiveData<BucketDetailUiInfo> get() = _bucketBucketDetailUiInfo
@@ -65,6 +62,7 @@ class DetailViewModel @Inject constructor(
 
             viewModelScope.launch(CEH(_loadFail, true)) {
 
+                // TODO : 다른사람 프로필 조회도 필요해!!!
                 val job1 = async { getBucketDetailData(token, id, isMine) }
                 val job2 = async { getProfileInfo(token) }
 

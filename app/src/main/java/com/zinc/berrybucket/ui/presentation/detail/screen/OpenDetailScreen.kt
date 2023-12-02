@@ -6,13 +6,8 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -33,30 +28,21 @@ import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentLongClicked
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
-import com.zinc.berrybucket.model.MyProfileInfoUi
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
-import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.design.util.visibleLastIndex
-import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
-import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
-import com.zinc.berrybucket.ui.presentation.detail.component.CommentCountView
-import com.zinc.berrybucket.ui.presentation.detail.component.CommentLine
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentOptionClicked
 import com.zinc.berrybucket.ui.presentation.detail.component.CommentSelectedDialog
-import com.zinc.berrybucket.ui.presentation.detail.component.DetailCommentView
-import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
-import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
+import com.zinc.berrybucket.ui.presentation.detail.component.OpenDetailContentView
 import com.zinc.berrybucket.ui.presentation.detail.component.OtherDetailAppBarMoreMenuDialog
-import com.zinc.berrybucket.ui.presentation.detail.component.TogetherMemberView
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEditTextView2
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
@@ -64,7 +50,6 @@ import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
-import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.nav.GoToBucketDetailEvent
 import com.zinc.common.models.ReportInfo
@@ -277,7 +262,7 @@ fun OpenDetailScreen(
                     ) {
                         val (contentView, floatingButtonView, editView) = createRefs()
 
-                        ContentView(
+                        OpenDetailContentView(
                             listState = listScrollState,
                             info = info,
                             clickEvent = {
@@ -448,115 +433,6 @@ fun OpenDetailScreen(
             }
         }
     }
-}
-
-
-@Composable
-private fun ContentView(
-    modifier: Modifier,
-    listState: LazyListState,
-    info: BucketDetailUiInfo,
-    flatButtonVisible: Boolean,
-    clickEvent: (DetailClickEvent) -> Unit
-) {
-
-    LazyColumn(
-        modifier = modifier, state = listState
-    ) {
-        info.imageInfo?.let {
-            item(key = "imageViewPager") {
-                ImageViewPagerInsideIndicator(
-                    modifier = Modifier.fillMaxWidth(),
-                    indicatorModifier = Modifier.padding(bottom = 16.dp, end = 16.dp),
-                    imageList = it.imageList
-                )
-            }
-        }
-
-        item(key = "profileView") {
-            ProfileView(info.myProfileInfo)
-        }
-
-        item(key = "detailDescLayer") {
-            DetailDescView(info.descInfo)
-        }
-
-        item(key = "memoView") {
-            if (info.memoInfo != null) {
-                DetailMemoView(
-                    modifier = Modifier.padding(
-                        top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
-                    ), memo = info.memoInfo?.memo!!
-                )
-            } else {
-                Spacer(modifier = Modifier.height(56.dp))
-            }
-
-        }
-
-        item(key = "flatDetailSuccessButton") {
-            if (listState.layoutInfo.visibleItemsInfo.isEmpty() || info.isMine.not()) {
-                return@item
-            }
-            // Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
-            AnimatedVisibility(
-                flatButtonVisible,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                DetailSuccessButtonView(
-                    successClicked = {
-                        clickEvent.invoke(DetailClickEvent.SuccessClicked(info.bucketId))
-                    }, successButtonInfo = SuccessButtonInfo(
-                        goalCount = info.descInfo.goalCount,
-                        userCount = info.descInfo.userCount
-                    )
-                )
-            }
-            // }
-        }
-
-        item(key = "friendsView") {
-            if (info.togetherInfo != null) {
-                TogetherMemberView(
-                    modifier = Modifier.fillMaxWidth(),
-                    togetherInfo = info.togetherInfo!!
-                )
-            }
-        }
-
-        item(key = "spacer") {
-            Spacer(modifier = Modifier.height(30.dp))
-        }
-        item(key = "commentLine") {
-            CommentLine()
-        }
-        item(key = "commentCountView") {
-            CommentCountView(info.commentInfo?.commentCount ?: 0)
-        }
-        item(key = "commentLayer") {
-            DetailCommentView(commentInfo = info.commentInfo, commentLongClicked = {
-                clickEvent.invoke(CommentLongClicked(it))
-            })
-        }
-    }
-}
-
-@Composable
-fun ProfileView(myProfileInfo: MyProfileInfoUi) {
-    ProfileView(
-        modifier = Modifier
-            .padding(top = 28.dp)
-            .padding(horizontal = 12.dp),
-        imageSize = 48.dp,
-        profileSize = 44.dp,
-        profileRadius = 16.dp,
-        badgeSize = Pair(24.dp, 27.dp),
-        nickNameTextSize = dpToSp(14.dp),
-        titlePositionTextSize = dpToSp(13.dp),
-        nickNameTextColor = Gray10,
-        profileInfo = myProfileInfo.toUi()
-    )
 }
 
 private fun flatButtonIndex(bucketDetailUiInfo: BucketDetailUiInfo): Int {

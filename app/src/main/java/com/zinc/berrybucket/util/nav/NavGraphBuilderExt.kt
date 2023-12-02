@@ -386,6 +386,8 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
                             GoToBucketDetailEvent.GoToUpdate(info), backStackEntry
                         )
                     }
+
+                    is GoToBucketDetailEvent.GoToBucketReport -> TODO()
                 }
             }, backPress = backPress
         )
@@ -491,6 +493,7 @@ sealed class SearchEvent {
 
 sealed class GoToBucketDetailEvent {
     data class GoToCommentReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
+    data class GoToBucketReport(val reportInfo: ReportInfo) : GoToBucketDetailEvent()
     data class GoToUpdate(val info: WriteTotalInfo) : GoToBucketDetailEvent()
 }
 
