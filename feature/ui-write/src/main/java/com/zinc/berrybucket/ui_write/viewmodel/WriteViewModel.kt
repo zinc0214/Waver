@@ -138,7 +138,7 @@ class WriteViewModel @Inject constructor(
             viewModelScope.launch(CEH(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
                 runCatching {
                     accessToken.value?.let { token ->
-                        val result = loadBucketDetail(token, bucketId)
+                        val result = loadBucketDetail(token, bucketId, true)
 
                         Log.e("ayhan", "loadBucketDetai; $result")
                         if (result.success) {

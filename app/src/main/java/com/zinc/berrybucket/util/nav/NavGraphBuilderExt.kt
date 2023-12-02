@@ -17,7 +17,7 @@ import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.screen.category.CategoryEditScreen
-import com.zinc.berrybucket.ui.presentation.search.RecommendScreen
+import com.zinc.berrybucket.ui.presentation.search.SearchRecommendScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui_feed.FeedScreen
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
@@ -85,7 +85,7 @@ internal fun NavGraphBuilder.homeSearch(
     onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.SEARCH.route) { nav ->
-        RecommendScreen(
+        SearchRecommendScreen(
             onSearchEvent = {
                 onSearchEvent.invoke(it, nav)
             }
@@ -106,7 +106,7 @@ internal fun NavGraphBuilder.homeMore(
     }
 }
 
-internal fun NavGraphBuilder.homeSearchNavGraph(
+internal fun NavGraphBuilder.homeMyBucketSearch(
     mySearchClickEvent: (MySearchClickEvent, NavBackStackEntry) -> Unit
 ) {
 
@@ -246,7 +246,8 @@ internal fun NavGraphBuilder.openBucketReportNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.searchNavGraph(
+// 홈 > 검색 > 검색창 이동 
+internal fun NavGraphBuilder.searchDirectNavGraph(
     backPress: () -> Unit,
     searchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
 ) {
@@ -357,15 +358,20 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
     backPress: () -> Unit
 ) {
     composable(
-        "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}",
+        "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}/{${MainDestinations.BUCKET_IS_MINE}}",
         arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {
             type = NavType.StringType
+        }, navArgument(MainDestinations.BUCKET_IS_MINE) {
+            type = NavType.BoolType
         })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
+        val isMine = arguments.getBoolean(MainDestinations.BUCKET_IS_MINE)
         OpenDetailScreen(
-            detailId = detailId, goToEvent = {
+            detailId = detailId,
+            isMine = isMine,
+            goToEvent = {
                 when (it) {
                     is GoToBucketDetailEvent.GoToCommentReport -> {
                         goToBucketDetailEvent.invoke(
@@ -429,6 +435,7 @@ object MainDestinations {
     const val CLOSE_BUCKET_DETAIL = "close_bucket_detail"
     const val OPEN_BUCKET_DETAIL = "open_bucket_detail"
     const val BUCKET_ID_KEY = "bucketId"
+    const val BUCKET_IS_MINE = "isMine"
     const val MY_SEARCH = "my_search"
     const val MY_CATEGORY_EDIT = "my_category_edit"
     const val SELECT_TAB = "select_tab"

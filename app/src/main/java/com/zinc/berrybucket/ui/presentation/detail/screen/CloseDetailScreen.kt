@@ -56,7 +56,7 @@ fun CloseDetailScreen(
     val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
 
     if (vmDetailInfoAsState == null) {
-        viewModel.getBucketDetail(detailId)
+        viewModel.getBucketDetail(detailId, true)
     }
 
     val detailInfo = remember { mutableStateOf(vmDetailInfoAsState) }
@@ -171,7 +171,7 @@ fun CloseDetailScreen(
                                 }
                                 .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
                             successClicked = {
-                                viewModel.achieveMyBucket(info.bucketId)
+                                viewModel.achieveMyBucket(info.bucketId, true)
                             },
                             successButtonInfo = SuccessButtonInfo(
                                 goalCount = info.descInfo.goalCount,

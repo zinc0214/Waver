@@ -22,6 +22,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.detail.screen.MyBucketMenuEvent
+import com.zinc.berrybucket.ui.presentation.detail.screen.OtherBucketMenuEvent
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R
 
@@ -62,6 +63,41 @@ fun MyDetailAppBarMoreMenuDialog(
         }
     }
 }
+
+@Composable
+fun OtherDetailAppBarMoreMenuDialog(
+    optionPopUpShowed: MutableState<Boolean>,
+    event: (OtherBucketMenuEvent) -> Unit
+) {
+
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopEnd)
+            .padding(top = 8.dp, bottom = 8.dp),
+        shape = RoundedCornerShape(40.dp),
+        backgroundColor = Gray1,
+        elevation = 2.dp
+    ) {
+        MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
+            DropdownMenu(
+                expanded = true,
+                onDismissRequest = { optionPopUpShowed.value = false },
+                offset = DpOffset(16.dp, 0.dp),
+                properties = PopupProperties(clippingEnabled = false)
+            ) {
+                PppUpText(R.string.hide) {
+                    event(OtherBucketMenuEvent.GoToHide)
+                }
+
+                PppUpText(R.string.report) {
+                    event(OtherBucketMenuEvent.GoToReport)
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun PppUpText(@StringRes text: Int, clickEvent: () -> Unit) {

@@ -37,7 +37,7 @@ data class FeedListResponse(
         val like: Int,
         val commentCount: Int,
         val isScraped: Boolean = false,
-        val likeYn: YesOrNo
+        val likeYn: YesOrNo?
 
     ) {
         enum class FeedItemBucketStatus {
@@ -46,7 +46,7 @@ data class FeedListResponse(
 
         data class UserInfo(
             val name: String,
-            val imgUrl: String
+            val imgUrl: String?
         )
     }
 }

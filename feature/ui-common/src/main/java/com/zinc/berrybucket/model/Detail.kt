@@ -102,7 +102,8 @@ data class BucketDetailUiInfo(
     val descInfo: CommonDetailDescInfo,
     val memoInfo: MemoInfo? = null,
     val commentInfo: CommentInfo? = null,
-    val togetherInfo: TogetherInfo? = null
+    val togetherInfo: TogetherInfo? = null,
+    val isMine: Boolean
 )
 
 sealed class DetailAppBarClickEvent {

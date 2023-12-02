@@ -15,7 +15,7 @@ fun List<FeedKeyWord>.parseUI() = map { UIFeedKeyword(id = it.id, keyword = it.n
 @Serializable
 data class UIFeedInfo(
     val bucketId: String,
-    val profileImage: String,
+    val profileImage: String?,
     val badgeImage: String,
     val titlePosition: String,
     val nickName: String,
@@ -42,7 +42,7 @@ fun FeedListResponse.FeedData.toUIModel() = this.list.map { item ->
         imageList = item.images,
         isProcessing = item.status == FeedListResponse.FeedItemResponse.FeedItemBucketStatus.PROGRESS,
         title = item.title,
-        liked = item.likeYn.isYes(),
+        liked = item.likeYn?.isYes() ?: false,
         likeCount = item.like,
         commentCount = item.commentCount,
         isScraped = item.isScraped

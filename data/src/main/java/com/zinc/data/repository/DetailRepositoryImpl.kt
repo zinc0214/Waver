@@ -9,7 +9,13 @@ internal class DetailRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : DetailRepository {
 
-    override suspend fun loadBucketDetail(token: String, id: String): BucketDetailResponse {
-        return berryBucketApi.loadBucketDetail(token, id)
+    override suspend fun loadBucketDetail(
+        token: String,
+        id: String,
+        isMine: Boolean
+    ): BucketDetailResponse {
+        return if (isMine) berryBucketApi.loadBucketDetail(
+            token, id
+        ) else berryBucketApi.loadOtherBucketDetail(token, id)
     }
 }

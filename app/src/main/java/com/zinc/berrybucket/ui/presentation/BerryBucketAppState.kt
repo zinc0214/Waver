@@ -51,7 +51,7 @@ class BerryBucketAppState(
     // BottomBar state source of truth
     // ----------------------------------------------------------
 
-    val bottomBarTabs = HomeSections.values().toList()
+    val bottomBarTabs = HomeSections.entries
     private val bottomBarRoutes = bottomBarTabs.map { it.route }
 
     // Reading this attribute will cause recompositions when the bottom bar needs shown, or not.
@@ -96,10 +96,10 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToOpenBucketDetail(bucketId: String, from: NavBackStackEntry) {
+    fun navigateToOpenBucketDetail(bucketId: String, isMine: Boolean, from: NavBackStackEntry) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}")
+            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}/${isMine}")
         }
     }
 

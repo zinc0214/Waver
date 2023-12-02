@@ -55,6 +55,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButton
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
 import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
+import com.zinc.berrybucket.ui.presentation.detail.component.OtherDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.component.TogetherMemberView
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.CommentEditTextView2
 import com.zinc.berrybucket.ui.presentation.detail.component.mention.MentionSearchListPopup
@@ -72,6 +73,7 @@ import java.time.LocalTime
 @Composable
 fun OpenDetailScreen(
     detailId: String,
+    isMine: Boolean,
     goToEvent: (GoToBucketDetailEvent) -> Unit,
     backPress: () -> Unit
 ) {
@@ -89,7 +91,7 @@ fun OpenDetailScreen(
     }
 
     if (detailInfo.value == null) {
-        viewModel.getBucketDetail(detailId)
+        viewModel.getBucketDetail(detailId, isMine)
     }
 
     LaunchedEffect(key1 = vmDetailInfoAsState) {
@@ -153,26 +155,40 @@ fun OpenDetailScreen(
         BaseTheme {
             Scaffold { padding ->
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
-                        when (it) {
-                            MyBucketMenuEvent.GoToDelete -> {
-                                optionPopUpShowed.value = false
-                            }
+                    if (info.isMine) {
+                        MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
+                            when (it) {
+                                MyBucketMenuEvent.GoToDelete -> {
+                                    optionPopUpShowed.value = false
+                                }
 
-                            MyBucketMenuEvent.GoToEdit -> {
-                                optionPopUpShowed.value = false
-                                goToEvent.invoke(
-                                    GoToBucketDetailEvent.GoToUpdate(
-                                        info.toUpdateUiModel(
-                                            imageInfos
+                                MyBucketMenuEvent.GoToEdit -> {
+                                    optionPopUpShowed.value = false
+                                    goToEvent.invoke(
+                                        GoToBucketDetailEvent.GoToUpdate(
+                                            info.toUpdateUiModel(
+                                                imageInfos
+                                            )
                                         )
                                     )
-                                )
-                            }
+                                }
 
-                            MyBucketMenuEvent.GoToGoalUpdate -> {
-                                goalCountUpdatePopUpShowed.value = true
-                                optionPopUpShowed.value = false
+                                MyBucketMenuEvent.GoToGoalUpdate -> {
+                                    goalCountUpdatePopUpShowed.value = true
+                                    optionPopUpShowed.value = false
+                                }
+                            }
+                        }
+                    } else {
+                        OtherDetailAppBarMoreMenuDialog(optionPopUpShowed = optionPopUpShowed) { event ->
+                            when (event) {
+                                OtherBucketMenuEvent.GoToHide -> {
+
+                                }
+
+                                OtherBucketMenuEvent.GoToReport -> {
+
+                                }
                             }
                         }
                     }
@@ -263,7 +279,7 @@ fun OpenDetailScreen(
 
                         ContentView(
                             listState = listScrollState,
-                            bucketDetailUiInfo = info,
+                            info = info,
                             clickEvent = {
                                 when (it) {
                                     is CommentLongClicked -> {
@@ -271,7 +287,7 @@ fun OpenDetailScreen(
                                     }
 
                                     is DetailClickEvent.SuccessClicked -> {
-                                        viewModel.achieveMyBucket(it.id)
+                                        viewModel.achieveMyBucket(it.id, isMine)
                                     }
                                 }
                             },
@@ -286,7 +302,7 @@ fun OpenDetailScreen(
                                 })
 
                         // 플로팅 완료 버튼 노출 조건
-                        if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty()) {
+                        if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty() && info.isMine) {
                             this@Column.AnimatedVisibility(
                                 flatButtonVisible.not(),
                                 enter = expandVertically(),
@@ -303,7 +319,7 @@ fun OpenDetailScreen(
                                 DetailSuccessButtonView(
                                     modifier = Modifier.padding(bottom = 30.dp),
                                     successClicked = {
-                                        viewModel.achieveMyBucket(info.bucketId)
+                                        viewModel.achieveMyBucket(info.bucketId, isMine)
                                     },
                                     successButtonInfo = SuccessButtonInfo(
                                         goalCount = info.descInfo.goalCount,
@@ -439,7 +455,7 @@ fun OpenDetailScreen(
 private fun ContentView(
     modifier: Modifier,
     listState: LazyListState,
-    bucketDetailUiInfo: BucketDetailUiInfo,
+    info: BucketDetailUiInfo,
     flatButtonVisible: Boolean,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
@@ -447,7 +463,7 @@ private fun ContentView(
     LazyColumn(
         modifier = modifier, state = listState
     ) {
-        bucketDetailUiInfo.imageInfo?.let {
+        info.imageInfo?.let {
             item(key = "imageViewPager") {
                 ImageViewPagerInsideIndicator(
                     modifier = Modifier.fillMaxWidth(),
@@ -458,19 +474,19 @@ private fun ContentView(
         }
 
         item(key = "profileView") {
-            ProfileView(bucketDetailUiInfo.myProfileInfo)
+            ProfileView(info.myProfileInfo)
         }
 
         item(key = "detailDescLayer") {
-            DetailDescView(bucketDetailUiInfo.descInfo)
+            DetailDescView(info.descInfo)
         }
 
         item(key = "memoView") {
-            if (bucketDetailUiInfo.memoInfo != null) {
+            if (info.memoInfo != null) {
                 DetailMemoView(
                     modifier = Modifier.padding(
                         top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
-                    ), memo = bucketDetailUiInfo.memoInfo?.memo!!
+                    ), memo = info.memoInfo?.memo!!
                 )
             } else {
                 Spacer(modifier = Modifier.height(56.dp))
@@ -479,7 +495,7 @@ private fun ContentView(
         }
 
         item(key = "flatDetailSuccessButton") {
-            if (listState.layoutInfo.visibleItemsInfo.isEmpty()) {
+            if (listState.layoutInfo.visibleItemsInfo.isEmpty() || info.isMine.not()) {
                 return@item
             }
             // Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
@@ -490,10 +506,10 @@ private fun ContentView(
             ) {
                 DetailSuccessButtonView(
                     successClicked = {
-                        clickEvent.invoke(DetailClickEvent.SuccessClicked(bucketDetailUiInfo.bucketId))
+                        clickEvent.invoke(DetailClickEvent.SuccessClicked(info.bucketId))
                     }, successButtonInfo = SuccessButtonInfo(
-                        goalCount = bucketDetailUiInfo.descInfo.goalCount,
-                        userCount = bucketDetailUiInfo.descInfo.userCount
+                        goalCount = info.descInfo.goalCount,
+                        userCount = info.descInfo.userCount
                     )
                 )
             }
@@ -501,10 +517,10 @@ private fun ContentView(
         }
 
         item(key = "friendsView") {
-            if (bucketDetailUiInfo.togetherInfo != null) {
+            if (info.togetherInfo != null) {
                 TogetherMemberView(
                     modifier = Modifier.fillMaxWidth(),
-                    togetherInfo = bucketDetailUiInfo.togetherInfo!!
+                    togetherInfo = info.togetherInfo!!
                 )
             }
         }
@@ -516,10 +532,10 @@ private fun ContentView(
             CommentLine()
         }
         item(key = "commentCountView") {
-            CommentCountView(bucketDetailUiInfo.commentInfo?.commentCount ?: 0)
+            CommentCountView(info.commentInfo?.commentCount ?: 0)
         }
         item(key = "commentLayer") {
-            DetailCommentView(commentInfo = bucketDetailUiInfo.commentInfo, commentLongClicked = {
+            DetailCommentView(commentInfo = info.commentInfo, commentLongClicked = {
                 clickEvent.invoke(CommentLongClicked(it))
             })
         }

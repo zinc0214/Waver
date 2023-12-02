@@ -5,3 +5,9 @@ interface MyBucketMenuEvent {
     object GoToGoalUpdate : MyBucketMenuEvent
     object GoToDelete : MyBucketMenuEvent
 }
+
+
+interface OtherBucketMenuEvent {
+    object GoToHide : OtherBucketMenuEvent
+    object GoToReport : OtherBucketMenuEvent
+}

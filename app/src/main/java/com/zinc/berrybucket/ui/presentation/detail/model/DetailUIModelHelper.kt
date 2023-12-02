@@ -22,7 +22,8 @@ import com.zinc.common.models.YesOrNo
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
-    profileInfo: HomeProfileInfo
+    profileInfo: HomeProfileInfo,
+    isMine: Boolean
 ) = BucketDetailUiInfo(
     bucketId = bucketInfo.id,
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
@@ -35,8 +36,8 @@ fun bucketDetailResponseToUiModel(
     ),
     descInfo = CommonDetailDescInfo(
         dDay = bucketInfo.completedDt,
-        keywordList = bucketInfo.keywords?.map {
-            WriteKeyWord(it.id, it.name)
+        keywordList = bucketInfo.keywordIds?.zip(bucketInfo.keywords.orEmpty()) { id, keyword ->
+            WriteKeyWord(id, keyword)
         },
         title = bucketInfo.title,
         goalCount = bucketInfo.goalCount,
@@ -45,11 +46,12 @@ fun bucketDetailResponseToUiModel(
             id = 0, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
         ),
         isScrap = bucketInfo.scrapYn.isYes(),
-        status = if (bucketInfo.status == DetailInfo.Status.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
+        status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
     ),
     memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
     commentInfo = null,
-    togetherInfo = null
+    togetherInfo = null,
+    isMine = isMine
 )
 
 

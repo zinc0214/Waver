@@ -33,8 +33,8 @@ import com.zinc.berrybucket.util.nav.homeCategoryEditNavGraph
 import com.zinc.berrybucket.util.nav.homeFeed
 import com.zinc.berrybucket.util.nav.homeMore
 import com.zinc.berrybucket.util.nav.homeMy
+import com.zinc.berrybucket.util.nav.homeMyBucketSearch
 import com.zinc.berrybucket.util.nav.homeSearch
-import com.zinc.berrybucket.util.nav.homeSearchNavGraph
 import com.zinc.berrybucket.util.nav.moreAlarmNavGraph
 import com.zinc.berrybucket.util.nav.moreAppInfoNavGraph
 import com.zinc.berrybucket.util.nav.moreBlockNavGraph
@@ -45,7 +45,7 @@ import com.zinc.berrybucket.util.nav.myFollowingListNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.openBucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.openBucketReportNavGraph
-import com.zinc.berrybucket.util.nav.searchNavGraph
+import com.zinc.berrybucket.util.nav.searchDirectNavGraph
 import com.zinc.berrybucket.util.nav.writeNavGraph
 import com.zinc.common.models.ExposureStatus
 
@@ -97,7 +97,7 @@ fun BerryBucketApp(
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
                     homeFeed(onFeedClicked = { id, nav ->
-                        appState.navigateToOpenBucketDetail(id, nav)
+                        appState.navigateToOpenBucketDetail(id, false, nav)
                     })
                     homeSearch(
                         onSearchEvent = { event, nav ->
@@ -107,7 +107,7 @@ fun BerryBucketApp(
                                 }
 
                                 is SearchEvent.GoToOpenBucket -> {
-                                    appState.navigateToOpenBucketDetail(event.id, nav)
+                                    appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
                                 is SearchEvent.GoToOtherUser -> {
@@ -142,7 +142,7 @@ fun BerryBucketApp(
                                         )
                                     } else {
                                         appState.navigateToOpenBucketDetail(
-                                            selected.bucketInfo.id, nav
+                                            selected.bucketInfo.id, true, nav
                                         )
                                     }
                                 }
@@ -159,7 +159,7 @@ fun BerryBucketApp(
                             if (event is BottomSheetScreenType.SearchScreen) {
                                 appState.navigateToMySearch(event.selectTab, nav)
                             } else if (event is BottomSheetScreenType.FilterScreen) {
-                                shownBottomSheet.value = true
+                                shownBottomSheet.value = event.needToShown
                             }
                         },
 
@@ -179,19 +179,19 @@ fun BerryBucketApp(
                     )
 
 
-                    homeSearchNavGraph { event, nav ->
+                    homeMyBucketSearch { event, nav ->
                         when (event) {
                             is MySearchClickEvent.BucketItemClicked -> {
                                 if (event.isPrivate) {
                                     appState.navigateToCloseBucketDetail(event.id, nav)
                                 } else {
-                                    appState.navigateToOpenBucketDetail(event.id, nav)
+                                    appState.navigateToOpenBucketDetail(event.id, true, nav)
                                 }
                             }
 
-                            is MySearchClickEvent.CategoryItemClicked -> TODO()
+                            is MySearchClickEvent.CategoryItemClicked -> TODO() // 다음은 여기하자!!!!
 
-                            MySearchClickEvent.CloseClicked -> {
+                            is MySearchClickEvent.CloseClicked -> {
                                 shownBottomSheet.value = false
                                 appState.backPress()
                             }
@@ -205,7 +205,7 @@ fun BerryBucketApp(
                             if (isPrivate) {
                                 appState.navigateToCloseBucketDetail(id, nav)
                             } else {
-                                appState.navigateToOpenBucketDetail(id, nav)
+                                appState.navigateToOpenBucketDetail(id, true, nav)
                             }
 
                         })
@@ -276,16 +276,17 @@ fun BerryBucketApp(
                         backPress = appState::backPress
                     )
                     openBucketReportNavGraph(backPress = appState::backPress)
-                    searchNavGraph(backPress = appState::backPress, searchEvent =
-                    { event, nav ->
-                        when (event) {
-                            SearchEvent.GoToSearch -> {
-                                appState.navigateToSearch(nav)
-                            }
+                    searchDirectNavGraph(
+                        backPress = appState::backPress, searchEvent =
+                        { event, nav ->
+                            when (event) {
+                                SearchEvent.GoToSearch -> {
+                                    appState.navigateToSearch(nav)
+                                }
 
-                            is SearchEvent.GoToOpenBucket -> {
-                                appState.navigateToOpenBucketDetail(event.id, nav)
-                            }
+                                is SearchEvent.GoToOpenBucket -> {
+                                    appState.navigateToOpenBucketDetail(event.id, false, nav)
+                                }
 
                             is SearchEvent.GoToOtherUser -> {
                                 appState.navigateToOtherHome(nav, event.id)

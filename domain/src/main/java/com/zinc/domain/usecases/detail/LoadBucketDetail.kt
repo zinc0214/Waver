@@ -6,6 +6,6 @@ import javax.inject.Inject
 class LoadBucketDetail @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(token: String, id: String) =
-        detailRepository.loadBucketDetail(token, id)
+    suspend operator fun invoke(token: String, id: String, isMine: Boolean) =
+        detailRepository.loadBucketDetail(token, id, isMine)
 }

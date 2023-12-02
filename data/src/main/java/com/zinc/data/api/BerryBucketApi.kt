@@ -118,7 +118,7 @@ interface BerryBucketApi {
         @Body request: SavedKeywordItemsRequest
     ): CommonResponse
 
-    @GET("/feeds/keywords")
+    @GET("/feeds")
     suspend fun loadFeedItems(@Header("Authorization") token: String): FeedListResponse
 
 //    @GET("/search/recommendList")
@@ -245,5 +245,11 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): CommonResponse
+
+    @GET("/feeds/{id}")
+    suspend fun loadOtherBucketDetail(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): BucketDetailResponse
 
 }

@@ -19,7 +19,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.util.nav.SearchEvent
 
 @Composable
-fun RecommendScreen(
+fun SearchRecommendScreen(
     onSearchEvent: (SearchEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()

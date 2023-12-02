@@ -18,6 +18,7 @@ import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.ui.presentation.detail.model.bucketDetailResponseToUiModel
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
+import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.HomeProfileInfo
@@ -52,16 +53,19 @@ class DetailViewModel @Inject constructor(
     private val _achieveFail = MutableLiveData<Boolean>()
     val achieveFail: LiveData<Boolean> get() = _achieveFail
 
+    private val _loadFail = SingleLiveEvent<Boolean>()
+    val loadFail: LiveData<Boolean> get() = _loadFail
+
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: HomeProfileInfo
 
-    fun getBucketDetail(id: String) {
+    fun getBucketDetail(id: String, isMine: Boolean) {
 
         accessToken.value?.let { token ->
 
-            viewModelScope.launch {
+            viewModelScope.launch(CEH(_loadFail, true)) {
 
-                val job1 = async { getBucketDetailData(token, id) }
+                val job1 = async { getBucketDetailData(token, id, isMine) }
                 val job2 = async { getProfileInfo(token) }
 
                 joinAll(job1, job2).runCatching {
@@ -73,14 +77,14 @@ class DetailViewModel @Inject constructor(
                 Log.e("ayhan", "getBucketDetail: $bucketDetailData , $profileInfo")
 
                 _bucketBucketDetailUiInfo.value =
-                    bucketDetailResponseToUiModel(bucketDetailData, profileInfo)
+                    bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine)
             }
         }
 
         //   _bucketBucketDetailUiInfo.value = bucketDetailUiInfo1
     }
 
-    fun achieveMyBucket(id: String) {
+    fun achieveMyBucket(id: String, isMine: Boolean) {
         viewModelScope.launch(CEH(_achieveFail, true))
         {
             runCatching {
@@ -88,7 +92,7 @@ class DetailViewModel @Inject constructor(
                     val response = achieveMyBucket(token, id)
                     if (response.success) {
                         _achieveFail.value = false
-                        getBucketDetail(id)
+                        getBucketDetail(id, isMine)
                     } else {
                         _achieveFail.value = true
                     }
@@ -99,8 +103,8 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getBucketDetailData(token: String, id: String) {
-        bucketDetailData = loadBucketDetail(token, id).data
+    private suspend fun getBucketDetailData(token: String, id: String, isMine: Boolean) {
+        bucketDetailData = loadBucketDetail(token, id, isMine).data
     }
 
     private suspend fun getProfileInfo(token: String) {
@@ -154,7 +158,7 @@ class DetailViewModel @Inject constructor(
         _bucketBucketDetailUiInfo.value = updateInfo
     }
 
-    private val bucketDetailUiInfo1 =
+    private val bucketDetailUiInfo1: BucketDetailUiInfo =
         BucketDetailUiInfo(
             bucketId = "abc",
             imageInfo = ImageInfo(
@@ -245,7 +249,8 @@ class DetailViewModel @Inject constructor(
                     )
                 )
             ),
-            writeOpenType = WriteOpenType.PUBLIC
+            writeOpenType = WriteOpenType.PUBLIC,
+            isMine = true
         )
 
     private val bucketDetailUiInfo2 =
@@ -276,6 +281,6 @@ class DetailViewModel @Inject constructor(
             memoInfo = null,
             commentInfo = null,
             togetherInfo = null,
-
-            )
+            isMine = true
+        )
 }
