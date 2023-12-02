@@ -19,11 +19,15 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.ModalBottomSheetValue.Expanded
+import androidx.compose.material.ModalBottomSheetValue.HalfExpanded
+import androidx.compose.material.ModalBottomSheetValue.Hidden
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -90,10 +94,10 @@ fun MyScreen(
         mutableStateOf(false)
     }
     val myTabType = remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
+        initialValue = Hidden, skipHalfExpanded = true
     )
     val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
         coroutineScope.launch {
@@ -105,15 +109,27 @@ fun MyScreen(
         }
     }
 
+    LaunchedEffect(bottomSheetScaffoldState.currentValue) {
+        when (bottomSheetScaffoldState.currentValue) {
+            Hidden -> {
+                bottomSheetClicked.invoke(BottomSheetScreenType.FilterScreen(false))
+            }
+
+            Expanded, HalfExpanded -> {
+                bottomSheetClicked.invoke(BottomSheetScreenType.FilterScreen(true))
+            }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
             Box(Modifier.defaultMinSize(minHeight = 1.dp)) {
                 FilterBottomView(
-                    tab = if (myTabType.value == 0) ALL else DDAY,
+                    tab = if (myTabType.intValue == 0) ALL else DDAY,
                     viewModel = viewModel,
                     isNeedToUpdated = {
-                        isNeedToBottomSheetOpen.invoke(false)
+                        isNeedToBottomSheetOpen.invoke(it)
                         isFilterUpdated.value = it
                     }
                 )
@@ -133,7 +149,6 @@ fun MyScreen(
                         MyTopLayer(profileInfo = profileInfo) {
                             myTopEvent(it)
                         }
-
                     }
                 }
             ) {
@@ -148,9 +163,8 @@ fun MyScreen(
                             bottomSheetClicked(it)
 
                             if (it is BottomSheetScreenType.FilterScreen) {
-                                myTabType.value = if (it.selectTab == ALL) 0 else 2
-                                isNeedToBottomSheetOpen.invoke(true)
-
+                                myTabType.intValue = pagerState.currentPage
+                                isNeedToBottomSheetOpen.invoke(it.needToShown)
                             }
                         },
                         goToCategoryEdit = goToCategoryEdit,
@@ -244,11 +258,9 @@ fun MyViewPager(
                                 }
 
                                 is MyPagerClickEvent.BottomSheet.FilterClicked -> {
-                                    coroutineScope.launch {
-                                        bottomSheetClicked.invoke(
-                                            BottomSheetScreenType.FilterScreen(ALL)
-                                        )
-                                    }
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.FilterScreen(it.isOpened)
+                                    )
                                 }
 
                                 is MyPagerClickEvent.AchieveBucketClicked -> {
@@ -316,11 +328,9 @@ fun MyViewPager(
                                 }
 
                                 is MyPagerClickEvent.BottomSheet.FilterClicked -> {
-                                    coroutineScope.launch {
-                                        bottomSheetClicked.invoke(
-                                            BottomSheetScreenType.FilterScreen(DDAY)
-                                        )
-                                    }
+                                    bottomSheetClicked.invoke(
+                                        BottomSheetScreenType.FilterScreen(it.isOpened)
+                                    )
                                 }
 
                                 is MyPagerClickEvent.AchieveBucketClicked -> {

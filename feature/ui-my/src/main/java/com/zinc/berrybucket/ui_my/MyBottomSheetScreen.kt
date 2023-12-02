@@ -62,6 +62,6 @@ sealed class BottomSheetScreenType {
     ) : BottomSheetScreenType()
 
     data class FilterScreen(
-        val selectTab: MyTabType
+        val needToShown: Boolean
     ) : BottomSheetScreenType()
 }
