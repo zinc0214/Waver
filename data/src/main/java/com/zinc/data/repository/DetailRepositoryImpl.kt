@@ -1,5 +1,6 @@
 package com.zinc.data.repository
 
+import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.DetailRepository
@@ -17,5 +18,9 @@ internal class DetailRepositoryImpl @Inject constructor(
         return if (isMine) berryBucketApi.loadBucketDetail(
             token, id
         ) else berryBucketApi.loadOtherBucketDetail(token, id)
+    }
+
+    override suspend fun addBucketComment(token: String, request: AddBucketCommentRequest) {
+        TODO("Not yet implemented")
     }
 }

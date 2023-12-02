@@ -1,6 +1,8 @@
 package com.zinc.berrybucket.ui.presentation.detail.model
 
 import com.zinc.berrybucket.model.BucketDetailUiInfo
+import com.zinc.berrybucket.model.CommentInfo
+import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
@@ -24,17 +26,16 @@ fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
     profileInfo: HomeProfileInfo,
     isMine: Boolean
-) = BucketDetailUiInfo(
-    bucketId = bucketInfo.id,
-    writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
-    imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
-    myProfileInfo = MyProfileInfoUi(
+): BucketDetailUiInfo {
+
+    val myProfileInfoUi = MyProfileInfoUi(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeUrl.orEmpty(),
         titlePosition = profileInfo.bio,
         nickName = profileInfo.name
-    ),
-    descInfo = CommonDetailDescInfo(
+    )
+
+    val descInfo = CommonDetailDescInfo(
         dDay = bucketInfo.completedDt,
         keywordList = bucketInfo.keywordIds?.zip(bucketInfo.keywords.orEmpty()) { id, keyword ->
             WriteKeyWord(id, keyword)
@@ -47,12 +48,31 @@ fun bucketDetailResponseToUiModel(
         ),
         isScrap = bucketInfo.scrapYn.isYes(),
         status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
-    ),
-    memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
-    commentInfo = null,
-    togetherInfo = null,
-    isMine = isMine
-)
+    )
+
+    val commentInfo = bucketInfo.comment?.let {
+        CommentInfo(it.size, it.map { comment ->
+            Commenter(
+                commentId = "1",
+                profileImage = comment.imgUrl,
+                nickName = comment.name,
+                comment = comment.content,
+                isMine = false
+            )
+        })
+    }
+    return BucketDetailUiInfo(
+        bucketId = bucketInfo.id,
+        writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
+        imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
+        myProfileInfo = myProfileInfoUi,
+        descInfo = descInfo,
+        memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
+        commentInfo = commentInfo,
+        togetherInfo = null,
+        isMine = isMine
+    )
+}
 
 
 fun BucketDetailUiInfo.toUpdateUiModel(

@@ -46,3 +46,9 @@ data class DetailInfo(
         val content: String
     )
 }
+
+data class AddBucketCommentRequest(
+    val bucketlistId: String,
+    val content: String,
+    val mentionIds: String
+)
