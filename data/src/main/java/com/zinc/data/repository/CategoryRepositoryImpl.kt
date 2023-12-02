@@ -2,6 +2,7 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AllBucketListResponse
+import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.LoadCategoryResponse
@@ -39,11 +40,13 @@ internal class CategoryRepositoryImpl @Inject constructor(
 
     override suspend fun loadCategoryBucketList(
         token: String,
-        categoryId: String
+        categoryId: String,
+        sort: AllBucketListSortType
     ): AllBucketListResponse {
         return berryBucketApi.loadAllBucketList(
             token = token,
-            categoryId = categoryId
+            categoryId = categoryId,
+            sort = sort
         )
     }
 }

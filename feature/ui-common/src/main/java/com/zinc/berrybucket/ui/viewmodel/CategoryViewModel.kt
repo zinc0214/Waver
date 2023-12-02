@@ -8,6 +8,8 @@ import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.model.parseUI
+import com.zinc.common.models.AllBucketListSortType
+import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.AddNewCategory
 import com.zinc.domain.usecases.category.EditCategoryName
@@ -17,6 +19,7 @@ import com.zinc.domain.usecases.category.RemoveCategoryItem
 import com.zinc.domain.usecases.category.ReorderCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +31,8 @@ class CategoryViewModel @Inject constructor(
     private val removeCategoryItem: RemoveCategoryItem,
     private val reorderCategory: ReorderCategory,
     private val loadCategoryBucketList: LoadCategoryBucketList,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
+    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val _categoryInfoList = MutableLiveData<List<UICategoryInfo>>()
@@ -43,10 +47,19 @@ class CategoryViewModel @Inject constructor(
     private val _apiFailed2 = MutableLiveData<Boolean>()
     val apiFailed2: LiveData<Boolean> get() = _apiFailed2
 
+    private val _orderType = MutableLiveData<Int>()
+    val orderType: LiveData<Int> get() = _orderType
+
     private fun ceh(liveData: MutableLiveData<Boolean>, data: Boolean) =
         CoroutineExceptionHandler { coroutineContext, throwable ->
             liveData.value = data
         }
+
+    init {
+        viewModelScope.launch {
+            loadOrderTypeDataStore()
+        }
+    }
 
     fun loadCategoryList() {
         runCatching {
@@ -143,8 +156,12 @@ class CategoryViewModel @Inject constructor(
         accessToken.value?.let { token ->
             runCatching {
                 viewModelScope.launch(ceh(_apiFailed2, true)) {
-                    val response = loadCategoryBucketList.invoke(token, categoryId.toString())
-                    Log.e("ayhan", "loadCategoryBucketList response : ${response.success}")
+                    val response = loadCategoryBucketList.invoke(
+                        token,
+                        categoryId.toString(),
+                        loadSortFilter()
+                    )
+                    Log.e("ayhan", "loadCategoryBucketList response : ${response}")
                     if (response.success) {
                         _apiFailed2.value = false
                         _categoryBucketList.value = response.data.bucketlist.parseToUI()
@@ -157,4 +174,16 @@ class CategoryViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun loadOrderTypeDataStore() {
+        filterPreferenceDataStoreModule.apply {
+            loadOrderType.collectLatest {
+                _orderType.value = it
+                Log.e("ayhan", "loadOrderTypeDataStore")
+            }
+        }
+    }
+
+    private fun loadSortFilter() =
+        if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 }
