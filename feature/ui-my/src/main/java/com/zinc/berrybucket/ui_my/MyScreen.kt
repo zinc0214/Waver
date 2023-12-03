@@ -24,6 +24,7 @@ import androidx.compose.material.ModalBottomSheetValue.HalfExpanded
 import androidx.compose.material.ModalBottomSheetValue.Hidden
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,11 +33,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -44,6 +47,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MyPagerClickEvent
@@ -78,14 +83,34 @@ fun MyScreen(
     val coroutineScope = rememberCoroutineScope()
     val viewModel: MyViewModel = hiltViewModel()
 
-    viewModel.loadProfile()
-    val profileInfo by viewModel.profileInfo.observeAsState()
+    val profileInfoAsState by viewModel.profileInfo.observeAsState()
+
+    val profileInfo = remember {
+        mutableStateOf(profileInfoAsState)
+    }
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState(pageCount = { tabItems.size })
 
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { owner, event ->
+            if (event == Lifecycle.Event.ON_CREATE) {
+                viewModel.loadProfile()
+            }
+        }
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(key1 = profileInfoAsState) {
+        profileInfo.value = profileInfoAsState
+    }
 
     ////////////////////////////
     ////BottomSheet////////////
@@ -138,7 +163,7 @@ fun MyScreen(
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
-        profileInfo?.let {
+        profileInfo.value?.let {
             rememberSystemUiController().setSystemBarsColor(Gray1)
             CollapsingToolbarScaffold(
                 modifier = Modifier.fillMaxSize(),
@@ -146,7 +171,7 @@ fun MyScreen(
                 scrollStrategy = ScrollStrategy.EnterAlways,
                 toolbar = {
                     Column {
-                        MyTopLayer(profileInfo = profileInfo) {
+                        MyTopLayer(profileInfo = profileInfo.value) {
                             myTopEvent(it)
                         }
                     }
