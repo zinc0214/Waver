@@ -9,16 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.ui.design.theme.Gray8
@@ -41,8 +46,6 @@ fun CategoryLayer(
     val recommendCategory = "여향"
 
     val viewModel: CategoryViewModel = hiltViewModel()
-
-    viewModel.loadCategoryList()
     val categoryList by viewModel.categoryInfoList.observeAsState()
 
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
@@ -50,6 +53,21 @@ fun CategoryLayer(
     LaunchedEffect(key1 = categoryList, block = {
         addNewCategoryDialogShowAvailable.value = false
     })
+
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { owner, event ->
+            if (event == Lifecycle.Event.ON_CREATE) {
+                viewModel.loadCategoryList()
+            }
+        }
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
+
 
     categoryList?.let {
         if (addNewCategoryDialogShowAvailable.value) {
