@@ -138,6 +138,7 @@ internal fun NavGraphBuilder.homeMyBucketSearch(
 internal fun NavGraphBuilder.homeCategoryBucketListNavGraph(
     backPress: () -> Unit,
     bucketClicked: (String, Boolean, NavBackStackEntry) -> Unit,
+    goToAddBucket: (NavBackStackEntry) -> Unit
 ) {
     composable(
         route = "${MainDestinations.MY_CATEGORY_BUCKET_LIST}/{${MainDestinations.CATEGORY_INFO}}",
@@ -159,6 +160,9 @@ internal fun NavGraphBuilder.homeCategoryBucketListNavGraph(
                 onBackPressed = backPress,
                 bucketItemClicked = { id, isPrivate ->
                     bucketClicked(id, isPrivate, entry)
+                },
+                goToAddBucket = {
+                    goToAddBucket(entry)
                 }
             )
         }

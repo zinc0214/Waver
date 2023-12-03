@@ -35,7 +35,7 @@ import com.zinc.berrybucket.ui.presentation.screen.category.model.AddCategoryEve
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.R
-import com.zinc.berrybucket.ui_my.screen.category.MyCategoryAddView
+import com.zinc.berrybucket.ui_my.screen.category.component.MyCategoryAddView
 import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
 
 @Composable

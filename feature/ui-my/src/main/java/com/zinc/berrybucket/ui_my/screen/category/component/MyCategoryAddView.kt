@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui_my.screen.category
+package com.zinc.berrybucket.ui_my.screen.category.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

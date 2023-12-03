@@ -27,6 +27,7 @@ import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_my.SimpleBucketCard
+import com.zinc.berrybucket.ui_my.screen.category.component.MyCategoryBucketListBlankView
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
 
 @Composable
@@ -34,6 +35,7 @@ fun CategoryBucketListScreen(
     _categoryInfo: UICategoryInfo,
     onBackPressed: () -> Unit,
     bucketItemClicked: (String, Boolean) -> Unit,
+    goToAddBucket: () -> Unit,
     viewModel: CategoryViewModel = hiltViewModel(),
     myViewModel: MyViewModel = hiltViewModel()
 ) {
@@ -85,28 +87,39 @@ fun CategoryBucketListScreen(
                 }
             )
 
-            LazyColumn(
-                contentPadding = PaddingValues(
-                    bottom = 60.dp,
-                    top = 24.dp,
-                    start = 16.dp,
-                    end = 16.dp
-                ),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                itemsIndexed(data, key = { _, item -> item.id }) { _, bucket ->
-                    SimpleBucketCard(
-                        itemInfo = bucket,
-                        tabType = MyTabType.ALL,
-                        isShowDday = false,
-                        itemClicked = { item ->
-                            bucketItemClicked.invoke(
-                                item.id,
-                                item.isPrivate()
-                            )
-                        },
-                        achieveClicked = { myViewModel.achieveBucket(it, MyTabType.ALL) }
-                    )
+            if (data.isEmpty()) {
+                MyCategoryBucketListBlankView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    categoryName = _categoryInfo.name
+                ) {
+                    goToAddBucket()
+                }
+            } else {
+                LazyColumn(
+                    contentPadding = PaddingValues(
+                        bottom = 60.dp,
+                        top = 24.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    itemsIndexed(data, key = { _, item -> item.id }) { _, bucket ->
+                        SimpleBucketCard(
+                            itemInfo = bucket,
+                            tabType = MyTabType.ALL,
+                            isShowDday = false,
+                            itemClicked = { item ->
+                                bucketItemClicked.invoke(
+                                    item.id,
+                                    item.isPrivate()
+                                )
+                            },
+                            achieveClicked = { myViewModel.achieveBucket(it, MyTabType.ALL) }
+                        )
+                    }
                 }
             }
         }

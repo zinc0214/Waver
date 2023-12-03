@@ -84,7 +84,7 @@ fun BerryBucketApp(
                                 appState.currentHomeRoute.value = it
                             }
                         ) {
-                            appState.navigateToWrite(
+                            appState.navigateToWriteBucket(
                                 "NoId",
                                 appState.navController.currentBackStackEntry!!
                             )
@@ -208,7 +208,9 @@ fun BerryBucketApp(
                             } else {
                                 appState.navigateToOpenBucketDetail(id, true, nav)
                             }
-
+                        },
+                        goToAddBucket = {
+                            appState.navigateToWriteBucket("NoId", it)
                         })
 
                     homeCategoryEditNavGraph(backPress = appState::backPress)
@@ -249,7 +251,7 @@ fun BerryBucketApp(
                                 }
 
                                 is OpenBucketDetailEvent.Update -> {
-                                    appState.navigateToWrite(
+                                    appState.navigateToWriteBucket(
                                         eventInfo.info.bucketId ?: "NoId",
                                         appState.navController.currentBackStackEntry!!
                                     )
@@ -267,7 +269,7 @@ fun BerryBucketApp(
                         goToBucketDetailEvent = { eventInfo, nav ->
                             when (eventInfo) {
                                 is CloseBucketDetailEvent.Update -> {
-                                    appState.navigateToWrite(
+                                    appState.navigateToWriteBucket(
                                         eventInfo.info.bucketId ?: "NoId",
                                         appState.navController.currentBackStackEntry!!
                                     )

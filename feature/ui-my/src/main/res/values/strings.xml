@@ -35,6 +35,8 @@
     <string name="recommendTag">#</string>
     <string name="categoryEdit">편집</string>
     <string name="categorySearchImageViewDesc">카테고리 검색</string>
+    <string name="categoryBlankText"> 에는\n 버킷리스트가 없어요</string>
+    <string name="addNewBucket">버킷리스트 만들기</string>
 
     <!-- My > Dday -->
     <string name="ddayComment">지난 Dday가 1개 있어요</string>
