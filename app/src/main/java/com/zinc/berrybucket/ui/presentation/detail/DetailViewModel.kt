@@ -26,6 +26,7 @@ import com.zinc.common.models.HomeProfileInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.AddBucketComment
+import com.zinc.domain.usecases.detail.GoalCountUpdate
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadHomeProfileInfo
@@ -41,6 +42,7 @@ class DetailViewModel @Inject constructor(
     private val loadHomeProfileInfo: LoadHomeProfileInfo,
     private val achieveMyBucket: AchieveMyBucket,
     private val addBucketComment: AddBucketComment,
+    private val goalCountUpdate: GoalCountUpdate,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -156,13 +158,14 @@ class DetailViewModel @Inject constructor(
     }
 
 
-    fun goalCountUpdate(bucketId: String, goalCount: String) {
-        val descInfo = bucketDetailUiInfo1.descInfo
-        val updateGoalInfo = descInfo.copy(goalCount = descInfo.goalCount + 1)
-        val updateInfo = bucketDetailUiInfo1.copy(
-            descInfo = updateGoalInfo
-        )
-        _bucketBucketDetailUiInfo.value = updateInfo
+    fun goalCountUpdate(bucketId: String, goalCount: Int) {
+        viewModelScope.launch(CEH(_loadFail, true)) {
+            accessToken.value?.let { token ->
+                goalCountUpdate(token, bucketId, goalCount = goalCount)
+                _loadFail.value = false
+                getBucketDetail(bucketId, true)
+            }
+        }
     }
 
     fun addBucketComment(request: AddBucketCommentRequest) {

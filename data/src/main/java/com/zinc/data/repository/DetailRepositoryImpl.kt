@@ -4,6 +4,7 @@ import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.data.api.BerryBucketApi
+import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.repository.DetailRepository
 import javax.inject.Inject
 
@@ -26,5 +27,13 @@ internal class DetailRepositoryImpl @Inject constructor(
         request: AddBucketCommentRequest
     ): CommonResponse {
         return berryBucketApi.addBucketComment(token, request)
+    }
+
+    override suspend fun requestGoalCountUpdate(
+        token: String,
+        id: String,
+        goalCount: Int
+    ): CommonResponse {
+        return berryBucketApi.requestGoalCountUpdate(token, id, RequestGoalCountUpdate(goalCount))
     }
 }

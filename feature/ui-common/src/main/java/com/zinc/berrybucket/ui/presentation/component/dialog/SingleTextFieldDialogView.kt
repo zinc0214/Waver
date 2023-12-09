@@ -28,6 +28,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
@@ -81,6 +82,8 @@ fun SingleTextFieldDialogView(
     saveAvailableCondition: () -> Boolean,
     event: (SingleTextFieldDialogEvent) -> Unit
 ) {
+
+    val isNumber = keyboardType == KeyboardType.Number
 
     DialogView(dismissEvent = {
         event.invoke(SingleTextFieldDialogEvent.Close)
@@ -136,8 +139,13 @@ fun SingleTextFieldDialogView(
                         fontSize = dpToSp(dp = fieldTextSize)
                     ),
                     onValueChange = {
-                        updatedText.value = it
-                        event.invoke(SingleTextFieldDialogEvent.TextChangedField(it.text))
+                        if (isNumber && it.text.isDigitsOnly()) {
+                            updatedText.value = it
+                            event.invoke(SingleTextFieldDialogEvent.TextChangedField(it.text))
+                        } else {
+                            updatedText.value = it
+                            event.invoke(SingleTextFieldDialogEvent.TextChangedField(it.text))
+                        }
                     },
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions.Default.copy(

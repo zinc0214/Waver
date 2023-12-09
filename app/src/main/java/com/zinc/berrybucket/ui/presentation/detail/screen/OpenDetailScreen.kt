@@ -206,7 +206,6 @@ fun OpenDetailScreen(
                     }
 
                     is GoalCountUpdateEvent.CountUpdate -> {
-                        // Todo : ViewModel Update!
                         viewModel.goalCountUpdate(info.bucketId, it.count)
                         goalCountUpdatePopUpShowed.value = false
                     }

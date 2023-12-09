@@ -39,7 +39,7 @@ fun GoalCountUpdateDialog(
 
                 is SingleTextFieldDialogEvent.Update -> event.invoke(
                     GoalCountUpdateEvent.CountUpdate(
-                        updateGoalCount
+                        updateGoalCount.toInt()
                     )
                 )
             }

@@ -22,6 +22,7 @@ import com.zinc.common.models.ReportItems
 import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
+import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
@@ -258,5 +259,13 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Body request: AddBucketCommentRequest
     ): CommonResponse
+
+    @PATCH("/bucketlist/{id}/goalCount")
+    suspend fun requestGoalCountUpdate(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body goalCount: RequestGoalCountUpdate
+    ): CommonResponse
+
 
 }
