@@ -34,12 +34,6 @@ class LoginViewModel @Inject constructor(
 
     var isLoginChecked = false
 
-//    private val _emailIsAlreadyUsed = SingleLiveEvent<Nothing>()
-//    val emailIsAlreadyUsed: LiveData<Nothing> get() = _emailIsAlreadyUsed
-
-//    private val _goToCreateUser = SingleLiveEvent<String>()
-//    val goToCreateUser: LiveData<String> get() = _goToCreateUser
-
     private val _goToMain = MutableLiveData<Boolean>()
     val goToMain: LiveData<Boolean> get() = _goToMain
 
@@ -90,49 +84,6 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
-//    fun joinBerryBucket(email: String) {
-//        _failJoin.value = false
-//        viewModelScope.launch(CEH(_failJoin, true)) {
-//            val response = checkIsAvailableEmail(email)
-//            if (response.code == "1004") {
-//                // 중복된 이메일
-//                _emailIsAlreadyUsed.call()
-//            } else if (response.success) {
-//                // 프로필 생성
-//                _goToCreateUser.value = email
-//            } else {
-//                _failJoin.value = true
-//            }
-//        }
-//
-//    }
-
-//    fun joinBerryBucket() {
-//        if (accessToken.value.isNullOrEmpty()) {
-//            viewModelScope.launch {
-//                runCatching {
-//                    // TODO : 구글로그인 붙이기
-//                    val res = checkIsAvailableEmail.invoke("zinc4@gmail.com")
-//                    Log.e("ayhan", "token : ${res}")
-//
-//                    if (res.success) {
-//                        val data = res.data
-//                        loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
-//                        loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
-//                        _joinResponse.value = data?.accessToken
-//                    } else {
-//                        _failJoin.call()
-//                    }
-//                }.getOrElse {
-//                    Log.e("ayhan", "Fail : $it")
-//                    _failJoin.call()
-//                }
-//            }
-//        } else {
-//            _canGoToLogin.call()
-//        }
-//    }
 
     // TODO : Splash 등으로 옮겨야댐
     fun updateAppVersion(appVersion: String) {
