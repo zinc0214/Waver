@@ -3,6 +3,7 @@ package com.zinc.berrybucket.ui.presentation.detail.screen
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -357,7 +358,10 @@ fun OpenDetailScreen(
                         end.linkTo(parent.end)
                         bottom.linkTo(parent.bottom)
                     }) {
-                    AnimatedVisibility(isCommentViewShown || !isScrollable) {
+                    AnimatedVisibility(
+                        isCommentViewShown || !isScrollable,
+                        enter = slideInVertically()
+                    ) {
                         CommentEditTextView2(
                             originText = commentText.value,
                             newTaggedInfo = newTaggedText.value,

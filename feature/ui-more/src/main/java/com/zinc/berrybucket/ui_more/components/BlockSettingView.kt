@@ -30,6 +30,7 @@ import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_more.R
 import com.zinc.berrybucket.ui_more.models.BlockMemberData
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 internal fun BlockTitle(backClicked: () -> Unit) {
@@ -54,9 +55,9 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
     ) {
 
         Image(
-            painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.test),
+            painter = painterResource(id = CommonR.drawable.test),
             contentDescription = stringResource(
-                id = R.string.moreProfileImageDesc
+                id = CommonR.string.moreProfileImageDesc
             ),
             contentScale = ContentScale.Crop,
             modifier = Modifier

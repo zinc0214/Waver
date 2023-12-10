@@ -11,15 +11,17 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
-import com.zinc.common.models.JoinRequest
+import com.zinc.common.models.JoinEmailCheck
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.MyState
+import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
 import com.zinc.common.models.YesOrNo
+import com.zinc.domain.models.CheckEmailIsLogined
 import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
@@ -41,9 +43,17 @@ import retrofit2.http.Query
 
 interface BerryBucketApi {
 
+    // 이메일 확인
+    @POST("/user/check")
+    suspend fun checkEmailIsLogined(@Body checkEmailIsLogined: CheckEmailIsLogined): CommonResponse
+
     // 회원가입
     @POST("/user/join")
-    suspend fun joinBerryBucket(@Body joinRequest: JoinRequest): JoinResponse
+    suspend fun joinBerryBucket(@Body joinEmailCheck: JoinEmailCheck): JoinResponse
+
+    // 토큰재발급
+    @GET("/token/refresh")
+    suspend fun refreshToken(@Header("Authorization") token: String): RefreshTokenResponse
 
     // 프로필생성
     @POST("/user/profile")
@@ -54,7 +64,7 @@ interface BerryBucketApi {
         @Part name: MultipartBody.Part,
         @Part bio: MultipartBody.Part?,
         @Part profileImage: MultipartBody.Part?
-    ): CommonResponse
+    ): JoinResponse
 
     @GET("/my")
     suspend fun loadMyProfileInfo(@Header("Authorization") token: String): HomeProfileResponse

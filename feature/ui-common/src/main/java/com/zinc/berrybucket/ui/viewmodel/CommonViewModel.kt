@@ -10,6 +10,7 @@ import com.zinc.common.utils.TAG
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +25,7 @@ open class CommonViewModel @Inject constructor(
     private val _error = SingleLiveEvent<Nothing>()
     val error: LiveData<Nothing> get() = _error
 
-    fun <T> CEH(event: MutableLiveData<T>, value: T) =
+    fun <T> CEH(event: MutableLiveData<T>, value: T?) =
         CoroutineExceptionHandler { coroutineContext, throwable ->
             Log.e(TAG, "loadMyProfile: $throwable")
             event.value = value
@@ -40,13 +41,13 @@ open class CommonViewModel @Inject constructor(
             accessToken.value =
                     //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI1LCJpYXQiOjE2OTk3MDU1OTMsImV4cCI6MTcwMDA2NTU5M30.enBLkgc_xNWp-aAT4eDoF3pL6faciohGdn3f5HWXrMY"
                 "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODQ2MTgwMywiZXhwIjoxNzQ1NzI2MTgwM30.RG-TKPJR3UbLBXD-O9269gyNLv21G9KIBP1Q6SNaeCU"
-//            loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
-//                accessToken.value = it
-//            }
-//
-//            loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
-//                refreshToken.value = it
-//            }
+            loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
+                accessToken.value = it
+            }
+
+            loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
+                refreshToken.value = it
+            }
         }
     }
 }

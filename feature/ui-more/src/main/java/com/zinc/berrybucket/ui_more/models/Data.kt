@@ -77,15 +77,6 @@ data class BlockMemberData(
     val id: String
 )
 
-data class ProfileEditData(
-    val dataType: ProfileDataType,
-    val prevText: String
-) {
-    enum class ProfileDataType {
-        NICKNAME, BIO
-    }
-}
-
 enum class AppInfoItemType {
     USE_TERMS, PERSONAL_TERMS, OPEN_SOURCE
 }

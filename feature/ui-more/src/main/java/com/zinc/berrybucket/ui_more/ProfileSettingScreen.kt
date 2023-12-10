@@ -31,11 +31,11 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.component.dialog.CommonDialogView
+import com.zinc.berrybucket.ui.presentation.component.profile.ProfileEditView
+import com.zinc.berrybucket.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
-import com.zinc.berrybucket.ui_more.components.ProfileEditView
+import com.zinc.berrybucket.ui.presentation.model.ProfileEditData
 import com.zinc.berrybucket.ui_more.components.ProfileSettingTitle
-import com.zinc.berrybucket.ui_more.components.ProfileUpdateView
-import com.zinc.berrybucket.ui_more.models.ProfileEditData
 import com.zinc.berrybucket.ui_more.viewModel.MoreViewModel
 import kotlinx.coroutines.launch
 import java.io.File

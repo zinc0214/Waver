@@ -67,4 +67,11 @@
     <string name="retryDesc">다시 시도해주세요</string>
     <string name="requestFailDesc">요청에 실패했습니다</string>
 
+    <!-- 프로필 생성 / 수정 -->
+    <string name="moreProfileImageDesc">프로필 이미지</string>
+    <string name="profileChangeDesc">프로필 이미지 변경</string>
+    <string name="profileSettingNickNameTitle">닉네임</string>
+    <string name="profileSettingBioTitle">소개문구</string>
+    <string name="alreadyUsedNickNameGuide">사용 중인 닉네임입니다.</string>
+
 </resources>

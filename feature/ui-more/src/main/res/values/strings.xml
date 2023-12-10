@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="moreTitle">더보기</string>
-    <string name="moreProfileImageDesc">프로필 이미지</string>
     <string name="goToBadgeChangeButtonText">변경</string>
     <string name="goToUpdateProfile">프로필 관리</string>
     <string name="goToJoinBerryClub">달콤베리 클럽 가입하기</string>
@@ -27,12 +26,8 @@
 
     <!-- 프로필 관리 -->
     <string name="profileSettingTitle">프로필 관리</string>
-    <string name="profileChangeDesc">프로필 이미지 변경</string>
-    <string name="profileSettingNickNameTitle">닉네임</string>
-    <string name="profileSettingBioTitle">소개문구</string>
     <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
     <string name="profileUpdateFailTitle">변경이 싫패했습니다.\n다시 시도해주세요.</string>
-    <string name="alreadyUsedNickNameGuide">사용 중인 닉네임입니다.</string>
     <string name="loadFailProfile">프로필 로드 실패</string>
 
     <!-- 앱 정보 -->

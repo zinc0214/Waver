@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">베리버킷</string>
 
+    <!-- 로그인 -->
+    <string name="loginFail">로그인 실패</string>
+    <string name="loginRetry">다시 시도해주세요.</string>
+    <string name="notLoginedEamil">존재하지 않는 이메일입니다.</string>
+    <string name="goToJoinMessage">회원가입을 시작해주세요.</string>
+    <string name="goToJoin">회원가입</string>
+    <string name="joinFailTitle">회원가입 실패</string>
+
     <!--타이틀 디스크립션-->
     <string name="my">마이</string>
     <string name="feed">피드</string>

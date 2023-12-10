@@ -14,7 +14,7 @@ data class JoinAccessToken(
     val refreshToken: String
 )
 
-data class JoinRequest(
+data class JoinEmailCheck(
     val email: String
 )
 
@@ -27,4 +27,16 @@ data class CreateProfileRequest(
 
 data class LoginRequest(
     val email: String
+)
+
+data class RefreshTokenResponse(
+    val data: RefreshAccessToken?,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
+data class RefreshAccessToken(
+    val accessToken: String,
+    val refreshToken: String
 )

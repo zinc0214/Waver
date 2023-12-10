@@ -10,10 +10,16 @@ import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.berrybucket.model.AddImageType
+import com.zinc.berrybucket.ui.presentation.detail.model.ShowParentScreenType
+import com.zinc.berrybucket.ui.presentation.login.JoinScreen
+import com.zinc.berrybucket.ui.presentation.login.LoginScreen
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.util.CheckPermissionView
 import com.zinc.berrybucket.util.createImageFile
@@ -56,36 +62,61 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val showScreenType: MutableState<ShowParentScreenType> = remember {
+                mutableStateOf(ShowParentScreenType.Login)
+            }
 
-            BerryBucketApp(action = {
-                when (it) {
-                    is ActionWithActivity.AddImage -> {
-                        // AddImageActivity.startWithLauncher(this, it.type)
-                        takePhotoAction = it
-                        if (it.type == AddImageType.CAMERA) {
-                            takePhoto()
-                        } else {
-                            goToGallery()
-                        }
-                    }
-
-                    is ActionWithActivity.CheckPermission -> {
-                        checkPermissionAction = it
-                        isNeedToShowPermission = true
-
-                    }
-
-                    ActionWithActivity.AppFinish -> {
+            when (showScreenType.value) {
+                ShowParentScreenType.Join -> {
+                    JoinScreen(goToMain = {
+                        showScreenType.value = ShowParentScreenType.Main
+                    }, goToBack = {
                         finish()
+                    })
+                }
+
+                ShowParentScreenType.Login -> {
+                    LoginScreen(goToMainHome = {
+                        showScreenType.value = ShowParentScreenType.Main
+                    }, goToJoin = {
+                        showScreenType.value = ShowParentScreenType.Join
+                    }, goToFinish = {
+                        finish()
+                    })
+                }
+
+                ShowParentScreenType.Main -> {
+                    BerryBucketApp(action = {
+                        when (it) {
+                            is ActionWithActivity.AddImage -> {
+                                // AddImageActivity.startWithLauncher(this, it.type)
+                                takePhotoAction = it
+                                if (it.type == AddImageType.CAMERA) {
+                                    takePhoto()
+                                } else {
+                                    goToGallery()
+                                }
+                            }
+
+                            is ActionWithActivity.CheckPermission -> {
+                                checkPermissionAction = it
+                                isNeedToShowPermission = true
+
+                            }
+
+                            ActionWithActivity.AppFinish -> {
+                                finish()
+                            }
+                        }
+                    })
+
+                    if (isNeedToShowPermission) {
+                        CheckPermissionView(isAvailable = {
+                            checkPermissionAction.isAllGranted.invoke(it)
+                            isNeedToShowPermission = false
+                        })
                     }
                 }
-            })
-
-            if (isNeedToShowPermission) {
-                CheckPermissionView(isAvailable = {
-                    checkPermissionAction.isAllGranted.invoke(it)
-                    isNeedToShowPermission = false
-                })
             }
         }
     }
