@@ -28,14 +28,18 @@ fun LoginScreen(
 ) {
     val viewModel: LoginViewModel = hiltViewModel()
 
-    viewModel.checkHasLoginEmail()
-
     val canGoToMainAsState by viewModel.goToMain.observeAsState()
     val isLoginFailAsState by viewModel.loginFail.observeAsState()
     val goToJoinAsState by viewModel.needToStartJoin.observeAsState()
+    val needToStartLoadTokenAsState by viewModel.needToStartLoadToken.observeAsState()
 
     val needToShowLoginFailDialog = remember { mutableStateOf(isLoginFailAsState) }
     val needToShowJoinDialog = remember { mutableStateOf(goToJoinAsState) }
+    val currentEmail = remember { mutableStateOf(needToStartLoadTokenAsState) }
+
+    if (!viewModel.isLoginChecked) {
+        viewModel.checkHasLoginEmail()
+    }
 
     LaunchedEffect(key1 = canGoToMainAsState) {
         canGoToMainAsState?.let {
@@ -49,6 +53,15 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = goToJoinAsState) {
         needToShowJoinDialog.value = goToJoinAsState
+    }
+
+    LaunchedEffect(key1 = needToStartLoadTokenAsState) {
+        needToStartLoadTokenAsState?.let {
+            if (currentEmail.value != it) {
+                viewModel.checkIsLoginedEmail(it)
+                currentEmail.value = it
+            }
+        }
     }
 
     Scaffold { padding ->

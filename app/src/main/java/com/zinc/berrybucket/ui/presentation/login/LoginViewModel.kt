@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,11 @@ class LoginViewModel @Inject constructor(
     private val _needToStartJoin = SingleLiveEvent<Boolean>()
     val needToStartJoin: LiveData<Boolean> get() = _needToStartJoin
 
+    private val _needToStartLoadToken = SingleLiveEvent<String>()
+    val needToStartLoadToken: LiveData<String> get() = _needToStartLoadToken
+
+    var isLoginChecked = false
+
 //    private val _emailIsAlreadyUsed = SingleLiveEvent<Nothing>()
 //    val emailIsAlreadyUsed: LiveData<Nothing> get() = _emailIsAlreadyUsed
 
@@ -37,23 +43,24 @@ class LoginViewModel @Inject constructor(
     private val _goToMain = MutableLiveData<Boolean>()
     val goToMain: LiveData<Boolean> get() = _goToMain
 
-
     fun checkHasLoginEmail() {
+        isLoginChecked = true
         viewModelScope.launch {
             loginPreferenceDataStoreModule.loadLoginedEmail.collectLatest {
                 if (it.isEmpty()) {
                     _needToStartJoin.value = true
                 } else {
-                    checkIsLoginedEmail(it)
+                    _needToStartLoadToken.value = it
                 }
             }
         }
     }
 
-    private fun checkIsLoginedEmail(email: String) {
+    fun checkIsLoginedEmail(email: String) {
         _loginFail.value = false
         viewModelScope.launch(CEH(_loginFail, true)) {
             val result = checkEmail(email)
+            Log.e("ayhan", "checkIsLoginedEmail result : $result")
             if (result.success) {
                 loadUserToken()
             } else {
@@ -65,13 +72,17 @@ class LoginViewModel @Inject constructor(
     private fun loadUserToken() {
         _loginFail.value = false
         viewModelScope.launch(CEH(_loginFail, true)) {
-            refreshToken.value?.let { token ->
+            Log.e("ayhan", "loadUserToken result : ${refreshToken.value} , ${accessToken.value}")
+
+            accessToken.value?.let { token ->
                 val result = refreshUserToken(token)
+                Log.e("ayhan", "loadUserToken result : ${result.data}")
                 if (result.success) {
                     val data = result.data
                     accessToken.value = "Bearer ${data?.accessToken}"
-                    loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
+                    refreshToken.value = "Bearer ${data?.refreshToken}"
                     loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
+                    loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
                     _goToMain.value = true
                 } else {
                     _loginFail.value = true

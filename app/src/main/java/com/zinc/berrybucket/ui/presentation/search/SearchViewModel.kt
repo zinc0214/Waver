@@ -40,6 +40,8 @@ class SearchViewModel @Inject constructor(
     private val _loadFail = MutableLiveData<String?>(null)
     val loadFail: LiveData<String?> get() = _loadFail
 
+    var prevSearchWord: String = ""
+
     fun loadRecommendList() {
         viewModelScope.launch {
             runCatching {
@@ -71,6 +73,7 @@ class SearchViewModel @Inject constructor(
                 runCatching {
                     val response = loadSearchResult.invoke(token, searchWord)
                     if (response.success) {
+                        prevSearchWord = searchWord
                         _searchResultItems.value = response.data.parseUI()
                     } else {
                         _loadFail.value = response.message

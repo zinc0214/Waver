@@ -11,6 +11,7 @@ import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,16 +39,23 @@ open class CommonViewModel @Inject constructor(
 
     private fun loadToken() {
         viewModelScope.launch {
-            accessToken.value =
-                    //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI1LCJpYXQiOjE2OTk3MDU1OTMsImV4cCI6MTcwMDA2NTU5M30.enBLkgc_xNWp-aAT4eDoF3pL6faciohGdn3f5HWXrMY"
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODQ2MTgwMywiZXhwIjoxNzQ1NzI2MTgwM30.RG-TKPJR3UbLBXD-O9269gyNLv21G9KIBP1Q6SNaeCU"
-            loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
-                accessToken.value = it
-            }
+            val job1 = launch { loadAccessToken() }
+            val job2 = launch { loadRefreshToken() }
+            joinAll(job1, job2)
+            //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjI1LCJpYXQiOjE2OTk3MDU1OTMsImV4cCI6MTcwMDA2NTU5M30.enBLkgc_xNWp-aAT4eDoF3pL6faciohGdn3f5HWXrMY"
+            //  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODQ2MTgwMywiZXhwIjoxNzQ1NzI2MTgwM30.RG-TKPJR3UbLBXD-O9269gyNLv21G9KIBP1Q6SNaeCU"
+        }
+    }
 
-            loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
-                refreshToken.value = it
-            }
+    private suspend fun loadAccessToken() {
+        loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
+            refreshToken.value = it
+        }
+    }
+
+    private suspend fun loadRefreshToken() {
+        loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
+            accessToken.value = it
         }
     }
 }

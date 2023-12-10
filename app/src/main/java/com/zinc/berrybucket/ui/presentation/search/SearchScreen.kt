@@ -35,11 +35,10 @@ fun SearchScreen(
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
 
-
     val listScrollState = rememberLazyListState()
     val searchResultItems = remember { mutableStateOf(searchResultItemsAsState) }
     val searchRecommendItems = remember { mutableStateOf(searchRecommendItemsAsState) }
-    val searchWord = remember { mutableStateOf("") }
+    val searchWord = remember { mutableStateOf(viewModel.prevSearchWord) }
     val isClosed = remember { mutableStateOf(false) }
     val showFailDialog = remember { mutableStateOf(null as String?) }
 
