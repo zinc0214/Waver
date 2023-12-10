@@ -6,5 +6,5 @@ import javax.inject.Inject
 class LoadFeedKeyWords @Inject constructor(
     private val feedRepository: FeedRepository
 ) {
-    suspend operator fun invoke() = feedRepository.loadFeedKeyWords()
+    suspend operator fun invoke(token: String) = feedRepository.loadSelectableFeedKeyWords(token)
 }

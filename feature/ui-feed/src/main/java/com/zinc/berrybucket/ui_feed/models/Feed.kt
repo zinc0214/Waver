@@ -1,16 +1,16 @@
 package com.zinc.berrybucket.ui_feed.models
 
 import com.zinc.berrybucket.model.MyProfileInfoUi
-import com.zinc.domain.models.FeedKeyWord
+import com.zinc.common.models.KeywordInfo
 import com.zinc.domain.models.FeedListResponse
 import kotlinx.serialization.Serializable
 
 data class UIFeedKeyword(
-    val id: String,
+    val id: Int,
     val keyword: String
 )
 
-fun List<FeedKeyWord>.parseUI() = map { UIFeedKeyword(id = it.id, keyword = it.name) }
+fun List<KeywordInfo>.parseUI() = map { UIFeedKeyword(id = it.id, keyword = it.name) }
 
 @Serializable
 data class UIFeedInfo(

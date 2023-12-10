@@ -22,7 +22,6 @@ import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.ReportItems
 import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.CheckEmailIsLogined
-import com.zinc.domain.models.FeedKeywordResponse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
@@ -120,9 +119,6 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("id") id: String
     ): BucketDetailResponse
-
-    @GET("/explore/keywords")
-    suspend fun loadFeedKeyword(): FeedKeywordResponse
 
     @POST("/feeds/keyword")
     suspend fun savedFeedKeywords(

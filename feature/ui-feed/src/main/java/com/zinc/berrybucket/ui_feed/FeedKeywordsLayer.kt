@@ -54,10 +54,10 @@ import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
 @Composable
 fun FeedKeywordsLayer(
     keywords: List<UIFeedKeyword>,
-    recommendClicked: (MutableList<String>) -> Unit
+    recommendClicked: (MutableList<Int>) -> Unit
 ) {
 
-    val selectedKeywordsList = remember { mutableListOf<String>() }
+    val selectedKeywordsList = remember { mutableListOf<Int>() }
 
     Log.e("ayhan", "selectedKeywordsList :$selectedKeywordsList")
 
@@ -176,7 +176,7 @@ private fun BodyContent(
     keywords: List<UIFeedKeyword>,
     recommendClicked: () -> Unit,
     modifier: Modifier,
-    updateSelectedKeyword: (String, Boolean) -> Unit,
+    updateSelectedKeyword: (Int, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     Box(modifier = modifier, content = {
@@ -205,7 +205,7 @@ private fun ChipBodyContent(
     modifier: Modifier = Modifier,
     state: LazyGridState,
     keywords: List<UIFeedKeyword>,
-    updateSelectedKeyword: (String, Boolean) -> Unit,
+    updateSelectedKeyword: (Int, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     LazyVerticalGrid(

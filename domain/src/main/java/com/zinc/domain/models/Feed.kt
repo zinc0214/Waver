@@ -2,20 +2,8 @@ package com.zinc.domain.models
 
 import com.zinc.common.models.YesOrNo
 
-data class FeedKeywordResponse(
-    val data: List<FeedKeyWord>,
-    val success: Boolean,
-    val code: String,
-    val message: String
-)
-
-data class FeedKeyWord(
-    val id: String,
-    val name: String
-)
-
 data class SavedKeywordItemsRequest(
-    val keywordIds: List<String>
+    val keywordIds: List<Int>
 )
 
 data class FeedListResponse(

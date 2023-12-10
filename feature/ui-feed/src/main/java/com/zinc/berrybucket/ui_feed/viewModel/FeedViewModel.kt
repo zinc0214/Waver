@@ -16,7 +16,6 @@ import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
 import com.zinc.domain.usecases.feed.SavedKeywordItems
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,17 +43,17 @@ class FeedViewModel @Inject constructor(
     val likeFail: LiveData<Boolean> get() = _likeFail
 
     fun loadFeedKeyWords() {
-        viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            _loadFail.value = true
-        }) {
+        viewModelScope.launch(CEH(_loadFail, true)) {
             runCatching {
-                loadFeedKeyWords.invoke().apply {
-                    Log.e("ayhan", "feed response : $this")
-                    if (success) {
-                        _feedKeyWords.value = data.parseUI()
-                        _loadFail.value = false
-                    } else {
-                        _loadFail.value = true
+                accessToken.value?.let {
+                    loadFeedKeyWords.invoke(it).apply {
+                        Log.e("ayhan", "feed response : $this")
+                        if (success) {
+                            _feedKeyWords.value = data?.parseUI()
+                            _loadFail.value = false
+                        } else {
+                            _loadFail.value = true
+                        }
                     }
                 }
             }.getOrElse {
@@ -86,7 +85,7 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun savedKeywordList(list: List<String>) {
+    fun savedKeywordList(list: List<Int>) {
         viewModelScope.launch(CEH(_isKeyWordSelected, false)) {
             accessToken.value?.let { token ->
                 runCatching {
