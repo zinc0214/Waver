@@ -6,7 +6,6 @@ import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
-import com.zinc.common.models.MyState
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.repository.MyRepository
 import javax.inject.Inject
@@ -55,9 +54,5 @@ internal class MyRepositoryImpl @Inject constructor(
 
     override suspend fun achieveMyBucket(token: String, id: String): CommonResponse {
         return berryBucketApi.achieveBucket(token, id)
-    }
-
-    override suspend fun loadMyState(): MyState {
-        return berryBucketApi.loadMyState()
     }
 }

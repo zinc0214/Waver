@@ -5,11 +5,9 @@ import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
-import com.zinc.common.models.MyState
 
 interface MyRepository {
     suspend fun loadMyHomeProfileInfo(token: String): HomeProfileResponse
-    suspend fun loadMyState(): MyState
     suspend fun loadAllBucketList(
         token: String,
         allBucketListRequest: AllBucketListRequest
