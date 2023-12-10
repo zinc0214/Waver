@@ -239,6 +239,8 @@ class MyViewModel @Inject constructor(
                             followerCount = data.followerCount,
                             percent = data.bucketInfo.grade()
                         )
+
+                        Log.e("ayhan", "homeProfike : $topProfile")
                         _profileInfo.value = topProfile
                     } else {
                         Log.e("ayhan", "Fail Load Profile not success")
@@ -288,7 +290,7 @@ class MyViewModel @Inject constructor(
                             val data = this.data
                             Log.e("ayhan", "allBucketList : $this")
                             val uiALlBucketType = AllBucketList(
-                                processingCount = data.processingCount.toString(),
+                                processingCount = data.progressCount.toString(),
                                 succeedCount = data.completedCount.toString(),
                                 bucketList = data.bucketlist.parseToUI()
                             )
@@ -331,7 +333,7 @@ class MyViewModel @Inject constructor(
                         if (this.success) {
                             val data = this.data
                             val uiAllBucketList = AllBucketList(
-                                processingCount = data.processingCount.toString(),
+                                processingCount = data.progressCount.toString(),
                                 succeedCount = data.completedCount.toString(),
                                 bucketList = data.bucketlist.parseToUI()
                             )

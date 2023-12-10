@@ -28,7 +28,8 @@ data class HomeProfileBucketInfo(
     val completedCount: Int,
     val progressCount: Int
 ) {
-    fun grade(): Float = if (totalCount == 0) 0.0f else (totalCount / completedCount).toFloat()
+    fun grade(): Float =
+        if (totalCount == 0) 0.0f else (completedCount.toFloat() / totalCount.toFloat())
 }
 
 @Serializable
@@ -54,7 +55,7 @@ data class AllBucketListResponse(
 @Serializable
 data class AllBucketList(
     val totalCount: Int,
-    val processingCount: Int,
+    val progressCount: Int,
     val completedCount: Int,
     val bucketlist: List<BucketInfoSimple>
 )
