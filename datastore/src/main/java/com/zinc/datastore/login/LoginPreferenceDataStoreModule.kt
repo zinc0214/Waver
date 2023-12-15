@@ -21,6 +21,7 @@ class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext con
     private val accessTokenKey = stringPreferencesKey("accessToken")
     private val refreshTokenKey = stringPreferencesKey("refreshToken")
     private val loginedEmailKey = stringPreferencesKey("loginedEmailKey")
+    private val userIdKey = stringPreferencesKey("userIdKey")
 
     val loadAccessToken: Flow<String> = loginDataStore.data
         .map { preferences ->
@@ -51,6 +52,16 @@ class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext con
     suspend fun setLoaginedEmail(email: String) {
         loginDataStore.edit { preferences ->
             preferences[loginedEmailKey] = email
+        }
+    }
+
+    val loadUserIdKey: Flow<String> = loginDataStore.data.map { preferences ->
+        preferences[userIdKey] ?: ""
+    }
+
+    suspend fun setUserIdKey(id: String) {
+        loginDataStore.edit { preferences ->
+            preferences[userIdKey] = id
         }
     }
 }

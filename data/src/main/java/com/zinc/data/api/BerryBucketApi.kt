@@ -9,6 +9,7 @@ import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
+import com.zinc.common.models.EmailCheckResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinEmailCheck
@@ -42,7 +43,7 @@ interface BerryBucketApi {
 
     // 이메일 확인
     @POST("/user/check")
-    suspend fun checkEmailIsLogined(@Body checkEmailIsLogined: CheckEmailIsLogined): CommonResponse
+    suspend fun checkEmailIsLogined(@Body checkEmailIsLogined: CheckEmailIsLogined): EmailCheckResponse
 
     // 회원가입
     @POST("/user/join")

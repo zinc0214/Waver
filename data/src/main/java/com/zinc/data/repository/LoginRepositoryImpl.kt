@@ -2,6 +2,7 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.CreateProfileRequest
+import com.zinc.common.models.EmailCheckResponse
 import com.zinc.common.models.JoinEmailCheck
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.LoginRequest
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class LoginRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : LoginRepository {
-    override suspend fun checkEmail(email: String): CommonResponse {
+    override suspend fun checkEmail(email: String): EmailCheckResponse {
         return berryBucketApi.checkEmailIsLogined(CheckEmailIsLogined(email))
     }
 

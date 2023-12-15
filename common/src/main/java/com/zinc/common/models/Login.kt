@@ -2,6 +2,17 @@ package com.zinc.common.models
 
 import java.io.File
 
+data class EmailCheckResponse(
+    val data: UserId,
+    val success: Boolean,
+    val code: String,
+    val message: String
+) {
+    data class UserId(
+        val userId: Int
+    )
+}
+
 data class JoinResponse(
     val data: JoinAccessToken?,
     val success: Boolean,
