@@ -11,11 +11,9 @@ import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
-import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.nav.AlarmDestinations
-import com.zinc.berrybucket.util.nav.BucketListDetailDestinations
 import com.zinc.berrybucket.util.nav.MainDestinations
 import com.zinc.berrybucket.util.nav.MainDestinations.HOME_ROUTE
 import com.zinc.berrybucket.util.nav.MoreDestinations
@@ -117,37 +115,11 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToCommentReport(reportInfo: ReportInfo, from: NavBackStackEntry) {
-        if (from.lifecycleIsResumed()) {
-            val infoParse = ReportInfo.toNavigationValue(reportInfo)
-            navController.navigate("${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/${infoParse}")
-        }
-    }
-
     fun navigateToSearch(from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate(SearchDestinations.GO_TO_SEARCH)
         }
     }
-
-//    fun navigateToWrite1(writeInfo: WriteTotalInfo, from: NavBackStackEntry) {
-//        if (from.lifecycleIsResumed()) {
-//            val info = WriteTotalInfo.toNavigationValue(writeInfo)
-//            navController.navigate("${WriteDestinations.GO_TO_WRITE1}/${info}", navOptions {
-//                popUpTo(findStartDestination(navController.graph).id) {
-//                    inclusive = false
-//                    saveState = true
-//                }
-//            })
-//        }
-//    }
-//
-//    fun navigateToWrite2(from: NavBackStackEntry, totalInfo: WriteTotalInfo) {
-//        if (from.lifecycleIsResumed()) {
-//            val info = WriteTotalInfo.toNavigationValue(totalInfo)
-//            navController.navigate("${WriteDestinations.GO_TO_WRITE2}/${info}")
-//        }
-//    }
 
     fun navigateToWriteBucket(updateId: String, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {

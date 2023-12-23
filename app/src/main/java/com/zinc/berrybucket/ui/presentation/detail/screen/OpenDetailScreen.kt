@@ -268,10 +268,6 @@ fun OpenDetailScreen(
                                     commentReportInfo.value = reportInfo
                                     commentOptionPopUpShowed.value =
                                         false to commentOptionPopUpShowed.value.second
-                                    // 신고이벤트
-//                                    goToEvent.invoke(
-//                                        OpenBucketDetailEvent.CommentReport(reportInfo)
-//                                    )
                                 }
                             }
                         }

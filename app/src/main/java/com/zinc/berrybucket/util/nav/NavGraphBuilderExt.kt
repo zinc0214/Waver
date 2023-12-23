@@ -15,7 +15,6 @@ import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailScreen
 import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
-import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchRecommendScreen
 import com.zinc.berrybucket.ui.presentation.search.SearchScreen
@@ -233,29 +232,6 @@ internal fun NavGraphBuilder.myFollowerSettingNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.openBucketReportNavGraph(
-    backPress: () -> Unit
-) {
-    composable(
-        route = "${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/{${BucketListDetailDestinations.REPORT_INFO}}",
-        arguments = listOf(
-            navArgument(BucketListDetailDestinations.REPORT_INFO) {
-                type = SerializableType(
-                    type = ReportInfo::class.java,
-                    parser = ReportInfo::parseNavigationValue
-                )
-            }
-        ),
-        content = { entry ->
-            val arguments = requireNotNull(entry.arguments)
-            val reportInfo: ReportInfo =
-                arguments.extraNotNullSerializable(BucketListDetailDestinations.REPORT_INFO)
-            ReportScreen(reportInfo = reportInfo) {}
-
-        }
-    )
-}
-
 // 홈 > 검색 > 검색창 이동 
 internal fun NavGraphBuilder.searchDirectNavGraph(
     backPress: () -> Unit,
@@ -383,13 +359,6 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
             isMine = isMine,
             goToEvent = {
                 when (it) {
-                    is OpenBucketDetailEvent.CommentReport -> {
-                        goToBucketDetailEvent.invoke(
-                            OpenBucketDetailEvent.CommentReport(it.reportInfo),
-                            backStackEntry
-                        )
-                    }
-
                     is OpenBucketDetailEvent.Update -> {
                         val info = it.info.copy(isForUpdate = true)
                         goToBucketDetailEvent.invoke(
@@ -465,11 +434,6 @@ object MainDestinations {
     }
 }
 
-object BucketListDetailDestinations {
-    const val BUCKET_COMMENT_REPORT = "bucket_comment_report"
-    const val REPORT_INFO = "report_info"
-}
-
 object SearchDestinations {
     const val GO_TO_SEARCH = "go_to_search"
 }
@@ -502,7 +466,6 @@ sealed class SearchEvent {
 }
 
 sealed interface OpenBucketDetailEvent {
-    data class CommentReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
     data class BucketReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
     data class Update(val info: WriteTotalInfo) : OpenBucketDetailEvent
 }

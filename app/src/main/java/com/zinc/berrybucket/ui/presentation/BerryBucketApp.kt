@@ -45,7 +45,6 @@ import com.zinc.berrybucket.util.nav.myFollowerSettingNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingListNavGraph
 import com.zinc.berrybucket.util.nav.myFollowingSettingNavGraph
 import com.zinc.berrybucket.util.nav.openBucketDetailNavGraph
-import com.zinc.berrybucket.util.nav.openBucketReportNavGraph
 import com.zinc.berrybucket.util.nav.searchDirectNavGraph
 import com.zinc.berrybucket.util.nav.writeNavGraph
 import com.zinc.common.models.ExposureStatus
@@ -246,10 +245,6 @@ fun BerryBucketApp(
                     openBucketDetailNavGraph(
                         goToBucketDetailEvent = { eventInfo, nav ->
                             when (eventInfo) {
-                                is OpenBucketDetailEvent.CommentReport -> {
-                                    appState.navigateToCommentReport(eventInfo.reportInfo, nav)
-                                }
-
                                 is OpenBucketDetailEvent.Update -> {
                                     appState.navigateToWriteBucket(
                                         eventInfo.info.bucketId ?: "NoId",
@@ -278,7 +273,6 @@ fun BerryBucketApp(
                         },
                         backPress = appState::backPress
                     )
-                    openBucketReportNavGraph(backPress = appState::backPress)
                     searchDirectNavGraph(
                         backPress = appState::backPress, searchEvent =
                         { event, nav ->
