@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.ReportClickEvent
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
@@ -52,7 +53,6 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.common.models.ReportInfo
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 import kotlinx.coroutines.launch

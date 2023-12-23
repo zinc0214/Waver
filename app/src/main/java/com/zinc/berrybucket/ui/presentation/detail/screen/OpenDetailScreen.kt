@@ -35,6 +35,7 @@ import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentLongClicked
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.util.Keyboard
@@ -58,10 +59,10 @@ import com.zinc.berrybucket.ui.presentation.detail.model.MentionSearchInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
+import com.zinc.berrybucket.ui.presentation.report.ReportScreen
 import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.common.models.AddBucketCommentRequest
-import com.zinc.common.models.ReportInfo
 import java.time.LocalTime
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -133,8 +134,8 @@ fun OpenDetailScreen(
         val keyboardController = LocalSoftwareKeyboardController.current
         val focusManager = LocalFocusManager.current
         if (isKeyboardStatus == Keyboard.Closed) {
-            focusManager.clearFocus()
-            keyboardController?.hide()
+            //  focusManager.clearFocus()
+            //   keyboardController?.hide()
         }
 
         // 전체 뷰 clickable 인데, 리플 효과 제거를 위해 사용
@@ -152,10 +153,17 @@ fun OpenDetailScreen(
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
+        // 댓글 신고 화면
+        val needToShowCommentReportView = remember {
+            mutableStateOf(false)
+        }
+        val commentReportInfo: MutableState<ReportInfo?> = remember {
+            mutableStateOf(null)
+        }
+
         if (imageInfos.isEmpty()) {
             imageInfos.addAll(createImageInfoWithPath(context, info.imageInfo?.imageList.orEmpty()))
         }
-
 
         if (optionPopUpShowed.value) {
             if (info.isMine) {
@@ -256,11 +264,14 @@ fun OpenDetailScreen(
                                         writer = commenter.nickName,
                                         contents = commenter.comment
                                     )
-
+                                    needToShowCommentReportView.value = true
+                                    commentReportInfo.value = reportInfo
+                                    commentOptionPopUpShowed.value =
+                                        false to commentOptionPopUpShowed.value.second
                                     // 신고이벤트
-                                    goToEvent.invoke(
-                                        OpenBucketDetailEvent.CommentReport(reportInfo)
-                                    )
+//                                    goToEvent.invoke(
+//                                        OpenBucketDetailEvent.CommentReport(reportInfo)
+//                                    )
                                 }
                             }
                         }
@@ -476,6 +487,17 @@ fun OpenDetailScreen(
                         }
                     }
                 }
+            }
+        }
+
+        if (needToShowCommentReportView.value) {
+            commentReportInfo.value?.let { reportInfo ->
+                ReportScreen(reportInfo = reportInfo, backPress = { needToRefresh ->
+                    if (needToRefresh) {
+                        viewModel.getBucketDetail(detailId, isMine)
+                    }
+                    needToShowCommentReportView.value = false
+                })
             }
         }
     }

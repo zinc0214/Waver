@@ -291,4 +291,11 @@ interface BerryBucketApi {
         @Path("id") id: String,
         @Body goalCount: RequestGoalCountUpdate
     ): CommonResponse
+
+    @POST("/comment/{id}/report")
+    suspend fun requestCommentReport(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Query("reason") reason: String
+    ): CommonResponse
 }

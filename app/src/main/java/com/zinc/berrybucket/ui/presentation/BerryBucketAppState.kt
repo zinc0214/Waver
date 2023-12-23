@@ -11,6 +11,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.util.nav.AlarmDestinations
@@ -21,7 +22,6 @@ import com.zinc.berrybucket.util.nav.MoreDestinations
 import com.zinc.berrybucket.util.nav.OtherDestinations
 import com.zinc.berrybucket.util.nav.SearchDestinations
 import com.zinc.berrybucket.util.nav.WriteDestinations
-import com.zinc.common.models.ReportInfo
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
@@ -119,7 +119,8 @@ class BerryBucketAppState(
 
     fun navigateToCommentReport(reportInfo: ReportInfo, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/${reportInfo}")
+            val infoParse = ReportInfo.toNavigationValue(reportInfo)
+            navController.navigate("${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/${infoParse}")
         }
     }
 

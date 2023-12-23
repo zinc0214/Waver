@@ -57,7 +57,7 @@ class LoginViewModel @Inject constructor(
             Log.e("ayhan", "checkIsLoginedEmail result : $result")
             if (result.success) {
                 loadUserToken()
-                loginPreferenceDataStoreModule.setUserIdKey(result.data.userId)
+                loginPreferenceDataStoreModule.setUserIdKey(result.data.userId.toString())
             } else {
                 _needToStartJoin.value = true
             }

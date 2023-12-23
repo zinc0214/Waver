@@ -1,5 +1,6 @@
 package com.zinc.data.repository
 
+import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 import com.zinc.data.api.BerryBucketApi
@@ -53,5 +54,9 @@ internal class ReportRepositoryImpl @Inject constructor(
             )
         )
         //return berryBucketApi.loadReportItems()
+    }
+
+    override suspend fun reportComment(token: String, id: String, reason: String): CommonResponse {
+        return berryBucketApi.requestCommentReport(token, id, reason)
     }
 }

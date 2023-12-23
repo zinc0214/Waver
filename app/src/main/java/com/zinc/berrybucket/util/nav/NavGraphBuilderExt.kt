@@ -4,11 +4,11 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.zinc.berrybucket.model.HomeItemSelected
 import com.zinc.berrybucket.model.MySearchClickEvent
 import com.zinc.berrybucket.model.MyTabType
+import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.presentation.detail.screen.CloseDetailScreen
@@ -44,7 +44,6 @@ import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING
-import com.zinc.common.models.ReportInfo
 
 
 internal fun NavGraphBuilder.homeMy(
@@ -237,17 +236,24 @@ internal fun NavGraphBuilder.myFollowerSettingNavGraph(
 internal fun NavGraphBuilder.openBucketReportNavGraph(
     backPress: () -> Unit
 ) {
-    navigation(
-        route = MainDestinations.OPEN_BUCKET_DETAIL + "/{${BucketListDetailDestinations.REPORT_INFO}}",
-        startDestination = BucketListDetailDestinations.BUCKET_COMMENT_REPORT
-    ) {
-        composable(BucketListDetailDestinations.BUCKET_COMMENT_REPORT + "/{${BucketListDetailDestinations.REPORT_INFO}}") { entry ->
+    composable(
+        route = "${BucketListDetailDestinations.BUCKET_COMMENT_REPORT}/{${BucketListDetailDestinations.REPORT_INFO}}",
+        arguments = listOf(
+            navArgument(BucketListDetailDestinations.REPORT_INFO) {
+                type = SerializableType(
+                    type = ReportInfo::class.java,
+                    parser = ReportInfo::parseNavigationValue
+                )
+            }
+        ),
+        content = { entry ->
             val arguments = requireNotNull(entry.arguments)
-            val reportInfo =
-                arguments.extraNotNullSerializable<ReportInfo>(BucketListDetailDestinations.REPORT_INFO)
-            ReportScreen(reportInfo = reportInfo, backPress = backPress)
+            val reportInfo: ReportInfo =
+                arguments.extraNotNullSerializable(BucketListDetailDestinations.REPORT_INFO)
+            ReportScreen(reportInfo = reportInfo) {}
+
         }
-    }
+    )
 }
 
 // 홈 > 검색 > 검색창 이동 
