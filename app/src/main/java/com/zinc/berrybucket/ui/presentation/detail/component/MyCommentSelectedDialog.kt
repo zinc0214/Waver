@@ -139,21 +139,21 @@ private fun CommentSelectedDialog(
 
 private sealed class InnerCommentOptionClicked {
     data class FirstOptionClickedInner(
-        val commentId: String
+        val commentId: Int
     ) : InnerCommentOptionClicked()
 
     data class SecondOptionClickedInner(
-        val commentId: String
+        val commentId: Int
     ) : InnerCommentOptionClicked()
 }
 
 
 sealed interface MyCommentOptionClicked {
-    data class Edit(val commentId: String) : MyCommentOptionClicked
-    data class Delete(val commentId: String) : MyCommentOptionClicked
+    data class Edit(val commentId: Int) : MyCommentOptionClicked
+    data class Delete(val commentId: Int) : MyCommentOptionClicked
 }
 
 sealed interface OtherCommentOptionClicked {
-    data class Hide(val commentId: String) : OtherCommentOptionClicked
-    data class Report(val commentId: String) : OtherCommentOptionClicked
+    data class Hide(val commentId: Int) : OtherCommentOptionClicked
+    data class Report(val commentId: Int) : OtherCommentOptionClicked
 }

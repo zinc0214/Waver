@@ -42,7 +42,7 @@ class ReportViewModel @Inject constructor(
         }
     }
 
-    fun requestReportComment(id: String, reason: String) {
+    fun requestReportComment(id: Int, reason: String) {
         viewModelScope.launch {
             accessToken.value?.let { token ->
                 val result = requestReportComment.invoke(token, id, reason)

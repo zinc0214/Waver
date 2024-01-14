@@ -41,9 +41,12 @@ data class DetailInfo(
 
     @Serializable
     data class Comment(
+        val isMyComment: YesOrNo,
+        val userId: Int,
         val imgUrl: String?,
         val name: String,
-        val content: String
+        val content: String,
+        val isBlocked: YesOrNo
     )
 }
 

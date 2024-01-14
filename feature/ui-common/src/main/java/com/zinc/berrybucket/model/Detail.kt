@@ -39,11 +39,12 @@ data class MemoInfo(
 ) : DetailDescType()
 
 data class Commenter(
-    val commentId: String = "",
+    val commentId: Int,
     val profileImage: String?,
     val nickName: String,
     val comment: String,
-    val isMine: Boolean = true
+    val isMine: Boolean,
+    val isBlocked: Boolean
 )
 
 data class TogetherInfo(

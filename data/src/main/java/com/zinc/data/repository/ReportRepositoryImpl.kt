@@ -56,7 +56,7 @@ internal class ReportRepositoryImpl @Inject constructor(
         //return berryBucketApi.loadReportItems()
     }
 
-    override suspend fun reportComment(token: String, id: String, reason: String): CommonResponse {
+    override suspend fun reportComment(token: String, id: Int, reason: String): CommonResponse {
         return berryBucketApi.requestCommentReport(token, id, reason)
     }
 }

@@ -51,13 +51,14 @@ fun bucketDetailResponseToUiModel(
     )
 
     val commentInfo = bucketInfo.comment?.let {
-        CommentInfo(it.size, it.map { comment ->
+        CommentInfo(it.size, it.filter { comment -> comment.isBlocked.isNo() }.map { comment ->
             Commenter(
-                commentId = "1",
+                commentId = comment.userId,
                 profileImage = comment.imgUrl,
                 nickName = comment.name,
                 comment = comment.content,
-                isMine = false
+                isMine = comment.isMyComment.isYes(),
+                isBlocked = comment.isBlocked.isYes()
             )
         })
     }

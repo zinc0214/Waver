@@ -7,6 +7,6 @@ import javax.inject.Inject
 class ReportComment @Inject constructor(
     private val reportRepository: ReportRepository
 ) {
-    suspend operator fun invoke(token: String, id: String, reason: String) =
+    suspend operator fun invoke(token: String, id: Int, reason: String) =
         reportRepository.reportComment(token, id, reason)
 }
