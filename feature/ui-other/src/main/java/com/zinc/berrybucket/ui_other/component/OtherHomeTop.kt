@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,6 +89,10 @@ private fun FollowStatus(
         fontSize = dpToSp(dp = 14.dp),
         modifier = modifier
             .padding(top = 12.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .clickable {
+                changeFollowStatus(!isAlreadyFollowed)
+            }
             .background(
                 color = bgColor,
                 shape = RoundedCornerShape(22.dp)
@@ -98,9 +103,6 @@ private fun FollowStatus(
                 shape = RoundedCornerShape(22.dp)
             )
             .padding(horizontal = 22.dp, vertical = 3.dp)
-            .clickable {
-                changeFollowStatus(!isAlreadyFollowed)
-            }
     )
 }
 
@@ -112,7 +114,7 @@ private fun FollowCountStatus(
 ) {
     Row(
         modifier = modifier
-            .padding(top = 14.dp),
+            .padding(top = 14.dp, bottom = 28.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
