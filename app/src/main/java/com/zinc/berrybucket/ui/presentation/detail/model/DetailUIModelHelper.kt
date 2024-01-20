@@ -6,7 +6,6 @@ import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
-import com.zinc.berrybucket.model.MyProfileInfoUi
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteFriend
@@ -14,6 +13,7 @@ import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteTotalInfo
+import com.zinc.berrybucket.model.WriterProfileInfoUi
 import com.zinc.berrybucket.ui.util.parseWithDday
 import com.zinc.berrybucket.ui.util.toLocalData
 import com.zinc.berrybucket.ui.util.toStringData
@@ -24,11 +24,11 @@ import com.zinc.common.models.YesOrNo
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
-    profileInfo: HomeProfileInfo,
+    profileInfo: HomeProfileInfo, // TODO : 글쓴사람 프로필로 바꿔야함
     isMine: Boolean
 ): BucketDetailUiInfo {
 
-    val myProfileInfoUi = MyProfileInfoUi(
+    val writerProfileInfoUi = WriterProfileInfoUi(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeUrl.orEmpty(),
         titlePosition = profileInfo.bio,
@@ -51,7 +51,7 @@ fun bucketDetailResponseToUiModel(
     )
 
     val commentInfo = bucketInfo.comment?.let {
-        CommentInfo(it.size, it.filter { comment -> comment.isBlocked.isNo() }.map { comment ->
+        CommentInfo(it.size, it.map { comment ->
             Commenter(
                 commentId = comment.userId,
                 profileImage = comment.imgUrl,
@@ -66,7 +66,7 @@ fun bucketDetailResponseToUiModel(
         bucketId = bucketInfo.id,
         writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
         imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
-        myProfileInfo = myProfileInfoUi,
+        writerProfileInfo = writerProfileInfoUi,
         descInfo = descInfo,
         memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
         commentInfo = commentInfo,

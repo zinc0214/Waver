@@ -8,6 +8,20 @@ import com.zinc.common.models.BucketStatus
 //    val commentInfo: CommentInfo
 //)
 
+data class WriterProfileInfoUi(
+    val profileImage: String?,
+    val badgeImage: String,
+    val titlePosition: String,
+    val nickName: String
+) : DetailDescType() {
+    fun toUi() = UiProfileInfo(
+        profileImage = this.profileImage,
+        badgeImage = this.badgeImage,
+        titlePosition = this.titlePosition,
+        nickName = this.nickName
+    )
+}
+
 data class ImageInfo(
     val imageList: List<String>
 ) : DetailDescType()
@@ -84,22 +98,11 @@ sealed class DetailDescType {
 
 }
 
-fun detailId(descType: DetailDescType): Int {
-    return when (descType) {
-        is ImageInfo -> 0
-        is MyProfileInfoUi -> 1
-        is CommonDetailDescInfo, is CloseDetailDescInfo -> 2
-        is MemoInfo -> 3
-        is CommentInfo -> 4
-        is InnerSuccessButton -> 5
-    }
-}
-
 data class BucketDetailUiInfo(
     val bucketId: String,
     val writeOpenType: WriteOpenType,
     val imageInfo: ImageInfo? = null,
-    val myProfileInfo: MyProfileInfoUi,
+    val writerProfileInfo: WriterProfileInfoUi,
     val descInfo: CommonDetailDescInfo,
     val memoInfo: MemoInfo? = null,
     val commentInfo: CommentInfo? = null,

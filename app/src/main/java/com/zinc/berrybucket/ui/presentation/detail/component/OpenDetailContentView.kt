@@ -41,7 +41,7 @@ fun OpenDetailContentView(
         }
 
         item(key = "profileView") {
-            DetailProfileView(info.myProfileInfo)
+            DetailProfileView(info.writerProfileInfo)
         }
 
         item(key = "detailDescLayer") {

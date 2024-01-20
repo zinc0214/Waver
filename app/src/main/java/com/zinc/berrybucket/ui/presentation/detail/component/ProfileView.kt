@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.MyProfileInfoUi
+import com.zinc.berrybucket.model.WriterProfileInfoUi
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
-fun DetailProfileView(myProfileInfo: MyProfileInfoUi) {
+fun DetailProfileView(writerProfileInfo: WriterProfileInfoUi) {
     ProfileView(
         modifier = Modifier
             .padding(top = 28.dp)
@@ -22,6 +22,6 @@ fun DetailProfileView(myProfileInfo: MyProfileInfoUi) {
         nickNameTextSize = dpToSp(14.dp),
         titlePositionTextSize = dpToSp(13.dp),
         nickNameTextColor = Gray10,
-        profileInfo = myProfileInfo.toUi()
+        profileInfo = writerProfileInfo.toUi()
     )
 }
