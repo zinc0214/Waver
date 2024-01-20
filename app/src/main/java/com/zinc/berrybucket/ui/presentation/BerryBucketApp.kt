@@ -23,6 +23,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.PROFILE
 import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
+import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
 import com.zinc.berrybucket.util.nav.CloseBucketDetailEvent
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.berrybucket.util.nav.SearchEvent
@@ -319,9 +320,16 @@ fun BerryBucketApp(
 
                         }
                     )
-                    goToOtherHomeNavGraph(
-                        backPress = appState::backPress,
-                    )
+                    goToOtherHomeNavGraph { event, from ->
+                        when (event) {
+                            is OtherHomeEvent.GoToBack -> appState.backPress()
+                            is OtherHomeEvent.GoToOtherBucket -> appState.navigateToOpenBucketDetail(
+                                bucketId = event.id.toString(),
+                                isMine = false,
+                                from = from
+                            )
+                        }
+                    }
                 }
             }
         }

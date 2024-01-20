@@ -36,6 +36,7 @@ import com.zinc.berrybucket.ui_my.screen.profile.FollowerListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowerListSettingScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
+import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
 import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
 import com.zinc.berrybucket.ui_write.model.WriteEvent
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen
@@ -398,7 +399,7 @@ internal fun NavGraphBuilder.closeBucketDetailNavGraph(
 }
 
 internal fun NavGraphBuilder.goToOtherHomeNavGraph(
-    backPress: () -> Unit
+    otherHomeEvent: (OtherHomeEvent, NavBackStackEntry) -> Unit
 ) {
     composable(
         "${OtherDestinations.GO_TO_OTHER_HOME}/{${OtherDestinations.OTHER_USER_ID}}",
@@ -409,7 +410,7 @@ internal fun NavGraphBuilder.goToOtherHomeNavGraph(
         val arguments = requireNotNull(backStackEntry.arguments)
         val otherId = arguments.getString(OtherDestinations.OTHER_USER_ID) ?: ""
         OtherHomeScreen(userId = otherId) {
-            backPress()
+            otherHomeEvent(it, backStackEntry)
         }
     }
 }

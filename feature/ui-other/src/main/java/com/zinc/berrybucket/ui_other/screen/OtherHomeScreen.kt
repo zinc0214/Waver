@@ -15,6 +15,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray2
 import com.zinc.berrybucket.ui_other.component.OtherBucketListView
 import com.zinc.berrybucket.ui_other.component.OtherHomeProfile
+import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
 import com.zinc.domain.models.TopProfile
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
@@ -23,7 +24,7 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 @Composable
 fun OtherHomeScreen(
     userId: String,
-    goToBack: () -> Unit
+    otherHomeEvent: (OtherHomeEvent) -> Unit
 ) {
     val nestedScrollInterop = rememberNestedScrollInteropConnection()
 
@@ -90,7 +91,9 @@ fun OtherHomeScreen(
                         profileInfo = profileInfo,
                         isAlreadyFollowed = false,
                         changeFollowStatus = {},
-                        goToBack = goToBack
+                        goToBack = {
+                            otherHomeEvent.invoke(OtherHomeEvent.GoToBack)
+                        }
                     )
                 }
             }
@@ -106,7 +109,9 @@ fun OtherHomeScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     bucketList = list,
-                    itemClicked = {}
+                    itemClicked = {
+                        otherHomeEvent.invoke(OtherHomeEvent.GoToOtherBucket(it))
+                    }
 
                 )
             }
