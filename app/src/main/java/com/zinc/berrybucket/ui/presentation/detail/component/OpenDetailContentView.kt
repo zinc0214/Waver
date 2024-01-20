@@ -41,7 +41,9 @@ fun OpenDetailContentView(
         }
 
         item(key = "profileView") {
-            DetailProfileView(info.writerProfileInfo)
+            DetailProfileView(info.writerProfileInfo) {
+                clickEvent(DetailClickEvent.GoToOtherProfile(it))
+            }
         }
 
         item(key = "detailDescLayer") {

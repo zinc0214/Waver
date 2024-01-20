@@ -367,6 +367,9 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
                     }
 
                     is OpenBucketDetailEvent.BucketReport -> TODO()
+                    is OpenBucketDetailEvent.GoToOtherProfile -> {
+                        goToBucketDetailEvent.invoke(it, backStackEntry)
+                    }
                 }
             }, backPress = backPress
         )
@@ -468,6 +471,7 @@ sealed class SearchEvent {
 sealed interface OpenBucketDetailEvent {
     data class BucketReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
     data class Update(val info: WriteTotalInfo) : OpenBucketDetailEvent
+    data class GoToOtherProfile(val id: String) : OpenBucketDetailEvent
 }
 
 sealed interface CloseBucketDetailEvent {

@@ -12,7 +12,8 @@ data class WriterProfileInfoUi(
     val profileImage: String?,
     val badgeImage: String,
     val titlePosition: String,
-    val nickName: String
+    val nickName: String,
+    val userId: String
 ) : DetailDescType() {
     fun toUi() = UiProfileInfo(
         profileImage = this.profileImage,
@@ -117,6 +118,7 @@ sealed class DetailAppBarClickEvent {
 
 sealed class DetailClickEvent {
     data class SuccessClicked(val id: String) : DetailClickEvent()
+    data class GoToOtherProfile(val id: String) : DetailClickEvent()
 }
 
 data class CommentLongClicked(val commentIndex: Int) : DetailClickEvent()

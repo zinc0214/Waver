@@ -317,6 +317,10 @@ fun OpenDetailScreen(
                             is DetailClickEvent.SuccessClicked -> {
                                 viewModel.achieveMyBucket(it.id, isMine)
                             }
+
+                            is DetailClickEvent.GoToOtherProfile -> {
+                                goToEvent.invoke(OpenBucketDetailEvent.GoToOtherProfile(it.id))
+                            }
                         }
                     },
                     flatButtonVisible = flatButtonVisible,

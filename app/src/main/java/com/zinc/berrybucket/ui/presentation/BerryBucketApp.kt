@@ -255,6 +255,10 @@ fun BerryBucketApp(
                                 is OpenBucketDetailEvent.BucketReport -> {
 
                                 }
+
+                                is OpenBucketDetailEvent.GoToOtherProfile -> {
+                                    appState.navigateToOtherHome(nav, eventInfo.id)
+                                }
                             }
                         },
                         backPress = appState::backPress

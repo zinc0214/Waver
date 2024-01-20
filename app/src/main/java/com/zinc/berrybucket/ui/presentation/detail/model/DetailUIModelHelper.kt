@@ -32,7 +32,8 @@ fun bucketDetailResponseToUiModel(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeUrl.orEmpty(),
         titlePosition = profileInfo.bio,
-        nickName = profileInfo.name
+        nickName = profileInfo.name,
+        userId = "0"
     )
 
     val descInfo = CommonDetailDescInfo(

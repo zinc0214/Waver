@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,11 +11,17 @@ import com.zinc.berrybucket.ui.presentation.component.ProfileView
 import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
-fun DetailProfileView(writerProfileInfo: WriterProfileInfoUi) {
+fun DetailProfileView(
+    writerProfileInfo: WriterProfileInfoUi,
+    goToOtherProfile: (String) -> Unit
+) {
     ProfileView(
         modifier = Modifier
             .padding(top = 28.dp)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp)
+            .clickable {
+                goToOtherProfile(writerProfileInfo.userId)
+            },
         imageSize = 48.dp,
         profileSize = 44.dp,
         profileRadius = 16.dp,
