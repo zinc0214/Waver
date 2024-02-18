@@ -235,20 +235,11 @@ private fun RecentSearchItem(
 
 @Composable
 private fun RecommendKeyWordView(keyWordItems: List<KeyWordItem>, itemClicked: (String) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            keyWordItems.forEach {
-                RecommendKeyWordItem(it, itemClicked)
-            }
+    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        keyWordItems.forEach {
+            RecommendKeyWordItem(it, itemClicked)
         }
-
-        KeyWordChangeButton(
-            modifier = Modifier
-                .padding(top = 40.dp, bottom = 32.dp)
-                .align(Alignment.CenterHorizontally)
-        )
     }
-
 }
 
 @Composable
