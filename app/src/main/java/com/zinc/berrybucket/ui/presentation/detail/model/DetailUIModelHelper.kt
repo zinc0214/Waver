@@ -72,7 +72,8 @@ fun bucketDetailResponseToUiModel(
         memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
         commentInfo = commentInfo,
         togetherInfo = null,
-        isMine = isMine
+        isMine = isMine,
+        isDone = bucketInfo.status == DetailInfo.CompleteStatus.COMPLETE
     )
 }
 

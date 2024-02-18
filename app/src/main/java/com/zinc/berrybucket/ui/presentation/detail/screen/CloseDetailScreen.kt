@@ -178,23 +178,25 @@ fun CloseDetailScreen(
                                 height = Dimension.fillToConstraints
                             })
 
-                        DetailSuccessButtonView(
-                            modifier = Modifier
-                                .constrainAs(floatingButtonView) {
-                                    start.linkTo(parent.start)
-                                    end.linkTo(parent.end)
-                                    bottom.linkTo(parent.bottom)
-                                }
-                                .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
-                            successClicked = {
-                                viewModel.achieveMyBucket(info.bucketId, true)
-                            },
-                            successButtonInfo = SuccessButtonInfo(
-                                goalCount = info.descInfo.goalCount,
-                                userCount = info.descInfo.userCount
-                            ),
-                            isWide = !scrollContext.isBottom
-                        )
+                        if (info.isDone.not()) {
+                            DetailSuccessButtonView(
+                                modifier = Modifier
+                                    .constrainAs(floatingButtonView) {
+                                        start.linkTo(parent.start)
+                                        end.linkTo(parent.end)
+                                        bottom.linkTo(parent.bottom)
+                                    }
+                                    .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
+                                successClicked = {
+                                    viewModel.achieveMyBucket(info.bucketId, true)
+                                },
+                                successButtonInfo = SuccessButtonInfo(
+                                    goalCount = info.descInfo.goalCount,
+                                    userCount = info.descInfo.userCount
+                                ),
+                                isWide = !scrollContext.isBottom
+                            )
+                        }
                     }
                 }
             }

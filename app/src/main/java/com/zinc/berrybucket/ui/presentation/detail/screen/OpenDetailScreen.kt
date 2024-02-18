@@ -153,6 +153,10 @@ fun OpenDetailScreen(
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
+        // 달성 완료 버튼 미노출 정책
+        val successButtonHide =
+            listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty() || info.isMine || info.isDone
+
         // 댓글 신고 화면
         val needToShowCommentReportView = remember {
             mutableStateOf(false)
@@ -334,7 +338,7 @@ fun OpenDetailScreen(
                         })
 
                 // 플로팅 완료 버튼 노출 조건
-                if (listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty() && info.isMine) {
+                if (successButtonHide) {
                     this@Column.AnimatedVisibility(
                         flatButtonVisible.not(),
                         enter = expandVertically(),

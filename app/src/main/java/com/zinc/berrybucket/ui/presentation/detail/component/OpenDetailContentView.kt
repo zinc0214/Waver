@@ -27,6 +27,8 @@ fun OpenDetailContentView(
     clickEvent: (DetailClickEvent) -> Unit
 ) {
 
+    val successButtonHide =
+        listState.layoutInfo.visibleItemsInfo.isNotEmpty() || info.isMine || info.isDone
     LazyColumn(
         modifier = modifier, state = listState
     ) {
@@ -64,7 +66,7 @@ fun OpenDetailContentView(
         }
 
         item(key = "flatDetailSuccessButton") {
-            if (listState.layoutInfo.visibleItemsInfo.isEmpty() || info.isMine.not()) {
+            if (successButtonHide) {
                 return@item
             }
             // Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
