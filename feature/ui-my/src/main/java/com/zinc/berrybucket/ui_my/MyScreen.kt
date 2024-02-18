@@ -137,11 +137,11 @@ fun MyScreen(
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
             Hidden -> {
-                bottomSheetClicked.invoke(BottomSheetScreenType.FilterScreen(false))
+                bottomSheetClicked.invoke(BottomSheetScreenType.MyBucketFilterScreen(false))
             }
 
             Expanded, HalfExpanded -> {
-                bottomSheetClicked.invoke(BottomSheetScreenType.FilterScreen(true))
+                bottomSheetClicked.invoke(BottomSheetScreenType.MyBucketFilterScreen(true))
             }
         }
     }
@@ -187,7 +187,7 @@ fun MyScreen(
                         bottomSheetClicked = {
                             bottomSheetClicked(it)
 
-                            if (it is BottomSheetScreenType.FilterScreen) {
+                            if (it is BottomSheetScreenType.MyBucketFilterScreen) {
                                 myTabType.intValue = pagerState.currentPage
                                 isNeedToBottomSheetOpen.invoke(it.needToShown)
                             }
@@ -275,7 +275,7 @@ fun MyViewPager(
                                 is MyPagerClickEvent.BottomSheet.SearchClicked -> {
                                     coroutineScope.launch {
                                         bottomSheetClicked.invoke(
-                                            BottomSheetScreenType.SearchScreen(
+                                            BottomSheetScreenType.MyBucketSearchScreen(
                                                 selectTab = ALL, viewModel = viewModel
                                             )
                                         )
@@ -284,7 +284,7 @@ fun MyViewPager(
 
                                 is MyPagerClickEvent.BottomSheet.FilterClicked -> {
                                     bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.FilterScreen(it.isOpened)
+                                        BottomSheetScreenType.MyBucketFilterScreen(it.isOpened)
                                     )
                                 }
 
@@ -309,7 +309,7 @@ fun MyViewPager(
                             is MyPagerClickEvent.BottomSheet.SearchClicked -> {
                                 coroutineScope.launch {
                                     bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.SearchScreen(
+                                        BottomSheetScreenType.MyBucketSearchScreen(
                                             selectTab = CATEGORY, viewModel = viewModel
                                         )
                                     )
@@ -344,7 +344,7 @@ fun MyViewPager(
                                 is MyPagerClickEvent.BottomSheet.SearchClicked -> {
                                     coroutineScope.launch {
                                         bottomSheetClicked.invoke(
-                                            BottomSheetScreenType.SearchScreen(
+                                            BottomSheetScreenType.MyBucketSearchScreen(
                                                 selectTab = DDAY,
                                                 viewModel = viewModel
                                             )
@@ -354,7 +354,7 @@ fun MyViewPager(
 
                                 is MyPagerClickEvent.BottomSheet.FilterClicked -> {
                                     bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.FilterScreen(it.isOpened)
+                                        BottomSheetScreenType.MyBucketFilterScreen(it.isOpened)
                                     )
                                 }
 

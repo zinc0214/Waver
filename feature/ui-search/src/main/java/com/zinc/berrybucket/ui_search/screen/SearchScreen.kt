@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.search
+package com.zinc.berrybucket.ui_search.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,17 +18,21 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.R
 import com.zinc.berrybucket.ui.presentation.component.SearchEditView
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
-import com.zinc.berrybucket.util.nav.SearchEvent
+import com.zinc.berrybucket.ui_search.R
+import com.zinc.berrybucket.ui_search.component.RecommendKeyWordView
+import com.zinc.berrybucket.ui_search.component.SearchResultView
+import com.zinc.berrybucket.ui_search.component.SearchTopAppBar
+import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.viewmodel.SearchViewModel
 import com.zinc.berrybucket.ui_common.R as CommonR
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
     closeEvent: () -> Unit,
-    searchEvent: (SearchEvent) -> Unit
+    searchEvent: (SearchClickEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()

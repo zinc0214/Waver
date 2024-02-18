@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.search
+package com.zinc.berrybucket.ui_search.screen
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
@@ -16,11 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.ui.design.theme.Gray1
-import com.zinc.berrybucket.util.nav.SearchEvent
+import com.zinc.berrybucket.ui_search.component.RecommendListView
+import com.zinc.berrybucket.ui_search.component.RecommendTopBar
+import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.viewmodel.SearchViewModel
 
 @Composable
 fun SearchRecommendScreen(
-    onSearchEvent: (SearchEvent) -> Unit
+    onSearchEvent: (SearchClickEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     viewModel.loadRecommendList()
@@ -43,7 +46,7 @@ fun SearchRecommendScreen(
                 .fillMaxWidth(),
             height = animatedHeight,
             editViewClicked = {
-                onSearchEvent.invoke(SearchEvent.GoToSearch)
+                onSearchEvent.invoke(SearchClickEvent.GoToSearch)
             }
         )
 
@@ -59,7 +62,7 @@ fun SearchRecommendScreen(
                 minAppBarHeight = minAppBarHeight,
                 recommendList = list,
                 bucketClicked = {
-                    onSearchEvent.invoke(SearchEvent.GoToOpenBucket(it))
+                    onSearchEvent.invoke(SearchClickEvent.GoToOpenBucket(it))
                 }
             )
         }

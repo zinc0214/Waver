@@ -16,8 +16,6 @@ import com.zinc.berrybucket.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.berrybucket.ui.presentation.home.HomeSections
 import com.zinc.berrybucket.ui.presentation.model.ActionWithActivity
 import com.zinc.berrybucket.ui.presentation.screen.category.CategoryEditScreen
-import com.zinc.berrybucket.ui.presentation.search.SearchRecommendScreen
-import com.zinc.berrybucket.ui.presentation.search.SearchScreen
 import com.zinc.berrybucket.ui_feed.FeedScreen
 import com.zinc.berrybucket.ui_more.AlarmSettingScreen
 import com.zinc.berrybucket.ui_more.AppInfoScreen
@@ -38,6 +36,9 @@ import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
 import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
+import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.screen.SearchRecommendScreen
+import com.zinc.berrybucket.ui_search.screen.SearchScreen
 import com.zinc.berrybucket.ui_write.model.WriteEvent
 import com.zinc.berrybucket.ui_write.presentation.WriteScreen
 import com.zinc.berrybucket.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
@@ -81,7 +82,7 @@ internal fun NavGraphBuilder.homeFeed(
 }
 
 internal fun NavGraphBuilder.homeSearch(
-    onSearchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
+    onSearchEvent: (SearchClickEvent, NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.SEARCH.route) { nav ->
         SearchRecommendScreen(
@@ -236,7 +237,7 @@ internal fun NavGraphBuilder.myFollowerSettingNavGraph(
 // 홈 > 검색 > 검색창 이동 
 internal fun NavGraphBuilder.searchDirectNavGraph(
     backPress: () -> Unit,
-    searchEvent: (SearchEvent, NavBackStackEntry) -> Unit,
+    searchEvent: (SearchClickEvent, NavBackStackEntry) -> Unit,
 ) {
     composable(SearchDestinations.GO_TO_SEARCH) { nav ->
         SearchScreen(
@@ -461,12 +462,6 @@ object AlarmDestinations {
 object OtherDestinations {
     const val GO_TO_OTHER_HOME = "go_to_other_home"
     const val OTHER_USER_ID = "other_user_id"
-}
-
-sealed class SearchEvent {
-    data object GoToSearch : SearchEvent()
-    data class GoToOpenBucket(val id: String) : SearchEvent()
-    data class GoToOtherUser(val id: String) : SearchEvent()
 }
 
 sealed interface OpenBucketDetailEvent {

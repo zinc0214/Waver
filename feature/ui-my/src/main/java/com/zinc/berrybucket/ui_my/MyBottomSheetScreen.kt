@@ -57,11 +57,11 @@ fun FilterBottomView(
 }
 
 sealed class BottomSheetScreenType {
-    data class SearchScreen(
+    data class MyBucketSearchScreen(
         val selectTab: MyTabType, val viewModel: MyViewModel
     ) : BottomSheetScreenType()
 
-    data class FilterScreen(
+    data class MyBucketFilterScreen(
         val needToShown: Boolean
     ) : BottomSheetScreenType()
 }

@@ -13,6 +13,7 @@
       <module name="BerryBucket.feature.ui-more" target="19" />
       <module name="BerryBucket.feature.ui-my" target="19" />
       <module name="BerryBucket.feature.ui-other" target="19" />
+      <module name="BerryBucket.feature.ui-search" target="19" />
       <module name="BerryBucket.feature.ui-write" target="19" />
     </bytecodeTargetLevel>
   </component>

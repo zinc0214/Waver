@@ -1,16 +1,16 @@
-package com.zinc.berrybucket.ui.presentation.search
+package com.zinc.berrybucket.ui_search.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.berrybucket.model.RecommendItem
-import com.zinc.berrybucket.model.RecommendList
-import com.zinc.berrybucket.model.RecommendType
-import com.zinc.berrybucket.model.SearchBucketItem
-import com.zinc.berrybucket.model.SearchRecommendItems
-import com.zinc.berrybucket.model.SearchResultItems
-import com.zinc.berrybucket.model.parseUI
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
+import com.zinc.berrybucket.ui_search.model.RecommendItem
+import com.zinc.berrybucket.ui_search.model.RecommendList
+import com.zinc.berrybucket.ui_search.model.RecommendType
+import com.zinc.berrybucket.ui_search.model.SearchBucketItem
+import com.zinc.berrybucket.ui_search.model.SearchRecommendItems
+import com.zinc.berrybucket.ui_search.model.SearchResultItems
+import com.zinc.berrybucket.ui_search.model.parseUI
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.search.DeleteRecentWord
 import com.zinc.domain.usecases.search.LoadSearchRecommend

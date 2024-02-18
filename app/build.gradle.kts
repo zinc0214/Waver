@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":feature:ui-more"))
     implementation(project(":feature:ui-write"))
     implementation(project(":feature:ui-other"))
+    implementation(project(":feature:ui-search"))
 
     // android X
     implementation(Dep.AndroidX.coreKtx)
@@ -74,7 +75,7 @@ dependencies {
     implementation(Dep.AndroidX.Arch.common)
     implementation(Dep.AndroidX.Arch.runtime)
     implementation(Dep.AndroidX.viewPager2)
-    implementation(Dep.AndroidX.Compose.systemUiController)
+    implementation(project(":feature:ui-search"))
 
     // test
     testImplementation(Dep.Test.junit)
@@ -99,6 +100,7 @@ dependencies {
     implementation(Dep.AndroidX.Compose.viewPager)
     implementation(Dep.AndroidX.Compose.indicator)
     implementation(Dep.AndroidX.Compose.flowlayout)
+    implementation(Dep.AndroidX.Compose.systemUiController)
 
     // Hilt
     implementation(Dep.Dagger.Hilt.android)

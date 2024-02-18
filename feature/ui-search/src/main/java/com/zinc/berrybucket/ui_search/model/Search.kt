@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.model
+package com.zinc.berrybucket.ui_search.model
 
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse

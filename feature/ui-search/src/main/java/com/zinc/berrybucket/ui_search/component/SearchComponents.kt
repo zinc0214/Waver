@@ -1,4 +1,4 @@
-package com.zinc.berrybucket.ui.presentation.search
+package com.zinc.berrybucket.ui_search.component
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -38,12 +38,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.KeyWordItem
-import com.zinc.berrybucket.model.SearchRecommendItems
-import com.zinc.berrybucket.model.SearchRecommendType
-import com.zinc.berrybucket.model.SearchResultItems
-import com.zinc.berrybucket.model.UserItem
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -55,8 +49,13 @@ import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.util.nav.SearchEvent
-
+import com.zinc.berrybucket.ui_search.R
+import com.zinc.berrybucket.ui_search.model.KeyWordItem
+import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchRecommendItems
+import com.zinc.berrybucket.ui_search.model.SearchRecommendType
+import com.zinc.berrybucket.ui_search.model.SearchResultItems
+import com.zinc.berrybucket.ui_search.model.UserItem
 
 @Composable
 fun SearchTopAppBar(
@@ -278,7 +277,7 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
 fun SearchResultView(
     resultItems: SearchResultItems,
     modifier: Modifier,
-    clickEvent: (SearchEvent) -> Unit
+    clickEvent: (SearchClickEvent) -> Unit
 ) {
     var needBucketMoreButtonShow by remember {
         mutableStateOf(resultItems.bucketItems.size > 3)
@@ -302,7 +301,7 @@ fun SearchResultView(
         bucketVisibleItem.forEach {
             RecommendBucketItemView(item = it,
                 bucketClicked = { id ->
-                    clickEvent.invoke(SearchEvent.GoToOpenBucket(id))
+                    clickEvent.invoke(SearchClickEvent.GoToOpenBucket(id))
                 })
         }
 
@@ -325,7 +324,7 @@ fun SearchResultView(
             SearchUserItemView(
                 item = it,
                 userClicked = { id ->
-                    clickEvent.invoke(SearchEvent.GoToOtherUser(id))
+                    clickEvent.invoke(SearchClickEvent.GoToOtherUser(id))
                 }
 
             )
@@ -386,7 +385,7 @@ fun SearchUserItemView(
             Image(
                 painter = painterResource(id = com.zinc.berrybucket.ui_common.R.drawable.kakao),
                 contentDescription = stringResource(
-                    id = com.zinc.berrybucket.ui_feed.R.string.feedProfileImage
+                    id = R.string.searchProfileImage
                 ),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

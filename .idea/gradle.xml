@@ -32,6 +32,7 @@
             <option value="$PROJECT_DIR$/feature/ui-more" />
             <option value="$PROJECT_DIR$/feature/ui-my" />
             <option value="$PROJECT_DIR$/feature/ui-other" />
+            <option value="$PROJECT_DIR$/feature/ui-search" />
             <option value="$PROJECT_DIR$/feature/ui-write" />
           </set>
         </option>

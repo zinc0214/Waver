@@ -24,9 +24,9 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
+import com.zinc.berrybucket.ui_search.model.SearchClickEvent
 import com.zinc.berrybucket.util.nav.CloseBucketDetailEvent
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
-import com.zinc.berrybucket.util.nav.SearchEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
 import com.zinc.berrybucket.util.nav.closeBucketDetailNavGraph
 import com.zinc.berrybucket.util.nav.goToOtherHomeNavGraph
@@ -103,15 +103,15 @@ fun BerryBucketApp(
                     homeSearch(
                         onSearchEvent = { event, nav ->
                             when (event) {
-                                SearchEvent.GoToSearch -> {
+                                SearchClickEvent.GoToSearch -> {
                                     appState.navigateToSearch(nav)
                                 }
 
-                                is SearchEvent.GoToOpenBucket -> {
+                                is SearchClickEvent.GoToOpenBucket -> {
                                     appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
-                                is SearchEvent.GoToOtherUser -> {
+                                is SearchClickEvent.GoToOtherUser -> {
                                     appState.navigateToOtherHome(nav, event.id)
                                 }
                             }
@@ -157,9 +157,9 @@ fun BerryBucketApp(
                         },
 
                         bottomSheetClicked = { event, nav ->
-                            if (event is BottomSheetScreenType.SearchScreen) {
+                            if (event is BottomSheetScreenType.MyBucketSearchScreen) {
                                 appState.navigateToMySearch(event.selectTab, nav)
-                            } else if (event is BottomSheetScreenType.FilterScreen) {
+                            } else if (event is BottomSheetScreenType.MyBucketFilterScreen) {
                                 shownBottomSheet.value = event.needToShown
                             }
                         },
@@ -282,15 +282,15 @@ fun BerryBucketApp(
                         backPress = appState::backPress, searchEvent =
                         { event, nav ->
                             when (event) {
-                                SearchEvent.GoToSearch -> {
+                                SearchClickEvent.GoToSearch -> {
                                     appState.navigateToSearch(nav)
                                 }
 
-                                is SearchEvent.GoToOpenBucket -> {
+                                is SearchClickEvent.GoToOpenBucket -> {
                                     appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
-                                is SearchEvent.GoToOtherUser -> {
+                                is SearchClickEvent.GoToOtherUser -> {
                                     appState.navigateToOtherHome(nav, event.id)
                                 }
                             }
