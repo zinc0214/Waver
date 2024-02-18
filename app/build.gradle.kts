@@ -53,8 +53,6 @@ android {
 }
 
 dependencies {
-    implementation(Dep.Kotlin.stdlibJvm)
-
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":common"))

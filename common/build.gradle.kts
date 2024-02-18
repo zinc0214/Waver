@@ -29,6 +29,6 @@ dependencies {
 
     // Gson
     implementation(Dep.Gson.google)
-    implementation(Dep.Gson.squareup)
+    implementation(Dep.Retrofit.converter)
 
 }
