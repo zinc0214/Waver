@@ -36,7 +36,7 @@ import com.zinc.berrybucket.ui_my.screen.profile.FollowingListScreen
 import com.zinc.berrybucket.ui_my.screen.profile.FollowingListSettingScreen
 import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
 import com.zinc.berrybucket.ui_other.screen.OtherHomeScreen
-import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchGoToEvent
 import com.zinc.berrybucket.ui_search.screen.SearchRecommendScreen
 import com.zinc.berrybucket.ui_search.screen.SearchScreen
 import com.zinc.berrybucket.ui_write.model.WriteEvent
@@ -82,7 +82,7 @@ internal fun NavGraphBuilder.homeFeed(
 }
 
 internal fun NavGraphBuilder.homeSearch(
-    onSearchEvent: (SearchClickEvent, NavBackStackEntry) -> Unit,
+    onSearchEvent: (SearchGoToEvent, NavBackStackEntry) -> Unit,
 ) {
     composable(HomeSections.SEARCH.route) { nav ->
         SearchRecommendScreen(
@@ -237,7 +237,7 @@ internal fun NavGraphBuilder.myFollowerSettingNavGraph(
 // 홈 > 검색 > 검색창 이동 
 internal fun NavGraphBuilder.searchDirectNavGraph(
     backPress: () -> Unit,
-    searchEvent: (SearchClickEvent, NavBackStackEntry) -> Unit,
+    searchEvent: (SearchGoToEvent, NavBackStackEntry) -> Unit,
 ) {
     composable(SearchDestinations.GO_TO_SEARCH) { nav ->
         SearchScreen(

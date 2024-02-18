@@ -24,7 +24,7 @@ import com.zinc.berrybucket.ui_more.models.MoreItemType.QNA
 import com.zinc.berrybucket.ui_my.BottomSheetScreenType
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
-import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchGoToEvent
 import com.zinc.berrybucket.util.nav.CloseBucketDetailEvent
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.berrybucket.util.nav.alarmNavGraph
@@ -103,15 +103,15 @@ fun BerryBucketApp(
                     homeSearch(
                         onSearchEvent = { event, nav ->
                             when (event) {
-                                SearchClickEvent.GoToSearch -> {
+                                SearchGoToEvent.GoToSearch -> {
                                     appState.navigateToSearch(nav)
                                 }
 
-                                is SearchClickEvent.GoToOpenBucket -> {
+                                is SearchGoToEvent.GoToOpenBucket -> {
                                     appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
-                                is SearchClickEvent.GoToOtherUser -> {
+                                is SearchGoToEvent.GoToOtherUser -> {
                                     appState.navigateToOtherHome(nav, event.id)
                                 }
                             }
@@ -282,15 +282,15 @@ fun BerryBucketApp(
                         backPress = appState::backPress, searchEvent =
                         { event, nav ->
                             when (event) {
-                                SearchClickEvent.GoToSearch -> {
+                                SearchGoToEvent.GoToSearch -> {
                                     appState.navigateToSearch(nav)
                                 }
 
-                                is SearchClickEvent.GoToOpenBucket -> {
+                                is SearchGoToEvent.GoToOpenBucket -> {
                                     appState.navigateToOpenBucketDetail(event.id, false, nav)
                                 }
 
-                                is SearchClickEvent.GoToOtherUser -> {
+                                is SearchGoToEvent.GoToOtherUser -> {
                                     appState.navigateToOtherHome(nav, event.id)
                                 }
                             }

@@ -51,7 +51,8 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_search.R
 import com.zinc.berrybucket.ui_search.model.KeyWordItem
-import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchActionEvent
+import com.zinc.berrybucket.ui_search.model.SearchGoToEvent
 import com.zinc.berrybucket.ui_search.model.SearchRecommendItems
 import com.zinc.berrybucket.ui_search.model.SearchRecommendType
 import com.zinc.berrybucket.ui_search.model.SearchResultItems
@@ -277,7 +278,8 @@ private fun RecommendKeyWordItem(item: KeyWordItem, itemClicked: (String) -> Uni
 fun SearchResultView(
     resultItems: SearchResultItems,
     modifier: Modifier,
-    clickEvent: (SearchClickEvent) -> Unit
+    goToEvent: (SearchGoToEvent) -> Unit,
+    actionEvent: (SearchActionEvent) -> Unit
 ) {
     var needBucketMoreButtonShow by remember {
         mutableStateOf(resultItems.bucketItems.size > 3)
@@ -301,7 +303,7 @@ fun SearchResultView(
         bucketVisibleItem.forEach {
             RecommendBucketItemView(item = it,
                 bucketClicked = { id ->
-                    clickEvent.invoke(SearchClickEvent.GoToOpenBucket(id))
+                    goToEvent.invoke(SearchGoToEvent.GoToOpenBucket(id))
                 })
         }
 
@@ -324,7 +326,10 @@ fun SearchResultView(
             SearchUserItemView(
                 item = it,
                 userClicked = { id ->
-                    clickEvent.invoke(SearchClickEvent.GoToOtherUser(id))
+                    goToEvent.invoke(SearchGoToEvent.GoToOtherUser(id))
+                },
+                actionEvent = { event ->
+                    actionEvent(event)
                 }
 
             )
@@ -365,7 +370,10 @@ private fun ShowMoreButton(buttonClicked: () -> Unit) {
 
 @Composable
 fun SearchUserItemView(
-    modifier: Modifier = Modifier, item: UserItem, userClicked: (String) -> Unit
+    modifier: Modifier = Modifier,
+    item: UserItem,
+    userClicked: (String) -> Unit,
+    actionEvent: (SearchActionEvent) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
@@ -427,7 +435,7 @@ fun SearchUserItemView(
                 })
 
             IconButton(onClick = {
-                // can copied if is unCopied
+                actionEvent(SearchActionEvent.RequestFollow(item.userId, item.isFollowed))
             },
                 image = if (item.isFollowed) R.drawable.btn_32_following else R.drawable.btn_32_not_follow,
                 contentDescription = stringResource(id = com.zinc.berrybucket.ui_common.R.string.copy),

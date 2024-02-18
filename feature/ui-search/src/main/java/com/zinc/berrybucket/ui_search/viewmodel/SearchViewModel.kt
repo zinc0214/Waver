@@ -11,7 +11,10 @@ import com.zinc.berrybucket.ui_search.model.SearchBucketItem
 import com.zinc.berrybucket.ui_search.model.SearchRecommendItems
 import com.zinc.berrybucket.ui_search.model.SearchResultItems
 import com.zinc.berrybucket.ui_search.model.parseUI
+import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.domain.usecases.my.RequestFollowUser
+import com.zinc.domain.usecases.my.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
 import com.zinc.domain.usecases.search.LoadSearchRecommend
 import com.zinc.domain.usecases.search.LoadSearchResult
@@ -25,6 +28,8 @@ class SearchViewModel @Inject constructor(
     private val loadSearchResult: LoadSearchResult,
     private val loadSearchRecommend: LoadSearchRecommend,
     private val deleteRecentWord: DeleteRecentWord,
+    private val requestFollow: RequestFollowUser,
+    private val requestUnFollow: RequestUnfollowUser,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -39,6 +44,9 @@ class SearchViewModel @Inject constructor(
 
     private val _loadFail = MutableLiveData<String?>(null)
     val loadFail: LiveData<String?> get() = _loadFail
+
+    private val _actionFail = SingleLiveEvent<Nothing>()
+    val actionFail: LiveData<Nothing> get() = _actionFail
 
     var prevSearchWord: String = ""
 
@@ -135,6 +143,30 @@ class SearchViewModel @Inject constructor(
                     }
                 }.getOrElse {
                     _loadFail.value = ""
+                }
+            }
+        }
+    }
+
+    fun requestFollow(userId: String, isAlreadyFollowed: Boolean) {
+        viewModelScope.launch(CEH(_actionFail, null)) {
+            accessToken.value?.let { token ->
+                runCatching {
+                    if (isAlreadyFollowed) {
+                        val response = requestUnFollow.invoke(token, userId)
+                        if (response.success) {
+                            loadSearchResult(prevSearchWord)
+                        } else {
+                            _actionFail.call()
+                        }
+                    } else {
+                        val response = requestFollow.invoke(token, userId)
+                        if (response.success) {
+                            loadSearchResult(prevSearchWord)
+                        } else {
+                            _actionFail.call()
+                        }
+                    }
                 }
             }
         }

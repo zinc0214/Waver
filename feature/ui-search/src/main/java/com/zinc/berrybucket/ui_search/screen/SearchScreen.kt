@@ -24,7 +24,8 @@ import com.zinc.berrybucket.ui_search.R
 import com.zinc.berrybucket.ui_search.component.RecommendKeyWordView
 import com.zinc.berrybucket.ui_search.component.SearchResultView
 import com.zinc.berrybucket.ui_search.component.SearchTopAppBar
-import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchActionEvent
+import com.zinc.berrybucket.ui_search.model.SearchGoToEvent
 import com.zinc.berrybucket.ui_search.viewmodel.SearchViewModel
 import com.zinc.berrybucket.ui_common.R as CommonR
 
@@ -32,7 +33,7 @@ import com.zinc.berrybucket.ui_common.R as CommonR
 @Composable
 fun SearchScreen(
     closeEvent: () -> Unit,
-    searchEvent: (SearchClickEvent) -> Unit
+    searchEvent: (SearchGoToEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()
@@ -139,7 +140,14 @@ fun SearchScreen(
                     SearchResultView(
                         resultItems = it,
                         modifier = Modifier.animateItemPlacement(),
-                        clickEvent = searchEvent
+                        goToEvent = searchEvent,
+                        actionEvent = { event ->
+                            when (event) {
+                                is SearchActionEvent.RequestFollow -> {
+                                    viewModel.requestFollow(event.userId, event.alreadyFollowed)
+                                }
+                            }
+                        }
                     )
                 }
             }

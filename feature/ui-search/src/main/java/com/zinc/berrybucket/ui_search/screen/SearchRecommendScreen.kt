@@ -18,12 +18,12 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui_search.component.RecommendListView
 import com.zinc.berrybucket.ui_search.component.RecommendTopBar
-import com.zinc.berrybucket.ui_search.model.SearchClickEvent
+import com.zinc.berrybucket.ui_search.model.SearchGoToEvent
 import com.zinc.berrybucket.ui_search.viewmodel.SearchViewModel
 
 @Composable
 fun SearchRecommendScreen(
-    onSearchEvent: (SearchClickEvent) -> Unit
+    onSearchEvent: (SearchGoToEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
     viewModel.loadRecommendList()
@@ -46,7 +46,7 @@ fun SearchRecommendScreen(
                 .fillMaxWidth(),
             height = animatedHeight,
             editViewClicked = {
-                onSearchEvent.invoke(SearchClickEvent.GoToSearch)
+                onSearchEvent.invoke(SearchGoToEvent.GoToSearch)
             }
         )
 
@@ -62,7 +62,7 @@ fun SearchRecommendScreen(
                 minAppBarHeight = minAppBarHeight,
                 recommendList = list,
                 bucketClicked = {
-                    onSearchEvent.invoke(SearchClickEvent.GoToOpenBucket(it))
+                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(it))
                 }
             )
         }
