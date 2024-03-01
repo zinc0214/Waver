@@ -7,5 +7,5 @@ fun MyProfileInfo.toUi() = UIMoreMyProfileInfo(
     imgUrl = imgUrl.orEmpty(),
     badgeUrl = badgeImgUrl,
     badgeTitle = badgeTitle,
-    bio = bio
+    bio = bio.orEmpty()
 )

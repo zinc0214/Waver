@@ -23,7 +23,7 @@ data class MyProfileInfo(
     val email: String,
     val name: String,
     val imgUrl: String?,
-    val bio: String,
+    val bio: String?,
     val badgeTitle: String,
     val badgeImgUrl: String
 )
