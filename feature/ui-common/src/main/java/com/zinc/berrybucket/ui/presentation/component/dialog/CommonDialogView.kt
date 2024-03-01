@@ -95,7 +95,9 @@ fun CommonDialogView(
                         negative = negative,
                         positive = positive,
                         negativeEvent = { negativeEvent?.invoke() },
-                        positiveEvent = { positiveEvent() }
+                        positiveEvent = {
+                            positiveEvent()
+                        }
                     )
                 }
             }

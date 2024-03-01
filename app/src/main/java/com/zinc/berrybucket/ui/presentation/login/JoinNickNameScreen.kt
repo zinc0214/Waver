@@ -149,7 +149,7 @@ fun JoinNickNameScreen(
             title = stringResource(id = R.string.joinFailTitle),
             message = stringResource(id = R.string.loginRetry)
         ) {
-            viewModel.checkIsAlreadyUsedName(nickNameData.value.prevText)
+            isJoinFailed.value = false
         }
     }
 }

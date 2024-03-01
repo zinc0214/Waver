@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -151,6 +152,7 @@ fun JoinEmailScreen(
             title = stringResource(id = R.string.joinFailTitle),
             message = stringResource(id = R.string.loginRetry)
         ) {
+            Log.e("ayhan", "api Faaaaaa")
             isFailApi.value = false
         }
     }
