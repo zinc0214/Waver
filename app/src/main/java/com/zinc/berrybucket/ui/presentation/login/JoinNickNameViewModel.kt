@@ -3,13 +3,14 @@ package com.zinc.berrybucket.ui.presentation.login
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.berrybucket.ui.presentation.login.model.LoginPrevData
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.CreateProfileRequest
 import com.zinc.common.utils.TAG
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.login.CreateProfile
-import com.zinc.domain.usecases.login.CreateUserToken
+import com.zinc.domain.usecases.login.JoinByEmail
 import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,8 +18,8 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class JoinViewModel @Inject constructor(
-    private val createUserToken: CreateUserToken,
+class JoinNickNameViewModel @Inject constructor(
+    private val joinByEmail: JoinByEmail,
     private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname,
     private val createProfile: CreateProfile,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
@@ -51,7 +52,6 @@ class JoinViewModel @Inject constructor(
                         CreateProfileRequest(name = nickName, bio = bio, profileImage = image)
                     )
                     if (res.success) {
-                        loginPreferenceDataStoreModule.setLoaginedEmail(email)
                         _goToLogin.value = true
                     } else {
                         _failJoin.value = true
@@ -86,23 +86,12 @@ class JoinViewModel @Inject constructor(
         }
     }
 
-    fun createUserToken(email: String) {
-        _failJoin.value = false
-        viewModelScope.launch(CEH(_failJoin, true)) {
-            runCatching {
-                val result = createUserToken.invoke(email)
-                if (result.success) {
-                    val data = result.data
-                    loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
-                    loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
-                    accessToken.value = "Bearer ${data?.accessToken}"
-                    _goToCreateProfile.value = true
-                } else {
-                    _failJoin.value = true
-                }
-            }.getOrElse {
-                _failJoin.value = true
-            }
+    fun createUserToken(data: LoginPrevData) {
+        viewModelScope.launch {
+            loginPreferenceDataStoreModule.setLoaginedEmail(data.email)
+            loginPreferenceDataStoreModule.setAccessToken("Bearer ${data.accessToken}")
+            loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data.refreshToken}")
+            accessToken.value = "Bearer ${data.accessToken}"
         }
     }
 }

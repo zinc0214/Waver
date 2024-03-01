@@ -51,3 +51,14 @@ data class RefreshAccessToken(
     val accessToken: String,
     val refreshToken: String
 )
+
+data class LoadTokenByEmailRequest(
+    val email: String
+)
+
+data class LoadTokenByEmailResponse(
+    val data: JoinAccessToken?,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)

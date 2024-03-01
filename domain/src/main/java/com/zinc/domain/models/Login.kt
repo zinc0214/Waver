@@ -1,5 +1,5 @@
 package com.zinc.domain.models
 
-data class CheckEmailIsLogined(
+data class CheckEmailsAlreadyUse(
     val email: String
 )

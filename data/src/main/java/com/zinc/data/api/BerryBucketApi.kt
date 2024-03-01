@@ -16,11 +16,13 @@ import com.zinc.common.models.JoinEmailCheck
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
+import com.zinc.common.models.LoadTokenByEmailRequest
+import com.zinc.common.models.LoadTokenByEmailResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
-import com.zinc.domain.models.CheckEmailIsLogined
+import com.zinc.domain.models.CheckEmailsAlreadyUse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
@@ -43,7 +45,7 @@ interface BerryBucketApi {
 
     // 이메일 확인
     @POST("/user/check")
-    suspend fun checkEmailIsLogined(@Body checkEmailIsLogined: CheckEmailIsLogined): EmailCheckResponse
+    suspend fun checkEmailIsLogined(@Body checkEmailsAlreadyUse: CheckEmailsAlreadyUse): EmailCheckResponse
 
     // 회원가입
     @POST("/user/join")
@@ -63,6 +65,10 @@ interface BerryBucketApi {
         @Part bio: MultipartBody.Part?,
         @Part profileImage: MultipartBody.Part?
     ): JoinResponse
+
+    // 로그인
+    @POST("/login")
+    suspend fun requestLogin(@Body loadTokenByEmail: LoadTokenByEmailRequest): LoadTokenByEmailResponse
 
     // 홈 > 프로필 조회
     @GET("/my")

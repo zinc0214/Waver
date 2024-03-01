@@ -8,6 +8,8 @@
     <string name="goToJoinMessage">회원가입을 시작해주세요.</string>
     <string name="goToJoin">회원가입</string>
     <string name="joinFailTitle">회원가입 실패</string>
+    <string name="alreadyUsedEmailTitle">이미 사용중인 이메일입니다.</string>
+    <string name="alreadyUsedEmailDesc">해당 이메일로 로그인하시겠습니까?</string>
 
     <!--타이틀 디스크립션-->
     <string name="my">마이</string>
