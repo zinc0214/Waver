@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.BerryBucket" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.BerryBucket" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/main4</item>
         <item name="colorPrimaryVariant">@color/main3</item>
