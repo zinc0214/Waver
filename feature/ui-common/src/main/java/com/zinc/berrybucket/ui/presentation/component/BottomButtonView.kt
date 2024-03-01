@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
+import com.zinc.berrybucket.ui.design.theme.Gray4
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -77,9 +78,7 @@ fun BottomButtonView(
                         .fillMaxHeight()
                         .width(0.6.dp)
                         .background(
-                            color = colorResource(
-                                id = R.color._dbdbdb
-                            )
+                            color = Gray4
                         )
                 )
             }

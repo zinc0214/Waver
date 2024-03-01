@@ -27,7 +27,7 @@ fun JoinScreen(
         }, goToBack = {
             goToBack()
         })
-    } else if (emailLoginSucceed && loginPrevData.value != null) {
+    } else {
         JoinNickNameScreen(
             loginPrevData = loginPrevData.value!!,
             goToMain = { goToMain() },

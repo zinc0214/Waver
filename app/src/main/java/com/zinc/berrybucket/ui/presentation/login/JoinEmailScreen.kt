@@ -19,14 +19,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.DialogButtonInfo
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray6
+import com.zinc.berrybucket.ui.design.theme.Gray7
+import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.berrybucket.ui.presentation.login.component.ProfileCreateTitle
 import com.zinc.berrybucket.ui.presentation.login.model.LoginPrevData
 import com.zinc.berrybucket.ui.util.dpToSp
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 
 // 회원가입1 > 이메일 입력
@@ -125,19 +130,28 @@ fun JoinEmailScreen(
         }
     }
     if (isAlreadyUsedEmail.value) {
-        ApiFailDialog(
+        CommonDialogView(
             title = stringResource(id = R.string.alreadyUsedEmailTitle),
-            message = stringResource(id = R.string.alreadyUsedEmailDesc)
-        ) {
-            viewModel.goToLogin(prevLoginEmail.value)
-        }
+            message = stringResource(id = R.string.alreadyUsedEmailDesc),
+            dismissAvailable = false,
+            negative = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
+            positive = DialogButtonInfo(text = CommonR.string.closeDesc, color = Main4),
+            negativeEvent = {
+                isAlreadyUsedEmail.value = false
+                goToBack()
+            },
+            positiveEvent = {
+                isAlreadyUsedEmail.value = false
+                viewModel.goToLogin(prevLoginEmail.value)
+            }
+        )
     }
     if (isFailApi.value) {
         ApiFailDialog(
             title = stringResource(id = R.string.joinFailTitle),
             message = stringResource(id = R.string.loginRetry)
         ) {
-            viewModel.checkEmailValid(prevLoginEmail.value)
+            isFailApi.value = false
         }
     }
 }
