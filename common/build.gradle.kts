@@ -21,14 +21,9 @@ android {
 
 dependencies {
     // serialization
-    implementation(Dep.Kotlin.serialization)
-
-    testImplementation(Dep.Test.junit)
-    androidTestImplementation(Dep.Test.androidJunit)
-    androidTestImplementation(Dep.Test.espressoCore)
+    implementation(libs.kotlinx.serialization)
 
     // Gson
-    implementation(Dep.Gson.google)
-    implementation(Dep.Retrofit.converter)
-
+    implementation(libs.google.gson)
+    implementation(libs.retrofit.converter.gson)
 }

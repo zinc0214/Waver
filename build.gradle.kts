@@ -5,11 +5,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath(Dep.GradlePlugin.android)
-        classpath(Dep.GradlePlugin.kotlin)
-        classpath(Dep.GradlePlugin.kotlinSerialization)
-        classpath(Dep.GradlePlugin.hilt)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20-dev-1059")
+        classpath(libs.gradle.android)
+        classpath(libs.gradle.kotlin)
+        classpath(libs.gradle.kotlin.serialization)
+        classpath(libs.gradle.hilt)
     }
 }
 

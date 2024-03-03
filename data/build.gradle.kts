@@ -30,18 +30,18 @@ dependencies {
     implementation(project(":domain"))
 
     // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    kapt(Dep.Dagger.Hilt.compiler)
+    implementation(libs.hilt.anroid)
+    kapt(libs.hilt.compiler)
 
     // retrofit2
-    implementation(Dep.Retrofit.core)
-    implementation(Dep.Retrofit.serialization)
-    implementation(Dep.Retrofit.converter)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.retrofit.converter.gson)
 
     // okhttp3
-    implementation(Dep.OkHttp.core)
-    implementation(Dep.OkHttp.loggingInterceptor)
+    implementation(libs.okhttp.core)
+    implementation(libs.okhttp.logging.interceptor)
 
     // serialization
-    implementation(Dep.Kotlin.serialization)
+    implementation(libs.kotlinx.serialization)
 }

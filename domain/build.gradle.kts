@@ -23,18 +23,13 @@ android {
 dependencies {
     implementation(project(":common"))
 
-    testImplementation(Dep.Test.junit)
-    androidTestImplementation(Dep.Test.androidJunit)
-    androidTestImplementation(Dep.Test.espressoCore)
-
     // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    kapt(Dep.Dagger.Hilt.compiler)
-    implementation(Dep.Dagger.dagger)
+    implementation(libs.hilt.anroid)
+    kapt(libs.hilt.compiler)
 
     // coroutine
-    implementation(Dep.Kotlin.coroutines.core)
-    implementation(Dep.Kotlin.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 }
 
 kapt {

@@ -29,10 +29,10 @@ dependencies {
     implementation(project(":common"))
 
     // dataStore
-    implementation(Dep.AndroidX.DataStore.core)
-    implementation(Dep.AndroidX.DataStore.dataStore)
+    implementation(libs.androidx.datastore.core)
+    implementation(libs.androidx.datastore.preferences)
 
     // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    kapt(Dep.Dagger.Hilt.compiler)
+    implementation(libs.hilt.anroid)
+    kapt(libs.hilt.compiler)
 }

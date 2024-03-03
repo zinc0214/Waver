@@ -15,7 +15,7 @@ android {
     compileSdk = Versions.compileSdk
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.compilerVersion
+        kotlinCompilerExtensionVersion = libs.versions.composeCompilerVersion.get()
     }
 
     buildFeatures {
@@ -40,26 +40,26 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":datastore"))
 
-    val composeBom = platform(Dep.AndroidX.Compose.Bom.version)
-    implementation(composeBom)
-    androidTestImplementation(composeBom)
 
-    implementation(Dep.AndroidX.Compose.Bom.ui)
-    implementation(Dep.AndroidX.Compose.Bom.material)
-    implementation(Dep.AndroidX.Compose.Bom.tooling)
-    implementation(Dep.AndroidX.Compose.Bom.livedata)
-    implementation(Dep.AndroidX.Compose.Bom.foundation)
-    implementation(Dep.AndroidX.Compose.constraintLayout)
-    implementation(Dep.AndroidX.Compose.accompanist)
-    implementation(Dep.AndroidX.Compose.flowlayout)
+    // compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.bom.ui)
+    implementation(libs.compose.bom.material)
+    implementation(libs.compose.bom.tooling)
+    implementation(libs.compose.bom.livedata)
+    implementation(libs.compose.bom.foundation)
+
+    implementation(libs.compose.accompanist.permissions)
+    implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.accompanist.flowlayout)
 
     // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    implementation(Dep.Dagger.Hilt.navigation)
-    kapt(Dep.Dagger.Hilt.compiler)
+    implementation(libs.hilt.anroid)
+    implementation(libs.hilt.navigation)
+    kapt(libs.hilt.compiler)
 
     // Coil
-    implementation(Dep.coil)
+    implementation(libs.coil)
 
 
 }

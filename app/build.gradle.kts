@@ -42,7 +42,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Dep.AndroidX.Compose.compilerVersion
+        kotlinCompilerExtensionVersion = libs.versions.composeCompilerVersion.get()
     }
     kapt {
         correctErrorTypes = true
@@ -65,65 +65,59 @@ dependencies {
     implementation(project(":feature:ui-other"))
     implementation(project(":feature:ui-search"))
 
-    // android X
-    implementation(Dep.AndroidX.coreKtx)
-    implementation(Dep.AndroidX.appcompat)
-    implementation(Dep.AndroidX.UI.material)
-    implementation(Dep.AndroidX.Lifecycle.runTime)
-    implementation(Dep.AndroidX.Arch.common)
-    implementation(Dep.AndroidX.Arch.runtime)
-    implementation(Dep.AndroidX.viewPager2)
-    implementation(project(":feature:ui-search"))
+    // androidX - common
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.android.material)
+
+    // androidX - LiveData
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.livedata)
+
+    // androidX - arch
+    implementation(libs.androidx.arch.common)
+    implementation(libs.androidx.arch.runtime)
+
+    // androidX - etc
+    implementation(libs.androidx.viewpager2)
 
     // test
-    testImplementation(Dep.Test.junit)
-    androidTestImplementation(Dep.Test.androidJunit)
-    androidTestImplementation(Dep.Test.espressoCore)
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.android.junit)
+    androidTestImplementation(libs.test.android.espresso.core)
 
     // test - mockito
-    testImplementation(Dep.Test.Mockito.core)
-    testImplementation(Dep.Test.Mockito.inline)
-    androidTestImplementation(Dep.Test.Mockito.android)
+    testImplementation(libs.test.mockito.core)
+    testImplementation(libs.test.mockito.inline)
+    androidTestImplementation(libs.test.mockito.android)
 
     // compose
-    implementation(Dep.AndroidX.Compose.Bom.ui)
-    implementation(Dep.AndroidX.Compose.Bom.material)
-    implementation(Dep.AndroidX.Compose.Bom.tooling)
-    implementation(Dep.AndroidX.Compose.activity)
-    implementation(Dep.AndroidX.Compose.Bom.livedata)
-    implementation(Dep.AndroidX.Compose.Bom.foundation)
-    implementation(Dep.AndroidX.Compose.constraintLayout)
-    implementation(Dep.AndroidX.Compose.navigation)
-    implementation(Dep.AndroidX.Compose.accompanist)
-    implementation(Dep.AndroidX.Compose.viewPager)
-    implementation(Dep.AndroidX.Compose.indicator)
-    implementation(Dep.AndroidX.Compose.flowlayout)
-    implementation(Dep.AndroidX.Compose.systemUiController)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.bom.ui)
+    implementation(libs.compose.bom.material)
+    implementation(libs.compose.bom.tooling)
+    implementation(libs.compose.bom.livedata)
+    implementation(libs.compose.bom.foundation)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.accompanist.permissions)
+    implementation(libs.compose.accompanist.pager)
+    implementation(libs.compose.accompanist.pager.indicators)
+    implementation(libs.compose.accompanist.flowlayout)
+    implementation(libs.compose.accompanist.systemuicontroller)
 
     // Hilt
-    implementation(Dep.Dagger.Hilt.android)
-    implementation(Dep.Dagger.Hilt.navigation)
-    kapt(Dep.Dagger.Hilt.compiler)
-
-    // retrofit2
-    implementation(Dep.Retrofit.core)
-    implementation(Dep.Retrofit.serialization)
-    implementation(Dep.Retrofit.converter)
-
-    // okhttp3
-    implementation(Dep.OkHttp.core)
-    implementation(Dep.OkHttp.loggingInterceptor)
-
-    // LiveData
-    implementation(Dep.AndroidX.Lifecycle.viewModel)
-    implementation(Dep.AndroidX.Lifecycle.runTime)
-    implementation(Dep.AndroidX.Lifecycle.livedata)
+    implementation(libs.hilt.anroid)
+    implementation(libs.hilt.navigation)
+    kapt(libs.hilt.compiler)
 
     // coil
-    implementation(Dep.coil)
+    implementation(libs.coil)
 
     // cropper
-    implementation(Dep.cropper)
+    implementation(libs.cropper)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.kotlinx.serialization)
 }
