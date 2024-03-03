@@ -1,10 +1,8 @@
 package com.zinc.berrybucket.ui.design.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -12,25 +10,20 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.zinc.berrybucket.ui_common.R
 
-private val DarkColorPalette = darkColors(
-    primary = Main3,
-    primaryVariant = Main4,
-    secondary = Gray2
-)
-
-private val LightColorPalette = lightColors(
+private val LightColorPalette = Colors(
     primary = Main1,
-    primaryVariant = Main2,
-    secondary = Gray1
-
-    /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primaryVariant = Main3,
+    secondary = Sub_D3,
+    secondaryVariant = Sub_D2,
+    background = Gray1,
+    surface = Gray1,
+    error = Error2,
+    onPrimary = Main4,
+    onSecondary = Gray1,
+    onBackground = Gray10,
+    onSurface = Gray10,
+    onError = Gray1,
+    isLight = true
 )
 
 val notoSansKr = FontFamily(
@@ -43,15 +36,9 @@ val notoSansKr = FontFamily(
 )
 
 @Composable
-fun BaseTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
-
+fun BaseTheme(content: @Composable() () -> Unit) {
     MaterialTheme(
-        colors = colors,
+        colors = LightColorPalette,
         typography = Typography(defaultFontFamily = notoSansKr),
         shapes = Shapes,
         content = content
