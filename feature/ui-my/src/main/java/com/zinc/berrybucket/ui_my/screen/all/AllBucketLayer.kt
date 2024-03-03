@@ -92,6 +92,7 @@ fun AllBucketLayer(
     })
 
     LaunchedEffect(key1 = allBucketInfoAsState, block = {
+        bucketInfo.value = bucketInfo.value?.copy(bucketList = emptyList())
         bucketInfo.value = allBucketInfoAsState
     })
 
