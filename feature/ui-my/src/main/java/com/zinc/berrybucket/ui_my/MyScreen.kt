@@ -154,7 +154,7 @@ fun MyScreen(
                     tab = if (myTabType.intValue == 0) ALL else DDAY,
                     viewModel = viewModel,
                     isNeedToUpdated = {
-                        isNeedToBottomSheetOpen.invoke(it)
+                        isNeedToBottomSheetOpen.invoke(false)
                         isFilterUpdated.value = it
                     }
                 )
