@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -18,13 +19,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -109,18 +109,33 @@ fun OpenDetailScreen(
         val listScrollState = rememberLazyListState()
         val titleIndex = if (info.imageInfo == null) 1 else 2 // 타이틀의 위치
         val flatButtonIndex = flatButtonIndex(info) // 붙는 버튼의 위치
+
+
+        Log.e("ayhan", "flatButtonIndex :$flatButtonIndex")
+
         val visibleLastIndex = listScrollState.visibleLastIndex() // 현재 보여지는 마지막 아이템의 index
-        val isCommentViewShown =
-            visibleLastIndex > listScrollState.layoutInfo.totalItemsCount - 2 // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
+
+        Log.e("ayhan", "visibleLastIndex :$visibleLastIndex")
+
+        val commentViewIndex = listScrollState.layoutInfo.totalItemsCount - 2
         val isScrollable =
             if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
 
+        // 키보드 상태 확인
+        val coroutineScope = rememberCoroutineScope()
+        val isKeyboardStatus by keyboardAsState()
+        val isKeyboardOpened = isKeyboardStatus == Keyboard.Opened
+
+        val isCommentViewShown =
+            visibleLastIndex > commentViewIndex || isKeyboardOpened // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
 
         // 붙은버튼의 노출조건
         // 1. 댓글이 노출되는 경우
         // 2. 친구 또는 댓글의 영역이 노출되는 경우 (현재 마지막으로 보이는 Index 가 (2) 의 Index 인 경우)
+        val flatButtonVisible =
+            isCommentViewShown || visibleLastIndex >= flatButtonIndex
 
-        val flatButtonVisible = isCommentViewShown || visibleLastIndex >= flatButtonIndex
+        Log.e("ayhan", "flatButtonVisible :$flatButtonVisible")
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
@@ -128,15 +143,6 @@ fun OpenDetailScreen(
             remember { mutableStateOf(false to 0) } // 댓글 롱클릭 옵션 팝업 노출여부 + 댓글 index
         val mentionPopupShowed = remember { mutableStateOf(false) } // 댓글 태그 팝업 노출 여부
         val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
-
-        // 키보드 상태 확인
-        val isKeyboardStatus by keyboardAsState()
-        val keyboardController = LocalSoftwareKeyboardController.current
-        val focusManager = LocalFocusManager.current
-        if (isKeyboardStatus == Keyboard.Closed) {
-            //  focusManager.clearFocus()
-            //   keyboardController?.hide()
-        }
 
         // 전체 뷰 clickable 인데, 리플 효과 제거를 위해 사용
         val interactionSource = remember { MutableInteractionSource() }
