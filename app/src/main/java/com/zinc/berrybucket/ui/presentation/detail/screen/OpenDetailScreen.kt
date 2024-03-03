@@ -21,7 +21,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -65,7 +64,6 @@ import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.common.models.AddBucketCommentRequest
 import java.time.LocalTime
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun OpenDetailScreen(
     detailId: String,
