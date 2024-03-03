@@ -6,6 +6,13 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
 rootProject.name = "BerryBucket"
 include(":app")
 include(":domain")

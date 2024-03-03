@@ -1,5 +1,4 @@
 [versions]
-androidStudioGradlePlugin = "8.3.2"
 androidTooldBuild = "8.3.0"
 lifecycle = "2.7.0"
 androidXArch = "2.2.0"
@@ -13,8 +12,7 @@ okHttp = "4.12.0"
 coroutines = "1.7.3"
 kotlin = "1.9.22"
 dataStore = "1.0.0"
-
-
+ksp = "1.9.22-1.0.17"
 
 [libraries]
 ##################################
@@ -24,7 +22,6 @@ gradle-hilt = { module = "com.google.dagger:hilt-android-gradle-plugin", version
 gradle-android = { module = "com.android.tools.build:gradle", version.ref = "androidTooldBuild" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 gradle-kotlin-serialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
-
 
 ##################################
 #androidX
@@ -115,8 +112,11 @@ test-mockito-inline = "org.mockito:mockito-inline:3.2.4"
 test-mockito-android = "org.mockito:mockito-android:3.2.4"
 
 
-
 [plugins]
-android-application = { id = "com.android.application", version.ref = "androidStudioGradlePlugin" }
+android-application = { id = "com.android.application", version.ref = "androidTooldBuild" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 [bundles]
