@@ -1,11 +1,11 @@
 package com.zinc.berrybucket.ui_more.models
 
-import com.zinc.common.models.MyProfileInfo
+import com.zinc.common.models.ProfileInfo
 
-fun MyProfileInfo.toUi() = UIMoreMyProfileInfo(
+fun ProfileInfo.toUi() = UIMoreMyProfileInfo(
     name = name,
     imgUrl = imgUrl.orEmpty(),
-    badgeUrl = badgeImgUrl,
-    badgeTitle = badgeTitle,
+    badgeUrl = badgeImgUrl.orEmpty(),
+    badgeTitle = badgeTitle.orEmpty(),
     bio = bio.orEmpty()
 )

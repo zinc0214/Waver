@@ -11,13 +11,13 @@ import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.DetailInfo
-import com.zinc.common.models.HomeProfileInfo
+import com.zinc.common.models.ProfileInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.GoalCountUpdate
 import com.zinc.domain.usecases.detail.LoadBucketDetail
+import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
-import com.zinc.domain.usecases.my.LoadHomeProfileInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.joinAll
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
-    private val loadHomeProfileInfo: LoadHomeProfileInfo,
+    private val loadProfileInfo: LoadProfileInfo,
     private val achieveMyBucket: AchieveMyBucket,
     private val addBucketComment: AddBucketComment,
     private val goalCountUpdate: GoalCountUpdate,
@@ -47,7 +47,7 @@ class DetailViewModel @Inject constructor(
     val loadFail: LiveData<Boolean> get() = _loadFail
 
     private lateinit var bucketDetailData: DetailInfo
-    private lateinit var profileInfo: HomeProfileInfo
+    private lateinit var profileInfo: ProfileInfo
 
     private var userId: String? = null
     private var isMine: Boolean? = true
@@ -63,7 +63,7 @@ class DetailViewModel @Inject constructor(
 
                 // TODO : 다른사람 프로필 조회도 필요해!!!
                 val job1 = async { getBucketDetailData(token, id, isMine) }
-                val job2 = async { getProfileInfo(token) }
+                val job2 = async { getProfileInfo(token, isMine = isMine, writerId = id) }
 
                 joinAll(job1, job2).runCatching {
                     Log.e("ayhan", "runCatching")
@@ -104,8 +104,8 @@ class DetailViewModel @Inject constructor(
         bucketDetailData = loadBucketDetail(token, id, isMine).data
     }
 
-    private suspend fun getProfileInfo(token: String) {
-        profileInfo = loadHomeProfileInfo(token).data
+    private suspend fun getProfileInfo(token: String, writerId: String, isMine: Boolean) {
+        profileInfo = loadProfileInfo(token, writerId, isMine).data
     }
 
     fun getValidMentionList() {

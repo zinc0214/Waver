@@ -19,7 +19,7 @@ import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.LoadTokenByEmailRequest
 import com.zinc.common.models.LoadTokenByEmailResponse
 import com.zinc.common.models.LoadWriteSelectableFriendsResponse
-import com.zinc.common.models.MyProfileResponse
+import com.zinc.common.models.ProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
@@ -210,7 +210,7 @@ interface BerryBucketApi {
     @GET("/user/profile")
     suspend fun loadMyProfile(
         @Header("Authorization") token: String,
-    ): MyProfileResponse
+    ): ProfileResponse
 
     // 프로필편집 > 프로필 수정
     @PATCH("/user/profile")
@@ -310,4 +310,10 @@ interface BerryBucketApi {
     suspend fun loadWriteSelectableFriends(
         @Header("Authorization") token: String
     ): LoadWriteSelectableFriendsResponse
+
+    @GET("/other/profile/{otherUserId}")
+    suspend fun loadOtherProfileInfo(
+        @Header("Authorization") token: String,
+        @Path("otherUserId") id: String,
+    ): ProfileResponse
 }

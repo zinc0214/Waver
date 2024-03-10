@@ -83,7 +83,7 @@ private fun ProfileImageView(
         modifier = modifier.size(imageSize),
         content = {
             Image(
-                painter = painterResource(id = R.drawable.kakao),
+                painter = painterResource(id = R.drawable.btn_32_like_on),
                 contentDescription = stringResource(
                     id = R.string.profileImgDesc
                 ),

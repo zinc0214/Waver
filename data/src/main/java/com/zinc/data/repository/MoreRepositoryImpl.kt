@@ -1,7 +1,7 @@
 package com.zinc.data.repository
 
 import com.zinc.common.models.CommonResponse
-import com.zinc.common.models.MyProfileResponse
+import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
@@ -12,7 +12,7 @@ import javax.inject.Inject
 internal class MoreRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MoreRepository {
-    override suspend fun loadProfileInfo(token: String): MyProfileResponse {
+    override suspend fun loadProfileInfo(token: String): ProfileResponse {
         return berryBucketApi.loadMyProfile(token)
     }
 

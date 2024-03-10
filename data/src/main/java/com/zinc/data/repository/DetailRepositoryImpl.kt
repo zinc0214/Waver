@@ -3,6 +3,7 @@ package com.zinc.data.repository
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.repository.DetailRepository
@@ -35,5 +36,17 @@ internal class DetailRepositoryImpl @Inject constructor(
         goalCount: Int
     ): CommonResponse {
         return berryBucketApi.requestGoalCountUpdate(token, id, RequestGoalCountUpdate(goalCount))
+    }
+
+    override suspend fun loadProfile(
+        token: String,
+        isMine: Boolean,
+        writerId: String
+    ): ProfileResponse {
+        return if (isMine) {
+            berryBucketApi.loadMyProfile(token)
+        } else {
+            berryBucketApi.loadOtherProfileInfo(token, writerId)
+        }
     }
 }

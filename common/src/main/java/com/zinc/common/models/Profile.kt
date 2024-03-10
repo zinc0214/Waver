@@ -11,19 +11,19 @@ data class OtherProfileInfo(
 )
 
 @Serializable
-data class MyProfileResponse(
-    val data: MyProfileInfo,
+data class ProfileResponse(
+    val data: ProfileInfo,
     val success: Boolean,
     val code: String,
     val message: String
 )
 
 @Serializable
-data class MyProfileInfo(
+data class ProfileInfo(
     val email: String,
     val name: String,
     val imgUrl: String?,
     val bio: String?,
-    val badgeTitle: String,
-    val badgeImgUrl: String
+    val badgeTitle: String?,
+    val badgeImgUrl: String?
 )

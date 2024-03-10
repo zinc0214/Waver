@@ -19,19 +19,19 @@ import com.zinc.berrybucket.ui.util.toLocalData
 import com.zinc.berrybucket.ui.util.toStringData
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.DetailInfo
-import com.zinc.common.models.HomeProfileInfo
+import com.zinc.common.models.ProfileInfo
 import com.zinc.common.models.YesOrNo
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
-    profileInfo: HomeProfileInfo, // TODO : 글쓴사람 프로필로 바꿔야함
+    profileInfo: ProfileInfo, // TODO : 글쓴사람 프로필로 바꿔야함
     isMine: Boolean
 ): BucketDetailUiInfo {
 
     val writerProfileInfoUi = WriterProfileInfoUi(
         profileImage = profileInfo.imgUrl,
-        badgeImage = profileInfo.badgeUrl.orEmpty(),
-        titlePosition = profileInfo.bio,
+        badgeImage = profileInfo.badgeImgUrl.orEmpty(),
+        titlePosition = profileInfo.bio.orEmpty(),
         nickName = profileInfo.name,
         userId = "0"
     )
