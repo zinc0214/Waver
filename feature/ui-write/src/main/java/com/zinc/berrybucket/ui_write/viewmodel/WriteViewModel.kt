@@ -14,6 +14,7 @@ import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.DetailInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
+import com.zinc.domain.usecases.detail.LoadFriends
 import com.zinc.domain.usecases.keyword.LoadKeyWord
 import com.zinc.domain.usecases.write.AddNewBucketList
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +27,8 @@ class WriteViewModel @Inject constructor(
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
     private val addNewBucketList: AddNewBucketList,
     private val loadBucketDetail: LoadBucketDetail,
-    private val loadKeyWord: LoadKeyWord
+    private val loadKeyWord: LoadKeyWord,
+    private val loadFriends: LoadFriends
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
     private val _savedWriteData = MutableLiveData<WriteTotalInfo>()
@@ -95,19 +97,29 @@ class WriteViewModel @Inject constructor(
         _searchFriendsResult.value = emptyList()
     }
 
-    fun searchFriends(searchName: String) {
-        _searchFriendsResult.value = buildList {
-            add(WriteFriend("1", "ㅁㅁㅁ", "유저 닉네임 11"))
-            add(WriteFriend("3", "ㅁㅁㅁ", "유저 닉네임 12"))
-            add(WriteFriend("2", "ㅁㅁㅁ", "유저 닉네임 133"))
-            add(WriteFriend("4", "ㅁㅁㅁ", "유저 닉네임 01"))
-            add(WriteFriend("5", "ㅁㅁㅁ", "유저 1"))
-            add(WriteFriend("6", "ㅁㅁㅁ", "유1"))
-            add(WriteFriend("7", "ㅁㅁㅁ", "유5541"))
-            add(WriteFriend("8", "ㅁㅁㅁ", "유55dd541"))
-            add(WriteFriend("9", "ㅁㅁㅁ", "유5541"))
-            add(WriteFriend("10", "ㅁㅁㅁ", "유d임 55541"))
+    fun loadFriends() {
+        viewModelScope.launch(CEH(_loadFail, "친구 로드 실패" to "로드 실패!")) {
+            runCatching {
+                accessToken.value?.let { token ->
+                    val res = loadFriends(token)
+                    if (res.success) {
+                        _searchFriendsResult.value = res.data.filter { it.mutualFollow }.map {
+                            WriteFriend(it.id, it.imgUrl, it.name)
+                        }
+                    } else {
+                        _loadFail.value = "친구 로드 실패" to res.message
+                    }
+                }
+            }.getOrElse {
+                _loadFail.value = "친구 로드 실패" to "로드 실패!"
+            }
         }
+    }
+
+    fun searchFriends(searchName: String) {
+        _searchFriendsResult.value = searchFriendsResult.value?.filter {
+            it.nickname == searchName
+        }.orEmpty()
     }
 
     fun loadKeyword() {

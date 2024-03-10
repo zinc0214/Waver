@@ -17,11 +17,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.berrybucket.model.WriteFriend
+import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.SearchEditView
 import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_write.presentation.AddedFriendItem
@@ -34,6 +37,7 @@ import com.zinc.berrybucket.ui_write.viewmodel.WriteViewModel
 @Composable
 fun WriteSelectFriendsScreen(
     closeClicked: () -> Unit,
+    originFriends: List<WriteFriend>,
     selectedFriends: List<WriteFriend>,
     addFriendsClicked: (List<WriteFriend>) -> Unit
 ) {
@@ -57,7 +61,7 @@ fun WriteSelectFriendsScreen(
     ) {
         WriteAppBar(
             modifier = Modifier.fillMaxWidth(),
-            nextButtonClickable = true,
+            nextButtonClickable = updateFriends.isNotEmpty(),
             rightText = R.string.addDesc,
             clickEvent = {
                 when (it) {
@@ -73,72 +77,84 @@ fun WriteSelectFriendsScreen(
             isShowDivider = false
         )
 
-        SearchEditView(
-            onImeAction = {
-                viewModel.searchFriends(it)
-            },
-            searchTextChange = {
-                searchWord.value = it
-            },
-            currentSearchWord = searchWord
-        )
+        if (originFriends.isEmpty()) {
+            MyText(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 100.dp),
+                text = "아무도 없어요! 친구를 추가해주세요.",
+                textAlign = TextAlign.Center
+            )
+        } else {
+            SearchEditView(
+                onImeAction = {
+                    viewModel.searchFriends(it)
+                },
+                searchTextChange = {
+                    searchWord.value = it
+                },
+                currentSearchWord = searchWord
+            )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            state = scrollState,
-            contentPadding = PaddingValues(bottom = 50.dp)
-        ) {
-            if (updateFriends.isNotEmpty()) {
-                item {
-                    FlowRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 15.dp),
-                        mainAxisSpacing = 12.dp,
-                        crossAxisSpacing = 8.dp,
-                    ) {
-                        val list =
-                            if (needShowAllFriendButton.value) updateFriends.take(5) else updateFriends
-                        list.forEach {
-                            AddedFriendItem(
-                                writeFriend = it,
-                                deleteFriend = { friend ->
-                                    updateFriends = updateFriends - friend
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                state = scrollState,
+                contentPadding = PaddingValues(bottom = 50.dp)
+            ) {
+                if (updateFriends.isNotEmpty()) {
+                    item {
+                        FlowRow(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 15.dp),
+                            mainAxisSpacing = 12.dp,
+                            crossAxisSpacing = 8.dp,
+                        ) {
+                            val list =
+                                if (needShowAllFriendButton.value) updateFriends.take(5) else updateFriends
+                            list.forEach {
+                                AddedFriendItem(
+                                    writeFriend = it,
+                                    deleteFriend = { friend ->
+                                        updateFriends = updateFriends - friend
+                                    })
+                            }
+                            if (needShowAllFriendButton.value) {
+                                ShowAllFriendItem(clicked = {
+                                    needShowAllFriendButton.value = false
                                 })
-                        }
-                        if (needShowAllFriendButton.value) {
-                            ShowAllFriendItem(clicked = {
-                                needShowAllFriendButton.value = false
-                            })
+                            }
                         }
                     }
                 }
-            }
 
-            searchFriendsResult?.let { friends ->
-                item {
-                    Spacer(modifier = Modifier.height(15.dp))
+                searchFriendsResult?.let { friends ->
+                    item {
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
+
+                    items(
+                        items = friends,
+                        itemContent = { friend ->
+                            var selected = updateFriends.any { it == friend }
+                            WriteSelectFriendItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 12.dp)
+                                    .clickable(enabled = !selected, onClick = {
+                                        updateFriends = updateFriends + friend
+                                        selected = !selected
+                                    }),
+                                writeFriend = friend,
+                                isSelected = selected
+                            )
+                        })
                 }
-
-                items(
-                    items = friends,
-                    itemContent = { friend ->
-                        var selected = updateFriends.any { it == friend }
-                        WriteSelectFriendItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 12.dp)
-                                .clickable(enabled = !selected, onClick = {
-                                    updateFriends = updateFriends + friend
-                                    selected = !selected
-                                }),
-                            writeFriend = friend,
-                            isSelected = selected
-                        )
-                    })
             }
         }
+
     }
 }

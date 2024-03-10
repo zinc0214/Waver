@@ -18,6 +18,7 @@ import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.LoadTokenByEmailRequest
 import com.zinc.common.models.LoadTokenByEmailResponse
+import com.zinc.common.models.LoadWriteSelectableFriendsResponse
 import com.zinc.common.models.MyProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
@@ -304,4 +305,9 @@ interface BerryBucketApi {
         @Path("id") id: Int,
         @Query("reason") reason: String
     ): CommonResponse
+
+    @GET("/follow/mutual")
+    suspend fun loadWriteSelectableFriends(
+        @Header("Authorization") token: String
+    ): LoadWriteSelectableFriendsResponse
 }

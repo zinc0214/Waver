@@ -59,6 +59,7 @@ fun WriteScreen2(
 
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
     val originKeyWords by viewModel.keywordList.observeAsState()
+    val originFriendsAsState by viewModel.searchFriendsResult.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
     val addNewBucketListResult by viewModel.addNewBucketListResult.observeAsState()
 
@@ -67,10 +68,15 @@ fun WriteScreen2(
     val selectedOpenType = remember { mutableStateOf(writeTotalInfo.writeOpenType) }
     val isScrapUsed = remember { mutableStateOf(writeTotalInfo.isScrapUsed) }
     val keyWordList = remember { mutableStateOf(originKeyWords) }
+    val originFriendList = remember { mutableStateOf(originFriendsAsState) }
     val showApiFailDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(originKeyWords) {
         keyWordList.value = originKeyWords
+    }
+
+    LaunchedEffect(key1 = originFriendsAsState) {
+        originFriendList.value = originFriendsAsState
     }
 
     LaunchedEffect(key1 = loadFail) {
@@ -156,9 +162,11 @@ fun WriteScreen2(
             }
 
             WriteOptionsType2.FRIENDS -> {
+                viewModel.loadFriends()
                 WriteSelectFriendsScreen(
                     closeClicked = { optionScreenShow = null },
                     selectedFriends = selectedFriends.value,
+                    originFriends = originFriendList.value.orEmpty(),
                     addFriendsClicked = {
                         selectedFriends.value = it
                         if (selectedFriends.value.isNotEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {

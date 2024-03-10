@@ -26,7 +26,7 @@ data class DetailInfo(
     val completedDt: String?,
     val keywordIds: List<Int>?,
     val keywords: List<String>?,
-    val friendUserIds: List<String>?,
+    val friends: List<Friend>?,
     val images: List<String>?,
     val comment: List<Comment>?
 ) {
@@ -47,6 +47,12 @@ data class DetailInfo(
         val name: String,
         val content: String,
         val isBlocked: YesOrNo
+    )
+
+    @Serializable
+    data class Friend(
+        val name: String,
+        val id: String
     )
 }
 

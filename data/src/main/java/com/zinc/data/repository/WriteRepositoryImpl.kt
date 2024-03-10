@@ -3,6 +3,7 @@ package com.zinc.data.repository
 import android.util.Log
 import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.LoadWriteSelectableFriendsResponse
 import com.zinc.data.api.BerryBucketApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
@@ -67,5 +68,9 @@ internal class WriteRepositoryImpl @Inject constructor(
                 categoryId
             )
         }
+    }
+
+    override suspend fun loadFriends(token: String): LoadWriteSelectableFriendsResponse {
+        return berryBucketApi.loadWriteSelectableFriends(token)
     }
 }

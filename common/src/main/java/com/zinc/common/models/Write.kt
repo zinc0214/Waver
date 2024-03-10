@@ -49,3 +49,17 @@ data class AddBucketListItem(
     val userCount: Int,
     val images: List<String>
 )
+
+data class LoadWriteSelectableFriendsResponse(
+    val data: List<WriteSelectableFriend>,
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
+data class WriteSelectableFriend(
+    val id: String,
+    val name: String,
+    val imgUrl: String,
+    val mutualFollow: Boolean
+)
