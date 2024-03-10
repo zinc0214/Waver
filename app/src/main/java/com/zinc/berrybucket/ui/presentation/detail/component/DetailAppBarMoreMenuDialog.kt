@@ -36,7 +36,7 @@ fun MyDetailAppBarMoreMenuDialog(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.TopEnd)
-            .padding(top = 8.dp, bottom = 8.dp),
+            .padding(top = 8.dp, bottom = 8.dp, end = 32.dp),
         shape = RoundedCornerShape(40.dp),
         backgroundColor = Gray1,
         elevation = 2.dp
@@ -74,7 +74,7 @@ fun OtherDetailAppBarMoreMenuDialog(
         modifier = Modifier
             .fillMaxSize()
             .wrapContentSize(Alignment.TopEnd)
-            .padding(top = 8.dp, bottom = 8.dp),
+            .padding(top = 8.dp, bottom = 8.dp, end = 32.dp),
         shape = RoundedCornerShape(40.dp),
         backgroundColor = Gray1,
         elevation = 2.dp
