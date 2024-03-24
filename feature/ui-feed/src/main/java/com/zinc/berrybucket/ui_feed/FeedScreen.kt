@@ -45,9 +45,6 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
         mutableStateOf(feedItemsAsState)
     }
 
-    if (feedItemsAsState.isNullOrEmpty()) {
-        viewModel.loadFeedItems()
-    }
 
     LaunchedEffect(key1 = isKeyWordSelected) {
         if (isKeyWordSelected == false) {
@@ -65,7 +62,11 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
     }
 
     LaunchedEffect(key1 = feedItemsAsState) {
-        feedItems.value = feedItemsAsState
+        if (feedItemsAsState == null) {
+            viewModel.loadFeedItems()
+        } else {
+            feedItems.value = feedItemsAsState
+        }
     }
 
     Scaffold { padding ->
