@@ -523,13 +523,11 @@ class MyViewModel @Inject constructor(
                     Log.e("ayhan", "Achieve Response : $response")
                     if (response.success) {
                         when (type) {
-                            is ALL -> {
-                                loadAllBucketList()
-                            }
-
-                            is CATEGORY -> TODO()
-                            is CHALLENGE -> TODO()
+                            is ALL -> loadAllBucketList()
                             is DDAY -> loadDdayBucketList()
+                            else -> {
+                                // Do Nothing
+                            }
                         }
                     } else {
                         _achieveBucketFail.call()
