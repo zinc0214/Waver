@@ -382,7 +382,7 @@ fun OpenDetailScreen(
                                     is OpenDetailEditTextViewEvent.SendComment -> {
                                         viewModel.addBucketComment(
                                             request = AddBucketCommentRequest(
-                                                bucketlistId = detailId,
+                                                bucketlistId = detailId.toInt(),
                                                 content = it.sendText,
                                                 mentionIds = "" //TODO : 수정필요
                                             )
