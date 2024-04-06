@@ -54,6 +54,7 @@ data class MemoInfo(
 ) : DetailDescType()
 
 data class Comment(
+    val commentId: String,
     val userId: String,
     val profileImage: String?,
     val nickName: String,

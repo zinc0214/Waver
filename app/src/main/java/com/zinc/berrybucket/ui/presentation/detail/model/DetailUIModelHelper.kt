@@ -54,6 +54,7 @@ fun bucketDetailResponseToUiModel(
     val commentInfo = bucketInfo.comment?.let {
         CommentInfo(it.size, it.map { comment ->
             Comment(
+                commentId = comment.id,
                 userId = comment.userId,
                 profileImage = comment.imgUrl,
                 nickName = comment.name,

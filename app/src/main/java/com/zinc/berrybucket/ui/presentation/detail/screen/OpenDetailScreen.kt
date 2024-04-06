@@ -260,7 +260,7 @@ fun OpenDetailScreen(
                                 is OtherCommentOptionClicked.Hide -> TODO()
                                 is OtherCommentOptionClicked.Report -> {
                                     val reportInfo = ReportInfo(
-                                        id = commenter.userId,
+                                        id = commenter.commentId,
                                         writer = commenter.nickName,
                                         contents = commenter.comment
                                     )

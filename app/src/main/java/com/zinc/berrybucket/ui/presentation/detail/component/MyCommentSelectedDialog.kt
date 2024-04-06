@@ -112,7 +112,7 @@ private fun CommentSelectedDialog(
                     .clickable {
                         commentOptionClicked.invoke(
                             InnerCommentOptionClicked.FirstOptionClickedInner(
-                                comment.userId
+                                comment.commentId
                             )
                         )
                     }
@@ -127,7 +127,7 @@ private fun CommentSelectedDialog(
                     .clickable {
                         commentOptionClicked.invoke(
                             InnerCommentOptionClicked.SecondOptionClickedInner(
-                                comment.userId
+                                comment.commentId
                             )
                         )
                     }
