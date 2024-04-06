@@ -62,7 +62,7 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
     }
 
     LaunchedEffect(key1 = feedItemsAsState) {
-        if (feedItemsAsState == null) {
+        if (feedItemsAsState == null || feedItemsAsState?.isEmpty() == true) {
             viewModel.loadFeedItems()
         } else {
             feedItems.value = feedItemsAsState
