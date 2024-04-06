@@ -108,12 +108,7 @@ fun OpenDetailScreen(
         val titleIndex = if (info.imageInfo == null) 1 else 2 // 타이틀의 위치
         val flatButtonIndex = flatButtonIndex(info) // 붙는 버튼의 위치
 
-
-        Log.e("ayhan", "flatButtonIndex :$flatButtonIndex")
-
         val visibleLastIndex = listScrollState.visibleLastIndex() // 현재 보여지는 마지막 아이템의 index
-
-        Log.e("ayhan", "visibleLastIndex :$visibleLastIndex")
 
         val commentViewIndex = listScrollState.layoutInfo.totalItemsCount - 2
         val isScrollable =
@@ -132,8 +127,6 @@ fun OpenDetailScreen(
         // 2. 친구 또는 댓글의 영역이 노출되는 경우 (현재 마지막으로 보이는 Index 가 (2) 의 Index 인 경우)
         val flatButtonVisible =
             isCommentViewShown || visibleLastIndex >= flatButtonIndex
-
-        Log.e("ayhan", "flatButtonVisible :$flatButtonVisible")
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부

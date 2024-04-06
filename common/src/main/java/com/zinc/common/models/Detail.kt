@@ -19,7 +19,7 @@ data class DetailInfo(
     val status: CompleteStatus,
     val pin: String,
     val scrapYn: YesOrNo,
-    val categoryId: String,
+    val categoryId: Int,
     val categoryName: String,
     val goalCount: Int,
     val userCount: Int,

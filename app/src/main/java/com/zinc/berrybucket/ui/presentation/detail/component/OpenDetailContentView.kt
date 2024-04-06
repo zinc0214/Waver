@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail.component
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -30,8 +29,6 @@ fun OpenDetailContentView(
 
     val successButtonHide =
         listState.layoutInfo.visibleItemsInfo.isEmpty() || info.isMine.not() || info.isDone
-
-    Log.e("ayhan", "successButtonHide :$successButtonHide")
 
     LazyColumn(
         modifier = modifier, state = listState
@@ -73,8 +70,6 @@ fun OpenDetailContentView(
             if (successButtonHide) {
                 return@item
             }
-            Log.e("ayhan", "local flatButtonVisible : $flatButtonVisible")
-            // Box(modifier = Modifier.alpha(if (flatButtonVisible) 1f else 0f)) {
             AnimatedVisibility(
                 flatButtonVisible,
                 enter = expandVertically(),
@@ -89,7 +84,6 @@ fun OpenDetailContentView(
                     )
                 )
             }
-            // }
         }
 
         item(key = "friendsView") {

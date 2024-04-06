@@ -281,7 +281,7 @@ private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List
     optionsList.add(
         WriteOption1Info.Category(
             WriteCategoryInfo(
-                id = 0, name = categoryName, defaultYn = YesOrNo.N
+                id = categoryId, name = categoryName, defaultYn = YesOrNo.N
             )
         )
     )

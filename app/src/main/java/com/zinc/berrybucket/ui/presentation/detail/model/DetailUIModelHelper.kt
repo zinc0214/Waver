@@ -45,7 +45,7 @@ fun bucketDetailResponseToUiModel(
         goalCount = bucketInfo.goalCount,
         userCount = bucketInfo.userCount,
         categoryInfo = WriteCategoryInfo(
-            id = 0, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
+            id = bucketInfo.categoryId, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
         ),
         isScrap = bucketInfo.scrapYn.isYes(),
         status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
