@@ -24,8 +24,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
+import com.zinc.berrybucket.model.Comment
 import com.zinc.berrybucket.model.CommentInfo
-import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray6
@@ -43,7 +43,7 @@ fun DetailCommentView(
     ) {
 
         if ((commentInfo?.commentCount ?: 0) > 0) {
-            CommentListView(commentInfo?.commenterList.orEmpty(), commentLongClicked)
+            CommentListView(commentInfo?.commentList.orEmpty(), commentLongClicked)
         } else {
             Spacer(modifier = Modifier.height(12.dp))
             CommentBlankView()
@@ -81,10 +81,10 @@ fun CommentCountView(commentCount: Int) {
 }
 
 @Composable
-private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (Int) -> Unit) {
+private fun CommentListView(commentList: List<Comment>, commentLongClicked: (Int) -> Unit) {
     commentList.forEachIndexed { index, commenter ->
         CommentDescView(
-            commenter = commenter,
+            comment = commenter,
             commentIndex = index,
             isLastItem = commentList.lastIndex == index,
             commentLongClicked = commentLongClicked
@@ -95,7 +95,7 @@ private fun CommentListView(commentList: List<Commenter>, commentLongClicked: (I
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CommentDescView(
-    commenter: Commenter,
+    comment: Comment,
     commentIndex: Int,
     isLastItem: Boolean,
     commentLongClicked: (Int) -> Unit
@@ -126,12 +126,12 @@ private fun CommentDescView(
 
         Column(modifier = Modifier.padding(start = 12.dp)) {
             MyText(
-                text = commenter.nickName,
+                text = comment.nickName,
                 color = Gray9,
                 fontSize = dpToSp(13.dp),
             )
             MyText(
-                text = commenter.comment,
+                text = comment.comment,
                 color = Gray8,
                 fontSize = dpToSp(14.dp),
                 modifier = Modifier.padding(top = 8.dp)

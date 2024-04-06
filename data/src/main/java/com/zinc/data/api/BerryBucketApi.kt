@@ -302,7 +302,7 @@ interface BerryBucketApi {
     @POST("/comment/{id}/report")
     suspend fun requestCommentReport(
         @Header("Authorization") token: String,
-        @Path("id") id: Int,
+        @Path("id") id: String,
         @Query("reason") reason: String
     ): CommonResponse
 

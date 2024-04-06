@@ -1,6 +1,5 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -223,14 +222,14 @@ fun OpenDetailScreen(
             }
         }
         if (commentOptionPopUpShowed.value.first) {
-            val commenter = vmDetailInfoAsState?.commentInfo?.commenterList?.getOrNull(
+            val commenter = vmDetailInfoAsState?.commentInfo?.commentList?.getOrNull(
                 commentOptionPopUpShowed.value.second
             )
 
             if (commenter != null) {
                 if (commenter.isMine) {
                     MyCommentSelectedDialog(
-                        commenter = commenter,
+                        comment = commenter,
                         onDismissRequest = {
                             commentOptionPopUpShowed.value =
                                 false to commentOptionPopUpShowed.value.second
@@ -251,7 +250,7 @@ fun OpenDetailScreen(
                     )
                 } else {
                     OtherCommentSelectedDialog(
-                        commenter = commenter,
+                        comment = commenter,
                         onDismissRequest = {
                             commentOptionPopUpShowed.value =
                                 false to commentOptionPopUpShowed.value.second
@@ -261,7 +260,7 @@ fun OpenDetailScreen(
                                 is OtherCommentOptionClicked.Hide -> TODO()
                                 is OtherCommentOptionClicked.Report -> {
                                     val reportInfo = ReportInfo(
-                                        id = commenter.commentId,
+                                        id = commenter.userId,
                                         writer = commenter.nickName,
                                         contents = commenter.comment
                                     )
@@ -382,7 +381,7 @@ fun OpenDetailScreen(
                                     is OpenDetailEditTextViewEvent.SendComment -> {
                                         viewModel.addBucketComment(
                                             request = AddBucketCommentRequest(
-                                                bucketlistId = detailId.toInt(),
+                                                bucketlistId = detailId,
                                                 content = it.sendText,
                                                 mentionIds = "" //TODO : 수정필요
                                             )

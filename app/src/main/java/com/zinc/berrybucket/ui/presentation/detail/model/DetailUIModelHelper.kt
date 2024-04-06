@@ -1,8 +1,8 @@
 package com.zinc.berrybucket.ui.presentation.detail.model
 
 import com.zinc.berrybucket.model.BucketDetailUiInfo
+import com.zinc.berrybucket.model.Comment
 import com.zinc.berrybucket.model.CommentInfo
-import com.zinc.berrybucket.model.Commenter
 import com.zinc.berrybucket.model.CommonDetailDescInfo
 import com.zinc.berrybucket.model.ImageInfo
 import com.zinc.berrybucket.model.MemoInfo
@@ -53,8 +53,8 @@ fun bucketDetailResponseToUiModel(
 
     val commentInfo = bucketInfo.comment?.let {
         CommentInfo(it.size, it.map { comment ->
-            Commenter(
-                commentId = comment.userId,
+            Comment(
+                userId = comment.userId,
                 profileImage = comment.imgUrl,
                 nickName = comment.name,
                 comment = comment.content,

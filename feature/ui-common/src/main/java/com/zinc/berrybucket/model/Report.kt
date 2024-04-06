@@ -9,7 +9,7 @@ sealed class ReportClickEvent {
 
 @Serializable
 data class ReportInfo(
-    val id: Int,
+    val id: String,
     val writer: String,
     val contents: String
 )

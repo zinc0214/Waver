@@ -41,8 +41,9 @@ data class DetailInfo(
 
     @Serializable
     data class Comment(
+        val id: String,
         val isMyComment: YesOrNo,
-        val userId: Int,
+        val userId: String,
         val imgUrl: String?,
         val name: String,
         val content: String,
@@ -57,7 +58,7 @@ data class DetailInfo(
 }
 
 data class AddBucketCommentRequest(
-    val bucketlistId: Int,
+    val bucketlistId: String,
     val content: String,
     val mentionIds: String
 )

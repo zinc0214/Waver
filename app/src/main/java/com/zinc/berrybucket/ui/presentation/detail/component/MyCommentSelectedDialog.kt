@@ -15,7 +15,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.zinc.berrybucket.R
-import com.zinc.berrybucket.model.Commenter
+import com.zinc.berrybucket.model.Comment
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.presentation.component.MyText
@@ -24,17 +24,17 @@ import com.zinc.berrybucket.ui.util.dpToSp
 /**
  * 댓글 롱크릭 시 노출되는 팝업
  *
- * @param commenter 댓글 정보
+ * @param comment 댓글 정보
  * @param onDismissRequest
  * @param commentOptionClicked
  */
 @Composable
 fun MyCommentSelectedDialog(
-    commenter: Commenter,
+    comment: Comment,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (MyCommentOptionClicked) -> Unit
 ) {
-    CommentSelectedDialog(commenter, onDismissRequest) {
+    CommentSelectedDialog(comment, onDismissRequest) {
         when (it) {
             is InnerCommentOptionClicked.FirstOptionClickedInner ->
                 commentOptionClicked(MyCommentOptionClicked.Edit(it.commentId))
@@ -48,17 +48,17 @@ fun MyCommentSelectedDialog(
 /**
  * 댓글 롱크릭 시 노출되는 팝업
  *
- * @param commenter 댓글 정보
+ * @param comment 댓글 정보
  * @param onDismissRequest
  * @param commentOptionClicked
  */
 @Composable
 fun OtherCommentSelectedDialog(
-    commenter: Commenter,
+    comment: Comment,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (OtherCommentOptionClicked) -> Unit
 ) {
-    CommentSelectedDialog(commenter, onDismissRequest) {
+    CommentSelectedDialog(comment, onDismissRequest) {
         when (it) {
             is InnerCommentOptionClicked.FirstOptionClickedInner ->
                 commentOptionClicked(OtherCommentOptionClicked.Hide(it.commentId))
@@ -72,7 +72,7 @@ fun OtherCommentSelectedDialog(
 
 @Composable
 private fun CommentSelectedDialog(
-    commenter: Commenter,
+    comment: Comment,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (InnerCommentOptionClicked) -> Unit
 ) {
@@ -103,7 +103,7 @@ private fun CommentSelectedDialog(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
             MyText(
-                text = stringResource(id = if (commenter.isMine) R.string.commentEdit else R.string.commentHide),
+                text = stringResource(id = if (comment.isMine) R.string.commentEdit else R.string.commentHide),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
@@ -112,13 +112,13 @@ private fun CommentSelectedDialog(
                     .clickable {
                         commentOptionClicked.invoke(
                             InnerCommentOptionClicked.FirstOptionClickedInner(
-                                commenter.commentId
+                                comment.userId
                             )
                         )
                     }
             )
             MyText(
-                text = stringResource(id = if (commenter.isMine) R.string.commentDelete else R.string.commentReport),
+                text = stringResource(id = if (comment.isMine) R.string.commentDelete else R.string.commentReport),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
@@ -127,7 +127,7 @@ private fun CommentSelectedDialog(
                     .clickable {
                         commentOptionClicked.invoke(
                             InnerCommentOptionClicked.SecondOptionClickedInner(
-                                commenter.commentId
+                                comment.userId
                             )
                         )
                     }
@@ -139,21 +139,21 @@ private fun CommentSelectedDialog(
 
 private sealed class InnerCommentOptionClicked {
     data class FirstOptionClickedInner(
-        val commentId: Int
+        val commentId: String
     ) : InnerCommentOptionClicked()
 
     data class SecondOptionClickedInner(
-        val commentId: Int
+        val commentId: String
     ) : InnerCommentOptionClicked()
 }
 
 
 sealed interface MyCommentOptionClicked {
-    data class Edit(val commentId: Int) : MyCommentOptionClicked
-    data class Delete(val commentId: Int) : MyCommentOptionClicked
+    data class Edit(val commentId: String) : MyCommentOptionClicked
+    data class Delete(val commentId: String) : MyCommentOptionClicked
 }
 
 sealed interface OtherCommentOptionClicked {
-    data class Hide(val commentId: Int) : OtherCommentOptionClicked
-    data class Report(val commentId: Int) : OtherCommentOptionClicked
+    data class Hide(val commentId: String) : OtherCommentOptionClicked
+    data class Report(val commentId: String) : OtherCommentOptionClicked
 }

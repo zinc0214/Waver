@@ -46,15 +46,15 @@ data class CloseDetailDescInfo(
 
 data class CommentInfo(
     val commentCount: Int,
-    val commenterList: List<Commenter>
+    val commentList: List<Comment>
 ) : DetailDescType()
 
 data class MemoInfo(
     val memo: String
 ) : DetailDescType()
 
-data class Commenter(
-    val commentId: Int,
+data class Comment(
+    val userId: String,
     val profileImage: String?,
     val nickName: String,
     val comment: String,
