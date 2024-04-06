@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_search.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -42,6 +43,9 @@ class SearchViewModel @Inject constructor(
     private val _searchResultItems = MutableLiveData<SearchResultItems>()
     val searchResultItems: LiveData<SearchResultItems> get() = _searchResultItems
 
+    private val _searchResultIsEmpty = MutableLiveData<Boolean>()
+    val searchResultIsEmpty: LiveData<Boolean> get() = _searchResultIsEmpty
+
     private val _loadFail = MutableLiveData<String?>(null)
     val loadFail: LiveData<String?> get() = _loadFail
 
@@ -77,17 +81,27 @@ class SearchViewModel @Inject constructor(
 
     fun loadSearchResult(searchWord: String) {
         viewModelScope.launch(CEH(_loadFail, "")) {
+            _searchResultIsEmpty.value = false
             accessToken.value?.let { token ->
                 runCatching {
                     val response = loadSearchResult.invoke(token, searchWord)
+                    Log.e("ayhan", "loadSearchResult : $response")
                     if (response.success) {
                         prevSearchWord = searchWord
-                        _searchResultItems.value = response.data.parseUI()
+                        if (response.data.bucketlist.isEmpty() && response.data.users.isEmpty()) {
+                            _searchResultIsEmpty.value = true
+                        } else {
+                            _searchResultIsEmpty.value = false
+                            _searchResultItems.value = response.data.parseUI()
+                        }
+
                     } else {
                         _loadFail.value = response.message
+                        _searchResultIsEmpty.value = true
                     }
                 }.getOrElse {
                     _loadFail.value = ""
+                    _searchResultIsEmpty.value = true
                 }
             }
         }

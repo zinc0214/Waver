@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.compose.bom.material)
     implementation(libs.compose.bom.livedata)
     implementation(libs.compose.bom.ui)
+    implementation(libs.compose.bom.tooling)
 
     implementation(libs.compose.accompanist.permissions)
     implementation(libs.compose.constraintlayout)

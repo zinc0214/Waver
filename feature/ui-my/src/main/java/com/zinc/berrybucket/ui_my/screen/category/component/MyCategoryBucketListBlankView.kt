@@ -36,7 +36,6 @@ fun MyCategoryBucketListBlankView(
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
         MyText(
-
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             color = Gray9,

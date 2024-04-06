@@ -39,10 +39,15 @@ import com.zinc.berrybucket.ui_search.model.SearchRecommendType
 @Composable
 fun RecommendKeyWordView(
     searchItems: SearchRecommendItems,
+    showOnlyRecommend: Boolean,
     itemClicked: (String) -> Unit,
-    recentItemDelete: (String) -> Unit
+    recentItemDelete: (String) -> Unit,
 ) {
-    var selectType by remember { mutableStateOf(SearchRecommendType.RECENT) }
+    var selectType by remember {
+        mutableStateOf(
+            if (showOnlyRecommend) SearchRecommendType.RECOMMEND else SearchRecommendType.RECENT
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -50,15 +55,17 @@ fun RecommendKeyWordView(
             .padding(top = 20.dp)
     ) {
         Row(modifier = Modifier.padding(horizontal = 24.dp)) {
-            MyText(text = stringResource(id = R.string.recentSearch),
-                fontSize = dpToSp(15.dp),
-                fontWeight = FontWeight.Bold,
-                color = if (selectType == SearchRecommendType.RECENT) Main4 else Gray6,
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .clickable {
-                        selectType = SearchRecommendType.RECENT
-                    })
+            if (!showOnlyRecommend) {
+                MyText(text = stringResource(id = R.string.recentSearch),
+                    fontSize = dpToSp(15.dp),
+                    fontWeight = FontWeight.Bold,
+                    color = if (selectType == SearchRecommendType.RECENT) Main4 else Gray6,
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .clickable {
+                            selectType = SearchRecommendType.RECENT
+                        })
+            }
             MyText(text = stringResource(id = R.string.recommendSearch),
                 fontSize = dpToSp(15.dp),
                 fontWeight = FontWeight.Bold,
@@ -72,14 +79,16 @@ fun RecommendKeyWordView(
         Column(
             modifier = Modifier.padding(top = 24.dp)
         ) {
-            AnimatedVisibility(
-                visible = selectType == SearchRecommendType.RECENT
-            ) {
-                RecentSearchView(
-                    searchItems.recentWords,
-                    itemClicked = itemClicked,
-                    recentItemDelete = recentItemDelete
-                )
+            if (!showOnlyRecommend) {
+                AnimatedVisibility(
+                    visible = selectType == SearchRecommendType.RECENT
+                ) {
+                    RecentSearchView(
+                        searchItems.recentWords,
+                        itemClicked = itemClicked,
+                        recentItemDelete = recentItemDelete
+                    )
+                }
             }
             AnimatedVisibility(
                 visible = selectType == SearchRecommendType.RECOMMEND

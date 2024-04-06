@@ -22,6 +22,7 @@ import com.zinc.berrybucket.ui.presentation.component.SearchEditView
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui_search.R
 import com.zinc.berrybucket.ui_search.component.RecommendKeyWordView
+import com.zinc.berrybucket.ui_search.component.SearchResultBlankView
 import com.zinc.berrybucket.ui_search.component.SearchResultView
 import com.zinc.berrybucket.ui_search.component.SearchTopAppBar
 import com.zinc.berrybucket.ui_search.model.SearchActionEvent
@@ -38,11 +39,13 @@ fun SearchScreen(
     val viewModel: SearchViewModel = hiltViewModel()
     val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
+    val searchResultIsEmptyAsState by viewModel.searchResultIsEmpty.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
 
     val listScrollState = rememberLazyListState()
     val searchResultItems = remember { mutableStateOf(searchResultItemsAsState) }
     val searchRecommendItems = remember { mutableStateOf(searchRecommendItemsAsState) }
+    val searchResultIsEmpty = remember { mutableStateOf(searchResultIsEmptyAsState) }
     val searchWord = remember { mutableStateOf(viewModel.prevSearchWord) }
     val isClosed = remember { mutableStateOf(false) }
     val showFailDialog = remember { mutableStateOf(null as String?) }
@@ -65,6 +68,10 @@ fun SearchScreen(
         if (loadFail != null) {
             showFailDialog.value = loadFail
         }
+    }
+
+    LaunchedEffect(key1 = searchResultIsEmptyAsState) {
+        searchResultIsEmpty.value = searchResultIsEmptyAsState
     }
 
     if (searchRecommendItems.value == null && !isClosed.value) {
@@ -116,12 +123,23 @@ fun SearchScreen(
                 )
             }
 
+            // 검색 결과가 없는 경우
+            if (searchWord.value.isNotEmpty() && searchResultIsEmpty.value == true) {
+                item {
+                    SearchResultBlankView(
+                        modifier = Modifier.animateItemPlacement(),
+                        searchWord = searchWord.value
+                    )
+                }
+            }
+
             // 최근 검색어 + 추천 키워드 화면
-            item {
-                if (searchWord.value.isEmpty() && searchResultItems.value == null) {
+            if (searchWord.value.isEmpty() || searchResultIsEmpty.value == true) {
+                item {
                     searchRecommendItems.value?.let {
                         RecommendKeyWordView(
                             searchItems = it,
+                            showOnlyRecommend = searchWord.value.isNotEmpty(),
                             itemClicked = { selectWord ->
                                 searchWord.value = selectWord
                                 viewModel.loadSearchResult(selectWord)
@@ -134,21 +152,23 @@ fun SearchScreen(
                 }
             }
 
-
-            item {
-                searchResultItems.value?.let {
-                    SearchResultView(
-                        resultItems = it,
-                        modifier = Modifier.animateItemPlacement(),
-                        goToEvent = searchEvent,
-                        actionEvent = { event ->
-                            when (event) {
-                                is SearchActionEvent.RequestFollow -> {
-                                    viewModel.requestFollow(event.userId, event.alreadyFollowed)
+            // 검색 결과
+            if (searchResultIsEmpty.value == false) {
+                item {
+                    searchResultItems.value?.let {
+                        SearchResultView(
+                            resultItems = it,
+                            modifier = Modifier.animateItemPlacement(),
+                            goToEvent = searchEvent,
+                            actionEvent = { event ->
+                                when (event) {
+                                    is SearchActionEvent.RequestFollow -> {
+                                        viewModel.requestFollow(event.userId, event.alreadyFollowed)
+                                    }
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }

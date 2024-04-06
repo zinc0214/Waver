@@ -7,4 +7,6 @@
     <string name="searchHint">리스트를 검색하세요</string>
     <string name="keywordRefresh">키워드 새로고침</string>
     <string name="searchProfileImage">프로필 이미지</string>
+
+    <string name="searchWordBlankText"> 에 대한\n 검색결과가 없습니다.</string>
 </resources>
