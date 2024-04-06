@@ -14,6 +14,7 @@ import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.ProfileInfo
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.AddBucketComment
+import com.zinc.domain.usecases.detail.DeleteBucketComment
 import com.zinc.domain.usecases.detail.GoalCountUpdate
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadProfileInfo
@@ -30,6 +31,7 @@ class DetailViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
     private val achieveMyBucket: AchieveMyBucket,
     private val addBucketComment: AddBucketComment,
+    private val deleteBucketComment: DeleteBucketComment,
     private val goalCountUpdate: GoalCountUpdate,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
@@ -162,6 +164,21 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch(CEH(_loadFail, true)) {
             accessToken.value?.let { token ->
                 val result = addBucketComment(token, request)
+                Log.e("ayhan", "comment Result : $result")
+                if (result.success) {
+                    getBucketDetail(userId!!, isMine!!)
+                } else {
+                    _loadFail.value = true
+                }
+            }
+        }
+    }
+
+    fun deleteBucketComment(id: String) {
+        _loadFail.value = false
+        viewModelScope.launch(CEH(_loadFail, true)) {
+            accessToken.value?.let { token ->
+                val result = deleteBucketComment(token, id)
                 Log.e("ayhan", "comment Result : $result")
                 if (result.success) {
                     getBucketDetail(userId!!, isMine!!)

@@ -49,4 +49,8 @@ internal class DetailRepositoryImpl @Inject constructor(
             berryBucketApi.loadOtherProfileInfo(token, writerId)
         }
     }
+
+    override suspend fun deleteBucketComment(token: String, id: String): CommonResponse {
+        return berryBucketApi.deleteComment(token, id)
+    }
 }

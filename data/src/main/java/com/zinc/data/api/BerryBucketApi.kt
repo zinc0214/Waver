@@ -316,4 +316,11 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("otherUserId") id: String,
     ): ProfileResponse
+
+    // 댓글 삭제
+    @DELETE("/comment/{id}")
+    suspend fun deleteComment(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+    ): CommonResponse
 }

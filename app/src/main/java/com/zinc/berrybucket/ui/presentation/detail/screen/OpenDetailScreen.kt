@@ -237,8 +237,9 @@ fun OpenDetailScreen(
                         commentOptionClicked = {
                             when (it) {
                                 is MyCommentOptionClicked.Delete -> {
-
-
+                                    viewModel.deleteBucketComment(it.commentId)
+                                    commentOptionPopUpShowed.value =
+                                        false to commentOptionPopUpShowed.value.second
                                 }
 
                                 is MyCommentOptionClicked.Edit -> {
