@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
@@ -33,11 +34,12 @@ class JoinEmailViewModel @Inject constructor(
         viewModelScope.launch(CEH(_failEmailCheck, true)) {
             runCatching {
                 val res = joinByEmail(email)
+                Log.e("ayhan", "checkEmailValid  :$res")
                 if (res.code == "1004") {
                     // 존재하는 이메일
                     _isAlreadyUsedEmail.value = true
                     _failEmailCheck.value = false
-                } else if (res.success && res.data != null) {
+                } else if (res.success && res.code == "0000") {
                     // 존재하지 않는 이메일
                     _goToMakeNickName.value =
                         res.data?.accessToken.orEmpty() to res.data?.refreshToken.orEmpty()

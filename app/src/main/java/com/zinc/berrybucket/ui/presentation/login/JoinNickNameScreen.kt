@@ -32,11 +32,12 @@ fun JoinNickNameScreen(
     goToMain: () -> Unit,
     goToBack: () -> Unit
 ) {
-    val viewModel: JoinNickNameViewModel = hiltViewModel()
+    val createUserViewModel: JoinNickNameViewModel = hiltViewModel()
 
-    val checkAlreadyUsedNickname by viewModel.isAlreadyUsedNickName.observeAsState()
-    val failJoinAsState by viewModel.failJoin.observeAsState()
-    val goToLoginAsState by viewModel.goToLogin.observeAsState()
+    val checkAlreadyUsedNickname by createUserViewModel.isAlreadyUsedNickName.observeAsState()
+    val failJoinAsState by createUserViewModel.failJoin.observeAsState()
+    val goToLoginAsState by createUserViewModel.goToLogin.observeAsState()
+    val failLoginAsState by createUserViewModel.failLogin.observeAsState()
 
     val isDataChanged = remember { mutableStateOf(false) }
     var showSelectCameraType by remember { mutableStateOf(false) }
@@ -46,7 +47,6 @@ fun JoinNickNameScreen(
     val updateImagePath: MutableState<String?> = remember { mutableStateOf(null) }
 
     val isJoinFailed = remember { mutableStateOf(failJoinAsState) }
-    val tryLoginEmail = remember { mutableStateOf("") }
 
     val nickNameData = remember {
         mutableStateOf(
@@ -68,14 +68,7 @@ fun JoinNickNameScreen(
 
     LaunchedEffect(key1 = checkAlreadyUsedNickname) {
         isAlreadyUsedNickname.value = checkAlreadyUsedNickname ?: false
-        if (checkAlreadyUsedNickname == false) {
-            viewModel.createNewProfile(
-                email = tryLoginEmail.value,
-                nickName = nickNameData.value.prevText,
-                bio = bioData.value.prevText,
-                image = updateImageFile.value
-            )
-        } else {
+        if (checkAlreadyUsedNickname == true) {
             isDataChanged.value = false
         }
     }
@@ -92,8 +85,13 @@ fun JoinNickNameScreen(
 
     LaunchedEffect(key1 = goToLoginAsState) {
         if (goToLoginAsState == true) {
-            viewModel.createUserToken(loginPrevData)
             goToMain()
+        }
+    }
+
+    LaunchedEffect(key1 = failLoginAsState) {
+        if (failLoginAsState == true) {
+            isJoinFailed.value = true
         }
     }
 
@@ -110,7 +108,13 @@ fun JoinNickNameScreen(
             },
             saveClicked = {
                 if (nickNameData.value.prevText.isNotEmpty()) {
-                    viewModel.checkIsAlreadyUsedName(nickNameData.value.prevText)
+                    createUserViewModel.join(
+                        token = loginPrevData.accessToken,
+                        email = loginPrevData.email,
+                        nickName = nickNameData.value.prevText,
+                        bio = bioData.value.prevText,
+                        image = updateImageFile.value
+                    )
                 }
             }
         )
