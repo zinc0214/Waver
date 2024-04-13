@@ -20,7 +20,6 @@ import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -64,8 +63,8 @@ class DetailViewModel @Inject constructor(
             viewModelScope.launch(CEH(_loadFail, true)) {
 
                 // TODO : 다른사람 프로필 조회도 필요해!!!
-                val job1 = async { getBucketDetailData(token, id, isMine) }
-                val job2 = async { getProfileInfo(token, isMine = isMine, writerId = id) }
+                val job1 = launch { getBucketDetailData(token, id, isMine) }
+                val job2 = launch { getProfileInfo(token, isMine = isMine, writerId = id) }
 
                 joinAll(job1, job2).runCatching {
                     Log.e("ayhan", "runCatching")
