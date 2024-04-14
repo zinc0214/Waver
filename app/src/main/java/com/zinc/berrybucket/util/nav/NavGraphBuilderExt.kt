@@ -72,11 +72,11 @@ internal fun NavGraphBuilder.homeMy(
 }
 
 internal fun NavGraphBuilder.homeFeed(
-    onFeedClicked: (String, NavBackStackEntry) -> Unit
+    onFeedClicked: (String, String, NavBackStackEntry) -> Unit
 ) {
     composable(HomeSections.FEED.route) { from ->
-        FeedScreen(goToBucket = {
-            onFeedClicked(it, from)
+        FeedScreen(goToBucket = { bucketId, userId ->
+            onFeedClicked(bucketId, userId, from)
         })
     }
 }
@@ -346,18 +346,22 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
     backPress: () -> Unit
 ) {
     composable(
-        "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}/{${MainDestinations.BUCKET_IS_MINE}}",
+        "${MainDestinations.OPEN_BUCKET_DETAIL}/{${MainDestinations.BUCKET_ID_KEY}}/{${MainDestinations.WRITER_ID_KEY}}/{${MainDestinations.BUCKET_IS_MINE}}",
         arguments = listOf(navArgument(MainDestinations.BUCKET_ID_KEY) {
             type = NavType.StringType
         }, navArgument(MainDestinations.BUCKET_IS_MINE) {
             type = NavType.BoolType
+        }, navArgument(MainDestinations.WRITER_ID_KEY) {
+            type = NavType.StringType
         })
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
+        val writerId = arguments.getString(MainDestinations.WRITER_ID_KEY) ?: ""
         val isMine = arguments.getBoolean(MainDestinations.BUCKET_IS_MINE)
         OpenDetailScreen(
             detailId = detailId,
+            writerId = writerId,
             isMine = isMine,
             goToEvent = {
                 when (it) {
@@ -421,6 +425,7 @@ object MainDestinations {
     const val CLOSE_BUCKET_DETAIL = "close_bucket_detail"
     const val OPEN_BUCKET_DETAIL = "open_bucket_detail"
     const val BUCKET_ID_KEY = "bucketId"
+    const val WRITER_ID_KEY = "writerId"
     const val BUCKET_IS_MINE = "isMine"
     const val MY_SEARCH = "my_search"
     const val MY_CATEGORY_EDIT = "my_category_edit"

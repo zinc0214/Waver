@@ -71,8 +71,8 @@ fun SearchResultView(
 
         bucketVisibleItem.forEach {
             RecommendBucketItemView(item = it,
-                bucketClicked = { id ->
-                    goToEvent.invoke(SearchGoToEvent.GoToOpenBucket(id))
+                bucketClicked = { bucketId, userId ->
+                    goToEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId))
                 })
         }
 

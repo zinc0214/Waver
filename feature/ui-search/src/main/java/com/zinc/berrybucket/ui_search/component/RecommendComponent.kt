@@ -164,7 +164,7 @@ fun RecommendListView(
     maxAppBarHeight: Dp,
     minAppBarHeight: Dp,
     recommendList: RecommendList,
-    bucketClicked: (String) -> Unit
+    bucketClicked: (String, String) -> Unit
 ) {
 
     val maxAppBarPixelValue = with(LocalDensity.current) { maxAppBarHeight.toPx() }
@@ -250,7 +250,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
 
 
 @Composable
-fun RecommendBucketListView(list: List<SearchBucketItem>, bucketClicked: (String) -> Unit) {
+fun RecommendBucketListView(list: List<SearchBucketItem>, bucketClicked: (String, String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -268,7 +268,7 @@ fun RecommendBucketListView(list: List<SearchBucketItem>, bucketClicked: (String
 fun RecommendBucketItemView(
     modifier: Modifier = Modifier,
     item: SearchBucketItem,
-    bucketClicked: (String) -> Unit
+    bucketClicked: (String, String) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
@@ -278,7 +278,7 @@ fun RecommendBucketItemView(
         modifier = modifier
             .padding(top = 12.dp)
             .clickable {
-                bucketClicked(item.id)
+                bucketClicked(item.bucketId, item.writerId)
             }
     ) {
         Column {

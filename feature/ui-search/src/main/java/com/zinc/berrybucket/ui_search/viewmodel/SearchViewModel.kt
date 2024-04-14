@@ -191,24 +191,28 @@ class SearchViewModel @Inject constructor(
 
         val bucketItem = listOf(
             SearchBucketItem(
-                id = "1",
+                bucketId = "1",
                 thumbnail = "1",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
+                writerId = "32",
                 isCopied = false
             ),
             SearchBucketItem(
-                id = "2",
+                bucketId = "2",
                 title = "버킷리스트 타이틀",
+                writerId = "32",
                 isCopied = true
             ),
             SearchBucketItem(
-                id = "3",
+                bucketId = "3",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
+                writerId = "32",
                 isCopied = false
             ),
             SearchBucketItem(
-                id = "4",
+                bucketId = "4",
                 title = "버킷리스트 타이틀",
+                writerId = "32",
                 isCopied = true
             )
         )

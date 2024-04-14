@@ -9,6 +9,6 @@ interface DetailRepository {
     suspend fun loadBucketDetail(token: String, id: String, isMine: Boolean): BucketDetailResponse
     suspend fun addBucketComment(token: String, request: AddBucketCommentRequest): CommonResponse
     suspend fun requestGoalCountUpdate(token: String, id: String, goalCount: Int): CommonResponse
-    suspend fun loadProfile(token: String, isMine: Boolean, writerId: String): ProfileResponse
+    suspend fun loadProfile(token: String, isMine: Boolean, writerId: String?): ProfileResponse
     suspend fun deleteBucketComment(token: String, id: String): CommonResponse
 }

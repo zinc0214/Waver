@@ -97,8 +97,8 @@ fun BerryBucketApp(
                     startDestination = HomeSections.MY.route,
                     modifier = Modifier.padding(innerPaddingModifier)
                 ) {
-                    homeFeed(onFeedClicked = { id, nav ->
-                        appState.navigateToOpenBucketDetail(id, false, nav)
+                    homeFeed(onFeedClicked = { bucketId, userId, nav ->
+                        appState.navigateToOpenBucketDetail(bucketId, userId, false, nav)
                     })
                     homeSearch(
                         onSearchEvent = { event, nav ->
@@ -108,7 +108,12 @@ fun BerryBucketApp(
                                 }
 
                                 is SearchGoToEvent.GoToOpenBucket -> {
-                                    appState.navigateToOpenBucketDetail(event.id, false, nav)
+                                    appState.navigateToOpenBucketDetail(
+                                        event.bucketId,
+                                        event.userId,
+                                        false,
+                                        nav
+                                    )
                                 }
 
                                 is SearchGoToEvent.GoToOtherUser -> {
@@ -143,7 +148,7 @@ fun BerryBucketApp(
                                         )
                                     } else {
                                         appState.navigateToOpenBucketDetail(
-                                            selected.bucketInfo.id, true, nav
+                                            selected.bucketInfo.id, "NoId", true, nav
                                         )
                                     }
                                 }
@@ -186,7 +191,7 @@ fun BerryBucketApp(
                                 if (event.isPrivate) {
                                     appState.navigateToCloseBucketDetail(event.id, nav)
                                 } else {
-                                    appState.navigateToOpenBucketDetail(event.id, true, nav)
+                                    appState.navigateToOpenBucketDetail(event.id, "NoId", true, nav)
                                 }
                             }
 
@@ -206,7 +211,7 @@ fun BerryBucketApp(
                             if (isPrivate) {
                                 appState.navigateToCloseBucketDetail(id, nav)
                             } else {
-                                appState.navigateToOpenBucketDetail(id, true, nav)
+                                appState.navigateToOpenBucketDetail(id, "NoId", true, nav)
                             }
                         },
                         goToAddBucket = {
@@ -287,7 +292,12 @@ fun BerryBucketApp(
                                 }
 
                                 is SearchGoToEvent.GoToOpenBucket -> {
-                                    appState.navigateToOpenBucketDetail(event.id, false, nav)
+                                    appState.navigateToOpenBucketDetail(
+                                        event.bucketId,
+                                        event.userId,
+                                        false,
+                                        nav
+                                    )
                                 }
 
                                 is SearchGoToEvent.GoToOtherUser -> {
@@ -324,7 +334,8 @@ fun BerryBucketApp(
                         when (event) {
                             is OtherHomeEvent.GoToBack -> appState.backPress()
                             is OtherHomeEvent.GoToOtherBucket -> appState.navigateToOpenBucketDetail(
-                                bucketId = event.id.toString(),
+                                bucketId = event.bucketId.toString(),
+                                writerId = event.writerId,
                                 isMine = false,
                                 from = from
                             )

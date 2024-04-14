@@ -18,6 +18,7 @@ data class FeedListResponse(
 
     data class FeedItemResponse(
         val id: String,
+        val userId: String?,
         val status: FeedItemBucketStatus,
         val title: String,
         val images: List<String>,

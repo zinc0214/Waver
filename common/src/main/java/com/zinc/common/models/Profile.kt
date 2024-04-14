@@ -20,6 +20,7 @@ data class ProfileResponse(
 
 @Serializable
 data class ProfileInfo(
+    val userId: String? = "",
     val email: String,
     val name: String,
     val imgUrl: String?,

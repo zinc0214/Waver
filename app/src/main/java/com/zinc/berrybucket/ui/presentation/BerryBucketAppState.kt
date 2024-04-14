@@ -94,10 +94,15 @@ class BerryBucketAppState(
         }
     }
 
-    fun navigateToOpenBucketDetail(bucketId: String, isMine: Boolean, from: NavBackStackEntry) {
+    fun navigateToOpenBucketDetail(
+        bucketId: String,
+        writerId: String,
+        isMine: Boolean,
+        from: NavBackStackEntry
+    ) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}/${isMine}")
+            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}/${writerId}/${isMine}")
         }
     }
 

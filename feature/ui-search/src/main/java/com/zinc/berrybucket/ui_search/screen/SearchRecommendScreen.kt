@@ -61,8 +61,8 @@ fun SearchRecommendScreen(
                 maxAppBarHeight = maxAppBarHeight,
                 minAppBarHeight = minAppBarHeight,
                 recommendList = list,
-                bucketClicked = {
-                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(it))
+                bucketClicked = { bucketId, userId ->
+                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId))
                 }
             )
         }

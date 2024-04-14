@@ -66,6 +66,7 @@ import java.time.LocalTime
 @Composable
 fun OpenDetailScreen(
     detailId: String,
+    writerId: String,
     isMine: Boolean,
     goToEvent: (OpenBucketDetailEvent) -> Unit,
     backPress: () -> Unit
@@ -79,7 +80,7 @@ fun OpenDetailScreen(
         val observer = LifecycleEventObserver { owner, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
                 viewModel.getValidMentionList()
-                viewModel.getBucketDetail(detailId, isMine)
+                viewModel.getBucketDetail(detailId, writerId, isMine)
             }
         }
         lifecycle.addObserver(observer)
@@ -215,7 +216,7 @@ fun OpenDetailScreen(
                     }
 
                     is GoalCountUpdateEvent.CountUpdate -> {
-                        viewModel.goalCountUpdate(info.bucketId, it.count)
+                        viewModel.goalCountUpdate(it.count)
                         goalCountUpdatePopUpShowed.value = false
                     }
                 }
@@ -316,7 +317,7 @@ fun OpenDetailScreen(
                             }
 
                             is DetailClickEvent.SuccessClicked -> {
-                                viewModel.achieveMyBucket(it.id, isMine)
+                                viewModel.achieveMyBucket()
                             }
 
                             is DetailClickEvent.GoToOtherProfile -> {
@@ -352,7 +353,7 @@ fun OpenDetailScreen(
                         DetailSuccessButtonView(
                             modifier = Modifier.padding(bottom = 30.dp),
                             successClicked = {
-                                viewModel.achieveMyBucket(info.bucketId, isMine)
+                                viewModel.achieveMyBucket()
                             },
                             successButtonInfo = SuccessButtonInfo(
                                 goalCount = info.descInfo.goalCount,
@@ -495,7 +496,7 @@ fun OpenDetailScreen(
             commentReportInfo.value?.let { reportInfo ->
                 ReportScreen(reportInfo = reportInfo, backPress = { needToRefresh ->
                     if (needToRefresh) {
-                        viewModel.getBucketDetail(detailId, isMine)
+                        viewModel.getBucketDetail(detailId, writerId, isMine)
                     }
                     needToShowCommentReportView.value = false
                 })

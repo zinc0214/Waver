@@ -81,7 +81,7 @@ fun FeedCardView(
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-                clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId))
+                clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId, feedInfo.writerId))
             }
     ) {
         Column {
@@ -208,7 +208,12 @@ private fun BottomStateView(
                 image = R.drawable.btn_32_comment,
                 contentDescription = null,
                 onClick = {
-                    clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId))
+                    clickEvent.invoke(
+                        FeedClickEvent.GoToBucket(
+                            feedInfo.bucketId,
+                            feedInfo.writerId
+                        )
+                    )
                 },
                 modifier = Modifier
                     .size(32.dp)

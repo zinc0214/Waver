@@ -41,12 +41,12 @@ internal class DetailRepositoryImpl @Inject constructor(
     override suspend fun loadProfile(
         token: String,
         isMine: Boolean,
-        writerId: String
+        writerId: String?
     ): ProfileResponse {
         return if (isMine) {
             berryBucketApi.loadMyProfile(token)
         } else {
-            berryBucketApi.loadOtherProfileInfo(token, writerId)
+            berryBucketApi.loadOtherProfileInfo(token, writerId.orEmpty())
         }
     }
 

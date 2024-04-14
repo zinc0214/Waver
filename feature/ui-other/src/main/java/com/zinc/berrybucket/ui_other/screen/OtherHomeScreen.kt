@@ -78,10 +78,9 @@ fun OtherHomeScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp),
                         bucketList = homeData.bucketList,
-                        itemClicked = {
-                            otherHomeEvent.invoke(OtherHomeEvent.GoToOtherBucket(it))
+                        itemClicked = { bucketId ->
+                            otherHomeEvent.invoke(OtherHomeEvent.GoToOtherBucket(bucketId, userId))
                         }
-
                     )
                 }
             }

@@ -6,7 +6,8 @@ import com.zinc.domain.models.SearchResultResponse
 fun SearchResultResponse.SearchResult.parseUI(): SearchResultItems {
     val bucketItems = this.bucketlist.map {
         SearchBucketItem(
-            id = it.id.toString(),
+            bucketId = it.id.toString(),
+            writerId = "",
             thumbnail = null,
             title = it.title,
             isCopied = false
@@ -59,7 +60,8 @@ data class RecommendItem(
 )
 
 data class SearchBucketItem(
-    val id: String,
+    val bucketId: String,
+    val writerId: String,
     val thumbnail: String? = null,
     val title: String,
     val isCopied: Boolean,

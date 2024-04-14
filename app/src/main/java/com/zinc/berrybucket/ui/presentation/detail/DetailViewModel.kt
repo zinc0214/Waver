@@ -50,12 +50,14 @@ class DetailViewModel @Inject constructor(
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: ProfileInfo
 
-    private var userId: String? = null
+    private var bucketId: String? = null
+    private var writerId: String? = null
     private var isMine: Boolean? = true
 
-    fun getBucketDetail(id: String, isMine: Boolean) {
+    fun getBucketDetail(bucketId: String, writerId: String?, isMine: Boolean) {
 
-        userId = id
+        this.bucketId = bucketId
+        this.writerId = writerId
         this.isMine = isMine
 
         accessToken.value?.let { token ->
@@ -63,8 +65,8 @@ class DetailViewModel @Inject constructor(
             viewModelScope.launch(CEH(_loadFail, true)) {
 
                 // TODO : 다른사람 프로필 조회도 필요해!!!
-                val job1 = launch { getBucketDetailData(token, id, isMine) }
-                val job2 = launch { getProfileInfo(token, isMine = isMine, writerId = id) }
+                val job1 = launch { getBucketDetailData(token, bucketId, isMine) }
+                val job2 = launch { getProfileInfo(token, isMine = isMine, writerId = writerId) }
 
                 joinAll(job1, job2).runCatching {
                     Log.e("ayhan", "runCatching")
@@ -82,15 +84,15 @@ class DetailViewModel @Inject constructor(
         //   _bucketBucketDetailUiInfo.value = bucketDetailUiInfo1
     }
 
-    fun achieveMyBucket(id: String, isMine: Boolean) {
+    fun achieveMyBucket() {
         viewModelScope.launch(CEH(_achieveFail, true))
         {
             runCatching {
                 accessToken.value?.let { token ->
-                    val response = achieveMyBucket(token, id)
+                    val response = achieveMyBucket(token, bucketId!!)
                     if (response.success) {
                         _achieveFail.value = false
-                        getBucketDetail(id, isMine)
+                        getBucketDetail(bucketId!!, writerId!!, isMine!!)
                     } else {
                         _achieveFail.value = true
                     }
@@ -105,7 +107,7 @@ class DetailViewModel @Inject constructor(
         bucketDetailData = loadBucketDetail(token, id, isMine).data
     }
 
-    private suspend fun getProfileInfo(token: String, writerId: String, isMine: Boolean) {
+    private suspend fun getProfileInfo(token: String, writerId: String?, isMine: Boolean) {
         profileInfo = loadProfileInfo(token, writerId, isMine).data
     }
 
@@ -147,12 +149,12 @@ class DetailViewModel @Inject constructor(
     }
 
 
-    fun goalCountUpdate(bucketId: String, goalCount: Int) {
+    fun goalCountUpdate(goalCount: Int) {
         viewModelScope.launch(CEH(_loadFail, true)) {
             accessToken.value?.let { token ->
-                goalCountUpdate(token, bucketId, goalCount = goalCount)
+                goalCountUpdate(token, bucketId!!, goalCount = goalCount)
                 _loadFail.value = false
-                getBucketDetail(bucketId, true)
+                getBucketDetail(bucketId!!, writerId!!, true)
             }
         }
     }
@@ -165,7 +167,7 @@ class DetailViewModel @Inject constructor(
                 val result = addBucketComment(token, request)
                 Log.e("ayhan", "comment Result : $result")
                 if (result.success) {
-                    getBucketDetail(userId!!, isMine!!)
+                    getBucketDetail(bucketId!!, writerId!!, isMine!!)
                 } else {
                     _loadFail.value = true
                 }
@@ -180,7 +182,7 @@ class DetailViewModel @Inject constructor(
                 val result = deleteBucketComment(token, id)
                 Log.e("ayhan", "comment Result : $result")
                 if (result.success) {
-                    getBucketDetail(userId!!, isMine!!)
+                    getBucketDetail(bucketId!!, writerId!!, isMine!!)
                 } else {
                     _loadFail.value = true
                 }

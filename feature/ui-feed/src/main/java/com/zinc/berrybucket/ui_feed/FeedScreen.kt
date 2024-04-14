@@ -21,7 +21,7 @@ import com.zinc.berrybucket.ui_feed.viewModel.FeedViewModel
 import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
-fun FeedScreen(goToBucket: (String) -> Unit) {
+fun FeedScreen(goToBucket: (String, String) -> Unit) {
 
     val context = LocalContext.current
 
@@ -78,7 +78,7 @@ fun FeedScreen(goToBucket: (String) -> Unit) {
                     feedItems = it,
                     feedClicked = { event ->
                         when (event) {
-                            is FeedClickEvent.GoToBucket -> goToBucket(event.id)
+                            is FeedClickEvent.GoToBucket -> goToBucket(event.bucketId, event.userId)
                             is FeedClickEvent.Like -> {
                                 viewModel.saveBucketLike(event.id)
                             }

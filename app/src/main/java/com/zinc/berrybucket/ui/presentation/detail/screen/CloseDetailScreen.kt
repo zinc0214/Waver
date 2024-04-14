@@ -66,7 +66,7 @@ fun CloseDetailScreen(
         val observer = LifecycleEventObserver { owner, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
                 viewModel.getValidMentionList()
-                viewModel.getBucketDetail(detailId, true)
+                viewModel.getBucketDetail(detailId, "", true)
             }
         }
         lifecycle.addObserver(observer)
@@ -128,7 +128,7 @@ fun CloseDetailScreen(
 
                             is GoalCountUpdateEvent.CountUpdate -> {
                                 // Todo : ViewModel Update!
-                                viewModel.goalCountUpdate(info.bucketId, it.count)
+                                viewModel.goalCountUpdate(it.count)
                                 goalCountUpdatePopUpShowed.value = false
                             }
                         }
@@ -188,7 +188,7 @@ fun CloseDetailScreen(
                                     }
                                     .padding(bottom = if (scrollContext.isBottom) 28.dp else 0.dp),
                                 successClicked = {
-                                    viewModel.achieveMyBucket(info.bucketId, true)
+                                    viewModel.achieveMyBucket()
                                 },
                                 successButtonInfo = SuccessButtonInfo(
                                     goalCount = info.descInfo.goalCount,
