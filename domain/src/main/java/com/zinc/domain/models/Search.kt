@@ -15,6 +15,7 @@ data class SearchResultResponse(
 
     data class SearchResultBucketList(
         val id: Int,
+        val writerId: String? = null,
         val title: String
     )
 

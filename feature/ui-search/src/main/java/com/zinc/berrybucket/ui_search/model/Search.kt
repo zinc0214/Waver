@@ -7,7 +7,7 @@ fun SearchResultResponse.SearchResult.parseUI(): SearchResultItems {
     val bucketItems = this.bucketlist.map {
         SearchBucketItem(
             bucketId = it.id.toString(),
-            writerId = "",
+            writerId = it.id.toString(), // TODO : writer id 붙이기
             thumbnail = null,
             title = it.title,
             isCopied = false

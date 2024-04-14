@@ -19,7 +19,8 @@ import java.io.Serializable
 data class WriteAddOption(
     val type: WriteOptionsType2,
     val title: String,
-    val tagList: List<String>,
+    val showList: List<String>, // 보여줄 데이터
+    val dataList: List<String>, // 서버 전송용
     val showDivider: Boolean = false,
     val clicked: (WriteOptionsType2) -> Unit
 ) : Serializable

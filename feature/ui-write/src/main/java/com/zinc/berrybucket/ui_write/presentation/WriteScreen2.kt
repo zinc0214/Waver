@@ -115,21 +115,24 @@ fun WriteScreen2(
         WriteAddOption(
             type = WriteOptionsType2.TAG,
             title = "키워드 추가",
-            tagList = selectedKeyWords.value.map { "#${it.text}" },
+            showList = selectedKeyWords.value.map { "#${it.text}" },
+            dataList = selectedFriends.value.map { it.id },
             clicked = {
                 optionScreenShow = it
             }),
         WriteAddOption(
             type = WriteOptionsType2.FRIENDS,
             title = "함께할 친구 추가하기",
-            tagList = selectedFriends.value.map { "@${it.nickname}" },
+            showList = selectedFriends.value.map { "@${it.nickname}" },
+            dataList = selectedFriends.value.map { it.id },
             clicked = {
                 optionScreenShow = it
             }),
         WriteAddOption(
             type = WriteOptionsType2.OPEN,
             title = "공개설정",
-            tagList = listOf(selectedOpenType.value.text),
+            showList = listOf(selectedOpenType.value.text),
+            dataList = listOf(selectedOpenType.value.text),
             showDivider = true,
             clicked = {
                 optionScreenShow = it
@@ -140,7 +143,8 @@ fun WriteScreen2(
                 isScrapUsed = isScrapUsed.value
             ),
             title = "스크랩",
-            tagList = emptyList(),
+            dataList = emptyList(),
+            showList = emptyList(),
             clicked = {
                 optionScreenShow = null
             }),
@@ -305,8 +309,8 @@ private fun WriteScreen2ContentView(
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
-                                keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.tagList.orEmpty(),
-                                tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.tagList.orEmpty(),
+                                keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.dataList.orEmpty(),
+                                tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.dataList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
                             ),
                             isForUpdate = writeTotalInfo.isForUpdate

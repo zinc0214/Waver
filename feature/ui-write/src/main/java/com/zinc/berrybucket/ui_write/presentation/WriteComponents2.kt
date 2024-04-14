@@ -143,7 +143,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                     start = 28.dp,
                     top = 18.dp,
                     end = 28.dp,
-                    bottom = if (option.tagList.isEmpty()) 18.dp else 12.dp
+                    bottom = if (option.showList.isEmpty()) 18.dp else 12.dp
                 ),
             color = Gray10,
             fontSize = dpToSp(16.dp))
@@ -157,13 +157,13 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                     width = Dimension.fillToConstraints
                 }
                 .padding(
-                    start = if (option.tagList.isEmpty()) 0.dp else 28.dp,
-                    bottom = if (option.tagList.isEmpty()) 0.dp else 20.dp
+                    start = if (option.showList.isEmpty()) 0.dp else 28.dp,
+                    bottom = if (option.showList.isEmpty()) 0.dp else 20.dp
                 ),
             mainAxisSpacing = 12.dp,
             crossAxisSpacing = 8.dp,
         ) {
-            option.tagList.forEach {
+            option.showList.forEach {
                 MyText(
                     text = it,
                     modifier = Modifier,
