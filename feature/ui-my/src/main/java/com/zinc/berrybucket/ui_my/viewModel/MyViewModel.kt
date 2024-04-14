@@ -22,10 +22,10 @@ import com.zinc.common.models.BucketType
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.ExposureStatus
+import com.zinc.common.models.TopProfile
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
-import com.zinc.domain.models.TopProfile
 import com.zinc.domain.usecases.category.SearchCategoryList
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadAllBucketList

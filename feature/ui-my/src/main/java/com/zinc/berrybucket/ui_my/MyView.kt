@@ -13,7 +13,7 @@ import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.ui_my.databinding.LayoutMyViewBinding
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
 import com.zinc.berrybucket.ui_my.viewModel.MyViewModel
-import com.zinc.domain.models.TopProfile
+import com.zinc.common.models.TopProfile
 import kotlinx.coroutines.CoroutineScope
 
 // TODO : 제거예정

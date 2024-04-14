@@ -27,13 +27,13 @@ import com.zinc.berrybucket.ui.design.theme.Gray5
 import com.zinc.berrybucket.ui.design.theme.Gray6
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.berrybucket.ui_other.screen.OtherBucketInfo
 import com.zinc.berrybucket.util.shadow
+import com.zinc.common.models.OtherProfileHomeData
 
 @Composable
 fun OtherBucketListView(
     modifier: Modifier,
-    bucketList: List<OtherBucketInfo>,
+    bucketList: List<OtherProfileHomeData.OtherBucketInfo>,
     itemClicked: (Int) -> Unit,
 ) {
 
@@ -59,7 +59,7 @@ fun OtherBucketListView(
 
 @Composable
 private fun OtherBucketView(
-    info: OtherBucketInfo,
+    info: OtherProfileHomeData.OtherBucketInfo,
     itemClicked: (Int) -> Unit
 ) {
 
@@ -121,7 +121,7 @@ private fun TitleTextView(
 private fun OtherBucketPreview() {
     val list = buildList {
         add(
-            OtherBucketInfo(
+            OtherProfileHomeData.OtherBucketInfo(
                 title = "테스트1", bucketId = 0, isProgress = false
             )
         )

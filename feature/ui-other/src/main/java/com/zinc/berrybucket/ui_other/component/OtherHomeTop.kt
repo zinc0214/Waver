@@ -33,12 +33,11 @@ import com.zinc.berrybucket.ui.presentation.component.TitleIconType
 import com.zinc.berrybucket.ui.presentation.component.TitleView
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_other.R
-import com.zinc.domain.models.TopProfile
+import com.zinc.common.models.TopProfile
 
 @Composable
 fun OtherHomeProfile(
     profileInfo: TopProfile,
-    isAlreadyFollowed: Boolean,
     changeFollowStatus: (Boolean) -> Unit,
     goToBack: () -> Unit
 ) {
@@ -57,7 +56,7 @@ fun OtherHomeProfile(
         ProfileLayer(profileInfo)
         FollowStatus(
             modifier = Modifier.align(Alignment.CenterHorizontally),
-            isAlreadyFollowed
+            profileInfo.isFollowed
         ) {
             changeFollowStatus(it)
         }
@@ -165,6 +164,7 @@ private fun FollowCountTextView(modifier: Modifier, text: String, number: String
 private fun OtherHomeProfilePreview() {
     OtherHomeProfile(
         profileInfo = TopProfile(
+            isFollowed = false,
             name = "안녕다른사람",
             imgUrl = null,
             percent = 0.3f,
@@ -174,7 +174,6 @@ private fun OtherHomeProfilePreview() {
             followerCount = "10",
             followingCount = "20"
         ),
-        false,
         {}, {}
     )
 }

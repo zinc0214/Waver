@@ -17,7 +17,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray7
 import com.zinc.berrybucket.ui.design.theme.Main3
 import com.zinc.berrybucket.ui.util.dpToSp
-import com.zinc.domain.models.TopProfile
+import com.zinc.common.models.TopProfile
 
 @Composable
 fun ProfileLayer(profileInfo: TopProfile) {

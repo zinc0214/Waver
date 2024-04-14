@@ -27,3 +27,15 @@ data class ProfileInfo(
     val badgeTitle: String?,
     val badgeImgUrl: String?
 )
+
+data class TopProfile(
+    val isFollowed: Boolean = false,
+    val name: String,
+    val imgUrl: String?,
+    val percent: Float,
+    val badgeType: String?,
+    val badgeTitle: String?,
+    val bio: String?,
+    val followerCount: String,
+    val followingCount: String
+)

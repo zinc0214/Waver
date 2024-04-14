@@ -25,6 +25,8 @@ import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.CheckEmailsAlreadyUse
 import com.zinc.domain.models.FeedListResponse
+import com.zinc.domain.models.OtherBucketListResponse
+import com.zinc.domain.models.OtherFollowDataResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
 import com.zinc.domain.models.SearchRecommendResponse
@@ -316,6 +318,18 @@ interface BerryBucketApi {
         @Header("Authorization") token: String,
         @Path("otherUserId") id: String,
     ): ProfileResponse
+
+    @GET("/other/bucketlist/{otherUserId}")
+    suspend fun loadOtherBucketList(
+        @Header("Authorization") token: String,
+        @Path("otherUserId") id: String,
+    ): OtherBucketListResponse
+
+    @GET("/other/follow/count/{otherUserId}")
+    suspend fun loadOtherFollowData(
+        @Header("Authorization") token: String,
+        @Path("otherUserId") id: String,
+    ): OtherFollowDataResponse
 
     // 댓글 삭제
     @DELETE("/comment/{id}")

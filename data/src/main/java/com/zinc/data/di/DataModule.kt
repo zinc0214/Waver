@@ -11,6 +11,7 @@ import com.zinc.data.repository.KeywordRepositoryImpl
 import com.zinc.data.repository.LoginRepositoryImpl
 import com.zinc.data.repository.MoreRepositoryImpl
 import com.zinc.data.repository.MyRepositoryImpl
+import com.zinc.data.repository.OtherRepositoryImpl
 import com.zinc.data.repository.ReportRepositoryImpl
 import com.zinc.data.repository.SearchRepositoryImpl
 import com.zinc.data.repository.WriteRepositoryImpl
@@ -23,6 +24,7 @@ import com.zinc.domain.repository.KeywordRepository
 import com.zinc.domain.repository.LoginRepository
 import com.zinc.domain.repository.MoreRepository
 import com.zinc.domain.repository.MyRepository
+import com.zinc.domain.repository.OtherRepository
 import com.zinc.domain.repository.ReportRepository
 import com.zinc.domain.repository.SearchRepository
 import com.zinc.domain.repository.WriteRepository
@@ -100,6 +102,11 @@ internal abstract class DataModule {
     abstract fun bindMoreRepository(
         repository: MoreRepositoryImpl
     ): MoreRepository
+
+    @Binds
+    abstract fun bindOtherRepository(
+        repository: OtherRepositoryImpl
+    ): OtherRepository
 
     @InstallIn(SingletonComponent::class)
     @Module

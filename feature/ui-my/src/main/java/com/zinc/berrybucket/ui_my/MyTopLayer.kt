@@ -39,7 +39,7 @@ import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.ProfileLayer
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_my.model.MyTopEvent
-import com.zinc.domain.models.TopProfile
+import com.zinc.common.models.TopProfile
 
 @Composable
 fun MyTopLayer(
