@@ -60,7 +60,7 @@ fun WriteScreen2(
     var optionScreenShow: WriteOptionsType2? by remember { mutableStateOf(null) }
     val originKeyWords by viewModel.keywordList.observeAsState()
     val originFriendsAsState by viewModel.searchFriendsResult.observeAsState()
-    val loadFail by viewModel.loadFail.observeAsState()
+    val loadFailAsState by viewModel.loadFail.observeAsState()
     val addNewBucketListResult by viewModel.addNewBucketListResult.observeAsState()
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
@@ -79,8 +79,10 @@ fun WriteScreen2(
         originFriendList.value = originFriendsAsState
     }
 
-    LaunchedEffect(key1 = loadFail) {
-        if (loadFail?.first.isNullOrEmpty().not() && loadFail?.second.isNullOrEmpty().not()) {
+    LaunchedEffect(key1 = loadFailAsState) {
+        if (loadFailAsState?.first.isNullOrEmpty().not() && loadFailAsState?.second.isNullOrEmpty()
+                .not()
+        ) {
             showApiFailDialog.value = true
         }
     }
@@ -100,6 +102,7 @@ fun WriteScreen2(
         if (optionScreenShow != null) {
             optionScreenShow = null
         } else {
+            viewModel.clearData()
             goToBack(
                 writeTotalInfo.copy(
                     keyWord = selectedKeyWords.value,
@@ -195,6 +198,7 @@ fun WriteScreen2(
                 writeTotalInfo = writeTotalInfo,
                 optionsList = optionsList,
                 goToBack = {
+                    viewModel.clearData()
                     goToBack(
                         writeTotalInfo.copy(
                             writeOpenType = selectedOpenType.value,
@@ -238,8 +242,8 @@ fun WriteScreen2(
 
         if (showApiFailDialog.value) {
             ApiFailDialog(
-                title = loadFail?.first.orEmpty(),
-                message = loadFail?.second.orEmpty(),
+                title = loadFailAsState?.first.orEmpty(),
+                message = loadFailAsState?.second.orEmpty(),
                 dismissEvent = {
                     showApiFailDialog.value = false
                 })

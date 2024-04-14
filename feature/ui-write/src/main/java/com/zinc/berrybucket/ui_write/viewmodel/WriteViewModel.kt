@@ -52,7 +52,9 @@ class WriteViewModel @Inject constructor(
     private val _loadFail = MutableLiveData<Pair<String, String>>()
     val loadFail: LiveData<Pair<String, String>> get() = _loadFail
 
-
+    fun clearData() {
+        _loadFail.value = null
+    }
     fun addNewBucketList(writeInfo: UIAddBucketListInfo, isForUpdate: Boolean) {
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             _loadFail.value = "버킷리스트 생성 실패" to "다시 시도해주세요"
@@ -60,6 +62,7 @@ class WriteViewModel @Inject constructor(
             Log.e("ayhan", "Imagrs : ${writeInfo.images}")
         }) {
             runCatching {
+                _loadFail.value = null
                 accessToken.value?.let { accessToken ->
                     val result = addNewBucketList.invoke(
                         accessToken,
@@ -100,6 +103,7 @@ class WriteViewModel @Inject constructor(
     fun loadFriends() {
         viewModelScope.launch(CEH(_loadFail, "친구 로드 실패" to "로드 실패!")) {
             runCatching {
+                _loadFail.value = null
                 accessToken.value?.let { token ->
                     val res = loadFriends(token)
                     if (res.success) {
@@ -123,6 +127,7 @@ class WriteViewModel @Inject constructor(
     }
 
     fun loadKeyword() {
+        _loadFail.value = null
         viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
             _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
         }) {
@@ -146,6 +151,7 @@ class WriteViewModel @Inject constructor(
     }
 
     fun getBucketDetailData(bucketId: String) {
+        _loadFail.value = null
         if (bucketId.isBlank().not() && bucketId != "NoId") {
             viewModelScope.launch(CEH(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
                 runCatching {
