@@ -14,8 +14,8 @@ import com.zinc.berrybucket.ui_search.model.SearchResultItems
 import com.zinc.berrybucket.ui_search.model.parseUI
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
-import com.zinc.domain.usecases.my.RequestFollowUser
-import com.zinc.domain.usecases.my.RequestUnfollowUser
+import com.zinc.domain.usecases.other.RequestFollowUser
+import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
 import com.zinc.domain.usecases.search.LoadSearchRecommend
 import com.zinc.domain.usecases.search.LoadSearchResult

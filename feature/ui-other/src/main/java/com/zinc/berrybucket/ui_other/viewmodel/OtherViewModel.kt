@@ -8,6 +8,8 @@ import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.OtherProfileHomeData
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.other.LoadOtherInfo
+import com.zinc.domain.usecases.other.RequestFollowUser
+import com.zinc.domain.usecases.other.RequestUnfollowUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class OtherViewModel @Inject constructor(
     private val loadOtherInfo: LoadOtherInfo,
+    private val followUser: RequestFollowUser,
+    private val unfollowUser: RequestUnfollowUser,
     loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
 ) : CommonViewModel(loginPreferenceDataStoreModule) {
 
@@ -41,5 +45,41 @@ class OtherViewModel @Inject constructor(
                 _loadFail.value = true
             }
         }
+    }
+
+    fun changeFollowStatus(userId: String, follow: Boolean) {
+        viewModelScope.launch(CEH(_loadFail, true)) {
+            runCatching {
+                accessToken.value?.let { token ->
+                    if (follow) {
+                        val result = followUser.invoke(token, userId)
+                        if (result.success) {
+                            updateProfile(true)
+                            _loadFail.value = false
+                        } else {
+                            _loadFail.value = true
+                        }
+                    } else {
+                        val result = unfollowUser.invoke(token, userId)
+                        if (result.success) {
+                            updateProfile(false)
+                            _loadFail.value = false
+                        } else {
+                            _loadFail.value = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateProfile(updateFollow: Boolean) {
+        if (otherHomeData.value == null) return
+
+        val topProfile = otherHomeData.value!!.profile
+        val updateProfile = topProfile.copy(isFollowed = updateFollow)
+        val updateData = otherHomeData.value?.copy(profile = updateProfile)
+
+        _otherHomeData.value = updateData
     }
 }

@@ -9,8 +9,8 @@ import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.utils.cehCommonTitle
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.my.LoadFollowList
-import com.zinc.domain.usecases.my.RequestFollowUser
-import com.zinc.domain.usecases.my.RequestUnfollowUser
+import com.zinc.domain.usecases.other.RequestFollowUser
+import com.zinc.domain.usecases.other.RequestUnfollowUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch

@@ -13,11 +13,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.design.theme.Gray2
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.ui_other.component.OtherBucketListView
 import com.zinc.berrybucket.ui_other.component.OtherHomeProfile
 import com.zinc.berrybucket.ui_other.model.OtherHomeEvent
@@ -34,8 +37,10 @@ fun OtherHomeScreen(
 
     val viewModel: OtherViewModel = hiltViewModel()
     val profileHomeDataAsState by viewModel.otherHomeData.observeAsState()
+    val apiFailAsState by viewModel.loadFail.observeAsState()
 
     val profileHomeData = remember { mutableStateOf(profileHomeDataAsState) }
+    val showFailDialog = remember { mutableStateOf(false) }
 
     if (profileHomeDataAsState == null) {
         viewModel.loadOtherInfo(userId)
@@ -45,6 +50,10 @@ fun OtherHomeScreen(
         profileHomeDataAsState?.let {
             profileHomeData.value = it
         }
+    }
+
+    LaunchedEffect(key1 = apiFailAsState) {
+        showFailDialog.value = apiFailAsState == true
     }
 
 
@@ -59,7 +68,9 @@ fun OtherHomeScreen(
                     Column {
                         OtherHomeProfile(
                             profileInfo = homeData.profile,
-                            changeFollowStatus = {},
+                            changeFollowStatus = { changeFollow ->
+                                viewModel.changeFollowStatus(userId, changeFollow)
+                            },
                             goToBack = {
                                 otherHomeEvent.invoke(OtherHomeEvent.GoToBack)
                             }
@@ -84,6 +95,15 @@ fun OtherHomeScreen(
                     )
                 }
             }
+        }
+    }
+
+    if (showFailDialog.value) {
+        ApiFailDialog(
+            title = stringResource(id = R.string.apiFailTitle),
+            message = stringResource(id = R.string.apiFailMessage)
+        ) {
+            showFailDialog.value = false
         }
     }
 }

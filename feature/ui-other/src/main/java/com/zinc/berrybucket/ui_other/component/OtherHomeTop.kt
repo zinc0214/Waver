@@ -78,9 +78,9 @@ private fun FollowStatus(
         if (isAlreadyFollowed) stringResource(id = R.string.otherFollowed) else stringResource(
             id = R.string.otherFollow
         )
-    val bgColor = if (isAlreadyFollowed) Main1 else Gray2
-    val textColor = if (isAlreadyFollowed) Main4 else Gray7
-    val borderColor = if (isAlreadyFollowed) Main4 else Gray5
+    val bgColor = if (isAlreadyFollowed) Gray2 else Main1
+    val textColor = if (isAlreadyFollowed) Gray7 else Main4
+    val borderColor = if (isAlreadyFollowed) Gray5 else Main4
     MyText(
         text = followText,
         color = textColor,

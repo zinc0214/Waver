@@ -53,7 +53,7 @@ class LoadOtherInfo @Inject constructor(
                             isSuccess = true,
                             data = OtherProfileHomeData(
                                 profile = TopProfile(
-                                    isFollowed = false,
+                                    isFollowed = profile.followYn?.isYes() ?: false,
                                     name = profile.name,
                                     imgUrl = profile.imgUrl,
                                     percent = bucketList.completedCount.toFloat() / bucketList.totalCount.toFloat(),

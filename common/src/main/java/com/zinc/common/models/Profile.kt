@@ -26,7 +26,8 @@ data class ProfileInfo(
     val imgUrl: String?,
     val bio: String?,
     val badgeTitle: String?,
-    val badgeImgUrl: String?
+    val badgeImgUrl: String?,
+    val followYn: YesOrNo? = YesOrNo.N
 )
 
 data class TopProfile(
