@@ -34,13 +34,42 @@ fun MyCommentSelectedDialog(
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (MyCommentOptionClicked) -> Unit
 ) {
-    CommentSelectedDialog(comment, onDismissRequest) {
-        when (it) {
-            is InnerCommentOptionClicked.FirstOptionClickedInner ->
-                commentOptionClicked(MyCommentOptionClicked.Edit(it.commentId))
+    val dialogProperties = DialogProperties(
+        dismissOnBackPress = true,
+        dismissOnClickOutside = true,
+        securePolicy = SecureFlagPolicy.Inherit,
+        usePlatformDefaultWidth = false
+    )
 
-            is InnerCommentOptionClicked.SecondOptionClickedInner ->
-                commentOptionClicked(MyCommentOptionClicked.Delete(it.commentId))
+    Dialog(
+        properties = dialogProperties,
+        onDismissRequest = { onDismissRequest(false) }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 50.dp)
+                .background(color = Gray1, shape = RoundedCornerShape(8.dp))
+                .padding(24.dp)
+        ) {
+            MyText(
+                text = stringResource(id = R.string.commentOptionDialogTitle),
+                fontSize = dpToSp(14.dp),
+                fontWeight = FontWeight.Bold,
+                color = Gray10,
+                modifier = Modifier.padding(bottom = 24.dp)
+            )
+
+            MyText(
+                text = stringResource(id = R.string.commentDelete),
+                fontSize = dpToSp(14.dp),
+                color = Gray10,
+                modifier = Modifier
+                    .padding(bottom = 20.dp)
+                    .fillMaxWidth()
+                    .clickable {
+                        commentOptionClicked.invoke(MyCommentOptionClicked.Delete(comment.commentId))
+                    }
+            )
         }
     }
 }
@@ -57,24 +86,6 @@ fun OtherCommentSelectedDialog(
     comment: Comment,
     onDismissRequest: (Boolean) -> Unit,
     commentOptionClicked: (OtherCommentOptionClicked) -> Unit
-) {
-    CommentSelectedDialog(comment, onDismissRequest) {
-        when (it) {
-            is InnerCommentOptionClicked.FirstOptionClickedInner ->
-                commentOptionClicked(OtherCommentOptionClicked.Hide(it.commentId))
-
-            is InnerCommentOptionClicked.SecondOptionClickedInner ->
-                commentOptionClicked(OtherCommentOptionClicked.Report(it.commentId))
-        }
-    }
-}
-
-
-@Composable
-private fun CommentSelectedDialog(
-    comment: Comment,
-    onDismissRequest: (Boolean) -> Unit,
-    commentOptionClicked: (InnerCommentOptionClicked) -> Unit
 ) {
 
     val dialogProperties = DialogProperties(
@@ -103,7 +114,7 @@ private fun CommentSelectedDialog(
                 modifier = Modifier.padding(bottom = 24.dp)
             )
             MyText(
-                text = stringResource(id = if (comment.isMine) R.string.commentEdit else R.string.commentHide),
+                text = stringResource(R.string.commentHide),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
@@ -111,14 +122,14 @@ private fun CommentSelectedDialog(
                     .fillMaxWidth()
                     .clickable {
                         commentOptionClicked.invoke(
-                            InnerCommentOptionClicked.FirstOptionClickedInner(
+                            OtherCommentOptionClicked.Hide(
                                 comment.commentId
                             )
                         )
                     }
             )
             MyText(
-                text = stringResource(id = if (comment.isMine) R.string.commentDelete else R.string.commentReport),
+                text = stringResource(R.string.commentReport),
                 fontSize = dpToSp(14.dp),
                 color = Gray10,
                 modifier = Modifier
@@ -126,7 +137,7 @@ private fun CommentSelectedDialog(
                     .fillMaxWidth()
                     .clickable {
                         commentOptionClicked.invoke(
-                            InnerCommentOptionClicked.SecondOptionClickedInner(
+                            OtherCommentOptionClicked.Report(
                                 comment.commentId
                             )
                         )
@@ -137,19 +148,7 @@ private fun CommentSelectedDialog(
 }
 
 
-private sealed class InnerCommentOptionClicked {
-    data class FirstOptionClickedInner(
-        val commentId: String
-    ) : InnerCommentOptionClicked()
-
-    data class SecondOptionClickedInner(
-        val commentId: String
-    ) : InnerCommentOptionClicked()
-}
-
-
 sealed interface MyCommentOptionClicked {
-    data class Edit(val commentId: String) : MyCommentOptionClicked
     data class Delete(val commentId: String) : MyCommentOptionClicked
 }
 

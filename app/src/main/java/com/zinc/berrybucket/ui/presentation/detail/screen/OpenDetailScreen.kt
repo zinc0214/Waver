@@ -242,11 +242,6 @@ fun OpenDetailScreen(
                                     commentOptionPopUpShowed.value =
                                         false to commentOptionPopUpShowed.value.second
                                 }
-
-                                is MyCommentOptionClicked.Edit -> {
-
-
-                                }
                             }
                         }
                     )

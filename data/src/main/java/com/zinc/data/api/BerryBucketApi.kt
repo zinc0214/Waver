@@ -268,7 +268,7 @@ interface BerryBucketApi {
     ): CommonResponse
 
     // 피드 > 다른사람 버킷리스트 상세
-    @GET("/feeds/{id}")
+    @GET("/bucketlist/{id}")
     suspend fun loadOtherBucketDetail(
         @Header("Authorization") token: String,
         @Path("id") id: String

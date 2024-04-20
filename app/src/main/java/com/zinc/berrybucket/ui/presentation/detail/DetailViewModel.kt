@@ -108,7 +108,7 @@ class DetailViewModel @Inject constructor(
     }
 
     private suspend fun getProfileInfo(token: String, writerId: String?, isMine: Boolean) {
-        profileInfo = loadProfileInfo(token, writerId, isMine).data
+        profileInfo = loadProfileInfo(token, isMine, writerId).data
     }
 
     fun getValidMentionList() {
