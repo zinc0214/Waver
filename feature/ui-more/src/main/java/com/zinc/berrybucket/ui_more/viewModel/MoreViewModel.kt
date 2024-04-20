@@ -98,8 +98,8 @@ class MoreViewModel @Inject constructor(
     fun checkIsAlreadyUsedName(name: String) {
         viewModelScope.launch(CEH(_isAlreadyUsedNickName, true)) {
             runCatching {
-                accessToken.value?.let { token ->
-                    checkAlreadyUsedNickname.invoke(token, name).apply {
+                accessToken.value?.let {
+                    checkAlreadyUsedNickname.invoke(name).apply {
                         Log.e("ayhan", "check Alreay $this")
                         if (success) {
                             _isAlreadyUsedNickName.value = false

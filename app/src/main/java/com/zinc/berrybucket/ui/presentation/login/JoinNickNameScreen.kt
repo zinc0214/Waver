@@ -22,13 +22,12 @@ import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.component.profile.ProfileEditView
 import com.zinc.berrybucket.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.berrybucket.ui.presentation.login.component.ProfileCreateTitle
-import com.zinc.berrybucket.ui.presentation.login.model.LoginPrevData
 import com.zinc.berrybucket.ui.presentation.model.ProfileEditData
 import java.io.File
 
 @Composable
 fun JoinNickNameScreen(
-    loginPrevData: LoginPrevData,
+    email: String,
     goToMain: () -> Unit,
     goToBack: () -> Unit
 ) {
@@ -109,8 +108,7 @@ fun JoinNickNameScreen(
             saveClicked = {
                 if (nickNameData.value.prevText.isNotEmpty()) {
                     createUserViewModel.join(
-                        token = loginPrevData.accessToken,
-                        email = loginPrevData.email,
+                        email = email,
                         nickName = nickNameData.value.prevText,
                         bio = bioData.value.prevText,
                         image = updateImageFile.value

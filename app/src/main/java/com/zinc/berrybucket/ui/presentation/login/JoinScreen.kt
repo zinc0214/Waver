@@ -6,30 +6,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.zinc.berrybucket.ui.presentation.login.model.LoginPrevData
 
 @Composable
 fun JoinScreen(
     goToMain: () -> Unit,
-    goToBack: () -> Unit
+    goToBack: () -> Unit,
+    goToLogin: (String) -> Unit
 ) {
 
     var emailLoginSucceed by remember {
         mutableStateOf(false)
     }
 
-    val loginPrevData: MutableState<LoginPrevData?> = remember { mutableStateOf(null) }
+    val joinTryEmail: MutableState<String?> = remember { mutableStateOf(null) }
 
     if (emailLoginSucceed.not()) {
         JoinEmailScreen(goToNexPage = {
-            loginPrevData.value = it
+            joinTryEmail.value = it
             emailLoginSucceed = true
         }, goToBack = {
             goToBack()
-        })
+        }, goToLogin = goToLogin)
     } else {
         JoinNickNameScreen(
-            loginPrevData = loginPrevData.value!!,
+            email = joinTryEmail.value.orEmpty(),
             goToMain = { goToMain() },
             goToBack = { goToBack() }
         )

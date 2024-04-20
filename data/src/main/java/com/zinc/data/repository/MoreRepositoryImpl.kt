@@ -33,7 +33,7 @@ internal class MoreRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun checkAlreadyUsedNickName(token: String, name: String): CommonResponse {
-        return berryBucketApi.checkAlreadyUsedNickname(token, name)
+    override suspend fun checkAlreadyUsedNickName(name: String): CommonResponse {
+        return berryBucketApi.checkAlreadyUsedNickname(name)
     }
 }

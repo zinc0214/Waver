@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.login
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -22,6 +23,7 @@ import com.zinc.berrybucket.ui.presentation.component.dialog.CommonDialogView
 
 @Composable
 fun LoginScreen(
+    retryLoginEmail: String = "",
     goToMainHome: () -> Unit,
     goToJoin: () -> Unit,
     goToFinish: () -> Unit
@@ -38,7 +40,7 @@ fun LoginScreen(
     val currentEmail = remember { mutableStateOf(needToStartLoadTokenAsState) }
 
     if (!viewModel.isLoginChecked) {
-        viewModel.checkHasLoginEmail()
+        viewModel.checkHasLoginEmail(retryLoginEmail)
     }
 
     LaunchedEffect(key1 = canGoToMainAsState) {
@@ -57,10 +59,12 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = needToStartLoadTokenAsState) {
         needToStartLoadTokenAsState?.let {
-            if (currentEmail.value != it) {
-                viewModel.checkIsLoginedEmail(it)
-                currentEmail.value = it
-            }
+            Log.e(
+                "ayhan",
+                "needToStartLoadTokenAsState : $it,  currentEmail : ${currentEmail.value}"
+            )
+            viewModel.loadLoginToken(it)
+            currentEmail.value = it
         }
     }
 
@@ -75,6 +79,7 @@ fun LoginScreen(
                 message = stringResource(id = R.string.loginRetry)
             ) {
                 goToFinish()
+                needToShowLoginFailDialog.value = false
             }
         }
 
@@ -90,9 +95,11 @@ fun LoginScreen(
                 positive = DialogButtonInfo(text = R.string.goToJoin, color = Main4),
                 negativeEvent = {
                     goToFinish()
+                    needToShowJoinDialog.value = false
                 },
                 positiveEvent = {
                     goToJoin()
+                    needToShowJoinDialog.value = false
                 }
             )
         }

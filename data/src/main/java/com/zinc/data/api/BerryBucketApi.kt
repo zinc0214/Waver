@@ -9,10 +9,8 @@ import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
-import com.zinc.common.models.EmailCheckResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
-import com.zinc.common.models.JoinEmailCheck
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
@@ -23,7 +21,6 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
-import com.zinc.domain.models.CheckEmailsAlreadyUse
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.OtherBucketListResponse
 import com.zinc.domain.models.OtherFollowDataResponse
@@ -46,24 +43,16 @@ import retrofit2.http.Query
 
 interface BerryBucketApi {
 
-    // 이메일 확인
-    @POST("/user/check")
-    suspend fun checkEmailIsLogined(@Body checkEmailsAlreadyUse: CheckEmailsAlreadyUse): EmailCheckResponse
-
-    // 회원가입
-    @POST("/user/join")
-    suspend fun joinBerryBucket(@Body joinEmailCheck: JoinEmailCheck): JoinResponse
-
     // 토큰재발급
     @GET("/token/refresh")
     suspend fun refreshToken(@Header("Authorization") token: String): RefreshTokenResponse
 
     // 프로필생성
-    @POST("/user/profile")
+    @POST("/user/join")
     @Multipart
     suspend fun crateProfile(
-        @Header("Authorization") token: String,
         @Part accountType: MultipartBody.Part, // 기기 유형
+        @Part email: MultipartBody.Part,
         @Part name: MultipartBody.Part,
         @Part bio: MultipartBody.Part?,
         @Part profileImage: MultipartBody.Part?
@@ -227,7 +216,6 @@ interface BerryBucketApi {
     // 닉네임 중복 확인
     @GET("/user/profile/name")
     suspend fun checkAlreadyUsedNickname(
-        @Header("Authorization") token: String,
         @Query("name") name: String
     ): CommonResponse
 

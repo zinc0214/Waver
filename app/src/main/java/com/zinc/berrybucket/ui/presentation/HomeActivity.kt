@@ -62,6 +62,9 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val retryEmail: MutableState<String> = remember {
+                mutableStateOf("")
+            }
             val showScreenType: MutableState<ShowParentScreenType> = remember {
                 mutableStateOf(ShowParentScreenType.Login)
             }
@@ -72,17 +75,22 @@ class HomeActivity : AppCompatActivity() {
                         showScreenType.value = ShowParentScreenType.Main
                     }, goToBack = {
                         finish()
+                    }, goToLogin = {
+                        retryEmail.value = it
+                        showScreenType.value = ShowParentScreenType.Login
                     })
                 }
 
                 ShowParentScreenType.Login -> {
-                    LoginScreen(goToMainHome = {
-                        showScreenType.value = ShowParentScreenType.Main
-                    }, goToJoin = {
-                        showScreenType.value = ShowParentScreenType.Join
-                    }, goToFinish = {
-                        finish()
-                    })
+                    LoginScreen(
+                        retryLoginEmail = retryEmail.value,
+                        goToMainHome = {
+                            showScreenType.value = ShowParentScreenType.Main
+                        }, goToJoin = {
+                            showScreenType.value = ShowParentScreenType.Join
+                        }, goToFinish = {
+                            finish()
+                        })
                 }
 
                 ShowParentScreenType.Main -> {

@@ -6,6 +6,6 @@ import javax.inject.Inject
 class CheckAlreadyUsedNickname @Inject constructor(
     private val moreRepository: MoreRepository
 ) {
-    suspend operator fun invoke(token: String, nickName: String) =
-        moreRepository.checkAlreadyUsedNickName(token, nickName)
+    suspend operator fun invoke(nickName: String) =
+        moreRepository.checkAlreadyUsedNickName(nickName)
 }

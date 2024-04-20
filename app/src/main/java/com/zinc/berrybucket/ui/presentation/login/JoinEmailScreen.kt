@@ -30,7 +30,6 @@ import com.zinc.berrybucket.ui.presentation.component.MyTextField
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.berrybucket.ui.presentation.login.component.ProfileCreateTitle
-import com.zinc.berrybucket.ui.presentation.login.model.LoginPrevData
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_common.R as CommonR
 
@@ -38,8 +37,9 @@ import com.zinc.berrybucket.ui_common.R as CommonR
 // 회원가입1 > 이메일 입력
 @Composable
 fun JoinEmailScreen(
-    goToNexPage: (LoginPrevData) -> Unit,
-    goToBack: () -> Unit
+    goToNexPage: (String) -> Unit,
+    goToBack: () -> Unit,
+    goToLogin: (String) -> Unit
 ) {
     val viewModel: JoinEmailViewModel = hiltViewModel()
 
@@ -47,8 +47,11 @@ fun JoinEmailScreen(
     val checkAlreadyUsedEmailAsState by viewModel.isAlreadyUsedEmail.observeAsState()
     val isAlreadyUsedEmail = remember { mutableStateOf(false) }
 
-    // 사용가능한 이메일인 경우
+    // 존재하는 이메일이 없는 경우
     val goToMakeNickNameAsState by viewModel.goToMakeNickName.observeAsState()
+
+    // 이메일이 있는 경우, 로그인 하러 가기
+    val goToLoginAsState by viewModel.goToLogin.observeAsState()
 
     // api 실패
     val failApiAsState by viewModel.failEmailCheck.observeAsState()
@@ -62,18 +65,18 @@ fun JoinEmailScreen(
 
     LaunchedEffect(key1 = goToMakeNickNameAsState) {
         goToMakeNickNameAsState?.let { data ->
-            goToNexPage(
-                LoginPrevData(
-                    email = prevLoginEmail.value,
-                    accessToken = data.first,
-                    refreshToken = data.second
-                )
-            )
+            goToNexPage(data)
         }
     }
 
     LaunchedEffect(key1 = failApiAsState) {
         isFailApi.value = failApiAsState == true
+    }
+
+    LaunchedEffect(key1 = goToLoginAsState) {
+        if (goToLoginAsState == true) {
+            goToLogin(prevLoginEmail.value)
+        }
     }
 
     Column(
@@ -87,7 +90,7 @@ fun JoinEmailScreen(
                 goToBack()
             },
             saveClicked = {
-                viewModel.checkEmailValid(prevLoginEmail.value)
+                viewModel.goToLogin(prevLoginEmail.value)
             }
         )
 
@@ -136,14 +139,14 @@ fun JoinEmailScreen(
             message = stringResource(id = R.string.alreadyUsedEmailDesc),
             dismissAvailable = false,
             negative = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
-            positive = DialogButtonInfo(text = CommonR.string.closeDesc, color = Main4),
+            positive = DialogButtonInfo(text = CommonR.string.goToLogin, color = Main4),
             negativeEvent = {
                 isAlreadyUsedEmail.value = false
                 goToBack()
             },
             positiveEvent = {
                 isAlreadyUsedEmail.value = false
-                viewModel.goToLogin(prevLoginEmail.value)
+                viewModel.savedLoginEmail(prevLoginEmail.value)
             }
         )
     }

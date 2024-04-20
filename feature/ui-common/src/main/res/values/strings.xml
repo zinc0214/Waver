@@ -35,6 +35,8 @@
 
     <string name="monthDesc">뭐든</string>
 
+    <!-- Login -->
+    <string name="goToLogin">로그인</string>
     <!-- My > TabTitle -->
     <string name="allTab">전체</string>
     <string name="categoryTab">카테고리</string>

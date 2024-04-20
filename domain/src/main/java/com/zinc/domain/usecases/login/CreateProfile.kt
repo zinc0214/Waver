@@ -8,6 +8,6 @@ import javax.inject.Inject
 class CreateProfile @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(token: String, profileRequest: CreateProfileRequest) =
-        loginRepository.createProfile(token, profileRequest)
+    suspend operator fun invoke(profileRequest: CreateProfileRequest) =
+        loginRepository.createProfile(profileRequest)
 }

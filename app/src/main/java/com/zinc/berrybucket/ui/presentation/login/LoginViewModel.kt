@@ -8,7 +8,6 @@ import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.datastore.common.CommonDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
-import com.zinc.domain.usecases.login.CheckEmail
 import com.zinc.domain.usecases.login.LoginByEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -17,7 +16,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val checkEmail: CheckEmail,
     private val loginByEmail: LoginByEmail,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
     private val commonDataStoreModule: CommonDataStoreModule
@@ -37,35 +35,26 @@ class LoginViewModel @Inject constructor(
     private val _goToMain = MutableLiveData<Boolean>()
     val goToMain: LiveData<Boolean> get() = _goToMain
 
-    fun checkHasLoginEmail() {
+    fun checkHasLoginEmail(retryEmail: String) {
         isLoginChecked = true
+        _needToStartJoin.value = false
         viewModelScope.launch {
             loginPreferenceDataStoreModule.loadLoginedEmail.collectLatest {
                 Log.e("ayhan", "checkHasLoginEmail : $it")
-                if (it.isEmpty()) {
-                    _needToStartJoin.value = true
-                } else {
+                if (it.isNotEmpty()) {
                     _needToStartLoadToken.value = it
+                    _needToStartJoin.value = false
+                } else if (retryEmail.isNotEmpty()) {
+                    _needToStartLoadToken.value = it
+                    _needToStartJoin.value = false
+                } else {
+                    _needToStartJoin.value = true
                 }
             }
         }
     }
 
-    fun checkIsLoginedEmail(email: String) {
-        _loginFail.value = false
-        viewModelScope.launch(CEH(_loginFail, true)) {
-            val result = checkEmail(email)
-            Log.e("ayhan", "checkIsLoginedEmail result : $result")
-            if (result.success) {
-                loadLoginToken(email)
-                loginPreferenceDataStoreModule.setUserIdKey(result.data.userId.toString())
-            } else {
-                _needToStartJoin.value = true
-            }
-        }
-    }
-
-    private fun loadLoginToken(email: String) {
+    fun loadLoginToken(email: String) {
         _loginFail.value = false
         viewModelScope.launch(CEH(_loginFail, true)) {
             Log.e("ayhan", "loadUserToken result : ${refreshToken.value} , ${accessToken.value}")
@@ -78,17 +67,11 @@ class LoginViewModel @Inject constructor(
                 refreshToken.value = "Bearer ${data?.refreshToken}"
                 loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
                 loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
+                loginPreferenceDataStoreModule.setLoaginedEmail(email)
                 _goToMain.value = true
             } else {
                 _loginFail.value = true
             }
-        }
-    }
-
-    // TODO : Splash 등으로 옮겨야댐
-    fun updateAppVersion(appVersion: String) {
-        viewModelScope.launch {
-            commonDataStoreModule.setAppVersion(appVersion)
         }
     }
 }
