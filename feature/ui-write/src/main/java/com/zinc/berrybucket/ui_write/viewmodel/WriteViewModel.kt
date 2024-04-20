@@ -55,6 +55,7 @@ class WriteViewModel @Inject constructor(
     fun clearData() {
         _loadFail.value = null
     }
+
     fun addNewBucketList(writeInfo: UIAddBucketListInfo, isForUpdate: Boolean) {
         viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
             _loadFail.value = "버킷리스트 생성 실패" to "다시 시도해주세요"
@@ -134,6 +135,7 @@ class WriteViewModel @Inject constructor(
             runCatching {
                 accessToken.value?.let { token ->
                     val result = loadKeyWord.invoke(token)
+                    Log.e("ayhan", "laodKeywrod : $result")
                     if (result.success) {
                         _keywordList.value = result.data?.toUiModel()
                     } else {

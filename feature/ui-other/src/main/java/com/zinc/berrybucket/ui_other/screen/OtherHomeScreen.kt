@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui_other.screen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -42,10 +43,9 @@ fun OtherHomeScreen(
     val profileHomeData = remember { mutableStateOf(profileHomeDataAsState) }
     val showFailDialog = remember { mutableStateOf(false) }
 
-    if (profileHomeDataAsState == null) {
+    LaunchedEffect(key1 = Unit) {
         viewModel.loadOtherInfo(userId)
     }
-
     LaunchedEffect(key1 = profileHomeDataAsState) {
         profileHomeDataAsState?.let {
             profileHomeData.value = it
@@ -54,6 +54,7 @@ fun OtherHomeScreen(
 
     LaunchedEffect(key1 = apiFailAsState) {
         showFailDialog.value = apiFailAsState == true
+        Log.e("ayhan", "${showFailDialog.value}, $apiFailAsState")
     }
 
 
@@ -104,6 +105,7 @@ fun OtherHomeScreen(
             message = stringResource(id = R.string.apiFailMessage)
         ) {
             showFailDialog.value = false
+            otherHomeEvent(OtherHomeEvent.GoToBack)
         }
     }
 }

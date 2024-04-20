@@ -34,11 +34,11 @@ class OtherViewModel @Inject constructor(
             runCatching {
                 accessToken.value?.let { token ->
                     val result = loadOtherInfo(token, userId)
-                    if (result == null || !result.isSuccess) {
+                    Log.e("ayhan", "loadOtherInfo : $result")
+                    if (result == null || !result.isSuccess || result.data == null) {
                         _loadFail.value = true
                     } else {
                         _otherHomeData.value = result.data
-                        Log.e("ayhan", "loadOtherInfo : ${result.data}")
                     }
                 }
             }.getOrElse {
