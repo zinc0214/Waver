@@ -1,8 +1,10 @@
 package com.zinc.berrybucket.ui_my.screen.category.screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +32,7 @@ import com.zinc.berrybucket.ui.design.theme.Gray8
 import com.zinc.berrybucket.ui.design.theme.Main4
 import com.zinc.berrybucket.ui.presentation.component.CategoryListView
 import com.zinc.berrybucket.ui.presentation.component.MyText
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.screen.category.component.AddNewCategoryDialog
 import com.zinc.berrybucket.ui.presentation.screen.category.model.AddCategoryEvent
 import com.zinc.berrybucket.ui.util.dpToSp
@@ -40,21 +43,20 @@ import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
 
 @Composable
 fun CategoryLayer(
-    modifier: Modifier = Modifier,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     val recommendCategory = "여향"
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     val viewModel: CategoryViewModel = hiltViewModel()
-    val categoryList by viewModel.categoryInfoList.observeAsState()
+    val categoryListAsState by viewModel.categoryInfoList.observeAsState()
+    val apiFailed by viewModel.apiFailed.observeAsState()
 
+    val categoryList = remember { mutableStateOf(categoryListAsState) }
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
+    val apiFailState = remember { mutableStateOf(apiFailed) }
+    val apiFailDialogShow = remember { mutableStateOf(false) }
 
-    LaunchedEffect(key1 = categoryList, block = {
-        addNewCategoryDialogShowAvailable.value = false
-    })
-
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
         val observer = LifecycleEventObserver { owner, event ->
@@ -68,24 +70,24 @@ fun CategoryLayer(
         }
     }
 
+    LaunchedEffect(key1 = categoryListAsState, block = {
+        Log.e("ayhan", "categoryListAsState : $categoryListAsState")
+        addNewCategoryDialogShowAvailable.value = false
+        categoryList.value = categoryListAsState
+    })
 
-    categoryList?.let {
-        if (addNewCategoryDialogShowAvailable.value) {
-            AddNewCategoryDialog(event = {
-                when (it) {
-                    is AddCategoryEvent.AddNewAddCategory -> {
-                        viewModel.addNewCategory(it.name)
-                    }
-
-                    AddCategoryEvent.Close -> {
-                        addNewCategoryDialogShowAvailable.value = false
-                    }
-                }
-            })
+    LaunchedEffect(apiFailed) {
+        if (apiFailed != null) {
+            apiFailDialogShow.value = true
+            apiFailState.value = apiFailed
         }
+    }
 
+    categoryList.value?.let {
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
             Spacer(modifier = Modifier.height(16.dp))
@@ -94,6 +96,28 @@ fun CategoryLayer(
             }
             MyCategoryAddView {
                 addNewCategoryDialogShowAvailable.value = true
+            }
+        }
+    }
+
+    if (addNewCategoryDialogShowAvailable.value) {
+        AddNewCategoryDialog(event = {
+            when (it) {
+                is AddCategoryEvent.AddNewAddCategory -> {
+                    viewModel.addNewCategory(it.name)
+                }
+
+                AddCategoryEvent.Close -> {
+                    addNewCategoryDialogShowAvailable.value = false
+                }
+            }
+        })
+    }
+
+    if (apiFailDialogShow.value) {
+        apiFailState.value?.let { failData ->
+            ApiFailDialog(failData.first, failData.second) {
+                apiFailDialogShow.value = false
             }
         }
     }

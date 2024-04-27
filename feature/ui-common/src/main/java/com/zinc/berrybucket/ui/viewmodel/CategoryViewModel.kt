@@ -62,13 +62,12 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun loadCategoryList() {
-        runCatching {
-            accessToken.value?.let { token ->
-                viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-                    Log.e("ayhan", "load Category Fail 2 $throwable")
-                    _apiFailed.value = "카테고리 로드 실패" to ""
-                }) {
+        viewModelScope.launch(CEH(_apiFailed, "카테고리 로드 실패" to "")) {
+            Log.e("ayhan", "load Category?")
+            runCatching {
+                accessToken.value?.let { token ->
                     loadCategoryList.invoke(token).apply {
+                        Log.e("ayhan", "categoryList : ${this.data}")
                         if (this.success) {
                             _categoryInfoList.value = this.data.parseUI()
                         } else {
@@ -76,11 +75,10 @@ class CategoryViewModel @Inject constructor(
                         }
                     }
                 }
+            }.getOrElse {
+                _apiFailed.value = "카테고리 로드 실패" to ""
             }
-        }.getOrElse {
-            _apiFailed.value = "카테고리 로드 실패" to ""
         }
-
     }
 
     fun addNewCategory(name: String) {

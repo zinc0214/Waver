@@ -43,7 +43,6 @@ fun CategoryListView(categoryInfoList: List<UICategoryInfo>, clicked: (UICategor
             CategoryCard(
                 categoryInfo = category,
                 clicked = {
-                    Log.e("ayhan", "cateogryt")
                     clicked(it)
                 }
             )
