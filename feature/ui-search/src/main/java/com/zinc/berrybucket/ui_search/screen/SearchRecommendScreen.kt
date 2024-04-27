@@ -1,18 +1,16 @@
 package com.zinc.berrybucket.ui_search.screen
 
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.berrybucket.ui.design.theme.Gray1
@@ -29,22 +27,15 @@ fun SearchRecommendScreen(
     viewModel.loadRecommendList()
     val recommendList by viewModel.recommendList.observeAsState()
 
-    val maxAppBarHeight = 156.dp
-    val minAppBarHeight = 106.dp
-    var height by remember {
-        mutableFloatStateOf(0f)
-    }
-    val density = LocalDensity.current
-    val animatedHeight by animateDpAsState(
-        targetValue = with(density) { height.toDp() },
-        label = "animatedHeight"
-    )
+    var isFirstItemShown by remember { mutableStateOf(true) }
+
     Column(modifier = Modifier.fillMaxSize()) {
         rememberSystemUiController().setSystemBarsColor(Gray1)
         RecommendTopBar(
             modifier = Modifier
-                .fillMaxWidth(),
-            height = animatedHeight,
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            isFirstItemShown = isFirstItemShown,
             editViewClicked = {
                 onSearchEvent.invoke(SearchGoToEvent.GoToSearch)
             }
@@ -52,17 +43,12 @@ fun SearchRecommendScreen(
 
         recommendList?.let { list ->
             RecommendListView(
-                onOffsetChanged = {
-                    // 맨 마지막 아이템에서 갑자기 튀는 현상이 있음. 방지를 위함.
-                    if (height == 0f || it - height <= 500) {
-                        height = it
-                    }
-                },
-                maxAppBarHeight = maxAppBarHeight,
-                minAppBarHeight = minAppBarHeight,
                 recommendList = list,
                 bucketClicked = { bucketId, userId ->
                     onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId))
+                },
+                isFirstItemShown = { isTop ->
+                    isFirstItemShown = isTop
                 }
             )
         }

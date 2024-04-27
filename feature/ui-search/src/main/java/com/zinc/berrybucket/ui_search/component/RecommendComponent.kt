@@ -1,10 +1,13 @@
 package com.zinc.berrybucket.ui_search.component
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,8 +18,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -24,14 +30,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -45,7 +48,6 @@ import com.zinc.berrybucket.ui.design.theme.Gray9
 import com.zinc.berrybucket.ui.presentation.component.IconButton
 import com.zinc.berrybucket.ui.presentation.component.MyText
 import com.zinc.berrybucket.ui.presentation.component.TagListView
-import com.zinc.berrybucket.ui.presentation.component.rememberNestedScrollConnection
 import com.zinc.berrybucket.ui.util.dpToSp
 import com.zinc.berrybucket.ui_search.R
 import com.zinc.berrybucket.ui_search.model.RecommendItem
@@ -58,18 +60,18 @@ import com.zinc.berrybucket.ui_search.model.SearchBucketItem
 fun RecommendTopBar(
     modifier: Modifier,
     editViewClicked: () -> Unit,
-    height: Dp
+    isFirstItemShown: Boolean
 ) {
 
-    Column(modifier = modifier.height(height)) {
-        if (height >= 130.dp) {
+    Column(modifier = modifier.wrapContentHeight()) {
+        AnimatedVisibility(visible = isFirstItemShown) {
             SearchTitle()
         }
         SearchTextView {
             editViewClicked.invoke()
         }
 
-        if (height < 130.dp) {
+        AnimatedVisibility(visible = !isFirstItemShown) {
             RecommendDivider()
         }
     }
@@ -160,32 +162,30 @@ fun RecommendDivider(modifier: Modifier = Modifier) {
 
 @Composable
 fun RecommendListView(
-    onOffsetChanged: (Float) -> Unit,
-    maxAppBarHeight: Dp,
-    minAppBarHeight: Dp,
     recommendList: RecommendList,
-    bucketClicked: (String, String) -> Unit
+    bucketClicked: (String, String) -> Unit,
+    isFirstItemShown: (Boolean) -> Unit
 ) {
 
-    val maxAppBarPixelValue = with(LocalDensity.current) { maxAppBarHeight.toPx() }
-    val minAppBarPixelValue = with(LocalDensity.current) { minAppBarHeight.toPx() }
-    val nestedScrollState =
-        rememberNestedScrollConnection(
-            onOffsetChanged = onOffsetChanged,
-            maxAppBarHeight = maxAppBarPixelValue,
-            minAppBarHeight = minAppBarPixelValue
-        )
-    LaunchedEffect(key1 = Unit, block = {
-        onOffsetChanged(maxAppBarPixelValue)
-    })
+    val listScrollState = rememberLazyListState()
+    val isFirstItemShownState = listScrollState.canScrollBackward.not()
+
+    LaunchedEffect(key1 = isFirstItemShownState) {
+        isFirstItemShown(isFirstItemShownState)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .nestedScroll(nestedScrollState)
+            .scrollable(
+                orientation = Orientation.Vertical,
+                state = rememberScrollState()
+            )
     ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(),
+            state = listScrollState,
             contentPadding = PaddingValues(
                 top = 16.dp, bottom = 32.dp
             )
