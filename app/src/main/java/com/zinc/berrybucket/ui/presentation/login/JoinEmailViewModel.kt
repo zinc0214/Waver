@@ -30,7 +30,7 @@ class JoinEmailViewModel @Inject constructor(
     val goToLogin: LiveData<Boolean> get() = _goToLogin
 
     fun goToLogin(email: String) {
-        viewModelScope.launch(CEH(_failEmailCheck, true)) {
+        viewModelScope.launch(ceh(_failEmailCheck, true)) {
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {

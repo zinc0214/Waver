@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.berrybucket.R
 import com.zinc.berrybucket.model.Comment
-import com.zinc.berrybucket.model.CommentInfo
+import com.zinc.berrybucket.model.DetailDescType
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Gray3
 import com.zinc.berrybucket.ui.design.theme.Gray6
@@ -36,7 +36,7 @@ import com.zinc.berrybucket.ui.util.dpToSp
 
 @Composable
 fun DetailCommentView(
-    commentInfo: CommentInfo?, commentLongClicked: (Int) -> Unit
+    commentInfo: DetailDescType.CommentInfo?, commentLongClicked: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier.padding(top = 20.dp)

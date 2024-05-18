@@ -40,7 +40,7 @@ class JoinNickNameViewModel @Inject constructor(
         bio: String? = null,
         image: File? = null
     ) {
-        viewModelScope.launch(CEH(_failJoin, true)) {
+        viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
             runCatching {
                 createNewProfile(email, nickName, bio, image)
@@ -54,7 +54,7 @@ class JoinNickNameViewModel @Inject constructor(
         bio: String? = null,
         image: File? = null
     ) {
-        viewModelScope.launch(CEH(_failJoin, true)) {
+        viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
             _goToLogin.value = false
             runCatching {
@@ -83,7 +83,7 @@ class JoinNickNameViewModel @Inject constructor(
     }
 
     private fun goToLogin(email: String) {
-        viewModelScope.launch(CEH(_failLogin, true)) {
+        viewModelScope.launch(ceh(_failLogin, true)) {
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {

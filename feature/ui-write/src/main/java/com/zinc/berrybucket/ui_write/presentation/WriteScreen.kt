@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.berrybucket.model.ImageInfo
+import com.zinc.berrybucket.model.DetailDescType
 import com.zinc.berrybucket.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.berrybucket.ui_write.model.WriteEvent
@@ -51,7 +51,7 @@ fun WriteScreen(
     LaunchedEffect(key1 = prevWriteDataForUpdateAsState) {
         if (prevWriteDataForUpdateAsState != null) {
             val info = prevWriteDataForUpdateAsState
-            val imageInfo = ImageInfo(info?.images.orEmpty())
+            val imageInfo = DetailDescType.ImageInfo(info?.images.orEmpty())
             val imageToUiModel =
                 createImageInfoWithPath(context = context, images = imageInfo.imageList)
 

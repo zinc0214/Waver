@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.zinc.berrybucket.model.CommonDetailDescInfo
+import com.zinc.berrybucket.model.DetailDescType
 import com.zinc.berrybucket.ui.design.theme.Error2
 import com.zinc.berrybucket.ui.design.theme.Gray10
 import com.zinc.berrybucket.ui.design.theme.Main4
@@ -27,7 +27,7 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
-fun DetailDescView(detailDescInfo: CommonDetailDescInfo) {
+fun DetailDescView(detailDescInfo: DetailDescType.CommonDetailDescInfo) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

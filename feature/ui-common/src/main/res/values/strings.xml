@@ -76,4 +76,7 @@
     <string name="profileSettingBioTitle">소개문구</string>
     <string name="alreadyUsedNickNameGuide">사용 중인 닉네임입니다.</string>
 
+    <!-- 버킷 상세 -->
+    <string name="loadBucketFail">버킷리스트 로드 실패</string>
+    <string name="achieveBucketFail">버킷리스트 달성 실패</string>
 </resources>

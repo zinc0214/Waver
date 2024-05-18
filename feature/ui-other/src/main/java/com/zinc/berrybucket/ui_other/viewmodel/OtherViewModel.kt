@@ -30,7 +30,7 @@ class OtherViewModel @Inject constructor(
 
     fun loadOtherInfo(userId: String) {
         _loadFail.value = false
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        viewModelScope.launch(ceh(_loadFail, true)) {
             runCatching {
                 accessToken.value?.let { token ->
                     val result = loadOtherInfo(token, userId)
@@ -48,7 +48,7 @@ class OtherViewModel @Inject constructor(
     }
 
     fun changeFollowStatus(userId: String, follow: Boolean) {
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        viewModelScope.launch(ceh(_loadFail, true)) {
             runCatching {
                 accessToken.value?.let { token ->
                     if (follow) {

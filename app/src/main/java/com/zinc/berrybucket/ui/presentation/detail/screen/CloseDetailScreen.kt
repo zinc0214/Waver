@@ -23,6 +23,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -31,12 +32,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
+import com.zinc.berrybucket.model.DetailLoadFailStatus
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteTotalInfo
 import com.zinc.berrybucket.ui.design.theme.BaseTheme
 import com.zinc.berrybucket.ui.design.util.rememberScrollContext
 import com.zinc.berrybucket.ui.presentation.component.ImageViewPagerInsideIndicator
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailDescView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailMemoView
@@ -46,6 +49,7 @@ import com.zinc.berrybucket.ui.presentation.detail.component.GoalCountUpdateDial
 import com.zinc.berrybucket.ui.presentation.detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.berrybucket.ui.presentation.detail.model.GoalCountUpdateEvent
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.util.createImageInfoWithPath
 
 @Composable
@@ -59,13 +63,13 @@ fun CloseDetailScreen(
     val viewModel: DetailViewModel = hiltViewModel()
 
     val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
+    val loadFailAsState by viewModel.loadFail.observeAsState()
 
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
         val observer = LifecycleEventObserver { owner, event ->
             if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.getValidMentionList()
                 viewModel.getBucketDetail(detailId, "", true)
             }
         }
@@ -81,8 +85,18 @@ fun CloseDetailScreen(
     val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
     val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
 
+    val loadFail = remember { mutableStateOf(loadFailAsState) }
+    val showLoadFailDialog = remember { mutableStateOf(false) }
+
     LaunchedEffect(key1 = vmDetailInfoAsState) {
         detailInfo.value = vmDetailInfoAsState
+    }
+
+    LaunchedEffect(key1 = loadFailAsState) {
+        if (loadFailAsState != null) {
+            loadFail.value = loadFailAsState
+            showLoadFailDialog.value = true
+        }
     }
 
     detailInfo.value?.let { info ->
@@ -203,6 +217,29 @@ fun CloseDetailScreen(
         }
     }
 
+    if (showLoadFailDialog.value) {
+        val title = when (loadFail.value) {
+            DetailLoadFailStatus.AchieveFail -> stringResource(id = R.string.achieveBucketFail)
+            DetailLoadFailStatus.LoadFail -> stringResource(id = R.string.loadBucketFail)
+            else -> stringResource(id = R.string.apiFailTitle)
+        }
+        ApiFailDialog(
+            title = title,
+            message = stringResource(id = R.string.apiFailMessage)
+        ) {
+            when (loadFail.value) {
+                DetailLoadFailStatus.AchieveFail -> viewModel.achieveMyBucket()
+                DetailLoadFailStatus.LoadFail -> {
+                    viewModel.getBucketDetail(detailId, "", true)
+                }
+
+                else -> {
+                    // Do Nothing
+                }
+            }
+            showLoadFailDialog.value = false
+        }
+    }
 }
 
 

@@ -8,50 +8,66 @@ import com.zinc.common.models.BucketStatus
 //    val commentInfo: CommentInfo
 //)
 
-data class WriterProfileInfoUi(
-    val profileImage: String?,
-    val badgeImage: String,
-    val titlePosition: String,
-    val nickName: String,
-    val userId: String
-) : DetailDescType() {
-    fun toUi() = UiProfileInfo(
-        profileImage = this.profileImage,
-        badgeImage = this.badgeImage,
-        titlePosition = this.titlePosition,
-        nickName = this.nickName
-    )
+sealed class DetailDescType {
+    data class WriterProfileInfoUi(
+        val profileImage: String?,
+        val badgeImage: String,
+        val titlePosition: String,
+        val nickName: String,
+        val userId: String
+    ) : DetailDescType() {
+        fun toUi() = UiProfileInfo(
+            profileImage = this.profileImage,
+            badgeImage = this.badgeImage,
+            titlePosition = this.titlePosition,
+            nickName = this.nickName
+        )
+    }
+
+    data class ImageInfo(
+        val imageList: List<String>
+    ) : DetailDescType()
+
+    data class CommonDetailDescInfo(
+        val dDay: String?,
+        val status: BucketStatus,
+        val keywordList: List<WriteKeyWord>?,
+        val title: String,
+        val goalCount: Int,
+        val userCount: Int,
+        val categoryInfo: WriteCategoryInfo,
+        val isScrap: Boolean
+    ) : DetailDescType()
+
+    data class CloseDetailDescInfo(
+        val commonDetailDescInfo: CommonDetailDescInfo,
+        val goalCount: Int,
+        val userCount: Int
+    ) : DetailDescType()
+
+    data class CommentInfo(
+        val commentCount: Int,
+        val commentList: List<Comment>
+    ) : DetailDescType()
+
+    data class MemoInfo(
+        val memo: String
+    ) : DetailDescType()
+
 }
 
-data class ImageInfo(
-    val imageList: List<String>
-) : DetailDescType()
-
-data class CommonDetailDescInfo(
-    val dDay: String?,
-    val status: BucketStatus,
-    val keywordList: List<WriteKeyWord>?,
-    val title: String,
-    val goalCount: Int,
-    val userCount: Int,
-    val categoryInfo: WriteCategoryInfo,
-    val isScrap: Boolean
-) : DetailDescType()
-
-data class CloseDetailDescInfo(
-    val commonDetailDescInfo: CommonDetailDescInfo,
-    val goalCount: Int,
-    val userCount: Int
-) : DetailDescType()
-
-data class CommentInfo(
-    val commentCount: Int,
-    val commentList: List<Comment>
-) : DetailDescType()
-
-data class MemoInfo(
-    val memo: String
-) : DetailDescType()
+data class BucketDetailUiInfo(
+    val bucketId: String,
+    val writeOpenType: WriteOpenType,
+    val imageInfo: DetailDescType.ImageInfo? = null,
+    val writerProfileInfo: DetailDescType.WriterProfileInfoUi,
+    val descInfo: DetailDescType.CommonDetailDescInfo,
+    val memoInfo: DetailDescType.MemoInfo? = null,
+    val commentInfo: DetailDescType.CommentInfo? = null,
+    val togetherInfo: TogetherInfo? = null,
+    val isMine: Boolean,
+    val isDone: Boolean
+)
 
 data class Comment(
     val commentId: String,
@@ -79,10 +95,6 @@ data class TogetherMember(
     fun isSucceed() = goalCount == userCount
 }
 
-data class InnerSuccessButton(
-    var isVisible: Boolean
-) : DetailDescType()
-
 data class CommentMentionInfo(
     val userId: String,
     val profileImage: String,
@@ -96,26 +108,9 @@ data class SuccessButtonInfo(
     val userCount: Int
 )
 
-sealed class DetailDescType {
-
-}
-
-data class BucketDetailUiInfo(
-    val bucketId: String,
-    val writeOpenType: WriteOpenType,
-    val imageInfo: ImageInfo? = null,
-    val writerProfileInfo: WriterProfileInfoUi,
-    val descInfo: CommonDetailDescInfo,
-    val memoInfo: MemoInfo? = null,
-    val commentInfo: CommentInfo? = null,
-    val togetherInfo: TogetherInfo? = null,
-    val isMine: Boolean,
-    val isDone: Boolean
-)
-
 sealed class DetailAppBarClickEvent {
-    object MoreOptionClicked : DetailAppBarClickEvent()
-    object CloseClicked : DetailAppBarClickEvent()
+    data object MoreOptionClicked : DetailAppBarClickEvent()
+    data object CloseClicked : DetailAppBarClickEvent()
 }
 
 sealed class DetailClickEvent {
@@ -124,3 +119,11 @@ sealed class DetailClickEvent {
 }
 
 data class CommentLongClicked(val commentIndex: Int) : DetailClickEvent()
+
+sealed interface DetailLoadFailStatus {
+    data object LoadFail : DetailLoadFailStatus
+    data object AchieveFail : DetailLoadFailStatus
+    data object GoalCountUpdateFail : DetailLoadFailStatus
+    data object AddCommentFail : DetailLoadFailStatus
+    data object DeleteCommentFail : DetailLoadFailStatus
+}

@@ -1,5 +1,6 @@
 package com.zinc.berrybucket.ui.presentation.detail.screen
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -23,6 +24,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -33,12 +35,14 @@ import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.CommentLongClicked
 import com.zinc.berrybucket.model.DetailAppBarClickEvent
 import com.zinc.berrybucket.model.DetailClickEvent
+import com.zinc.berrybucket.model.DetailLoadFailStatus
 import com.zinc.berrybucket.model.ReportInfo
 import com.zinc.berrybucket.model.SuccessButtonInfo
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.ui.design.util.Keyboard
 import com.zinc.berrybucket.ui.design.util.keyboardAsState
 import com.zinc.berrybucket.ui.design.util.visibleLastIndex
+import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.berrybucket.ui.presentation.detail.DetailViewModel
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailSuccessButtonView
 import com.zinc.berrybucket.ui.presentation.detail.component.DetailTopAppBar
@@ -58,6 +62,7 @@ import com.zinc.berrybucket.ui.presentation.detail.model.OpenDetailEditTextViewE
 import com.zinc.berrybucket.ui.presentation.detail.model.TaggedTextInfo
 import com.zinc.berrybucket.ui.presentation.detail.model.toUpdateUiModel
 import com.zinc.berrybucket.ui.presentation.report.ReportScreen
+import com.zinc.berrybucket.ui_common.R
 import com.zinc.berrybucket.util.createImageInfoWithPath
 import com.zinc.berrybucket.util.nav.OpenBucketDetailEvent
 import com.zinc.common.models.AddBucketCommentRequest
@@ -91,14 +96,27 @@ fun OpenDetailScreen(
 
     val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
+    val loadFailAsState by viewModel.loadFail.observeAsState()
+
     val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
+    val showLoadFailDialog = remember { mutableStateOf(false) }
 
     val detailInfo = remember {
         mutableStateOf(vmDetailInfoAsState)
     }
 
+    val loadFail = remember { mutableStateOf(loadFailAsState) }
+
     LaunchedEffect(key1 = vmDetailInfoAsState) {
         detailInfo.value = vmDetailInfoAsState
+    }
+
+    LaunchedEffect(key1 = loadFailAsState) {
+        Log.e("ayhan", "loadFailAsState : $loadFailAsState")
+        if (loadFailAsState != null) {
+            loadFail.value = loadFailAsState
+            showLoadFailDialog.value = true
+        }
     }
 
     detailInfo.value?.let { info ->
@@ -496,6 +514,31 @@ fun OpenDetailScreen(
                     needToShowCommentReportView.value = false
                 })
             }
+        }
+    }
+
+    if (showLoadFailDialog.value) {
+        val title = when (loadFail.value) {
+            DetailLoadFailStatus.AchieveFail -> stringResource(id = R.string.achieveBucketFail)
+            DetailLoadFailStatus.LoadFail -> stringResource(id = R.string.loadBucketFail)
+            else -> stringResource(id = R.string.apiFailTitle)
+        }
+        ApiFailDialog(
+            title = title,
+            message = stringResource(id = R.string.apiFailMessage)
+        ) {
+            when (loadFail.value) {
+                DetailLoadFailStatus.AchieveFail -> viewModel.achieveMyBucket()
+                DetailLoadFailStatus.LoadFail -> {
+                    viewModel.getValidMentionList()
+                    viewModel.getBucketDetail(detailId, writerId, isMine)
+                }
+
+                else -> {
+                    // Do Nothing
+                }
+            }
+            showLoadFailDialog.value = false
         }
     }
 }

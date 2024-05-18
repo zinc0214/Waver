@@ -43,14 +43,14 @@ class FeedViewModel @Inject constructor(
     val likeFail: LiveData<Boolean> get() = _likeFail
 
     fun loadFeedKeyWords() {
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        _loadFail.value = false
+        viewModelScope.launch(ceh(_loadFail, true)) {
             runCatching {
                 accessToken.value?.let {
                     loadFeedKeyWords.invoke(it).apply {
                         Log.e("ayhan", "feed response : $this")
                         if (success) {
                             _feedKeyWords.value = data?.parseUI()
-                            _loadFail.value = false
                         } else {
                             _loadFail.value = true
                         }
@@ -63,7 +63,7 @@ class FeedViewModel @Inject constructor(
     }
 
     fun loadFeedItems() {
-        viewModelScope.launch(CEH(_loadFail, true)) {
+        viewModelScope.launch(ceh(_loadFail, true)) {
             kotlin.runCatching {
                 accessToken.value?.let { token ->
                     loadFeedItems.invoke(token).apply {
@@ -86,7 +86,7 @@ class FeedViewModel @Inject constructor(
     }
 
     fun savedKeywordList(list: List<Int>) {
-        viewModelScope.launch(CEH(_isKeyWordSelected, false)) {
+        viewModelScope.launch(ceh(_isKeyWordSelected, false)) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = savedKeywordItems.invoke(token, list)
@@ -99,7 +99,7 @@ class FeedViewModel @Inject constructor(
     }
 
     fun saveBucketLike(bucketId: String) {
-        viewModelScope.launch(CEH(_likeFail, true)) {
+        viewModelScope.launch(ceh(_likeFail, true)) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = saveBucketLike.invoke(token, bucketId)

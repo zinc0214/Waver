@@ -2,10 +2,7 @@ package com.zinc.berrybucket.ui.presentation.detail.model
 
 import com.zinc.berrybucket.model.BucketDetailUiInfo
 import com.zinc.berrybucket.model.Comment
-import com.zinc.berrybucket.model.CommentInfo
-import com.zinc.berrybucket.model.CommonDetailDescInfo
-import com.zinc.berrybucket.model.ImageInfo
-import com.zinc.berrybucket.model.MemoInfo
+import com.zinc.berrybucket.model.DetailDescType
 import com.zinc.berrybucket.model.UserSelectedImageInfo
 import com.zinc.berrybucket.model.WriteCategoryInfo
 import com.zinc.berrybucket.model.WriteFriend
@@ -13,7 +10,6 @@ import com.zinc.berrybucket.model.WriteKeyWord
 import com.zinc.berrybucket.model.WriteOpenType
 import com.zinc.berrybucket.model.WriteOption1Info
 import com.zinc.berrybucket.model.WriteTotalInfo
-import com.zinc.berrybucket.model.WriterProfileInfoUi
 import com.zinc.berrybucket.ui.util.parseWithDday
 import com.zinc.berrybucket.ui.util.toLocalData
 import com.zinc.berrybucket.ui.util.toStringData
@@ -28,7 +24,7 @@ fun bucketDetailResponseToUiModel(
     isMine: Boolean
 ): BucketDetailUiInfo {
 
-    val writerProfileInfoUi = WriterProfileInfoUi(
+    val writerProfileInfoUi = DetailDescType.WriterProfileInfoUi(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeImgUrl.orEmpty(),
         titlePosition = profileInfo.bio.orEmpty(),
@@ -36,7 +32,7 @@ fun bucketDetailResponseToUiModel(
         userId = profileInfo.userId.orEmpty()
     )
 
-    val descInfo = CommonDetailDescInfo(
+    val descInfo = DetailDescType.CommonDetailDescInfo(
         dDay = bucketInfo.completedDt,
         keywordList = bucketInfo.keywordIds?.zip(bucketInfo.keywords.orEmpty()) { id, keyword ->
             WriteKeyWord(id, keyword)
@@ -52,7 +48,7 @@ fun bucketDetailResponseToUiModel(
     )
 
     val commentInfo = bucketInfo.comment?.let {
-        CommentInfo(it.size, it.map { comment ->
+        DetailDescType.CommentInfo(it.size, it.map { comment ->
             Comment(
                 commentId = comment.id,
                 userId = comment.userId,
@@ -67,10 +63,12 @@ fun bucketDetailResponseToUiModel(
     return BucketDetailUiInfo(
         bucketId = bucketInfo.id,
         writeOpenType = WriteOpenType.PUBLIC, // TODO : 변경필요
-        imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else ImageInfo(bucketInfo.images!!),
+        imageInfo = if (bucketInfo.images.isNullOrEmpty()) null else DetailDescType.ImageInfo(
+            bucketInfo.images!!
+        ),
         writerProfileInfo = writerProfileInfoUi,
         descInfo = descInfo,
-        memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else MemoInfo(bucketInfo.memo!!),
+        memoInfo = if (bucketInfo.memo.isNullOrEmpty()) null else DetailDescType.MemoInfo(bucketInfo.memo!!),
         commentInfo = commentInfo,
         togetherInfo = null,
         isMine = isMine,

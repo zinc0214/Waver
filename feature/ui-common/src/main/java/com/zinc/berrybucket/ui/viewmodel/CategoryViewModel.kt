@@ -55,7 +55,7 @@ class CategoryViewModel @Inject constructor(
     fun loadCategoryList() {
         _loadFail.value = null
         accessToken.value?.let { token ->
-            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.LoadFail)) {
+            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.LoadFail)) {
                 runCatching {
                     val result = loadCategoryList.invoke(token)
                     if (result.success) {
@@ -76,7 +76,7 @@ class CategoryViewModel @Inject constructor(
         _loadFail.value = null
 
         accessToken.value?.let { token ->
-            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.AddFail)) {
+            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.AddFail)) {
                 val response = addNewCategory(token, name)
                 if (response.success) {
                     loadCategoryList()
@@ -92,7 +92,7 @@ class CategoryViewModel @Inject constructor(
     fun editCategory(categoryInfo: UICategoryInfo) {
         _loadFail.value = null
         accessToken.value?.let { token ->
-            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.EditFail)) {
+            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.EditFail)) {
                 val response = editCategoryName(token = token, categoryInfo.id, categoryInfo.name)
                 if (response.success) {
                     loadCategoryList()
@@ -109,7 +109,7 @@ class CategoryViewModel @Inject constructor(
         _loadFail.value = null
 
         accessToken.value?.let { token ->
-            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.DeleteFail)) {
+            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.DeleteFail)) {
                 val response = removeCategoryItem(token, categoryId)
                 if (response.success) {
                     loadCategoryList()
@@ -126,7 +126,7 @@ class CategoryViewModel @Inject constructor(
         _loadFail.value = null
         val updatedList = _categoryInfoList.value.orEmpty()
         accessToken.value?.let { token ->
-            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.ReorderFail)) {
+            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.ReorderFail)) {
                 val response = reorderCategory(token, updatedList.map { it.id.toString() })
                 if (response.success) {
                     loadCategoryList()
@@ -147,7 +147,7 @@ class CategoryViewModel @Inject constructor(
         _loadFail.value = null
         accessToken.value?.let { token ->
             runCatching {
-                viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.BucketLoadFail)) {
+                viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.BucketLoadFail)) {
                     val response = loadCategoryBucketList.invoke(
                         token,
                         categoryId.toString(),

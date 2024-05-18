@@ -56,7 +56,7 @@ class LoginViewModel @Inject constructor(
 
     fun loadLoginToken(email: String) {
         _loginFail.value = false
-        viewModelScope.launch(CEH(_loginFail, true)) {
+        viewModelScope.launch(ceh(_loginFail, true)) {
             Log.e("ayhan", "loadUserToken result : ${refreshToken.value} , ${accessToken.value}")
 
             val result = loginByEmail(email)

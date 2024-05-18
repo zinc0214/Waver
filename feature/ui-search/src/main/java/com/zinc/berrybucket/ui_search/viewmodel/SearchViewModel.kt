@@ -63,7 +63,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadSearchRecommendItems() {
-        viewModelScope.launch(CEH(_loadFail, "")) {
+        viewModelScope.launch(ceh(_loadFail, "")) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = loadSearchRecommend.invoke(token)
@@ -80,7 +80,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadSearchResult(searchWord: String) {
-        viewModelScope.launch(CEH(_loadFail, "")) {
+        viewModelScope.launch(ceh(_loadFail, "")) {
             _searchResultIsEmpty.value = false
             accessToken.value?.let { token ->
                 runCatching {
@@ -141,7 +141,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun deleteRecentWord(deleteWord: String) {
-        viewModelScope.launch(CEH(_loadFail, "")) {
+        viewModelScope.launch(ceh(_loadFail, "")) {
             accessToken.value?.let { token ->
                 runCatching {
                     val response = deleteRecentWord.invoke(token, deleteWord)
@@ -163,7 +163,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun requestFollow(userId: String, isAlreadyFollowed: Boolean) {
-        viewModelScope.launch(CEH(_actionFail, null)) {
+        viewModelScope.launch(ceh(_actionFail, null)) {
             accessToken.value?.let { token ->
                 runCatching {
                     if (isAlreadyFollowed) {

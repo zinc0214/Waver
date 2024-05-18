@@ -102,7 +102,7 @@ class WriteViewModel @Inject constructor(
     }
 
     fun loadFriends() {
-        viewModelScope.launch(CEH(_loadFail, "친구 로드 실패" to "로드 실패!")) {
+        viewModelScope.launch(ceh(_loadFail, "친구 로드 실패" to "로드 실패!")) {
             runCatching {
                 _loadFail.value = null
                 accessToken.value?.let { token ->
@@ -155,7 +155,7 @@ class WriteViewModel @Inject constructor(
     fun getBucketDetailData(bucketId: String) {
         _loadFail.value = null
         if (bucketId.isBlank().not() && bucketId != "NoId") {
-            viewModelScope.launch(CEH(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
+            viewModelScope.launch(ceh(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
                 runCatching {
                     accessToken.value?.let { token ->
                         val result = loadBucketDetail(token, bucketId, true)
