@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.CategoryLoadFailStatus
 import com.zinc.berrybucket.model.MyTabType
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Gray2
@@ -41,7 +42,7 @@ fun CategoryBucketListScreen(
 ) {
 
     val _bucketList by viewModel.categoryBucketList.observeAsState()
-    val apiFailed by viewModel.apiFailed2.observeAsState()
+    val apiFailed by viewModel.loadFail.observeAsState()
 
     val categoryInfo = remember {
         mutableStateOf(_categoryInfo)
@@ -62,7 +63,7 @@ fun CategoryBucketListScreen(
     }
 
     LaunchedEffect(key1 = apiFailed) {
-        if (apiFailed == true) {
+        if (apiFailed is CategoryLoadFailStatus.BucketLoadFail) {
             showApiFail.value = true
         }
     }

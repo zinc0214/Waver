@@ -31,3 +31,12 @@ fun List<CategoryInfo>.parseUI() = map {
         count = it.bucketlistCount
     )
 }
+
+sealed interface CategoryLoadFailStatus {
+    data object LoadFail : CategoryLoadFailStatus
+    data object AddFail : CategoryLoadFailStatus
+    data object EditFail : CategoryLoadFailStatus
+    data object DeleteFail : CategoryLoadFailStatus
+    data object ReorderFail : CategoryLoadFailStatus
+    data object BucketLoadFail : CategoryLoadFailStatus
+}

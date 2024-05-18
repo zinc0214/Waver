@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.zinc.berrybucket.model.CategoryLoadFailStatus
 import com.zinc.berrybucket.model.MyPagerClickEvent
 import com.zinc.berrybucket.model.MyTabType.CATEGORY
 import com.zinc.berrybucket.ui.design.theme.Gray8
@@ -40,6 +41,7 @@ import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
 import com.zinc.berrybucket.ui_my.R
 import com.zinc.berrybucket.ui_my.screen.category.component.MyCategoryAddView
 import com.zinc.berrybucket.ui_my.view.EditButtonAndSearchImageView
+import com.zinc.berrybucket.ui_common.R as CommonR
 
 @Composable
 fun CategoryLayer(
@@ -49,8 +51,9 @@ fun CategoryLayer(
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     val viewModel: CategoryViewModel = hiltViewModel()
+
     val categoryListAsState by viewModel.categoryInfoList.observeAsState()
-    val apiFailed by viewModel.apiFailed.observeAsState()
+    val apiFailed by viewModel.loadFail.observeAsState()
 
     val categoryList = remember { mutableStateOf(categoryListAsState) }
     val addNewCategoryDialogShowAvailable = remember { mutableStateOf(false) } // 카테고리 추가 팝업 노출 여부
@@ -60,6 +63,7 @@ fun CategoryLayer(
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
         val observer = LifecycleEventObserver { owner, event ->
+            Log.e("ayhan", "CategoryLayer event  :$event")
             if (event == Lifecycle.Event.ON_CREATE) {
                 viewModel.loadCategoryList()
             }
@@ -83,23 +87,20 @@ fun CategoryLayer(
         }
     }
 
-    categoryList.value?.let {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
-            TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
-            Spacer(modifier = Modifier.height(16.dp))
-            CategoryListView(it) {
-                clickEvent.invoke(MyPagerClickEvent.GoTo.CategoryItemClicked(it))
-            }
-            MyCategoryAddView {
-                addNewCategoryDialogShowAvailable.value = true
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
+        Spacer(modifier = Modifier.height(16.dp))
+        CategoryListView(categoryList.value.orEmpty()) {
+            clickEvent.invoke(MyPagerClickEvent.GoTo.CategoryItemClicked(it))
+        }
+        MyCategoryAddView {
+            addNewCategoryDialogShowAvailable.value = true
         }
     }
-
     if (addNewCategoryDialogShowAvailable.value) {
         AddNewCategoryDialog(event = {
             when (it) {
@@ -115,8 +116,17 @@ fun CategoryLayer(
     }
 
     if (apiFailDialogShow.value) {
-        apiFailState.value?.let { failData ->
-            ApiFailDialog(failData.first, failData.second) {
+        apiFailState.value?.let { failStatus ->
+            ApiFailDialog(
+                stringResource(id = CommonR.string.apiFailTitle),
+                stringResource(id = CommonR.string.apiFailMessage)
+            ) {
+                when (failStatus) {
+                    CategoryLoadFailStatus.LoadFail -> viewModel.loadCategoryList()
+                    else -> {
+                        // Do Nothing
+                    }
+                }
                 apiFailDialogShow.value = false
             }
         }

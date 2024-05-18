@@ -64,6 +64,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.anroid)
     implementation(libs.hilt.navigation)
+    implementation(libs.androidx.material3.android)
     kapt(libs.hilt.compiler)
 
     // Coil

@@ -1,13 +1,14 @@
 package com.zinc.berrybucket.ui.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.berrybucket.model.CategoryLoadFailStatus
 import com.zinc.berrybucket.model.UIBucketInfoSimple
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.model.parseToUI
 import com.zinc.berrybucket.model.parseUI
+import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AllBucketListSortType
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
@@ -18,7 +19,6 @@ import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.category.RemoveCategoryItem
 import com.zinc.domain.usecases.category.ReorderCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,22 +38,13 @@ class CategoryViewModel @Inject constructor(
     private val _categoryInfoList = MutableLiveData<List<UICategoryInfo>>()
     val categoryInfoList: LiveData<List<UICategoryInfo>> get() = _categoryInfoList
 
-    private val _apiFailed = MutableLiveData<Pair<String, String>>()
-    val apiFailed: LiveData<Pair<String, String>> get() = _apiFailed
-
     private val _categoryBucketList = MutableLiveData<List<UIBucketInfoSimple>>()
     val categoryBucketList: LiveData<List<UIBucketInfoSimple>> get() = _categoryBucketList
 
-    private val _apiFailed2 = MutableLiveData<Boolean>()
-    val apiFailed2: LiveData<Boolean> get() = _apiFailed2
+    private val _loadFail = SingleLiveEvent<CategoryLoadFailStatus>()
+    val loadFail: LiveData<CategoryLoadFailStatus> get() = _loadFail
 
-    private val _orderType = MutableLiveData<Int>()
-    val orderType: LiveData<Int> get() = _orderType
-
-    private fun ceh(liveData: MutableLiveData<Boolean>, data: Boolean) =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-            liveData.value = data
-        }
+    private var orderType = AllBucketListSortType.CREATED
 
     init {
         viewModelScope.launch {
@@ -62,87 +53,89 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun loadCategoryList() {
-        viewModelScope.launch(CEH(_apiFailed, "카테고리 로드 실패" to "")) {
-            Log.e("ayhan", "load Category?")
-            runCatching {
-                accessToken.value?.let { token ->
-                    loadCategoryList.invoke(token).apply {
-                        Log.e("ayhan", "categoryList : ${this.data}")
-                        if (this.success) {
-                            _categoryInfoList.value = this.data.parseUI()
-                        } else {
-                            _apiFailed.value = "카테고리 로드 실패" to this.message
-                        }
+        _loadFail.value = null
+        accessToken.value?.let { token ->
+            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.LoadFail)) {
+                runCatching {
+                    val result = loadCategoryList.invoke(token)
+                    if (result.success) {
+                        _categoryInfoList.value = result.data.parseUI()
+                    } else {
+                        _loadFail.value = CategoryLoadFailStatus.LoadFail
                     }
+                }.getOrElse {
+                    _loadFail.value = CategoryLoadFailStatus.LoadFail
                 }
-            }.getOrElse {
-                _apiFailed.value = "카테고리 로드 실패" to ""
             }
+        } ?: run {
+            _loadFail.value = CategoryLoadFailStatus.LoadFail
         }
     }
 
     fun addNewCategory(name: String) {
+        _loadFail.value = null
+
         accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-                Log.e("ayhan", "load addNewCategory Fail 2 $throwable")
-            }) {
-                _apiFailed.value = null
+            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.AddFail)) {
                 val response = addNewCategory(token, name)
                 if (response.success) {
                     loadCategoryList()
                 } else {
-                    _apiFailed.value = "카테고리 추가 실패" to response.message
+                    _loadFail.value = CategoryLoadFailStatus.AddFail
                 }
             }
+        } ?: run {
+            _loadFail.value = CategoryLoadFailStatus.AddFail
         }
     }
 
     fun editCategory(categoryInfo: UICategoryInfo) {
+        _loadFail.value = null
         accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            }) {
-                _apiFailed.value = null
+            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.EditFail)) {
                 val response = editCategoryName(token = token, categoryInfo.id, categoryInfo.name)
                 if (response.success) {
                     loadCategoryList()
                 } else {
-                    _apiFailed.value = "카테고리 수정 실패" to response.message
+                    _loadFail.value = CategoryLoadFailStatus.EditFail
                 }
             }
+        } ?: run {
+            _loadFail.value = CategoryLoadFailStatus.EditFail
         }
     }
 
     fun removeCategory(categoryId: Int) {
+        _loadFail.value = null
+
         accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            }) {
-                _apiFailed.value = null
+            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.DeleteFail)) {
                 val response = removeCategoryItem(token, categoryId)
                 if (response.success) {
                     loadCategoryList()
                 } else {
-                    _apiFailed.value = "카테고리 삭제 실패" to response.message
+                    _loadFail.value = CategoryLoadFailStatus.DeleteFail
                 }
             }
+        } ?: run {
+            _loadFail.value = CategoryLoadFailStatus.DeleteFail
         }
     }
 
     fun reorderCategory() {
+        _loadFail.value = null
         val updatedList = _categoryInfoList.value.orEmpty()
-        Log.d("ayhan", "reorderCategory: ${updatedList}")
         accessToken.value?.let { token ->
-            viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
-            }) {
-                _apiFailed.value = null
+            viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.ReorderFail)) {
                 val response = reorderCategory(token, updatedList.map { it.id.toString() })
-                Log.d("ayhan", "reorderCategoryresponse: ${response}")
-
                 if (response.success) {
                     loadCategoryList()
                 } else {
-                    _apiFailed.value = "카테고리 순서 편집 실패" to response.message
+                    _loadFail.value = CategoryLoadFailStatus.ReorderFail
                 }
             }
+        } ?: run {
+            _loadFail.value = CategoryLoadFailStatus.ReorderFail
         }
     }
 
@@ -151,24 +144,23 @@ class CategoryViewModel @Inject constructor(
     }
 
     fun loadCategoryBucketList(categoryId: Int) {
+        _loadFail.value = null
         accessToken.value?.let { token ->
             runCatching {
-                viewModelScope.launch(ceh(_apiFailed2, true)) {
+                viewModelScope.launch(CEH(_loadFail, CategoryLoadFailStatus.BucketLoadFail)) {
                     val response = loadCategoryBucketList.invoke(
                         token,
                         categoryId.toString(),
-                        loadSortFilter()
+                        orderType
                     )
-                    Log.e("ayhan", "loadCategoryBucketList response : ${response}")
                     if (response.success) {
-                        _apiFailed2.value = false
                         _categoryBucketList.value = response.data.bucketlist.parseToUI()
                     } else {
-                        _apiFailed2.value = true
+                        _loadFail.value = CategoryLoadFailStatus.BucketLoadFail
                     }
                 }
             }.getOrElse {
-                _apiFailed2.value = true
+                _loadFail.value = CategoryLoadFailStatus.BucketLoadFail
             }
         }
     }
@@ -176,12 +168,11 @@ class CategoryViewModel @Inject constructor(
     private suspend fun loadOrderTypeDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadOrderType.collectLatest {
-                _orderType.value = it
-                Log.e("ayhan", "loadOrderTypeDataStore")
+                orderType = loadSortFilter(it)
             }
         }
     }
 
-    private fun loadSortFilter() =
-        if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
+    private fun loadSortFilter(orderIntType: Int) =
+        if (orderIntType == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 }

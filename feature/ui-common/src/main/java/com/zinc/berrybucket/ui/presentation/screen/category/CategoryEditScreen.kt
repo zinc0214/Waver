@@ -11,7 +11,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.berrybucket.model.CategoryLoadFailStatus
 import com.zinc.berrybucket.model.UICategoryInfo
 import com.zinc.berrybucket.ui.design.theme.Gray1
 import com.zinc.berrybucket.ui.presentation.component.dialog.ApiFailDialog
@@ -23,6 +25,7 @@ import com.zinc.berrybucket.ui.presentation.screen.category.model.AddCategoryEve
 import com.zinc.berrybucket.ui.presentation.screen.category.model.CategoryEditOptionEvent
 import com.zinc.berrybucket.ui.presentation.screen.category.model.EditCategoryNameEvent
 import com.zinc.berrybucket.ui.viewmodel.CategoryViewModel
+import com.zinc.berrybucket.ui_common.R
 
 @Composable
 fun CategoryEditScreen(
@@ -31,7 +34,7 @@ fun CategoryEditScreen(
 ) {
 
     val categoryList by viewModel.categoryInfoList.observeAsState()
-    val apiFailed by viewModel.apiFailed.observeAsState()
+    val apiFailed by viewModel.loadFail.observeAsState()
 
     if (categoryList.isNullOrEmpty()) {
         viewModel.loadCategoryList()
@@ -56,8 +59,17 @@ fun CategoryEditScreen(
     }
 
     if (apiFailDialogShow.value) {
-        apiFailState.value?.let { failData ->
-            ApiFailDialog(failData.first, failData.second) {
+        apiFailState.value?.let { failStatus ->
+            ApiFailDialog(
+                title = stringResource(id = R.string.apiFailTitle),
+                message = stringResource(id = R.string.apiFailMessage)
+            ) {
+                when (failStatus) {
+                    CategoryLoadFailStatus.LoadFail -> viewModel.loadCategoryList()
+                    else -> {
+                        // Do Nothing
+                    }
+                }
                 apiFailDialogShow.value = false
             }
         }
@@ -94,9 +106,11 @@ fun CategoryEditScreen(
     }
 
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Gray1)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Gray1)
+    ) {
 
         CategoryEditTitleView(backClicked = {
             backClicked()

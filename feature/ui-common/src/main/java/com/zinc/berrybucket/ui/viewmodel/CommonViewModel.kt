@@ -48,17 +48,18 @@ open class CommonViewModel @Inject constructor(
     }
 
     private suspend fun loadAccessToken() {
-        loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
-            refreshToken.value =
+        loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
+            accessToken.value =
                 it
             //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODQ2MTgwMywiZXhwIjoxNzQ1NzI2MTgwM30.RG-TKPJR3UbLBXD-O9269gyNLv21G9KIBP1Q6SNaeCU"
         }
     }
 
     private suspend fun loadRefreshToken() {
-        loginPreferenceDataStoreModule.loadAccessToken.collectLatest {
-            accessToken.value =
+        loginPreferenceDataStoreModule.loadRefreshToken.collectLatest {
+            refreshToken.value =
                 it
+
             //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY3ODQ2MTgwMywiZXhwIjoxNzQ1NzI2MTgwM30.RG-TKPJR3UbLBXD-O9269gyNLv21G9KIBP1Q6SNaeCU"
         }
     }
