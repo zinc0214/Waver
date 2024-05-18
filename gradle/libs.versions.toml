@@ -1,6 +1,6 @@
 [versions]
 androidTooldBuild = "8.3.2"
-lifecycle = "2.7.0"
+lifecycle = "2.8.0"
 androidXArch = "2.2.0"
 composeBom = "2024.05.00"
 activity = "1.9.0"
@@ -38,7 +38,7 @@ androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-kt
 androidx-arch-common = { module = "androidx.arch.core:core-common", version.ref = "androidXArch" }
 androidx-arch-runtime = { module = "androidx.arch.core:core-runtime", version.ref = "androidXArch" }
 
-androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.0.0"
+androidx-viewpager2 = "androidx.viewpager2:viewpager2:1.1.0"
 
 androidx-datastore-core = { module = "androidx.datastore:datastore-preferences-core", version.ref = "dataStore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
