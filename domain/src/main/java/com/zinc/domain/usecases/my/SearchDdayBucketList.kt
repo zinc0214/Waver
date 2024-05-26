@@ -7,7 +7,6 @@ class SearchDdayBucketList @Inject constructor(
     private val myRepository: MyRepository
 ) {
     suspend operator fun invoke(
-        token: String,
         query: String
-    ) = myRepository.searchDdayBucketList(token, query)
+    ) = myRepository.searchDdayBucketList(query)
 }

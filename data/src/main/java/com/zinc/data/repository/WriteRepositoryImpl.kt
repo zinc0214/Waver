@@ -14,7 +14,6 @@ internal class WriteRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : WriteRepository {
     override suspend fun addNewBucketList(
-        token: String,
         addBucketListRequest: AddBucketListRequest,
         isForUpdate: Boolean
     ): CommonResponse {
@@ -36,7 +35,6 @@ internal class WriteRepositoryImpl @Inject constructor(
 
         if (isForUpdate) {
             return berryBucketApi.updateBucketList(
-                token,
                 bucketType,
                 exposureStatus,
                 title,
@@ -52,7 +50,6 @@ internal class WriteRepositoryImpl @Inject constructor(
             )
         } else {
             return berryBucketApi.addNewBucketList(
-                token,
                 bucketType,
                 exposureStatus,
                 title,
@@ -68,7 +65,7 @@ internal class WriteRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun loadFriends(token: String): LoadWriteSelectableFriendsResponse {
-        return berryBucketApi.loadWriteSelectableFriends(token)
+    override suspend fun loadFriends(): LoadWriteSelectableFriendsResponse {
+        return berryBucketApi.loadWriteSelectableFriends()
     }
 }

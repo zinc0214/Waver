@@ -9,7 +9,6 @@ import com.zinc.berrybucket.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.berrybucket.ui_more.models.toUi
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.utils.TAG
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.models.UpdateProfileRequest
 import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
 import com.zinc.domain.usecases.more.LoadProfileInfo
@@ -24,9 +23,8 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
     private val updateProfileInfo: UpdateProfileInfo,
-    private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname
+) : CommonViewModel() {
 
     private fun CEH(event: SingleLiveEvent<Boolean>, value: Boolean) =
         CoroutineExceptionHandler { coroutineContext, throwable ->
@@ -51,68 +49,46 @@ class MoreViewModel @Inject constructor(
 
     fun loadMyProfile() {
         viewModelScope.launch(CEH(_profileLoadFail, true)) {
-            runCatching {
-                accessToken.value?.let { token ->
-                    Log.e(TAG, "loadMyProfile1: $token")
-                    loadProfileInfo.invoke(token).apply {
-                        Log.e(TAG, "loadMyProfile: $this")
-                        if (success) {
-                            _profileInfo.value = data.toUi()
-                        } else {
-                            _profileLoadFail.value = true
-                        }
-                    }
+            loadProfileInfo.invoke().apply {
+                Log.e(TAG, "loadMyProfile: $this")
+                if (success) {
+                    _profileInfo.value = data.toUi()
+                } else {
+                    _profileLoadFail.value = true
                 }
-            }.getOrElse {
-                Log.e(TAG, "loadMyProfile2: ${it.message}")
-                _profileLoadFail.value = true
             }
         }
     }
 
     fun updateMyProfile(name: String, bio: String, profileImage: File? = null) {
         viewModelScope.launch(CEH(_profileUpdateFail, false)) {
-            runCatching {
-                accessToken.value?.let { token ->
-                    val request = UpdateProfileRequest(
-                        name = name,
-                        bio = bio,
-                        image = profileImage
-                    )
-                    updateProfileInfo.invoke(token, request).apply {
-                        Log.e(TAG, "loadMyProfile: $this")
-                        if (success) {
-                            _profileUpdateSucceed.value = true
-                        } else {
-                            _profileUpdateFail.value = false
-                        }
-                    }
+            val request = UpdateProfileRequest(
+                name = name,
+                bio = bio,
+                image = profileImage
+            )
+            updateProfileInfo.invoke(request).apply {
+                Log.e(TAG, "loadMyProfile: $this")
+                if (success) {
+                    _profileUpdateSucceed.value = true
+                } else {
+                    _profileUpdateFail.value = false
                 }
-            }.getOrElse {
-                Log.e(TAG, "loadMyProfile2: ${it.message}")
-                _profileUpdateFail.value = false
             }
         }
     }
 
     fun checkIsAlreadyUsedName(name: String) {
         viewModelScope.launch(CEH(_isAlreadyUsedNickName, true)) {
-            runCatching {
-                accessToken.value?.let {
-                    checkAlreadyUsedNickname.invoke(name).apply {
-                        Log.e("ayhan", "check Alreay $this")
-                        if (success) {
-                            _isAlreadyUsedNickName.value = false
-                        } else if (code == "3000") {
-                            _isAlreadyUsedNickName.value = true
-                        } else {
-                            _profileUpdateFail.value = false
-                        }
-                    }
+            checkAlreadyUsedNickname.invoke(name).apply {
+                Log.e("ayhan", "check Alreay $this")
+                if (success) {
+                    _isAlreadyUsedNickName.value = false
+                } else if (code == "3000") {
+                    _isAlreadyUsedNickName.value = true
+                } else {
+                    _profileUpdateFail.value = false
                 }
-            }.getOrElse {
-                Log.e(TAG, "loadMyProfile2: ${it.message}")
-                _isAlreadyUsedNickName.value = true
             }
         }
     }

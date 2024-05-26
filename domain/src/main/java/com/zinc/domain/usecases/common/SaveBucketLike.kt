@@ -6,6 +6,6 @@ import javax.inject.Inject
 class SaveBucketLike @Inject constructor(
     private val commonRepository: CommonRepository
 ) {
-    suspend operator fun invoke(token: String, id: String) =
-        commonRepository.saveBucketLike(token, id)
+    suspend operator fun invoke(id: String) =
+        commonRepository.saveBucketLike(id)
 }

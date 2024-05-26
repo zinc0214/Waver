@@ -6,6 +6,6 @@ import javax.inject.Inject
 class DeleteRecentWord @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend operator fun invoke(token: String, keyWord: String) =
-        searchRepository.deleteSearchRecentWord(token, keyWord)
+    suspend operator fun invoke(keyWord: String) =
+        searchRepository.deleteSearchRecentWord(keyWord)
 }

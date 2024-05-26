@@ -6,6 +6,6 @@ import javax.inject.Inject
 class LoadProfileInfo @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(token: String, isMine: Boolean, otherId: String?) =
-        detailRepository.loadProfile(token, isMine, otherId)
+    suspend operator fun invoke(isMine: Boolean, otherId: String?) =
+        detailRepository.loadProfile(isMine, otherId)
 }

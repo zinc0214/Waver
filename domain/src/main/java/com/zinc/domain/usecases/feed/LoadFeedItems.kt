@@ -6,5 +6,5 @@ import javax.inject.Inject
 class LoadFeedItems @Inject constructor(
     private val feedRepository: FeedRepository
 ) {
-    suspend operator fun invoke(token: String) = feedRepository.loadFeedItems(token)
+    suspend operator fun invoke() = feedRepository.loadFeedItems()
 }

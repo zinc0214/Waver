@@ -6,9 +6,9 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ProfileResponse
 
 interface DetailRepository {
-    suspend fun loadBucketDetail(token: String, id: String, isMine: Boolean): BucketDetailResponse
-    suspend fun addBucketComment(token: String, request: AddBucketCommentRequest): CommonResponse
-    suspend fun requestGoalCountUpdate(token: String, id: String, goalCount: Int): CommonResponse
-    suspend fun loadProfile(token: String, isMine: Boolean, writerId: String?): ProfileResponse
-    suspend fun deleteBucketComment(token: String, id: String): CommonResponse
+    suspend fun loadBucketDetail(id: String, isMine: Boolean): BucketDetailResponse
+    suspend fun addBucketComment(request: AddBucketCommentRequest): CommonResponse
+    suspend fun requestGoalCountUpdate(id: String, goalCount: Int): CommonResponse
+    suspend fun loadProfile(isMine: Boolean, writerId: String?): ProfileResponse
+    suspend fun deleteBucketComment(id: String): CommonResponse
 }

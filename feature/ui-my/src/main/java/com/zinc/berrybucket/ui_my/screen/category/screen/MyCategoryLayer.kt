@@ -105,7 +105,7 @@ fun CategoryLayer(
         AddNewCategoryDialog(event = {
             when (it) {
                 is AddCategoryEvent.AddNewAddCategory -> {
-                    viewModel.addNewCategory(it.name)
+                    viewModel.requestAddNewCategory(it.name)
                 }
 
                 AddCategoryEvent.Close -> {

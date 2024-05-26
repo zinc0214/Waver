@@ -7,6 +7,6 @@ import javax.inject.Inject
 class AddBucketComment @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(token: String, request: AddBucketCommentRequest) =
-        detailRepository.addBucketComment(token, request)
+    suspend operator fun invoke(request: AddBucketCommentRequest) =
+        detailRepository.addBucketComment(request)
 }

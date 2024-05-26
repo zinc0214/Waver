@@ -142,7 +142,7 @@ fun CloseDetailScreen(
 
                             is GoalCountUpdateEvent.CountUpdate -> {
                                 // Todo : ViewModel Update!
-                                viewModel.goalCountUpdate(it.count)
+                                viewModel.requestGoalCountUpdate(it.count)
                                 goalCountUpdatePopUpShowed.value = false
                             }
                         }

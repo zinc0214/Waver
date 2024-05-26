@@ -7,6 +7,6 @@ import javax.inject.Inject
 class LoadCategoryBucketList @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
-    suspend operator fun invoke(token: String, id: String, sort: AllBucketListSortType) =
-        categoryRepository.loadCategoryBucketList(token, id, sort)
+    suspend operator fun invoke(id: String, sort: AllBucketListSortType) =
+        categoryRepository.loadCategoryBucketList(id, sort)
 }

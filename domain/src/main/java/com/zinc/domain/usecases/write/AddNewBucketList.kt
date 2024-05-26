@@ -8,8 +8,7 @@ class AddNewBucketList @Inject constructor(
     private val writeRepository: WriteRepository
 ) {
     suspend operator fun invoke(
-        token: String,
         addBucketListRequest: AddBucketListRequest,
         isForUpdate: Boolean
-    ) = writeRepository.addNewBucketList(token, addBucketListRequest, isForUpdate)
+    ) = writeRepository.addNewBucketList(addBucketListRequest, isForUpdate)
 }

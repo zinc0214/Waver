@@ -18,7 +18,6 @@ class LoadOtherInfo @Inject constructor(
     private val otherRepository: OtherRepository
 ) {
     suspend operator fun invoke(
-        token: String,
         userId: String
     ): OtherProfileLoad? {
 
@@ -31,11 +30,11 @@ class LoadOtherInfo @Inject constructor(
                 var followResponse: OtherFollowDataResponse? = null
 
                 joinAll(launch {
-                    profileResponse = otherRepository.loadOtherProfile(token, userId)
+                    profileResponse = otherRepository.loadOtherProfile(userId)
                 }, launch {
-                    bucketListResponse = otherRepository.loadOtherBucketList(token, userId)
+                    bucketListResponse = otherRepository.loadOtherBucketList(userId)
                 }, launch {
-                    followResponse = otherRepository.loadOtherFollow(token, userId)
+                    followResponse = otherRepository.loadOtherFollow(userId)
                 })
 
                 Log.e(

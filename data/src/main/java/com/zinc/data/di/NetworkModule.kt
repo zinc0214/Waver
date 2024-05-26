@@ -1,5 +1,7 @@
 package com.zinc.data.di
 
+import com.zinc.data.api.AuthAuthenticator
+import com.zinc.data.api.TokenInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,13 +17,18 @@ import javax.inject.Singleton
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient =
+    fun provideOkHttpClient(
+        tokenInterceptor: TokenInterceptor,
+        authInterceptor: AuthAuthenticator
+    ): OkHttpClient =
         OkHttpClient.Builder()
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     setLevel(HttpLoggingInterceptor.Level.BASIC)
                 }
             )
+            .addInterceptor(tokenInterceptor)
+            .authenticator(authInterceptor)
             .build()
 
     @Provides

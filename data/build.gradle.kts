@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":domain"))
+    implementation(project(":datastore"))
 
     // Hilt
     implementation(libs.hilt.anroid)

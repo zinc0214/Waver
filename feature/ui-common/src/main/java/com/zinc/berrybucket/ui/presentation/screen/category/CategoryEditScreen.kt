@@ -80,7 +80,7 @@ fun CategoryEditScreen(
             when (it) {
                 is AddCategoryEvent.AddNewAddCategory -> {
                     addNewCategoryDialogShowAvailable.value = false
-                    viewModel.addNewCategory(it.name)
+                    viewModel.requestAddNewCategory(it.name)
                 }
 
                 AddCategoryEvent.Close -> addNewCategoryDialogShowAvailable.value = false

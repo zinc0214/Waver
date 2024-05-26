@@ -15,7 +15,7 @@ import javax.inject.Inject
 class JoinEmailViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+) : CommonViewModel() {
 
     private val _failEmailCheck = SingleLiveEvent<Boolean>()
     val failEmailCheck: LiveData<Boolean> get() = _failEmailCheck
@@ -37,7 +37,6 @@ class JoinEmailViewModel @Inject constructor(
                     res.data?.let { token ->
                         loginPreferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
                         loginPreferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
-                        accessToken.value = "Bearer ${token.accessToken}"
                     }
                     _isAlreadyUsedEmail.value = true
                 } else {

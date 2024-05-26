@@ -6,8 +6,8 @@ import javax.inject.Inject
 class DeleteBucketComment @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(token: String, id: String) =
-        detailRepository.deleteBucketComment(token, id)
+    suspend operator fun invoke(id: String) =
+        detailRepository.deleteBucketComment(id)
 }
 
 

@@ -16,16 +16,11 @@ import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AllBucketListRequest
 import com.zinc.common.models.AllBucketListSortType
-import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
-import com.zinc.common.models.BucketType
-import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.DdaySortType
-import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.TopProfile
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.category.SearchCategoryList
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadAllBucketList
@@ -47,9 +42,8 @@ class MyViewModel @Inject constructor(
     private val searchCategoryList: SearchCategoryList,
     private val searchDdayBucketList: SearchDdayBucketList,
     private val achieveMyBucket: AchieveMyBucket,
-    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule
+) : CommonViewModel() {
 
     private val _profileInfo = MutableLiveData<TopProfile>()
     val profileInfo: LiveData<TopProfile> get() = _profileInfo
@@ -62,9 +56,6 @@ class MyViewModel @Inject constructor(
 
     private val _allBucketItem = MutableLiveData<AllBucketList>()
     val allBucketItem: LiveData<AllBucketList> get() = _allBucketItem
-
-    private val _categoryInfoItems = MutableLiveData<List<CategoryInfo>>()
-    val categoryInfoItems: LiveData<List<CategoryInfo>> get() = _categoryInfoItems
 
     private val _ddayBucketList = MutableLiveData<AllBucketList>()
     val ddayBucketList: LiveData<AllBucketList> = _ddayBucketList
@@ -116,13 +107,13 @@ class MyViewModel @Inject constructor(
 
     private var isPrefChanged = false
 
-    private val searchCeh = CoroutineExceptionHandler { coroutineContext, throwable ->
+    private val searchCeh = CoroutineExceptionHandler { _, throwable ->
         Log.e("ayhan", "searchFail 1 : $throwable")
         _searchFailed.call()
     }
 
     private fun ceh(liveData: SingleLiveEvent<Nothing>) =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
+        CoroutineExceptionHandler { _, _ ->
             liveData.call()
         }
 
@@ -221,31 +212,27 @@ class MyViewModel @Inject constructor(
     fun loadProfile() {
         viewModelScope.launch {
             runCatching {
-                accessToken.value?.let { token ->
-                    Log.e("ayhan", "token : $token")
+                val response = loadHomeProfileInfo.invoke()
+                Log.e("ayhan", "tokgen : $response")
 
-                    val response = loadHomeProfileInfo.invoke(token)
-                    Log.e("ayhan", "tokgen : $response")
+                if (response.success) {
+                    val data = response.data
+                    val topProfile = TopProfile(
+                        name = data.name,
+                        imgUrl = data.imgUrl,
+                        badgeType = data.badgeUrl,
+                        badgeTitle = data.badgeTitle,
+                        bio = data.bio,
+                        followingCount = data.followingCount,
+                        followerCount = data.followerCount,
+                        percent = data.bucketInfo.grade()
+                    )
 
-                    if (response.success) {
-                        val data = response.data
-                        val topProfile = TopProfile(
-                            name = data.name,
-                            imgUrl = data.imgUrl,
-                            badgeType = data.badgeUrl,
-                            badgeTitle = data.badgeTitle,
-                            bio = data.bio,
-                            followingCount = data.followingCount,
-                            followerCount = data.followerCount,
-                            percent = data.bucketInfo.grade()
-                        )
-
-                        Log.e("ayhan", "homeProfike : $topProfile")
-                        _profileInfo.value = topProfile
-                    } else {
-                        Log.e("ayhan", "Fail Load Profile not success")
-                        loadDummyProfile()
-                    }
+                    Log.e("ayhan", "homeProfike : $topProfile")
+                    _profileInfo.value = topProfile
+                } else {
+                    Log.e("ayhan", "Fail Load Profile not success")
+                    loadDummyProfile()
                 }
             }.getOrElse {
                 Log.e("ayhan", "Fail Load Profile : $it")
@@ -281,24 +268,22 @@ class MyViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                accessToken.value?.let { token ->
-                    loadAllBucketList.invoke(
-                        token,
-                        allBucketListRequest
-                    ).apply {
-                        if (this.success) {
-                            val data = this.data
-                            Log.e("ayhan", "allBucketList : $this")
-                            val uiALlBucketType = AllBucketList(
-                                processingCount = data.progressCount.toString(),
-                                succeedCount = data.completedCount.toString(),
-                                bucketList = data.bucketlist.parseToUI()
-                            )
-                            _allBucketItem.value = uiALlBucketType
-                            _allFilterLoadFinished.value = false
-                        }
-
+                loadAllBucketList.invoke(
+                    //token,
+                    allBucketListRequest
+                ).apply {
+                    if (this.success) {
+                        val data = this.data
+                        Log.e("ayhan", "allBucketList : $this")
+                        val uiALlBucketType = AllBucketList(
+                            processingCount = data.progressCount.toString(),
+                            succeedCount = data.completedCount.toString(),
+                            bucketList = data.bucketlist.parseToUI()
+                        )
+                        _allBucketItem.value = uiALlBucketType
+                        _allFilterLoadFinished.value = false
                     }
+
                 }
             }.getOrElse {
 
@@ -325,35 +310,29 @@ class MyViewModel @Inject constructor(
 
         viewModelScope.launch {
             runCatching {
-                accessToken.value?.let { token ->
-                    loadAllBucketList.invoke(
-                        token,
-                        allBucketListRequest
-                    ).apply {
-                        if (this.success) {
-                            val data = this.data
-                            val uiAllBucketList = AllBucketList(
-                                processingCount = data.progressCount.toString(),
-                                succeedCount = data.completedCount.toString(),
-                                bucketList = data.bucketlist.parseToUI()
-                            )
+                loadAllBucketList.invoke(allBucketListRequest).apply {
+                    if (this.success) {
+                        val data = this.data
+                        val uiAllBucketList = AllBucketList(
+                            processingCount = data.progressCount.toString(),
+                            succeedCount = data.completedCount.toString(),
+                            bucketList = data.bucketlist.parseToUI()
+                        )
 
-                            val filteredList =
-                                if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
-                                    uiAllBucketList.bucketList
-                                } else if (_isShowPlusDday.value == true) {
-                                    uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
-                                } else if (_isShownMinusDday.value == true) {
-                                    uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
-                                } else {
-                                    uiAllBucketList.bucketList
-                                }
+                        val filteredList =
+                            if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
+                                uiAllBucketList.bucketList
+                            } else if (_isShowPlusDday.value == true) {
+                                uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
+                            } else if (_isShownMinusDday.value == true) {
+                                uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
+                            } else {
+                                uiAllBucketList.bucketList
+                            }
 
-                            _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
-                            _ddayFilterLoadFinished.value = false
-                            Log.e("ayhan", "filteredList : $filteredList")
-                        }
-
+                        _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
+                        _ddayFilterLoadFinished.value = false
+                        Log.e("ayhan", "filteredList : $filteredList")
                     }
                 }
             }.getOrElse {
@@ -436,47 +415,36 @@ class MyViewModel @Inject constructor(
 
     private fun searchAllBucket(searchWord: String) {
         viewModelScope.launch(searchCeh) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    searchAllBucketList.invoke(token, searchWord).apply {
-                        if (this.success) {
-                            _searchBucketResult.value = Pair(
-                                ALL,
-                                this.data.bucketlist
-                            )
-                        } else {
-                            Log.e("ayhan", "searchFail 3 : ${this.message}")
-                            _searchFailed.call()
-                        }
-
+            runCatching {
+                searchAllBucketList.invoke(searchWord).apply {
+                    if (this.success) {
+                        _searchBucketResult.value = Pair(
+                            ALL,
+                            this.data.bucketlist
+                        )
+                    } else {
+                        Log.e("ayhan", "searchFail 3 : ${this.message}")
+                        _searchFailed.call()
                     }
-                }.getOrElse {
-                    Log.e("ayhan", "searchFail 2 : ${it.message}")
-                    _searchFailed.call()
+
                 }
+            }.getOrElse {
+                Log.e("ayhan", "searchFail 2 : ${it.message}")
+                _searchFailed.call()
             }
         }
-
     }
 
     private fun searchDdayBucket(searchWord: String) {
         viewModelScope.launch(searchCeh) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    searchDdayBucketList.invoke(token, searchWord).apply {
-                        if (this.success) {
-                            _searchBucketResult.value = Pair(
-                                DDAY,
-                                this.data.bucketlist
-                            )
-                        } else {
-                            Log.e("ayhan", "searchFail 3 : ${this.message}")
-                            _searchFailed.call()
-                        }
-
-                    }
-                }.getOrElse {
-                    Log.e("ayhan", "searchFail 2 : ${it.message}")
+            searchDdayBucketList.invoke(searchWord).apply {
+                if (this.success) {
+                    _searchBucketResult.value = Pair(
+                        DDAY,
+                        this.data.bucketlist
+                    )
+                } else {
+                    Log.e("ayhan", "searchFail 3 : ${this.message}")
                     _searchFailed.call()
                 }
             }
@@ -485,147 +453,46 @@ class MyViewModel @Inject constructor(
 
     private fun searchCategoryItems(searchWord: String) {
         viewModelScope.launch(searchCeh) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    searchCategoryList.invoke(token, searchWord).apply {
-                        Log.e("ayhan", "category : $this")
-                        if (this.success) {
-                            val parseData = data.parseUI()
-                            _searchBucketResult.value = Pair(
-                                CATEGORY,
-                                parseData
-                            )
-                        } else {
-                            _searchFailed.call()
-                            Log.e("ayhan", "searchCategoryItems Fail3 : $message")
-                        }
+            runCatching {
+                searchCategoryList.invoke(searchWord).apply {
+                    Log.e("ayhan", "category : $this")
+                    if (this.success) {
+                        val parseData = data.parseUI()
+                        _searchBucketResult.value = Pair(
+                            CATEGORY,
+                            parseData
+                        )
+                    } else {
+                        _searchFailed.call()
+                        Log.e("ayhan", "searchCategoryItems Fail3 : $message")
                     }
-                }.getOrElse {
-                    Log.e("ayhan", "searchCategoryItems Fail2 : ${it.message}")
-                    _searchFailed.call()
                 }
+            }.getOrElse {
+                Log.e("ayhan", "searchCategoryItems Fail2 : ${it.message}")
+                _searchFailed.call()
             }
         }
     }
 
     private fun searchChallenge(searchWord: String) {
-        _searchBucketResult.value = Pair(
-            CHALLENGE,
-            simpleTypeList
-        )
+        // TODO
     }
 
     fun achieveBucket(id: String, type: MyTabType) {
         viewModelScope.launch(ceh(_achieveBucketFail)) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = achieveMyBucket(token, id)
-                    Log.e("ayhan", "Achieve Response : $response")
-                    if (response.success) {
-                        when (type) {
-                            is ALL -> loadAllBucketList()
-                            is DDAY -> loadDdayBucketList()
-                            else -> {
-                                // Do Nothing
-                            }
-                        }
-                    } else {
-                        _achieveBucketFail.call()
+            val response = achieveMyBucket(id)
+            Log.e("ayhan", "Achieve Response : $response")
+            if (response.success) {
+                when (type) {
+                    is ALL -> loadAllBucketList()
+                    is DDAY -> loadDdayBucketList()
+                    else -> {
+                        // Do Nothing
                     }
-                }.getOrElse {
-                    _achieveBucketFail.call()
                 }
+            } else {
+                _achieveBucketFail.call()
             }
         }
     }
-
-    private val simpleTypeList = listOf(
-        BucketInfoSimple(
-            id = "1",
-            title = "아이스크림을 먹을테야 얍얍압얍",
-            userCount = 1,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-
-        ),
-        BucketInfoSimple(
-            id = "2",
-            title = "아이스크림을 여행을 갈거란 말이야",
-            userCount = 1,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "3",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "4",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        ),
-        BucketInfoSimple(
-            id = "5",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-
-        ),
-        BucketInfoSimple(
-            id = "6",
-            title = "Dday가 있는 애22233",
-            userCount = 5,
-            goalCount = 10,
-            dDay = -10,
-            status = BucketStatus.PROGRESS,
-            exposureStatus = ExposureStatus.PUBLIC,
-            bucketType = BucketType.ORIGINAL
-        )
-    )
-
-    private val searchCategoryInfos = listOf(
-        CategoryInfo(
-            id = 1,
-            name = "여행",
-            bucketlistCount = "20"
-        ),
-        CategoryInfo(
-            id = 2,
-            name = "아주아주 맛있는 것을 먹으러 다니는 거야 냠냠쩝쩝 하면서 룰루리랄라 크크루삥봉",
-            bucketlistCount = "10"
-        ),
-        CategoryInfo(
-            id = 3,
-            name = "제주도여행을 갈거야",
-            bucketlistCount = "3"
-        ),
-        CategoryInfo(
-            id = 4,
-            name = "제주도여행을 갈거야",
-            bucketlistCount = "5"
-        ),
-        CategoryInfo(
-            id = 5,
-            name = "검색한 갈거야",
-            bucketlistCount = "35"
-        )
-    )
-
 }

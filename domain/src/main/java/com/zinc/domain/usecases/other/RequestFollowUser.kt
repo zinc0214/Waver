@@ -6,6 +6,6 @@ import javax.inject.Inject
 class RequestFollowUser @Inject constructor(
     private val myRepository: MyRepository
 ) {
-    suspend operator fun invoke(token: String, userId: String) =
-        myRepository.requestFollow(token, userId)
+    suspend operator fun invoke(userId: String) =
+        myRepository.requestFollow(userId)
 }

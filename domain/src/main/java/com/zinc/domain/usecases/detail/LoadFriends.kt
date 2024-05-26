@@ -7,7 +7,5 @@ import javax.inject.Inject
 class LoadFriends @Inject constructor(
     private val writeRepository: WriteRepository
 ) {
-    suspend operator fun invoke(
-        token: String
-    ) = writeRepository.loadFriends(token)
+    suspend operator fun invoke() = writeRepository.loadFriends()
 }

@@ -8,8 +8,8 @@ import javax.inject.Inject
 class SavedKeywordItems @Inject constructor(
     private val feedRepository: FeedRepository
 ) {
-    suspend operator fun invoke(token: String, list: List<Int>): CommonResponse {
+    suspend operator fun invoke(list: List<Int>): CommonResponse {
         val request = SavedKeywordItemsRequest(keywordIds = list)
-        return feedRepository.savedKeywordItems(token, request)
+        return feedRepository.savedKeywordItems(request)
     }
 }

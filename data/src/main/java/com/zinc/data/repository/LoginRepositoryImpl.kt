@@ -26,8 +26,8 @@ class LoginRepositoryImpl @Inject constructor(
         return berryBucketApi.crateProfile(accountType, email, name, bio, profileImage)
     }
 
-    override suspend fun refreshToken(token: String): RefreshTokenResponse {
-        return berryBucketApi.refreshToken(token)
+    override suspend fun refreshToken(): RefreshTokenResponse {
+        return berryBucketApi.refreshToken()
     }
 
     override suspend fun requestLogin(loginRequest: LoadTokenByEmailRequest): LoadTokenByEmailResponse {

@@ -14,43 +14,39 @@ internal class DetailRepositoryImpl @Inject constructor(
 ) : DetailRepository {
 
     override suspend fun loadBucketDetail(
-        token: String,
         id: String,
         isMine: Boolean
     ): BucketDetailResponse {
-        return if (isMine) berryBucketApi.loadBucketDetail(
-            token, id
-        ) else berryBucketApi.loadOtherBucketDetail(token, id)
+        return if (isMine) berryBucketApi.loadBucketDetail(id) else berryBucketApi.loadOtherBucketDetail(
+            id
+        )
     }
 
     override suspend fun addBucketComment(
-        token: String,
         request: AddBucketCommentRequest
     ): CommonResponse {
-        return berryBucketApi.addBucketComment(token, request)
+        return berryBucketApi.addBucketComment(request)
     }
 
     override suspend fun requestGoalCountUpdate(
-        token: String,
         id: String,
         goalCount: Int
     ): CommonResponse {
-        return berryBucketApi.requestGoalCountUpdate(token, id, RequestGoalCountUpdate(goalCount))
+        return berryBucketApi.requestGoalCountUpdate(id, RequestGoalCountUpdate(goalCount))
     }
 
     override suspend fun loadProfile(
-        token: String,
         isMine: Boolean,
         writerId: String?
     ): ProfileResponse {
         return if (isMine) {
-            berryBucketApi.loadMyProfile(token)
+            berryBucketApi.loadMyProfile()
         } else {
-            berryBucketApi.loadOtherProfileInfo(token, writerId.orEmpty())
+            berryBucketApi.loadOtherProfileInfo(writerId.orEmpty())
         }
     }
 
-    override suspend fun deleteBucketComment(token: String, id: String): CommonResponse {
-        return berryBucketApi.deleteComment(token, id)
+    override suspend fun deleteBucketComment(id: String): CommonResponse {
+        return berryBucketApi.deleteComment(id)
     }
 }

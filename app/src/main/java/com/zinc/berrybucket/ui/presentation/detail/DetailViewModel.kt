@@ -13,7 +13,6 @@ import com.zinc.berrybucket.util.SingleLiveEvent
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.ProfileInfo
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.DeleteBucketComment
 import com.zinc.domain.usecases.detail.GoalCountUpdate
@@ -32,9 +31,8 @@ class DetailViewModel @Inject constructor(
     private val achieveMyBucket: AchieveMyBucket,
     private val addBucketComment: AddBucketComment,
     private val deleteBucketComment: DeleteBucketComment,
-    private val goalCountUpdate: GoalCountUpdate,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val goalCountUpdate: GoalCountUpdate
+) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
     val bucketBucketDetailUiInfo: LiveData<BucketDetailUiInfo> get() = _bucketBucketDetailUiInfo
@@ -60,26 +58,20 @@ class DetailViewModel @Inject constructor(
         this.isMine = isMine
 
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
-            accessToken.value?.let { token ->
+            // TODO : 다른사람 프로필 조회도 필요해!!!
+            val job1 = launch { getBucketDetailData(bucketId, isMine) }
+            val job2 = launch { getProfileInfo(isMine = isMine, writerId = writerId) }
 
-                // TODO : 다른사람 프로필 조회도 필요해!!!
-                val job1 = launch { getBucketDetailData(token, bucketId, isMine) }
-                val job2 = launch { getProfileInfo(token, isMine = isMine, writerId = writerId) }
-
-                joinAll(job1, job2).runCatching {
-                    Log.e("ayhan", "runCatching")
-                }.getOrElse {
-                    Log.e("ayhan", "getOrlElse, ${it.message}")
-                }
-
-                Log.e("ayhan", "getBucketDetail: $bucketDetailData , $profileInfo")
-
-                _bucketBucketDetailUiInfo.value =
-                    bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine)
-            } ?: run {
-                Log.e("ayhan", "loadfail acceess")
-                _loadFail.value = DetailLoadFailStatus.LoadFail
+            joinAll(job1, job2).runCatching {
+                Log.e("ayhan", "runCatching")
+            }.getOrElse {
+                Log.e("ayhan", "getOrlElse, ${it.message}")
             }
+
+            Log.e("ayhan", "getBucketDetail: $bucketDetailData , $profileInfo")
+
+            _bucketBucketDetailUiInfo.value =
+                bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine)
         }
     }
 
@@ -87,25 +79,21 @@ class DetailViewModel @Inject constructor(
         _loadFail.value = null
 
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.AchieveFail)) {
-            accessToken.value?.let { token ->
-                val response = achieveMyBucket(token, bucketId!!)
-                if (response.success) {
-                    getBucketDetail(bucketId!!, writerId!!, isMine!!)
-                } else {
-                    _loadFail.value = DetailLoadFailStatus.AchieveFail
-                }
-            } ?: run {
+            val response = achieveMyBucket(bucketId!!)
+            if (response.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
                 _loadFail.value = DetailLoadFailStatus.AchieveFail
             }
         }
     }
 
-    private suspend fun getBucketDetailData(token: String, id: String, isMine: Boolean) {
-        bucketDetailData = loadBucketDetail(token, id, isMine).data
+    private suspend fun getBucketDetailData(id: String, isMine: Boolean) {
+        bucketDetailData = loadBucketDetail(id, isMine).data
     }
 
-    private suspend fun getProfileInfo(token: String, writerId: String?, isMine: Boolean) {
-        profileInfo = loadProfileInfo(token, isMine, writerId).data
+    private suspend fun getProfileInfo(writerId: String?, isMine: Boolean) {
+        profileInfo = loadProfileInfo(isMine, writerId).data
     }
 
     fun getValidMentionList() {
@@ -146,48 +134,36 @@ class DetailViewModel @Inject constructor(
     }
 
 
-    fun goalCountUpdate(goalCount: Int) {
+    fun requestGoalCountUpdate(goalCount: Int) {
         _loadFail.value = null
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.GoalCountUpdateFail)) {
-            accessToken.value?.let { token ->
-                goalCountUpdate(token, bucketId!!, goalCount = goalCount)
-                getBucketDetail(bucketId!!, writerId!!, true)
-            } ?: run {
-                _loadFail.value = DetailLoadFailStatus.GoalCountUpdateFail
-            }
+            goalCountUpdate(bucketId!!, goalCount = goalCount)
+            getBucketDetail(bucketId!!, writerId!!, true)
         }
     }
 
-    fun addBucketComment(request: AddBucketCommentRequest) {
+    fun requestAddBucketComment(request: AddBucketCommentRequest) {
         Log.e("ayhan", "comment request : $request")
         _loadFail.value = null
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.AddCommentFail)) {
-            accessToken.value?.let { token ->
-                val result = addBucketComment(token, request)
-                Log.e("ayhan", "comment Result : $result")
-                if (result.success) {
-                    getBucketDetail(bucketId!!, writerId!!, isMine!!)
-                } else {
-                    _loadFail.value = DetailLoadFailStatus.AddCommentFail
-                }
-            } ?: run {
+            val result = addBucketComment(request)
+            Log.e("ayhan", "comment Result : $result")
+            if (result.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
                 _loadFail.value = DetailLoadFailStatus.AddCommentFail
             }
         }
     }
 
-    fun deleteBucketComment(id: String) {
+    fun requestDeleteBucketComment(id: String) {
         _loadFail.value = null
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.DeleteCommentFail)) {
-            accessToken.value?.let { token ->
-                val result = deleteBucketComment(token, id)
-                Log.e("ayhan", "comment Result : $result")
-                if (result.success) {
-                    getBucketDetail(bucketId!!, writerId!!, isMine!!)
-                } else {
-                    _loadFail.value = DetailLoadFailStatus.DeleteCommentFail
-                }
-            } ?: run {
+            val result = deleteBucketComment(id)
+            Log.e("ayhan", "comment Result : $result")
+            if (result.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
                 _loadFail.value = DetailLoadFailStatus.DeleteCommentFail
             }
         }

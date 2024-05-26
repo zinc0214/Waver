@@ -14,37 +14,35 @@ import javax.inject.Inject
 internal class CategoryRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : CategoryRepository {
-    override suspend fun loadCategoryList(token: String): LoadCategoryResponse {
-        return berryBucketApi.loadCategoryList(token)
+    override suspend fun loadCategoryList(): LoadCategoryResponse {
+        return berryBucketApi.loadCategoryList()
     }
 
-    override suspend fun addNewCategory(token: String, name: String): CommonResponse {
-        return berryBucketApi.addNewCategory(token, AddNewCategoryRequest(name))
+    override suspend fun addNewCategory(name: String): CommonResponse {
+        return berryBucketApi.addNewCategory(AddNewCategoryRequest(name))
     }
 
-    override suspend fun editCategoryName(token: String, id: Int, name: String): CommonResponse {
-        return berryBucketApi.editCategoryName(token, EditCategoryNameRequest(id, name))
+    override suspend fun editCategoryName(id: Int, name: String): CommonResponse {
+        return berryBucketApi.editCategoryName(EditCategoryNameRequest(id, name))
     }
 
-    override suspend fun removeCategory(token: String, id: Int): CommonResponse {
-        return berryBucketApi.removeCategoryItem(token, id)
+    override suspend fun removeCategory(id: Int): CommonResponse {
+        return berryBucketApi.removeCategoryItem(id)
     }
 
-    override suspend fun reorderCategory(token: String, orderedIds: List<String>): CommonResponse {
-        return berryBucketApi.reorderedCategory(token, ReorderedCategoryRequest(orderedIds))
+    override suspend fun reorderCategory(orderedIds: List<String>): CommonResponse {
+        return berryBucketApi.reorderedCategory(ReorderedCategoryRequest(orderedIds))
     }
 
-    override suspend fun searchCategoryList(token: String, query: String): LoadCategoryResponse {
-        return berryBucketApi.searchCategoryList(token, query)
+    override suspend fun searchCategoryList(query: String): LoadCategoryResponse {
+        return berryBucketApi.searchCategoryList(query)
     }
 
     override suspend fun loadCategoryBucketList(
-        token: String,
         categoryId: String,
         sort: AllBucketListSortType
     ): AllBucketListResponse {
         return berryBucketApi.loadAllBucketList(
-            token = token,
             categoryId = categoryId,
             sort = sort
         )

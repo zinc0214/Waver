@@ -7,38 +7,20 @@ import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 
 interface MyRepository {
-    suspend fun loadMyHomeProfileInfo(token: String): HomeProfileResponse
+    suspend fun loadMyHomeProfileInfo(): HomeProfileResponse
     suspend fun loadAllBucketList(
-        token: String,
         allBucketListRequest: AllBucketListRequest
     ): AllBucketListResponse
 
-    suspend fun loadFollowList(
-        token: String
-    ): FollowResponse
+    suspend fun loadFollowList(): FollowResponse
 
-    suspend fun requestUnfollow(
-        token: String,
-        userId: String
-    ): CommonResponse
+    suspend fun requestUnfollow(userId: String): CommonResponse
 
-    suspend fun requestFollow(
-        token: String,
-        userId: String
-    ): CommonResponse
+    suspend fun requestFollow(userId: String): CommonResponse
 
-    suspend fun searchAllBucketList(
-        token: String,
-        query: String
-    ): AllBucketListResponse
+    suspend fun searchAllBucketList(query: String): AllBucketListResponse
 
-    suspend fun searchDdayBucketList(
-        token: String,
-        query: String
-    ): AllBucketListResponse
+    suspend fun searchDdayBucketList(query: String): AllBucketListResponse
 
-    suspend fun achieveMyBucket(
-        token: String,
-        id: String
-    ): CommonResponse
+    suspend fun achieveMyBucket(id: String): CommonResponse
 }

@@ -13,17 +13,15 @@ import javax.inject.Inject
 internal class MyRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MyRepository {
-    override suspend fun loadMyHomeProfileInfo(token: String): HomeProfileResponse {
-        return berryBucketApi.loadMyProfileInfo(token)
+    override suspend fun loadMyHomeProfileInfo(): HomeProfileResponse {
+        return berryBucketApi.loadMyProfileInfo()
     }
 
     override suspend fun loadAllBucketList(
-        token: String,
         allBucketListRequest: AllBucketListRequest
     ): AllBucketListResponse {
         Log.e("ayhan", "loadAllBucketList: $allBucketListRequest")
         return berryBucketApi.loadAllBucketList(
-            token = token,
             dDayBucketOnly = allBucketListRequest.dDayBucketOnly,
             isPassed = allBucketListRequest.isPassed,
             status = allBucketListRequest.status,
@@ -32,27 +30,27 @@ internal class MyRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun loadFollowList(token: String): FollowResponse {
-        return berryBucketApi.loadFollowList(token)
+    override suspend fun loadFollowList(): FollowResponse {
+        return berryBucketApi.loadFollowList()
     }
 
-    override suspend fun requestUnfollow(token: String, userId: String): CommonResponse {
-        return berryBucketApi.requestUnfollow(token, userId)
+    override suspend fun requestUnfollow(userId: String): CommonResponse {
+        return berryBucketApi.requestUnfollow(userId)
     }
 
-    override suspend fun requestFollow(token: String, userId: String): CommonResponse {
-        return berryBucketApi.requestFollow(token, userId)
+    override suspend fun requestFollow(userId: String): CommonResponse {
+        return berryBucketApi.requestFollow(userId)
     }
 
-    override suspend fun searchAllBucketList(token: String, query: String): AllBucketListResponse {
-        return berryBucketApi.searchAllBucketList(token, query)
+    override suspend fun searchAllBucketList(query: String): AllBucketListResponse {
+        return berryBucketApi.searchAllBucketList(query)
     }
 
-    override suspend fun searchDdayBucketList(token: String, query: String): AllBucketListResponse {
-        return berryBucketApi.searchDdayBucketList(token)
+    override suspend fun searchDdayBucketList(query: String): AllBucketListResponse {
+        return berryBucketApi.searchDdayBucketList()
     }
 
-    override suspend fun achieveMyBucket(token: String, id: String): CommonResponse {
-        return berryBucketApi.achieveBucket(token, id)
+    override suspend fun achieveMyBucket(id: String): CommonResponse {
+        return berryBucketApi.achieveBucket(id)
     }
 }

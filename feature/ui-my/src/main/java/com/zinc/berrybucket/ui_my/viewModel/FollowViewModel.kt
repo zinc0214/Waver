@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.utils.cehCommonTitle
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.my.LoadFollowList
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
@@ -20,9 +19,8 @@ import javax.inject.Inject
 class FollowViewModel @Inject constructor(
     private val loadFollowList: LoadFollowList,
     private val requestUnfollowUser: RequestUnfollowUser,
-    private val requestFollowUser: RequestFollowUser,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val requestFollowUser: RequestFollowUser
+) : CommonViewModel() {
 
     private val _followingList = MutableLiveData<List<OtherProfileInfo>>()
     val followingList: LiveData<List<OtherProfileInfo>> get() = _followingList
@@ -33,101 +31,74 @@ class FollowViewModel @Inject constructor(
     private val _loadFail = MutableLiveData<Pair<String?, String?>>()
     val loadFail: LiveData<Pair<String?, String?>> get() = _loadFail
 
-    private val CEH = CoroutineExceptionHandler { coroutineContext, throwable ->
+    private val CEH = CoroutineExceptionHandler { _, throwable ->
         Log.e("ayhan", "loadFollowList fail: $throwable")
         _loadFail.value = cehCommonTitle to null
     }
 
     fun loadFollowList() {
         viewModelScope.launch(CEH) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    loadFollowList.invoke(token).apply {
-                        Log.e("ayhan", "loadFollowList: $this")
-                        _followerList.value = this.data.followerUsers
-//
-////TODO : 코드제거
-//                            buildList {
-//                                repeat(40) {
-//                                    add(
-//                                        OtherProfileInfo(
-//                                            id = it.toString(),
-//                                            imgUrl = null,
-//                                            name = "$it+가나다라마바사아자차가타파아azbdfdkop+$it",
-//                                            mutualFollow = it > 10
-//                                        )
-//                                    )
-//                                }
-//                            }
-//                    }
-                    }
-                }.getOrElse {
-                    Log.e("ayhan", "loadFollowList fail2: ${it.message}")
-                    _loadFail.value = cehCommonTitle to null
+            runCatching {
+                loadFollowList.invoke().apply {
+                    Log.e("ayhan", "loadFollowList: $this")
+                    _followerList.value = this.data.followerUsers
                 }
+            }.getOrElse {
+                Log.e("ayhan", "loadFollowList fail2: ${it.message}")
+                _loadFail.value = cehCommonTitle to null
             }
         }
     }
 
     fun loadFollowingList() {
         viewModelScope.launch(CEH) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    loadFollowList.invoke(token).apply {
-                        Log.e("ayhan", "loadFollowList: $this")
-                        _followingList.value = this.data.followingUsers
-                    }
-                }.getOrElse {
-                    Log.e("ayhan", "loadFollowList fail2: ${it.message}")
-                    _loadFail.value = cehCommonTitle to null
+            runCatching {
+                loadFollowList.invoke().apply {
+                    Log.e("ayhan", "loadFollowList: $this")
+                    _followingList.value = this.data.followingUsers
                 }
+            }.getOrElse {
+                Log.e("ayhan", "loadFollowList fail2: ${it.message}")
+                _loadFail.value = cehCommonTitle to null
             }
         }
     }
 
     fun requestUnfollow(unfollowUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    requestUnfollowUser.invoke(token, unfollowUser.id).apply {
-                        Log.e("ayhan", "response : $this")
-                        if (success) {
-                            val removeIndex =
-                                _followingList.value?.indexOfFirst { it == unfollowUser } ?: -1
-                            if (removeIndex > -1) {
-                                val list = _followingList.value?.toMutableList()
-                                list?.removeAt(removeIndex)
-                                _followingList.value = list
-                            }
+            runCatching {
+                requestUnfollowUser.invoke(unfollowUser.id).apply {
+                    Log.e("ayhan", "response : $this")
+                    if (success) {
+                        val removeIndex =
+                            _followingList.value?.indexOfFirst { it == unfollowUser } ?: -1
+                        if (removeIndex > -1) {
+                            val list = _followingList.value?.toMutableList()
+                            list?.removeAt(removeIndex)
+                            _followingList.value = list
                         }
                     }
-                }.getOrElse {
-                    _loadFail.value = cehCommonTitle to null
                 }
+            }.getOrElse {
+                _loadFail.value = cehCommonTitle to null
             }
         }
     }
 
     fun requestFollow(followUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    requestFollowUser.invoke(token, followUser.id).apply {
-                        if (success) {
-                            val updateList = _followerList.value?.toMutableList()
-                            val updateUser = followUser.copy(mutualFollow = true)
-                            updateList?.replaceAll {
-                                if (it.id == updateUser.id) {
-                                    updateUser
-                                } else {
-                                    it
-                                }
-                            }
-                            _followerList.value = updateList
+            requestFollowUser.invoke(followUser.id).apply {
+                if (success) {
+                    val updateList = _followerList.value?.toMutableList()
+                    val updateUser = followUser.copy(mutualFollow = true)
+                    updateList?.replaceAll {
+                        if (it.id == updateUser.id) {
+                            updateUser
+                        } else {
+                            it
                         }
                     }
-                }.getOrElse {
-                    _loadFail.value = "팔로우 목록 로드 실패" to "다시 시도해주세요"
+                    _followerList.value = updateList
                 }
             }
         }

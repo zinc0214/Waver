@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.OtherProfileHomeData
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.other.LoadOtherInfo
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
@@ -18,9 +17,8 @@ import javax.inject.Inject
 class OtherViewModel @Inject constructor(
     private val loadOtherInfo: LoadOtherInfo,
     private val followUser: RequestFollowUser,
-    private val unfollowUser: RequestUnfollowUser,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val unfollowUser: RequestUnfollowUser
+) : CommonViewModel() {
 
     private val _loadFail = MutableLiveData<Boolean>()
     val loadFail: LiveData<Boolean> get() = _loadFail
@@ -31,43 +29,33 @@ class OtherViewModel @Inject constructor(
     fun loadOtherInfo(userId: String) {
         _loadFail.value = false
         viewModelScope.launch(ceh(_loadFail, true)) {
-            runCatching {
-                accessToken.value?.let { token ->
-                    val result = loadOtherInfo(token, userId)
-                    Log.e("ayhan", "loadOtherInfo : $result")
-                    if (result == null || !result.isSuccess || result.data == null) {
-                        _loadFail.value = true
-                    } else {
-                        _otherHomeData.value = result.data
-                    }
-                }
-            }.getOrElse {
+            val result = loadOtherInfo.invoke(userId)
+            Log.e("ayhan", "loadOtherInfo : $result")
+            if (result == null || !result.isSuccess || result.data == null) {
                 _loadFail.value = true
+            } else {
+                _otherHomeData.value = result.data
             }
         }
     }
 
     fun changeFollowStatus(userId: String, follow: Boolean) {
         viewModelScope.launch(ceh(_loadFail, true)) {
-            runCatching {
-                accessToken.value?.let { token ->
-                    if (follow) {
-                        val result = followUser.invoke(token, userId)
-                        if (result.success) {
-                            updateProfile(true)
-                            _loadFail.value = false
-                        } else {
-                            _loadFail.value = true
-                        }
-                    } else {
-                        val result = unfollowUser.invoke(token, userId)
-                        if (result.success) {
-                            updateProfile(false)
-                            _loadFail.value = false
-                        } else {
-                            _loadFail.value = true
-                        }
-                    }
+            if (follow) {
+                val result = followUser.invoke(userId)
+                if (result.success) {
+                    updateProfile(true)
+                    _loadFail.value = false
+                } else {
+                    _loadFail.value = true
+                }
+            } else {
+                val result = unfollowUser.invoke(userId)
+                if (result.success) {
+                    updateProfile(false)
+                    _loadFail.value = false
+                } else {
+                    _loadFail.value = true
                 }
             }
         }

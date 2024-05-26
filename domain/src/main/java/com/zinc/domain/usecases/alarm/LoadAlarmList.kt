@@ -6,5 +6,5 @@ import javax.inject.Inject
 class LoadAlarmList @Inject constructor(
     private val alarmRepository: AlarmRepository
 ) {
-    suspend operator fun invoke(token: String) = alarmRepository.loadAlarmList(token)
+    suspend operator fun invoke() = alarmRepository.loadAlarmList()
 }

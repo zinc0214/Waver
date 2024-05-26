@@ -6,6 +6,6 @@ import javax.inject.Inject
 class GoalCountUpdate @Inject constructor(
     private val detailRepository: DetailRepository
 ) {
-    suspend operator fun invoke(token: String, id: String, goalCount: Int) =
-        detailRepository.requestGoalCountUpdate(token, id, goalCount)
+    suspend operator fun invoke(id: String, goalCount: Int) =
+        detailRepository.requestGoalCountUpdate(id, goalCount)
 }

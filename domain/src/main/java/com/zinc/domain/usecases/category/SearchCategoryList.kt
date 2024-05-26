@@ -6,6 +6,6 @@ import javax.inject.Inject
 class SearchCategoryList @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
-    suspend operator fun invoke(token: String, query: String) =
-        categoryRepository.searchCategoryList(token, query)
+    suspend operator fun invoke(query: String) =
+        categoryRepository.searchCategoryList(query)
 }

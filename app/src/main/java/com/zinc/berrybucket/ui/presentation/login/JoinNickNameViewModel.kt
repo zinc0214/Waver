@@ -20,7 +20,7 @@ class JoinNickNameViewModel @Inject constructor(
     private val createProfile: CreateProfile,
     private val loginByEmail: LoginByEmail,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+) : CommonViewModel() {
 
     private val _isAlreadyUsedNickName = MutableLiveData<Boolean>()
     val isAlreadyUsedNickName: LiveData<Boolean> get() = _isAlreadyUsedNickName
@@ -91,7 +91,6 @@ class JoinNickNameViewModel @Inject constructor(
                     res.data?.let { token ->
                         loginPreferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
                         loginPreferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
-                        accessToken.value = "Bearer ${token.accessToken}"
                     }
                     _goToLogin.value = true
                 } else {

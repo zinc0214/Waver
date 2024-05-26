@@ -7,10 +7,7 @@ import com.zinc.common.models.LoadTokenByEmailResponse
 import com.zinc.common.models.RefreshTokenResponse
 
 interface LoginRepository {
-    suspend fun createProfile(
-        createProfileRequest: CreateProfileRequest
-    ): JoinResponse
-
-    suspend fun refreshToken(token: String): RefreshTokenResponse
+    suspend fun createProfile(createProfileRequest: CreateProfileRequest): JoinResponse
+    suspend fun refreshToken(): RefreshTokenResponse
     suspend fun requestLogin(loginRequest: LoadTokenByEmailRequest): LoadTokenByEmailResponse
 }

@@ -11,23 +11,20 @@ class OtherRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : OtherRepository {
     override suspend fun loadOtherProfile(
-        token: String,
         otherUserId: String
     ): ProfileResponse {
-        return berryBucketApi.loadOtherProfileInfo(token, otherUserId)
+        return berryBucketApi.loadOtherProfileInfo(otherUserId)
     }
 
     override suspend fun loadOtherBucketList(
-        token: String,
         otherUserId: String
     ): OtherBucketListResponse {
-        return berryBucketApi.loadOtherBucketList(token, otherUserId)
+        return berryBucketApi.loadOtherBucketList(otherUserId)
     }
 
     override suspend fun loadOtherFollow(
-        token: String,
         otherUserId: String
     ): OtherFollowDataResponse {
-        return berryBucketApi.loadOtherFollowData(token, otherUserId)
+        return berryBucketApi.loadOtherFollowData(otherUserId)
     }
 }

@@ -6,7 +6,6 @@ import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.common.models.AlarmItem
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AlarmType
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.alarm.LoadAlarmList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,8 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AlarmViewModel @Inject constructor(
     private val loadAlarmList: LoadAlarmList,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+) : CommonViewModel() {
 
     private val _alarmList = MutableLiveData<AlarmList>()
     val alarmList: LiveData<AlarmList> get() = _alarmList

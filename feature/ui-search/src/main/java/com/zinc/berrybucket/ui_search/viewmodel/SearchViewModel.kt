@@ -13,7 +13,6 @@ import com.zinc.berrybucket.ui_search.model.SearchRecommendItems
 import com.zinc.berrybucket.ui_search.model.SearchResultItems
 import com.zinc.berrybucket.ui_search.model.parseUI
 import com.zinc.berrybucket.util.SingleLiveEvent
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
@@ -30,9 +29,8 @@ class SearchViewModel @Inject constructor(
     private val loadSearchRecommend: LoadSearchRecommend,
     private val deleteRecentWord: DeleteRecentWord,
     private val requestFollow: RequestFollowUser,
-    private val requestUnFollow: RequestUnfollowUser,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val requestUnFollow: RequestUnfollowUser
+) : CommonViewModel() {
 
     private val _recommendList = MutableLiveData<RecommendList>()
     val recommendList: LiveData<RecommendList> get() = _recommendList
@@ -64,17 +62,11 @@ class SearchViewModel @Inject constructor(
 
     fun loadSearchRecommendItems() {
         viewModelScope.launch(ceh(_loadFail, "")) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = loadSearchRecommend.invoke(token)
-                    if (response.success) {
-                        _searchRecommendItems.value = response.data.parseUI()
-                    } else {
-                        _loadFail.value = response.message
-                    }
-                }.getOrElse {
-                    _loadFail.value = ""
-                }
+            val response = loadSearchRecommend.invoke()
+            if (response.success) {
+                _searchRecommendItems.value = response.data.parseUI()
+            } else {
+                _loadFail.value = response.message
             }
         }
     }
@@ -82,104 +74,65 @@ class SearchViewModel @Inject constructor(
     fun loadSearchResult(searchWord: String) {
         viewModelScope.launch(ceh(_loadFail, "")) {
             _searchResultIsEmpty.value = false
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = loadSearchResult.invoke(token, searchWord)
-                    Log.e("ayhan", "loadSearchResult : $response")
-                    if (response.success) {
-                        prevSearchWord = searchWord
-                        if (response.data.bucketlist.isEmpty() && response.data.users.isEmpty()) {
-                            _searchResultIsEmpty.value = true
-                        } else {
-                            _searchResultIsEmpty.value = false
-                            _searchResultItems.value = response.data.parseUI()
-                        }
-
-                    } else {
-                        _loadFail.value = response.message
+            runCatching {
+                val response = loadSearchResult.invoke(searchWord)
+                Log.e("ayhan", "loadSearchResult : $response")
+                if (response.success) {
+                    prevSearchWord = searchWord
+                    if (response.data.bucketlist.isEmpty() && response.data.users.isEmpty()) {
                         _searchResultIsEmpty.value = true
+                    } else {
+                        _searchResultIsEmpty.value = false
+                        _searchResultItems.value = response.data.parseUI()
                     }
-                }.getOrElse {
-                    _loadFail.value = ""
+
+                } else {
+                    _loadFail.value = response.message
                     _searchResultIsEmpty.value = true
                 }
+            }.getOrElse {
+                _loadFail.value = ""
+                _searchResultIsEmpty.value = true
             }
         }
-        // 여기
-//        _searchResultItems.value = SearchResultItems(
-//            bucketItems = listOf(
-//                SearchBucketItem(id = "1", title = "버킷리스트 타이틀", isCopied = false),
-//                SearchBucketItem(id = "2", title = "버킷리스트 타이틀", isCopied = false),
-//                SearchBucketItem(
-//                    id = "3",
-//                    title = "버킷리스트 타이틀버킷리스트 타이버킷리스트 타이버킷리스트타이버킷리스트 타이버킷리스트타이버킷리스트 타이버킷리스트타이버킷리스트 타이버킷리스트타이버킷리스트 타이버킷리스트 타이",
-//                    isCopied = true
-//                ),
-//                SearchBucketItem(id = "4", title = "버킷리스트 타이틀버킷리스트", isCopied = true)
-//            ),
-//            userItems = listOf(
-//                UserItem(
-//                    userId = "A", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                ),
-//                UserItem(
-//                    userId = "B", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                ),
-//                UserItem(
-//                    userId = "C", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                ),
-//                UserItem(
-//                    userId = "D", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                ),
-//                UserItem(
-//                    userId = "E", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                ),
-//                UserItem(
-//                    userId = "F", profileImageUrl = "aaa", nickName = "아가가나날라", isFollowed = true
-//                )
-//            )
-//        )
     }
 
     fun deleteRecentWord(deleteWord: String) {
         viewModelScope.launch(ceh(_loadFail, "")) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = deleteRecentWord.invoke(token, deleteWord)
-                    if (response.success) {
-                        val originRecentWords =
-                            _searchRecommendItems.value?.recentWords?.toMutableList()
-                        originRecentWords?.remove(deleteWord)
-                        _searchRecommendItems.value = _searchRecommendItems.value?.copy(
-                            recentWords = originRecentWords.orEmpty()
-                        )
-                    } else {
-                        _loadFail.value = response.message
-                    }
-                }.getOrElse {
-                    _loadFail.value = ""
+            runCatching {
+                val response = deleteRecentWord.invoke(deleteWord)
+                if (response.success) {
+                    val originRecentWords =
+                        _searchRecommendItems.value?.recentWords?.toMutableList()
+                    originRecentWords?.remove(deleteWord)
+                    _searchRecommendItems.value = _searchRecommendItems.value?.copy(
+                        recentWords = originRecentWords.orEmpty()
+                    )
+                } else {
+                    _loadFail.value = response.message
                 }
+            }.getOrElse {
+                _loadFail.value = ""
             }
         }
     }
 
     fun requestFollow(userId: String, isAlreadyFollowed: Boolean) {
         viewModelScope.launch(ceh(_actionFail, null)) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    if (isAlreadyFollowed) {
-                        val response = requestUnFollow.invoke(token, userId)
-                        if (response.success) {
-                            loadSearchResult(prevSearchWord)
-                        } else {
-                            _actionFail.call()
-                        }
+            runCatching {
+                if (isAlreadyFollowed) {
+                    val response = requestUnFollow.invoke(userId)
+                    if (response.success) {
+                        loadSearchResult(prevSearchWord)
                     } else {
-                        val response = requestFollow.invoke(token, userId)
-                        if (response.success) {
-                            loadSearchResult(prevSearchWord)
-                        } else {
-                            _actionFail.call()
-                        }
+                        _actionFail.call()
+                    }
+                } else {
+                    val response = requestFollow.invoke(userId)
+                    if (response.success) {
+                        loadSearchResult(prevSearchWord)
+                    } else {
+                        _actionFail.call()
                     }
                 }
             }

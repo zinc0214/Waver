@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.berrybucket.ui.viewmodel.CommonViewModel
 import com.zinc.berrybucket.util.SingleLiveEvent
-import com.zinc.datastore.common.CommonDataStoreModule
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.login.LoginByEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +17,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
-    private val commonDataStoreModule: CommonDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+) : CommonViewModel() {
 
     private val _loginFail = SingleLiveEvent<Boolean>()
     val loginFail: LiveData<Boolean> get() = _loginFail
@@ -57,14 +55,10 @@ class LoginViewModel @Inject constructor(
     fun loadLoginToken(email: String) {
         _loginFail.value = false
         viewModelScope.launch(ceh(_loginFail, true)) {
-            Log.e("ayhan", "loadUserToken result : ${refreshToken.value} , ${accessToken.value}")
-
             val result = loginByEmail(email)
             Log.e("ayhan", "loadUserToken result : ${result.data}")
             if (result.success) {
                 val data = result.data
-                accessToken.value = "Bearer ${data?.accessToken}"
-                refreshToken.value = "Bearer ${data?.refreshToken}"
                 loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
                 loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
                 loginPreferenceDataStoreModule.setLoaginedEmail(email)

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class RefreshUserToken @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(token: String) =
-        loginRepository.refreshToken(token)
+    suspend operator fun invoke() =
+        loginRepository.refreshToken()
 }

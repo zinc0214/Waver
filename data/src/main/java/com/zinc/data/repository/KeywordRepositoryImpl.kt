@@ -8,7 +8,7 @@ import javax.inject.Inject
 internal class KeywordRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : KeywordRepository {
-    override suspend fun loadKeyword(token: String): KeywordResponse {
-        return berryBucketApi.loadKeywords(token)
+    override suspend fun loadKeyword(): KeywordResponse {
+        return berryBucketApi.loadKeywords()
     }
 }

@@ -10,7 +10,6 @@ import com.zinc.berrybucket.ui_feed.models.UIFeedKeyword
 import com.zinc.berrybucket.ui_feed.models.parseUI
 import com.zinc.berrybucket.ui_feed.models.toUIModel
 import com.zinc.berrybucket.util.SingleLiveEvent
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
@@ -24,9 +23,8 @@ class FeedViewModel @Inject constructor(
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
-    private val saveBucketLike: SaveBucketLike,
-    loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
-) : CommonViewModel(loginPreferenceDataStoreModule) {
+    private val saveBucketLike: SaveBucketLike
+) : CommonViewModel() {
     private val _isKeyWordSelected = MutableLiveData<Boolean>()
     val isKeyWordSelected: LiveData<Boolean> get() = _isKeyWordSelected
 
@@ -46,14 +44,12 @@ class FeedViewModel @Inject constructor(
         _loadFail.value = false
         viewModelScope.launch(ceh(_loadFail, true)) {
             runCatching {
-                accessToken.value?.let {
-                    loadFeedKeyWords.invoke(it).apply {
-                        Log.e("ayhan", "feed response : $this")
-                        if (success) {
-                            _feedKeyWords.value = data?.parseUI()
-                        } else {
-                            _loadFail.value = true
-                        }
+                loadFeedKeyWords.invoke().apply {
+                    Log.e("ayhan", "feed response : $this")
+                    if (success) {
+                        _feedKeyWords.value = data?.parseUI()
+                    } else {
+                        _loadFail.value = true
                     }
                 }
             }.getOrElse {
@@ -64,18 +60,16 @@ class FeedViewModel @Inject constructor(
 
     fun loadFeedItems() {
         viewModelScope.launch(ceh(_loadFail, true)) {
-            kotlin.runCatching {
-                accessToken.value?.let { token ->
-                    loadFeedItems.invoke(token).apply {
-                        Log.e("ayhan", "feedListResponse : $this")
-                        if (this.success.not()) {
-                            _loadFail.value = true
-                        } else if (this.code == "5000") {
-                            _isKeyWordSelected.value = false
-                        } else {
-                            _isKeyWordSelected.value = true
-                            _feedItems.value = this.data.toUIModel()
-                        }
+            runCatching {
+                loadFeedItems.invoke().apply {
+                    Log.e("ayhan", "feedListResponse : $this")
+                    if (this.success.not()) {
+                        _loadFail.value = true
+                    } else if (this.code == "5000") {
+                        _isKeyWordSelected.value = false
+                    } else {
+                        _isKeyWordSelected.value = true
+                        _feedItems.value = this.data.toUIModel()
                     }
                 }
             }.getOrElse {
@@ -87,32 +81,28 @@ class FeedViewModel @Inject constructor(
 
     fun savedKeywordList(list: List<Int>) {
         viewModelScope.launch(ceh(_isKeyWordSelected, false)) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = savedKeywordItems.invoke(token, list)
-                    _isKeyWordSelected.value = response.success
-                }.getOrElse {
-                    _loadFail.value = true
-                }
+            runCatching {
+                val response = savedKeywordItems.invoke(list)
+                _isKeyWordSelected.value = response.success
+            }.getOrElse {
+                _loadFail.value = true
             }
         }
     }
 
     fun saveBucketLike(bucketId: String) {
         viewModelScope.launch(ceh(_likeFail, true)) {
-            accessToken.value?.let { token ->
-                runCatching {
-                    val response = saveBucketLike.invoke(token, bucketId)
-                    Log.e("ayhan", "response : $response")
-                    if (response.success) {
-                        loadFeedItems()
-                        _likeFail.value = false
-                    } else {
-                        _likeFail.value = true
-                    }
-                }.getOrElse {
+            runCatching {
+                val response = saveBucketLike.invoke(bucketId)
+                Log.e("ayhan", "response : $response")
+                if (response.success) {
+                    loadFeedItems()
+                    _likeFail.value = false
+                } else {
                     _likeFail.value = true
                 }
+            }.getOrElse {
+                _likeFail.value = true
             }
         }
     }

@@ -5,7 +5,7 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.domain.models.UpdateProfileRequest
 
 interface MoreRepository {
-    suspend fun loadProfileInfo(token: String): ProfileResponse
-    suspend fun updateProfileInfo(token: String, request: UpdateProfileRequest): CommonResponse
+    suspend fun loadProfileInfo(): ProfileResponse
+    suspend fun updateProfileInfo(request: UpdateProfileRequest): CommonResponse
     suspend fun checkAlreadyUsedNickName(name: String): CommonResponse
 }

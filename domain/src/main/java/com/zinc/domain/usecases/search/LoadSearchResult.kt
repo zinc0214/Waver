@@ -6,6 +6,6 @@ import javax.inject.Inject
 class LoadSearchResult @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend operator fun invoke(token: String, searchWord: String) =
-        searchRepository.loadSearchResult(token, searchWord)
+    suspend operator fun invoke(searchWord: String) =
+        searchRepository.loadSearchResult(searchWord)
 }

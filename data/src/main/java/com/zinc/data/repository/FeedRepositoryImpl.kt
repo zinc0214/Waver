@@ -10,14 +10,14 @@ import javax.inject.Inject
 internal class FeedRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : FeedRepository {
-    override suspend fun loadSelectableFeedKeyWords(token: String): KeywordResponse {
-        return berryBucketApi.loadKeywords(token)
+    override suspend fun loadSelectableFeedKeyWords(): KeywordResponse {
+        return berryBucketApi.loadKeywords()
     }
 
-    override suspend fun loadFeedItems(token: String): FeedListResponse {
-        return berryBucketApi.loadFeedItems(token)
+    override suspend fun loadFeedItems(): FeedListResponse {
+        return berryBucketApi.loadFeedItems()
     }
 
-    override suspend fun savedKeywordItems(token: String, request: SavedKeywordItemsRequest) =
-        berryBucketApi.savedFeedKeywords(token, request)
+    override suspend fun savedKeywordItems(request: SavedKeywordItemsRequest) =
+        berryBucketApi.savedFeedKeywords(request)
 }

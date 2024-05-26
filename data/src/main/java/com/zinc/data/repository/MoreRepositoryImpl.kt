@@ -12,12 +12,11 @@ import javax.inject.Inject
 internal class MoreRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : MoreRepository {
-    override suspend fun loadProfileInfo(token: String): ProfileResponse {
-        return berryBucketApi.loadMyProfile(token)
+    override suspend fun loadProfileInfo(): ProfileResponse {
+        return berryBucketApi.loadMyProfile()
     }
 
     override suspend fun updateProfileInfo(
-        token: String,
         request: UpdateProfileRequest
     ): CommonResponse {
 
@@ -26,7 +25,6 @@ internal class MoreRepositoryImpl @Inject constructor(
         val profileImage = request.image?.fileToMultipartFile("profileImage")
 
         return berryBucketApi.updateMyProfile(
-            token,
             name = name,
             bio = bio,
             profileImage = profileImage

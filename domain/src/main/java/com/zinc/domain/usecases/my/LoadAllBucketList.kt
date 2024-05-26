@@ -8,7 +8,6 @@ class LoadAllBucketList @Inject constructor(
     private val myRepository: MyRepository
 ) {
     suspend operator fun invoke(
-        token: String,
         allBucketListRequest: AllBucketListRequest
-    ) = myRepository.loadAllBucketList(token, allBucketListRequest)
+    ) = myRepository.loadAllBucketList(allBucketListRequest)
 }

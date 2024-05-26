@@ -33,7 +33,6 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
-import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
@@ -45,7 +44,7 @@ interface BerryBucketApi {
 
     // 토큰재발급
     @GET("/token/refresh")
-    suspend fun refreshToken(@Header("Authorization") token: String): RefreshTokenResponse
+    suspend fun refreshToken(): RefreshTokenResponse
 
     // 프로필생성
     @POST("/user/join")
@@ -64,12 +63,11 @@ interface BerryBucketApi {
 
     // 홈 > 프로필 조회
     @GET("/my")
-    suspend fun loadMyProfileInfo(@Header("Authorization") token: String): HomeProfileResponse
+    suspend fun loadMyProfileInfo(): HomeProfileResponse
 
     // 전체버킷리스트 조회
     @GET("/bucketList")
     suspend fun loadAllBucketList(
-        @Header("Authorization") token: String,
         @Query("dDayBucketOnly") dDayBucketOnly: String? = null,
         @Query("isPassed") isPassed: String? = null,
         @Query("status") status: BucketStatus? = null,
@@ -79,66 +77,58 @@ interface BerryBucketApi {
 
     // 카테고리 전체 로드
     @GET("/category")
-    suspend fun loadCategoryList(@Header("Authorization") token: String): LoadCategoryResponse
+    suspend fun loadCategoryList(): LoadCategoryResponse
 
     // 카테고리 별 로드
     @GET("/category")
     suspend fun searchCategoryList(
-        @Header("Authorization") token: String,
         @Query("query") query: String
     ): LoadCategoryResponse
 
     // 카테고리 추가
     @POST("/category")
     suspend fun addNewCategory(
-        @Header("Authorization") token: String,
         @Body request: AddNewCategoryRequest
     ): CommonResponse
 
     // 카테고리 수정
     @PATCH("/category")
     suspend fun editCategoryName(
-        @Header("Authorization") token: String,
         @Body request: EditCategoryNameRequest
     ): CommonResponse
 
     // 카테고리 삭제
     @HTTP(method = "DELETE", path = "/category/{id}")
     suspend fun removeCategoryItem(
-        @Header("Authorization") token: String,
         @Path("id") id: Int
     ): CommonResponse
 
     // 카테고리 순서 변경
     @PATCH("/category/seq")
     suspend fun reorderedCategory(
-        @Header("Authorization") token: String,
         @Body request: ReorderedCategoryRequest
     ): CommonResponse
 
     // 버킷리스트 상세
     @GET("/bucketList/{id}")
     suspend fun loadBucketDetail(
-        @Header("Authorization") token: String,
         @Path("id") id: String
     ): BucketDetailResponse
 
     // 피드 > 키워드 선택 > 저장
     @POST("/feeds/keyword")
     suspend fun savedFeedKeywords(
-        @Header("Authorization") token: String,
         @Body request: SavedKeywordItemsRequest
     ): CommonResponse
 
     // 피드
     @GET("/feeds")
-    suspend fun loadFeedItems(@Header("Authorization") token: String): FeedListResponse
+    suspend fun loadFeedItems(): FeedListResponse
 
     // 버킷리스트 등록
     @POST("/bucketlist")
     @Multipart
     suspend fun addNewBucketList(
-        @Header("Authorization") token: String,
         @Part bucketType: MultipartBody.Part,
         @Part exposureStatus: MultipartBody.Part, // 공개여부
         @Part title: MultipartBody.Part,
@@ -156,7 +146,6 @@ interface BerryBucketApi {
     @POST("/bucketlist/{id}")
     @Multipart
     suspend fun updateBucketList(
-        @Header("Authorization") token: String,
         @Part bucketType: MultipartBody.Part,
         @Part exposureStatus: MultipartBody.Part, // 공개여부
         @Part title: MultipartBody.Part,
@@ -173,41 +162,36 @@ interface BerryBucketApi {
 
     //TODO : 실데이터 연결 필요
     @GET("/alarm")
-    suspend fun loadAlarmList(@Header("Authorization") token: String): AlarmList
+    suspend fun loadAlarmList(): AlarmList
 
     // 피드, 버킷리스트 생성(수정) 시 키워드 아이템 로드
     @GET("/explore/keywords")
-    suspend fun loadKeywords(@Header("Authorization") token: String): KeywordResponse
+    suspend fun loadKeywords(): KeywordResponse
 
     // 팔로우 목록
     @GET("/follow")
-    suspend fun loadFollowList(@Header("Authorization") token: String): FollowResponse
+    suspend fun loadFollowList(): FollowResponse
 
     // 펄로오 > 언팔하기
     @POST("/follow/unfollow")
     suspend fun requestUnfollow(
-        @Header("Authorization") token: String,
         @Query("followUserId") followUserId: String
     ): CommonResponse
 
     // 팔로우 하기
     @POST("/follow")
     suspend fun requestFollow(
-        @Header("Authorization") token: String,
         @Query("followUserId") followUserId: String
     ): CommonResponse
 
     // 프로필편집 > 프로필조회
     @GET("/user/profile")
-    suspend fun loadMyProfile(
-        @Header("Authorization") token: String,
-    ): ProfileResponse
+    suspend fun loadMyProfile(): ProfileResponse
 
     // 프로필편집 > 프로필 수정
     @PATCH("/user/profile")
     @Multipart
     suspend fun updateMyProfile(
-        @Header("Authorization") token: String,
         @Part name: MultipartBody.Part,
         @Part bio: MultipartBody.Part,
         @Part profileImage: MultipartBody.Part?
@@ -222,107 +206,76 @@ interface BerryBucketApi {
     // 버킷리스트 전체 검색
     @GET("/bucketList")
     suspend fun searchAllBucketList(
-        @Header("Authorization") token: String,
         @Query("query") query: String
     ): AllBucketListResponse
 
     // 디데이 버킷리스트 검색
     @GET("/bucketList")
     suspend fun searchDdayBucketList(
-        @Header("Authorization") token: String,
         @Query("dDayBucketOnly") dDayBucketOnly: String? = YesOrNo.Y.name
     ): AllBucketListResponse
 
     // 버킷리스트 달성
     @GET("/bucketList/{id}/achieve")
-    suspend fun achieveBucket(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): CommonResponse
+    suspend fun achieveBucket(@Path("id") id: String): CommonResponse
 
     // 검색 > 버킷리스트 검색
     @GET("/explore")
-    suspend fun loadSearchResult(
-        @Header("Authorization") token: String,
-        @Query("query") query: String
-    ): SearchResultResponse
+    suspend fun loadSearchResult(@Query("query") query: String): SearchResultResponse
 
     // 검색 > 추천검색어, 최근검색어 조회
     @GET("/explore/searchOptions")
-    suspend fun loadSearchRecommend(
-        @Header("Authorization") token: String,
-    ): SearchRecommendResponse
+    suspend fun loadSearchRecommend(): SearchRecommendResponse
 
     // 검색 > 최근검색어 > 삭제
     @DELETE("/explore/recentSearch/{keyword}")
     suspend fun deleteSearchRecentWord(
-        @Header("Authorization") token: String,
+
         @Path("keyword") keyword: String
     ): CommonResponse
 
     // 피드 > 버킷리스트 좋아요
     @POST("/feeds/{id}/like")
-    suspend fun saveBucketLike(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): CommonResponse
+    suspend fun saveBucketLike(@Path("id") id: String): CommonResponse
 
     // 피드 > 다른사람 버킷리스트 상세
     @GET("/bucketlist/{id}")
-    suspend fun loadOtherBucketDetail(
-        @Header("Authorization") token: String,
-        @Path("id") id: String
-    ): BucketDetailResponse
+    suspend fun loadOtherBucketDetail(@Path("id") id: String): BucketDetailResponse
 
     // 버킷리스트 상세 > 댓글 달기
     @POST("/comment")
-    suspend fun addBucketComment(
-        @Header("Authorization") token: String,
-        @Body request: AddBucketCommentRequest
-    ): CommonResponse
+    suspend fun addBucketComment(@Body request: AddBucketCommentRequest): CommonResponse
 
     // 내 버킷리스트 > 달성횟수 변경
     @PATCH("/bucketlist/{id}/goalCount")
     suspend fun requestGoalCountUpdate(
-        @Header("Authorization") token: String,
         @Path("id") id: String,
         @Body goalCount: RequestGoalCountUpdate
     ): CommonResponse
 
     @POST("/comment/{id}/report")
     suspend fun requestCommentReport(
-        @Header("Authorization") token: String,
         @Path("id") id: String,
         @Query("reason") reason: String
     ): CommonResponse
 
     @GET("/follow/mutual")
-    suspend fun loadWriteSelectableFriends(
-        @Header("Authorization") token: String
-    ): LoadWriteSelectableFriendsResponse
+    suspend fun loadWriteSelectableFriends(): LoadWriteSelectableFriendsResponse
 
     @GET("/other/profile/{otherUserId}")
     suspend fun loadOtherProfileInfo(
-        @Header("Authorization") token: String,
         @Path("otherUserId") id: String,
     ): ProfileResponse
 
     @GET("/other/bucketlist/{otherUserId}")
     suspend fun loadOtherBucketList(
-        @Header("Authorization") token: String,
         @Path("otherUserId") id: String,
     ): OtherBucketListResponse
 
     @GET("/other/follow/count/{otherUserId}")
-    suspend fun loadOtherFollowData(
-        @Header("Authorization") token: String,
-        @Path("otherUserId") id: String,
-    ): OtherFollowDataResponse
+    suspend fun loadOtherFollowData(@Path("otherUserId") id: String): OtherFollowDataResponse
 
     // 댓글 삭제
     @DELETE("/comment/{id}")
-    suspend fun deleteComment(
-        @Header("Authorization") token: String,
-        @Path("id") id: String,
-    ): CommonResponse
+    suspend fun deleteComment(@Path("id") id: String): CommonResponse
 }

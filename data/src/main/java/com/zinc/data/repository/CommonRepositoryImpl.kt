@@ -8,7 +8,7 @@ import javax.inject.Inject
 internal class CommonRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : CommonRepository {
-    override suspend fun saveBucketLike(token: String, id: String): CommonResponse {
-        return berryBucketApi.saveBucketLike(token, id)
+    override suspend fun saveBucketLike(id: String): CommonResponse {
+        return berryBucketApi.saveBucketLike(id)
     }
 }

@@ -7,6 +7,6 @@ import javax.inject.Inject
 class UpdateProfileInfo @Inject constructor(
     private val moreRepository: MoreRepository
 ) {
-    suspend operator fun invoke(token: String, request: UpdateProfileRequest) =
-        moreRepository.updateProfileInfo(token, request)
+    suspend operator fun invoke(request: UpdateProfileRequest) =
+        moreRepository.updateProfileInfo(request)
 }

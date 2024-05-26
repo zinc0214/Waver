@@ -234,7 +234,7 @@ fun OpenDetailScreen(
                     }
 
                     is GoalCountUpdateEvent.CountUpdate -> {
-                        viewModel.goalCountUpdate(it.count)
+                        viewModel.requestGoalCountUpdate(it.count)
                         goalCountUpdatePopUpShowed.value = false
                     }
                 }
@@ -256,7 +256,7 @@ fun OpenDetailScreen(
                         commentOptionClicked = {
                             when (it) {
                                 is MyCommentOptionClicked.Delete -> {
-                                    viewModel.deleteBucketComment(it.commentId)
+                                    viewModel.requestDeleteBucketComment(it.commentId)
                                     commentOptionPopUpShowed.value =
                                         false to commentOptionPopUpShowed.value.second
                                 }
@@ -394,7 +394,7 @@ fun OpenDetailScreen(
                             commentEvent = {
                                 when (it) {
                                     is OpenDetailEditTextViewEvent.SendComment -> {
-                                        viewModel.addBucketComment(
+                                        viewModel.requestAddBucketComment(
                                             request = AddBucketCommentRequest(
                                                 bucketlistId = detailId.toInt(),
                                                 content = it.sendText,

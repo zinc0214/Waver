@@ -8,7 +8,7 @@ import javax.inject.Inject
 internal class AlarmRepositoryImpl @Inject constructor(
     private val berryBucketApi: BerryBucketApi
 ) : AlarmRepository {
-    override suspend fun loadAlarmList(token: String): AlarmList {
-        return berryBucketApi.loadAlarmList(token)
+    override suspend fun loadAlarmList(): AlarmList {
+        return berryBucketApi.loadAlarmList()
     }
 }

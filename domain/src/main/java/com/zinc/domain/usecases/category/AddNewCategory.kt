@@ -6,6 +6,6 @@ import javax.inject.Inject
 class AddNewCategory @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) {
-    suspend operator fun invoke(token: String, categoryName: String) =
-        categoryRepository.addNewCategory(token, categoryName)
+    suspend operator fun invoke(categoryName: String) =
+        categoryRepository.addNewCategory(categoryName)
 }
