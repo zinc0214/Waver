@@ -119,5 +119,9 @@ dependencies {
     // cropper
     implementation(libs.cropper)
 
+    // serialization
     implementation(libs.kotlinx.serialization)
+
+    // lottie
+    implementation(libs.lottie)
 }

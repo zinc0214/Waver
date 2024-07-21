@@ -19,12 +19,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BerryBucket"
+        android:theme="@style/Theme.BerryBucket.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.zinc.berrybucket.ui.presentation.HomeActivity"
+            android:name="com.zinc.berrybucket.ui.presentation.SplashActivity"
             android:exported="true"
-            android:theme="@style/Theme.BerryBucket.NoActionBar"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,6 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.zinc.berrybucket.ui.presentation.HomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BerryBucket.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.zinc.berrybucket.ui.presentation.report.ReportActivity"
             android:theme="@style/Theme.BerryBucket.NoActionBar"
