@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hana.berrybucket.ui_write"
+    namespace = "com.zinc.waver.ui_write"
 
     defaultConfig {
         minSdk = Versions.minSdk

@@ -9,13 +9,13 @@ plugins {
 
 android {
 
-    namespace = "com.zinc.berrybucket"
+    namespace = "com.zinc.waver"
 
     compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools
 
     defaultConfig {
-        applicationId = "com.zinc.berrybucket"
+        applicationId = "com.zinc.waver"
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
         versionCode = Versions.versionCode

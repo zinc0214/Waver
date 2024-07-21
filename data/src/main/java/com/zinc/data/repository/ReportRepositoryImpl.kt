@@ -3,12 +3,12 @@ package com.zinc.data.repository
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.domain.repository.ReportRepository
 import javax.inject.Inject
 
 internal class ReportRepositoryImpl @Inject constructor(
-    private val berryBucketApi: BerryBucketApi
+    private val waverApi: WaverApi
 ) : ReportRepository {
 
     override suspend fun loadReportItems(): ReportItems {
@@ -53,10 +53,9 @@ internal class ReportRepositoryImpl @Inject constructor(
                 )
             )
         )
-        //return berryBucketApi.loadReportItems()
     }
 
     override suspend fun reportComment(id: String, reason: String): CommonResponse {
-        return berryBucketApi.requestCommentReport(id, reason)
+        return waverApi.requestCommentReport(id, reason)
     }
 }

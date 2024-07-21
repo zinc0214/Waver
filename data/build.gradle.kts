@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.data"
+    namespace = "com.zinc.waver.data"
 
     compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools

@@ -7,42 +7,42 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.LoadCategoryResponse
 import com.zinc.common.models.ReorderedCategoryRequest
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.domain.repository.CategoryRepository
 import javax.inject.Inject
 
 internal class CategoryRepositoryImpl @Inject constructor(
-    private val berryBucketApi: BerryBucketApi
+    private val waverApi: WaverApi
 ) : CategoryRepository {
     override suspend fun loadCategoryList(): LoadCategoryResponse {
-        return berryBucketApi.loadCategoryList()
+        return waverApi.loadCategoryList()
     }
 
     override suspend fun addNewCategory(name: String): CommonResponse {
-        return berryBucketApi.addNewCategory(AddNewCategoryRequest(name))
+        return waverApi.addNewCategory(AddNewCategoryRequest(name))
     }
 
     override suspend fun editCategoryName(id: Int, name: String): CommonResponse {
-        return berryBucketApi.editCategoryName(EditCategoryNameRequest(id, name))
+        return waverApi.editCategoryName(EditCategoryNameRequest(id, name))
     }
 
     override suspend fun removeCategory(id: Int): CommonResponse {
-        return berryBucketApi.removeCategoryItem(id)
+        return waverApi.removeCategoryItem(id)
     }
 
     override suspend fun reorderCategory(orderedIds: List<String>): CommonResponse {
-        return berryBucketApi.reorderedCategory(ReorderedCategoryRequest(orderedIds))
+        return waverApi.reorderedCategory(ReorderedCategoryRequest(orderedIds))
     }
 
     override suspend fun searchCategoryList(query: String): LoadCategoryResponse {
-        return berryBucketApi.searchCategoryList(query)
+        return waverApi.searchCategoryList(query)
     }
 
     override suspend fun loadCategoryBucketList(
         categoryId: String,
         sort: AllBucketListSortType
     ): AllBucketListResponse {
-        return berryBucketApi.loadAllBucketList(
+        return waverApi.loadAllBucketList(
             categoryId = categoryId,
             sort = sort
         )

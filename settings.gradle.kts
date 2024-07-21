@@ -13,7 +13,7 @@ pluginManagement {
         mavenCentral()
     }
 }
-rootProject.name = "BerryBucket"
+rootProject.name = "Waver"
 include(":app")
 include(":domain")
 include(":data")

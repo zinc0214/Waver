@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.ui_common"
+    namespace = "com.zinc.waver.ui_common"
 
     defaultConfig {
         minSdk = Versions.minSdk
@@ -64,5 +64,5 @@ dependencies {
     // Coil
     implementation(libs.coil)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation(libs.kotlinx.serialization.json.v151)
 }

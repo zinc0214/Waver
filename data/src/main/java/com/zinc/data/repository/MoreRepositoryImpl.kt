@@ -2,7 +2,7 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ProfileResponse
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
 import com.zinc.domain.models.UpdateProfileRequest
@@ -10,10 +10,10 @@ import com.zinc.domain.repository.MoreRepository
 import javax.inject.Inject
 
 internal class MoreRepositoryImpl @Inject constructor(
-    private val berryBucketApi: BerryBucketApi
+    private val waverApi: WaverApi
 ) : MoreRepository {
     override suspend fun loadProfileInfo(): ProfileResponse {
-        return berryBucketApi.loadMyProfile()
+        return waverApi.loadMyProfile()
     }
 
     override suspend fun updateProfileInfo(
@@ -24,7 +24,7 @@ internal class MoreRepositoryImpl @Inject constructor(
         val bio = request.bio.toMultipartFile("bio")
         val profileImage = request.image?.fileToMultipartFile("profileImage")
 
-        return berryBucketApi.updateMyProfile(
+        return waverApi.updateMyProfile(
             name = name,
             bio = bio,
             profileImage = profileImage
@@ -32,6 +32,6 @@ internal class MoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkAlreadyUsedNickName(name: String): CommonResponse {
-        return berryBucketApi.checkAlreadyUsedNickname(name)
+        return waverApi.checkAlreadyUsedNickname(name)
     }
 }

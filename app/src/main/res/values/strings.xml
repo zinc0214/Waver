@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">베리버킷</string>
+    <string name="app_name">웨이버</string>
 
     <!-- 로그인 -->
     <string name="loginFail">로그인 실패</string>

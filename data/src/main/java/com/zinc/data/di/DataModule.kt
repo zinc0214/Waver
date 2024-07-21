@@ -1,7 +1,7 @@
 package com.zinc.data.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.data.repository.AlarmRepositoryImpl
 import com.zinc.data.repository.CategoryRepositoryImpl
 import com.zinc.data.repository.CommonRepositoryImpl
@@ -33,7 +33,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Converter
@@ -111,7 +110,6 @@ internal abstract class DataModule {
     @InstallIn(SingletonComponent::class)
     @Module
     internal object ApiModule {
-        @OptIn(ExperimentalSerializationApi::class)
         @Provides
         @Singleton
         fun provideConverter(): Converter.Factory {
@@ -122,10 +120,10 @@ internal abstract class DataModule {
 
         @Provides
         @Singleton
-        fun provideBerryBucketApi(
+        fun provideWaverApi(
             retrofit: Retrofit
-        ): BerryBucketApi {
-            return retrofit.create(BerryBucketApi::class.java)
+        ): WaverApi {
+            return retrofit.create(WaverApi::class.java)
         }
     }
 }

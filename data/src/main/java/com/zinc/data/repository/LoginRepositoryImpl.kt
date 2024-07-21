@@ -5,14 +5,14 @@ import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.LoadTokenByEmailRequest
 import com.zinc.common.models.LoadTokenByEmailResponse
 import com.zinc.common.models.RefreshTokenResponse
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
 import com.zinc.domain.repository.LoginRepository
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
-    private val berryBucketApi: BerryBucketApi
+    private val waverApi: WaverApi
 ) : LoginRepository {
     override suspend fun createProfile(
         createProfileRequest: CreateProfileRequest
@@ -23,14 +23,14 @@ class LoginRepositoryImpl @Inject constructor(
         val bio = createProfileRequest.bio?.toMultipartFile("bio")
         val profileImage = createProfileRequest.profileImage?.fileToMultipartFile("profileImage")
 
-        return berryBucketApi.crateProfile(accountType, email, name, bio, profileImage)
+        return waverApi.crateProfile(accountType, email, name, bio, profileImage)
     }
 
     override suspend fun refreshToken(): RefreshTokenResponse {
-        return berryBucketApi.refreshToken()
+        return waverApi.refreshToken()
     }
 
     override suspend fun requestLogin(loginRequest: LoadTokenByEmailRequest): LoadTokenByEmailResponse {
-        return berryBucketApi.requestLogin(loginRequest)
+        return waverApi.requestLogin(loginRequest)
     }
 }

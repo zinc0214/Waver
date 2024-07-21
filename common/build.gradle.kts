@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.common"
+    namespace = "com.zinc.waver.common"
 
     defaultConfig {
         minSdk = Versions.minSdk

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.domain"
+    namespace = "com.zinc.waver.domain"
 
     compileSdk = Versions.compileSdk
     buildToolsVersion = Versions.buildTools

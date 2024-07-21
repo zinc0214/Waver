@@ -4,14 +4,14 @@ import android.util.Log
 import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.LoadWriteSelectableFriendsResponse
-import com.zinc.data.api.BerryBucketApi
+import com.zinc.data.api.WaverApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
 import com.zinc.domain.repository.WriteRepository
 import javax.inject.Inject
 
 internal class WriteRepositoryImpl @Inject constructor(
-    private val berryBucketApi: BerryBucketApi
+    private val waverApi: WaverApi
 ) : WriteRepository {
     override suspend fun addNewBucketList(
         addBucketListRequest: AddBucketListRequest,
@@ -34,7 +34,7 @@ internal class WriteRepositoryImpl @Inject constructor(
         val categoryId = addBucketListRequest.categoryId.toMultipartFile("categoryId")
 
         if (isForUpdate) {
-            return berryBucketApi.updateBucketList(
+            return waverApi.updateBucketList(
                 bucketType,
                 exposureStatus,
                 title,
@@ -49,7 +49,7 @@ internal class WriteRepositoryImpl @Inject constructor(
                 addBucketListRequest.bucketId.orEmpty()
             )
         } else {
-            return berryBucketApi.addNewBucketList(
+            return waverApi.addNewBucketList(
                 bucketType,
                 exposureStatus,
                 title,
@@ -66,6 +66,6 @@ internal class WriteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadFriends(): LoadWriteSelectableFriendsResponse {
-        return berryBucketApi.loadWriteSelectableFriends()
+        return waverApi.loadWriteSelectableFriends()
     }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.berrybucket.ui_search"
+    namespace = "com.zinc.waver.ui_search"
 
     defaultConfig {
         minSdk = Versions.minSdk
