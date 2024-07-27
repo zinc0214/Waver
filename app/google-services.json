@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121106798779",
+    "project_id": "waver-668e3",
+    "storage_bucket": "waver-668e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121106798779:android:e264a8cd0e688776b8f19e",
+        "android_client_info": {
+          "package_name": "com.zinc.waver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAob8YQmOaJfPDRHSHTFjtd0m3PXEbz2T8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
