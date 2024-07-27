@@ -64,5 +64,5 @@ dependencies {
     // Coil
     implementation(libs.coil)
 
-    implementation(libs.kotlinx.serialization.json.v151)
+    implementation(libs.kotlinx.serialization)
 }

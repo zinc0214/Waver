@@ -1,12 +1,14 @@
 [versions]
 androidTooldBuild = "8.5.1"
-lifecycle = "2.8.3"
+firebaseBom = "33.1.2"
+lifecycle = "2.8.4"
 androidXArch = "2.2.0"
 composeBom = "2024.06.00"
-activity = "1.9.0"
+activity = "1.9.1"
 composeAccompanist = "0.32.0"
 composeCompilerVersion = "1.5.10"
 hilt = "2.51"
+playServicesAuth = "21.2.0"
 retrofit = "2.9.0"
 okHttp = "4.12.0"
 coroutines = "1.7.3"
@@ -14,11 +16,15 @@ kotlin = "1.9.22"
 dataStore = "1.1.1"
 ksp = "1.9.22-1.0.17"
 material3Android = "1.2.1"
+googleService = "4.4.2"
 
 [libraries]
 ##################################
 #plugin
 ##################################
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-auth-ktx = { module = "com.google.firebase:firebase-auth-ktx" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 gradle-hilt = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 gradle-android = { module = "com.android.tools.build:gradle", version.ref = "androidTooldBuild" }
 gradle-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -61,6 +67,7 @@ compose-bom-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-bom-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
 compose-bom-foundation = { module = "androidx.compose.foundation:foundation" }
 
+#flowlayout, pager, indicators, systemuicontroller
 compose-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "composeAccompanist" }
 compose-accompanist-flowlayout = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "composeAccompanist" }
 compose-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "composeAccompanist" }
@@ -84,6 +91,7 @@ hilt-navigation = "androidx.hilt:hilt-navigation-compose:1.2.0"
 ##################################
 #reftrofit
 ##################################
+play-services-auth = { module = "com.google.android.gms:play-services-auth", version.ref = "playServicesAuth" }
 retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-serialization = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0"
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
@@ -121,5 +129,6 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleService" }
 
 [bundles]

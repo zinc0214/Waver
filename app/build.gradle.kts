@@ -5,6 +5,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
     id("kotlinx-serialization")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -107,6 +108,12 @@ dependencies {
     implementation(libs.compose.accompanist.pager.indicators)
     implementation(libs.compose.accompanist.flowlayout)
     implementation(libs.compose.accompanist.systemuicontroller)
+
+    // google login
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.analytics)
 
     // Hilt
     implementation(libs.hilt.anroid)
