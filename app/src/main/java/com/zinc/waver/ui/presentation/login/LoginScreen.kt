@@ -1,7 +1,7 @@
 package com.zinc.waver.ui.presentation.login
 
 import android.util.Log
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,14 +12,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.waver.R
-import com.zinc.waver.model.DialogButtonInfo
-import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Main4
-import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
-import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 
 @Composable
 fun LoginScreen(
@@ -38,23 +34,30 @@ fun LoginScreen(
     val needToShowLoginFailDialog = remember { mutableStateOf(isLoginFailAsState) }
     val needToShowJoinDialog = remember { mutableStateOf(goToJoinAsState) }
     val currentEmail = remember { mutableStateOf(needToStartLoadTokenAsState) }
+    val isAnimFinished = remember { mutableStateOf(false) }
 
     if (!viewModel.isLoginChecked) {
         viewModel.checkHasLoginEmail(retryLoginEmail)
     }
 
-    LaunchedEffect(key1 = canGoToMainAsState) {
-        canGoToMainAsState?.let {
-            goToMainHome()
+    LaunchedEffect(key1 = canGoToMainAsState, key2 = isAnimFinished.value) {
+        if (isAnimFinished.value) {
+            canGoToMainAsState?.let {
+                goToMainHome()
+            }
         }
     }
 
-    LaunchedEffect(key1 = isLoginFailAsState) {
-        needToShowLoginFailDialog.value = isLoginFailAsState
+    LaunchedEffect(key1 = isLoginFailAsState, key2 = isAnimFinished.value) {
+        if (isAnimFinished.value) {
+            needToShowLoginFailDialog.value = isLoginFailAsState
+        }
     }
 
-    LaunchedEffect(key1 = goToJoinAsState) {
-        needToShowJoinDialog.value = goToJoinAsState
+    LaunchedEffect(key1 = goToJoinAsState, key2 = isAnimFinished.value) {
+        if (isAnimFinished.value) {
+            needToShowJoinDialog.value = goToJoinAsState
+        }
     }
 
     LaunchedEffect(key1 = needToStartLoadTokenAsState) {
@@ -69,10 +72,17 @@ fun LoginScreen(
     }
 
     Scaffold { padding ->
-        Column(modifier = Modifier.padding(padding)) {
-            MyText(text = "로그인 중 ...")
-        }
 
+        AndroidView(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            factory = { context ->
+                SplashView(context = context, animFinished = {
+                    isAnimFinished.value = true
+                })
+            }
+        )
         if (needToShowLoginFailDialog.value == true) {
             ApiFailDialog(
                 title = stringResource(id = R.string.loginFail),
@@ -84,24 +94,25 @@ fun LoginScreen(
         }
 
         if (needToShowJoinDialog.value == true) {
-            CommonDialogView(
-                title = stringResource(id = R.string.notLoginedEamil),
-                message = stringResource(id = R.string.goToJoinMessage),
-                dismissAvailable = false,
-                negative = DialogButtonInfo(
-                    text = com.zinc.waver.ui_common.R.string.cancel,
-                    color = Gray10
-                ),
-                positive = DialogButtonInfo(text = R.string.goToJoin, color = Main4),
-                negativeEvent = {
-                    goToFinish()
-                    needToShowJoinDialog.value = false
-                },
-                positiveEvent = {
-                    goToJoin()
-                    needToShowJoinDialog.value = false
-                }
-            )
+//            CommonDialogView(
+//                title = stringResource(id = R.string.notLoginedEamil),
+//                message = stringResource(id = R.string.goToJoinMessage),
+//                dismissAvailable = false,
+//                negative = DialogButtonInfo(
+//                    text = com.zinc.waver.ui_common.R.string.cancel,
+//                    color = Gray10
+//                ),
+//                positive = DialogButtonInfo(text = R.string.goToJoin, color = Main4),
+//                negativeEvent = {
+//                    goToFinish()
+//                    needToShowJoinDialog.value = false
+//                },
+//                positiveEvent = {
+//                    goToJoin()
+//                    needToShowJoinDialog.value = false
+//                }
+//            )
+            goToJoin()
         }
     }
 }

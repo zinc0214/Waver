@@ -2,11 +2,12 @@
     <string name="app_name">웨이버</string>
 
     <!-- 로그인 -->
+    <string name="waverJoinGuide">함께하는 버킷리스트 웨이버</string>
     <string name="loginFail">로그인 실패</string>
     <string name="loginRetry">다시 시도해주세요.</string>
     <string name="notLoginedEamil">존재하지 않는 이메일입니다.</string>
     <string name="goToJoinMessage">회원가입을 시작해주세요.</string>
-    <string name="goToJoin">회원가입</string>
+    <string name="goToJoin">구글로 로그인</string>
     <string name="joinFailTitle">회원가입 실패</string>
     <string name="alreadyUsedEmailTitle">이미 사용중인 이메일입니다.</string>
     <string name="alreadyUsedEmailDesc">해당 이메일로 로그인하시겠습니까?</string>

@@ -1,36 +1,58 @@
 package com.zinc.waver.ui.presentation.login
 
 import android.util.Log
-import androidx.compose.foundation.layout.Column
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
+import com.zinc.waver.BuildConfig
 import com.zinc.waver.R
 import com.zinc.waver.model.DialogButtonInfo
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray6
+import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
-import com.zinc.waver.ui.presentation.component.MyTextField
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
-import com.zinc.waver.ui.presentation.login.component.ProfileCreateTitle
-import com.zinc.waver.ui.util.dpToSp
+import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 
@@ -39,7 +61,7 @@ import com.zinc.waver.ui_common.R as CommonR
 fun JoinEmailScreen(
     goToNexPage: (String) -> Unit,
     goToBack: () -> Unit,
-    goToLogin: (String) -> Unit
+    goToLogin: (String) -> Unit,
 ) {
     val viewModel: JoinEmailViewModel = hiltViewModel()
 
@@ -79,60 +101,11 @@ fun JoinEmailScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        ProfileCreateTitle(
-            saveButtonEnable = prevLoginEmail.value.isNotEmpty(),
-            backClicked = {
-                goToBack()
-            },
-            saveClicked = {
-                viewModel.goToLogin(prevLoginEmail.value)
-            }
-        )
+    GoogleSignInButton(goToEmailCheck = {
+        viewModel.goToLogin(it)
+        prevLoginEmail.value = it
+    })
 
-        Spacer(modifier = Modifier.padding(top = 44.dp))
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 20.dp)
-                .padding(horizontal = 28.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                MyTextField(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
-                    value = prevLoginEmail.value,
-                    textStyle = TextStyle(
-                        color = Gray10, fontSize = dpToSp(24.dp), fontWeight = FontWeight.Medium
-                    ),
-                    onValueChange = {
-                        prevLoginEmail.value = it
-                    },
-                    decorationBox = { innerTextField ->
-                        Row {
-                            if (prevLoginEmail.value.isEmpty()) {
-                                MyText(
-                                    text = "이메일을 입력하세요",
-                                    color = Gray6,
-                                    fontSize = dpToSp(24.dp)
-                                )
-                            }
-                            innerTextField()  //<-- Add this
-                        }
-                    },
-                )
-            }
-        }
-    }
     if (isAlreadyUsedEmail.value) {
         CommonDialogView(
             title = stringResource(id = R.string.alreadyUsedEmailTitle),
@@ -159,4 +132,132 @@ fun JoinEmailScreen(
             isFailApi.value = false
         }
     }
+}
+
+@Composable
+private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
+    ConstraintLayout(modifier = modifier) {
+        val (logo, guide, button) = createRefs()
+
+        Image(
+            painter = painterResource(R.drawable.img_login_text),
+            contentDescription = stringResource(id = R.string.waverJoinGuide),
+            modifier = Modifier
+                .constrainAs(guide) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.img_wave),
+            contentDescription = null,
+            modifier = Modifier
+                .constrainAs(logo) {
+                    start.linkTo(parent.start)
+                    bottom.linkTo(guide.top)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .padding(bottom = 8.dp)
+        )
+
+        Box(modifier = Modifier
+            .constrainAs(button) {
+                start.linkTo(parent.start)
+                top.linkTo(guide.bottom)
+                end.linkTo(parent.end)
+                width = Dimension.fillToConstraints
+            }
+            .padding(start = 40.dp, end = 40.dp, top = 72.dp)
+            .clickable {
+                emailClicked()
+            }
+            .background(color = Gray1, shape = RoundedCornerShape(2.dp))
+            .border(width = 1.dp, color = Gray3, shape = RoundedCornerShape(2.dp))
+            .padding(top = 13.dp, bottom = 14.dp, start = 24.dp, end = 106.dp)
+        ) {
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null,
+                    modifier = Modifier.sizeIn(18.dp)
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                MyText(
+                    text = stringResource(id = R.string.goToJoin),
+                    fontSize = 15.sp,
+                    color = Gray10,
+                    fontWeight = FontWeight.Normal
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun GoogleSignInButton(goToEmailCheck: (String) -> Unit) {
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+
+    // Remember launcher for activity result
+    val googleSignInLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            if (account != null) {
+                coroutineScope.launch {
+                    googleLogin(account.idToken!!, goToEmailCheck)
+                }
+            }
+        } catch (e: ApiException) {
+            // Handle sign-in error
+        }
+    }
+
+    // Google Sign-In Button
+    EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(BuildConfig.GOOGLE_WEB_ID)
+            .requestEmail()
+            .build()
+        val googleSignInClient = GoogleSignIn.getClient(context.applicationContext, gso)
+        googleSignInClient.revokeAccess().addOnCompleteListener {
+            googleSignInLauncher.launch(googleSignInClient.signInIntent)
+        }
+    })
+}
+
+private fun googleLogin(idToken: String, goToEmailCheck: (String) -> Unit) {
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+
+    val credential = GoogleAuthProvider.getCredential(idToken, null)
+    auth.signInWithCredential(credential)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sign in success
+                Log.e("ayhan", "googleLogin : ${task.result.user?.email}")
+                goToEmailCheck(task.result.user?.email.orEmpty())
+            } else {
+                // Sign in failed
+            }
+        }
+}
+
+@Preview
+@Composable
+private fun EmailViewPreview() {
+    EmailView(modifier = Modifier.fillMaxSize()) {}
 }

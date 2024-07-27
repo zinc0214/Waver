@@ -26,6 +26,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "GOOGLE_WEB_ID", "\"${property("GOOGLE_WEB_ID")}\"")
+    }
+
+    buildFeatures {
+        buildConfig = true // Enable BuildConfig
     }
 
     buildTypes {
@@ -114,6 +120,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     implementation(libs.firebase.analytics)
+    implementation(libs.googleid)
 
     // Hilt
     implementation(libs.hilt.anroid)
