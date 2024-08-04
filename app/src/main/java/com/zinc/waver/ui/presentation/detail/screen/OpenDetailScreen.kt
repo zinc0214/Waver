@@ -528,8 +528,7 @@ fun OpenDetailScreen(
             when (loadFail.value) {
                 DetailLoadFailStatus.AchieveFail -> viewModel.achieveMyBucket()
                 DetailLoadFailStatus.LoadFail -> {
-                    viewModel.getValidMentionList()
-                    viewModel.getBucketDetail(detailId, writerId, isMine)
+                    backPress()
                 }
 
                 else -> {
