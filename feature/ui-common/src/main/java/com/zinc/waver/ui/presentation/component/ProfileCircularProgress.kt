@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui_common.R
@@ -41,7 +42,8 @@ fun ProfileCircularProgressBar(
     color: Color = Main4,
     animDuration: Int = 1000,
     animDelay: Int = 0,
-    profileImageUrl: String
+    profileImageUrl: String,
+    badgeImageUrl: String
 ) {
     var animationPlayed by remember {
         mutableStateOf(false)
@@ -72,7 +74,7 @@ fun ProfileCircularProgressBar(
             )
         }
 
-        BadgeImage()
+        BadgeImage(badgeImageUrl)
     }
 }
 
@@ -95,7 +97,7 @@ fun ProfileCenterImage(profileImageUrl: String) {
 }
 
 @Composable
-fun BadgeImage() {
+fun BadgeImage(url: String) {
 //    val angle = (-90f) + 360 * curPercentage
 //    val radian = angle * 0.0175
 //    val x = radius * cos(radian)
@@ -103,7 +105,10 @@ fun BadgeImage() {
 //
 
     Image(
-        painterResource(R.drawable.badge_large),
+        painter = rememberAsyncImagePainter(
+            model = url,
+            error = painterResource(id = R.drawable.kakao)
+        ),
         contentDescription = null,
         modifier = Modifier
             .padding(top = 80.dp)

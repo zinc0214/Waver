@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray2
@@ -124,11 +125,14 @@ private fun ProfileTextView(modifier: Modifier, info: UIMoreMyProfileInfo) {
 }
 
 
-// TODO :  Profile Url 적용 필요
 @Composable
 private fun ProfileImageView(modifier: Modifier, profileUrl: String) {
     Image(
-        painter = painterResource(id = CommonR.drawable.test),
+        painter = rememberAsyncImagePainter(
+            model = profileUrl,
+            placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.kakao),
+            error = painterResource(com.zinc.waver.ui_common.R.drawable.kakao)
+        ),
         contentDescription = stringResource(
             id = CommonR.string.moreProfileImageDesc
         ),

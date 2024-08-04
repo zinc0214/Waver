@@ -220,7 +220,7 @@ class MyViewModel @Inject constructor(
                     val topProfile = TopProfile(
                         name = data.name,
                         imgUrl = data.imgUrl,
-                        badgeType = data.badgeUrl,
+                        badgeImgUrl = data.badgeUrl,
                         badgeTitle = data.badgeTitle,
                         bio = data.bio,
                         followingCount = data.followingCount,
@@ -247,7 +247,7 @@ class MyViewModel @Inject constructor(
             name = "한아로해봐",
             imgUrl = "ddd",
             percent = 0.6f,
-            badgeType = "",
+            badgeImgUrl = "",
             badgeTitle = "안녕 반가우이잇",
             bio = "나는 ESFP 한아라고 불러줘?",
             followingCount = "20",

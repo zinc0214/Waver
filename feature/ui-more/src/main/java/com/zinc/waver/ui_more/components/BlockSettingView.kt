@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray6
@@ -55,7 +56,11 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
     ) {
 
         Image(
-            painter = painterResource(id = CommonR.drawable.test),
+            painter = rememberAsyncImagePainter(
+                model = memberData.profileUrl,
+                placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.kakao),
+                error = painterResource(com.zinc.waver.ui_common.R.drawable.kakao)
+            ),
             contentDescription = stringResource(
                 id = CommonR.string.moreProfileImageDesc
             ),

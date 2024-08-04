@@ -1,5 +1,6 @@
 package com.zinc.waver.ui.presentation.component
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -17,13 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.ui_common.R
 
 
@@ -56,11 +55,17 @@ fun ImageViewPagerOutSideIndicator(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) { page ->
+                    Log.e("ayhan", "imgUrl : ${imageList[page]}")
+                    val painter = rememberAsyncImagePainter(
+                        model = imageList[page],
+                        placeholder = painterResource(R.drawable.kakao),
+                        error = painterResource(R.drawable.kakao)
+                    )
                     Image(
-                        painter = painterResource(id = R.drawable.kakao),
-                        contentDescription = "Test",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        painter = painter,
+                        contentDescription = stringResource(id = R.string.bucketImage),
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop
                     )
                 }
             }
@@ -108,16 +113,16 @@ fun ImageViewPagerInsideIndicator(
                             .fillMaxWidth()
                     ) { page ->
 
-                        AsyncImage(
-                            model = ImageRequest.Builder(LocalContext.current)
-                                .data(pagerState.currentPage)
-                                .crossfade(true)
-                                .build(),
-                            error = painterResource(R.drawable.kakao),
+                        val painter = rememberAsyncImagePainter(
+                            model = imageList[page],
                             placeholder = painterResource(R.drawable.kakao),
-                            contentDescription = stringResource(R.string.bucketImage),
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
+                            error = painterResource(R.drawable.kakao)
+                        )
+                        Image(
+                            painter = painter,
+                            contentDescription = stringResource(id = R.string.bucketImage),
+                            modifier = Modifier.fillMaxSize(),
+                            contentScale = ContentScale.Crop
                         )
                     }
                 }

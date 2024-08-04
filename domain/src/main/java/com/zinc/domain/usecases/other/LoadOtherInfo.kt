@@ -56,7 +56,7 @@ class LoadOtherInfo @Inject constructor(
                                     name = profile.name,
                                     imgUrl = profile.imgUrl,
                                     percent = bucketList.completedCount.toFloat() / bucketList.totalCount.toFloat(),
-                                    badgeType = profile.badgeImgUrl,
+                                    badgeImgUrl = profile.badgeImgUrl,
                                     badgeTitle = profile.badgeTitle,
                                     bio = profile.bio,
                                     followerCount = follow.followerCount.toString(),

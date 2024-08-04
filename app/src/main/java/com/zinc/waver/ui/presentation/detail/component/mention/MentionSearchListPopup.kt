@@ -25,11 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.model.CommentMentionInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui_common.R
 
 @Composable
 fun MentionSearchListPopup(
@@ -84,7 +86,11 @@ private fun MentionItem(
             }, verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.test),
+            painter = rememberAsyncImagePainter(
+                model = item.profileImage,
+                placeholder = painterResource(R.drawable.kakao),
+                error = painterResource(R.drawable.kakao)
+            ),
             contentDescription = stringResource(
                 id = com.zinc.waver.ui_feed.R.string.feedProfileImage
             ),

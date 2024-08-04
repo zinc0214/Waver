@@ -25,7 +25,8 @@ fun ProfileLayer(profileInfo: TopProfile) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             ProfileCircularProgressBar(
                 percentage = profileInfo.percent,
-                profileImageUrl = profileInfo.imgUrl ?: ""
+                profileImageUrl = profileInfo.imgUrl.orEmpty(),
+                badgeImageUrl = profileInfo.badgeImgUrl.orEmpty()
             )
         }
         Spacer(modifier = Modifier.height(6.dp))

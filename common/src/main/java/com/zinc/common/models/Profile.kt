@@ -35,7 +35,7 @@ data class TopProfile(
     val name: String,
     val imgUrl: String?,
     val percent: Float,
-    val badgeType: String?,
+    val badgeImgUrl: String?,
     val badgeTitle: String?,
     val bio: String?,
     val followerCount: String,

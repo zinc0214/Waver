@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.model.UiProfileInfo
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray9
@@ -53,7 +54,7 @@ fun ProfileView(
             badgeSize = badgeSize,
             profileRadius = profileRadius,
             profileUrl = profileInfo.profileImage,
-            badge = profileInfo.badgeImage
+            badgeUrl = profileInfo.badgeImage
         )
         ProfileTextView(
             nickNameTextSize = nickNameTextSize,
@@ -77,13 +78,17 @@ private fun ProfileImageView(
     profileRadius: Dp,
     badgeSize: Pair<Dp, Dp>,
     profileUrl: String?,
-    badge: String
+    badgeUrl: String
 ) {
     Box(
         modifier = modifier.size(imageSize),
         content = {
             Image(
-                painter = painterResource(id = R.drawable.btn_32_like_on),
+                painter = rememberAsyncImagePainter(
+                    model = profileUrl,
+                    placeholder = painterResource(R.drawable.kakao),
+                    error = painterResource(R.drawable.kakao)
+                ),
                 contentDescription = stringResource(
                     id = R.string.profileImgDesc
                 ),
@@ -95,7 +100,11 @@ private fun ProfileImageView(
                     .align(Alignment.TopStart)
             )
             Image(
-                painter = painterResource(id = R.drawable.badge_small),
+                painter = rememberAsyncImagePainter(
+                    model = badgeUrl,
+                    placeholder = painterResource(R.drawable.kakao),
+                    error = painterResource(R.drawable.kakao)
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 4.dp)

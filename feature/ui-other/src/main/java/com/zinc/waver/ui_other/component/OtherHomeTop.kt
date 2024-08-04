@@ -168,7 +168,7 @@ private fun OtherHomeProfilePreview() {
             name = "안녕다른사람",
             imgUrl = null,
             percent = 0.3f,
-            badgeType = null,
+            badgeImgUrl = null,
             badgeTitle = "신나는여행자",
             bio = "나는다른사람이라고해요",
             followerCount = "10",

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.R
 import com.zinc.waver.model.CommentMentionInfo
 import com.zinc.waver.ui.design.theme.Gray10
@@ -121,7 +122,11 @@ private fun MentionItem(
             }, verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.test),
+            painter = rememberAsyncImagePainter(
+                model = item.profileImage,
+                placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.kakao),
+                error = painterResource(com.zinc.waver.ui_common.R.drawable.kakao)
+            ),
             contentDescription = stringResource(
                 id = com.zinc.waver.ui_feed.R.string.feedProfileImage
             ),

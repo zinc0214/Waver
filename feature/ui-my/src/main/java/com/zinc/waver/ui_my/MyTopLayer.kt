@@ -208,7 +208,7 @@ private fun ProfileLayerPreview() {
             name = "한아라고해",
             imgUrl = null,
             percent = 0.0f,
-            badgeType = null,
+            badgeImgUrl = null,
             badgeTitle = "딩가딩가딩 딩가링가링",
             bio = "안녕, 나를 한 아 라고 불러줘",
             followerCount = "10",
