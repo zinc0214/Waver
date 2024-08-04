@@ -58,8 +58,7 @@ fun ProfileCircularProgressBar(
     }
 
     Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.size(radius * 3)
+        contentAlignment = Alignment.Center
     ) {
         ProfileCenterImage(profileImageUrl)
 
@@ -108,8 +107,8 @@ fun BadgeImage() {
         contentDescription = null,
         modifier = Modifier
             .padding(top = 80.dp)
-            .width(32.dp)
-            .height(32.dp)
+            .width(36.dp)
+            .height(36.dp)
         //.offset(x = x.dp, y = y.dp)
 
     )

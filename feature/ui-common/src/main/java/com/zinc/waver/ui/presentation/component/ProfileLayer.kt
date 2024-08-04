@@ -28,12 +28,13 @@ fun ProfileLayer(profileInfo: TopProfile) {
                 profileImageUrl = profileInfo.imgUrl ?: ""
             )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(6.dp))
         MyText(
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            text = profileInfo.badgeTitle ?: "",
+            // TODO : 잠깐 추가
+            text = profileInfo.badgeTitle ?: "뱃지 정보!",
             fontSize = dpToSp(15.dp),
             color = Main3,
             textAlign = TextAlign.Center
