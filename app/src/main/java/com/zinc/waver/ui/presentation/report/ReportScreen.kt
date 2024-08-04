@@ -1,5 +1,6 @@
 package com.zinc.waver.ui.presentation.report
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,6 @@ import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
 
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ReportScreen(
     reportInfo: ReportInfo, backPress: (Boolean) -> Unit
@@ -44,13 +44,24 @@ fun ReportScreen(
 
     val reportItems by viewModel.reportItemList.observeAsState()
     val commentReportSucceedAsState by viewModel.commentReportSucceed.observeAsState()
-    val apiLoadFailAsState by viewModel.requestFail.observeAsState()
+    val commentReportFailAsSate by viewModel.requestFail.observeAsState()
+
+    var commentReportSucceed by remember { mutableStateOf(commentReportSucceedAsState) }
+    var commentReportFail by remember { mutableStateOf(commentReportFailAsSate) }
 
     LaunchedEffect(key1 = commentReportSucceedAsState) {
         if (commentReportSucceedAsState == true) {
-            backPress(true)
+            commentReportSucceed = true
         }
     }
+
+    LaunchedEffect(key1 = commentReportFailAsSate) {
+        if (commentReportFailAsSate == true) {
+            commentReportFail = true
+        }
+    }
+
+    val context = LocalContext.current
 
     ConstraintLayout(
         modifier = Modifier
@@ -131,6 +142,17 @@ fun ReportScreen(
                     viewModel.requestReportComment(reportInfo.id, reason)
                 }
             )
+        }
+
+        if (commentReportSucceed == true) {
+            Toast.makeText(context, R.string.commentReportSucceed, Toast.LENGTH_SHORT).show()
+            commentReportSucceed = false
+            backPress(true)
+        }
+
+        if (commentReportFail == true) {
+            Toast.makeText(context, R.string.commentReportFail, Toast.LENGTH_SHORT).show()
+            commentReportFail = false
         }
     }
 }

@@ -41,7 +41,7 @@ class ReportViewModel @Inject constructor(
     }
 
     fun requestReportComment(id: String, reason: String) {
-        viewModelScope.launch {
+        viewModelScope.launch(ceh(_requestFail, true)) {
             val result = requestReportComment.invoke(id, reason)
             Log.e("ayhan", "requestReportComment result : $reason\n $result")
             if (result.success) {

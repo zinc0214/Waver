@@ -37,6 +37,8 @@
     <string name="commentDelete">삭제</string>
     <string name="commentHide">숨기기</string>
     <string name="commentReport">신고</string>
+    <string name="commentReportSucceed">신고를 완료했습니다.</string>
+    <string name="commentReportFail">다시 시도해주세요.</string>
 
     <!-- Report -->
     <string name="commentReportTitle">댓글 신고</string>
