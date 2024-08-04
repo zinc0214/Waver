@@ -130,8 +130,8 @@ private fun ProfileImageView(modifier: Modifier, profileUrl: String) {
     Image(
         painter = rememberAsyncImagePainter(
             model = profileUrl,
-            placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.kakao),
-            error = painterResource(com.zinc.waver.ui_common.R.drawable.kakao)
+            placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.testimg),
+            error = painterResource(com.zinc.waver.ui_common.R.drawable.testimg)
         ),
         contentDescription = stringResource(
             id = CommonR.string.moreProfileImageDesc

@@ -67,7 +67,7 @@ fun ProfileUpdateView(
         Image(
             painter = rememberAsyncImagePainter(
                 model = profileUri,
-                error = painterResource(id = R.drawable.kakao)
+                error = painterResource(id = R.drawable.testimg)
             ),
             contentDescription = stringResource(
                 id = R.string.moreProfileImageDesc

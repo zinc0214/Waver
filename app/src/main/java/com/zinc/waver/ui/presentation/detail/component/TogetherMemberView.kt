@@ -126,7 +126,7 @@ private fun TogetherMemberItemView(
                 modifier = Modifier.size(50.dp),
                 content = {
                     Image(
-                        painter = painterResource(id = R.drawable.kakao),
+                        painter = painterResource(id = R.drawable.testimg),
                         contentDescription = stringResource(
                             id = R.string.profileImgDesc
                         ),

@@ -48,8 +48,8 @@ fun FollowItemView(
                 .data(info.imgUrl)
                 .crossfade(true)
                 .build(),
-            error = painterResource(R.drawable.kakao),
-            placeholder = painterResource(R.drawable.kakao),
+            error = painterResource(R.drawable.testimg),
+            placeholder = painterResource(R.drawable.testimg),
             contentDescription = stringResource(R.string.profileImageDesc),
             contentScale = ContentScale.Crop,
             modifier = Modifier

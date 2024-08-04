@@ -86,8 +86,8 @@ private fun ProfileImageView(
             Image(
                 painter = rememberAsyncImagePainter(
                     model = profileUrl,
-                    placeholder = painterResource(R.drawable.kakao),
-                    error = painterResource(R.drawable.kakao)
+                    placeholder = painterResource(R.drawable.testimg),
+                    error = painterResource(R.drawable.testimg)
                 ),
                 contentDescription = stringResource(
                     id = R.string.profileImgDesc
@@ -102,8 +102,8 @@ private fun ProfileImageView(
             Image(
                 painter = rememberAsyncImagePainter(
                     model = badgeUrl,
-                    placeholder = painterResource(R.drawable.kakao),
-                    error = painterResource(R.drawable.kakao)
+                    placeholder = painterResource(R.drawable.testimg),
+                    error = painterResource(R.drawable.testimg)
                 ),
                 contentDescription = null,
                 modifier = Modifier

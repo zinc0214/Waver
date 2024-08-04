@@ -160,7 +160,7 @@ fun SearchUserItemView(
             val (profileImage, nickNameView, followButton) = createRefs()
 
             Image(
-                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.kakao),
+                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.testimg),
                 contentDescription = stringResource(
                     id = R.string.searchProfileImage
                 ),

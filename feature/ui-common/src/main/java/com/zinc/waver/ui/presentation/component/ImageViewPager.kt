@@ -58,8 +58,8 @@ fun ImageViewPagerOutSideIndicator(
                     Log.e("ayhan", "imgUrl : ${imageList[page]}")
                     val painter = rememberAsyncImagePainter(
                         model = imageList[page],
-                        placeholder = painterResource(R.drawable.kakao),
-                        error = painterResource(R.drawable.kakao)
+                        placeholder = painterResource(R.drawable.testimg),
+                        error = painterResource(R.drawable.testimg)
                     )
                     Image(
                         painter = painter,
@@ -115,8 +115,8 @@ fun ImageViewPagerInsideIndicator(
 
                         val painter = rememberAsyncImagePainter(
                             model = imageList[page],
-                            placeholder = painterResource(R.drawable.kakao),
-                            error = painterResource(R.drawable.kakao)
+                            placeholder = painterResource(R.drawable.testimg),
+                            error = painterResource(R.drawable.testimg)
                         )
                         Image(
                             painter = painter,

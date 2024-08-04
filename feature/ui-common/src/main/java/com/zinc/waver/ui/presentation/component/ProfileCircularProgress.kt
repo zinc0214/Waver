@@ -84,8 +84,8 @@ fun ProfileCenterImage(profileImageUrl: String) {
         model = ImageRequest.Builder(LocalContext.current).data(profileImageUrl)
             .crossfade(true)
             .build(),
-        error = painterResource(R.drawable.kakao),
-        placeholder = painterResource(R.drawable.kakao),
+        error = painterResource(R.drawable.testimg),
+        placeholder = painterResource(R.drawable.testimg),
         contentDescription = stringResource(R.string.profileImageDesc),
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -107,7 +107,7 @@ fun BadgeImage(url: String) {
     Image(
         painter = rememberAsyncImagePainter(
             model = url,
-            error = painterResource(id = R.drawable.kakao)
+            error = painterResource(id = R.drawable.testimg)
         ),
         contentDescription = null,
         modifier = Modifier

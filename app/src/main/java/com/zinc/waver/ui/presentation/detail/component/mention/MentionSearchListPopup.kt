@@ -88,8 +88,8 @@ private fun MentionItem(
         Image(
             painter = rememberAsyncImagePainter(
                 model = item.profileImage,
-                placeholder = painterResource(R.drawable.kakao),
-                error = painterResource(R.drawable.kakao)
+                placeholder = painterResource(R.drawable.testimg),
+                error = painterResource(R.drawable.testimg)
             ),
             contentDescription = stringResource(
                 id = com.zinc.waver.ui_feed.R.string.feedProfileImage
