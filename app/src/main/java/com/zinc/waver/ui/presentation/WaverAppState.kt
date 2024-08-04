@@ -102,7 +102,7 @@ class WaverAppState(
     ) {
         // In order to discard duplicated navigation events, we check the Lifecycle
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}/${32}/${isMine}")
+            navController.navigate("${MainDestinations.OPEN_BUCKET_DETAIL}/${bucketId}/${writerId}/${isMine}")
         }
     }
 

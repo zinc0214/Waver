@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -133,18 +132,21 @@ fun OpenDetailScreen(
             if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
 
         // 키보드 상태 확인
-        val coroutineScope = rememberCoroutineScope()
         val isKeyboardStatus by keyboardAsState()
         val isKeyboardOpened = isKeyboardStatus == Keyboard.Opened
 
         val isCommentViewShown =
             visibleLastIndex > commentViewIndex || isKeyboardOpened // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
 
+        // 달성 완료 버튼 노출 정책
+        val successButtonShow =
+            listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty() && info.isMine && info.isDone.not()
+
         // 붙은버튼의 노출조건
         // 1. 댓글이 노출되는 경우
         // 2. 친구 또는 댓글의 영역이 노출되는 경우 (현재 마지막으로 보이는 Index 가 (2) 의 Index 인 경우)
         val flatButtonVisible =
-            isCommentViewShown || visibleLastIndex >= flatButtonIndex
+            (isCommentViewShown || visibleLastIndex >= flatButtonIndex) && successButtonShow
 
         // 팝업 노출 여부
         val optionPopUpShowed = remember { mutableStateOf(false) } // 우상단 옵션 팝업 노출 여부
@@ -167,10 +169,6 @@ fun OpenDetailScreen(
 
         // 검색할 텍스트와 관련된 정보들
         val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
-
-        // 달성 완료 버튼 미노출 정책
-        val successButtonHide =
-            listScrollState.layoutInfo.visibleItemsInfo.isNotEmpty() || info.isMine || info.isDone
 
         // 댓글 신고 화면
         val needToShowCommentReportView = remember {
@@ -349,7 +347,7 @@ fun OpenDetailScreen(
                         })
 
                 // 플로팅 완료 버튼 노출 조건
-                if (successButtonHide) {
+                if (successButtonShow) {
                     this@Column.AnimatedVisibility(
                         flatButtonVisible.not(),
                         enter = expandVertically(),

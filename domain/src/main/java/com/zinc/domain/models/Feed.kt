@@ -18,7 +18,6 @@ data class FeedListResponse(
 
     data class FeedItemResponse(
         val id: String,
-        val userId: String?,
         val status: FeedItemBucketStatus,
         val title: String,
         val images: List<String>,
@@ -34,8 +33,11 @@ data class FeedListResponse(
         }
 
         data class UserInfo(
+            val id: String,
             val name: String,
-            val imgUrl: String?
+            val imgUrl: String?,
+            val badgeTitle: String?,
+            val badgeImgUrl: String?
         )
     }
 }

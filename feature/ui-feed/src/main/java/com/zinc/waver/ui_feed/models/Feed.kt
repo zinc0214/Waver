@@ -36,10 +36,10 @@ data class UIFeedInfo(
 fun FeedListResponse.FeedData.toUIModel() = this.list.map { item ->
     UIFeedInfo(
         bucketId = item.id,
-        writerId = item.userId.orEmpty(),
+        writerId = item.user.id,
         profileImage = item.user.imgUrl,
-        badgeImage = "",
-        titlePosition = "",
+        badgeImage = item.user.badgeImgUrl.orEmpty(),
+        titlePosition = item.user.badgeTitle.orEmpty(),
         nickName = item.user.name,
         imageList = item.images,
         isProcessing = item.status == FeedListResponse.FeedItemResponse.FeedItemBucketStatus.PROGRESS,
