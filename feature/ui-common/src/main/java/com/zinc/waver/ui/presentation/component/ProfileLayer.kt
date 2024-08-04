@@ -33,8 +33,7 @@ fun ProfileLayer(profileInfo: TopProfile) {
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
                 .align(Alignment.CenterHorizontally),
-            // TODO : 잠깐 추가
-            text = profileInfo.badgeTitle ?: "뱃지 정보!",
+            text = profileInfo.badgeTitle.orEmpty(),
             fontSize = dpToSp(15.dp),
             color = Main3,
             textAlign = TextAlign.Center
