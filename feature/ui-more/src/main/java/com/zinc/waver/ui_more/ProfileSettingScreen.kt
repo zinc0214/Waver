@@ -125,11 +125,15 @@ fun ProfileSettingScreen(
         bioData.value = bioData.value.copy(prevText = profileInfo.value?.bio.orEmpty())
     }
 
-    LaunchedEffect(key1 = nickNameData.value, key2 = bioData.value, block = {
-        val isEmpty = nickNameData.value.prevText.isEmpty() || bioData.value.prevText.isEmpty()
-        isDataChanged.value = isEmpty.not() &&
-                (profileInfo.value?.name != nickNameData.value.prevText || profileInfo.value?.bio != bioData.value.prevText)
-    })
+    LaunchedEffect(
+        key1 = nickNameData.value,
+        key2 = bioData.value,
+        key3 = updateImagePath.value,
+        block = {
+            val isEmpty = nickNameData.value.prevText.isEmpty() || bioData.value.prevText.isEmpty()
+            isDataChanged.value = isEmpty.not() &&
+                    (profileInfo.value?.name != nickNameData.value.prevText || profileInfo.value?.bio != bioData.value.prevText || updateImagePath.value != null)
+        })
 
     val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
         coroutineScope.launch {

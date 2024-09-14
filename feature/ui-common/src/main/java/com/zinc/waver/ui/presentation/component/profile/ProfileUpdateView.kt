@@ -34,7 +34,6 @@ import com.zinc.waver.ui.util.CameraPermission
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.util.createImageInfoWithPath
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ProfileUpdateView(
     updatePath: MutableState<String?>,
