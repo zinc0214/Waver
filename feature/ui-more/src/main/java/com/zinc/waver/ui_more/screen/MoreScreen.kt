@@ -55,7 +55,9 @@ fun MoreScreen(
         MoreTitleView()
 
         profileInfo.value?.let { info ->
-            MoreTopProfileView(info, goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
+            MoreTopProfileView(info,
+                goToMyWave = { moreItemClicked(MoreItemType.MY_WAVE) },
+                goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
 
             WaverClubLabelView {
 

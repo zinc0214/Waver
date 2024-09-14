@@ -205,6 +205,12 @@ class WaverAppState(
             navController.navigate("${OtherDestinations.GO_TO_OTHER_HOME}/${userId}")
         }
     }
+
+    fun navigateToMyWaveManage(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MoreDestinations.MY_WAVE_MANAGE)
+        }
+    }
 }
 
 /**

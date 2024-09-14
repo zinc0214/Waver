@@ -35,4 +35,11 @@
     <string name="appName">베리버킷</string>
     <string name="needToUpdateApp">최신 버전 업데이트</string>
     <string name="alreadyUsedLatelyApp">최신 버전 사용 중</string>
+
+    <!-- 내 웨이브 -->
+    <string name="myWave">내 웨이브</string>
+    <string name="badgeCount">뱃지획득</string>
+    <string name="likedCount">좋아요</string>
+    <string name="bucketCount">버킷리스트</string>
+    <string name="badgeGrade">단계</string>
 </resources>

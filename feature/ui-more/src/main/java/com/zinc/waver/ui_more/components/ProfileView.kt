@@ -36,8 +36,8 @@ import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray4
-import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.theme.Gray7
+import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.design.theme.Main3
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
@@ -46,7 +46,11 @@ import com.zinc.waver.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-internal fun MoreTopProfileView(info: UIMoreMyProfileInfo, goToProfileUpdate: () -> Unit) {
+internal fun MoreTopProfileView(
+    info: UIMoreMyProfileInfo,
+    goToMyWave: () -> Unit,
+    goToProfileUpdate: () -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .padding(28.dp)
@@ -61,7 +65,8 @@ internal fun MoreTopProfileView(info: UIMoreMyProfileInfo, goToProfileUpdate: ()
                 end.linkTo(imageView.start)
                 width = Dimension.fillToConstraints
             },
-            info = info
+            info = info,
+            goToMyWave = goToMyWave
         )
 
         ProfileImageView(modifier = Modifier.constrainAs(imageView) {
@@ -82,7 +87,11 @@ internal fun MoreTopProfileView(info: UIMoreMyProfileInfo, goToProfileUpdate: ()
 }
 
 @Composable
-private fun ProfileTextView(modifier: Modifier, info: UIMoreMyProfileInfo) {
+private fun ProfileTextView(
+    modifier: Modifier,
+    info: UIMoreMyProfileInfo,
+    goToMyWave: () -> Unit,
+) {
     Column(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -96,16 +105,16 @@ private fun ProfileTextView(modifier: Modifier, info: UIMoreMyProfileInfo) {
 
             MyText(
                 text = stringResource(id = R.string.goToBadgeChangeButtonText),
-                color = Gray6,
+                color = Gray8,
                 fontSize = dpToSp(dp = 12.dp),
                 modifier = Modifier
-                    .background(shape = RoundedCornerShape(12.dp), color = Gray2)
-                    .border(width = 1.dp, shape = RoundedCornerShape(12.dp), color = Gray3)
-                    .clip(shape = RoundedCornerShape(12.dp))
+                    .background(shape = RoundedCornerShape(10.dp), color = Gray2)
+                    .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = Gray3)
+                    .clip(shape = RoundedCornerShape(10.dp))
                     .clickable(onClick = {
-
+                        goToMyWave()
                     }, role = Role.Button)
-                    .padding(horizontal = 9.dp, vertical = 4.dp)
+                    .padding(start = 8.dp, end = 8.dp, top = 5.dp, bottom = 4.dp)
             )
         }
 
@@ -176,7 +185,10 @@ private fun ProfileTextPreView() {
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
         ),
-        modifier = Modifier
+        modifier = Modifier,
+        goToMyWave = {
+
+        }
     )
 }
 
@@ -197,6 +209,6 @@ private fun ProfilePreview() {
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
         ),
-        {}
+        {}, {}
     )
 }

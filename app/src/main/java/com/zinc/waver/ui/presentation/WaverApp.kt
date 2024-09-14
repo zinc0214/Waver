@@ -15,6 +15,7 @@ import com.zinc.waver.ui.design.theme.BaseTheme
 import com.zinc.waver.ui.presentation.home.HomeBottomBar
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.waver.ui_more.models.MoreItemType.BLOCK
@@ -45,6 +46,7 @@ import com.zinc.waver.util.nav.myFollowerListNavGraph
 import com.zinc.waver.util.nav.myFollowerSettingNavGraph
 import com.zinc.waver.util.nav.myFollowingListNavGraph
 import com.zinc.waver.util.nav.myFollowingSettingNavGraph
+import com.zinc.waver.util.nav.myWaveManageNavGraph
 import com.zinc.waver.util.nav.openBucketDetailNavGraph
 import com.zinc.waver.util.nav.searchDirectNavGraph
 import com.zinc.waver.util.nav.writeNavGraph
@@ -132,6 +134,7 @@ fun WaverApp(
 
                                 LOGOUT -> {}
                                 PROFILE -> appState.navigateToMoreProfileSetting(nav)
+                                MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
                             }
                         },
                         backPress = appState::backPress
@@ -339,6 +342,7 @@ fun WaverApp(
                             )
                         }
                     }
+                    myWaveManageNavGraph(backPress = appState::backPress)
                 }
             }
         }
