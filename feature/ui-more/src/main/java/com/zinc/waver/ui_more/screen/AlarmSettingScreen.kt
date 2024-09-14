@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more
+package com.zinc.waver.ui_more.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.AlarmGroupItemView
 import com.zinc.waver.ui_more.components.AlarmGroupTitleView
 import com.zinc.waver.ui_more.components.AlarmTitle

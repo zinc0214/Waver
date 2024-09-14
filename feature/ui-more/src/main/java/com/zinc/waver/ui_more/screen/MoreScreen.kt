@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more
+package com.zinc.waver.ui_more.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
@@ -15,6 +15,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.presentation.component.PopUpView
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.MoreItemsView
 import com.zinc.waver.ui_more.components.MoreTitleView
 import com.zinc.waver.ui_more.components.MoreTopProfileView

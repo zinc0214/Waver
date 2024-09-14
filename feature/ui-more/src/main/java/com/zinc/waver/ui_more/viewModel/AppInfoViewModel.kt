@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more
+package com.zinc.waver.ui_more.viewModel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

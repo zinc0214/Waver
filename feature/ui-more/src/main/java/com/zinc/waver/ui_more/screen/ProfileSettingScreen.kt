@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more
+package com.zinc.waver.ui_more.screen
 
 import android.util.Log
 import android.widget.Toast
@@ -35,6 +35,7 @@ import com.zinc.waver.ui.presentation.component.profile.ProfileEditView
 import com.zinc.waver.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.model.ProfileEditData
+import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.ProfileSettingTitle
 import com.zinc.waver.ui_more.viewModel.MoreViewModel
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more
+package com.zinc.waver.ui_more.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,7 @@ import com.zinc.waver.ui_more.components.AppInfoMoreItemsView
 import com.zinc.waver.ui_more.components.AppInfoTitle
 import com.zinc.waver.ui_more.components.AppVersionInfo
 import com.zinc.waver.ui_more.models.AppInfoItemType
+import com.zinc.waver.ui_more.viewModel.AppInfoViewModel
 
 @Composable
 fun AppInfoScreen(
