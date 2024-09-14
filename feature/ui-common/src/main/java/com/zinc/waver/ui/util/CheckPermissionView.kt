@@ -3,6 +3,7 @@ package com.zinc.waver.ui.util
 import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.provider.Settings
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
@@ -36,12 +37,21 @@ fun CheckPermissionView(
 
     val context = LocalContext.current
 
-    val permissionStates = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_MEDIA_LOCATION
+    val permissionStates = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        rememberMultiplePermissionsState(
+            listOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_MEDIA_LOCATION
+            )
         )
-    )
+    } else {
+        rememberMultiplePermissionsState(
+            listOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        )
+    }
 
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -71,7 +81,8 @@ fun CheckPermissionView(
     permissionStates.permissions.forEach {
         when (it.permission) {
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_MEDIA_LOCATION -> {
+            Manifest.permission.ACCESS_MEDIA_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE -> {
                 when (it.status) {
                     is PermissionStatus.Granted -> {
 
