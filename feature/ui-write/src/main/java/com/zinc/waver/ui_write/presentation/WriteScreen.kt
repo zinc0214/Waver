@@ -13,7 +13,7 @@ import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.model.toUpdateUiModel
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.waver.ui_write.model.WriteEvent
-import com.zinc.waver.ui_write.viewmodel.WriteViewModel
+import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 import com.zinc.waver.util.createImageInfoWithPath
 
 @Composable
@@ -24,9 +24,9 @@ fun WriteScreen(
 ) {
     val context = LocalContext.current
 
-    val writeViewModel: WriteViewModel = hiltViewModel()
-    val savedWriteDataAsSate by writeViewModel.savedWriteData.observeAsState()
-    val prevWriteDataForUpdateAsState by writeViewModel.prevWriteDataForUpdate.observeAsState()
+    val writeBucketListViewModel: WriteBucketListViewModel = hiltViewModel()
+    val savedWriteDataAsSate by writeBucketListViewModel.savedWriteData.observeAsState()
+    val prevWriteDataForUpdateAsState by writeBucketListViewModel.prevWriteDataForUpdate.observeAsState()
 
     val pageNumber = remember {
         mutableIntStateOf(1)
@@ -41,7 +41,7 @@ fun WriteScreen(
     }
 
     if (originWriteTotalInfo.value == null) {
-        writeViewModel.getBucketDetailData(id.orEmpty())
+        writeBucketListViewModel.getBucketDetailData(id.orEmpty())
     }
 
     LaunchedEffect(key1 = savedWriteDataAsSate) {
@@ -55,7 +55,7 @@ fun WriteScreen(
             val imageToUiModel =
                 createImageInfoWithPath(context = context, images = imageInfo.imageList)
 
-            writeViewModel.savedWriteData(info?.toUpdateUiModel(imageToUiModel))
+            writeBucketListViewModel.savedWriteData(info?.toUpdateUiModel(imageToUiModel))
         }
     }
 
@@ -65,7 +65,7 @@ fun WriteScreen(
                 originWriteTotalInfo = info,
                 event = {
                     if (it is WriteEvent.GoToAddCategory) {
-                        writeViewModel.savedWriteData(originWriteTotalInfo.value)
+                        writeBucketListViewModel.savedWriteData(originWriteTotalInfo.value)
                         needToShowCategory.value = true
                     } else {
                         event(it)
@@ -79,7 +79,7 @@ fun WriteScreen(
         } else if (pageNumber.intValue == 2) {
             WriteScreen2(
                 writeTotalInfo = info,
-                viewModel = writeViewModel,
+                viewModel = writeBucketListViewModel,
                 goToBack = {
                     originWriteTotalInfo.value = it
                     pageNumber.intValue = 1

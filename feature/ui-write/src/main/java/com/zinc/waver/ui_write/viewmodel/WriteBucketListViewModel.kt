@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WriteViewModel @Inject constructor(
+class WriteBucketListViewModel @Inject constructor(
     private val addNewBucketList: AddNewBucketList,
     private val loadBucketDetail: LoadBucketDetail,
     private val loadKeyWord: LoadKeyWord,

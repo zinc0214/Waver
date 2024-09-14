@@ -42,7 +42,7 @@ import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_write.presentation.options.ImageItem
 import com.zinc.waver.ui_write.presentation.options.WriteSelectFriendsScreen
 import com.zinc.waver.ui_write.presentation.options.WriteSelectKeyWordScreen
-import com.zinc.waver.ui_write.viewmodel.WriteViewModel
+import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 import com.zinc.waver.util.createImageInfoWithPath
 import com.zinc.waver.util.loadImageFiles
 
@@ -50,7 +50,7 @@ import com.zinc.waver.util.loadImageFiles
 fun WriteScreen2(
     modifier: Modifier = Modifier,
     writeTotalInfo: WriteTotalInfo,
-    viewModel: WriteViewModel,
+    viewModel: WriteBucketListViewModel,
     goToBack: (WriteTotalInfo) -> Unit,
     addBucketSucceed: () -> Unit
 ) {
@@ -256,7 +256,7 @@ fun WriteScreen2(
 private fun WriteScreen2ContentView(
     modifier: Modifier = Modifier,
     context: Context,
-    viewModel: WriteViewModel,
+    viewModel: WriteBucketListViewModel,
     writeTotalInfo: WriteTotalInfo,
     optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,

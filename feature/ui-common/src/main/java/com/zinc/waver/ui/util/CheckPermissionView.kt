@@ -23,7 +23,6 @@ import com.zinc.waver.ui.presentation.component.MyText
 fun CameraPermission(
     isAvailable: (Boolean) -> Unit
 ) {
-    val context = LocalContext.current
     CheckPermissionView(isAvailable = {
         isAvailable(it)
     })

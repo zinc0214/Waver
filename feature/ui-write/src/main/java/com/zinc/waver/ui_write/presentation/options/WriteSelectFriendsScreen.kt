@@ -32,7 +32,7 @@ import com.zinc.waver.ui_write.presentation.ShowAllFriendItem
 import com.zinc.waver.ui_write.presentation.WriteAppBar
 import com.zinc.waver.ui_write.presentation.WriteAppBarClickEvent
 import com.zinc.waver.ui_write.presentation.WriteSelectFriendItem
-import com.zinc.waver.ui_write.viewmodel.WriteViewModel
+import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 
 @Composable
 fun WriteSelectFriendsScreen(
@@ -41,7 +41,7 @@ fun WriteSelectFriendsScreen(
     selectedFriends: List<WriteFriend>,
     addFriendsClicked: (List<WriteFriend>) -> Unit
 ) {
-    val viewModel: WriteViewModel = hiltViewModel()
+    val viewModel: WriteBucketListViewModel = hiltViewModel()
     val searchFriendsResult by viewModel.searchFriendsResult.observeAsState()
 
     // 이미 선택된 친구가 5명이 넘는 경우

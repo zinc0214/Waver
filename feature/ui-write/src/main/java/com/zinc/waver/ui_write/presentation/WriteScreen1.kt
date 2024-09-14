@@ -27,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -68,10 +67,7 @@ import com.zinc.waver.util.createImageInfoWithPath
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(
-    ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class,
-    ExperimentalComposeUiApi::class
-)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun WriteScreen1(
     originWriteTotalInfo: WriteTotalInfo,
