@@ -1,5 +1,6 @@
 package com.zinc.waver.ui.presentation.component.profile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,6 +34,7 @@ import com.zinc.waver.ui.util.CameraPermission
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.util.createImageInfoWithPath
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ProfileUpdateView(
     updatePath: MutableState<String?>,
@@ -49,10 +51,16 @@ fun ProfileUpdateView(
     val showPermission = remember { mutableStateOf(false) }
     val hasPermission = remember { mutableStateOf(false) }
 
+
+    Log.e("ayhan", "showPermission1 : ${showPermission.value} , ${hasPermission.value}")
+
     if (showPermission.value) {
+        Log.e("ayhan", "showPermission")
         CheckCameraPermission {
             hasPermission.value = it
             showPermission.value = false
+
+            Log.e("ayhan", "CheckCameraPermission : $it")
         }
     }
 
@@ -99,7 +107,8 @@ fun ProfileUpdateView(
             IconButton(
                 modifier = Modifier.size(20.dp),
                 onClick = {
-                    if (hasPermission.value) {
+                    Log.e("ayhan", "click! ${hasPermission.value}")
+                    if (!hasPermission.value) {
                         showPermission.value = true
                     } else {
                         imageUpdateButtonClicked()
