@@ -9,4 +9,5 @@ interface FeedRepository {
     suspend fun loadSelectableFeedKeyWords(): KeywordResponse
     suspend fun loadFeedItems(): FeedListResponse
     suspend fun savedKeywordItems(request: SavedKeywordItemsRequest): CommonResponse
+    suspend fun checkSavedKeyWordItems(): CommonResponse
 }

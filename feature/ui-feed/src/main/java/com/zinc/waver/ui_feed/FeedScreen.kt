@@ -49,6 +49,8 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     LaunchedEffect(key1 = isKeyWordSelected) {
         if (isKeyWordSelected == false) {
             viewModel.loadFeedKeyWords()
+        } else {
+            viewModel.loadFeedItems()
         }
         isAlreadyKeywordSelected.value = isKeyWordSelected == true
     }
@@ -63,7 +65,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
 
     LaunchedEffect(key1 = feedItemsAsState) {
         if (feedItemsAsState == null || feedItemsAsState?.isEmpty() == true) {
-            viewModel.loadFeedItems()
+            viewModel.checkSavedKeyWords()
         } else {
             feedItems.value = feedItemsAsState
         }

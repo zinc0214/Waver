@@ -121,6 +121,9 @@ interface WaverApi {
         @Body request: SavedKeywordItemsRequest
     ): CommonResponse
 
+    @GET("/feeds/keywords")
+    suspend fun checkSavedFeedKeywords(): CommonResponse
+
     // 피드
     @GET("/feeds")
     suspend fun loadFeedItems(): FeedListResponse

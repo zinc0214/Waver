@@ -20,4 +20,7 @@ internal class FeedRepositoryImpl @Inject constructor(
 
     override suspend fun savedKeywordItems(request: SavedKeywordItemsRequest) =
         waverApi.savedFeedKeywords(request)
+
+    override suspend fun checkSavedKeyWordItems() =
+        waverApi.checkSavedFeedKeywords()
 }

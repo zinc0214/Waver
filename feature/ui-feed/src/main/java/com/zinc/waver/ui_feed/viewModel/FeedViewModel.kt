@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.domain.usecases.common.SaveBucketLike
+import com.zinc.domain.usecases.feed.CheckSavedKeywords
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
 import com.zinc.domain.usecases.feed.SavedKeywordItems
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
+    private val checkSavedKeywords: CheckSavedKeywords,
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
@@ -39,6 +41,26 @@ class FeedViewModel @Inject constructor(
 
     private val _likeFail = MutableLiveData<Boolean>()
     val likeFail: LiveData<Boolean> get() = _likeFail
+
+    fun checkSavedKeyWords() {
+        _loadFail.value = false
+        viewModelScope.launch(ceh(_loadFail, true)) {
+            runCatching {
+                checkSavedKeywords.invoke().apply {
+                    Log.e("ayhan", "feed check response : $this")
+                    if (this.code == "5000") {
+                        _isKeyWordSelected.value = false
+                    } else if (!success) {
+                        _loadFail.value = true
+                    } else {
+                        _isKeyWordSelected.value = true
+                    }
+                }
+            }.getOrElse {
+                _loadFail.value = true
+            }
+        }
+    }
 
     fun loadFeedKeyWords() {
         _loadFail.value = false
@@ -65,8 +87,6 @@ class FeedViewModel @Inject constructor(
                     Log.e("ayhan", "feedListResponse : $this")
                     if (this.success.not()) {
                         _loadFail.value = true
-                    } else if (this.code == "5000") {
-                        _isKeyWordSelected.value = false
                     } else {
                         _isKeyWordSelected.value = true
                         _feedItems.value = this.data.toUIModel()
