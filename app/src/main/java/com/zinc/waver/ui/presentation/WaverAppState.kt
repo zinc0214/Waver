@@ -211,6 +211,12 @@ class WaverAppState(
             navController.navigate(MoreDestinations.MY_WAVE_MANAGE)
         }
     }
+
+    fun navigateToWavePlusGuide(from: NavBackStackEntry) {
+        if (from.lifecycleIsResumed()) {
+            navController.navigate(MoreDestinations.WAVE_PLUS)
+        }
+    }
 }
 
 /**

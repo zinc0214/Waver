@@ -11,7 +11,7 @@ data class UIMoreMyProfileInfo(
 )
 
 enum class MoreItemType {
-    MY_WAVE, PROFILE, ALARM, BLOCK, QNA, APP_INFO, LOGOUT
+    MY_WAVE, PROFILE, ALARM, BLOCK, QNA, APP_INFO, LOGOUT, WAVE_PLUS
 }
 
 data class UIMoreItemData(
@@ -98,5 +98,21 @@ data class MyWaveInfo(
         val url: String,
         val name: String,
         val grade: Int
+    )
+}
+
+data class WavePlusInfo(
+    val options: List<Option>,
+    val yearPerPay: String,
+    val yearBenefitText: String,
+    val yearPay: String,
+    val monthPay: String,
+    val monthBenefitText: String
+) {
+    data class Option(
+        val url: String,
+        val title: String,
+        val subTitle: String,
+        val content: String
     )
 }

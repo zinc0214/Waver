@@ -60,7 +60,7 @@ fun MoreScreen(
                 goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
 
             WaverClubLabelView {
-
+                moreItemClicked(MoreItemType.WAVE_PLUS)
             }
 
             MoreItemsView {

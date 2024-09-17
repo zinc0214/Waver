@@ -22,6 +22,7 @@ import com.zinc.waver.ui_more.models.MoreItemType.BLOCK
 import com.zinc.waver.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.waver.ui_more.models.MoreItemType.PROFILE
 import com.zinc.waver.ui_more.models.MoreItemType.QNA
+import com.zinc.waver.ui_more.models.MoreItemType.WAVE_PLUS
 import com.zinc.waver.ui_my.BottomSheetScreenType
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_other.model.OtherHomeEvent
@@ -49,6 +50,7 @@ import com.zinc.waver.util.nav.myFollowingSettingNavGraph
 import com.zinc.waver.util.nav.myWaveManageNavGraph
 import com.zinc.waver.util.nav.openBucketDetailNavGraph
 import com.zinc.waver.util.nav.searchDirectNavGraph
+import com.zinc.waver.util.nav.wavePlusGuideNavGraph
 import com.zinc.waver.util.nav.writeNavGraph
 
 @Composable
@@ -60,17 +62,6 @@ fun WaverApp(
         val shownBottomSheet = remember {
             mutableStateOf(false)
         }
-
-//        BackHandler {
-//            coroutineScope.launch {
-//                if (shownBottomSheet.t) {
-//                    bottomSheetScaffoldState.hide() // will trigger the LaunchedEffect
-//                } else {
-//                    action.invoke(ActionWithActivity.AppFinish)
-//                }
-//            }
-//        }
-
 
         Column {
             Scaffold(
@@ -135,6 +126,7 @@ fun WaverApp(
                                 LOGOUT -> {}
                                 PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
+                                WAVE_PLUS -> appState.navigateToWavePlusGuide(nav)
                             }
                         },
                         backPress = appState::backPress
@@ -343,6 +335,7 @@ fun WaverApp(
                         }
                     }
                     myWaveManageNavGraph(backPress = appState::backPress)
+                    wavePlusGuideNavGraph(backPress = appState::backPress)
                 }
             }
         }

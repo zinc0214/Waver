@@ -27,7 +27,7 @@
     <!-- 프로필 관리 -->
     <string name="profileSettingTitle">프로필 관리</string>
     <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
-    <string name="profileUpdateFailTitle">변경이 싫패했습니다.\n다시 시도해주세요.</string>
+    <string name="profileUpdateFailTitle">변경이 실패했습니다.\n다시 시도해주세요.</string>
     <string name="loadFailProfile">프로필 로드 실패</string>
 
     <!-- 앱 정보 -->
@@ -42,4 +42,16 @@
     <string name="likedCount">좋아요</string>
     <string name="bucketCount">버킷리스트</string>
     <string name="badgeGrade">단계</string>
+
+    <!-- 웨이브 플러스 -->
+    <string name="wavePlus">웨이버 플러스</string>
+    <string name="wavePlusGuide">버킷리스트\n제한없이 즐기기</string>
+    <string name="payTitle1">할인된 요금</string>
+    <string name="payTitle2">으로</string>
+    <string name="payTitle3">웨이버 플러스</string>
+    <string name="payTitle4">혜택 즐기기</string>
+    <string name="yearPayText"><![CDATA[<b>연간</b> 혜택 이용권]]></string>
+    <string name="payPerMonth">월</string>
+    <string name="monthPayText"><![CDATA[<b>월간</b> 혜택 이용권]]></string>
+    <string name="startWavePlus">웨이버 플러스 시작하기</string>
 </resources>

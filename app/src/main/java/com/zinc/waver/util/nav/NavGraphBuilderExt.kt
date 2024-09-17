@@ -1,10 +1,12 @@
 package com.zinc.waver.util.nav
 
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
 import com.zinc.waver.model.MyTabType
@@ -25,6 +27,7 @@ import com.zinc.waver.ui_more.screen.BlockSettingScreen
 import com.zinc.waver.ui_more.screen.MoreScreen
 import com.zinc.waver.ui_more.screen.MyWaveManageScreen
 import com.zinc.waver.ui_more.screen.ProfileSettingScreen
+import com.zinc.waver.ui_more.screen.WavePlusGuideScreen
 import com.zinc.waver.ui_my.BottomSheetScreenType
 import com.zinc.waver.ui_my.MyScreen
 import com.zinc.waver.ui_my.SearchBottomView
@@ -46,7 +49,6 @@ import com.zinc.waver.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER
 import com.zinc.waver.util.nav.MainDestinations.FOLLOWER.MY_FOLLOWER_SETTING
 import com.zinc.waver.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING
 import com.zinc.waver.util.nav.MainDestinations.FOLLOWING.MY_FOLLOWING_SETTING
-
 
 internal fun NavGraphBuilder.homeMy(
     onBucketSelected: (HomeItemSelected, NavBackStackEntry) -> Unit,
@@ -429,6 +431,19 @@ internal fun NavGraphBuilder.myWaveManageNavGraph(
     }
 }
 
+internal fun NavGraphBuilder.wavePlusGuideNavGraph(
+    backPress: () -> Unit
+) {
+    composable(MoreDestinations.WAVE_PLUS) {
+
+        val systemUiController = rememberSystemUiController()
+        systemUiController.setStatusBarColor(Color(0xff2375e9))
+        systemUiController.setNavigationBarColor(Color(0xff2375e9))
+
+        WavePlusGuideScreen(onBackPressed = { backPress() })
+    }
+}
+
 object MainDestinations {
     const val HOME_ROUTE = "home"
     const val CLOSE_BUCKET_DETAIL = "close_bucket_detail"
@@ -468,6 +483,7 @@ object MoreDestinations {
     const val PROFILE_SETTING = "profile_setting"
     const val MORE_APP_INFO = "app_info"
     const val MY_WAVE_MANAGE = "my_wave_manage"
+    const val WAVE_PLUS = "wave_plus"
 }
 
 object AlarmDestinations {
