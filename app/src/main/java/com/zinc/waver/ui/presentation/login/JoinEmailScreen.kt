@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -182,11 +180,11 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
         ) {
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.width(280.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
-                    imageVector = Icons.Default.Lock,
+                    painter = painterResource(id = R.drawable.google),
                     contentDescription = null,
                     modifier = Modifier.sizeIn(18.dp)
                 )
