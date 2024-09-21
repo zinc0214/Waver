@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -103,10 +105,7 @@ private fun ProfileTextView(
                 modifier = Modifier.padding(end = 8.dp)
             )
 
-            MyText(
-                text = stringResource(id = R.string.goToBadgeChangeButtonText),
-                color = Gray8,
-                fontSize = dpToSp(dp = 12.dp),
+            Box(
                 modifier = Modifier
                     .background(shape = RoundedCornerShape(10.dp), color = Gray2)
                     .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = Gray3)
@@ -114,8 +113,16 @@ private fun ProfileTextView(
                     .clickable(onClick = {
                         goToMyWave()
                     }, role = Role.Button)
-                    .padding(start = 8.dp, end = 8.dp, top = 5.dp, bottom = 4.dp)
-            )
+                    .width(width = 40.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                MyText(
+                    text = stringResource(id = R.string.goToBadgeChangeButtonText),
+                    color = Gray8,
+                    fontSize = dpToSp(dp = 12.dp),
+                    modifier = Modifier.padding(top = 4.dp, bottom = 3.dp)
+                )
+            }
         }
 
         MyText(
