@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -20,7 +21,7 @@ import com.zinc.waver.ui_more.models.WavePlusInfo
 @Composable
 internal fun WavePlusTopView(options: List<WavePlusInfo.Option>, modifier: Modifier = Modifier) {
     ConstraintLayout(modifier = modifier.background(Gray1)) {
-        val (header, content, logo1, logo2, logo3) = createRefs()
+        val (header, content, logo) = createRefs()
 
         WavePlusGuideHeaderView(
             modifier = Modifier.constrainAs(header) {
@@ -38,54 +39,33 @@ internal fun WavePlusTopView(options: List<WavePlusInfo.Option>, modifier: Modif
                     linkTo(
                         top = header.bottom,
                         bottom = parent.bottom,
-                        topMargin = (-50).dp,
+                        topMargin = (-45).dp,
                         bias = 0f
                     )
                 }
                 .padding(bottom = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             options.forEach {
                 WavePlusGuideOptionView(it)
             }
         }
 
+
         Image(
-            painter = painterResource(id = R.drawable.img_wave_01),
+            painter = painterResource(id = R.drawable.img_wave_plus),
             contentDescription = null,
             modifier = Modifier
-                .size(60.dp)
-                .constrainAs(logo1) {
-                    top.linkTo(header.bottom)
+                .padding(top = 45.dp)
+                .size(width = 360.dp, height = 310.dp)
+                .constrainAs(logo) {
+                    top.linkTo(content.top)
+                    end.linkTo(parent.end)
                     start.linkTo(parent.start)
                 },
             contentScale = ContentScale.FillWidth
         )
 
-        Image(
-            painter = painterResource(id = R.drawable.img_wave_02),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(top = 27.dp)
-                .size(60.dp)
-                .constrainAs(logo2) {
-                    top.linkTo(logo1.bottom)
-                    end.linkTo(parent.end)
-                },
-            contentScale = ContentScale.FillWidth
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.img_wave_03),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(top = 27.dp)
-                .size(60.dp)
-                .constrainAs(logo3) {
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                },
-            contentScale = ContentScale.FillWidth
-        )
     }
 }

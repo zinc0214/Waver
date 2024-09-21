@@ -6,9 +6,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,8 +35,8 @@ import com.zinc.waver.ui_common.R as CommonR
 internal fun WavePlusGuideOptionView(options: WavePlusInfo.Option, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
             .padding(horizontal = 30.dp)
+            .width(300.dp)
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .border(width = 0.6.dp, color = Main2.copy(0.6f), shape = RoundedCornerShape(8.dp))
     ) {

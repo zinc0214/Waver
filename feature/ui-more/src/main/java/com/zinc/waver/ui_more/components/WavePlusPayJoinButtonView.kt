@@ -3,9 +3,11 @@ package com.zinc.waver.ui_more.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -24,24 +26,26 @@ internal fun WavePlusPayJoinButtonView(
     joinButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier
-        .fillMaxWidth()
-        .clickable {
-            joinButtonClicked()
-        }) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(63.dp)
+            .clickable {
+                joinButtonClicked()
+            },
+        contentAlignment = Alignment.Center
+    ) {
 
         Image(
             painter = painterResource(id = R.drawable.bottom_wave),
             contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.FillWidth
         )
 
         MyText(
             text = stringResource(id = R.string.startWavePlus),
-            modifier = Modifier
-                .padding(top = 28.dp, bottom = 18.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             color = Gray1,
             fontSize = dpToSp(dp = 18.dp),

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
@@ -49,9 +50,10 @@ internal fun WavePlusPayView(info: WavePlusInfo, modifier: Modifier = Modifier) 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 24.dp)
+            .padding(top = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WavePlusPayTitleView()
+        WavePlusPayTitleView(modifier = Modifier.align(Alignment.CenterHorizontally))
 
         Spacer(modifier = Modifier.height(26.dp))
 
@@ -70,18 +72,19 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
     ) {
-        val (logo1, title1, title2, title3, divider, logo2, logo3) = createRefs()
+        val (logo1, title1, title2) = createRefs()
 
         Image(
             painter = painterResource(id = R.drawable.img_wave_04),
             contentDescription = null,
             modifier = Modifier
-                .padding(start = 2.dp, top = 5.dp)
-                .size(30.dp)
+                .size(width = 332.dp, height = 111.dp)
                 .constrainAs(logo1) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
-                }
+                    end.linkTo(parent.end)
+                },
+            contentScale = ContentScale.Crop
         )
 
         MyText(
@@ -97,68 +100,49 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(top = 27.dp)
                 .constrainAs(title1) {
-                    start.linkTo(logo1.end)
+                    start.linkTo(parent.start)
                     top.linkTo(parent.top)
+                    end.linkTo(parent.end)
                 })
 
-        MyText(
-            text = stringResource(id = R.string.payTitle3),
-            color = Main4,
-            fontWeight = FontWeight.Bold,
-            fontSize = dpToSp(dp = 22.dp),
-            modifier = Modifier.constrainAs(title2) {
-                top.linkTo(title1.bottom)
-                start.linkTo(title1.start)
-            })
+        Row(modifier = Modifier.constrainAs(title2) {
+            top.linkTo(title1.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }) {
+            ConstraintLayout() {
+                val (titleF, divider) = createRefs()
 
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .constrainAs(divider) {
-                    start.linkTo(title2.start)
-                    end.linkTo(title2.end)
-                    top.linkTo(title2.bottom)
-                    width = Dimension.fillToConstraints
-                }, thickness = 2.dp, color = Main4
-        )
+                MyText(
+                    text = stringResource(id = R.string.payTitle3),
+                    color = Main4,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = dpToSp(dp = 22.dp),
+                    modifier = Modifier.constrainAs(titleF) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        top.linkTo(parent.top)
+                    })
 
-        MyText(
-            text = " " + stringResource(id = R.string.payTitle4),
-            color = Gray9,
-            fontWeight = FontWeight.Bold,
-            fontSize = dpToSp(dp = 22.dp),
-            modifier = Modifier.constrainAs(title3) {
-                top.linkTo(title2.top)
-                start.linkTo(title2.end)
-            })
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(divider) {
+                            start.linkTo(titleF.start)
+                            end.linkTo(titleF.end)
+                            top.linkTo(titleF.bottom)
+                            width = Dimension.fillToConstraints
+                        }, thickness = 2.dp, color = Main4
+                )
+            }
 
-
-        Image(
-            painter = painterResource(id = R.drawable.img_wave_06),
-            contentDescription = null,
-            modifier = Modifier
-                .size(60.dp)
-                .padding(bottom = 5.dp)
-                .constrainAs(logo2) {
-                    top.linkTo(parent.top)
-                    start.linkTo(title1.end)
-                    bottom.linkTo(title2.top)
-                },
-            contentScale = ContentScale.FillWidth
-        )
-
-        Image(
-            painter = painterResource(id = R.drawable.img_wave_05),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(start = 6.dp, top = 55.dp)
-                .size(40.dp)
-                .constrainAs(logo3) {
-                    start.linkTo(title3.end)
-                    top.linkTo(parent.top)
-                },
-            contentScale = ContentScale.FillWidth
-        )
+            MyText(
+                text = " " + stringResource(id = R.string.payTitle4),
+                color = Gray9,
+                fontWeight = FontWeight.Bold,
+                fontSize = dpToSp(dp = 22.dp)
+            )
+        }
     }
 }
 
@@ -167,8 +151,8 @@ private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifie
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
             .padding(horizontal = 30.dp)
+            .width(300.dp)
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Main2)
     ) {
@@ -255,8 +239,8 @@ fun WavePlusPayMonthView(info: WavePlusInfo, modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
-            .fillMaxWidth()
             .padding(horizontal = 30.dp)
+            .width(300.dp)
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Gray3)
     ) {

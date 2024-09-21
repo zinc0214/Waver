@@ -11,7 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -19,37 +26,43 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray1
+import com.zinc.waver.ui.design.theme.Gray11
+import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui_more.components.WavePlusPayJoinButtonView
 import com.zinc.waver.ui_more.components.WavePlusPayView
 import com.zinc.waver.ui_more.components.WavePlusTopView
 import com.zinc.waver.ui_more.models.WavePlusInfo
+import com.zinc.waver.util.DpToPx
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun WavePlusGuideScreen(onBackPressed: () -> Unit) {
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Gray1)) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color(0xff2375e9))
-        ) {
-            IconButton(image = CommonR.drawable.btn_40_close,
-                contentDescription = stringResource(id = CommonR.string.closeDesc),
-                modifier = Modifier
-                    .padding(start = 14.dp, top = 32.dp)
-                    .size(40.dp),
-                colorFilter = ColorFilter.tint(color = Gray1),
-                onClick = { onBackPressed() })
-        }
+    val scrollState = rememberScrollState()
 
+    var scrollPosition by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.value }
+            .collect { position ->
+                scrollPosition = position
+            }
+    }
+
+    val blueIsGoneOffset = DpToPx(294f)
+    val closeButtonTint = if (scrollPosition > blueIsGoneOffset) Gray11 else Gray1
+    val closeButtonBg = if (scrollPosition > blueIsGoneOffset) Gray1 else Color(0xff2375e9)
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Gray1)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
 
             WavePlusTopView(dummy)
@@ -61,6 +74,27 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit) {
             WavePlusPayJoinButtonView({
 
             })
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = closeButtonBg)
+        ) {
+            Column {
+                IconButton(image = CommonR.drawable.btn_40_close,
+                    contentDescription = stringResource(id = CommonR.string.closeDesc),
+                    modifier = Modifier
+                        .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+                        .size(40.dp),
+                    colorFilter = ColorFilter.tint(color = closeButtonTint),
+                    onClick = { onBackPressed() })
+
+                if (scrollPosition > blueIsGoneOffset) {
+                    Divider(thickness = 1.dp, color = Gray3)
+                }
+            }
+
         }
     }
 }
@@ -99,7 +133,7 @@ private val info = WavePlusInfo(
 )
 
 
-@Preview
+@Preview(heightDp = 700, widthDp = 500)
 @Composable
 private fun WavePlusGuidePreview() {
     WavePlusGuideScreen {}

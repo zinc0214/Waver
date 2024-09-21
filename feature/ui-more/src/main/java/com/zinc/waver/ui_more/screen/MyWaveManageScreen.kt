@@ -164,7 +164,7 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
         )
 
         Image(
-            painter = painterResource(id = R.drawable.img_wave_02),
+            painter = painterResource(id = R.drawable.img_wave_plus),
             contentDescription = null,
             modifier = Modifier
                 .sizeIn(60.dp)

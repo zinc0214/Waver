@@ -45,7 +45,9 @@
 
     <!-- 웨이브 플러스 -->
     <string name="wavePlus">웨이버 플러스</string>
-    <string name="wavePlusGuide">버킷리스트\n제한없이 즐기기</string>
+    <string name="wavePlusGuide1">버킷리스트</string>
+    <string name="wavePlusGuide2">제한없이</string>
+    <string name="wavePlusGuide3">즐기기</string>
     <string name="payTitle1">할인된 요금</string>
     <string name="payTitle2">으로</string>
     <string name="payTitle3">웨이버 플러스</string>
