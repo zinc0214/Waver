@@ -45,6 +45,14 @@
 
     <!-- 웨이브 플러스 -->
     <string name="wavePlus">웨이버 플러스</string>
+    <string name="wavePlusOption1_1"><![CDATA[<b><font color=#444444>모든</font><font color=#007bff> 광고제거</font></b>]]></string>
+    <string name="wavePlusOption1_2">클린한 웨이버 피드</string>
+    <string name="wavePlusOption2_1"><![CDATA[<b><font color=#444444>무제한</font><font color=#007bff> 함께하기 가능</font></b>]]></string>
+    <string name="wavePlusOption2_2">친구들과 더 많은 챌린지</string>
+    <string name="wavePlusOption3_1"><![CDATA[<b><font color=#444444>더 많은</font><font color=#007bff> 사진 업로드</font></b>]]></string>
+    <string name="wavePlusOption3_2">나만의 버킷리스트</string>
+    <string name="wavePlusOption4_1"><![CDATA[<b><font color=#444444>무제한</font><font color=#007bff> 버킷리스트</font></b>]]></string>
+    <string name="wavePlusOption4_2">나만의 다양한 챌린지</string>
     <string name="wavePlusGuide1">버킷리스트</string>
     <string name="wavePlusGuide2">제한없이</string>
     <string name="wavePlusGuide3">즐기기</string>
@@ -53,7 +61,12 @@
     <string name="payTitle3">웨이버 플러스</string>
     <string name="payTitle4">혜택 즐기기</string>
     <string name="yearPayText"><![CDATA[<b>연간</b> 혜택 이용권]]></string>
+    <string name="yearBenefit">1주일 무료 + 웨이버 플러스</string>
     <string name="payPerMonth">월</string>
+    <string name="payPerMonthValue">4,166원</string>
+    <string name="payTotalYear">50,000원</string>
     <string name="monthPayText"><![CDATA[<b>월간</b> 혜택 이용권]]></string>
+    <string name="monthBenefit">웨이버 플러스</string>
+    <string name="monthTotal">5,000원</string>
     <string name="startWavePlus">웨이버 플러스 시작하기</string>
 </resources>

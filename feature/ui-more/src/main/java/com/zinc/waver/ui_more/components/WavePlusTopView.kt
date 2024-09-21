@@ -12,14 +12,57 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui_more.R
-import com.zinc.waver.ui_more.models.WavePlusInfo
+import com.zinc.waver.ui_more.models.WaverPlusOption
 
 @Composable
-internal fun WavePlusTopView(options: List<WavePlusInfo.Option>, modifier: Modifier = Modifier) {
+internal fun WavePlusTopView(modifier: Modifier = Modifier) {
+
+    val optionsList = buildList {
+        add(
+            WaverPlusOption(
+                imgResource = painterResource(id = R.drawable.img_ad_remove),
+                title = stringResource(id = R.string.wavePlusOption1_1),
+                content = stringResource(
+                    id = R.string.wavePlusOption1_2
+                )
+            )
+        )
+        add(
+            WaverPlusOption(
+                imgResource = painterResource(id = R.drawable.img_together_unlimited),
+                title = stringResource(id = R.string.wavePlusOption2_1),
+                content = stringResource(
+                    id = R.string.wavePlusOption2_2
+                )
+            )
+        )
+        add(
+            WaverPlusOption(
+                imgResource = painterResource(id = R.drawable.img_ad_remove),
+                title = stringResource(id = R.string.wavePlusOption3_1),
+                content = stringResource(
+                    id = R.string.wavePlusOption3_2
+                )
+            )
+        )
+        add(
+            WaverPlusOption(
+                imgResource = painterResource(id = R.drawable.img_list_unlimited),
+                title = stringResource(id = R.string.wavePlusOption4_1),
+                content = stringResource(
+                    id = R.string.wavePlusOption4_2
+                )
+            )
+        )
+    }
+
+
     ConstraintLayout(modifier = modifier.background(Gray1)) {
         val (header, content, logo) = createRefs()
 
@@ -47,7 +90,7 @@ internal fun WavePlusTopView(options: List<WavePlusInfo.Option>, modifier: Modif
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            options.forEach {
+            optionsList.forEach {
                 WavePlusGuideOptionView(it)
             }
         }
@@ -68,4 +111,10 @@ internal fun WavePlusTopView(options: List<WavePlusInfo.Option>, modifier: Modif
         )
 
     }
+}
+
+@Preview
+@Composable
+private fun WavePlusTopPreview() {
+    WavePlusTopView()
 }

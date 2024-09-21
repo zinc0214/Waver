@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_more.models
 
+import androidx.compose.ui.graphics.painter.Painter
 import com.zinc.waver.ui_more.R
 
 data class UIMoreMyProfileInfo(
@@ -101,18 +102,8 @@ data class MyWaveInfo(
     )
 }
 
-data class WavePlusInfo(
-    val options: List<Option>,
-    val yearPerPay: String,
-    val yearBenefitText: String,
-    val yearPay: String,
-    val monthPay: String,
-    val monthBenefitText: String
-) {
-    data class Option(
-        val url: String,
-        val title: String,
-        val subTitle: String,
-        val content: String
-    )
-}
+data class WaverPlusOption(
+    val imgResource: Painter,
+    val title: String,
+    val content: String
+)

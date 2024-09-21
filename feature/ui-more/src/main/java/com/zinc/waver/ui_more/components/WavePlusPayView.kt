@@ -43,10 +43,9 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.HtmlText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
-import com.zinc.waver.ui_more.models.WavePlusInfo
 
 @Composable
-internal fun WavePlusPayView(info: WavePlusInfo, modifier: Modifier = Modifier) {
+internal fun WavePlusPayView(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -57,11 +56,11 @@ internal fun WavePlusPayView(info: WavePlusInfo, modifier: Modifier = Modifier) 
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        WavePlusPayYearView(info)
+        WavePlusPayYearView()
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        WavePlusPayMonthView(info)
+        WavePlusPayMonthView()
     }
 
 }
@@ -147,7 +146,7 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifier) {
+private fun WavePlusPayYearView(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
@@ -182,7 +181,7 @@ private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifie
             verticalAlignment = Alignment.CenterVertically
         ) {
             MyText(
-                text = info.yearBenefitText,
+                text = stringResource(id = R.string.yearBenefit),
                 color = Main4,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = dpToSp(
@@ -196,7 +195,7 @@ private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifie
                         append(stringResource(id = R.string.payPerMonth) + " ")
                     }
                     withStyle(style = SpanStyle(color = Main4, fontWeight = FontWeight.Bold)) {
-                        append(info.yearPerPay)
+                        append(stringResource(id = R.string.payPerMonthValue))
                     }
                 },
                 fontWeight = FontWeight.SemiBold,
@@ -213,7 +212,7 @@ private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifie
         }
 
         MyText(
-            text = info.yearPay,
+            text = stringResource(id = R.string.payTotalYear),
             color = Gray1,
             fontSize = dpToSp(dp = 16.dp),
             fontWeight = FontWeight.Bold,
@@ -235,7 +234,7 @@ private fun WavePlusPayYearView(info: WavePlusInfo, modifier: Modifier = Modifie
 }
 
 @Composable
-fun WavePlusPayMonthView(info: WavePlusInfo, modifier: Modifier = Modifier) {
+fun WavePlusPayMonthView(modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
@@ -262,7 +261,7 @@ fun WavePlusPayMonthView(info: WavePlusInfo, modifier: Modifier = Modifier) {
         )
 
         MyText(
-            text = info.monthBenefitText,
+            text = stringResource(id = R.string.monthBenefit),
             textAlign = TextAlign.Center,
             color = Gray9,
             fontSize = dpToSp(dp = 14.dp),
@@ -274,7 +273,7 @@ fun WavePlusPayMonthView(info: WavePlusInfo, modifier: Modifier = Modifier) {
 
 
         MyText(
-            text = info.monthPay,
+            text = stringResource(id = R.string.monthTotal),
             color = Gray8,
             fontSize = dpToSp(dp = 16.dp),
             fontWeight = FontWeight.Bold,
@@ -298,14 +297,5 @@ fun WavePlusPayMonthView(info: WavePlusInfo, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun WavePlusPayPreView() {
-    WavePlusPayView(
-        info = WavePlusInfo(
-            options = listOf(),
-            yearPerPay = "5,000원",
-            yearBenefitText = "1주일 무료 + 웨이버 플러스",
-            yearPay = "20,000원",
-            monthPay = "4,000원",
-            monthBenefitText = "웨이버 플러스"
-        )
-    )
+    WavePlusPayView()
 }

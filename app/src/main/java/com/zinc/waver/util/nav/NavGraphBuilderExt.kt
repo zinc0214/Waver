@@ -1,12 +1,10 @@
 package com.zinc.waver.util.nav
 
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
 import com.zinc.waver.model.MyTabType
@@ -435,10 +433,6 @@ internal fun NavGraphBuilder.wavePlusGuideNavGraph(
     backPress: () -> Unit
 ) {
     composable(MoreDestinations.WAVE_PLUS) {
-
-        val systemUiController = rememberSystemUiController()
-        systemUiController.setStatusBarColor(Color(0xff2375e9))
-        systemUiController.setNavigationBarColor(Color(0xff2375e9))
 
         WavePlusGuideScreen(onBackPressed = { backPress() })
     }

@@ -24,3 +24,19 @@ fun HtmlText(html: String, modifier: Modifier = Modifier, fontSize: Dp, @ColorIn
         update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
     )
 }
+
+@Composable
+fun HtmlText2(html: String, modifier: Modifier = Modifier, fontSize: Dp) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            TextView(context).apply {
+//                val typeface = ResourcesCompat.getFont(context, R.font.notosans_kr_regular)
+//                Log.e("ayhan", "typeSpace : $typeface")
+//                setTypeface(typeface)
+                textSize = fontSize.value
+            }
+        },
+        update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_COMPACT) }
+    )
+}
