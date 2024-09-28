@@ -32,6 +32,7 @@ import androidx.constraintlayout.compose.Dimension
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
+import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.design.theme.Main1
@@ -239,7 +240,7 @@ fun WavePlusPayMonthView(modifier: Modifier = Modifier) {
             .padding(horizontal = 30.dp)
             .width(300.dp)
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
-            .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Gray3)
+            .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Gray4)
     ) {
         HtmlText2(
             html = stringResource(id = R.string.monthPayText),
