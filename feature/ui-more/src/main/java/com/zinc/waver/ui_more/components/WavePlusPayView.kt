@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.waver.ui.design.theme.Gray1
-import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray8
@@ -40,7 +39,7 @@ import com.zinc.waver.ui.design.theme.Main2
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.theme.Sub_D3
 import com.zinc.waver.ui.presentation.component.MyText
-import com.zinc.waver.ui.util.HtmlText
+import com.zinc.waver.ui.util.HtmlText2
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
 
@@ -155,10 +154,9 @@ private fun WavePlusPayYearView(modifier: Modifier = Modifier) {
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Main2)
     ) {
-        HtmlText(
+        HtmlText2(
             html = stringResource(id = R.string.yearPayText),
             fontSize = 15.dp,
-            textColor = Gray10.hashCode(),
             modifier = Modifier
                 .padding(top = 14.dp, bottom = 12.dp)
                 .align(Alignment.CenterHorizontally)
@@ -243,10 +241,9 @@ fun WavePlusPayMonthView(modifier: Modifier = Modifier) {
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .border(width = 0.6.dp, shape = RoundedCornerShape(8.dp), color = Gray3)
     ) {
-        HtmlText(
+        HtmlText2(
             html = stringResource(id = R.string.monthPayText),
             fontSize = 15.dp,
-            textColor = Gray10.hashCode(),
             modifier = Modifier
                 .padding(top = 14.dp, bottom = 12.dp)
                 .align(Alignment.CenterHorizontally)

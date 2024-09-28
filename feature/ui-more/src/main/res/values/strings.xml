@@ -60,12 +60,12 @@
     <string name="payTitle2">으로</string>
     <string name="payTitle3">웨이버 플러스</string>
     <string name="payTitle4">혜택 즐기기</string>
-    <string name="yearPayText"><![CDATA[<b>연간</b> 혜택 이용권]]></string>
+    <string name="yearPayText"><![CDATA[<font color=#222222><b>연간</b> 혜택 이용권</font>]]></string>
     <string name="yearBenefit">1주일 무료 + 웨이버 플러스</string>
     <string name="payPerMonth">월</string>
     <string name="payPerMonthValue">4,166원</string>
     <string name="payTotalYear">50,000원</string>
-    <string name="monthPayText"><![CDATA[<b>월간</b> 혜택 이용권]]></string>
+    <string name="monthPayText"><![CDATA[<font color=#222222><b>월간</b> 혜택 이용권</fon>]]></string>
     <string name="monthBenefit">웨이버 플러스</string>
     <string name="monthTotal">5,000원</string>
     <string name="startWavePlus">웨이버 플러스 시작하기</string>
