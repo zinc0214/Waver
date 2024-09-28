@@ -17,7 +17,6 @@ import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.waver.model.AddImageType
-import com.zinc.waver.ui.presentation.detail.model.ShowParentScreenType
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
@@ -65,35 +64,40 @@ class HomeActivity : AppCompatActivity() {
             val retryEmail: MutableState<String> = remember {
                 mutableStateOf("")
             }
-            val showScreenType: MutableState<ShowParentScreenType> = remember {
-                mutableStateOf(ShowParentScreenType.Login)
+            val showScreenType: MutableState<com.zinc.waver.ui_detail.model.ShowParentScreenType> =
+                remember {
+                    mutableStateOf(com.zinc.waver.ui_detail.model.ShowParentScreenType.Login)
             }
 
             when (showScreenType.value) {
-                ShowParentScreenType.Join -> {
+                com.zinc.waver.ui_detail.model.ShowParentScreenType.Join -> {
                     JoinScreen(goToMain = {
-                        showScreenType.value = ShowParentScreenType.Main
+                        showScreenType.value =
+                            com.zinc.waver.ui_detail.model.ShowParentScreenType.Main
                     }, goToBack = {
                         finish()
                     }, goToLogin = {
                         retryEmail.value = it
-                        showScreenType.value = ShowParentScreenType.Login
+                        showScreenType.value =
+                            com.zinc.waver.ui_detail.model.ShowParentScreenType.Login
                     })
                 }
 
-                ShowParentScreenType.Login -> {
+                com.zinc.waver.ui_detail.model.ShowParentScreenType.Login -> {
                     LoginScreen(
                         retryLoginEmail = retryEmail.value,
                         goToMainHome = {
-                            showScreenType.value = ShowParentScreenType.Main
+                            showScreenType.value =
+                                com.zinc.waver.ui_detail.model.ShowParentScreenType.Main
                         }, goToJoin = {
-                            showScreenType.value = ShowParentScreenType.Join
+                            showScreenType.value =
+                                com.zinc.waver.ui_detail.model.ShowParentScreenType.Join
                         }, goToFinish = {
                             finish()
                         })
                 }
 
-                ShowParentScreenType.Main -> {
+                com.zinc.waver.ui_detail.model.ShowParentScreenType.Main -> {
                     WaverApp(action = {
                         when (it) {
                             is ActionWithActivity.AddImage -> {

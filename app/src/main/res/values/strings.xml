@@ -20,33 +20,4 @@
     <string name="write">버킷리스트 추가</string>
     <string name="titleLeftDesc">뒤로가기</string>
 
-    <!-- Detail -->
-    <string name="successButtonText">달성 완료</string>
-    <string name="likeButtonDesc">좋아요 버튼</string>
-    <string name="commentButtonDesc">태그 버튼</string>
-    <string name="commentSendButtonDesc">댓글 전송 버튼</string>
-    <string name="commentHintText">버킷리스트를 응원해주세요!</string>
-    <string name="commentBlankText">버킷리스트 처음 응원자가 되어주세요</string>
-    <string name="successButtonCount"><![CDATA[<font color="#ffffff">%s</font><font color="#a6c6ff">/%s</font>]]></string>
-    <string name="mentionHintText">닉네임을 선택헤주세요</string>
-    <string name="mentionFriendText">친구</string>
-
-    <!-- Detail > Comment Option Dialog -->
-    <string name="commentOptionDialogTitle">댓글</string>
-    <string name="commentEdit">수정</string>
-    <string name="commentDelete">삭제</string>
-    <string name="commentHide">숨기기</string>
-    <string name="commentReport">신고</string>
-    <string name="commentReportSucceed">신고를 완료했습니다.</string>
-    <string name="commentReportFail">다시 시도해주세요.</string>
-
-    <!-- Report -->
-    <string name="commentReportTitle">댓글 신고</string>
-    <string name="reportWriter">작성자</string>
-    <string name="reportContents">내용</string>
-    <string name="reportItemButton">신고버튼</string>
-    <string name="reportActionButton">신고하기</string>
-    <string name="reportEtc">기타</string>
-    <string name="reportTextFieldHint">신고 사유를 입력해주세요. (최대 500자) </string>
-
 </resources>

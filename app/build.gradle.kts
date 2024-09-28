@@ -71,6 +71,7 @@ dependencies {
     implementation(project(":feature:ui-write"))
     implementation(project(":feature:ui-other"))
     implementation(project(":feature:ui-search"))
+    implementation(project(":feature:ui-detail"))
 
     // androidX - common
     implementation(libs.androidx.core.ktx)

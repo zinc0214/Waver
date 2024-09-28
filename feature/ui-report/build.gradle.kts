@@ -7,7 +7,8 @@ plugins {
 }
 
 android {
-    namespace = "com.zinc.waver.ui_feed"
+    namespace = "com.zinc.waver.ui_report"
+    compileSdk = 34
 
     defaultConfig {
         minSdk = Versions.minSdk
@@ -22,6 +23,7 @@ android {
 
     buildFeatures {
         compose = true
+        dataBinding = true
         viewBinding = true
     }
 
@@ -33,7 +35,6 @@ android {
     }
 }
 
-
 dependencies {
 
     implementation(project(":common"))
@@ -41,14 +42,17 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":datastore"))
 
+    implementation(libs.androidx.appcompat)
+    implementation(libs.android.material)
+
     // compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.bom.ui)
     implementation(libs.compose.bom.material)
     implementation(libs.compose.bom.livedata)
-    implementation(libs.compose.bom.foundation)
     implementation(libs.compose.constraintlayout)
-    implementation(libs.compose.accompanist.systemuicontroller)
+
+    implementation(libs.coil)
 
     // Hilt
     implementation(libs.hilt.anroid)

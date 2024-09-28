@@ -15,6 +15,8 @@ import com.zinc.waver.ui.design.theme.BaseTheme
 import com.zinc.waver.ui.presentation.home.HomeBottomBar
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent
 import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
@@ -27,8 +29,6 @@ import com.zinc.waver.ui_my.BottomSheetScreenType
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_other.model.OtherHomeEvent
 import com.zinc.waver.ui_search.model.SearchGoToEvent
-import com.zinc.waver.util.nav.CloseBucketDetailEvent
-import com.zinc.waver.util.nav.OpenBucketDetailEvent
 import com.zinc.waver.util.nav.alarmNavGraph
 import com.zinc.waver.util.nav.closeBucketDetailNavGraph
 import com.zinc.waver.util.nav.goToOtherHomeNavGraph

@@ -8,14 +8,12 @@ import androidx.navigation.navArgument
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
 import com.zinc.waver.model.MyTabType
-import com.zinc.waver.model.ReportInfo
 import com.zinc.waver.model.UICategoryInfo
-import com.zinc.waver.model.WriteTotalInfo
-import com.zinc.waver.ui.presentation.detail.screen.CloseDetailScreen
-import com.zinc.waver.ui.presentation.detail.screen.OpenDetailScreen
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
+import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent
 import com.zinc.waver.ui_feed.FeedScreen
 import com.zinc.waver.ui_more.models.AppInfoItemType
 import com.zinc.waver.ui_more.models.MoreItemType
@@ -360,7 +358,7 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         val writerId = arguments.getString(MainDestinations.WRITER_ID_KEY) ?: ""
         val isMine = arguments.getBoolean(MainDestinations.BUCKET_IS_MINE)
-        OpenDetailScreen(
+        com.zinc.waver.ui_detail.screen.OpenDetailScreen(
             detailId = detailId,
             writerId = writerId,
             isMine = isMine,
@@ -395,7 +393,7 @@ internal fun NavGraphBuilder.closeBucketDetailNavGraph(
     ) { backStackEntry ->
         val arguments = requireNotNull(backStackEntry.arguments)
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
-        CloseDetailScreen(detailId, goToUpdate = {
+        com.zinc.waver.ui_detail.screen.CloseDetailScreen(detailId, goToUpdate = {
             val info = it.copy(isForUpdate = true)
             goToBucketDetailEvent.invoke(
                 CloseBucketDetailEvent.Update(info), backStackEntry
@@ -487,14 +485,4 @@ object AlarmDestinations {
 object OtherDestinations {
     const val GO_TO_OTHER_HOME = "go_to_other_home"
     const val OTHER_USER_ID = "other_user_id"
-}
-
-sealed interface OpenBucketDetailEvent {
-    data class BucketReport(val reportInfo: ReportInfo) : OpenBucketDetailEvent
-    data class Update(val info: WriteTotalInfo) : OpenBucketDetailEvent
-    data class GoToOtherProfile(val id: String) : OpenBucketDetailEvent
-}
-
-sealed interface CloseBucketDetailEvent {
-    data class Update(val info: WriteTotalInfo) : CloseBucketDetailEvent
 }

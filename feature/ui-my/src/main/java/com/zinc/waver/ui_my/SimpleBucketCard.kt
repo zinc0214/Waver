@@ -1,9 +1,6 @@
 package com.zinc.waver.ui_my
 
 import android.util.Log
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,7 +20,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -53,6 +49,7 @@ import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.theme.Main2
 import com.zinc.waver.ui.design.theme.Sub_D2
 import com.zinc.waver.ui.design.theme.Sub_D3
+import com.zinc.waver.ui.presentation.component.HorizontalProgressBar
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_my.view.BucketCircularProgressBar
@@ -316,50 +313,3 @@ private fun CountProgressView(
         )
     }
 }
-
-@Composable
-fun HorizontalProgressBar(
-    modifier: Modifier = Modifier,
-    _currentCount: Int,
-    _goalCount: Int,
-    _countProgressColor: Color
-) {
-    var currentCount by remember { mutableIntStateOf(_currentCount) }
-    var goalCount by remember { mutableIntStateOf(_goalCount) }
-    var countProgressColor by remember { mutableStateOf(_countProgressColor) }
-
-    LaunchedEffect(_currentCount) {
-        currentCount = _currentCount
-    }
-
-    LaunchedEffect(_goalCount) {
-        goalCount = _goalCount
-    }
-
-    LaunchedEffect(_countProgressColor) {
-        countProgressColor = _countProgressColor
-    }
-
-    var progress by remember { mutableStateOf(0f) }
-    val indicatorProgress =
-        if (currentCount == 0) 0.0f else (currentCount.toFloat() / goalCount.toFloat())
-    val progressAnimDuration = 1500
-    val progressAnimation by animateFloatAsState(
-        targetValue = indicatorProgress,
-        animationSpec = tween(durationMillis = progressAnimDuration, easing = FastOutSlowInEasing),
-        label = ""
-    )
-    LinearProgressIndicator(
-        modifier = modifier
-            .width(176.dp)
-            .height(8.dp)
-            .clip(RoundedCornerShape(2.dp)), // Rounded edges
-        progress = progressAnimation,
-        color = countProgressColor,
-        backgroundColor = Gray3
-    )
-    LaunchedEffect(indicatorProgress) {
-        progress = indicatorProgress
-    }
-}
-
