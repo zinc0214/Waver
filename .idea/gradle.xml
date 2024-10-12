@@ -15,6 +15,7 @@
             </builds>
           </compositeBuild>
         </compositeConfiguration>
+        <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="gradleJvm" value="19" />
         <option name="modules">
@@ -28,10 +29,12 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/ui-common" />
+            <option value="$PROJECT_DIR$/feature/ui-detail" />
             <option value="$PROJECT_DIR$/feature/ui-feed" />
             <option value="$PROJECT_DIR$/feature/ui-more" />
             <option value="$PROJECT_DIR$/feature/ui-my" />
             <option value="$PROJECT_DIR$/feature/ui-other" />
+            <option value="$PROJECT_DIR$/feature/ui-report" />
             <option value="$PROJECT_DIR$/feature/ui-search" />
             <option value="$PROJECT_DIR$/feature/ui-write" />
           </set>

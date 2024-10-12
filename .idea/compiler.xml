@@ -22,10 +22,12 @@
       <module name="Waver.common" target="19" />
       <module name="Waver.domain" target="19" />
       <module name="Waver.feature.ui-common" target="19" />
+      <module name="Waver.feature.ui-detail" target="19" />
       <module name="Waver.feature.ui-feed" target="19" />
       <module name="Waver.feature.ui-more" target="19" />
       <module name="Waver.feature.ui-my" target="19" />
       <module name="Waver.feature.ui-other" target="19" />
+      <module name="Waver.feature.ui-report" target="19" />
       <module name="Waver.feature.ui-search" target="19" />
       <module name="Waver.feature.ui-write" target="19" />
     </bytecodeTargetLevel>
