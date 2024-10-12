@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray4
-import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.TitleIconType
@@ -84,8 +83,8 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
 
         MyText(
             text = stringResource(id = R.string.nonBlocking),
-            color = Gray6,
-            fontSize = dpToSp(dp = 12.dp),
+            color = Gray9,
+            fontSize = dpToSp(dp = 13.dp),
             modifier = Modifier
                 .padding(start = 10.dp)
                 .background(shape = RoundedCornerShape(15.dp), color = Gray1)
@@ -94,7 +93,7 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
                 .clickable(onClick = {
 
                 }, role = Role.Button)
-                .padding(horizontal = 16.dp, vertical = 7.dp)
+                .padding(horizontal = 16.dp, vertical = 5.dp)
         )
     }
 }
