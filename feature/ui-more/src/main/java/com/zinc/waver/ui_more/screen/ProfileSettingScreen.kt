@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
@@ -42,7 +41,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import com.zinc.waver.ui_common.R as CommonR
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileSettingScreen(
     onBackPressed: () -> Unit,

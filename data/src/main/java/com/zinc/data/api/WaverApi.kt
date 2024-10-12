@@ -5,6 +5,7 @@ import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.AllBucketListSortType
+import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
@@ -281,4 +282,8 @@ interface WaverApi {
     // 댓글 삭제
     @DELETE("/comment/{id}")
     suspend fun deleteComment(@Path("id") id: String): CommonResponse
+
+    // 더보기 > 차단된 유저 목록
+    @GET("/follow/blockUsers")
+    suspend fun loadBlockedUsers(): BlockedUserResponse
 }

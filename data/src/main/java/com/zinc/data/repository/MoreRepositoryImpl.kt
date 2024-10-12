@@ -1,5 +1,6 @@
 package com.zinc.data.repository
 
+import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.WaverApi
@@ -33,5 +34,9 @@ internal class MoreRepositoryImpl @Inject constructor(
 
     override suspend fun checkAlreadyUsedNickName(name: String): CommonResponse {
         return waverApi.checkAlreadyUsedNickname(name)
+    }
+
+    override suspend fun loadBlockedUsers(): BlockedUserResponse {
+        return waverApi.loadBlockedUsers()
     }
 }
