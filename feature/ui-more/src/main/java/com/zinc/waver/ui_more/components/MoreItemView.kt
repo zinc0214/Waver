@@ -40,7 +40,7 @@ internal fun MoreItemsView(itemClicked: (MoreItemType) -> Unit) {
         add(
             UIMoreItemData(
                 text = stringResource(R.string.moreMenuCs),
-                type = MoreItemType.QNA
+                type = MoreItemType.CS
             )
         )
         add(

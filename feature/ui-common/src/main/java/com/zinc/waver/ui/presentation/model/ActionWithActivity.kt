@@ -12,5 +12,7 @@ sealed class ActionWithActivity {
         val isAllGranted: (Boolean) -> Unit
     ) : ActionWithActivity()
 
-    object AppFinish : ActionWithActivity()
+    data object AppFinish : ActionWithActivity()
+
+    data object GoToQNAEmail : ActionWithActivity()
 }

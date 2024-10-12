@@ -54,6 +54,7 @@ fun PopUpView(
             color = Gray1
         ) {
             PopUpView(
+                modifier = modifier,
                 title = title,
                 cancelText = cancelText,
                 positiveText = positiveText,
@@ -67,6 +68,7 @@ fun PopUpView(
 
 @Composable
 private fun PopUpView(
+    modifier: Modifier,
     title: String,
     cancelText: String? = null,
     positiveText: String? = null,
@@ -74,7 +76,7 @@ private fun PopUpView(
     positiveClicked: (() -> Unit)? = null,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
     ) {

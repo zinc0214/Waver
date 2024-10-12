@@ -2,6 +2,7 @@ package com.zinc.waver.ui.presentation
 
 import android.app.Activity
 import android.content.Intent
+import android.content.Intent.createChooser
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
@@ -13,14 +14,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import com.zinc.waver.R
 import com.zinc.waver.model.AddImageType
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.util.CheckPermissionView
+import com.zinc.waver.ui_detail.model.ShowParentScreenType
 import com.zinc.waver.util.createImageFile
 import com.zinc.waver.util.getImageFileWithImageInfo
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,40 +68,40 @@ class HomeActivity : AppCompatActivity() {
             val retryEmail: MutableState<String> = remember {
                 mutableStateOf("")
             }
-            val showScreenType: MutableState<com.zinc.waver.ui_detail.model.ShowParentScreenType> =
+            val showScreenType: MutableState<ShowParentScreenType> =
                 remember {
-                    mutableStateOf(com.zinc.waver.ui_detail.model.ShowParentScreenType.Login)
-            }
+                    mutableStateOf(ShowParentScreenType.Login)
+                }
 
             when (showScreenType.value) {
-                com.zinc.waver.ui_detail.model.ShowParentScreenType.Join -> {
+                ShowParentScreenType.Join -> {
                     JoinScreen(goToMain = {
                         showScreenType.value =
-                            com.zinc.waver.ui_detail.model.ShowParentScreenType.Main
+                            ShowParentScreenType.Main
                     }, goToBack = {
                         finish()
                     }, goToLogin = {
                         retryEmail.value = it
                         showScreenType.value =
-                            com.zinc.waver.ui_detail.model.ShowParentScreenType.Login
+                            ShowParentScreenType.Login
                     })
                 }
 
-                com.zinc.waver.ui_detail.model.ShowParentScreenType.Login -> {
+                ShowParentScreenType.Login -> {
                     LoginScreen(
                         retryLoginEmail = retryEmail.value,
                         goToMainHome = {
                             showScreenType.value =
-                                com.zinc.waver.ui_detail.model.ShowParentScreenType.Main
+                                ShowParentScreenType.Main
                         }, goToJoin = {
                             showScreenType.value =
-                                com.zinc.waver.ui_detail.model.ShowParentScreenType.Join
+                                ShowParentScreenType.Join
                         }, goToFinish = {
                             finish()
                         })
                 }
 
-                com.zinc.waver.ui_detail.model.ShowParentScreenType.Main -> {
+                ShowParentScreenType.Main -> {
                     WaverApp(action = {
                         when (it) {
                             is ActionWithActivity.AddImage -> {
@@ -118,6 +122,10 @@ class HomeActivity : AppCompatActivity() {
 
                             ActionWithActivity.AppFinish -> {
                                 finish()
+                            }
+
+                            ActionWithActivity.GoToQNAEmail -> {
+                                goToContactToMyBuryByEmail()
                             }
                         }
                     })
@@ -145,7 +153,11 @@ class HomeActivity : AppCompatActivity() {
                     }
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                     val error = result.error
-                    Toast.makeText(this, "이미지를 가져오는데 실패했습니다1.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        resources.getString(R.string.failToGetImage),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }
@@ -158,7 +170,11 @@ class HomeActivity : AppCompatActivity() {
         try {
             photoFile = createImageFile(this)
         } catch (e: IOException) {
-            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.failToGetImage),
+                Toast.LENGTH_SHORT
+            ).show()
             e.printStackTrace()
         }
 
@@ -188,14 +204,36 @@ class HomeActivity : AppCompatActivity() {
 
     private fun getFile() {
         if (photoUri == null) {
-            Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                resources.getString(R.string.failToGetImage),
+                Toast.LENGTH_SHORT
+            ).show()
         } else {
             val info = getImageFileWithImageInfo(photoUri!!, imageCount++)
             if (photoUri == null) {
-                Toast.makeText(this, "이미지를 가져오는데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    resources.getString(R.string.failToGetImage),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 takePhotoAction.succeed(info!!)
             }
         }
+    }
+
+    private fun goToContactToMyBuryByEmail() {
+        val send = Intent(Intent.ACTION_SENDTO)
+        val uriText = "mailto:" + Uri.encode("mybury.info@gmail.com") +
+                "?subject=" + Uri.encode("<" + resources.getString(R.string.goToWaveQna) + ">")
+        val uri = Uri.parse(uriText)
+
+        send.data = uri
+        ContextCompat.startActivity(
+            this,
+            createChooser(send, resources.getString(R.string.goToWaveQna)),
+            null
+        )
     }
 }

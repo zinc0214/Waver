@@ -21,9 +21,7 @@ import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.waver.ui_more.models.MoreItemType.BLOCK
-import com.zinc.waver.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.waver.ui_more.models.MoreItemType.PROFILE
-import com.zinc.waver.ui_more.models.MoreItemType.QNA
 import com.zinc.waver.ui_more.models.MoreItemType.WAVE_PLUS
 import com.zinc.waver.ui_my.BottomSheetScreenType
 import com.zinc.waver.ui_my.model.MyTopEvent
@@ -118,15 +116,16 @@ fun WaverApp(
                             when (type) {
                                 ALARM -> appState.navigateToMoreAlarmSetting(nav)
                                 BLOCK -> appState.navigateToMoreBlockSetting(nav)
-                                QNA -> {}
                                 APP_INFO -> {
                                     appState.navigateToMoreAppInfo(nav)
                                 }
-
-                                LOGOUT -> {}
                                 PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
                                 WAVE_PLUS -> appState.navigateToWavePlusGuide(nav)
+                                MoreItemType.CS_QNA -> action(ActionWithActivity.GoToQNAEmail)
+                                else -> {
+                                    // Do Nothing
+                                }
                             }
                         },
                         backPress = appState::backPress

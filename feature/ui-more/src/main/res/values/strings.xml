@@ -38,6 +38,10 @@
     <string name="profileUpdateFailTitle">변경이 실패했습니다.\n다시 시도해주세요.</string>
     <string name="loadFailProfile">프로필 로드 실패</string>
 
+    <!-- 고객 센터 -->
+    <string name="csFAQ">자주 묻는 질문</string>
+    <string name="csServiceQuestion">서비스 문의하기</string>
+
     <!-- 앱 정보 -->
     <string name="appInfoTitle">앱 정보</string>
     <string name="appName">베리버킷</string>

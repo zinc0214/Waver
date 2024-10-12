@@ -1,6 +1,11 @@
 package com.zinc.waver.ui_more.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -10,11 +15,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.waver.ui.design.theme.Gray1
+import com.zinc.waver.ui.design.theme.Gray10
+import com.zinc.waver.ui.presentation.ListPopupView
+import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.PopUpView
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.MoreItemsView
 import com.zinc.waver.ui_more.components.MoreTitleView
@@ -31,6 +41,7 @@ fun MoreScreen(
     goToBack: () -> Unit
 ) {
     var logoutPopupShow by remember { mutableStateOf(false) }
+    var csPopupShow by remember { mutableStateOf(false) }
     val viewModel: MoreViewModel = hiltViewModel()
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
@@ -49,7 +60,7 @@ fun MoreScreen(
         profileInfo.value = profileInfoAsState
     }
 
-    Column {
+    Column(modifier = modifier) {
         rememberSystemUiController().setSystemBarsColor(Gray1)
 
         MoreTitleView()
@@ -64,10 +75,18 @@ fun MoreScreen(
             }
 
             MoreItemsView {
-                if (it == MoreItemType.LOGOUT) {
-                    logoutPopupShow = true
-                } else {
-                    moreItemClicked(it)
+                when (it) {
+                    MoreItemType.LOGOUT -> {
+                        logoutPopupShow = true
+                    }
+
+                    MoreItemType.CS -> {
+                        csPopupShow = true
+                    }
+
+                    else -> {
+                        moreItemClicked(it)
+                    }
                 }
             }
         }
@@ -86,6 +105,41 @@ fun MoreScreen(
             },
             onDismissRequest = { logoutPopupShow = false },
             clickable = true
+        )
+    }
+
+    if (csPopupShow) {
+        ListPopupView(modifier = Modifier,
+            title = stringResource(R.string.moreMenuCs),
+            onDismissRequest = {
+                csPopupShow = false
+            },
+            clickable = true,
+            listBlock = {
+                Column {
+                    MyText(
+                        text = stringResource(R.string.csFAQ),
+                        fontSize = dpToSp(14.dp),
+                        color = Gray10,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                    )
+                    Spacer(Modifier.height(20.dp))
+                    MyText(
+                        text = stringResource(R.string.csServiceQuestion), fontSize = dpToSp(14.dp),
+                        color = Gray10,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp)
+                            .clickable {
+                                moreItemClicked.invoke(MoreItemType.CS_QNA)
+                            }
+                    )
+                    Spacer(Modifier.height(32.dp))
+                }
+            }
+
         )
     }
 

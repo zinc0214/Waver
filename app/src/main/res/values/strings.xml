@@ -20,4 +20,7 @@
     <string name="write">버킷리스트 추가</string>
     <string name="titleLeftDesc">뒤로가기</string>
 
+    <string name="goToWaveQna">웨이브 문의하기</string>
+    <string name="failToGetImage">"이미지를 가져오는데 실패했습니다."</string>
+
 </resources>
