@@ -11,5 +11,10 @@ sealed class ReportClickEvent {
 data class ReportInfo(
     val id: String,
     val writer: String,
-    val contents: String
+    val contents: String,
+    val reportType: ReportType
 )
+
+enum class ReportType {
+    BUCKET, COMMENT
+}

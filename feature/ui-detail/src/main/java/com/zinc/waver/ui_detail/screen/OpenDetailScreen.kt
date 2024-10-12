@@ -37,6 +37,7 @@ import com.zinc.waver.model.DetailAppBarClickEvent
 import com.zinc.waver.model.DetailClickEvent
 import com.zinc.waver.model.DetailLoadFailStatus
 import com.zinc.waver.model.ReportInfo
+import com.zinc.waver.model.ReportType
 import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.model.UserSelectedImageInfo
 import com.zinc.waver.ui.design.util.Keyboard
@@ -54,6 +55,7 @@ import com.zinc.waver.ui_detail.component.OpenDetailContentView
 import com.zinc.waver.ui_detail.component.OtherCommentOptionClicked
 import com.zinc.waver.ui_detail.component.OtherCommentSelectedDialog
 import com.zinc.waver.ui_detail.component.OtherDetailAppBarMoreMenuDialog
+import com.zinc.waver.ui_detail.component.ShowReportScreen
 import com.zinc.waver.ui_detail.component.mention.CommentEditTextView2
 import com.zinc.waver.ui_detail.component.mention.MentionSearchListPopup
 import com.zinc.waver.ui_detail.model.GoalCountUpdateEvent
@@ -65,7 +67,6 @@ import com.zinc.waver.ui_detail.model.OtherBucketMenuEvent
 import com.zinc.waver.ui_detail.model.TaggedTextInfo
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
 import com.zinc.waver.ui_detail.viewmodel.DetailViewModel
-import com.zinc.waver.ui_report.ReportScreen
 import com.zinc.waver.util.createImageInfoWithPath
 import java.time.LocalTime
 
@@ -176,6 +177,10 @@ fun OpenDetailScreen(
         val needToShowCommentReportView = remember {
             mutableStateOf(false)
         }
+        // 버킷 신고 화면
+        val needToShowBucketReportView = remember {
+            mutableStateOf(false)
+        }
         val commentReportInfo: MutableState<ReportInfo?> = remember {
             mutableStateOf(null)
         }
@@ -217,7 +222,7 @@ fun OpenDetailScreen(
                         }
 
                         OtherBucketMenuEvent.GoToReport -> {
-
+                            needToShowBucketReportView.value = true
                         }
                     }
                 }
@@ -277,7 +282,8 @@ fun OpenDetailScreen(
                                     val reportInfo = ReportInfo(
                                         id = commenter.commentId,
                                         writer = commenter.nickName,
-                                        contents = commenter.comment
+                                        contents = commenter.comment,
+                                        reportType = ReportType.COMMENT
                                     )
                                     needToShowCommentReportView.value = true
                                     commentReportInfo.value = reportInfo
@@ -509,13 +515,31 @@ fun OpenDetailScreen(
 
         if (needToShowCommentReportView.value) {
             commentReportInfo.value?.let { reportInfo ->
-                ReportScreen(reportInfo = reportInfo, backPress = { needToRefresh ->
-                    if (needToRefresh) {
-                        viewModel.getBucketDetail(detailId, writerId, isMine)
-                    }
+                ShowReportScreen(reportInfo = reportInfo, succeedReported = {
+                    viewModel.getBucketDetail(detailId, writerId, isMine)
+                    needToShowCommentReportView.value = false
+                }, closeEvent = {
                     needToShowCommentReportView.value = false
                 })
             }
+        }
+
+        if (needToShowBucketReportView.value) {
+            val bucketReportInfo = ReportInfo(
+                id = detailId,
+                writer = info.writerProfileInfo.nickName,
+                contents = info.descInfo.title,
+                reportType = ReportType.BUCKET
+            )
+
+            ShowReportScreen(reportInfo = bucketReportInfo, succeedReported = {
+                viewModel.getBucketDetail(detailId, writerId, isMine)
+                needToShowBucketReportView.value = false
+            }, closeEvent = {
+                needToShowBucketReportView.value = false
+            })
+
+            optionPopUpShowed.value = false
         }
     }
 

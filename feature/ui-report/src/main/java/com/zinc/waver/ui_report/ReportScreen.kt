@@ -27,6 +27,7 @@ import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 import com.zinc.waver.model.ReportClickEvent
 import com.zinc.waver.model.ReportInfo
+import com.zinc.waver.model.ReportType
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.util.Keyboard
 import com.zinc.waver.ui.design.util.keyboardAsState
@@ -35,7 +36,7 @@ import com.zinc.waver.ui.presentation.component.TitleView
 
 @Composable
 fun ReportScreen(
-    reportInfo: ReportInfo, backPress: (Boolean) -> Unit
+    reportInfo: ReportInfo, backPress: () -> Unit, succeedReported: () -> Unit
 ) {
     val viewModel: ReportViewModel = hiltViewModel()
     viewModel.loadReportItmes()
@@ -82,6 +83,10 @@ fun ReportScreen(
             }
         }
 
+        val title =
+            if (reportInfo.reportType == ReportType.COMMENT) R.string.commentReportTitle
+            else R.string.bucketReportTitle
+
         TitleView(modifier = Modifier
             .fillMaxWidth()
             .constrainAs(topAppBar) {
@@ -89,11 +94,11 @@ fun ReportScreen(
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
             },
-            title = stringResource(id = R.string.commentReportTitle),
+            title = stringResource(id = title),
             leftIconType = TitleIconType.BACK,
             isDividerVisible = isScrolled,
             onLeftIconClicked = {
-                backPress(false)
+                backPress()
             })
 
         ReportContentView(
@@ -145,7 +150,7 @@ fun ReportScreen(
         if (commentReportSucceed == true) {
             Toast.makeText(context, R.string.commentReportSucceed, Toast.LENGTH_SHORT).show()
             commentReportSucceed = false
-            backPress(true)
+            succeedReported()
         }
 
         if (commentReportFail == true) {
