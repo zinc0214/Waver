@@ -100,6 +100,7 @@ fun CategoryLayer(
         MyCategoryAddView {
             addNewCategoryDialogShowAvailable.value = true
         }
+        Spacer(modifier = Modifier.height(54.dp))
     }
     if (addNewCategoryDialogShowAvailable.value) {
         AddNewCategoryDialog(event = {
