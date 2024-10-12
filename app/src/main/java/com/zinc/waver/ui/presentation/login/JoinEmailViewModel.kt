@@ -50,7 +50,7 @@ class JoinEmailViewModel @Inject constructor(
 
     fun savedLoginEmail(email: String) {
         viewModelScope.launch {
-            loginPreferenceDataStoreModule.setLoaginedEmail(email)
+            loginPreferenceDataStoreModule.setLoginEmail(email)
             _goToLogin.value = true
         }
     }

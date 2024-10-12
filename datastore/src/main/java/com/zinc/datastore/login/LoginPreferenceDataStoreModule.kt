@@ -49,9 +49,15 @@ class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext con
         preferences[loginedEmailKey] ?: ""
     }
 
-    suspend fun setLoaginedEmail(email: String) {
+    suspend fun setLoginEmail(email: String) {
         loginDataStore.edit { preferences ->
             preferences[loginedEmailKey] = email
+        }
+    }
+
+    suspend fun clearLoginEmail() {
+        loginDataStore.edit { preferences ->
+            preferences.clear()
         }
     }
 

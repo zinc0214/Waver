@@ -55,6 +55,10 @@
     <string name="bucketCount">버킷리스트</string>
     <string name="badgeGrade">단계</string>
 
+    <!-- 로그아웃 -->
+    <string name="logoutTitle">로그아웃 하시겠어요?</string>
+    <string name="logoutButton">로그아웃</string>
+
     <!-- 웨이브 플러스 -->
     <string name="wavePlus">웨이버 플러스</string>
     <string name="wavePlusOption1_1"><![CDATA[<b><font color=#444444>모든</font><font color=#007bff> 광고제거</font></b>]]></string>

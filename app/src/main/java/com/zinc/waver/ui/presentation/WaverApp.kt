@@ -21,6 +21,7 @@ import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
 import com.zinc.waver.ui_more.models.MoreItemType.BLOCK
+import com.zinc.waver.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.waver.ui_more.models.MoreItemType.PROFILE
 import com.zinc.waver.ui_more.models.MoreItemType.WAVE_PLUS
 import com.zinc.waver.ui_my.BottomSheetScreenType
@@ -119,10 +120,12 @@ fun WaverApp(
                                 APP_INFO -> {
                                     appState.navigateToMoreAppInfo(nav)
                                 }
+
                                 PROFILE -> appState.navigateToMoreProfileSetting(nav)
                                 MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
                                 WAVE_PLUS -> appState.navigateToWavePlusGuide(nav)
                                 MoreItemType.CS_QNA -> action(ActionWithActivity.GoToQNAEmail)
+                                LOGOUT -> action(ActionWithActivity.Logout)
                                 else -> {
                                     // Do Nothing
                                 }

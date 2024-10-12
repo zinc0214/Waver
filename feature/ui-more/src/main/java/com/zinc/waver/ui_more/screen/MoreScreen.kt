@@ -94,14 +94,15 @@ fun MoreScreen(
 
     if (logoutPopupShow) {
         PopUpView(
-            title = "로그아웃 하시겠어요?",
-            cancelText = "취소",
-            positiveText = "로그아웃",
+            title = stringResource(R.string.logoutTitle),
+            cancelText = stringResource(CommonR.string.cancel),
+            positiveText = stringResource(R.string.logoutButton),
             cancelClicked = {
                 logoutPopupShow = false
             },
             positiveClicked = {
                 logoutPopupShow = false
+                moreItemClicked.invoke(MoreItemType.LOGOUT)
             },
             onDismissRequest = { logoutPopupShow = false },
             clickable = true

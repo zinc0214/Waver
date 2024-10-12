@@ -61,7 +61,7 @@ class LoginViewModel @Inject constructor(
                 val data = result.data
                 loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
                 loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
-                loginPreferenceDataStoreModule.setLoaginedEmail(email)
+                loginPreferenceDataStoreModule.setLoginEmail(email)
                 _goToMain.value = true
             } else {
                 _loginFail.value = true

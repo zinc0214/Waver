@@ -10,6 +10,7 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +34,8 @@ import java.io.IOException
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<HomeViewModel>()
 
     private var photoUri: Uri? = null
     private var imageCount = 0
@@ -126,6 +129,11 @@ class HomeActivity : AppCompatActivity() {
 
                             ActionWithActivity.GoToQNAEmail -> {
                                 goToContactToMyBuryByEmail()
+                            }
+
+                            ActionWithActivity.Logout -> {
+                                viewModel.logout()
+                                finish()
                             }
                         }
                     })
@@ -235,5 +243,9 @@ class HomeActivity : AppCompatActivity() {
             createChooser(send, resources.getString(R.string.goToWaveQna)),
             null
         )
+    }
+
+    private fun logout() {
+
     }
 }

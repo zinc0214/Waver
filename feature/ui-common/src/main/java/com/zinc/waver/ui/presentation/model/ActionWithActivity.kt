@@ -15,4 +15,6 @@ sealed class ActionWithActivity {
     data object AppFinish : ActionWithActivity()
 
     data object GoToQNAEmail : ActionWithActivity()
+
+    data object Logout : ActionWithActivity()
 }

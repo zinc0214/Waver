@@ -87,7 +87,7 @@ class JoinNickNameViewModel @Inject constructor(
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {
-                    loginPreferenceDataStoreModule.setLoaginedEmail(email)
+                    loginPreferenceDataStoreModule.setLoginEmail(email)
                     res.data?.let { token ->
                         loginPreferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
                         loginPreferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
