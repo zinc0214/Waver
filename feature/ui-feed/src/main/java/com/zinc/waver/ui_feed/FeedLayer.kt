@@ -25,7 +25,6 @@ fun FeedLayer(
     feedItems: List<UIFeedInfo>,
     feedClicked: (FeedClickEvent) -> Unit
 ) {
-
     Column(
         modifier = modifier
             .fillMaxHeight()
@@ -42,14 +41,18 @@ fun FeedLayer(
                 .padding(horizontal = 12.dp)
         )
 
-        FeedListView(
-            modifier = Modifier
-                .padding(top = 24.dp),
-            feedItems = feedItems,
-            feedClicked = feedClicked
-        )
+        if (feedItems.isEmpty()) {
+            // TODO : 피드 빈 화면 추가하기
+            MyText("피드가 비어있어요")
+        } else {
+            FeedListView(
+                modifier = Modifier
+                    .padding(top = 24.dp),
+                feedItems = feedItems,
+                feedClicked = feedClicked
+            )
+        }
     }
-
 }
 
 @Composable

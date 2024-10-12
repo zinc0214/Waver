@@ -64,7 +64,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     }
 
     LaunchedEffect(key1 = feedItemsAsState) {
-        if (feedItemsAsState == null || feedItemsAsState?.isEmpty() == true) {
+        if (feedItemsAsState == null) {
             viewModel.checkSavedKeyWords()
         } else {
             feedItems.value = feedItemsAsState
