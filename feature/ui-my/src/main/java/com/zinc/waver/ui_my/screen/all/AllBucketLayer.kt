@@ -51,7 +51,6 @@ fun AllBucketLayer(
     val allBucketInfoAsState by viewModel.allBucketItem.observeAsState()
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
-    val achieveSucceedAsState by viewModel.achieveSucceed.observeAsState()
     val filterLoadFinishedAsState by viewModel.allFilterLoadFinished.observeAsState()
 
     val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
