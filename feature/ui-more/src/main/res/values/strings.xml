@@ -5,6 +5,14 @@
     <string name="goToUpdateProfile">프로필 관리</string>
     <string name="goToJoinWaverClub">달콤베리 클럽 가입하기</string>
 
+
+    <!-- 더보기 메뉴 -->
+    <string name="moreMenuAlarm">알림 설정</string>
+    <string name="moreMenuBlock">차단 관리</string>
+    <string name="moreMenuCs">고객 센터</string>
+    <string name="moreMenuAppInfo">앱 정보</string>
+    <string name="moreMenuLogout">로그아웃</string>
+
     <!--알림 설정-->
     <string name="alarmSettingTitle">알림 설정</string>
     <string name="alarmSettingServiceAlarm">서비스 알림</string>

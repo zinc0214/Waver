@@ -10,6 +10,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray1
@@ -17,17 +18,43 @@ import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.UIMoreItemData
 
 @Composable
 internal fun MoreItemsView(itemClicked: (MoreItemType) -> Unit) {
     val itemList = buildList {
-        add(UIMoreItemData(text = "알림 설정", type = MoreItemType.ALARM))
-        add(UIMoreItemData(text = "차단 관리", type = MoreItemType.BLOCK))
-        add(UIMoreItemData(text = "문의하기", type = MoreItemType.QNA))
-        add(UIMoreItemData(text = "앱 정보", type = MoreItemType.APP_INFO))
-        add(UIMoreItemData(text = "로그아웃", type = MoreItemType.LOGOUT))
+        add(
+            UIMoreItemData(
+                text = stringResource(R.string.moreMenuAlarm),
+                type = MoreItemType.ALARM
+            )
+        )
+        add(
+            UIMoreItemData(
+                text = stringResource(R.string.moreMenuBlock),
+                type = MoreItemType.BLOCK
+            )
+        )
+        add(
+            UIMoreItemData(
+                text = stringResource(R.string.moreMenuCs),
+                type = MoreItemType.QNA
+            )
+        )
+        add(
+            UIMoreItemData(
+                text = stringResource(R.string.moreMenuAppInfo),
+                type = MoreItemType.APP_INFO
+            )
+        )
+        add(
+            UIMoreItemData(
+                text = stringResource(R.string.moreMenuLogout),
+                type = MoreItemType.LOGOUT
+            )
+        )
     }
     Column(modifier = Modifier.fillMaxWidth()) {
         itemList.forEach {
@@ -75,7 +102,7 @@ internal fun MoreItemView(
                 color = Gray10,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 16.dp, horizontal = 28.dp)
+                    .padding(vertical = 17.5.dp, horizontal = 28.dp)
             )
         }
 
