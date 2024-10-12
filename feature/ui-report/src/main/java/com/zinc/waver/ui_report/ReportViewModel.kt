@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.ReportItems
 import com.zinc.domain.usecases.report.LoadReportItems
+import com.zinc.domain.usecases.report.ReportBucket
 import com.zinc.domain.usecases.report.ReportComment
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
     private val loadReportItems: LoadReportItems,
-    private val requestReportComment: ReportComment
+    private val requestReportComment: ReportComment,
+    private val requestReportBucket: ReportBucket
 ) : CommonViewModel() {
 
     private val _reportItemList = MutableLiveData<ReportItems>()
@@ -43,6 +45,18 @@ class ReportViewModel @Inject constructor(
     fun requestReportComment(id: String, reason: String) {
         viewModelScope.launch(ceh(_requestFail, true)) {
             val result = requestReportComment.invoke(id, reason)
+            Log.e("ayhan", "requestReportComment result : $reason\n $result")
+            if (result.success) {
+                _commentReportSucceed.value = true
+            } else {
+                _requestFail.value = true
+            }
+        }
+    }
+
+    fun requestReportBucket(id: String, reason: String) {
+        viewModelScope.launch(ceh(_requestFail, true)) {
+            val result = requestReportBucket.invoke(id, reason)
             Log.e("ayhan", "requestReportComment result : $reason\n $result")
             if (result.success) {
                 _commentReportSucceed.value = true

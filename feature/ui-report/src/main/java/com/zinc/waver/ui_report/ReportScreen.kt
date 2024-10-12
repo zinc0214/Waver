@@ -140,9 +140,12 @@ fun ReportScreen(
                     }
                     .padding(bottom = 28.dp),
                 reportButtonClicked = {
-                    val reason =
-                        etcText.ifEmpty { selectedItem.value?.text.orEmpty() }
-                    viewModel.requestReportComment(reportInfo.id, reason)
+                    val reason = etcText.ifEmpty { selectedItem.value?.text.orEmpty() }
+                    if (reportInfo.reportType == ReportType.BUCKET) {
+                        viewModel.requestReportBucket(reportInfo.id, reason)
+                    } else {
+                        viewModel.requestReportComment(reportInfo.id, reason)
+                    }
                 }
             )
         }

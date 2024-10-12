@@ -286,4 +286,11 @@ interface WaverApi {
     // 더보기 > 차단된 유저 목록
     @GET("/follow/blockUsers")
     suspend fun loadBlockedUsers(): BlockedUserResponse
+
+    // 버킷리스트 신고
+    @POST("/feed/{id}/report")
+    suspend fun requestBucketReport(
+        @Path("id") id: String,
+        @Query("reason") reason: String
+    ): CommonResponse
 }

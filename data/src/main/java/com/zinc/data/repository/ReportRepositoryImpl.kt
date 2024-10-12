@@ -58,4 +58,8 @@ internal class ReportRepositoryImpl @Inject constructor(
     override suspend fun reportComment(id: String, reason: String): CommonResponse {
         return waverApi.requestCommentReport(id, reason)
     }
+
+    override suspend fun reportBucket(id: String, reason: String): CommonResponse {
+        return waverApi.requestBucketReport(id, reason)
+    }
 }

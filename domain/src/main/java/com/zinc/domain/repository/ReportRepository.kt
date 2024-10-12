@@ -6,4 +6,5 @@ import com.zinc.common.models.ReportItems
 interface ReportRepository {
     suspend fun loadReportItems(): ReportItems
     suspend fun reportComment(id: String, reason: String): CommonResponse
+    suspend fun reportBucket(id: String, reason: String): CommonResponse
 }
