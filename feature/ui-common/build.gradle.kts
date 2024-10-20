@@ -65,4 +65,7 @@ dependencies {
     implementation(libs.coil)
 
     implementation(libs.kotlinx.serialization)
+
+    // lottie
+    implementation(libs.lottie)
 }

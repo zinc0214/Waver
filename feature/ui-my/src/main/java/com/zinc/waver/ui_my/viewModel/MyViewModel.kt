@@ -81,8 +81,8 @@ class MyViewModel @Inject constructor(
     private val _isShownMinusDday = MutableLiveData<Boolean>()
     val isShownMinusDday: LiveData<Boolean> get() = _isShownMinusDday
 
-    private val _dataLoadFailed = SingleLiveEvent<Nothing>()
-    val dataLoadFailed: LiveData<Nothing> get() = _dataLoadFailed
+    private val _dataLoadFailed = SingleLiveEvent<Boolean>()
+    val dataLoadFailed: LiveData<Boolean> get() = _dataLoadFailed
 
     private val _searchFailed = SingleLiveEvent<Nothing>()
     val searchFailed: LiveData<Nothing> get() = _searchFailed
@@ -105,6 +105,9 @@ class MyViewModel @Inject constructor(
     private val _ddayFilterSavedFinished = MutableLiveData<Boolean>()
     val ddayFilterSavedFinished: LiveData<Boolean> get() = _ddayFilterSavedFinished
 
+    private val _showLoading = MutableLiveData<Boolean>()
+    val showLoading: LiveData<Boolean> get() = _showLoading
+
     private var isPrefChanged = false
 
     private val searchCeh = CoroutineExceptionHandler { _, throwable ->
@@ -118,8 +121,7 @@ class MyViewModel @Inject constructor(
         }
 
     fun loadAllBucketFilter() {
-        viewModelScope.launch {
-
+        viewModelScope.launch(ceh(_dataLoadFailed, true)) {
             Log.e(
                 "ayhan",
                 "status check : ${_showProgress.value} , ${_showSucceed.value}, ${_showDdayView.value}"
@@ -132,6 +134,7 @@ class MyViewModel @Inject constructor(
                 _allFilterLoadFinished.value = true
             }
             joinAll(job1, job2, job3, job4, job5)
+            _dataLoadFailed.value = false
         }
     }
 
@@ -210,11 +213,10 @@ class MyViewModel @Inject constructor(
     }
 
     fun loadProfile() {
-        viewModelScope.launch {
+        _showLoading.value = true
+        viewModelScope.launch(ceh(_dataLoadFailed, true)) {
             runCatching {
                 val response = loadHomeProfileInfo.invoke()
-                Log.e("ayhan", "tokgen : $response")
-
                 if (response.success) {
                     val data = response.data
                     val topProfile = TopProfile(
@@ -230,13 +232,17 @@ class MyViewModel @Inject constructor(
 
                     Log.e("ayhan", "homeProfike : $topProfile")
                     _profileInfo.value = topProfile
+                    _dataLoadFailed.value = false
+                    _showLoading.value = false
                 } else {
                     Log.e("ayhan", "Fail Load Profile not success")
-                    loadDummyProfile()
+                    _dataLoadFailed.value = false
+                    _showLoading.value = false
                 }
             }.getOrElse {
                 Log.e("ayhan", "Fail Load Profile : $it")
-                loadDummyProfile()
+                _dataLoadFailed.value = false
+                _showLoading.value = false
             }
         }
     }

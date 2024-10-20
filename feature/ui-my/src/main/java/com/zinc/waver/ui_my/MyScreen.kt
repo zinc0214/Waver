@@ -1,6 +1,6 @@
 package com.zinc.waver.ui_my
 
-import androidx.compose.foundation.ExperimentalFoundationApi
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,6 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue.Expanded
 import androidx.compose.material.ModalBottomSheetValue.HalfExpanded
@@ -59,6 +58,7 @@ import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.util.Loading
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_my.screen.all.AllBucketLayer
@@ -71,7 +71,6 @@ import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun MyScreen(
     itemSelected: (HomeItemSelected) -> Unit,
@@ -84,9 +83,13 @@ fun MyScreen(
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
 
+    val showLoadingAsState by viewModel.showLoading.observeAsState()
+
     val profileInfo = remember {
         mutableStateOf(profileInfoAsState)
     }
+
+    val showLoading = remember { mutableStateOf(false) }
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState(pageCount = { tabItems.size })
@@ -109,6 +112,12 @@ fun MyScreen(
 
     LaunchedEffect(key1 = profileInfoAsState) {
         profileInfo.value = profileInfoAsState
+    }
+
+    LaunchedEffect(showLoadingAsState) {
+        Log.e("ayhan", "showLoadingAsState : $showLoadingAsState")
+        showLoading.value = showLoadingAsState == true
+        Log.e("ayhan", "showLoading : $showLoading")
     }
 
     ////////////////////////////
@@ -199,10 +208,13 @@ fun MyScreen(
             }
         }
     }
+
+    if (showLoading.value) {
+        Loading()
+    }
 }
 
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyTabLayer(
     tabItems: List<MyTabType>, pagerState: PagerState, coroutineScope: CoroutineScope
@@ -236,7 +248,6 @@ fun MyTabLayer(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyViewPager(
     pagerState: PagerState,
