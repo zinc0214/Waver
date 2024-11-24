@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_my.screen.category.screen
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +28,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.waver.model.CategoryLoadFailStatus
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.CATEGORY
+import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.CategoryListView
@@ -90,7 +90,7 @@ fun CategoryLayer(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState())
+            .background(Gray2)
     ) {
         TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
         Spacer(modifier = Modifier.height(16.dp))

@@ -102,8 +102,7 @@ fun DdayBucketLayer(
                 },
                 achieveClicked = {
                     clickEvent.invoke(MyPagerClickEvent.AchieveBucketClicked(it))
-                },
-                nestedScrollInterop = null
+                }
             )
         }
     }

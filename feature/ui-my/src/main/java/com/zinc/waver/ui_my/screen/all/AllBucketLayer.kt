@@ -22,7 +22,6 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
@@ -44,7 +43,6 @@ import com.zinc.waver.ui_my.viewModel.MyViewModel
 fun AllBucketLayer(
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
-    nestedScrollInterop: NestedScrollConnection,
     _isFilterUpdated: Boolean
 ) {
 
@@ -133,7 +131,6 @@ fun AllBucketLayer(
                 bucketList = it.bucketList,
                 tabType = ALL,
                 showDday = ddayShow.value ?: true,
-                nestedScrollInterop = nestedScrollInterop,
                 itemClicked = {
                     clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
                 },

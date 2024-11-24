@@ -294,7 +294,6 @@ private fun SearchResultView(
                 bucketList = items.parseToUI().toMutableStateList(),
                 tabType = result.first,
                 showDday = true,
-                nestedScrollInterop = null,
                 itemClicked = {
                     clickEvent.invoke(
                         MySearchClickEvent.BucketItemClicked(
