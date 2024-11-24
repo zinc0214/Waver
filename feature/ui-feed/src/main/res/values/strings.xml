@@ -10,6 +10,7 @@
     <string name="feedRecommendSmallTitle">관심 키워드 선택</string>
     <string name="recommendBucketList">버킷 추천받기</string>
     <string name="keywordRefresh">키워드 새로고침</string>
+    <string name="feedBlankGuide">정보를 가져오지 못했어요.\n 아래로 당겨 피드를 새로고침해주세요.</string>
 
     <!-- Feed Common -->
     <string name="feedLoadFailTitle">데이터 로드 실패</string>

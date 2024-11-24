@@ -49,11 +49,13 @@ dependencies {
     implementation(libs.compose.bom.livedata)
     implementation(libs.compose.bom.foundation)
     implementation(libs.compose.constraintlayout)
+    implementation(libs.compose.bom.tooling)
     implementation(libs.compose.accompanist.systemuicontroller)
 
     // Hilt
     implementation(libs.hilt.anroid)
     implementation(libs.hilt.navigation)
+    implementation(libs.androidx.material3.android)
     kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit.serialization)

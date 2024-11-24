@@ -3,6 +3,7 @@ package com.zinc.waver.ui_feed
 import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,6 +19,7 @@ import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.viewModel.FeedViewModel
 import com.zinc.waver.ui_common.R as CommonR
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedScreen(goToBucket: (String, String) -> Unit) {
 
@@ -26,7 +28,6 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     val viewModel: FeedViewModel = hiltViewModel()
     val isKeyWordSelected by viewModel.isKeyWordSelected.observeAsState()
     val apiLoadFail by viewModel.loadFail.observeAsState()
-    val feedItemsAsState by viewModel.feedItems.observeAsState()
     val feedKeyWords by viewModel.feedKeyWords.observeAsState()
     val likeFailAsState by viewModel.likeFail.observeAsState()
 
@@ -39,10 +40,6 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     val showLikeFailToast = remember {
         mutableStateOf(false)
     }
-    val feedItems = remember {
-        mutableStateOf(feedItemsAsState)
-    }
-
 
     LaunchedEffect(key1 = isKeyWordSelected) {
         if (isKeyWordSelected == false) {
@@ -61,32 +58,26 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
         showLikeFailToast.value = likeFailAsState == true
     }
 
-    LaunchedEffect(key1 = feedItemsAsState) {
-        if (feedItemsAsState == null) {
-            viewModel.checkSavedKeyWords()
-        } else {
-            feedItems.value = feedItemsAsState
-        }
+    LaunchedEffect(Unit) {
+        viewModel.checkSavedKeyWords()
     }
 
     Scaffold { padding ->
         if (isAlreadyKeywordSelected.value) {
-            feedItems.value?.let {
-                FeedLayer(
-                    modifier = Modifier.padding(padding),
-                    feedItems = it,
-                    feedClicked = { event ->
-                        when (event) {
-                            is FeedClickEvent.GoToBucket -> goToBucket(event.bucketId, event.userId)
-                            is FeedClickEvent.Like -> {
-                                viewModel.saveBucketLike(event.id)
-                            }
-
-                            is FeedClickEvent.Scrap -> TODO()
+            FeedLayer(
+                modifier = Modifier.padding(padding),
+                viewModel = viewModel,
+                feedClicked = { event ->
+                    when (event) {
+                        is FeedClickEvent.GoToBucket -> goToBucket(event.bucketId, event.userId)
+                        is FeedClickEvent.Like -> {
+                            viewModel.saveBucketLike(event.id)
                         }
+
+                        is FeedClickEvent.Scrap -> TODO()
                     }
-                )
-            }
+                }
+            )
         } else {
             feedKeyWords?.let {
                 FeedKeywordsLayer(keywords = it, recommendClicked = { list ->

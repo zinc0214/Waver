@@ -16,6 +16,7 @@ import com.zinc.waver.ui_feed.models.parseUI
 import com.zinc.waver.ui_feed.models.toUIModel
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -41,6 +42,14 @@ class FeedViewModel @Inject constructor(
 
     private val _likeFail = MutableLiveData<Boolean>()
     val likeFail: LiveData<Boolean> get() = _likeFail
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
+    private val loadCeh = CoroutineExceptionHandler { _, throwable ->
+        _loadFail.value = true
+        _isLoading.value = false
+    }
 
     fun checkSavedKeyWords() {
         _loadFail.value = false
@@ -81,8 +90,10 @@ class FeedViewModel @Inject constructor(
     }
 
     fun loadFeedItems() {
-        viewModelScope.launch(ceh(_loadFail, true)) {
+        _loadFail.value = false
+        viewModelScope.launch(loadCeh) {
             runCatching {
+                _isLoading.value = true
                 loadFeedItems.invoke().apply {
                     Log.e("ayhan", "feedListResponse : $this")
                     if (this.success.not()) {
@@ -92,8 +103,11 @@ class FeedViewModel @Inject constructor(
                         _feedItems.value = this.data.toUIModel()
                     }
                 }
+
+                _isLoading.value = false
             }.getOrElse {
                 _loadFail.value = true
+                _isLoading.value = false
             }
 
         }
