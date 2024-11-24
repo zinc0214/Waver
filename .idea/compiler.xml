@@ -2,6 +2,9 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="11">
+      <module name="Android.Waver.app" target="19" />
+      <module name="Android.Waver.feature.ui-common" target="19" />
+      <module name="Android.Waver.feature.ui-write" target="19" />
       <module name="BerryBucket.app" target="19" />
       <module name="BerryBucket.buildSrc" target="19" />
       <module name="BerryBucket.buildSrc.main" target="19" />

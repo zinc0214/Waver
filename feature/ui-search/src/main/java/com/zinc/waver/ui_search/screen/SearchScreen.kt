@@ -119,7 +119,7 @@ fun SearchScreen(
                     searchTextChange = {
                         searchWord.value = it
                     },
-                    currentSearchWord = searchWord
+                    currentSearchWord = searchWord.value
                 )
             }
 
