@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.viewModel.FeedViewModel
@@ -72,7 +70,6 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     }
 
     Scaffold { padding ->
-        rememberSystemUiController().setSystemBarsColor(Gray2)
         if (isAlreadyKeywordSelected.value) {
             feedItems.value?.let {
                 FeedLayer(

@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_my
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -13,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
@@ -76,8 +76,6 @@ fun MySearchBottomScreen(
     val searchResult = remember { mutableStateOf(searchResultAsState) }
     val prevSearchResult = remember { mutableStateOf(prevSearchInfoAsState) }
 
-    Log.e("ayhan", "prevSearchText  :${prevSearchResult.value}")
-
     LaunchedEffect(key1 = searchResultAsState, block = {
         if (searchResultAsState != null) {
             searchResult.value = searchResultAsState
@@ -104,7 +102,7 @@ fun MySearchBottomScreen(
         }
     }
 
-    Column {
+    Column(modifier = Modifier.statusBarsPadding()) {
         TopAppBar(clickEvent = clickEvent)
 
         SearchEditView(

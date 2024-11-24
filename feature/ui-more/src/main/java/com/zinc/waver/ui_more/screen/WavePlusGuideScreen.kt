@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -26,7 +27,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray3
@@ -61,12 +61,10 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: () -> Unit)
         label = "closeButtonBg"
     )
 
-    val systemUiController = rememberSystemUiController()
-    systemUiController.setNavigationBarColor(Gray1)
-    systemUiController.setStatusBarColor(closeButtonBg)
-
     Box(
         modifier = Modifier
+            .background(closeButtonBg)
+            .statusBarsPadding()
             .fillMaxSize()
             .background(Gray1)
     ) {

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -154,6 +155,7 @@ fun CloseDetailScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
+                        .statusBarsPadding()
                         .padding(padding)
                         .clickable(
                             interactionSource = interactionSource,

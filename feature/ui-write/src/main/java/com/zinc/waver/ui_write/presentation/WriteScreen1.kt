@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue.Hidden
 import androidx.compose.material.rememberModalBottomSheetState
@@ -67,7 +67,7 @@ import com.zinc.waver.util.createImageInfoWithPath
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WriteScreen1(
     originWriteTotalInfo: WriteTotalInfo,
@@ -308,7 +308,9 @@ fun WriteScreen1(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         if (selectedOption != MEMO) {
-            ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+            ConstraintLayout(modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()) {
                 val (appBar, contents, option) = createRefs()
 
                 WriteAppBar(

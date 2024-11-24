@@ -1,6 +1,8 @@
 package com.zinc.waver.ui.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,6 +14,7 @@ import com.zinc.common.models.ExposureStatus
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
 import com.zinc.waver.ui.design.theme.BaseTheme
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.presentation.home.HomeBottomBar
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
@@ -62,7 +65,11 @@ fun WaverApp(
             mutableStateOf(false)
         }
 
-        Column {
+        Column(
+            modifier = Modifier
+                .background(color = Gray1)
+                .navigationBarsPadding()
+        ) {
             Scaffold(
                 bottomBar = {
                     if (appState.shouldShowBottomBar && shownBottomSheet.value.not()) {

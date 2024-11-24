@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.presentation.ListPopupView
 import com.zinc.waver.ui.presentation.component.MyText
@@ -62,9 +61,7 @@ fun MoreScreen(
         profileInfo.value = profileInfoAsState
     }
 
-    Column(modifier = modifier) {
-        rememberSystemUiController().setSystemBarsColor(Gray1)
-
+    Column(modifier = modifier.statusBarsPadding()) {
         MoreTitleView()
 
         profileInfo.value?.let { info ->

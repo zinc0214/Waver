@@ -2,6 +2,7 @@ package com.zinc.waver.ui_more.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -24,7 +25,9 @@ fun AppInfoScreen(
     val appVersion by viewModel.appVersion.observeAsState()
 
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .statusBarsPadding()) {
         AppInfoTitle {
             onBackClicked()
         }

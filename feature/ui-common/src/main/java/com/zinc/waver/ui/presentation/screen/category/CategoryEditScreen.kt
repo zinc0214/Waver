@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -110,6 +111,7 @@ fun CategoryEditScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Gray1)
+            .statusBarsPadding()
     ) {
 
         CategoryEditTitleView(backClicked = {
