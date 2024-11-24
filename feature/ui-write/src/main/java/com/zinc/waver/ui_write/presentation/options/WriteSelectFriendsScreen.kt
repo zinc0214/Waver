@@ -90,11 +90,13 @@ fun WriteSelectFriendsScreen(
             )
         } else {
             SearchEditView(
-                onImeAction = {
+                goToSearch = {
                     viewModel.searchFriends(it)
-                },
-                searchTextChange = {
                     searchWord.value = it
+                },
+                clearCurrent = {
+                    viewModel.searchFriends("")
+                    searchWord.value = ""
                 },
                 currentSearchWord = searchWord.value
             )

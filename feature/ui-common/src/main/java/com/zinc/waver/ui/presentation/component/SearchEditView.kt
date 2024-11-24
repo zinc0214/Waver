@@ -34,8 +34,8 @@ import com.zinc.waver.ui_common.R
 
 @Composable
 fun SearchEditView(
-    onImeAction: (String) -> Unit,
-    searchTextChange: (String) -> Unit,
+    goToSearch: (String) -> Unit,
+    clearCurrent: () -> Unit,
     currentSearchWord: String
 ) {
     val hintText = stringResource(id = R.string.searchHint)
@@ -58,13 +58,12 @@ fun SearchEditView(
                     color = Gray10, fontSize = dpToSp(22.dp), fontWeight = FontWeight.Medium
                 ),
                 onValueChange = {
-                    searchTextChange(it)
                     searchText = it
                 },
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
-                    onImeAction(searchText)
+                    goToSearch(searchText)
                     keyboardController?.hide()
                 }),
                 decorationBox = { innerTextField ->
@@ -84,8 +83,7 @@ fun SearchEditView(
                     modifier = Modifier
                         .size(32.dp)
                         .clickable {
-                            searchText = ""
-                            searchTextChange.invoke("")
+                            clearCurrent()
                         })
             }
         }
@@ -101,7 +99,8 @@ fun SearchEditView(
 @Preview(showBackground = true)
 @Composable
 private fun SearchEditPreview() {
-    SearchEditView(onImeAction = {}, searchTextChange = {}, currentSearchWord = ("z")
+    SearchEditView(
+        goToSearch = {}, currentSearchWord = ("z"), clearCurrent = {}
 
     )
 }

@@ -79,9 +79,11 @@ fun SearchScreen(
         viewModel.loadSearchRecommendItems()
     }
 
-    ConstraintLayout(modifier = Modifier
-        .fillMaxSize()
-        .statusBarsPadding()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
         val (topAppBar, searchResultView) = createRefs()
 
         SearchTopAppBar(
@@ -116,11 +118,13 @@ fun SearchScreen(
         ) {
             item {
                 SearchEditView(
-                    onImeAction = {
-                        viewModel.loadSearchResult(searchWord.value)
+                    goToSearch = { word ->
+                        viewModel.loadSearchResult(word)
+                        searchWord.value = word
                     },
-                    searchTextChange = {
-                        searchWord.value = it
+                    clearCurrent = {
+                        viewModel.loadSearchResult("")
+                        searchWord.value = ""
                     },
                     currentSearchWord = searchWord.value
                 )

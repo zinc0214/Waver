@@ -72,6 +72,11 @@ class SearchViewModel @Inject constructor(
     }
 
     fun loadSearchResult(searchWord: String) {
+        if (searchWord.isEmpty()) {
+            _searchResultIsEmpty.value = true
+            return
+        }
+
         viewModelScope.launch(ceh(_loadFail, "")) {
             _searchResultIsEmpty.value = false
             runCatching {
