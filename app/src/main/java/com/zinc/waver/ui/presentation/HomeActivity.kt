@@ -24,6 +24,7 @@ import com.zinc.waver.model.AddImageType
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
 import com.zinc.waver.util.createImageFile
@@ -135,6 +136,13 @@ class HomeActivity : AppCompatActivity() {
                                 viewModel.logout()
                                 finish()
                             }
+
+                            ActionWithActivity.InAppBilling -> {
+                                val subs = ChooseSubscription(this) {
+                                    Toast.makeText(this, "구매완료", Toast.LENGTH_SHORT).show()
+                                }
+                                subs.billingSetup()
+                            }
                         }
                     })
 
@@ -243,9 +251,5 @@ class HomeActivity : AppCompatActivity() {
             createChooser(send, resources.getString(R.string.goToWaveQna)),
             null
         )
-    }
-
-    private fun logout() {
-
     }
 }

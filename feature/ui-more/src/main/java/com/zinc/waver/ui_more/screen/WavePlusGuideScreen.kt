@@ -38,7 +38,7 @@ import com.zinc.waver.util.DpToPx
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-fun WavePlusGuideScreen(onBackPressed: () -> Unit) {
+fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: () -> Unit) {
 
     val scrollState = rememberScrollState()
     var scrollPosition by remember { mutableIntStateOf(0) }
@@ -83,7 +83,7 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit) {
             Spacer(modifier = Modifier.height(45.dp))
 
             WavePlusPayJoinButtonView({
-
+                inAppBillingShow()
             })
         }
 
@@ -111,8 +111,8 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit) {
 }
 
 
-@Preview(heightDp = 700, widthDp = 500)
+@Preview()
 @Composable
 private fun WavePlusGuidePreview() {
-    WavePlusGuideScreen {}
+    WavePlusGuideScreen({}, inAppBillingShow = {})
 }

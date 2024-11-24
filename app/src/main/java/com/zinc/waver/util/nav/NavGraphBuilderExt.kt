@@ -428,11 +428,12 @@ internal fun NavGraphBuilder.myWaveManageNavGraph(
 }
 
 internal fun NavGraphBuilder.wavePlusGuideNavGraph(
-    backPress: () -> Unit
+    backPress: () -> Unit,
+    inAppBillingShow: () -> Unit,
 ) {
     composable(MoreDestinations.WAVE_PLUS) {
 
-        WavePlusGuideScreen(onBackPressed = { backPress() })
+        WavePlusGuideScreen(onBackPressed = { backPress() }, inAppBillingShow = inAppBillingShow)
     }
 }
 

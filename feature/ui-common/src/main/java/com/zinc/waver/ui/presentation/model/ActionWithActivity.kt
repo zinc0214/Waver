@@ -17,4 +17,6 @@ sealed class ActionWithActivity {
     data object GoToQNAEmail : ActionWithActivity()
 
     data object Logout : ActionWithActivity()
+
+    data object InAppBilling : ActionWithActivity()
 }

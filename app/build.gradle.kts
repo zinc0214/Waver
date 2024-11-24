@@ -141,4 +141,7 @@ dependencies {
 
     // lottie
     implementation(libs.lottie)
+
+    // InAppBilling
+    implementation(libs.inapp.billing)
 }

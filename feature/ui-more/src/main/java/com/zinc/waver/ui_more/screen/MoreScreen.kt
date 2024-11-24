@@ -50,7 +50,9 @@ fun MoreScreen(
     val showApiFailDialog = remember { mutableStateOf(false) }
     val profileInfo = remember { mutableStateOf(profileInfoAsState) }
 
-    viewModel.loadMyProfile()
+    LaunchedEffect(Unit) {
+        viewModel.loadMyProfile()
+    }
 
     LaunchedEffect(key1 = loadProfileFail) {
         showApiFailDialog.value = loadProfileFail ?: false

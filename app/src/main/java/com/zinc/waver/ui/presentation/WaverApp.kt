@@ -337,7 +337,9 @@ fun WaverApp(
                         }
                     }
                     myWaveManageNavGraph(backPress = appState::backPress)
-                    wavePlusGuideNavGraph(backPress = appState::backPress)
+                    wavePlusGuideNavGraph(
+                        backPress = appState::backPress,
+                        inAppBillingShow = { action.invoke(ActionWithActivity.InAppBilling) })
                 }
             }
         }
