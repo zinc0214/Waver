@@ -6,23 +6,18 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -35,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -54,7 +50,7 @@ import com.zinc.waver.ui_search.model.RecommendItem
 import com.zinc.waver.ui_search.model.RecommendList
 import com.zinc.waver.ui_search.model.RecommendType
 import com.zinc.waver.ui_search.model.SearchBucketItem
-
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun RecommendTopBar(
@@ -63,7 +59,7 @@ fun RecommendTopBar(
     isFirstItemShown: Boolean
 ) {
 
-    Column(modifier = modifier.wrapContentHeight()) {
+    Column(modifier = modifier) {
         AnimatedVisibility(visible = isFirstItemShown) {
             SearchTitle()
         }
@@ -83,10 +79,12 @@ fun SearchTitle() {
         text = stringResource(id = R.string.searchTitle),
         fontSize = dpToSp(24.dp),
         color = Gray10,
+        fontWeight = FontWeight.Bold,
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Gray1)
-            .padding(top = 24.dp, bottom = 4.dp, start = 28.dp, end = 17.dp)
+            .padding(top = 24.dp)
+            .padding(horizontal = 28.dp)
     )
 }
 
@@ -173,87 +171,75 @@ fun RecommendListView(
     LaunchedEffect(key1 = isFirstItemShownState) {
         isFirstItemShown(isFirstItemShownState)
     }
-
-    Box(
+    LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .scrollable(
-                orientation = Orientation.Vertical,
-                state = rememberScrollState()
-            )
+            .fillMaxWidth(),
+        state = listScrollState,
+        contentPadding = PaddingValues(
+            top = 16.dp, bottom = 32.dp
+        )
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth(),
-            state = listScrollState,
-            contentPadding = PaddingValues(
-                top = 16.dp, bottom = 32.dp
-            )
-        ) {
-            items(
-                items = recommendList.items,
-                key = { it.type },
-                itemContent = {
-                    RecommendTitleView(it)
-                    RecommendBucketListView(it.items, bucketClicked = bucketClicked)
-                    if (recommendList.items.last() != it) {
-                        RecommendDivider(modifier = Modifier.padding(vertical = 32.dp))
-                    }
-                })
-        }
+        items(
+            items = recommendList.items,
+            key = { it.type },
+            itemContent = {
+                RecommendTitleView(it)
+                RecommendBucketListView(
+                    it.items,
+                    bucketClicked = bucketClicked
+                )
+                if (recommendList.items.last() != it) {
+                    RecommendDivider(modifier = Modifier.padding(vertical = 32.dp))
+                }
+            })
     }
 }
 
 @Composable
 private fun RecommendTitleView(recommendItem: RecommendItem) {
     val type = recommendItem.type
-    ConstraintLayout(
+
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 28.dp)
     ) {
-
-        val (leftContent, rightContent) = createRefs()
-
-        Column(
-            modifier = Modifier
-                .constrainAs(leftContent) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(if (type == RecommendType.POPULAR) rightContent.start else parent.end)
-                    width = Dimension.fillToConstraints
-                }
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             Row {
                 Image(
-                    painter = if (type == RecommendType.POPULAR) painterResource(com.zinc.waver.ui_common.R.drawable.btn_32_like_on) else painterResource(
+                    painter = if (type == RecommendType.POPULAR) painterResource(CommonR.drawable.btn_32_like_on) else painterResource(
                         R.drawable.btn_32_star
                     ), contentDescription = null, modifier = Modifier
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                MyText(text = "인기", fontSize = dpToSp(15.dp), color = Gray10)
+                MyText(text = recommendItem.title, fontSize = dpToSp(15.dp), color = Gray10)
             }
 
             TagListView(
+                modifier = Modifier,
                 tagList = recommendItem.tagList
             )
         }
         if (type == RecommendType.RECOMMEND) {
-            KeyWordChangeButton(modifier = Modifier.constrainAs(rightContent) {
-                bottom.linkTo(parent.bottom)
-                end.linkTo(parent.end)
-            })
+            KeyWordChangeButton(
+                modifier = Modifier
+                    .padding(start = 6.dp)
+                    .align(Alignment.Bottom)
+            )
         }
     }
 }
 
 
 @Composable
-fun RecommendBucketListView(list: List<SearchBucketItem>, bucketClicked: (String, String) -> Unit) {
+fun RecommendBucketListView(
+    list: List<SearchBucketItem>,
+    bucketClicked: (String, String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .padding(horizontal = 28.dp)
     ) {
         list.forEach {
@@ -358,4 +344,19 @@ fun KeyWordChangeButton(modifier: Modifier) {
             color = Gray9
         )
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun RecommendTitlePreview() {
+
+    RecommendTitleView(
+        recommendItem = RecommendItem(
+            title = "delenit",
+            type = RecommendType.RECOMMEND,
+            tagList = listOf("제주도", "1박2일", "좀 길어버린 텍스투"),
+            items = listOf()
+        )
+    )
 }

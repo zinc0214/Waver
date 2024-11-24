@@ -173,13 +173,15 @@ class SearchViewModel @Inject constructor(
         val popularItem = RecommendItem(
             type = RecommendType.POPULAR,
             tagList = listOf("여행", "공부", "문화"),
-            items = bucketItem
+            items = bucketItem,
+            title = "인기"
         )
 
         val recommendItem = RecommendItem(
             type = RecommendType.RECOMMEND,
             tagList = listOf("제주도", "1박2일", "가족여행"),
-            items = bucketItem
+            items = bucketItem,
+            title = "추천"
         )
 
         return RecommendList(listOf(popularItem, recommendItem))

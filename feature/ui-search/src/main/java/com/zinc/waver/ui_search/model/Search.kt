@@ -54,6 +54,7 @@ enum class SearchRecommendType {
 }
 
 data class RecommendItem(
+    val title: String,
     val type: RecommendType,
     val tagList: List<String>,
     val items: List<SearchBucketItem>

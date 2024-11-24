@@ -3,7 +3,6 @@ package com.zinc.waver.ui_search.screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -12,8 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui_search.component.RecommendListView
 import com.zinc.waver.ui_search.component.RecommendTopBar
 import com.zinc.waver.ui_search.model.SearchGoToEvent
@@ -30,11 +27,9 @@ fun SearchRecommendScreen(
     var isFirstItemShown by remember { mutableStateOf(true) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        rememberSystemUiController().setSystemBarsColor(Gray1)
         RecommendTopBar(
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+                .fillMaxWidth(),
             isFirstItemShown = isFirstItemShown,
             editViewClicked = {
                 onSearchEvent.invoke(SearchGoToEvent.GoToSearch)

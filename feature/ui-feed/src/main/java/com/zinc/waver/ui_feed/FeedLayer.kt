@@ -31,7 +31,6 @@ fun FeedLayer(
             .fillMaxWidth()
             .background(Gray2)
             .padding(horizontal = 16.dp)
-            .padding(top = 40.dp)
             .verticalScroll(rememberScrollState())
     ) {
 
