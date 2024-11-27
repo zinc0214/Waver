@@ -82,7 +82,9 @@ data class KeyWordItem(
 data class SearchResultItems(
     val bucketItems: List<SearchBucketItem>,
     val userItems: List<UserItem>
-)
+) {
+    fun hasItems() = bucketItems.isNotEmpty() || userItems.isNotEmpty()
+}
 
 data class UserItem(
     val userId: String,

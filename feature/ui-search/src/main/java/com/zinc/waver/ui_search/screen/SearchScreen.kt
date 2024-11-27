@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_search.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -31,52 +31,40 @@ import com.zinc.waver.ui_search.model.SearchGoToEvent
 import com.zinc.waver.ui_search.viewmodel.SearchViewModel
 import com.zinc.waver.ui_common.R as CommonR
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchScreen(
     closeEvent: () -> Unit,
     searchEvent: (SearchGoToEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
-    val searchRecommendItemsAsState by viewModel.searchRecommendItems.observeAsState()
+    val searchRecommendItems by viewModel.searchRecommendItems.observeAsState()
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
-    val searchResultIsEmptyAsState by viewModel.searchResultIsEmpty.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
 
     val listScrollState = rememberLazyListState()
-    val searchResultItems = remember { mutableStateOf(searchResultItemsAsState) }
-    val searchRecommendItems = remember { mutableStateOf(searchRecommendItemsAsState) }
-    val searchResultIsEmpty = remember { mutableStateOf(searchResultIsEmptyAsState) }
-    val searchWord = remember { mutableStateOf(viewModel.prevSearchWord) }
-    val isClosed = remember { mutableStateOf(false) }
-    val showFailDialog = remember { mutableStateOf(null as String?) }
+    var searchResultItems by remember { mutableStateOf(searchResultItemsAsState) }
+    var searchWord by remember { mutableStateOf(viewModel.prevSearchWord) }
+    var isClosed by remember { mutableStateOf(false) }
+    var showFailDialog by remember { mutableStateOf(null as String?) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadSearchRecommendItems()
+    }
 
     LaunchedEffect(searchResultItemsAsState) {
-        searchResultItems.value = searchResultItemsAsState
+        searchResultItems = searchResultItemsAsState
     }
 
-    LaunchedEffect(searchRecommendItemsAsState) {
-        searchRecommendItems.value = searchRecommendItemsAsState
-    }
-
-    LaunchedEffect(searchWord.value) {
-        if (searchWord.value.isEmpty()) {
-            searchResultItems.value = null
+    LaunchedEffect(searchWord) {
+        if (searchWord.isEmpty()) {
+            searchResultItems = null
         }
     }
 
     LaunchedEffect(key1 = loadFail) {
         if (loadFail != null) {
-            showFailDialog.value = loadFail
+            showFailDialog = loadFail
         }
-    }
-
-    LaunchedEffect(key1 = searchResultIsEmptyAsState) {
-        searchResultIsEmpty.value = searchResultIsEmptyAsState
-    }
-
-    if (searchRecommendItems.value == null && !isClosed.value) {
-        viewModel.loadSearchRecommendItems()
     }
 
     ConstraintLayout(
@@ -88,9 +76,9 @@ fun SearchScreen(
 
         SearchTopAppBar(
             listState = listScrollState,
-            title = searchWord.value,
+            title = searchWord,
             closeClicked = {
-                isClosed.value = true
+                isClosed = true
                 closeEvent.invoke()
             },
             modifier = Modifier
@@ -120,31 +108,31 @@ fun SearchScreen(
                 SearchEditView(
                     goToSearch = { word ->
                         viewModel.loadSearchResult(word)
-                        searchWord.value = word
+                        searchWord = word
                     },
-                    currentSearchWord = searchWord.value
+                    currentSearchWord = searchWord
                 )
             }
 
             // 검색 결과가 없는 경우
-            if (searchWord.value.isNotEmpty() && searchResultIsEmpty.value == true) {
+            if (searchWord.isNotEmpty() && searchResultItems?.hasItems() == false) {
                 item {
                     SearchResultBlankView(
-                        modifier = Modifier.animateItemPlacement(),
-                        searchWord = searchWord.value
+                        modifier = Modifier.animateItem(),
+                        searchWord = searchWord
                     )
                 }
             }
 
             // 최근 검색어 + 추천 키워드 화면
-            if (searchWord.value.isEmpty() || searchResultIsEmpty.value == true) {
+            if (searchWord.isEmpty() || searchResultItems?.hasItems() == false) {
                 item {
-                    searchRecommendItems.value?.let {
+                    searchRecommendItems?.let {
                         RecommendKeyWordView(
                             searchItems = it,
-                            showOnlyRecommend = searchWord.value.isNotEmpty(),
+                            showOnlyRecommend = searchWord.isNotEmpty(),
                             itemClicked = { selectWord ->
-                                searchWord.value = selectWord
+                                searchWord = selectWord
                                 viewModel.loadSearchResult(selectWord)
                             },
                             recentItemDelete = { deleteItem ->
@@ -156,12 +144,12 @@ fun SearchScreen(
             }
 
             // 검색 결과
-            if (searchResultIsEmpty.value == false) {
+            if (searchResultItems?.hasItems() == true) {
                 item {
-                    searchResultItems.value?.let {
+                    searchResultItems?.let {
                         SearchResultView(
                             resultItems = it,
-                            modifier = Modifier.animateItemPlacement(),
+                            modifier = Modifier.animateItem(),
                             goToEvent = searchEvent,
                             actionEvent = { event ->
                                 when (event) {
@@ -177,14 +165,14 @@ fun SearchScreen(
         }
     }
 
-    if (showFailDialog.value != null) {
+    if (showFailDialog != null) {
         val message =
-            if (showFailDialog.value.isNullOrBlank()) stringResource(CommonR.string.retryDesc) else showFailDialog.value
+            if (showFailDialog.isNullOrBlank()) stringResource(CommonR.string.retryDesc) else showFailDialog
         ApiFailDialog(
             title = stringResource(id = R.string.searchLoadFail),
             message = message,
             dismissEvent = {
-                showFailDialog.value = null
+                showFailDialog = null
                 closeEvent()
             })
     }
