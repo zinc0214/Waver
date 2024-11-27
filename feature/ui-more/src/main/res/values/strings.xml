@@ -3,7 +3,9 @@
     <string name="moreTitle">더보기</string>
     <string name="goToBadgeChangeButtonText">변경</string>
     <string name="goToUpdateProfile">프로필 관리</string>
-    <string name="goToJoinWaverClub">달콤베리 클럽 가입하기</string>
+    <string name="waverPlusBenefitDesc1">1주일 </string>
+    <string name="waverPlusBenefitDesc2">광고 제거/무제한 버킷리스트 무료</string>
+    <string name="goToJoinWaverClub">웨이버 플러스 알아보기</string>
 
 
     <!-- 더보기 메뉴 -->

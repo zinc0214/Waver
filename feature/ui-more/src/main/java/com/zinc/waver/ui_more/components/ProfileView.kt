@@ -175,7 +175,6 @@ private fun ProfileUpdateButtonView(modifier: Modifier, goToUpdate: () -> Unit) 
     ) {
         MyText(
             text = stringResource(id = R.string.goToUpdateProfile),
-            modifier = Modifier.padding(horizontal = 20.dp),
             fontSize = dpToSp(dp = 14.dp)
         )
     }
@@ -205,7 +204,7 @@ private fun ProfileImagePreview() {
     ProfileImageView(modifier = Modifier, "")
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun ProfilePreview() {
     MoreTopProfileView(
