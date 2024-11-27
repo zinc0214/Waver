@@ -94,10 +94,6 @@ fun WriteSelectFriendsScreen(
                     viewModel.searchFriends(it)
                     searchWord.value = it
                 },
-                clearCurrent = {
-                    viewModel.searchFriends("")
-                    searchWord.value = ""
-                },
                 currentSearchWord = searchWord.value
             )
 

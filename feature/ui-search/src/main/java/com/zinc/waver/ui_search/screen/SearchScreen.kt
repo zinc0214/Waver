@@ -122,10 +122,6 @@ fun SearchScreen(
                         viewModel.loadSearchResult(word)
                         searchWord.value = word
                     },
-                    clearCurrent = {
-                        viewModel.loadSearchResult("")
-                        searchWord.value = ""
-                    },
                     currentSearchWord = searchWord.value
                 )
             }
