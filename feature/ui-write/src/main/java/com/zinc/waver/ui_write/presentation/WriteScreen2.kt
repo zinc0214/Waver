@@ -46,6 +46,7 @@ import com.zinc.waver.ui_write.presentation.options.WriteSelectKeyWordScreen
 import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 import com.zinc.waver.util.createImageInfoWithPath
 import com.zinc.waver.util.loadImageFiles
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun WriteScreen2(
@@ -191,9 +192,11 @@ fun WriteScreen2(
             }
         }
     } else {
-        ConstraintLayout(modifier = modifier
-            .fillMaxSize()
-            .statusBarsPadding()) {
+        ConstraintLayout(
+            modifier = modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+        ) {
 
             WriteScreen2ContentView(
                 viewModel = viewModel,
@@ -283,6 +286,7 @@ private fun WriteScreen2ContentView(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
+            leftIcon = CommonR.drawable.btn_40_back,
             nextButtonClickable = true,
             rightText = R.string.writeGoToFinish,
             clickEvent = { it ->

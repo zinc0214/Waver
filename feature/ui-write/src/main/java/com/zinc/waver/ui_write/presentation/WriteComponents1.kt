@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_write.presentation
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,11 +43,13 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.MyTextField
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_write.R
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun WriteAppBar(
     modifier: Modifier,
     rightText: Int,
+    @DrawableRes leftIcon: Int = CommonR.drawable.btn_40_close,
     clickEvent: (WriteAppBarClickEvent) -> Unit,
     nextButtonClickable: Boolean,
     isShowDivider: Boolean = true
@@ -60,7 +62,7 @@ fun WriteAppBar(
         val (closeButton, moreButton, divider) = createRefs()
 
         IconButton(
-            image = com.zinc.waver.ui_common.R.drawable.btn_40_close,
+            image = leftIcon,
             contentDescription = stringResource(id = com.zinc.waver.ui_common.R.string.closeDesc),
             modifier = Modifier
                 .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
@@ -111,7 +113,6 @@ fun WriteTitleFieldView(
     textChanged: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.writeTitleHintText)
-    val keyboardController = LocalSoftwareKeyboardController.current
     var titleText by remember { mutableStateOf(TextFieldValue(title)) }
 
     MyTextField(
@@ -206,15 +207,19 @@ private fun BottomOptionIcon(
             MEMO -> {
                 if (isUsed) R.drawable.btn_40_memo_on else R.drawable.btn_40_memo_off
             }
+
             IMAGE -> {
                 if (isUsed) R.drawable.btn_40_gallery_on else R.drawable.btn_40_gallery_off
             }
+
             CATEGORY -> {
                 if (isUsed) R.drawable.btn_40_category_on else R.drawable.btn_40_category_off
             }
+
             D_DAY -> {
                 if (isUsed) R.drawable.btn_40_calendar_on else R.drawable.btn_40_calendar_off
             }
+
             GOAL -> {
                 if (isUsed) R.drawable.btn_40_taget_count_on else R.drawable.btn_40_taget_count_off
             }

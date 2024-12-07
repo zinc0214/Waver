@@ -106,10 +106,10 @@ private fun CategorySelectView(
                     style = TextStyle(textAlign = TextAlign.Center),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 28.dp, vertical = 18.dp)
                         .clickable {
                             goToAddCategory()
                         }
+                        .padding(horizontal = 28.dp, vertical = 18.dp)
                 )
             }
         }
@@ -118,7 +118,7 @@ private fun CategorySelectView(
 
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 private fun CategorySelectBottomScreenPreview() {
     CategorySelectView(categoryInfoList = buildList {
         add(CategoryInfo(id = 0, name = "여행", defaultYn = YesOrNo.Y, bucketlistCount = "10"))

@@ -61,9 +61,7 @@ fun BottomButtonView(
                         .fillMaxHeight()
                         .clickable {
                             negativeEvent()
-                        },
-
-                    ) {
+                        }) {
                     MyText(
                         modifier = Modifier.align(Alignment.Center),
                         text = stringResource(id = negative.text),
@@ -77,9 +75,7 @@ fun BottomButtonView(
                     modifier = Modifier
                         .fillMaxHeight()
                         .width(0.6.dp)
-                        .background(
-                            color = Gray4
-                        )
+                        .background(color = Gray4)
                 )
             }
 
@@ -91,7 +87,6 @@ fun BottomButtonView(
                     .clickable {
                         positiveEvent()
                     }
-
             ) {
                 MyText(
                     modifier = Modifier.align(Alignment.Center),
@@ -108,11 +103,25 @@ fun BottomButtonView(
 @Preview
 @Composable
 private fun BottomButtonPreview() {
-    BottomButtonView(
-        negative = null,
-        positive = DialogButtonInfo(
-            text = R.string.apply, color = Main4
-        ),
-        positiveEvent = {}
-    )
+    Column {
+        BottomButtonView(
+            negative = null,
+            positive = DialogButtonInfo(
+                text = R.string.apply, color = Main4
+            ),
+            positiveEvent = {}
+        )
+
+        BottomButtonView(
+            negative = DialogButtonInfo(
+                text = R.string.apply, color = Gray6
+            ),
+            positive = DialogButtonInfo(
+                text = R.string.apply, color = Main4
+            ),
+            negativeEvent = {},
+            positiveEvent = {}
+        )
+    }
+
 }
