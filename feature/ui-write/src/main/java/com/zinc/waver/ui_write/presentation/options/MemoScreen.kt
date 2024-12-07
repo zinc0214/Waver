@@ -3,6 +3,7 @@ package com.zinc.waver.ui_write.presentation.options
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
@@ -34,7 +35,9 @@ fun MemoScreen(
 
     ConstraintLayout(modifier = modifier
         .fillMaxSize()
-        .statusBarsPadding()) {
+        .statusBarsPadding()
+        .imePadding()
+    ) {
         val (appBar, textField) = createRefs()
 
         val nextButtonClickable = remember { mutableStateOf(false) }
