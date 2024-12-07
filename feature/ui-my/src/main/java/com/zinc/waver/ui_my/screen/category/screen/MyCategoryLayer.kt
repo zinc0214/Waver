@@ -45,6 +45,7 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun CategoryLayer(
+    modifier: Modifier,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     val recommendCategory = "여향"
@@ -88,7 +89,7 @@ fun CategoryLayer(
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Gray2)
     ) {

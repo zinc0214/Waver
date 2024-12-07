@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -35,12 +36,14 @@ import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.SimpleBucketListView
 import com.zinc.waver.ui_my.view.FilterAndSearchImageView
 import com.zinc.waver.ui_my.viewModel.MyViewModel
 
 @Composable
 fun AllBucketLayer(
+    modifier: Modifier,
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
     _isFilterUpdated: Boolean
@@ -114,29 +117,39 @@ fun AllBucketLayer(
     }
 
     bucketInfo.value?.let {
-        Column(Modifier.background(Gray2)) {
-            AllBucketTopView(
-                modifier = Modifier,
-                allBucketInfo = it,
-                clickEvent = {
-                    clickEvent(it)
+        if (it.bucketList.isNotEmpty()) {
+            Column(modifier.background(Gray2)) {
+                AllBucketTopView(
+                    modifier = Modifier,
+                    allBucketInfo = it,
+                    clickEvent = {
+                        clickEvent(it)
 
-                    if (it is MyPagerClickEvent.BottomSheet.FilterClicked) {
-                        isFilterUpdated.value = false
+                        if (it is MyPagerClickEvent.BottomSheet.FilterClicked) {
+                            isFilterUpdated.value = false
+                        }
                     }
-                }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                SimpleBucketListView(
+                    bucketList = it.bucketList,
+                    tabType = ALL,
+                    showDday = ddayShow.value ?: true,
+                    itemClicked = {
+                        clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
+                    },
+                    achieveClicked = {
+                        viewModel.achieveBucket(it, ALL)
+                    })
+            }
+        } else {
+            MyText(
+                text = stringResource(R.string.hasNoBucketList),
+                textAlign = TextAlign.Center,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 50.dp, horizontal = 20.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            SimpleBucketListView(
-                bucketList = it.bucketList,
-                tabType = ALL,
-                showDday = ddayShow.value ?: true,
-                itemClicked = {
-                    clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
-                },
-                achieveClicked = {
-                    viewModel.achieveBucket(it, ALL)
-                })
         }
     }
 }

@@ -110,7 +110,7 @@ sealed interface MyTabType : Serializable {
         fun parseNavigationValue(value: String): MyTabType =
             value.parseNavigationValue()
 
-        fun values() = listOf(ALL, CATEGORY, DDAY, CHALLENGE)
+        fun values() = listOf(ALL, CATEGORY, DDAY)
 
     }
 }

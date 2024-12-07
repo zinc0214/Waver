@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -16,18 +17,23 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.model.MyTabType.DDAY
+import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.SimpleBucketListView
 import com.zinc.waver.ui_my.view.FilterAndSearchImageView
 import com.zinc.waver.ui_my.viewModel.MyViewModel
 
 @Composable
 fun DdayBucketLayer(
+    modifier: Modifier,
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
     _isFilterUpdated: Boolean
@@ -92,17 +98,27 @@ fun DdayBucketLayer(
     }
 
     bucketInfo.value?.let {
-        Column {
-            DdayFilterAndSearchImageView(clickEvent = clickEvent)
-            Spacer(modifier = Modifier.height(16.dp))
-            SimpleBucketListView(
-                it.bucketList.toMutableStateList(), DDAY, true,
-                itemClicked = {
-                    clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
-                },
-                achieveClicked = {
-                    clickEvent.invoke(MyPagerClickEvent.AchieveBucketClicked(it))
-                }
+        if (it.bucketList.isNotEmpty()) {
+            Column(modifier = modifier) {
+                DdayFilterAndSearchImageView(clickEvent = clickEvent)
+                Spacer(modifier = Modifier.height(16.dp))
+                SimpleBucketListView(
+                    it.bucketList.toMutableStateList(), DDAY, true,
+                    itemClicked = {
+                        clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
+                    },
+                    achieveClicked = {
+                        clickEvent.invoke(MyPagerClickEvent.AchieveBucketClicked(it))
+                    }
+                )
+            }
+        } else {
+            MyText(
+                text = stringResource(R.string.hasNoBucketList),
+                textAlign = TextAlign.Center,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 50.dp, horizontal = 20.dp)
             )
         }
     }

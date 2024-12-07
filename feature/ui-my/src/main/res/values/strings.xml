@@ -17,6 +17,7 @@
     <!-- My > All -->
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
+    <string name="hasNoBucketList">버킷리스트가 없습니다</string>
 
     <!-- My > All > Filter -->
     <string name="showBucketList">표시할 버킷리스트</string>

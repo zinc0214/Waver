@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.ModalBottomSheetValue.Expanded
@@ -38,8 +41,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -60,6 +65,7 @@ import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray6
+import com.zinc.waver.ui.design.util.isFirstItemVisible
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.Loading
 import com.zinc.waver.ui.util.dpToSp
@@ -89,6 +95,10 @@ fun MyScreen(
     val profileInfo = remember {
         mutableStateOf(profileInfoAsState)
     }
+
+    val configuration = LocalConfiguration.current
+
+    val pagerHeight = configuration.screenHeightDp.dp - 128.dp
 
     val showLoading = remember { mutableStateOf(false) }
 
@@ -141,6 +151,10 @@ fun MyScreen(
         }
     }
 
+    val scrollState = rememberLazyListState()
+
+    var isListScrollable by remember { mutableStateOf(false) }
+
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
             Hidden -> {
@@ -151,6 +165,10 @@ fun MyScreen(
                 bottomSheetClicked.invoke(BottomSheetScreenType.MyBucketFilterScreen(true))
             }
         }
+    }
+
+    LaunchedEffect(scrollState.isFirstItemVisible) {
+        isListScrollable = !scrollState.isFirstItemVisible
     }
 
     ModalBottomSheetLayout(
@@ -174,7 +192,7 @@ fun MyScreen(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         profileInfo.value?.let {
-            LazyColumn(modifier = Modifier.statusBarsPadding(), state = rememberLazyListState()) {
+            LazyColumn(modifier = Modifier.statusBarsPadding(), state = scrollState) {
                 item {
                     MyTopLayer(profileInfo = profileInfo.value) {
                         myTopEvent(it)
@@ -186,6 +204,9 @@ fun MyScreen(
 
                 item {
                     MyViewPager(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(pagerHeight),
                         pagerState = pagerState,
                         viewModel = viewModel,
                         isFilterUpdated = isFilterUpdated.value,
@@ -199,11 +220,11 @@ fun MyScreen(
                             }
                         },
                         goToCategoryEdit = goToCategoryEdit,
-                        coroutineScope = coroutineScope
+                        coroutineScope = coroutineScope,
+                        isListScrollable = isListScrollable
                     )
                 }
             }
-            ///  }
         }
     }
 
@@ -233,7 +254,6 @@ fun MyTabLayer(
                 .background(color = Gray1)
                 .padding(start = 16.dp, top = 24.dp)
         ) {
-
             itemsIndexed(items = tabItems, itemContent = { index, tab ->
                 MyTab(mySection = tab,
                     isSelected = pagerState.currentPage == index,
@@ -256,14 +276,16 @@ fun MyViewPager(
     pagerState: PagerState,
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
+    isListScrollable: Boolean,
     isFilterUpdated: Boolean,
     itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     goToCategoryEdit: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     HorizontalPager(
-        modifier = Modifier,
+        modifier = modifier,
         state = pagerState,
         pageSize = PageSize.Fill,
         key = { count -> count },
@@ -271,6 +293,10 @@ fun MyViewPager(
             when (page) {
                 0 -> {
                     AllBucketLayer(
+                        modifier = modifier.verticalScroll(
+                            state = rememberScrollState(),
+                            enabled = isListScrollable
+                        ),
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {
@@ -311,40 +337,50 @@ fun MyViewPager(
                 }
 
                 1 -> {
-                    CategoryLayer(clickEvent = {
-                        when (it) {
-                            is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
-                                goToCategoryEdit()
-                            }
+                    CategoryLayer(
+                        modifier = modifier.verticalScroll(
+                            state = rememberScrollState(),
+                            enabled = isListScrollable
+                        ),
+                        clickEvent = {
+                            when (it) {
+                                is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
+                                    goToCategoryEdit()
+                                }
 
-                            is MyPagerClickEvent.BottomSheet.SearchClicked -> {
-                                coroutineScope.launch {
-                                    bottomSheetClicked.invoke(
-                                        BottomSheetScreenType.MyBucketSearchScreen(
-                                            selectTab = CATEGORY, viewModel = viewModel
+                                is MyPagerClickEvent.BottomSheet.SearchClicked -> {
+                                    coroutineScope.launch {
+                                        bottomSheetClicked.invoke(
+                                            BottomSheetScreenType.MyBucketSearchScreen(
+                                                selectTab = CATEGORY, viewModel = viewModel
+                                            )
+                                        )
+                                    }
+                                }
+
+                                is MyPagerClickEvent.GoTo.CategoryItemClicked -> {
+                                    itemSelected.invoke(
+                                        HomeItemSelected.GoToCategoryBucketList(
+                                            it.info
                                         )
                                     )
                                 }
-                            }
 
-                            is MyPagerClickEvent.GoTo.CategoryItemClicked -> {
-                                itemSelected.invoke(
-                                    HomeItemSelected.GoToCategoryBucketList(
-                                        it.info
-                                    )
-                                )
-                            }
+                                else -> {
+                                    // Do Nothing
+                                }
 
-                            else -> {
-                                // Do Nothing
                             }
-
-                        }
-                    })
+                        })
                 }
 
                 2 -> {
-                    DdayBucketLayer(viewModel = viewModel,
+                    DdayBucketLayer(
+                        modifier = modifier.verticalScroll(
+                            state = rememberScrollState(),
+                            enabled = isListScrollable
+                        ),
+                        viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {
                             when (it) {
