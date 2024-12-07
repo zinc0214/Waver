@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "121106798779",
     "project_id": "waver-668e3",
-    "storage_bucket": "waver-668e3.appspot.com"
+    "storage_bucket": "waver-668e3.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,28 @@
           "package_name": "com.zinc.waver"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "121106798779-boqf7j6ljlvlsulkd5td9pn2duns20a0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zinc.waver",
+            "certificate_hash": "9bdb4b635135e675079b50842855d6e90e5cb1f0"
+          }
+        },
+        {
+          "client_id": "121106798779-fdas3g4p2ib5kmp80379pdd4ohdd6egs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zinc.waver",
+            "certificate_hash": "503ca0cc06e1a8eb621ab2adee4c355986c2ca83"
+          }
+        },
+        {
+          "client_id": "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAob8YQmOaJfPDRHSHTFjtd0m3PXEbz2T8"
@@ -20,7 +41,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
