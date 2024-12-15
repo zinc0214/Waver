@@ -11,7 +11,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,13 +22,16 @@ import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R
-import com.zinc.waver.ui_detail.model.MyBucketMenuEvent
+import com.zinc.waver.ui_detail.model.MyBucketMoreMenuEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent.BucketMore
+import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent.BucketMore.My
+import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent.BucketMore.Other
 import com.zinc.waver.ui_detail.model.OtherBucketMenuEvent
 
 @Composable
 fun MyDetailAppBarMoreMenuDialog(
-    optionPopUpShowed: MutableState<Boolean>,
-    event: (MyBucketMenuEvent) -> Unit
+    dismiss: () -> Unit,
+    event: (BucketMore) -> Unit
 ) {
 
     Card(
@@ -44,20 +46,21 @@ fun MyDetailAppBarMoreMenuDialog(
         MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
             DropdownMenu(
                 expanded = true,
-                onDismissRequest = { optionPopUpShowed.value = false },
+                onDismissRequest = { dismiss() },
                 offset = DpOffset(16.dp, 0.dp),
                 properties = PopupProperties(clippingEnabled = false)
             ) {
                 PppUpText(R.string.edit) {
-                    event(MyBucketMenuEvent.GoToEdit)
+                    event(My(MyBucketMoreMenuEvent.GoToEdit))
+
                 }
 
                 PppUpText(R.string.countChange) {
-                    event(MyBucketMenuEvent.GoToGoalUpdate)
+                    event(My(MyBucketMoreMenuEvent.GoToGoalUpdate))
                 }
 
                 PppUpText(R.string.delete) {
-                    event(MyBucketMenuEvent.GoToDelete)
+                    event(My(MyBucketMoreMenuEvent.GoToDelete))
                 }
             }
         }
@@ -66,8 +69,8 @@ fun MyDetailAppBarMoreMenuDialog(
 
 @Composable
 fun OtherDetailAppBarMoreMenuDialog(
-    optionPopUpShowed: MutableState<Boolean>,
-    event: (OtherBucketMenuEvent) -> Unit
+    dismiss: () -> Unit,
+    event: (BucketMore) -> Unit,
 ) {
 
     Card(
@@ -82,16 +85,16 @@ fun OtherDetailAppBarMoreMenuDialog(
         MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
             DropdownMenu(
                 expanded = true,
-                onDismissRequest = { optionPopUpShowed.value = false },
+                onDismissRequest = { dismiss() },
                 offset = DpOffset(16.dp, 0.dp),
                 properties = PopupProperties(clippingEnabled = false)
             ) {
                 PppUpText(R.string.hide) {
-                    event(OtherBucketMenuEvent.GoToHide)
+                    event(Other(OtherBucketMenuEvent.GoToHide))
                 }
 
                 PppUpText(R.string.report) {
-                    event(OtherBucketMenuEvent.GoToReport)
+                    event(Other(OtherBucketMenuEvent.GoToReport))
                 }
             }
         }

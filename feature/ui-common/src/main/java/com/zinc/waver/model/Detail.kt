@@ -67,7 +67,9 @@ data class BucketDetailUiInfo(
     val togetherInfo: TogetherInfo? = null,
     val isMine: Boolean,
     val isDone: Boolean
-)
+) {
+    val canShowCompleteButton get() = isMine && !isDone
+}
 
 data class Comment(
     val commentId: String,

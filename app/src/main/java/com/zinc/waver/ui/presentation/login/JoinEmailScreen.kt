@@ -1,6 +1,7 @@
 package com.zinc.waver.ui.presentation.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -222,6 +223,11 @@ fun GoogleSignInButton(goToEmailCheck: (String) -> Unit) {
             }
         } catch (e: ApiException) {
             // Handle sign-in error
+            Toast.makeText(
+                context,
+                "실패 : ${e.status}, ${e.printStackTrace()}",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -254,7 +260,7 @@ private fun googleLogin(idToken: String, goToEmailCheck: (String) -> Unit) {
         }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun EmailViewPreview() {
     EmailView(modifier = Modifier.fillMaxSize()) {}

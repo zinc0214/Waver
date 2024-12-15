@@ -19,7 +19,7 @@ import com.zinc.waver.ui.presentation.home.HomeBottomBar
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
-import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
 import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
@@ -253,18 +253,14 @@ fun WaverApp(
                     openBucketDetailNavGraph(
                         goToBucketDetailEvent = { eventInfo, nav ->
                             when (eventInfo) {
-                                is OpenBucketDetailEvent.Update -> {
+                                is OpenBucketDetailEvent2.Update -> {
                                     appState.navigateToWriteBucket(
                                         eventInfo.info.bucketId ?: "NoId",
                                         appState.navController.currentBackStackEntry!!
                                     )
                                 }
 
-                                is OpenBucketDetailEvent.BucketReport -> {
-
-                                }
-
-                                is OpenBucketDetailEvent.GoToOtherProfile -> {
+                                is OpenBucketDetailEvent2.GoToOtherProfile -> {
                                     appState.navigateToOtherHome(nav, eventInfo.id)
                                 }
                             }

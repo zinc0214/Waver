@@ -1,8 +1,6 @@
 package com.zinc.waver.ui_detail.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.CommentLongClicked
 import com.zinc.waver.model.DetailClickEvent
-import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.ui.presentation.component.ImageViewPagerInsideIndicator
 
 @Composable
@@ -26,9 +23,6 @@ fun OpenDetailContentView(
     flatButtonVisible: Boolean,
     clickEvent: (DetailClickEvent) -> Unit
 ) {
-
-    val successButtonHide =
-        listState.layoutInfo.visibleItemsInfo.isEmpty() || info.isMine.not() || info.isDone
 
     LazyColumn(
         modifier = modifier, state = listState
@@ -68,25 +62,24 @@ fun OpenDetailContentView(
 
         }
 
-        item(key = "flatDetailSuccessButton") {
-            if (successButtonHide) {
-                return@item
-            }
-            AnimatedVisibility(
-                flatButtonVisible,
-                enter = expandVertically(),
-                exit = shrinkVertically()
-            ) {
-                DetailSuccessButtonView(
-                    successClicked = {
-                        clickEvent.invoke(DetailClickEvent.SuccessClicked(info.bucketId))
-                    }, successButtonInfo = SuccessButtonInfo(
-                        goalCount = info.descInfo.goalCount,
-                        userCount = info.descInfo.userCount
-                    )
-                )
-            }
-        }
+//        item(key = "flatDetailSuccessButton") {
+//            if (info.canShowCompleteButton) {
+//                AnimatedVisibility(
+//                    flatButtonVisible,
+//                    enter = expandVertically(),
+//                    exit = shrinkVertically()
+//                ) {
+//                    DetailSuccessButtonView(
+//                        successClicked = {
+//                            clickEvent.invoke(DetailClickEvent.SuccessClicked(info.bucketId))
+//                        }, successButtonInfo = SuccessButtonInfo(
+//                            goalCount = info.descInfo.goalCount,
+//                            userCount = info.descInfo.userCount
+//                        )
+//                    )
+//                }
+//            }
+//        }
 
         item(key = "friendsView") {
             if (info.togetherInfo != null) {
@@ -100,16 +93,14 @@ fun OpenDetailContentView(
         item(key = "spacer") {
             Spacer(modifier = Modifier.height(30.dp))
         }
-        item(key = "commentLine") {
-            CommentLine()
-        }
-        item(key = "commentCountView") {
-            CommentCountView(info.commentInfo?.commentCount ?: 0)
-        }
-        item(key = "commentLayer") {
-            DetailCommentView(commentInfo = info.commentInfo, commentLongClicked = {
-                clickEvent.invoke(CommentLongClicked(it))
-            })
+        item(key = "commentView") {
+            Column {
+                CommentLine()
+                CommentCountView(info.commentInfo?.commentCount ?: 0)
+                DetailCommentView(commentInfo = info.commentInfo, commentLongClicked = {
+                    clickEvent.invoke(CommentLongClicked(it))
+                })
+            }
         }
     }
 }

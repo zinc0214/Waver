@@ -13,7 +13,8 @@ import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
-import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
+import com.zinc.waver.ui_detail.screen.OpenDetailScreen
 import com.zinc.waver.ui_feed.FeedScreen
 import com.zinc.waver.ui_more.models.AppInfoItemType
 import com.zinc.waver.ui_more.models.MoreItemType
@@ -341,7 +342,7 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
 }
 
 internal fun NavGraphBuilder.openBucketDetailNavGraph(
-    goToBucketDetailEvent: (OpenBucketDetailEvent, NavBackStackEntry) -> Unit,
+    goToBucketDetailEvent: (OpenBucketDetailEvent2, NavBackStackEntry) -> Unit,
     backPress: () -> Unit
 ) {
     composable(
@@ -358,21 +359,20 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         val writerId = arguments.getString(MainDestinations.WRITER_ID_KEY) ?: ""
         val isMine = arguments.getBoolean(MainDestinations.BUCKET_IS_MINE)
-        com.zinc.waver.ui_detail.screen.OpenDetailScreen(
+        OpenDetailScreen(
             detailId = detailId,
             writerId = writerId,
             isMine = isMine,
             goToEvent = {
                 when (it) {
-                    is OpenBucketDetailEvent.Update -> {
+                    is OpenBucketDetailEvent2.Update -> {
                         val info = it.info.copy(isForUpdate = true)
                         goToBucketDetailEvent.invoke(
-                            OpenBucketDetailEvent.Update(info), backStackEntry
+                            OpenBucketDetailEvent2.Update(info), backStackEntry
                         )
                     }
 
-                    is OpenBucketDetailEvent.BucketReport -> TODO()
-                    is OpenBucketDetailEvent.GoToOtherProfile -> {
+                    is OpenBucketDetailEvent2.GoToOtherProfile -> {
                         goToBucketDetailEvent.invoke(it, backStackEntry)
                     }
                 }

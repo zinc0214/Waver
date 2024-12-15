@@ -50,7 +50,41 @@ class DetailViewModel @Inject constructor(
     private var writerId: String? = null
     private var isMine: Boolean? = true
 
-    fun getBucketDetail(bucketId: String, writerId: String?, isMine: Boolean) {
+    fun loadInitData(bucketId: String, writerId: String?, isMine: Boolean) {
+        _loadFail.value = null
+
+        viewModelScope.launch {
+
+            val job1 = launch { getBucketDetail(bucketId, writerId, isMine) }
+            val job2 = launch { getValidMentionList() }
+
+            joinAll(job1, job2).runCatching {
+                Log.e("ayhan", "runCatching")
+            }.getOrElse {
+                Log.e("ayhan", "getOrlElse, ${it.message}")
+                _loadFail.value = DetailLoadFailStatus.LoadFail
+            }
+        }
+    }
+
+    fun achieveMyBucket() {
+        _loadFail.value = null
+
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.AchieveFail)) {
+            val response = achieveMyBucket(bucketId!!)
+            if (response.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
+                _loadFail.value = DetailLoadFailStatus.AchieveFail
+            }
+        }
+    }
+
+    fun getBucketDetail(
+        bucketId: String,
+        writerId: String?,
+        isMine: Boolean
+    ) {
         _loadFail.value = null
 
         this.bucketId = bucketId
@@ -75,19 +109,6 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun achieveMyBucket() {
-        _loadFail.value = null
-
-        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.AchieveFail)) {
-            val response = achieveMyBucket(bucketId!!)
-            if (response.success) {
-                getBucketDetail(bucketId!!, writerId!!, isMine!!)
-            } else {
-                _loadFail.value = DetailLoadFailStatus.AchieveFail
-            }
-        }
-    }
-
     private suspend fun getBucketDetailData(id: String, isMine: Boolean) {
         bucketDetailData = loadBucketDetail(id, isMine).data
     }
@@ -96,7 +117,7 @@ class DetailViewModel @Inject constructor(
         profileInfo = loadProfileInfo(isMine, writerId).data
     }
 
-    fun getValidMentionList() {
+    private fun getValidMentionList() {
         val validMentionList = mutableListOf<CommentMentionInfo>()
 
         repeat(10) {

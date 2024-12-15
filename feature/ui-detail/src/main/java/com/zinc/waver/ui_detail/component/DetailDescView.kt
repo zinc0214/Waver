@@ -13,9 +13,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.YesOrNo
 import com.zinc.waver.model.DetailDescType
+import com.zinc.waver.model.WriteCategoryInfo
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Main4
@@ -41,10 +44,12 @@ fun DetailDescView(detailDescInfo: DetailDescType.CommonDetailDescInfo) {
         )
 
         detailDescInfo.keywordList?.let { tagList ->
-            TagListView(
-                modifier = Modifier.padding(bottom = 26.dp),
-                tagList = tagList.map { it.text }
-            )
+            if (tagList.isNotEmpty()) {
+                TagListView(
+                    modifier = Modifier.padding(bottom = 26.dp),
+                    tagList = tagList.map { it.text }
+                )
+            }
         }
 
         TitleView(
@@ -106,5 +111,26 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
         fontSize = dpToSp(24.dp),
         fontWeight = FontWeight.Bold,
         modifier = modifier
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DetailDescViewPreview() {
+    DetailDescView(
+        detailDescInfo = DetailDescType.CommonDetailDescInfo(
+            dDay = null,
+            status = BucketStatus.PROGRESS,
+            keywordList = listOf(),
+            title = "갸갸갸갸갸",
+            goalCount = 0,
+            userCount = 0,
+            categoryInfo = WriteCategoryInfo(
+                id = 0,
+                name = "",
+                defaultYn = YesOrNo.N
+            ),
+            isScrap = false
+        )
     )
 }

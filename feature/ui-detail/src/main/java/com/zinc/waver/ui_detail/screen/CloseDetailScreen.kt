@@ -49,7 +49,8 @@ import com.zinc.waver.ui_detail.component.DetailTopAppBar
 import com.zinc.waver.ui_detail.component.GoalCountUpdateDialog
 import com.zinc.waver.ui_detail.component.MyDetailAppBarMoreMenuDialog
 import com.zinc.waver.ui_detail.model.GoalCountUpdateEvent
-import com.zinc.waver.ui_detail.model.MyBucketMenuEvent
+import com.zinc.waver.ui_detail.model.MyBucketMoreMenuEvent
+import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
 import com.zinc.waver.ui_detail.viewmodel.DetailViewModel
 import com.zinc.waver.util.createImageInfoWithPath
@@ -114,23 +115,27 @@ fun CloseDetailScreen(
             Scaffold { padding ->
 
                 if (optionPopUpShowed.value) {
-                    MyDetailAppBarMoreMenuDialog(optionPopUpShowed) {
-                        when (it) {
-                            MyBucketMenuEvent.GoToDelete -> {
-                                optionPopUpShowed.value = false
-                            }
+                    MyDetailAppBarMoreMenuDialog(dismiss = {
+                        optionPopUpShowed.value = false
+                    }, event = {
+                        if (it is OpenBucketDetailInternalEvent.BucketMore.My) {
+                            when (it.event) {
+                                MyBucketMoreMenuEvent.GoToEdit -> {
+                                    optionPopUpShowed.value = false
+                                    goToUpdate(info.toUpdateUiModel(imageInfos))
+                                }
 
-                            MyBucketMenuEvent.GoToEdit -> {
-                                optionPopUpShowed.value = false
-                                goToUpdate(info.toUpdateUiModel(imageInfos))
-                            }
+                                MyBucketMoreMenuEvent.GoToGoalUpdate -> {
+                                    goalCountUpdatePopUpShowed.value = true
+                                    optionPopUpShowed.value = false
+                                }
 
-                            MyBucketMenuEvent.GoToGoalUpdate -> {
-                                goalCountUpdatePopUpShowed.value = true
-                                optionPopUpShowed.value = false
+                                MyBucketMoreMenuEvent.GoToDelete -> {
+                                    optionPopUpShowed.value = false
+                                }
                             }
                         }
-                    }
+                    })
                 }
 
                 if (goalCountUpdatePopUpShowed.value) {

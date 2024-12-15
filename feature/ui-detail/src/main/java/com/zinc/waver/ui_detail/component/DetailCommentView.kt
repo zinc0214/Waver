@@ -40,7 +40,9 @@ fun DetailCommentView(
     commentInfo: DetailDescType.CommentInfo?, commentLongClicked: (Int) -> Unit
 ) {
     Column(
-        modifier = Modifier.padding(top = 20.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp)
     ) {
 
         if ((commentInfo?.commentCount ?: 0) > 0) {
@@ -148,6 +150,7 @@ private fun CommentDescView(
 private fun CommentBlankView() {
     MyText(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(horizontal = 28.dp)
             .padding(bottom = 140.dp),
         text = stringResource(R.string.commentBlankText),
@@ -160,4 +163,18 @@ private fun CommentBlankView() {
 @Composable
 fun CommentBlankPreview() {
     CommentBlankView()
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CommentDescPreview() {
+    CommentDescView(comment = Comment(
+        commentId = "1",
+        userId = "1",
+        profileImage = null,
+        nickName = "zllzlzlz",
+        comment = "안년녀ㅕ여여ㅕ영여영",
+        isMine = false,
+        isBlocked = false
+    ), commentIndex = 10, isLastItem = false, commentLongClicked = {})
 }
