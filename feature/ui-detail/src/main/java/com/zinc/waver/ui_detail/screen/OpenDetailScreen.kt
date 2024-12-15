@@ -2,8 +2,8 @@ package com.zinc.waver.ui_detail.screen
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -360,8 +360,8 @@ fun OpenDetailScreen(
                 if (successButtonShow) {
                     this@Column.AnimatedVisibility(
                         flatButtonVisible.not(),
-                        enter = expandVertically(),
-                        exit = shrinkVertically(),
+                        enter = fadeIn(),
+                        exit = fadeOut(),
                         modifier = Modifier
                             .constrainAs(
                                 floatingButtonView
@@ -394,7 +394,7 @@ fun OpenDetailScreen(
                     }) {
                     AnimatedVisibility(
                         isCommentViewShown || !isScrollable,
-                        enter = slideInVertically()
+                        enter = slideInVertically(initialOffsetY = { it / 2 })
                     ) {
                         CommentEditTextView2(
                             originText = commentText.value,
