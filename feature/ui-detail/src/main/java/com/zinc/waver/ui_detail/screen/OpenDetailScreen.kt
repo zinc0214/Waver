@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -137,8 +136,8 @@ fun OpenDetailScreen(
             if (visibleLastIndex == 0) true else visibleLastIndex <= listScrollState.layoutInfo.totalItemsCount // 미자믹 아이템  == 전체아이템 갯수 인지 확인
 
         // 키보드 상태 확인
-        val isKeyboardStatus by keyboardAsState()
-        val isKeyboardOpened = isKeyboardStatus == Keyboard.Opened
+        val keyboardStatus by keyboardAsState()
+        val isKeyboardOpened = keyboardStatus == Keyboard.Opened
 
         val isCommentViewShown =
             visibleLastIndex > commentViewIndex || isKeyboardOpened // 댓글이 보이는지 여부 ( -2 == 댓글이 마지막이고, 그 전의 카운터에서부터 노출하기 위해)
@@ -304,7 +303,6 @@ fun OpenDetailScreen(
             modifier = Modifier
                 .fillMaxHeight()
                 .statusBarsPadding()
-                .imePadding()
                 .clickable(interactionSource = interactionSource,
                     indication = null,
                     onClick = { optionPopUpShowed.value = false })
@@ -411,6 +409,7 @@ fun OpenDetailScreen(
                                                 mentionIds = "" //TODO : 수정필요
                                             )
                                         )
+                                        commentText.value = ""
                                     }
 
                                     is OpenDetailEditTextViewEvent.TextChanged -> {

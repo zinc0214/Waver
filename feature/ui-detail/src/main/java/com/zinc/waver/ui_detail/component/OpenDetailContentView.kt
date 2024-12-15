@@ -56,9 +56,11 @@ fun OpenDetailContentView(
         item(key = "memoView") {
             if (info.memoInfo != null) {
                 DetailMemoView(
-                    modifier = Modifier.padding(
-                        top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
-                    ), memo = info.memoInfo?.memo!!
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
+                        ), memo = info.memoInfo?.memo!!
                 )
             } else {
                 Spacer(modifier = Modifier.height(56.dp))
