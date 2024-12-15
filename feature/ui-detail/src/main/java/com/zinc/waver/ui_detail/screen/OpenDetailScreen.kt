@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -85,6 +86,8 @@ fun OpenDetailScreen(
     val validMentionList by viewModel.validMentionList.observeAsState()
     val loadFailAsState by viewModel.loadFail.observeAsState()
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     var detailInfo by remember { mutableStateOf(detailInfoAsState) }
     var internalEvent: OpenBucketDetailInternalEvent by remember {
         mutableStateOf(
@@ -143,13 +146,14 @@ fun OpenDetailScreen(
             detailInfo = info,
             internalEvent = internalEvent,
             validMentionList = validMentionList.orEmpty(),
-            goToOutEvent = {
-
-            },
+            goToOutEvent = goToEvent,
             updateInternalEvent = { event ->
                 internalEvent = event
             },
-            backPress = backPress
+            backPress = {
+                keyboardController?.hide()
+                backPress()
+            }
         )
     }
 }
