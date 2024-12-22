@@ -69,6 +69,13 @@ data class BucketDetailUiInfo(
     val isDone: Boolean
 ) {
     val canShowCompleteButton get() = isMine && !isDone
+    fun getButtonIndex(): Int {
+        var index = 0
+        if (imageInfo != null) index += 1
+        if (memoInfo != null) index += 1
+        return index
+    }
+
 }
 
 data class Comment(

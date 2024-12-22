@@ -341,7 +341,6 @@ fun OpenDetailScreenOld(
                             }
                         }
                     },
-                    flatButtonVisible = flatButtonVisible,
                     modifier = Modifier
                         .constrainAs(contentView) {
                             start.linkTo(parent.start)
@@ -349,7 +348,8 @@ fun OpenDetailScreenOld(
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                             height = Dimension.fillToConstraints
-                        })
+                        }
+                )
 
                 // 플로팅 완료 버튼 노출 조건
                 if (successButtonShow) {

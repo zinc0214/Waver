@@ -1,32 +1,37 @@
 package com.zinc.waver.ui_detail.screen
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketStatus
@@ -44,7 +49,9 @@ import com.zinc.waver.model.ReportType
 import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.model.WriteCategoryInfo
 import com.zinc.waver.model.WriteOpenType
+import com.zinc.waver.ui.design.util.Keyboard
 import com.zinc.waver.ui.design.util.isLastItemVisible
+import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_detail.component.DetailSuccessButtonView
@@ -71,6 +78,9 @@ import com.zinc.waver.ui_detail.model.TaggedTextInfo
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
 import com.zinc.waver.ui_detail.viewmodel.DetailViewModel
 import com.zinc.waver.util.createImageInfoWithPath
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalTime
 
 @Composable
@@ -158,6 +168,7 @@ fun OpenDetailScreen(
     }
 }
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
 private fun InternalOpenDetailScreen(
     detailInfo: BucketDetailUiInfo,
@@ -169,12 +180,18 @@ private fun InternalOpenDetailScreen(
 ) {
 
     val context = LocalContext.current
+    val keyboardStatus by keyboardAsState()
 
     val listScrollState = rememberLazyListState()
     val titleIndex = if (detailInfo.imageInfo == null) 1 else 2
 
-    val scrollOffset by remember { derivedStateOf { listScrollState.firstVisibleItemScrollOffset } }
-    var needToShowCommentEditView by remember { mutableStateOf(listScrollState.isLastItemVisible) }
+    // 버킷리스트 content 내부에 달성완료 버튼을 노출할 여부
+    val needToAddButtonSpace = detailInfo.canShowCompleteButton
+
+    // 하단 comment 영역 노출 가능 여부
+    var isAvailableShowComment by remember { mutableStateOf(listScrollState.isLastItemVisible) }
+
+    var memoHeight by remember { mutableIntStateOf(0) }
 
     // 댓글 값 저장
     val commentText = remember { mutableStateOf("") }
@@ -188,11 +205,38 @@ private fun InternalOpenDetailScreen(
     // 검색할 텍스트와 관련된 정보들
     val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
-    LaunchedEffect(scrollOffset) {
-        val isBottom = !listScrollState.canScrollForward
-        val isShowComment = listScrollState.isLastItemVisible
+    LaunchedEffect(listScrollState.isLastItemVisible) {
+        if (memoHeight == 0 && needToAddButtonSpace) {
+            val targetItem2 = listScrollState.layoutInfo.visibleItemsInfo
+                .find { it.contentType == "buttonSpace" }
 
-        needToShowCommentEditView = isBottom || isShowComment
+            memoHeight = targetItem2?.offset ?: 0
+        }
+    }
+
+    LaunchedEffect(listScrollState) {
+        snapshotFlow { listScrollState.firstVisibleItemScrollOffset }
+            .distinctUntilChanged()
+            .onEach {
+                val targetItem = listScrollState.layoutInfo.visibleItemsInfo
+                    .find { it.contentType == "buttonSpace" }
+
+                memoHeight = targetItem?.offset ?: 0
+
+                val isBottom = !listScrollState.canScrollForward
+                val isShowComment = listScrollState.isLastItemVisible
+
+                isAvailableShowComment =
+                    isBottom || isShowComment || keyboardStatus == Keyboard.Opened
+            }
+            .launchIn(this)
+    }
+
+    LaunchedEffect(keyboardStatus) {
+        if (keyboardStatus == Keyboard.Opened) {
+            val lastIndex = listScrollState.layoutInfo.totalItemsCount - 1
+            listScrollState.animateScrollToItem(lastIndex)
+        }
     }
 
     Column(
@@ -200,6 +244,7 @@ private fun InternalOpenDetailScreen(
             .fillMaxHeight()
             .statusBarsPadding()
             .imePadding()
+            .navigationBarsPadding()
     ) {
         DetailTopAppBar(
             listState = listScrollState,
@@ -218,7 +263,7 @@ private fun InternalOpenDetailScreen(
             })
 
         ConstraintLayout(
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier.fillMaxSize()
         ) {
             val (contentView, floatingButtonView, editView) = createRefs()
 
@@ -240,42 +285,34 @@ private fun InternalOpenDetailScreen(
                         }
                     }
                 },
-                flatButtonVisible = false,
                 modifier = Modifier
                     .fillMaxWidth()
                     .constrainAs(contentView) {
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                         top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        height = Dimension.fillToConstraints
                     })
 
-            // 플로팅 완료 버튼 노출 조건
-//            AnimatedVisibility(
-//                flatButtonVisible.not(),
-//                enter = fadeIn(),
-//                exit = faㅌㅌdeOut(),
-//                modifier = Modifier
-//                    .constrainAs(
-//                        floatingButtonView
-//                    ) {
-//                        start.linkTo(parent.start)
-//                        end.linkTo(parent.end)
-//                        bottom.linkTo(parent.bottom)
-//                    }
-//            )
-
-            if (detailInfo.canShowCompleteButton) {
+            if (detailInfo.canShowCompleteButton && keyboardStatus == Keyboard.Closed) {
                 DetailSuccessButtonView(
                     modifier = Modifier
                         .padding(bottom = 30.dp)
+                        .offset {
+                            IntOffset(
+                                x = 0,
+                                y = memoHeight
+                            )
+                        }
                         .constrainAs(
                             floatingButtonView
                         ) {
                             start.linkTo(parent.start)
                             end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
+                            if (!needToAddButtonSpace || memoHeight == 0) {
+                                bottom.linkTo(parent.bottom)
+                            } else {
+                                top.linkTo(parent.top)
+                            }
                         },
                     successClicked = {
                         updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.Achieve)
@@ -295,7 +332,7 @@ private fun InternalOpenDetailScreen(
                     bottom.linkTo(parent.bottom)
                 }) {
                 AnimatedVisibility(
-                    needToShowCommentEditView,
+                    isAvailableShowComment,
                     enter = slideInVertically(initialOffsetY = { it / 2 })
                 ) {
                     CommentEditTextView2(
@@ -669,7 +706,6 @@ private fun ShowErrorDialog(
 private fun InternalOpenDetailScreenPreview() {
 
     InternalOpenDetailScreen(
-        validMentionList = emptyList(),
         detailInfo = BucketDetailUiInfo(
             bucketId = "1",
             writeOpenType = WriteOpenType.PUBLIC,
@@ -714,6 +750,7 @@ private fun InternalOpenDetailScreenPreview() {
             isMine = true,
             isDone = false
         ),
+        validMentionList = emptyList(),
         internalEvent = OpenBucketDetailInternalEvent.None,
         goToOutEvent = {},
         updateInternalEvent = {},
