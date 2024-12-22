@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -99,6 +101,8 @@ private fun JoinCreateProfile2(
     Column(
         modifier = Modifier
             .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding()
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
