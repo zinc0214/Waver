@@ -53,7 +53,7 @@ fun ProfileCircularProgressBar(
         animationSpec = tween(
             durationMillis = animDuration,
             delayMillis = animDelay
-        )
+        ), label = "curPercentage"
     )
     LaunchedEffect(key1 = true) {
         animationPlayed = true
@@ -107,7 +107,7 @@ fun BadgeImage(url: String) {
     Image(
         painter = rememberAsyncImagePainter(
             model = url,
-            error = painterResource(id = R.drawable.testimg)
+            error = painterResource(id = R.drawable.badge_small)
         ),
         contentDescription = null,
         modifier = Modifier

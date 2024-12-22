@@ -102,8 +102,8 @@ private fun ProfileImageView(
             Image(
                 painter = rememberAsyncImagePainter(
                     model = badgeUrl,
-                    placeholder = painterResource(R.drawable.testimg),
-                    error = painterResource(R.drawable.testimg)
+                    placeholder = painterResource(R.drawable.badge_small),
+                    error = painterResource(R.drawable.badge_small)
                 ),
                 contentDescription = null,
                 modifier = Modifier

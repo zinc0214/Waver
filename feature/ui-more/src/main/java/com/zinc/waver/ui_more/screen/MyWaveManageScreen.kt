@@ -156,7 +156,7 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
                     end.linkTo(parent.end)
                     top.linkTo(closeButton.bottom)
                 },
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.Crop
         )
 
         Image(
