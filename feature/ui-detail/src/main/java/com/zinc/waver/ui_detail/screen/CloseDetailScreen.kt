@@ -193,14 +193,16 @@ fun CloseDetailScreen(
                         ContentView(
                             listState = listScrollState,
                             bucketDetailUiInfo = info,
-                            modifier = Modifier.constrainAs(contentView) {
-                                start.linkTo(parent.start)
-                                end.linkTo(parent.end)
-                                top.linkTo(parent.top)
-                                height = Dimension.fillToConstraints
-                            })
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .constrainAs(contentView) {
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                    top.linkTo(parent.top)
+                                    height = Dimension.fillToConstraints
+                                })
 
-                        if (info.isDone.not()) {
+                        if (info.canShowCompleteButton) {
                             DetailSuccessButtonView(
                                 modifier = Modifier
                                     .constrainAs(floatingButtonView) {
@@ -270,11 +272,13 @@ private fun ContentView(
         bucketDetailUiInfo.memoInfo?.let {
             item {
                 DetailMemoView(
-                    modifier = Modifier.padding(
-                        top = 24.dp,
-                        start = 28.dp,
-                        end = 28.dp
-                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = 24.dp,
+                            start = 28.dp,
+                            end = 28.dp
+                        ),
                     memo = it.memo
                 )
             }
@@ -294,7 +298,7 @@ private fun ContentView(
         }
 
         item {
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(84.dp))
         }
     }
 }
