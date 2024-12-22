@@ -27,7 +27,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -69,9 +68,11 @@ fun JoinCreateProfile1(
     val createUserViewModel: JoinNickNameViewModel = hiltViewModel()
 
     val isAlreadyUsedNickName by createUserViewModel.isAlreadyUsedNickName.observeAsState()
-    val isCheckFail by createUserViewModel.failJoin.observeAsState()
+    val isCheckFail by createUserViewModel.failCheckNickname.observeAsState()
     var savedCreateInfo: CreateProfileInfo? by remember { mutableStateOf(null) }
+
     var nickNameData by remember { mutableStateOf(createProfileInfo.nickName) }
+    var checkedNickName by remember { mutableStateOf(createProfileInfo.nickName) }
 
     LaunchedEffect(isAlreadyUsedNickName) {
         if (isAlreadyUsedNickName == false) {
@@ -81,6 +82,8 @@ fun JoinCreateProfile1(
         } else {
             savedCreateInfo = null
         }
+
+        checkedNickName = nickNameData
     }
 
     JoinCreateProfile1(
@@ -96,9 +99,12 @@ fun JoinCreateProfile1(
         isCheckFail = isCheckFail ?: false,
         createProfileInfo = createProfileInfo,
         nickNameData = nickNameData,
-        checkNickName = {
-            createUserViewModel.checkIsAlreadyUsedName(it)
+        checkedNickName = checkedNickName,
+        updateNickName = {
             nickNameData = it
+        },
+        checkNickName = {
+            createUserViewModel.checkIsAlreadyUsedName(nickNameData)
         },
         addImageAction = addImageAction
     )
@@ -110,9 +116,11 @@ private fun JoinCreateProfile1(
     isCheckFail: Boolean,
     createProfileInfo: CreateProfileInfo,
     nickNameData: String,
-    goToNext: (CreateProfileInfo) -> Unit,
-    checkNickName: (String) -> Unit,
+    checkedNickName: String,
+    checkNickName: () -> Unit,
+    updateNickName: (String) -> Unit,
     addImageAction: (ActionWithActivity.AddImage) -> Unit,
+    goToNext: (CreateProfileInfo) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -123,8 +131,10 @@ private fun JoinCreateProfile1(
     val updateImagePath: MutableState<String?> =
         remember { mutableStateOf(createProfileInfo.imgPath) }
 
-    var isButtonEnabled by remember { mutableStateOf(nickNameData.isNotEmpty() && !isAlreadyUsedNickName) }
-    val isAlreadyUsedName = nickNameData.isNotEmpty() && isAlreadyUsedNickName
+    val isButtonEnabled =
+        nickNameData == checkedNickName && nickNameData.isNotEmpty() && !isAlreadyUsedNickName
+    val isAlreadyUsedName =
+        checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
 
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
@@ -201,11 +211,11 @@ private fun JoinCreateProfile1(
                 prevNickName = nickNameData,
                 isAlreadyUsedName = isAlreadyUsedName,
                 isCheckFail = isCheckFail,
-                checkNickname = { changedData ->
-                    checkNickName(changedData)
+                checkNickname = {
+                    checkNickName()
                 },
                 dataChanged = {
-                    isButtonEnabled = false
+                    updateNickName(it)
                 }
             )
 
@@ -238,14 +248,12 @@ private fun JoinCreateProfile1(
 @Composable
 private fun ProfileNickNameEditView(
     prevNickName: String,
-    checkNickname: (String) -> Unit,
+    checkNickname: () -> Unit,
     dataChanged: (String) -> Unit,
     isAlreadyUsedName: Boolean,
     isCheckFail: Boolean
 ) {
 
-    var currentText by remember { mutableStateOf(prevNickName) }
-    var currentTextSize by remember { mutableIntStateOf(currentText.length) }
     val showError = isAlreadyUsedName || isCheckFail
 
     Column(
@@ -266,21 +274,19 @@ private fun ProfileNickNameEditView(
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth(),
-            value = currentText,
+            value = prevNickName,
             singleLine = true,
             textStyle = TextStyle(fontSize = dpToSp(dp = 20.dp)),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = {
-                checkNickname(currentText)
+                checkNickname()
             }),
             onValueChange = { changeText ->
-                currentText = changeText
-                currentTextSize = currentText.length
                 dataChanged(changeText)
             },
             decorationBox = { innerTextField ->
                 Row {
-                    if (currentText.isEmpty()) {
+                    if (prevNickName.isEmpty()) {
                         MyText(
                             text = stringResource(CommonR.string.addProfileNickname),
                             color = Gray4,
@@ -315,11 +321,13 @@ private fun ProfileNickNameEditView(
 @Composable
 private fun JoinNickNameScreenPreview() {
     JoinCreateProfile1(
+        nickNameData = "",
         createProfileInfo = CreateProfileInfo(),
         goToNext = { },
         isAlreadyUsedNickName = false,
         isCheckFail = false,
-        nickNameData = "",
+        checkedNickName = "",
+        updateNickName = {},
         addImageAction = {},
         checkNickName = {})
 }

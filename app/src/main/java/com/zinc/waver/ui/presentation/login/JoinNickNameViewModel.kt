@@ -33,6 +33,9 @@ class JoinNickNameViewModel @Inject constructor(
     private val _failJoin = SingleLiveEvent<Boolean>()
     val failJoin: LiveData<Boolean> get() = _failJoin
 
+    private val _failCheckNickname = MutableLiveData<Boolean>()
+    val failCheckNickname: LiveData<Boolean> get() = _failCheckNickname
+
     fun join(
         email: String,
         nickName: String,
@@ -50,7 +53,7 @@ class JoinNickNameViewModel @Inject constructor(
     fun checkIsAlreadyUsedName(name: String) {
         _isAlreadyUsedNickName.value = true
 
-        viewModelScope.launch(ceh(_failJoin, true)) {
+        viewModelScope.launch(ceh(_failCheckNickname, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
@@ -58,7 +61,7 @@ class JoinNickNameViewModel @Inject constructor(
                 } else if (code == "3000") {
                     _isAlreadyUsedNickName.value = true
                 } else {
-                    _failJoin.value = true
+                    _failCheckNickname.value = true
                 }
 
             }

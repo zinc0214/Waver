@@ -64,6 +64,7 @@ fun JoinCreateProfile2(
     val failJoinAsState by createUserViewModel.failJoin.observeAsState()
     val goToLoginAsState by createUserViewModel.goToLogin.observeAsState()
 
+
     LaunchedEffect(goToLoginAsState) {
         if (goToLoginAsState == true) {
             goToMain()
@@ -291,7 +292,7 @@ private fun ProfileBioEditPreview() {
     ProfileBioEditView(
         nickName = "닉네임",
         prevBioText = "d",
-        isJoinFailed = false,
+        isJoinFailed = true,
         bioTextChanged = {},
     )
 }
