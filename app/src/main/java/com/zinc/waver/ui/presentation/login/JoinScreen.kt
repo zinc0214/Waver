@@ -18,7 +18,7 @@ fun JoinScreen(
 ) {
 
     var emailLoginSucceed by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
     var isFirstCreate by remember { mutableStateOf(false) }
