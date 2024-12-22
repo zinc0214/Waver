@@ -193,7 +193,7 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
                 Spacer(modifier = Modifier.weight(1f))
 
                 MyText(
-                    text = stringResource(id = R.string.goToJoin),
+                    text = stringResource(id = R.string.goToJoinWithGoogle),
                     fontSize = 15.sp,
                     color = Gray10,
                     fontWeight = FontWeight.Normal

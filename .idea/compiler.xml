@@ -4,6 +4,7 @@
     <bytecodeTargetLevel target="11">
       <module name="Android.Waver.app" target="19" />
       <module name="Android.Waver.feature.ui-common" target="19" />
+      <module name="Android.Waver.feature.ui-my" target="19" />
       <module name="Android.Waver.feature.ui-write" target="19" />
       <module name="BerryBucket.app" target="19" />
       <module name="BerryBucket.buildSrc" target="19" />

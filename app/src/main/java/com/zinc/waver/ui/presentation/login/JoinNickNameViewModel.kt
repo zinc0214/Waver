@@ -8,6 +8,7 @@ import com.zinc.common.models.CreateProfileRequest
 import com.zinc.datastore.login.LoginPreferenceDataStoreModule
 import com.zinc.domain.usecases.login.CreateProfile
 import com.zinc.domain.usecases.login.LoginByEmail
+import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class JoinNickNameViewModel @Inject constructor(
     private val createProfile: CreateProfile,
     private val loginByEmail: LoginByEmail,
+    private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname,
     private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
 ) : CommonViewModel() {
 
@@ -31,9 +33,6 @@ class JoinNickNameViewModel @Inject constructor(
     private val _failJoin = SingleLiveEvent<Boolean>()
     val failJoin: LiveData<Boolean> get() = _failJoin
 
-    private val _failLogin = SingleLiveEvent<Boolean>()
-    val failLogin: LiveData<Boolean> get() = _failLogin
-
     fun join(
         email: String,
         nickName: String,
@@ -44,6 +43,24 @@ class JoinNickNameViewModel @Inject constructor(
             _failJoin.value = false
             runCatching {
                 createNewProfile(email, nickName, bio, image)
+            }
+        }
+    }
+
+    fun checkIsAlreadyUsedName(name: String) {
+        _isAlreadyUsedNickName.value = true
+
+        viewModelScope.launch(ceh(_failJoin, true)) {
+            checkAlreadyUsedNickname.invoke(name).apply {
+                Log.e("ayhan", "check Alreay $this")
+                if (success) {
+                    _isAlreadyUsedNickName.value = false
+                } else if (code == "3000") {
+                    _isAlreadyUsedNickName.value = true
+                } else {
+                    _failJoin.value = true
+                }
+
             }
         }
     }
@@ -83,7 +100,7 @@ class JoinNickNameViewModel @Inject constructor(
     }
 
     private fun goToLogin(email: String) {
-        viewModelScope.launch(ceh(_failLogin, true)) {
+        viewModelScope.launch(ceh(_failJoin, true)) {
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {
@@ -94,10 +111,10 @@ class JoinNickNameViewModel @Inject constructor(
                     }
                     _goToLogin.value = true
                 } else {
-                    _failLogin.value = true
+                    _failJoin.value = true
                 }
             }.getOrElse {
-                _failLogin.value = true
+                _failJoin.value = true
             }
         }
     }

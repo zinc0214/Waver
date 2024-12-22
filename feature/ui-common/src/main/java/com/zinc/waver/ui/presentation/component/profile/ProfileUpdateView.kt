@@ -13,8 +13,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,13 +24,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.util.CameraPermission
 import com.zinc.waver.ui_common.R
@@ -47,17 +49,16 @@ fun ProfileUpdateView(
             path = updatePath.value!!,
             index = 0
         ).uri else null
-    val showPermission = remember { mutableStateOf(false) }
-    val hasPermission = remember { mutableStateOf(false) }
+    var showPermission by remember { mutableStateOf(false) }
+    var hasPermission by remember { mutableStateOf(false) }
 
+    Log.e("ayhan", "showPermission1 : ${showPermission} , ${hasPermission}")
 
-    Log.e("ayhan", "showPermission1 : ${showPermission.value} , ${hasPermission.value}")
-
-    if (showPermission.value) {
+    if (!hasPermission || showPermission) {
         Log.e("ayhan", "showPermission")
         CheckCameraPermission {
-            hasPermission.value = it
-            showPermission.value = false
+            hasPermission = it
+            showPermission = false
 
             Log.e("ayhan", "CheckCameraPermission : $it")
         }
@@ -74,7 +75,8 @@ fun ProfileUpdateView(
         Image(
             painter = rememberAsyncImagePainter(
                 model = profileUri,
-                error = painterResource(id = R.drawable.testimg)
+                placeholder = painterResource(id = R.drawable.profile_icon_1),
+                error = painterResource(id = R.drawable.profile_icon_1)
             ),
             contentDescription = stringResource(
                 id = R.string.moreProfileImageDesc
@@ -89,7 +91,6 @@ fun ProfileUpdateView(
                 .size(70.dp, 70.dp)
                 .aspectRatio(1f)
                 .clip(shape = RoundedCornerShape(28.dp))
-                .border(width = 1.dp, color = Gray2, shape = RoundedCornerShape(28.dp))
         )
 
         Box(
@@ -106,11 +107,11 @@ fun ProfileUpdateView(
             IconButton(
                 modifier = Modifier.size(20.dp),
                 onClick = {
-                    Log.e("ayhan", "click! ${hasPermission.value}")
-                    if (!hasPermission.value) {
-                        showPermission.value = true
-                    } else {
+                    Log.e("ayhan", "click! ${hasPermission}")
+                    if (hasPermission) {
                         imageUpdateButtonClicked()
+                    } else {
+                        showPermission = true
                     }
                 },
                 image = R.drawable.ico_20_camera,
@@ -126,4 +127,12 @@ internal fun CheckCameraPermission(isAvailable: (Boolean) -> Unit) {
     CameraPermission {
         isAvailable(it)
     }
+}
+
+@Preview
+@Composable
+private fun ProfileUpdateViewPreview() {
+    val updateImageFile: MutableState<String?> = remember { mutableStateOf("") }
+
+    ProfileUpdateView(updatePath = updateImageFile, imageUpdateButtonClicked = {})
 }

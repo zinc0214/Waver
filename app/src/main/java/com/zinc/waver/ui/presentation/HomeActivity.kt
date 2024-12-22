@@ -91,6 +91,13 @@ class HomeActivity : AppCompatActivity() {
                         retryEmail.value = it
                         showScreenType.value =
                             ShowParentScreenType.Login
+                    }, addImageAction = {
+                        takePhotoAction = it
+                        if (it.type == AddImageType.CAMERA) {
+                            takePhoto()
+                        } else {
+                            goToGallery()
+                        }
                     })
                 }
 
