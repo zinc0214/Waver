@@ -5,11 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.domain.usecases.common.SaveBucketLike
-import com.zinc.domain.usecases.feed.CheckSavedKeywords
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
 import com.zinc.domain.usecases.feed.SavedKeywordItems
 import com.zinc.waver.ui.viewmodel.CommonViewModel
+import com.zinc.waver.ui_feed.models.FeedLoadStatus
 import com.zinc.waver.ui_feed.models.UIFeedInfo
 import com.zinc.waver.ui_feed.models.UIFeedKeyword
 import com.zinc.waver.ui_feed.models.parseUI
@@ -22,121 +22,97 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    private val checkSavedKeywords: CheckSavedKeywords,
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
     private val saveBucketLike: SaveBucketLike
 ) : CommonViewModel() {
-    private val _isKeyWordSelected = MutableLiveData<Boolean>()
-    val isKeyWordSelected: LiveData<Boolean> get() = _isKeyWordSelected
-
     private val _feedKeyWords = MutableLiveData<List<UIFeedKeyword>>()
     val feedKeyWords: LiveData<List<UIFeedKeyword>> get() = _feedKeyWords
 
     private val _feedItems = MutableLiveData<List<UIFeedInfo>>()
     val feedItems: LiveData<List<UIFeedInfo>> get() = _feedItems
 
-    private val _loadFail = SingleLiveEvent<Boolean>()
-    val loadFail: LiveData<Boolean> get() = _loadFail
+    private val _loadStatusEvent = SingleLiveEvent<FeedLoadStatus>()
+    val loadStatusEvent: LiveData<FeedLoadStatus> get() = _loadStatusEvent
 
-    private val _likeFail = MutableLiveData<Boolean>()
-    val likeFail: LiveData<Boolean> get() = _likeFail
-
-    private val _isLoading = MutableLiveData<Boolean>()
-    val isLoading: LiveData<Boolean> get() = _isLoading
-
-    private val loadCeh = CoroutineExceptionHandler { _, throwable ->
-        _loadFail.value = true
-        _isLoading.value = false
-    }
-
-    fun checkSavedKeyWords() {
-        _loadFail.value = false
-        viewModelScope.launch(ceh(_loadFail, true)) {
-            runCatching {
-                checkSavedKeywords.invoke().apply {
-                    Log.e("ayhan", "feed check response : $this")
-                    if (this.code == "5000") {
-                        _isKeyWordSelected.value = false
-                    } else if (!success) {
-                        _loadFail.value = true
-                    } else {
-                        _isKeyWordSelected.value = true
-                    }
-                }
-            }.getOrElse {
-                _loadFail.value = true
-            }
-        }
-    }
-
-    fun loadFeedKeyWords() {
-        _loadFail.value = false
-        viewModelScope.launch(ceh(_loadFail, true)) {
-            runCatching {
-                loadFeedKeyWords.invoke().apply {
-                    Log.e("ayhan", "feed response : $this")
-                    if (success) {
-                        _feedKeyWords.value = data?.parseUI()
-                    } else {
-                        _loadFail.value = true
-                    }
-                }
-            }.getOrElse {
-                _loadFail.value = true
-            }
-        }
+    private val loadCeh = CoroutineExceptionHandler { _, _ ->
+        val hasData = _feedItems.value != null
+        _loadStatusEvent.value = FeedLoadStatus.LoadFail(hasData)
     }
 
     fun loadFeedItems() {
-        _loadFail.value = false
+        _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
         viewModelScope.launch(loadCeh) {
             runCatching {
-                _isLoading.value = true
                 loadFeedItems.invoke().apply {
                     Log.e("ayhan", "feedListResponse : $this")
-                    if (this.success.not()) {
-                        _loadFail.value = true
+                    if (this.code == "5000") {
+                        loadFeedKeyWords()
+                    } else if (this.success.not()) {
+                        _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
                     } else {
-                        _isKeyWordSelected.value = true
                         _feedItems.value = this.data.toUIModel()
                     }
+                    _loadStatusEvent.value = FeedLoadStatus.Success
                 }
-
-                _isLoading.value = false
             }.getOrElse {
-                _loadFail.value = true
-                _isLoading.value = false
+                val hasData = _feedItems.value != null
+                _loadStatusEvent.value = FeedLoadStatus.LoadFail(hasData)
             }
-
         }
     }
 
     fun savedKeywordList(list: List<Int>) {
-        viewModelScope.launch(ceh(_isKeyWordSelected, false)) {
+        _loadStatusEvent.value = FeedLoadStatus.None
+
+        viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
             runCatching {
                 val response = savedKeywordItems.invoke(list)
-                _isKeyWordSelected.value = response.success
+                if (response.success) {
+                    loadFeedItems()
+                } else {
+                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
+                }
             }.getOrElse {
-                _loadFail.value = true
+                _loadStatusEvent.value = FeedLoadStatus.ToastFail
             }
         }
     }
 
     fun saveBucketLike(bucketId: String) {
-        viewModelScope.launch(ceh(_likeFail, true)) {
+        _loadStatusEvent.value = FeedLoadStatus.None
+
+        viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
             runCatching {
                 val response = saveBucketLike.invoke(bucketId)
                 Log.e("ayhan", "response : $response")
                 if (response.success) {
                     loadFeedItems()
-                    _likeFail.value = false
                 } else {
-                    _likeFail.value = true
+                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
                 }
             }.getOrElse {
-                _likeFail.value = true
+                _loadStatusEvent.value = FeedLoadStatus.ToastFail
+            }
+        }
+    }
+
+    private fun loadFeedKeyWords() {
+        _loadStatusEvent.value = FeedLoadStatus.KeywordLoading
+        viewModelScope.launch(loadCeh) {
+            runCatching {
+                loadFeedKeyWords.invoke().apply {
+                    Log.e("ayhan", "feed response : $this")
+                    if (success) {
+                        _feedKeyWords.value = data?.parseUI()
+                        _loadStatusEvent.value = FeedLoadStatus.Success
+                    } else {
+                        _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
+                    }
+                }
+            }.getOrElse {
+                _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
             }
         }
     }

@@ -64,5 +64,14 @@ sealed interface FeedClickEvent {
     data class Like(val isLike: Boolean, val id: String) : FeedClickEvent
     data class Scrap(val id: String) : FeedClickEvent
     data class GoToBucket(val bucketId: String, val userId: String) : FeedClickEvent
+}
 
+sealed class FeedLoadStatus {
+    data object RefreshLoading : FeedLoadStatus()
+    data object PagingLoading : FeedLoadStatus()
+    data object KeywordLoading : FeedLoadStatus()
+    data object Success : FeedLoadStatus()
+    data object ToastFail : FeedLoadStatus()
+    data class LoadFail(val hasData: Boolean) : FeedLoadStatus()
+    data object None : FeedLoadStatus()
 }

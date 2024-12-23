@@ -17,7 +17,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.zinc.waver.ui_common.R
 
 @Composable
-fun Loading(modifier: Modifier = Modifier.fillMaxSize()) {
+fun WaverLoading(modifier: Modifier = Modifier.fillMaxSize()) {
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.wave_loading))
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Box(
@@ -36,5 +36,5 @@ fun Loading(modifier: Modifier = Modifier.fillMaxSize()) {
 @Preview
 @Composable
 private fun LoadingPreview() {
-    Loading()
+    WaverLoading()
 }

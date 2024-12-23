@@ -67,7 +67,7 @@ import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.util.isFirstItemVisible
 import com.zinc.waver.ui.presentation.component.MyText
-import com.zinc.waver.ui.util.Loading
+import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_my.screen.all.AllBucketLayer
@@ -229,7 +229,7 @@ fun MyScreen(
     }
 
     if (showLoading.value) {
-        Loading()
+        WaverLoading()
     }
 }
 
