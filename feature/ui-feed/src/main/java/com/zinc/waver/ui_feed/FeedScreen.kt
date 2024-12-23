@@ -92,11 +92,6 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
             title = stringResource(id = R.string.feedLoadFailTitle),
             message = stringResource(id = R.string.feedLoadFailContent)
         ) {
-            if (isKeyWordSelected == true) {
-                viewModel.loadFeedItems()
-            } else {
-                viewModel.loadFeedKeyWords()
-            }
             showLoadFailDialog.value = false
         }
     }
