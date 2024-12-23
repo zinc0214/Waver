@@ -66,7 +66,8 @@ data class BucketDetailUiInfo(
     val commentInfo: DetailDescType.CommentInfo? = null,
     val togetherInfo: TogetherInfo? = null,
     val isMine: Boolean,
-    val isDone: Boolean
+    val isDone: Boolean,
+    val isLiked: Boolean
 ) {
     val canShowCompleteButton get() = isMine && !isDone
     fun getButtonIndex(): Int {
@@ -135,4 +136,5 @@ sealed interface DetailLoadFailStatus {
     data object GoalCountUpdateFail : DetailLoadFailStatus
     data object AddCommentFail : DetailLoadFailStatus
     data object DeleteCommentFail : DetailLoadFailStatus
+    data object LikeFail : DetailLoadFailStatus
 }

@@ -72,7 +72,8 @@ fun bucketDetailResponseToUiModel(
         commentInfo = commentInfo,
         togetherInfo = null,
         isMine = isMine,
-        isDone = bucketInfo.status == DetailInfo.CompleteStatus.COMPLETE
+        isDone = bucketInfo.status == DetailInfo.CompleteStatus.COMPLETE,
+        isLiked = false // TODO : 데이터 받아야됨
     )
 }
 

@@ -19,6 +19,7 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
     val originText: String,
+    val isLiked: Boolean,
     val commentEvent: (OpenDetailEditTextViewEvent) -> Unit
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -41,6 +42,13 @@ class CommentEditTextAndroidView @JvmOverloads constructor(
             hideKeyboard()
             binding.commentEditTextView.clearFocus()
             binding.commentEditTextView.setText("")
+        }
+
+        binding.likeButton.isSelected = isLiked
+        binding.likeButton.setOnClickListener {
+            commentEvent.invoke(
+                OpenDetailEditTextViewEvent.BucketLike
+            )
         }
 
         binding.commentEditTextView.setText(originText)

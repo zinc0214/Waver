@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.ProfileInfo
+import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.DeleteBucketComment
 import com.zinc.domain.usecases.detail.GoalCountUpdate
@@ -31,7 +32,8 @@ class DetailViewModel @Inject constructor(
     private val achieveMyBucket: AchieveMyBucket,
     private val addBucketComment: AddBucketComment,
     private val deleteBucketComment: DeleteBucketComment,
-    private val goalCountUpdate: GoalCountUpdate
+    private val goalCountUpdate: GoalCountUpdate,
+    private val saveBucketLike: SaveBucketLike
 ) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
@@ -76,6 +78,19 @@ class DetailViewModel @Inject constructor(
                 getBucketDetail(bucketId!!, writerId!!, isMine!!)
             } else {
                 _loadFail.value = DetailLoadFailStatus.AchieveFail
+            }
+        }
+    }
+
+    fun saveBucketLike() {
+        _loadFail.value = null
+
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LikeFail)) {
+            val response = saveBucketLike(bucketId!!)
+            if (response.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
+                _loadFail.value = DetailLoadFailStatus.LikeFail
             }
         }
     }

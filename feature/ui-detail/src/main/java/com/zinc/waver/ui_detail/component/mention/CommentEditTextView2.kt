@@ -10,6 +10,7 @@ import com.zinc.waver.ui_detail.model.TaggedTextInfo
 @Composable
 fun CommentEditTextView2(
     originText: String,
+    isLiked: Boolean,
     newTaggedInfo: TaggedTextInfo? = null,
     commentEvent: (OpenDetailEditTextViewEvent) -> Unit
 ) {
@@ -18,6 +19,7 @@ fun CommentEditTextView2(
             CommentEditTextAndroidView(
                 context,
                 originText = originText,
+                isLiked = isLiked,
                 commentEvent = commentEvent
             )
         }, update = {

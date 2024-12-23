@@ -394,6 +394,7 @@ fun OpenDetailScreenOld(
                         CommentEditTextView2(
                             originText = commentText.value,
                             newTaggedInfo = newTaggedText.value,
+                            isLiked = false,
                             commentEvent = {
                                 when (it) {
                                     is OpenDetailEditTextViewEvent.SendComment -> {
@@ -461,6 +462,8 @@ fun OpenDetailScreenOld(
                                             mentionSearchInfo.value = null
                                         }
                                     }
+
+                                    OpenDetailEditTextViewEvent.BucketLike -> TODO()
                                 }
                             }
 

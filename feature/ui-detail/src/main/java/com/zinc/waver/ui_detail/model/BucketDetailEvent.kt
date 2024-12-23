@@ -62,6 +62,8 @@ sealed interface OpenBucketDetailInternalEvent {
 
         // 댓글 추가
         data class AddComment(val comment: AddBucketCommentRequest) : ViewModelEvent
+
+        data object BucketLike : ViewModelEvent
     }
 
 }

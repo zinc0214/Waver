@@ -8,4 +8,6 @@ sealed interface OpenDetailEditTextViewEvent {
     ) : OpenDetailEditTextViewEvent
 
     data class SendComment(val sendText: String) : OpenDetailEditTextViewEvent
+
+    data object BucketLike : OpenDetailEditTextViewEvent
 }

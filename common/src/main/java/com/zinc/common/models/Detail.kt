@@ -13,12 +13,14 @@ data class BucketDetailResponse(
 @Serializable
 data class DetailInfo(
     val id: String,
+    val userId: String,
     val title: String,
     val memo: String?,
     val exposureStatus: ExposureStatus,
     val status: CompleteStatus,
     val pin: String,
     val scrapYn: YesOrNo,
+    val isMine: YesOrNo,
     val categoryId: Int,
     val categoryName: String,
     val goalCount: Int,

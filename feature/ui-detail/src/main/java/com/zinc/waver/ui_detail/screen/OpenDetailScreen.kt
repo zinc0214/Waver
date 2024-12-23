@@ -147,6 +147,10 @@ fun OpenDetailScreen(
                 is OpenBucketDetailInternalEvent.ViewModelEvent.AddComment -> {
                     viewModel.requestAddBucketComment(event.comment)
                 }
+
+                OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike -> {
+                    viewModel.saveBucketLike()
+                }
             }
         }
     }
@@ -338,8 +342,12 @@ private fun InternalOpenDetailScreen(
                     CommentEditTextView2(
                         originText = commentText.value,
                         newTaggedInfo = newTaggedText.value,
+                        isLiked = detailInfo.isLiked,
                         commentEvent = {
                             when (it) {
+                                is OpenDetailEditTextViewEvent.BucketLike -> {
+                                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
+                                }
                                 is OpenDetailEditTextViewEvent.SendComment -> {
                                     updateInternalEvent(
                                         OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
@@ -748,7 +756,8 @@ private fun InternalOpenDetailScreenPreview() {
             ),
             togetherInfo = null,
             isMine = true,
-            isDone = false
+            isDone = false,
+            isLiked = false
         ),
         validMentionList = emptyList(),
         internalEvent = OpenBucketDetailInternalEvent.None,
