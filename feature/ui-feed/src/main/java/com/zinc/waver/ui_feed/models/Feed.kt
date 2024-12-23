@@ -71,6 +71,7 @@ sealed class FeedLoadStatus {
     data object PagingLoading : FeedLoadStatus()
     data object KeywordLoading : FeedLoadStatus()
     data object Success : FeedLoadStatus()
+    data object CopySuccess : FeedLoadStatus()
     data object ToastFail : FeedLoadStatus()
     data class LoadFail(val hasData: Boolean) : FeedLoadStatus()
     data object None : FeedLoadStatus()

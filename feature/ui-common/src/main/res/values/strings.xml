@@ -36,6 +36,8 @@
 
     <string name="monthDesc">뭐든</string>
 
+    <string name="bucketCopySucceedToast">버킷리스트가 복사되었습니다</string>
+
     <!-- Login -->
     <string name="goToLogin">로그인</string>
     <!-- My > TabTitle -->

@@ -11,4 +11,8 @@ internal class CommonRepositoryImpl @Inject constructor(
     override suspend fun saveBucketLike(id: String): CommonResponse {
         return waverApi.saveBucketLike(id)
     }
+
+    override suspend fun copyOtherBucket(id: String): CommonResponse {
+        return waverApi.copyOtherBucket(id)
+    }
 }

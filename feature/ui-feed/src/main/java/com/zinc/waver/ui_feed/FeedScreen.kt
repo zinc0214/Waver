@@ -76,7 +76,9 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
                     viewModel.saveBucketLike(event.id)
                 }
 
-                is FeedClickEvent.Scrap -> TODO()
+                is FeedClickEvent.Scrap -> {
+                    viewModel.copyOtherBucket(event.id)
+                }
             }
         },
         keywordSaved = {
@@ -90,7 +92,14 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
             CommonR.string.requestFailDesc,
             Toast.LENGTH_SHORT
         ).show()
-
+        loadStatus = FeedLoadStatus.None
+    } else if (loadStatus == FeedLoadStatus.CopySuccess) {
+        Toast.makeText(
+            context,
+            CommonR.string.bucketCopySucceedToast,
+            Toast.LENGTH_SHORT
+        ).show()
+        loadStatus = FeedLoadStatus.None
     }
 }
 
@@ -148,7 +157,6 @@ private fun FeedScreen(
         if (loadStatus == FeedLoadStatus.KeywordLoading) {
             WaverLoading()
         }
-
 
         PullRefreshIndicator(
             refreshing = loadStatus == FeedLoadStatus.RefreshLoading,

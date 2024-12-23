@@ -290,4 +290,10 @@ interface WaverApi {
         @Path("id") id: String,
         @Query("reason") reason: String
     ): CommonResponse
+
+    // 버킷 복사
+    @POST("/feeds/{id}/scrap")
+    suspend fun copyOtherBucket(
+        @Path("id") id: String
+    ): CommonResponse
 }

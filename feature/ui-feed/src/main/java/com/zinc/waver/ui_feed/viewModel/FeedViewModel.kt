@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.domain.usecases.common.CopyOtherBucket
 import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.feed.LoadFeedItems
 import com.zinc.domain.usecases.feed.LoadFeedKeyWords
@@ -25,7 +26,8 @@ class FeedViewModel @Inject constructor(
     private val loadFeedKeyWords: LoadFeedKeyWords,
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
-    private val saveBucketLike: SaveBucketLike
+    private val saveBucketLike: SaveBucketLike,
+    private val copyOtherBucket: CopyOtherBucket
 ) : CommonViewModel() {
     private val _feedKeyWords = MutableLiveData<List<UIFeedKeyword>>()
     val feedKeyWords: LiveData<List<UIFeedKeyword>> get() = _feedKeyWords
@@ -89,6 +91,25 @@ class FeedViewModel @Inject constructor(
                 Log.e("ayhan", "response : $response")
                 if (response.success) {
                     loadFeedItems()
+                } else {
+                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
+                }
+            }.getOrElse {
+                _loadStatusEvent.value = FeedLoadStatus.ToastFail
+            }
+        }
+    }
+
+    fun copyOtherBucket(bucketId: String) {
+        _loadStatusEvent.value = FeedLoadStatus.None
+
+        viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
+            runCatching {
+                val response = copyOtherBucket.invoke(bucketId)
+                Log.e("ayhan", "response : $response")
+                if (response.success) {
+                    loadFeedItems()
+                    _loadStatusEvent.value = FeedLoadStatus.CopySuccess
                 } else {
                     _loadStatusEvent.value = FeedLoadStatus.ToastFail
                 }
