@@ -44,7 +44,8 @@ fun bucketDetailResponseToUiModel(
             id = bucketInfo.categoryId, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
         ),
         isScrap = bucketInfo.scrapYn.isYes(),
-        status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE
+        status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE,
+        isMine = isMine
     )
 
     val commentInfo = bucketInfo.comment?.let {

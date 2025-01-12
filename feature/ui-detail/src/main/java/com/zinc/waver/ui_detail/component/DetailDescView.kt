@@ -3,6 +3,7 @@ package com.zinc.waver.ui_detail.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,10 +20,12 @@ import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.YesOrNo
 import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.model.WriteCategoryInfo
+import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.theme.Main5
+import com.zinc.waver.ui.presentation.component.CategoryView
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.TagListView
 import com.zinc.waver.ui.util.dpToSp
@@ -46,11 +49,17 @@ fun DetailDescView(detailDescInfo: DetailDescType.CommonDetailDescInfo) {
         detailDescInfo.keywordList?.let { tagList ->
             if (tagList.isNotEmpty()) {
                 TagListView(
-                    modifier = Modifier.padding(bottom = 26.dp),
+                    modifier = Modifier.padding(bottom = 16.dp),
                     tagList = tagList.map { it.text }
                 )
             }
         }
+
+        if (detailDescInfo.isMine) {
+            Spacer(modifier = Modifier.padding(4.dp))
+            CategoryView(detailDescInfo.categoryInfo)
+        }
+
 
         TitleView(
             title = detailDescInfo.title
@@ -97,6 +106,7 @@ private fun StatusView(modifier: Modifier = Modifier, dday: String?, status: Buc
                 text = statusInfo.text,
                 color = statusInfo.textColor,
                 fontSize = dpToSp(13.dp),
+                fontWeight = FontWeight.Medium,
                 modifier = Modifier.align(Alignment.Center)
             )
         }
@@ -121,16 +131,17 @@ private fun DetailDescViewPreview() {
         detailDescInfo = DetailDescType.CommonDetailDescInfo(
             dDay = null,
             status = BucketStatus.PROGRESS,
-            keywordList = listOf(),
+            keywordList = listOf(WriteKeyWord(id = 0, text = "여행")),
             title = "갸갸갸갸갸",
             goalCount = 0,
             userCount = 0,
             categoryInfo = WriteCategoryInfo(
                 id = 0,
-                name = "",
+                name = "카테고리명",
                 defaultYn = YesOrNo.N
             ),
-            isScrap = false
+            isScrap = false,
+            isMine = true
         )
     )
 }

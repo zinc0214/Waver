@@ -29,6 +29,7 @@ sealed class DetailDescType {
     ) : DetailDescType()
 
     data class CommonDetailDescInfo(
+        val isMine: Boolean,
         val dDay: String?,
         val status: BucketStatus,
         val keywordList: List<WriteKeyWord>?,

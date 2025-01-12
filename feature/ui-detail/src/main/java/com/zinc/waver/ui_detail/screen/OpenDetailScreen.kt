@@ -737,7 +737,8 @@ private fun InternalOpenDetailScreenPreview() {
                     name = "카테고리",
                     defaultYn = YesOrNo.N
                 ),
-                isScrap = false
+                isScrap = false,
+                isMine = true
             ),
             memoInfo = DetailDescType.MemoInfo("메모를 썼다고 해보자구\n아주긴ㄱㄹ로\n일단 스크롤이 되어야 하거든\n부탁 좀 핳게 !!!"),
             commentInfo = DetailDescType.CommentInfo(
