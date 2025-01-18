@@ -44,8 +44,8 @@ class WriteBucketListViewModel @Inject constructor(
     private val _keywordList = MutableLiveData<List<WriteKeyWord>>()
     val keywordList: LiveData<List<WriteKeyWord>> get() = _keywordList
 
-    private val _loadFail = MutableLiveData<Pair<String, String>>()
-    val loadFail: LiveData<Pair<String, String>> get() = _loadFail
+    private val _loadFail = MutableLiveData<Pair<String, String>?>()
+    val loadFail: LiveData<Pair<String, String>?> get() = _loadFail
 
     fun clearData() {
         _loadFail.value = null
@@ -98,6 +98,7 @@ class WriteBucketListViewModel @Inject constructor(
             runCatching {
                 _loadFail.value = null
                 val res = loadFriends.invoke()
+                Log.e("ayhan", "freinds : $res")
                 if (res.success) {
                     _searchFriendsResult.value = res.data.filter { it.mutualFollow }.map {
                         WriteFriend(it.id, it.imgUrl, it.name)

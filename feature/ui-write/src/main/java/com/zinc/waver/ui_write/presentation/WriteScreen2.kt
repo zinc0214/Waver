@@ -158,7 +158,9 @@ fun WriteScreen2(
     if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
         when (optionScreenShow) {
             WriteOptionsType2.TAG -> {
-                viewModel.loadKeyword()
+                LaunchedEffect(Unit) {
+                    viewModel.loadKeyword()
+                }
                 WriteSelectKeyWordScreen(
                     closeClicked = { optionScreenShow = null },
                     originKeyWord = keyWordList.value.orEmpty(),
@@ -171,7 +173,9 @@ fun WriteScreen2(
             }
 
             WriteOptionsType2.FRIENDS -> {
-                viewModel.loadFriends()
+                LaunchedEffect(Unit) {
+                    viewModel.loadFriends()
+                }
                 WriteSelectFriendsScreen(
                     closeClicked = { optionScreenShow = null },
                     selectedFriends = selectedFriends.value,
