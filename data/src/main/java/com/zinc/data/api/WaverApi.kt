@@ -123,7 +123,7 @@ interface WaverApi {
     ): CommonResponse
 
     // 피드 조회
-    @GET("/feeds/keywords")
+    @GET("/feeds")
     suspend fun loadFeedItems(): FeedListResponse
 
     // 버킷리스트 등록
