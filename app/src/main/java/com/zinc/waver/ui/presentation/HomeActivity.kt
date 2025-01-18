@@ -147,11 +147,11 @@ class HomeActivity : AppCompatActivity() {
                                 finish()
                             }
 
-                            ActionWithActivity.InAppBilling -> {
+                            is ActionWithActivity.InAppBilling -> {
                                 val subs = ChooseSubscription(this) {
                                     Toast.makeText(this, "구매완료", Toast.LENGTH_SHORT).show()
                                 }
-                                subs.billingSetup()
+                                subs.billingSetup(waverPlusType = it.type)
                             }
                         }
                     })

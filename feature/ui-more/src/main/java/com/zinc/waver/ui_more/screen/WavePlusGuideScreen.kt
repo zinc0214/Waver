@@ -8,17 +8,24 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -31,14 +38,16 @@ import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.IconButton
+import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui_more.components.WavePlusPayJoinButtonView
 import com.zinc.waver.ui_more.components.WavePlusPayView
 import com.zinc.waver.ui_more.components.WavePlusTopView
 import com.zinc.waver.util.DpToPx
+import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: () -> Unit) {
+fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlusType) -> Unit) {
 
     val scrollState = rememberScrollState()
     var scrollPosition by remember { mutableIntStateOf(0) }
@@ -61,49 +70,78 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: () -> Unit)
         label = "closeButtonBg"
     )
 
-    Box(
-        modifier = Modifier
-            .background(closeButtonBg)
-            .statusBarsPadding()
-            .fillMaxSize()
-            .background(Gray1)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(scrollState)
-        ) {
-
-            WavePlusTopView()
-
-            WavePlusPayView()
-
-            Spacer(modifier = Modifier.height(45.dp))
-
-            WavePlusPayJoinButtonView({
-                inAppBillingShow()
-            })
+    val bottomSheetScaffoldState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
+    )
+    val coroutineScope = rememberCoroutineScope()
+    val showInAppBillingBottomSheet: (Boolean) -> Unit = {
+        coroutineScope.launch {
+            if (it) {
+                bottomSheetScaffoldState.show()
+            } else {
+                bottomSheetScaffoldState.hide()
+            }
         }
+    }
 
+    ModalBottomSheetLayout(
+        modifier = Modifier
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding(),
+        sheetState = bottomSheetScaffoldState,
+        sheetContent = {
+            WavePlusBottomSheet(modifier = Modifier.fillMaxWidth(), selectedItem = {
+                inAppBillingShow(it)
+                showInAppBillingBottomSheet(false)
+            })
+        },
+        sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
+    ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(color = closeButtonBg)
+                .background(closeButtonBg)
+                .statusBarsPadding()
+                .fillMaxSize()
+                .background(Gray1)
         ) {
-            Column {
-                IconButton(image = CommonR.drawable.btn_40_close,
-                    contentDescription = stringResource(id = CommonR.string.closeDesc),
-                    modifier = Modifier
-                        .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
-                        .size(40.dp),
-                    colorFilter = ColorFilter.tint(color = closeButtonTint),
-                    onClick = { onBackPressed() })
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState)
+            ) {
 
-                if (scrollPosition > blueIsGoneOffset) {
-                    Divider(thickness = 1.dp, color = Gray3)
-                }
+                WavePlusTopView()
+
+                WavePlusPayView()
+
+                Spacer(modifier = Modifier.height(45.dp))
+
+                WavePlusPayJoinButtonView({
+                    showInAppBillingBottomSheet(true)
+                })
             }
 
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = closeButtonBg)
+            ) {
+                Column {
+                    IconButton(image = CommonR.drawable.btn_40_close,
+                        contentDescription = stringResource(id = CommonR.string.closeDesc),
+                        modifier = Modifier
+                            .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)
+                            .size(40.dp),
+                        colorFilter = ColorFilter.tint(color = closeButtonTint),
+                        onClick = { onBackPressed() })
+
+                    if (scrollPosition > blueIsGoneOffset) {
+                        Divider(thickness = 1.dp, color = Gray3)
+                    }
+                }
+
+            }
         }
     }
 }

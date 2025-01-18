@@ -16,6 +16,7 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.zinc.waver.ui.presentation.model.WaverPlusType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -43,8 +44,9 @@ class ChooseSubscription(
 
     private lateinit var billingClient: BillingClient
 
-    fun billingSetup() {
-
+    fun billingSetup(waverPlusType: WaverPlusType) {
+        val subType = "waver_plus"
+        val planId = if (waverPlusType == WaverPlusType.YEAR) "per-year" else "per-month"
         billingClient = BillingClient.newBuilder(activity)
             .setListener(purchaseUpdateListener)
             .enablePendingPurchases(
@@ -57,7 +59,7 @@ class ChooseSubscription(
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(result: BillingResult) {
                 if (result.responseCode == BillingResponseCode.OK) {
-                    checkSubscriptionStatus("per_year")
+                    checkSubscriptionStatus(subType, planId)
                 } else {
                     Log.e("ayhan", "billingSetup : ${result.responseCode}, ${result.debugMessage}")
                 }
@@ -72,6 +74,7 @@ class ChooseSubscription(
 
     fun checkSubscriptionStatus(
         subscriptionPlanId: String,
+        planId: String
     ) {
         val queryPurchaseParams = QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.SUBS)
@@ -106,12 +109,13 @@ class ChooseSubscription(
                 }
             }
             // User does not have an active subscription
-            querySubscriptionPlans(subscriptionPlanId)
+            querySubscriptionPlans(subscriptionPlanId, planId)
         }
     }
 
     private fun querySubscriptionPlans(
         subscriptionPlanId: String,
+        planId: String
     ) {
         val queryProductDetailsParams =
             QueryProductDetailsParams.newBuilder()
@@ -139,7 +143,7 @@ class ChooseSubscription(
                             "ayhan",
                             "subscriptionOfferDetails ${it.basePlanId}. $subscriptionPlanId"
                         )
-                        if (it.basePlanId == "per-year") {
+                        if (it.basePlanId == planId) {
                             offerToken = it.offerToken
                             true
                         } else {

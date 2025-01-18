@@ -83,8 +83,20 @@
     <string name="payPerMonth">월</string>
     <string name="payPerMonthValue">4,166원</string>
     <string name="payTotalYear">50,000원</string>
-    <string name="monthPayText"><![CDATA[<font color=#222222><b>월간</b> 혜택 이용권</fon>]]></string>
+    <string name="monthPayText"><![CDATA[<font color=#222222><b>월간</b> 혜택 이용권</font>]]></string>
     <string name="monthBenefit">웨이버 플러스</string>
     <string name="monthTotal">5,000원</string>
     <string name="startWavePlus">웨이버 플러스 시작하기</string>
+    <string name="waverPlusBottomSheetDesc">버킷리스트 제한없이 즐기기</string>
+    <string name="waverPlusBottomSheetYear1">연간</string>
+    <string name="waverPlusBottomSheetYear2">50,000원 / 년</string>
+    <string name="waverPlusBottomSheetYear3">12개월(월 4,166원)</string>
+    <string name="waverPlusBottomSheetMonth1">월간</string>
+    <string name="waverPlusBottomSheetMonth2">5,000원 / 월</string>
+    <string name="waverPlusBottomSheetDesc1">무료체험은 1회만 가능합니다.</string>
+    <string name="waverPlusBottomSheetDesc2">무료체험 기간이 종료된 후, 유료 결제로 자동 전환됩니다.</string>
+    <string name="waverPlusBottomSheetDesc3">구독 취소는 플레이스토어 내에서 언제든지 가능합니다.</string>
+    <string name="waverPlusBottomSheetDesc4">결제 해지 및 환불 방법은 고객센터에서 확인가능합니다.</string>
+    <string name="waverPlusBottomSheetColorText">고객센터</string>
+    <string name="waverPlusBottomSheetButton">웨이버 플러스 구독하기</string>
 </resources>

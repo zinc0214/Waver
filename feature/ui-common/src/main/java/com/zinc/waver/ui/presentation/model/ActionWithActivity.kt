@@ -18,5 +18,5 @@ sealed class ActionWithActivity {
 
     data object Logout : ActionWithActivity()
 
-    data object InAppBilling : ActionWithActivity()
+    data class InAppBilling(val type: WaverPlusType) : ActionWithActivity()
 }

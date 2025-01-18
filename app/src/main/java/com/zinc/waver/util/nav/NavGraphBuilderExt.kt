@@ -11,6 +11,7 @@ import com.zinc.waver.model.MyTabType
 import com.zinc.waver.model.UICategoryInfo
 import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
 import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
@@ -429,7 +430,7 @@ internal fun NavGraphBuilder.myWaveManageNavGraph(
 
 internal fun NavGraphBuilder.wavePlusGuideNavGraph(
     backPress: () -> Unit,
-    inAppBillingShow: () -> Unit,
+    inAppBillingShow: (WaverPlusType) -> Unit,
 ) {
     composable(MoreDestinations.WAVE_PLUS) {
 

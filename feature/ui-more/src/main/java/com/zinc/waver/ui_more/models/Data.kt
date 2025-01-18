@@ -2,6 +2,7 @@ package com.zinc.waver.ui_more.models
 
 import androidx.compose.ui.graphics.painter.Painter
 import com.zinc.common.models.BlockedUserResponse
+import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui_more.R
 
 data class UIMoreMyProfileInfo(
@@ -113,4 +114,11 @@ data class WaverPlusOption(
     val imgResource: Painter,
     val title: String,
     val content: String
+)
+
+data class WaverPlusBottomOption(
+    val type: WaverPlusType,
+    val title: String,
+    val content: String,
+    val subContent: String
 )
