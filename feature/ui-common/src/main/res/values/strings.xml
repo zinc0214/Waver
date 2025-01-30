@@ -85,4 +85,7 @@
     <!-- 버킷 상세 -->
     <string name="loadBucketFail">버킷리스트 로드 실패</string>
     <string name="achieveBucketFail">버킷리스트 달성 실패</string>
+
+    <!-- 광고 id -->
+    <string name="writeAdId">ca-app-pub-7493874486999773/1437019991</string>
 </resources>

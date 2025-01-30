@@ -144,4 +144,7 @@ dependencies {
 
     // InAppBilling
     implementation(libs.inapp.billing)
+
+    // PlayService Ads
+    implementation(libs.play.services.ads)
 }

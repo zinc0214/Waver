@@ -7,6 +7,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.waver.model.DetailDescType
@@ -39,6 +40,8 @@ fun WriteScreen(
     val needToShowCategory = remember {
         mutableStateOf(false)
     }
+
+    var showAds by remember { mutableStateOf(false) }
 
     if (originWriteTotalInfo.value == null) {
         writeBucketListViewModel.getBucketDetailData(id.orEmpty())
@@ -85,7 +88,7 @@ fun WriteScreen(
                     pageNumber.intValue = 1
                 },
                 addBucketSucceed = {
-                    addBucketSucceed()
+                    showAds = true
                 }
             )
         }
@@ -93,5 +96,10 @@ fun WriteScreen(
 
     if (needToShowCategory.value) {
         CategoryEditScreen(backClicked = { needToShowCategory.value = false })
+    }
+
+    if (showAds) {
+        // AdFullScreen()
+        addBucketSucceed()
     }
 }

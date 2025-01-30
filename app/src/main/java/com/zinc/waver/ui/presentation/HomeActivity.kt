@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.google.android.gms.ads.MobileAds
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.waver.R
@@ -25,6 +26,7 @@ import com.zinc.waver.model.AddImageType
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.screen.ads.AdFullScreen
 import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
@@ -68,9 +70,12 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(this)
 
         setContent {
             enableEdgeToEdge()
+
+            AdFullScreen()
 
             val retryEmail: MutableState<String> = remember {
                 mutableStateOf("")
