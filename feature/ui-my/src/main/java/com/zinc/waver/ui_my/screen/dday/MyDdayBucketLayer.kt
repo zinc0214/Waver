@@ -7,21 +7,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.model.MyTabType.DDAY
@@ -36,12 +31,12 @@ fun DdayBucketLayer(
     modifier: Modifier,
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
+    updateScrollable: (Boolean) -> Unit,
     _isFilterUpdated: Boolean
 ) {
 
     val dDayBucketListAsState by viewModel.ddayBucketList.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
     val filterLoadFinishedAsState by viewModel.ddayFilterLoadFinished.observeAsState()
 
     val bucketInfo = remember {
@@ -51,18 +46,9 @@ fun DdayBucketLayer(
         mutableStateOf(_isFilterUpdated)
     }
 
-    DisposableEffect(lifecycleOwner.value) {
-        val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { owner, event ->
-            Log.e("ayhan", "event  :$event")
-            if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.needToReload(true)
-            }
-        }
-        lifecycle.addObserver(observer)
-        onDispose {
-            lifecycle.removeObserver(observer)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.needToReload(true)
+        updateScrollable(dDayBucketListAsState?.bucketList?.isNotEmpty() == true)
     }
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
@@ -78,6 +64,7 @@ fun DdayBucketLayer(
 
     LaunchedEffect(key1 = dDayBucketListAsState, block = {
         bucketInfo.value = dDayBucketListAsState
+        updateScrollable(dDayBucketListAsState?.bucketList?.isNotEmpty() == true)
     })
 
     LaunchedEffect(key1 = filterLoadFinishedAsState) {
@@ -114,7 +101,7 @@ fun DdayBucketLayer(
             }
         } else {
             MyText(
-                text = stringResource(R.string.hasNoBucketList),
+                text = stringResource(R.string.allHasNoBucketListDesc1),
                 textAlign = TextAlign.Center,
                 modifier = modifier
                     .fillMaxWidth()

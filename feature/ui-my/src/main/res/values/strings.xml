@@ -17,7 +17,8 @@
     <!-- My > All -->
     <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
     <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
-    <string name="hasNoBucketList">버킷리스트가 없습니다</string>
+    <string name="allHasNoBucketListDesc1">버킷리스트를 등록</string>
+    <string name="allHasNoBucketListDesc2">하고\n인기 웨이버가 되어보세요.</string>
 
     <!-- My > All > Filter -->
     <string name="showBucketList">표시할 버킷리스트</string>

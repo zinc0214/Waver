@@ -10,21 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import com.zinc.waver.model.CategoryLoadFailStatus
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.CATEGORY
@@ -46,10 +41,10 @@ import com.zinc.waver.ui_common.R as CommonR
 @Composable
 fun CategoryLayer(
     modifier: Modifier,
+    updateScrollable: (Boolean) -> Unit,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     val recommendCategory = "여향"
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     val viewModel: CategoryViewModel = hiltViewModel()
 
@@ -61,24 +56,16 @@ fun CategoryLayer(
     val apiFailState = remember { mutableStateOf(apiFailed) }
     val apiFailDialogShow = remember { mutableStateOf(false) }
 
-    DisposableEffect(lifecycleOwner.value) {
-        val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { owner, event ->
-            Log.e("ayhan", "CategoryLayer event  :$event")
-            if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.loadCategoryList()
-            }
-        }
-        lifecycle.addObserver(observer)
-        onDispose {
-            lifecycle.removeObserver(observer)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.loadCategoryList()
+        updateScrollable(categoryListAsState?.isNotEmpty() == true)
     }
 
     LaunchedEffect(key1 = categoryListAsState, block = {
         Log.e("ayhan", "categoryListAsState : $categoryListAsState")
         addNewCategoryDialogShowAvailable.value = false
         categoryList.value = categoryListAsState
+        updateScrollable(categoryListAsState?.isNotEmpty() == true)
     })
 
     LaunchedEffect(apiFailed) {

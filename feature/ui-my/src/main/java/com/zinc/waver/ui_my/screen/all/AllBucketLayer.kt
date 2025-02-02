@@ -1,39 +1,44 @@
 package com.zinc.waver.ui_my.screen.all
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.zinc.waver.model.AllBucketList
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray4
+import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray8
+import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R.string
@@ -47,6 +52,7 @@ fun AllBucketLayer(
     modifier: Modifier,
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
+    updateScrollable: (Boolean) -> Unit,
     _isFilterUpdated: Boolean
 ) {
 
@@ -54,8 +60,6 @@ fun AllBucketLayer(
     val ddayShowPrefAsState by viewModel.showDdayView.observeAsState()
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val filterLoadFinishedAsState by viewModel.allFilterLoadFinished.observeAsState()
-
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     val bucketInfo = remember {
         mutableStateOf(allBucketInfoAsState)
@@ -67,18 +71,9 @@ fun AllBucketLayer(
         mutableStateOf(_isFilterUpdated)
     }
 
-    DisposableEffect(lifecycleOwner.value) {
-        val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { _, event ->
-            Log.e("ayhan", "event  :$event")
-            if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.needToReload(true)
-            }
-        }
-        lifecycle.addObserver(observer)
-        onDispose {
-            lifecycle.removeObserver(observer)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.needToReload(true)
+        updateScrollable(bucketInfo.value?.bucketList?.isNotEmpty() == true)
     }
 
     LaunchedEffect(key1 = filterLoadFinishedAsState) {
@@ -95,6 +90,7 @@ fun AllBucketLayer(
     LaunchedEffect(key1 = allBucketInfoAsState, block = {
         bucketInfo.value = bucketInfo.value?.copy(bucketList = emptyList())
         bucketInfo.value = allBucketInfoAsState
+        updateScrollable(bucketInfo.value?.bucketList?.isNotEmpty() == true)
     })
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
@@ -118,20 +114,21 @@ fun AllBucketLayer(
     }
 
     bucketInfo.value?.let { it ->
-        if (it.bucketList.isNotEmpty()) {
-            Column(modifier.background(Gray2)) {
-                AllBucketTopView(
-                    modifier = Modifier,
-                    allBucketInfo = it,
-                    clickEvent = { event ->
-                        clickEvent(event)
+        Column(modifier.background(Gray2)) {
+            AllBucketTopView(
+                modifier = Modifier,
+                allBucketInfo = it,
+                clickEvent = { event ->
+                    clickEvent(event)
 
-                        if (event is MyPagerClickEvent.BottomSheet.FilterClicked) {
-                            isFilterUpdated.value = false
-                        }
+                    if (event is MyPagerClickEvent.BottomSheet.FilterClicked) {
+                        isFilterUpdated.value = false
                     }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                }
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            if (it.bucketList.isNotEmpty()) {
                 SimpleBucketListView(
                     bucketList = it.bucketList,
                     tabType = ALL,
@@ -142,15 +139,9 @@ fun AllBucketLayer(
                     achieveClicked = {
                         viewModel.achieveBucket(it, ALL)
                     })
+            } else {
+                BlankView(modifier = Modifier.fillMaxWidth())
             }
-        } else {
-            MyText(
-                text = stringResource(R.string.hasNoBucketList),
-                textAlign = TextAlign.Center,
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 50.dp, horizontal = 20.dp)
-            )
         }
     }
 }
@@ -216,4 +207,42 @@ private fun BucketStateView(
         )
         MyText(text = succeedingText, fontSize = dpToSp(13.dp), color = Gray8)
     }
+}
+
+@Composable
+private fun BlankView(modifier: Modifier = Modifier) {
+    Box(modifier) {
+        MyText(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Main4)) {
+                    append(stringResource(id = R.string.allHasNoBucketListDesc1))
+                }
+                withStyle(style = SpanStyle(color = Gray7)) {
+                    append(stringResource(id = R.string.allHasNoBucketListDesc2))
+                }
+            },
+            fontSize = dpToSp(15.dp),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .padding(horizontal = 26.dp)
+                .padding(bottom = 110.dp, top = 86.dp)
+        )
+
+        Image(
+            painter = painterResource(R.drawable.img_guide_arrow),
+            contentDescription = null,
+            modifier = Modifier
+                .sizeIn(70.dp)
+                .padding(bottom = 10.dp)
+                .align(Alignment.BottomEnd)
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun BlankPreview() {
+    BlankView(modifier = Modifier)
 }

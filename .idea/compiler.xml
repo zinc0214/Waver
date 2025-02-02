@@ -6,6 +6,7 @@
       <module name="Android.Waver.feature.ui-common" target="19" />
       <module name="Android.Waver.feature.ui-detail" target="19" />
       <module name="Android.Waver.feature.ui-feed" target="19" />
+      <module name="Android.Waver.feature.ui-more" target="19" />
       <module name="Android.Waver.feature.ui-my" target="19" />
       <module name="Android.Waver.feature.ui-write" target="19" />
       <module name="BerryBucket.app" target="19" />

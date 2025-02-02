@@ -154,6 +154,13 @@ fun MyScreen(
     val scrollState = rememberLazyListState()
 
     var isListScrollable by remember { mutableStateOf(false) }
+    var isColumnScrollable by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isColumnScrollable) {
+        if (!isColumnScrollable) {
+            scrollState.animateScrollToItem(0, 0)
+        }
+    }
 
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
@@ -192,7 +199,11 @@ fun MyScreen(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         profileInfo.value?.let {
-            LazyColumn(modifier = Modifier.statusBarsPadding(), state = scrollState) {
+            LazyColumn(
+                modifier = Modifier.statusBarsPadding(),
+                state = scrollState,
+                userScrollEnabled = isColumnScrollable
+            ) {
                 item {
                     MyTopLayer(profileInfo = profileInfo.value) {
                         myTopEvent(it)
@@ -221,7 +232,10 @@ fun MyScreen(
                         },
                         goToCategoryEdit = goToCategoryEdit,
                         coroutineScope = coroutineScope,
-                        isListScrollable = isListScrollable
+                        isListScrollable = isListScrollable,
+                        updateScrollable = {
+                            isColumnScrollable = it
+                        }
                     )
                 }
             }
@@ -281,6 +295,7 @@ fun MyViewPager(
     itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     goToCategoryEdit: () -> Unit,
+    updateScrollable: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -299,6 +314,7 @@ fun MyViewPager(
                         ),
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
+                        updateScrollable = updateScrollable,
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.GoTo.BucketItemClicked -> {
@@ -342,6 +358,7 @@ fun MyViewPager(
                             state = rememberScrollState(),
                             enabled = isListScrollable
                         ),
+                        updateScrollable = updateScrollable,
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
@@ -380,6 +397,7 @@ fun MyViewPager(
                             state = rememberScrollState(),
                             enabled = isListScrollable
                         ),
+                        updateScrollable = updateScrollable,
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {
