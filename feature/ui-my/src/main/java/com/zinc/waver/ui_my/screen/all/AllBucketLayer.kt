@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +36,7 @@ import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui_common.R.string
 import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.SimpleBucketListView
 import com.zinc.waver.ui_my.view.FilterAndSearchImageView
@@ -68,7 +69,7 @@ fun AllBucketLayer(
 
     DisposableEffect(lifecycleOwner.value) {
         val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { owner, event ->
+        val observer = LifecycleEventObserver { _, event ->
             Log.e("ayhan", "event  :$event")
             if (event == Lifecycle.Event.ON_CREATE) {
                 viewModel.needToReload(true)
@@ -97,7 +98,7 @@ fun AllBucketLayer(
     })
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
-        Log.e("ayhan", "isNeedToUpdate : ${isNeedToUpdate}")
+        Log.e("ayhan", "isNeedToUpdate : $isNeedToUpdate")
 
         if (isNeedToUpdate == true) {
             viewModel.needToReload(false)
@@ -116,16 +117,16 @@ fun AllBucketLayer(
         }
     }
 
-    bucketInfo.value?.let {
+    bucketInfo.value?.let { it ->
         if (it.bucketList.isNotEmpty()) {
             Column(modifier.background(Gray2)) {
                 AllBucketTopView(
                     modifier = Modifier,
                     allBucketInfo = it,
-                    clickEvent = {
-                        clickEvent(it)
+                    clickEvent = { event ->
+                        clickEvent(event)
 
-                        if (it is MyPagerClickEvent.BottomSheet.FilterClicked) {
+                        if (event is MyPagerClickEvent.BottomSheet.FilterClicked) {
                             isFilterUpdated.value = false
                         }
                     }
@@ -197,15 +198,15 @@ private fun BucketStateView(
     succeedBucketCount: String
 ) {
     val proceedingText =
-        stringResource(com.zinc.waver.ui_common.R.string.proceedingText) + " " + proceedingBucketCount
+        stringResource(string.proceedingText) + " " + proceedingBucketCount
     val succeedingText =
-        stringResource(com.zinc.waver.ui_common.R.string.succeedText) + " " + succeedBucketCount
+        stringResource(string.succeedText) + " " + succeedBucketCount
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
         MyText(text = proceedingText, fontSize = dpToSp(13.dp), color = Gray8)
-        Divider(
+        HorizontalDivider(
             color = Gray4,
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp)
