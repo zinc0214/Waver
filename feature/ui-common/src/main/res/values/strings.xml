@@ -88,4 +88,9 @@
 
     <!-- 광고 id -->
     <string name="writeAdId">ca-app-pub-7493874486999773/1437019991</string>
+    <string name="badgeAdId">ca-app-pub-6302671173915322/6244920706</string>
+
+    <!-- 뱃지 -->
+    <string name="badgeAchieveText">뱃지 챌린지 달성!</string>
+    <string name="badgeAchieveGrade">단계</string>
 </resources>

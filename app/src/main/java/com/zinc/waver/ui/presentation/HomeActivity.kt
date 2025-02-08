@@ -75,8 +75,6 @@ class HomeActivity : AppCompatActivity() {
         setContent {
             enableEdgeToEdge()
 
-            AdFullScreen()
-
             val retryEmail: MutableState<String> = remember {
                 mutableStateOf("")
             }
@@ -169,6 +167,8 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             }
+
+            AdFullScreen()
         }
     }
 

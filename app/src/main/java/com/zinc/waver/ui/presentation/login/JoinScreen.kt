@@ -8,6 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.model.BadgePopupInfo
+import com.zinc.waver.ui.presentation.screen.badge.BadgePopupScreen
 
 @Composable
 fun JoinScreen(
@@ -25,6 +27,8 @@ fun JoinScreen(
     var createProfileInfo by remember { mutableStateOf(CreateProfileInfo()) }
 
     val joinTryEmail: MutableState<String?> = remember { mutableStateOf(null) }
+
+    var showBadgePopup by remember { mutableStateOf(false) }
 
     if (emailLoginSucceed.not()) {
         JoinEmailScreen(goToNexPage = {
@@ -46,11 +50,24 @@ fun JoinScreen(
         JoinCreateProfile2(
             email = joinTryEmail.value.orEmpty(),
             createProfileInfo = createProfileInfo,
-            goToMain = goToMain,
+            goToMain = {
+                showBadgePopup = true
+            },
             goToBack = {
                 isFirstCreate = false
             }
         )
+    }
+
+    if (showBadgePopup) {
+        BadgePopupScreen(info = BadgePopupInfo(
+            badgeUrl = "https://search.yahoo.com/search?p=audire",
+            badgeText = "요리",
+            badgeGrade = "1"
+        ), onDismissRequest = {
+            showBadgePopup = false
+            goToMain()
+        })
     }
 }
 
