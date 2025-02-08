@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.model.MyTabType.DDAY
+import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.SimpleBucketListView
 import com.zinc.waver.ui_my.view.FilterAndSearchImageView
@@ -79,15 +81,15 @@ fun DdayBucketLayer(
         isFilterUpdated.value = _isFilterUpdated
         if (isFilterUpdated.value) {
             viewModel.loadDdayBucketFilter()
-            // viewModel.loadAllBucketList()
             Log.e("ayhan", "isFilterUpdated")
         }
     }
 
     bucketInfo.value?.let {
-        if (it.bucketList.isNotEmpty()) {
-            Column(modifier = modifier) {
-                DdayFilterAndSearchImageView(clickEvent = clickEvent)
+        Column(modifier = modifier) {
+            DdayFilterAndSearchImageView(clickEvent = clickEvent)
+
+            if (it.bucketList.isNotEmpty()) {
                 Spacer(modifier = Modifier.height(16.dp))
                 SimpleBucketListView(
                     it.bucketList.toMutableStateList(), DDAY, true,
@@ -98,15 +100,17 @@ fun DdayBucketLayer(
                         clickEvent.invoke(MyPagerClickEvent.AchieveBucketClicked(it))
                     }
                 )
+            } else {
+                MyText(
+                    text = stringResource(R.string.ddayEmptyGuide),
+                    textAlign = TextAlign.Center,
+                    color = Gray7,
+                    fontSize = dpToSp(15.dp),
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 94.dp, horizontal = 26.dp)
+                )
             }
-        } else {
-            MyText(
-                text = stringResource(R.string.allHasNoBucketListDesc1),
-                textAlign = TextAlign.Center,
-                modifier = modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 50.dp, horizontal = 20.dp)
-            )
         }
     }
 }

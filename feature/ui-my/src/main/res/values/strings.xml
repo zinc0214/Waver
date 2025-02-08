@@ -46,6 +46,7 @@
     <string name="ddayComment">지난 Dday가 1개 있어요</string>
     <string name="ddaySearchImageViewDesc">디데이 버킷리스트 검색</string>
     <string name="ddayFilterImageViewDesc">디데이 버킷리스트 필터</string>
+    <string name="ddayEmptyGuide">디데이가 설정된 버킷리스트가 없습니다.</string>
 
     <!-- My > Dday > Filter -->
     <string name="dday">디데이가 지나지 않은 버킷리스트</string>
