@@ -9,10 +9,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.waver.model.DetailDescType
+import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.model.toUpdateUiModel
+import com.zinc.waver.ui.design.theme.Gray10
+import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
+import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_write.model.WriteEvent
 import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 import com.zinc.waver.util.createImageInfoWithPath
@@ -41,6 +46,11 @@ fun WriteScreen(
         mutableStateOf(false)
     }
 
+    val showBackConfirmDialog = remember {
+        mutableStateOf(false)
+    }
+
+
     var showAds by remember { mutableStateOf(false) }
 
     if (originWriteTotalInfo.value == null) {
@@ -66,14 +76,22 @@ fun WriteScreen(
         if (pageNumber.intValue == 1) {
             WriteScreen1(
                 originWriteTotalInfo = info,
+                viewModel = writeBucketListViewModel,
                 event = {
-                    if (it is WriteEvent.GoToAddCategory) {
-                        writeBucketListViewModel.savedWriteData(originWriteTotalInfo.value)
-                        needToShowCategory.value = true
-                    } else {
-                        event(it)
-                    }
+                    when (it) {
+                        is WriteEvent.GoToAddCategory -> {
+                            writeBucketListViewModel.savedWriteData(originWriteTotalInfo.value)
+                            needToShowCategory.value = true
+                        }
 
+                        is WriteEvent.GoToBack -> {
+                            showBackConfirmDialog.value = true
+                        }
+
+                        else -> {
+                            event(it)
+                        }
+                    }
                 },
                 goToNextPage = {
                     originWriteTotalInfo.value = it
@@ -101,5 +119,20 @@ fun WriteScreen(
     if (showAds) {
         // AdFullScreen()
         addBucketSucceed()
+    }
+
+    if (showBackConfirmDialog.value) {
+        CommonDialogView(
+            message = stringResource(R.string.confirmBackTitle), rightButtonInfo = DialogButtonInfo(
+                text = R.string.confirmBackRightButton, color = Gray10
+            ), leftButtonInfo = DialogButtonInfo(
+                text = R.string.confirmBackLeftButton, color = Gray10
+            ), rightButtonEvent = {
+                showBackConfirmDialog.value = false
+                event.invoke(WriteEvent.GoToBack)
+            }, leftButtonEvent = {
+                showBackConfirmDialog.value = false
+            }
+        )
     }
 }

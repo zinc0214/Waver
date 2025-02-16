@@ -1,7 +1,7 @@
 package com.zinc.data.api
 
 import android.util.Log
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -10,11 +10,11 @@ import okhttp3.Response
 import javax.inject.Inject
 
 class TokenInterceptor @Inject constructor(
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule
+    private val preferenceDataStoreModule: PreferenceDataStoreModule
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return runBlocking {
-            val accessToken = loginPreferenceDataStoreModule.loadAccessToken.first()
+            val accessToken = preferenceDataStoreModule.loadAccessToken.first()
             Log.e("ayhan", "AcceesToken : $accessToken")
             val request = if (accessToken.isNotEmpty()) {
                 chain.request().putTokenHeader(accessToken)

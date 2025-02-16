@@ -29,17 +29,17 @@ fun CommonDialogView(
     title: String? = null,
     message: String? = null,
     dismissAvailable: Boolean = true,
-    negative: DialogButtonInfo? = null,
-    positive: DialogButtonInfo,
-    negativeEvent: (() -> Unit)? = null,
-    positiveEvent: () -> Unit
+    leftButtonInfo: DialogButtonInfo? = null,
+    rightButtonInfo: DialogButtonInfo,
+    leftButtonEvent: (() -> Unit)? = null,
+    rightButtonEvent: () -> Unit
 ) {
     DialogView(
         dismissOnBackPress = dismissAvailable,
         dismissOnClickOutside = dismissAvailable,
         usePlatformDefaultWidth = false,
         dismissEvent = {
-            positiveEvent()
+            rightButtonEvent()
         },
         content = {
             Card(
@@ -92,11 +92,11 @@ fun CommonDialogView(
                     Divider(color = Gray4, thickness = 1.dp)
 
                     BottomButtonView(
-                        negative = negative,
-                        positive = positive,
-                        negativeEvent = { negativeEvent?.invoke() },
+                        negative = leftButtonInfo,
+                        positive = rightButtonInfo,
+                        negativeEvent = { leftButtonEvent?.invoke() },
                         positiveEvent = {
-                            positiveEvent()
+                            rightButtonEvent()
                         }
                     )
                 }
@@ -112,7 +112,8 @@ private fun TitleAndMessageDialogPreview() {
         title = "추가실패",
         message = "뾰잉",
         dismissAvailable = false,
-        positive = DialogButtonInfo(text = R.string.confirm, color = Main4),
-        positiveEvent = {}
+        rightButtonInfo = DialogButtonInfo(text = R.string.confirm, color = Main4),
+        leftButtonInfo = DialogButtonInfo(text = R.string.confirm, color = Gray9),
+        rightButtonEvent = {}
     )
 }

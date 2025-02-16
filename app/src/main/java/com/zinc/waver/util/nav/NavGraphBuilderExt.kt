@@ -13,6 +13,7 @@ import com.zinc.waver.ui.presentation.home.HomeSections
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
+import com.zinc.waver.ui.presentation.screen.waverplus.WaverPlusGuideScreen
 import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
 import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
 import com.zinc.waver.ui_detail.screen.OpenDetailScreen
@@ -25,7 +26,6 @@ import com.zinc.waver.ui_more.screen.BlockSettingScreen
 import com.zinc.waver.ui_more.screen.MoreScreen
 import com.zinc.waver.ui_more.screen.MyWaveManageScreen
 import com.zinc.waver.ui_more.screen.ProfileSettingScreen
-import com.zinc.waver.ui_more.screen.WavePlusGuideScreen
 import com.zinc.waver.ui_my.BottomSheetScreenType
 import com.zinc.waver.ui_my.MyScreen
 import com.zinc.waver.ui_my.SearchBottomView
@@ -273,11 +273,11 @@ internal fun NavGraphBuilder.writeNavGraph(
                         action(event.acton)
                     }
 
-                    WriteEvent.GoToBack -> {
+                    is WriteEvent.GoToBack -> {
                         backPress()
                     }
 
-                    WriteEvent.GoToAddCategory -> {
+                    is WriteEvent.GoToAddCategory -> {
                         goToAddCategory(entry)
                     }
                 }
@@ -434,7 +434,7 @@ internal fun NavGraphBuilder.wavePlusGuideNavGraph(
 ) {
     composable(MoreDestinations.WAVE_PLUS) {
 
-        WavePlusGuideScreen(onBackPressed = { backPress() }, inAppBillingShow = inAppBillingShow)
+        WaverPlusGuideScreen(onBackPressed = { backPress() }, inAppBillingShow = inAppBillingShow)
     }
 }
 

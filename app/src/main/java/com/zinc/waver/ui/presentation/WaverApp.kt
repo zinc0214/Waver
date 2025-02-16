@@ -303,7 +303,10 @@ fun WaverApp(
                                 }
                             }
                         })
-                    writeNavGraph(action = { actionType -> action(actionType) },
+                    writeNavGraph(
+                        action = { actionType ->
+                            action(actionType)
+                        },
                         backPress = {
                             appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
                         },

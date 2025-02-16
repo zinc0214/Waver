@@ -39,6 +39,7 @@ import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 internal fun WaverClubLabelView(
@@ -81,7 +82,7 @@ internal fun WaverClubLabelView(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
-                        painter = painterResource(com.zinc.waver.ui_common.R.drawable.ico_16_right),
+                        painter = painterResource(CommonR.drawable.ico_16_right),
                         contentDescription = null,
                         modifier = Modifier
                             .sizeIn(16.dp)

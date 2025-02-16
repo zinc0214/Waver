@@ -110,13 +110,13 @@ fun JoinEmailScreen(
             title = stringResource(id = R.string.alreadyUsedEmailTitle),
             message = stringResource(id = R.string.alreadyUsedEmailDesc),
             dismissAvailable = false,
-            negative = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
-            positive = DialogButtonInfo(text = CommonR.string.goToLogin, color = Main4),
-            negativeEvent = {
+            leftButtonInfo = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
+            rightButtonInfo = DialogButtonInfo(text = CommonR.string.goToLogin, color = Main4),
+            leftButtonEvent = {
                 isAlreadyUsedEmail.value = false
                 goToBack()
             },
-            positiveEvent = {
+            rightButtonEvent = {
                 isAlreadyUsedEmail.value = false
                 viewModel.savedLoginEmail(prevLoginEmail.value)
             }

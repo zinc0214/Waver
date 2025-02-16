@@ -122,10 +122,6 @@ class MyViewModel @Inject constructor(
 
     fun loadAllBucketFilter() {
         viewModelScope.launch(ceh(_dataLoadFailed, true)) {
-            Log.e(
-                "ayhan",
-                "status check : ${_showProgress.value} , ${_showSucceed.value}, ${_showDdayView.value}"
-            )
             val job1 = launch { loadShowProgressDataStore() }
             val job2 = launch { loadShowSucceedDataStore() }
             val job3 = launch { loadOrderTypeDataStore() }
@@ -235,7 +231,7 @@ class MyViewModel @Inject constructor(
                     _dataLoadFailed.value = false
                     _showLoading.value = false
                 } else {
-                    Log.e("ayhan", "Fail Load Profile not success")
+                    //  Log.e("ayhan", "Fail Load Profile not success")
                     _dataLoadFailed.value = false
                     _showLoading.value = false
                 }

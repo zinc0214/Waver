@@ -3,6 +3,9 @@ package com.zinc.waver.ui_write.presentation
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +25,7 @@ import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -52,6 +56,7 @@ import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.waver.ui.presentation.component.gridItems
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.screen.waverplus.WaverPlusGuideScreen
 import com.zinc.waver.ui.util.CameraPermission
 import com.zinc.waver.ui.util.parseWithDday
 import com.zinc.waver.ui.util.toLocalData
@@ -65,14 +70,17 @@ import com.zinc.waver.ui_write.presentation.options.AddImageItem
 import com.zinc.waver.ui_write.presentation.options.ImageItem
 import com.zinc.waver.ui_write.presentation.options.MemoScreen
 import com.zinc.waver.ui_write.presentation.options.OptionScreen
+import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
 import com.zinc.waver.util.createImageInfoWithPath
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun WriteScreen1(
     originWriteTotalInfo: WriteTotalInfo,
+    viewModel: WriteBucketListViewModel,
     event: (WriteEvent) -> Unit,
     goToNextPage: (WriteTotalInfo) -> Unit
 ) {
@@ -82,6 +90,9 @@ fun WriteScreen1(
     val isKeyboardStatus by keyboardAsState()
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val hasWaverPlusAsState by viewModel.hasWaverPlus.observeAsState()
+
+    var hasWaverPlus by remember { mutableStateOf(false) }
 
     // 지금 선택된 option
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
@@ -96,6 +107,8 @@ fun WriteScreen1(
     }
 
     val nextButtonClickable = remember { mutableStateOf(false) }
+
+    val showWaverPlus = remember { mutableStateOf(false) }
 
     // BottomSheet 관련
     val coroutineScope = rememberCoroutineScope()
@@ -112,6 +125,10 @@ fun WriteScreen1(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.checkHasWaverPlus()
+    }
+
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
             Hidden -> {
@@ -124,6 +141,11 @@ fun WriteScreen1(
             }
         }
     }
+
+    LaunchedEffect(hasWaverPlusAsState) {
+        hasWaverPlus = hasWaverPlusAsState ?: false
+    }
+
 
     // 키보드 이벤트
     if (isKeyboardStatus == Keyboard.Closed || selectedOption != null) {
@@ -314,10 +336,11 @@ fun WriteScreen1(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         if (selectedOption != MEMO) {
-            ConstraintLayout(modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .imePadding()
+            ConstraintLayout(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .statusBarsPadding()
+                    .imePadding()
             ) {
                 val (appBar, contents, option) = createRefs()
 
@@ -404,8 +427,13 @@ fun WriteScreen1(
                                         })
 
                                     if (imageList.value.isNotEmpty() && imageList.value.size < 3 && it == imageList.value.last()) {
-                                        AddImageItem {
-                                            selectedOption = IMAGE
+                                        AddImageItem(hasWaverPlus = hasWaverPlus) {
+                                            if (hasWaverPlus) {
+                                                selectedOption = IMAGE
+                                            } else {
+                                                showWaverPlus.value = true
+                                            }
+
                                         }
                                     }
                                 },
@@ -461,6 +489,16 @@ fun WriteScreen1(
                             }
                         }
                     })
+            }
+        }
+    }
+
+    AnimatedVisibility(showWaverPlus.value, enter = fadeIn(), exit = fadeOut()) {
+        if (showWaverPlus.value) {
+            WaverPlusGuideScreen(onBackPressed = {
+                showWaverPlus.value = false
+            }) { type ->
+                event.invoke(WriteEvent.ActivityAction(ActionWithActivity.InAppBilling(type)))
             }
         }
     }

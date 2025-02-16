@@ -18,15 +18,15 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
 import com.zinc.waver.ui.presentation.model.WaverPlusType
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class ChooseSubscription(
     private val activity: Activity,
-    private val subsDone: () -> Unit
+    private val isForPurchase: Boolean,
+    private val subsDone: () -> Unit,
+    private val alreadyPurchased: (Boolean) -> Unit
 ) {
     private val _subscriptions = MutableStateFlow<List<String>>(emptyList())
-    val subscriptions = _subscriptions.asStateFlow()
 
     private val purchaseUpdateListener = PurchasesUpdatedListener { result, purchases ->
         if (result.responseCode == BillingResponseCode.OK && purchases != null) {
@@ -60,8 +60,9 @@ class ChooseSubscription(
             override fun onBillingSetupFinished(result: BillingResult) {
                 if (result.responseCode == BillingResponseCode.OK) {
                     checkSubscriptionStatus(subType, planId)
+                    Log.e("ayhan", "billingSetup1 : ${result.responseCode}, ${result.debugMessage}")
                 } else {
-                    Log.e("ayhan", "billingSetup : ${result.responseCode}, ${result.debugMessage}")
+                    Log.e("ayhan", "billingSetup2 : ${result.responseCode}, ${result.debugMessage}")
                 }
             }
 
@@ -83,18 +84,25 @@ class ChooseSubscription(
         billingClient.queryPurchasesAsync(
             queryPurchaseParams
         ) { result, purchases ->
+            if (purchases.isEmpty()) {
+                alreadyPurchased(false)
+            }
+
             when (result.responseCode) {
                 BillingResponseCode.OK -> {
                     for (purchase in purchases) {
-                        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && purchase.products.contains(
-                                subscriptionPlanId
-                            )
+                        Log.e("ayhan", "queryPurchasesAsync : purchase :$purchase")
+
+                        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED &&
+                            purchase.products.contains(subscriptionPlanId) && purchase.isAcknowledged
                         ) {
                             _subscriptions.update {
                                 val newList = it.toMutableList()
                                 newList.addAll(purchase.products)
                                 newList
                             }
+
+                            alreadyPurchased(true)
                             return@queryPurchasesAsync
                         }
                     }
@@ -102,14 +110,20 @@ class ChooseSubscription(
 
                 BillingResponseCode.USER_CANCELED -> {
                     // User canceled the purchase
+                    Log.e("ayhan", "BillingResponseCode : USER_CANCELED")
                 }
 
                 else -> {
                     // Handle other error cases
+                    Log.e("ayhan", "BillingResponseCode else : ${result.responseCode}")
                 }
             }
+            Log.e("ayhan", "::: $result, $purchases")
+
             // User does not have an active subscription
-            querySubscriptionPlans(subscriptionPlanId, planId)
+            if (isForPurchase) {
+                querySubscriptionPlans(subscriptionPlanId, planId)
+            }
         }
     }
 
@@ -168,18 +182,20 @@ class ChooseSubscription(
 
                     billingClient.launchBillingFlow(activity, billingFlowParams)
                 }
+            } else {
+                Log.e("ayhan", "querySubscriptionPlans  :$${billingResult.responseCode}")
             }
         }
     }
 
     private fun handlePurchase(purchase: Purchase) {
-        subsDone.invoke()
-
         val consumeParams = ConsumeParams.newBuilder()
             .setPurchaseToken(purchase.purchaseToken)
             .build()
 
-        val listener = ConsumeResponseListener { billingResult, s -> }
+        val listener = ConsumeResponseListener { billingResult, s ->
+            Log.e("ayhan", "listener $billingResult")
+        }
 
         billingClient.consumeAsync(consumeParams, listener)
 
@@ -197,9 +213,16 @@ class ChooseSubscription(
                             newList.addAll(purchase.products)
                             newList
                         }
+
+                        Toast.makeText(activity, "구매완료", Toast.LENGTH_SHORT).show()
+                        subsDone.invoke()
                     }
                 }
+            } else {
+                Log.e("ayhan", "isAcknowledged")
             }
+        } else {
+            Log.e("ayhan", "purchase.purchaseState : ${purchase.purchaseState}")
         }
     }
 }

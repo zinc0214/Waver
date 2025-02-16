@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more.components
+package com.zinc.waver.ui.presentation.screen.waverplus
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
-import com.zinc.waver.ui_more.R
+import com.zinc.waver.ui_common.R
 
 @Composable
 internal fun WavePlusPayJoinButtonView(

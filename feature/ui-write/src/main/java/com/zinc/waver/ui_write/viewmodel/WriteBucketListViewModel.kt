@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.DetailInfo
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadFriends
 import com.zinc.domain.usecases.keyword.LoadKeyWord
@@ -18,6 +19,7 @@ import com.zinc.waver.model.toUiModel
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,7 +28,8 @@ class WriteBucketListViewModel @Inject constructor(
     private val addNewBucketList: AddNewBucketList,
     private val loadBucketDetail: LoadBucketDetail,
     private val loadKeyWord: LoadKeyWord,
-    private val loadFriends: LoadFriends
+    private val loadFriends: LoadFriends,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _savedWriteData = MutableLiveData<WriteTotalInfo>()
@@ -46,6 +49,10 @@ class WriteBucketListViewModel @Inject constructor(
 
     private val _loadFail = MutableLiveData<Pair<String, String>?>()
     val loadFail: LiveData<Pair<String, String>?> get() = _loadFail
+
+    private val _hasWaverPlus = MutableLiveData<Boolean>()
+    val hasWaverPlus: LiveData<Boolean> get() = _hasWaverPlus
+
 
     fun clearData() {
         _loadFail.value = null
@@ -160,6 +167,13 @@ class WriteBucketListViewModel @Inject constructor(
         } else {
             _savedWriteData.value = WriteTotalInfo()
         }
+    }
 
+    fun checkHasWaverPlus() {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadHasWaverPlus.collectLatest { value ->
+                _hasWaverPlus.value = value
+            }
+        }
     }
 }

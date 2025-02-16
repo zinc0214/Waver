@@ -10,11 +10,11 @@ fun ApiFailDialog(title: String? = null, message: String? = null, dismissEvent: 
 
     CommonDialogView(
         title = title, message = message, dismissAvailable = false,
-        positive = DialogButtonInfo(
+        rightButtonInfo = DialogButtonInfo(
             text = R.string.confirm,
             color = Main4
         ),
-        positiveEvent = {
+        rightButtonEvent = {
             dismissEvent()
         }
     )

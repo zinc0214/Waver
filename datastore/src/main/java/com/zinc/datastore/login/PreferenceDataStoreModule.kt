@@ -3,6 +3,7 @@ package com.zinc.datastore.login
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -13,7 +14,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext context: Context) {
+class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context: Context) {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "login")
     private val loginDataStore = context.dataStore
@@ -22,6 +23,7 @@ class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext con
     private val refreshTokenKey = stringPreferencesKey("refreshToken")
     private val loginedEmailKey = stringPreferencesKey("loginedEmailKey")
     private val userIdKey = stringPreferencesKey("userIdKey")
+    private val waverPlusKey = booleanPreferencesKey("waverPlusKey")
 
     val loadAccessToken: Flow<String> = loginDataStore.data
         .map { preferences ->
@@ -68,6 +70,16 @@ class LoginPreferenceDataStoreModule @Inject constructor(@ApplicationContext con
     suspend fun setUserIdKey(id: String) {
         loginDataStore.edit { preferences ->
             preferences[userIdKey] = id
+        }
+    }
+
+    val loadHasWaverPlus: Flow<Boolean> = loginDataStore.data.map { preferences ->
+        preferences[waverPlusKey] ?: false
+    }
+
+    suspend fun setHasWaverPlus(hasWaverPlus: Boolean) {
+        loginDataStore.edit { preferences ->
+            preferences[waverPlusKey] = hasWaverPlus
         }
     }
 }

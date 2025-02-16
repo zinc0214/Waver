@@ -1,6 +1,6 @@
 package com.zinc.data.api
 
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
@@ -11,14 +11,14 @@ import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
     //  private val berryBucketApi: BerryBucketApi
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request {
         if (response.code == HTTP_UNAUTHORIZED) {
             val token = runBlocking {
-                loginPreferenceDataStoreModule.loadRefreshToken.first()
+                preferenceDataStoreModule.loadRefreshToken.first()
             }
             // The access token is expired. Refresh the credentials.
 //            synchronized(this) {

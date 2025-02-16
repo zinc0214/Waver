@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _loginFail = SingleLiveEvent<Boolean>()
@@ -37,8 +37,8 @@ class LoginViewModel @Inject constructor(
         isLoginChecked = true
         _needToStartJoin.value = false
         viewModelScope.launch {
-            loginPreferenceDataStoreModule.loadLoginedEmail.collectLatest {
-                Log.e("ayhan", "checkHasLoginEmail : $it")
+            preferenceDataStoreModule.loadLoginedEmail.collectLatest {
+                //   Log.e("ayhan", "checkHasLoginEmail : $it")
                 if (it.isNotEmpty()) {
                     _needToStartLoadToken.value = it
                     _needToStartJoin.value = false
@@ -59,9 +59,9 @@ class LoginViewModel @Inject constructor(
             Log.e("ayhan", "loadUserToken result : ${result.data}")
             if (result.success) {
                 val data = result.data
-                loginPreferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
-                loginPreferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
-                loginPreferenceDataStoreModule.setLoginEmail(email)
+                preferenceDataStoreModule.setRefreshToken("Bearer ${data?.refreshToken}")
+                preferenceDataStoreModule.setAccessToken("Bearer ${data?.accessToken}")
+                preferenceDataStoreModule.setLoginEmail(email)
                 _goToMain.value = true
             } else {
                 _loginFail.value = true

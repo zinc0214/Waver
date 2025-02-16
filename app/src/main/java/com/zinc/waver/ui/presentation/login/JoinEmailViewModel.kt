@@ -3,7 +3,7 @@ package com.zinc.waver.ui.presentation.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinEmailViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _failEmailCheck = SingleLiveEvent<Boolean>()
@@ -35,8 +35,8 @@ class JoinEmailViewModel @Inject constructor(
                 val res = loginByEmail(email)
                 if (res.success) {
                     res.data?.let { token ->
-                        loginPreferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
-                        loginPreferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
+                        preferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
+                        preferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
                     }
                     _isAlreadyUsedEmail.value = true
                 } else {
@@ -50,7 +50,7 @@ class JoinEmailViewModel @Inject constructor(
 
     fun savedLoginEmail(email: String) {
         viewModelScope.launch {
-            loginPreferenceDataStoreModule.setLoginEmail(email)
+            preferenceDataStoreModule.setLoginEmail(email)
             _goToLogin.value = true
         }
     }

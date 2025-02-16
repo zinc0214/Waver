@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.CreateProfileRequest
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.login.CreateProfile
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
@@ -21,7 +21,7 @@ class JoinNickNameViewModel @Inject constructor(
     private val createProfile: CreateProfile,
     private val loginByEmail: LoginByEmail,
     private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname,
-    private val loginPreferenceDataStoreModule: LoginPreferenceDataStoreModule,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _isAlreadyUsedNickName = MutableLiveData<Boolean>()
@@ -107,10 +107,10 @@ class JoinNickNameViewModel @Inject constructor(
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {
-                    loginPreferenceDataStoreModule.setLoginEmail(email)
+                    preferenceDataStoreModule.setLoginEmail(email)
                     res.data?.let { token ->
-                        loginPreferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
-                        loginPreferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
+                        preferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
+                        preferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
                     }
                     _goToLogin.value = true
                 } else {

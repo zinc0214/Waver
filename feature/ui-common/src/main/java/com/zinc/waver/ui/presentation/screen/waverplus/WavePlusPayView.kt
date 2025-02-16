@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more.components
+package com.zinc.waver.ui.presentation.screen.waverplus
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,7 +42,7 @@ import com.zinc.waver.ui.design.theme.Sub_D3
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.HtmlText2
 import com.zinc.waver.ui.util.dpToSp
-import com.zinc.waver.ui_more.R
+import com.zinc.waver.ui_common.R
 
 @Composable
 internal fun WavePlusPayView(modifier: Modifier = Modifier) {

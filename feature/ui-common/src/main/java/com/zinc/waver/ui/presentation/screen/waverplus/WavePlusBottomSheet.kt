@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more.screen
+package com.zinc.waver.ui.presentation.screen.waverplus
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,11 +39,10 @@ import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.theme.Main5
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.presentation.model.WaverPlusBottomOption
 import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui.util.dpToSp
-import com.zinc.waver.ui_more.R
-import com.zinc.waver.ui_more.models.WaverPlusBottomOption
-
+import com.zinc.waver.ui_common.R
 
 @Composable
 fun WavePlusBottomSheet(modifier: Modifier = Modifier, selectedItem: (WaverPlusType) -> Unit) {

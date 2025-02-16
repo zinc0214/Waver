@@ -26,6 +26,7 @@ import com.zinc.waver.model.AddImageType
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui.presentation.screen.ads.AdFullScreen
 import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
@@ -71,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this)
+        checkInAppBilling()
 
         setContent {
             enableEdgeToEdge()
@@ -151,9 +153,15 @@ class HomeActivity : AppCompatActivity() {
                             }
 
                             is ActionWithActivity.InAppBilling -> {
-                                val subs = ChooseSubscription(this) {
-                                    Toast.makeText(this, "구매완료", Toast.LENGTH_SHORT).show()
-                                }
+                                val subs = ChooseSubscription(this,
+                                    isForPurchase = true,
+                                    subsDone = {
+                                        viewModel.updateWaverPlus(true)
+                                    },
+                                    alreadyPurchased = { purchased ->
+                                        viewModel.updateWaverPlus(purchased)
+                                    })
+
                                 subs.billingSetup(waverPlusType = it.type)
                             }
                         }
@@ -266,5 +274,19 @@ class HomeActivity : AppCompatActivity() {
             createChooser(send, resources.getString(R.string.goToWaveQna)),
             null
         )
+    }
+
+    private fun checkInAppBilling() {
+        val subs = ChooseSubscription(this,
+            isForPurchase = false,
+            subsDone = {
+                viewModel.updateWaverPlus(true)
+            },
+            alreadyPurchased = { purchased ->
+                viewModel.updateWaverPlus(purchased)
+            })
+        WaverPlusType.entries.forEach { type ->
+            subs.billingSetup(waverPlusType = type)
+        }
     }
 }

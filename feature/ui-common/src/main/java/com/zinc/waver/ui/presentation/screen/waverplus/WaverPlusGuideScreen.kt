@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more.screen
+package com.zinc.waver.ui.presentation.screen.waverplus
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -39,15 +39,12 @@ import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.model.WaverPlusType
-import com.zinc.waver.ui_more.components.WavePlusPayJoinButtonView
-import com.zinc.waver.ui_more.components.WavePlusPayView
-import com.zinc.waver.ui_more.components.WavePlusTopView
 import com.zinc.waver.util.DpToPx
 import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlusType) -> Unit) {
+fun WaverPlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlusType) -> Unit) {
 
     val scrollState = rememberScrollState()
     var scrollPosition by remember { mutableIntStateOf(0) }
@@ -150,5 +147,5 @@ fun WavePlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlusT
 @Preview()
 @Composable
 private fun WavePlusGuidePreview() {
-    WavePlusGuideScreen({}, inAppBillingShow = {})
+    WaverPlusGuideScreen({}, inAppBillingShow = {})
 }

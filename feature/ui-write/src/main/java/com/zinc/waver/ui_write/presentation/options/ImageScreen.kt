@@ -4,18 +4,12 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,26 +28,26 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_common.R as CommonR
 
-@Composable
-fun ImageScreen(
-    modifier: Modifier = Modifier,
-    images: List<UserSelectedImageInfo>,
-    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
-) {
-
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 80.dp),
-        state = rememberLazyGridState(),
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(32.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-
-        items(items = images, key = { it.parseKey() }) { imageInfo ->
-            ImageItem(imageInfo, deleteImage)
-        }
-    }
-}
+//@Composable
+//fun ImageScreen(
+//    modifier: Modifier = Modifier,
+//    images: List<UserSelectedImageInfo>,
+//    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
+//) {
+//
+//    LazyVerticalGrid(
+//        columns = GridCells.Adaptive(minSize = 80.dp),
+//        state = rememberLazyGridState(),
+//        modifier = modifier,
+//        horizontalArrangement = Arrangement.spacedBy(32.dp),
+//        verticalArrangement = Arrangement.spacedBy(10.dp)
+//    ) {
+//
+//        items(items = images, key = { it.parseKey() }) { imageInfo ->
+//            ImageItem(imageInfo, deleteImage)
+//        }
+//    }
+//}
 
 @Composable
 fun ImageItem(
@@ -105,6 +99,7 @@ fun ImageItem(
 
 @Composable
 fun AddImageItem(
+    hasWaverPlus: Boolean,
     addButtonClicked: () -> Unit
 ) {
     Card(
@@ -114,15 +109,26 @@ fun AddImageItem(
         elevation = 0.dp,
         modifier = Modifier
             .size(80.dp)
+            .clip(RoundedCornerShape(10.dp))
             .clickable {
                 addButtonClicked()
             }
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(
+            Image(
                 painter = painterResource(id = CommonR.drawable.btn_20_add),
                 contentDescription = stringResource(id = R.string.addImageDesc)
             )
+        }
+
+        if (!hasWaverPlus) {
+            Box(contentAlignment = Alignment.TopEnd) {
+                Image(
+                    modifier = Modifier.size(width = 56.dp, height = 24.dp),
+                    painter = painterResource(id = R.drawable.chip),
+                    contentDescription = stringResource(id = R.string.addImageWaverPlusDesc)
+                )
+            }
         }
     }
 
@@ -131,7 +137,7 @@ fun AddImageItem(
 @Preview
 @Composable
 private fun AddImageItemPreview() {
-    AddImageItem {
+    AddImageItem(hasWaverPlus = false) {
 
     }
 }

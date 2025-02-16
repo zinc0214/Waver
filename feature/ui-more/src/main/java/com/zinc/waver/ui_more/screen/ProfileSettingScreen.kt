@@ -261,8 +261,8 @@ fun ProfileSettingScreen(
         CommonDialogView(
             message = stringResource(id = R.string.profileUpdateSuccessTitle),
             dismissAvailable = false,
-            positive = DialogButtonInfo(text = CommonR.string.confirm, color = Main4),
-            positiveEvent = {
+            rightButtonInfo = DialogButtonInfo(text = CommonR.string.confirm, color = Main4),
+            rightButtonEvent = {
                 showUpdateSucceedDialog.value = false
                 onBackPressed()
             })

@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_my
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -124,9 +123,9 @@ fun MyScreen(
     }
 
     LaunchedEffect(showLoadingAsState) {
-        Log.e("ayhan", "showLoadingAsState : $showLoadingAsState")
+        // Log.e("ayhan", "showLoadingAsState : $showLoadingAsState")
         showLoading.value = showLoadingAsState == true
-        Log.e("ayhan", "showLoading : $showLoading")
+        //  Log.e("ayhan", "showLoading : $showLoading")
     }
 
     ////////////////////////////

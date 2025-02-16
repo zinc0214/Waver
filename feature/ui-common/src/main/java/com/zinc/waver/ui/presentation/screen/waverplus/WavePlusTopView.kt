@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_more.components
+package com.zinc.waver.ui.presentation.screen.waverplus
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,8 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.waver.ui.design.theme.Gray1
-import com.zinc.waver.ui_more.R
-import com.zinc.waver.ui_more.models.WaverPlusOption
+import com.zinc.waver.ui.presentation.model.WaverPlusOption
+import com.zinc.waver.ui_common.R
 
 @Composable
 internal fun WavePlusTopView(modifier: Modifier = Modifier) {

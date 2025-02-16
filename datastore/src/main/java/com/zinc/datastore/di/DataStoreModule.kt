@@ -3,7 +3,7 @@ package com.zinc.datastore.di
 import android.content.Context
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
 import com.zinc.datastore.common.CommonDataStoreModule
-import com.zinc.datastore.login.LoginPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +16,8 @@ import javax.inject.Singleton
 class DataStoreModule {
     @Provides
     @Singleton
-    fun loginPreferenceDataStoreModule(@ApplicationContext appContext: Context): LoginPreferenceDataStoreModule =
-        LoginPreferenceDataStoreModule(appContext)
+    fun loginPreferenceDataStoreModule(@ApplicationContext appContext: Context): PreferenceDataStoreModule =
+        PreferenceDataStoreModule(appContext)
 
     @Provides
     @Singleton
