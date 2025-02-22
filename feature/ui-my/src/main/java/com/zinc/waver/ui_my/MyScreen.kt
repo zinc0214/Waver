@@ -140,6 +140,15 @@ fun MyScreen(
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = Hidden, skipHalfExpanded = true
     )
+    val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
+        coroutineScope.launch {
+            if (it) {
+                bottomSheetScaffoldState.show()
+            } else {
+                bottomSheetScaffoldState.hide()
+            }
+        }
+    }
 
     val scrollState = rememberLazyListState()
 
@@ -172,6 +181,7 @@ fun MyScreen(
                     tab = if (myTabType.intValue == 0) ALL else DDAY,
                     viewModel = viewModel,
                     isNeedToUpdated = {
+                        isNeedToBottomSheetOpen.invoke(false)
                         isFilterUpdated.value = it
                     }
                 )
@@ -208,11 +218,12 @@ fun MyScreen(
 
                             if (it is BottomSheetScreenType.MyBucketFilterScreen) {
                                 myTabType.intValue = pagerState.currentPage
+                                isNeedToBottomSheetOpen.invoke(it.needToShown)
                             }
                         },
                         goToCategoryEdit = goToCategoryEdit,
                         coroutineScope = coroutineScope,
-                        isListScrollable = isListScrollable
+                        isListScrollable = isListScrollable,
                     )
                 }
             }
