@@ -19,6 +19,7 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -30,7 +31,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -40,6 +40,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.common.models.BucketInfoSimple
@@ -66,7 +67,6 @@ fun MySearchBottomScreen(
     currentTabType: MyTabType,
     clickEvent: (MySearchClickEvent) -> Unit,
 ) {
-
     val viewModel: MyViewModel = hiltViewModel()
     val searchResultAsState by viewModel.searchResult.observeAsState()
     val prevSearchInfoAsState by viewModel.prevSearchedResult.observeAsState()
@@ -116,11 +116,7 @@ fun MySearchBottomScreen(
             }
         )
 
-        Box(
-            modifier = Modifier
-                .padding(top = 15.dp, bottom = 21.dp, start = 24.dp, end = 24.dp)
-        )
-        {
+        Box(modifier = Modifier.padding(top = 15.dp, bottom = 21.dp, start = 24.dp, end = 24.dp)) {
             Divider(
                 modifier = Modifier
                     .height(1.dp)
@@ -130,7 +126,9 @@ fun MySearchBottomScreen(
         }
 
         ChipBodyContent(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp),
             list = MyTabType.values().toList(),
             currentTab = selectTab,
             tabChanged = {
@@ -154,6 +152,7 @@ fun MySearchBottomScreen(
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .fillMaxHeight()
+                            .verticalScroll(rememberScrollState())
                     ) {
                         it?.let { result ->
                             SearchResultView(result, clickEvent = { event ->
@@ -246,12 +245,12 @@ private fun ChipBodyContent(
     tabChanged: () -> Unit
 ) {
     Row(
-        modifier = modifier.horizontalScroll(rememberScrollState())
+        modifier = modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         for (tabType in list) {
             RoundChip(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .selectable(
                         selected = (currentTab.value == tabType),
@@ -259,10 +258,10 @@ private fun ChipBodyContent(
                             currentTab.value = tabType
                             tabChanged()
                         }),
-                textModifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                textModifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
                 text = stringResource(id = tabType.getTitle()),
                 isSelected = currentTab.value == tabType,
-                fontSize = 13.dp,
+                fontSize = 15.dp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -304,4 +303,10 @@ private fun SearchResultView(
             )
         }
     }
+}
+
+@Preview
+@Composable
+private fun MySearchBottomScreenPreview() {
+    MySearchBottomScreen(currentTabType = CATEGORY, clickEvent = {})
 }

@@ -167,7 +167,9 @@ data class WriteCategoryInfo(
 
 interface WriteOptionsType2 {
     object TAG : WriteOptionsType2
-    object FRIENDS : WriteOptionsType2
+    data class FRIENDS(
+        val isUsable: Boolean
+    ) : WriteOptionsType2
     object OPEN : WriteOptionsType2
     data class SCRAP(
         var isScrapAvailable: Boolean = false,

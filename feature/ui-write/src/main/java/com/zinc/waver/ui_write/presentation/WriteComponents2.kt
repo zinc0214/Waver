@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -44,9 +45,11 @@ import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOptionsType2
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
+import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray4
+import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.design.theme.Main2
@@ -117,6 +120,14 @@ fun WriteAddOptionView(
 
 @Composable
 private fun TextWithTagOptionView(option: WriteAddOption) {
+    val isValid = when (val type = option.type) {
+        is WriteOptionsType2.FRIENDS -> type.isUsable
+        else -> true
+    }
+
+    val arrowColor = if (isValid) Gray11 else Gray4
+    val textColor = if (isValid) Gray10 else Gray6
+
     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
         val (title, arrow, tag) = createRefs()
         Image(
@@ -127,7 +138,10 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                 }
                 .padding(20.dp),
             painter = painterResource(CommonR.drawable.ico_16_right),
+            colorFilter = ColorFilter.tint(arrowColor),
             contentDescription = null)
+
+
 
         MyText(
             text = option.title,
@@ -145,7 +159,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                     end = 28.dp,
                     bottom = if (option.showList.isEmpty()) 18.dp else 12.dp
                 ),
-            color = Gray10,
+            color = textColor,
             fontSize = dpToSp(16.dp))
 
         FlowRow(

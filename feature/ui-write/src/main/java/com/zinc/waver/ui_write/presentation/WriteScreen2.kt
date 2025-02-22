@@ -64,6 +64,7 @@ fun WriteScreen2(
     val originFriendsAsState by viewModel.searchFriendsResult.observeAsState()
     val loadFailAsState by viewModel.loadFail.observeAsState()
     val addNewBucketListResult by viewModel.addNewBucketListResult.observeAsState()
+    val hasWaverPlusAsState by viewModel.hasWaverPlus.observeAsState()
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
     val selectedFriends = remember { mutableStateOf(writeTotalInfo.tagFriends) }
@@ -72,6 +73,11 @@ fun WriteScreen2(
     val keyWordList = remember { mutableStateOf(originKeyWords) }
     val originFriendList = remember { mutableStateOf(originFriendsAsState) }
     val showApiFailDialog = remember { mutableStateOf(false) }
+    var hasWaverPlus by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.checkHasWaverPlus()
+    }
 
     LaunchedEffect(originKeyWords) {
         keyWordList.value = originKeyWords
@@ -100,6 +106,10 @@ fun WriteScreen2(
         }
     }
 
+    LaunchedEffect(hasWaverPlusAsState) {
+        hasWaverPlus = hasWaverPlusAsState ?: false
+    }
+
     BackHandler(enabled = true) { // <-----
         if (optionScreenShow != null) {
             optionScreenShow = null
@@ -126,7 +136,7 @@ fun WriteScreen2(
                 optionScreenShow = it
             }),
         WriteAddOption(
-            type = WriteOptionsType2.FRIENDS,
+            type = WriteOptionsType2.FRIENDS(isUsable = hasWaverPlus),
             title = "함께할 친구 추가하기",
             showList = selectedFriends.value.map { "@${it.nickname}" },
             dataList = selectedFriends.value.map { it.id },
@@ -172,7 +182,7 @@ fun WriteScreen2(
                 )
             }
 
-            WriteOptionsType2.FRIENDS -> {
+            is WriteOptionsType2.FRIENDS -> {
                 LaunchedEffect(Unit) {
                     viewModel.loadFriends()
                 }
@@ -325,7 +335,7 @@ private fun WriteScreen2ContentView(
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
                                 keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.dataList.orEmpty(),
-                                tagFriends = optionsList.find { it.type == WriteOptionsType2.FRIENDS }?.dataList.orEmpty(),
+                                tagFriends = optionsList.find { it.type is WriteOptionsType2.FRIENDS }?.dataList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
                             ),
                             isForUpdate = writeTotalInfo.isForUpdate
