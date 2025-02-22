@@ -33,7 +33,6 @@ fun DdayBucketLayer(
     modifier: Modifier,
     viewModel: MyViewModel,
     clickEvent: (MyPagerClickEvent) -> Unit,
-    updateScrollable: (Boolean) -> Unit,
     _isFilterUpdated: Boolean
 ) {
 
@@ -50,7 +49,6 @@ fun DdayBucketLayer(
 
     LaunchedEffect(Unit) {
         viewModel.needToReload(true)
-        updateScrollable(dDayBucketListAsState?.bucketList?.isNotEmpty() == true)
     }
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
@@ -66,7 +64,6 @@ fun DdayBucketLayer(
 
     LaunchedEffect(key1 = dDayBucketListAsState, block = {
         bucketInfo.value = dDayBucketListAsState
-        updateScrollable(dDayBucketListAsState?.bucketList?.isNotEmpty() == true)
     })
 
     LaunchedEffect(key1 = filterLoadFinishedAsState) {

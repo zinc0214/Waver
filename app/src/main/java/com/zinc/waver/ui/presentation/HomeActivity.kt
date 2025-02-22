@@ -121,7 +121,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 ShowParentScreenType.Main -> {
-                    WaverApp(action = {
+                    HomeScreen(action = {
                         when (it) {
                             is ActionWithActivity.AddImage -> {
                                 // AddImageActivity.startWithLauncher(this, it.type)

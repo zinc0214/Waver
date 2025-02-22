@@ -140,26 +140,10 @@ fun MyScreen(
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = Hidden, skipHalfExpanded = true
     )
-    val isNeedToBottomSheetOpen: (Boolean) -> Unit = {
-        coroutineScope.launch {
-            if (it) {
-                bottomSheetScaffoldState.show()
-            } else {
-                bottomSheetScaffoldState.hide()
-            }
-        }
-    }
 
     val scrollState = rememberLazyListState()
 
     var isListScrollable by remember { mutableStateOf(false) }
-    var isColumnScrollable by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isColumnScrollable) {
-        if (!isColumnScrollable) {
-            scrollState.animateScrollToItem(0, 0)
-        }
-    }
 
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
@@ -188,7 +172,6 @@ fun MyScreen(
                     tab = if (myTabType.intValue == 0) ALL else DDAY,
                     viewModel = viewModel,
                     isNeedToUpdated = {
-                        isNeedToBottomSheetOpen.invoke(false)
                         isFilterUpdated.value = it
                     }
                 )
@@ -200,8 +183,7 @@ fun MyScreen(
         profileInfo.value?.let {
             LazyColumn(
                 modifier = Modifier.statusBarsPadding(),
-                state = scrollState,
-                userScrollEnabled = isColumnScrollable
+                state = scrollState
             ) {
                 item {
                     MyTopLayer(profileInfo = profileInfo.value) {
@@ -226,15 +208,11 @@ fun MyScreen(
 
                             if (it is BottomSheetScreenType.MyBucketFilterScreen) {
                                 myTabType.intValue = pagerState.currentPage
-                                isNeedToBottomSheetOpen.invoke(it.needToShown)
                             }
                         },
                         goToCategoryEdit = goToCategoryEdit,
                         coroutineScope = coroutineScope,
-                        isListScrollable = isListScrollable,
-                        updateScrollable = {
-                            isColumnScrollable = it
-                        }
+                        isListScrollable = isListScrollable
                     )
                 }
             }
@@ -294,7 +272,6 @@ fun MyViewPager(
     itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
     goToCategoryEdit: () -> Unit,
-    updateScrollable: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -313,7 +290,6 @@ fun MyViewPager(
                         ),
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
-                        updateScrollable = updateScrollable,
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.GoTo.BucketItemClicked -> {
@@ -357,7 +333,6 @@ fun MyViewPager(
                             state = rememberScrollState(),
                             enabled = isListScrollable
                         ),
-                        updateScrollable = updateScrollable,
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
@@ -396,7 +371,6 @@ fun MyViewPager(
                             state = rememberScrollState(),
                             enabled = isListScrollable
                         ),
-                        updateScrollable = updateScrollable,
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {

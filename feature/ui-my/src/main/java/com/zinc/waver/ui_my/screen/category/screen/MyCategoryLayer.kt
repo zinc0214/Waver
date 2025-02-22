@@ -41,7 +41,6 @@ import com.zinc.waver.ui_common.R as CommonR
 @Composable
 fun CategoryLayer(
     modifier: Modifier,
-    updateScrollable: (Boolean) -> Unit,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     val recommendCategory = "여향"
@@ -58,14 +57,12 @@ fun CategoryLayer(
 
     LaunchedEffect(Unit) {
         viewModel.loadCategoryList()
-        updateScrollable(categoryListAsState?.isNotEmpty() == true)
     }
 
     LaunchedEffect(key1 = categoryListAsState, block = {
         Log.e("ayhan", "categoryListAsState : $categoryListAsState")
         addNewCategoryDialogShowAvailable.value = false
         categoryList.value = categoryListAsState
-        updateScrollable(categoryListAsState?.isNotEmpty() == true)
     })
 
     LaunchedEffect(apiFailed) {

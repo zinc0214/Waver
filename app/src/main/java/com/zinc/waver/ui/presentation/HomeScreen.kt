@@ -56,7 +56,7 @@ import com.zinc.waver.util.nav.wavePlusGuideNavGraph
 import com.zinc.waver.util.nav.writeNavGraph
 
 @Composable
-fun WaverApp(
+fun HomeScreen(
     action: (ActionWithActivity) -> Unit
 ) {
     BaseTheme {
