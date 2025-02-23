@@ -107,6 +107,9 @@ fun WriteScreen(
                 },
                 addBucketSucceed = {
                     showAds = true
+                },
+                event = {
+                    event(it)
                 }
             )
         }

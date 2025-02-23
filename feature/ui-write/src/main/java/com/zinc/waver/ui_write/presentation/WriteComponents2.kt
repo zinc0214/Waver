@@ -84,7 +84,6 @@ fun WriteAddOptionView(
     optionClicked: () -> Unit,
     optionValueChanged: (WriteAddOption) -> Unit
 ) {
-
     Column(modifier = modifier.clickable { optionClicked() }) {
 
         Divider(color = Gray3)
@@ -128,48 +127,45 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
     val arrowColor = if (isValid) Gray11 else Gray4
     val textColor = if (isValid) Gray10 else Gray6
 
-    ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-        val (title, arrow, tag) = createRefs()
-        Image(
-            modifier = Modifier
-                .constrainAs(arrow) {
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                }
-                .padding(20.dp),
-            painter = painterResource(CommonR.drawable.ico_16_right),
-            colorFilter = ColorFilter.tint(arrowColor),
-            contentDescription = null)
+    Column {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            MyText(
+                text = option.title,
+                modifier = Modifier
+                    .padding(
+                        start = 28.dp,
+                        top = 18.dp,
+                        end = 28.dp,
+                        bottom = if (option.showList.isEmpty()) 18.dp else 12.dp
+                    ),
+                color = textColor,
+                fontSize = dpToSp(16.dp)
+            )
 
 
+            Modifier.weight(1f)
 
-        MyText(
-            text = option.title,
-            modifier = Modifier
-                .constrainAs(title) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(arrow.start)
-                    bottom.linkTo(tag.top)
-                    width = Dimension.fillToConstraints
-                }
-                .padding(
-                    start = 28.dp,
-                    top = 18.dp,
-                    end = 28.dp,
-                    bottom = if (option.showList.isEmpty()) 18.dp else 12.dp
-                ),
-            color = textColor,
-            fontSize = dpToSp(16.dp))
+            if (!isValid) {
+                Image(
+                    modifier = Modifier
+                        .padding(end = 8.dp),
+                    painter = painterResource(R.drawable.chip2),
+                    contentDescription = null
+                )
+            }
+            Image(
+                modifier = Modifier
+                    .padding(end = 20.dp),
+                painter = painterResource(CommonR.drawable.ico_16_right),
+                colorFilter = ColorFilter.tint(arrowColor),
+                contentDescription = null
+            )
 
+
+        }
         FlowRow(
             modifier = Modifier
-                .constrainAs(tag) {
-                    top.linkTo(title.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(arrow.start)
-                    width = Dimension.fillToConstraints
-                }
+                .fillMaxWidth()
                 .padding(
                     start = if (option.showList.isEmpty()) 0.dp else 28.dp,
                     bottom = if (option.showList.isEmpty()) 0.dp else 20.dp
@@ -186,6 +182,7 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
                 )
             }
         }
+
     }
 }
 

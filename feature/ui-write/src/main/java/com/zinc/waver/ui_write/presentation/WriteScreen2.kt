@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,7 +42,10 @@ import com.zinc.waver.model.parseUIBucketListInfo
 import com.zinc.waver.model.parseWrite1Info
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.gridItems
+import com.zinc.waver.ui.presentation.model.ActionWithActivity
+import com.zinc.waver.ui.presentation.screen.waverplus.WaverPlusGuideScreen
 import com.zinc.waver.ui_write.R
+import com.zinc.waver.ui_write.model.WriteEvent
 import com.zinc.waver.ui_write.presentation.options.ImageItem
 import com.zinc.waver.ui_write.presentation.options.WriteSelectFriendsScreen
 import com.zinc.waver.ui_write.presentation.options.WriteSelectKeyWordScreen
@@ -54,6 +60,7 @@ fun WriteScreen2(
     writeTotalInfo: WriteTotalInfo,
     viewModel: WriteBucketListViewModel,
     goToBack: (WriteTotalInfo) -> Unit,
+    event: (WriteEvent) -> Unit,
     addBucketSucceed: () -> Unit
 ) {
 
@@ -74,6 +81,7 @@ fun WriteScreen2(
     val originFriendList = remember { mutableStateOf(originFriendsAsState) }
     val showApiFailDialog = remember { mutableStateOf(false) }
     var hasWaverPlus by remember { mutableStateOf(false) }
+    val showWaverPlus = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.checkHasWaverPlus()
@@ -141,7 +149,13 @@ fun WriteScreen2(
             showList = selectedFriends.value.map { "@${it.nickname}" },
             dataList = selectedFriends.value.map { it.id },
             clicked = {
-                optionScreenShow = it
+                val isValid = (it as WriteOptionsType2.FRIENDS).isUsable
+                if (isValid) {
+                    optionScreenShow = it
+                } else {
+                    showWaverPlus.value = true
+                }
+
             }),
         WriteAddOption(
             type = WriteOptionsType2.OPEN,
@@ -267,6 +281,16 @@ fun WriteScreen2(
                 dismissEvent = {
                     showApiFailDialog.value = false
                 })
+        }
+
+        AnimatedVisibility(showWaverPlus.value, enter = fadeIn(), exit = fadeOut()) {
+            if (showWaverPlus.value) {
+                WaverPlusGuideScreen(onBackPressed = {
+                    showWaverPlus.value = false
+                }) { type ->
+                    event.invoke(WriteEvent.ActivityAction(ActionWithActivity.InAppBilling(type)))
+                }
+            }
         }
     }
 }
