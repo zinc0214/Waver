@@ -214,7 +214,6 @@ class ChooseSubscription(
                             newList
                         }
 
-                        Toast.makeText(activity, "구매완료", Toast.LENGTH_SHORT).show()
                         subsDone.invoke()
                     }
                 }

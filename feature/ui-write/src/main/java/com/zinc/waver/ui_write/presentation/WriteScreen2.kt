@@ -83,7 +83,7 @@ fun WriteScreen2(
     var hasWaverPlus by remember { mutableStateOf(false) }
     val showWaverPlus = remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
     }
 

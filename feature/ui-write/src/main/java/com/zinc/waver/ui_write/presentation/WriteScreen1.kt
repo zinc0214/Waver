@@ -125,7 +125,7 @@ fun WriteScreen1(
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
     }
 

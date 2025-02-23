@@ -153,16 +153,7 @@ class HomeActivity : AppCompatActivity() {
                             }
 
                             is ActionWithActivity.InAppBilling -> {
-                                val subs = ChooseSubscription(this,
-                                    isForPurchase = true,
-                                    subsDone = {
-                                        viewModel.updateWaverPlus(true)
-                                    },
-                                    alreadyPurchased = { purchased ->
-                                        viewModel.updateWaverPlus(purchased)
-                                    })
-
-                                subs.billingSetup(waverPlusType = it.type)
+                                setUpBilling(it.type, true)
                             }
                         }
                     })
@@ -277,16 +268,22 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun checkInAppBilling() {
+        WaverPlusType.entries.forEach { type ->
+            setUpBilling(type, false)
+        }
+    }
+
+    private fun setUpBilling(type: WaverPlusType, isForPurchase: Boolean) {
         val subs = ChooseSubscription(this,
-            isForPurchase = false,
+            isForPurchase = isForPurchase,
             subsDone = {
                 viewModel.updateWaverPlus(true)
+                Toast.makeText(this, "구매완료", Toast.LENGTH_SHORT).show()
             },
             alreadyPurchased = { purchased ->
                 viewModel.updateWaverPlus(purchased)
             })
-        WaverPlusType.entries.forEach { type ->
-            subs.billingSetup(waverPlusType = type)
-        }
+
+        subs.billingSetup(waverPlusType = type)
     }
 }
