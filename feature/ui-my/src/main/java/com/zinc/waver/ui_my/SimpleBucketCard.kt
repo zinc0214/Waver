@@ -30,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.waver.model.BucketProgressState
@@ -81,16 +83,6 @@ fun SimpleBucketListView(
         }
         item { Spacer(modifier = Modifier.padding(bottom = 60.dp)) }
     }
-//    Column(
-//        modifier = columModifier,
-//        verticalArrangement = Arrangement.spacedBy(12.dp),
-//    ) {
-//        bucketList.forEach { bucket ->
-//
-//        }
-//
-//        Spacer(modifier = Modifier.padding(bottom = 60.dp))
-//    }
 }
 
 @Composable
@@ -219,25 +211,21 @@ fun SimpleBucketCard(
 
 
 @Composable
-private fun DdayBadgeView(_info: UIBucketInfoSimple) {
-    var info by remember { mutableStateOf(_info) }
-
-    LaunchedEffect(_info) {
-        info = _info
-    }
-
-    Card(
-        elevation = 0.dp,
-        shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp),
-        backgroundColor = info.dDayBadgeColor!!
-    ) {
-        MyText(
-            modifier = Modifier.padding(start = 8.dp, end = 8.dp, top = 3.dp, bottom = 3.dp),
-            text = info.dDayText!!,
-            fontSize = dpToSp(12.dp),
-            color = Gray1
-        )
-    }
+private fun DdayBadgeView(info: UIBucketInfoSimple) {
+    MyText(
+        modifier = Modifier
+            .background(
+                color = info.dDayBadgeColor!!,
+                shape = RoundedCornerShape(bottomEnd = 4.dp, bottomStart = 4.dp)
+            )
+            .padding(horizontal = 8.dp)
+            .height(22.dp),
+        text = info.dDayText!!,
+        textAlign = TextAlign.Center,
+        fontSize = dpToSp(12.dp),
+        fontWeight = FontWeight.SemiBold,
+        color = Gray1
+    )
 }
 
 @Composable
