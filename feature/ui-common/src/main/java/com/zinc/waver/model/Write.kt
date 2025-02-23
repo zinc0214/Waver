@@ -170,6 +170,7 @@ interface WriteOptionsType2 {
     data class FRIENDS(
         val isUsable: Boolean
     ) : WriteOptionsType2
+
     object OPEN : WriteOptionsType2
     data class SCRAP(
         var isScrapAvailable: Boolean = false,
@@ -215,7 +216,9 @@ private fun parseMemo(options: List<WriteOption1Info>): String? {
 }
 
 private fun parseTargetDate(options: List<WriteOption1Info>): String? {
-    return options.firstOrNull { it is WriteOption1Info.Dday }?.content()?.replace(".", "-")
+    return options.firstOrNull { it is WriteOption1Info.Dday }?.let {
+        (it as WriteOption1Info.Dday).localDate.replace(".", "-")
+    }
 }
 
 private fun parseGoalCount(options: List<WriteOption1Info>): Int {
