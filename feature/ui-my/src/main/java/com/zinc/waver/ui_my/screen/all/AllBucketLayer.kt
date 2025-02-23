@@ -57,7 +57,7 @@ fun AllBucketLayer(
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val filterLoadFinishedAsState by viewModel.allFilterLoadFinished.observeAsState()
 
-    val bucketInfo = remember {
+    var bucketInfo by remember("bucketInfo") {
         mutableStateOf(allBucketInfoAsState)
     }
     val ddayShow = remember {
@@ -83,8 +83,8 @@ fun AllBucketLayer(
     })
 
     LaunchedEffect(key1 = allBucketInfoAsState, block = {
-        bucketInfo.value = bucketInfo.value?.copy(bucketList = emptyList())
-        bucketInfo.value = allBucketInfoAsState
+        bucketInfo = allBucketInfoAsState
+        Log.e("ayhan", "bucketInfo : $bucketInfo")
     })
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
@@ -107,7 +107,7 @@ fun AllBucketLayer(
         }
     }
 
-    bucketInfo.value?.let { it ->
+    bucketInfo?.let { it ->
         Column(modifier.background(Gray2)) {
             AllBucketTopView(
                 modifier = Modifier,

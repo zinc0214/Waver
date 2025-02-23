@@ -19,7 +19,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.runtime.Composable
@@ -152,7 +151,6 @@ fun MySearchBottomScreen(
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .fillMaxHeight()
-                            .verticalScroll(rememberScrollState())
                     ) {
                         it?.let { result ->
                             SearchResultView(result, clickEvent = { event ->

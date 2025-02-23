@@ -12,10 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.PagerState
@@ -40,9 +38,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -64,7 +65,6 @@ import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray6
-import com.zinc.waver.ui.design.util.isFirstItemVisible
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui.util.dpToSp
@@ -150,9 +150,23 @@ fun MyScreen(
         }
     }
 
-    val scrollState = rememberLazyListState()
+    val parentScrollState = rememberScrollState() // 헤더 스크롤 상태
 
-    var isListScrollable by remember { mutableStateOf(false) }
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                return if (parentScrollState.value < parentScrollState.maxValue) {
+                    // 부모가 스크롤되는 동안은 자식 스크롤 금지
+                    val consumed = available.y
+                    parentScrollState.dispatchRawDelta(-consumed)
+                    Offset(0f, consumed)
+                } else {
+                    // 부모 스크롤이 끝난 후 자식 스크롤 시작
+                    Offset.Zero
+                }
+            }
+        }
+    }
 
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {
@@ -164,10 +178,6 @@ fun MyScreen(
                 bottomSheetClicked.invoke(BottomSheetScreenType.MyBucketFilterScreen(true))
             }
         }
-    }
-
-    LaunchedEffect(scrollState.isFirstItemVisible) {
-        isListScrollable = !scrollState.isFirstItemVisible
     }
 
     ModalBottomSheetLayout(
@@ -191,41 +201,40 @@ fun MyScreen(
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         profileInfo.value?.let {
-            LazyColumn(
-                modifier = Modifier.statusBarsPadding(),
-                state = scrollState
+
+            Column(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .nestedScroll(nestedScrollConnection)
+                    .verticalScroll(parentScrollState)
             ) {
-                item {
-                    MyTopLayer(profileInfo = profileInfo.value) {
-                        myTopEvent(it)
-                    }
-                }
-                stickyHeader("stickyHeader") {
-                    MyTabLayer(tabItems, pagerState, coroutineScope)
+
+                MyTopLayer(profileInfo = profileInfo.value) {
+                    myTopEvent(it)
                 }
 
-                item {
-                    MyViewPager(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .height(pagerHeight),
-                        pagerState = pagerState,
-                        viewModel = viewModel,
-                        isFilterUpdated = isFilterUpdated.value,
-                        itemSelected = itemSelected,
-                        bottomSheetClicked = {
-                            bottomSheetClicked(it)
+                MyTabLayer(tabItems, pagerState, coroutineScope)
 
-                            if (it is BottomSheetScreenType.MyBucketFilterScreen) {
-                                myTabType.intValue = pagerState.currentPage
-                                isNeedToBottomSheetOpen.invoke(it.needToShown)
-                            }
-                        },
-                        goToCategoryEdit = goToCategoryEdit,
-                        coroutineScope = coroutineScope,
-                        isListScrollable = isListScrollable,
-                    )
-                }
+                MyViewPager(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(pagerHeight),
+                    pagerState = pagerState,
+                    viewModel = viewModel,
+                    isFilterUpdated = isFilterUpdated.value,
+                    itemSelected = itemSelected,
+                    bottomSheetClicked = {
+                        bottomSheetClicked(it)
+
+                        if (it is BottomSheetScreenType.MyBucketFilterScreen) {
+                            myTabType.intValue = pagerState.currentPage
+                            isNeedToBottomSheetOpen.invoke(it.needToShown)
+                            isFilterUpdated.value = false
+                        }
+                    },
+                    goToCategoryEdit = goToCategoryEdit,
+                    coroutineScope = coroutineScope
+                )
             }
         }
     }
@@ -278,7 +287,6 @@ fun MyViewPager(
     pagerState: PagerState,
     viewModel: MyViewModel,
     coroutineScope: CoroutineScope,
-    isListScrollable: Boolean,
     isFilterUpdated: Boolean,
     itemSelected: (HomeItemSelected) -> Unit,
     bottomSheetClicked: (BottomSheetScreenType) -> Unit,
@@ -295,10 +303,7 @@ fun MyViewPager(
             when (page) {
                 0 -> {
                     AllBucketLayer(
-                        modifier = modifier.verticalScroll(
-                            state = rememberScrollState(),
-                            enabled = isListScrollable
-                        ),
+                        modifier = modifier,
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {
@@ -340,10 +345,7 @@ fun MyViewPager(
 
                 1 -> {
                     CategoryLayer(
-                        modifier = modifier.verticalScroll(
-                            state = rememberScrollState(),
-                            enabled = isListScrollable
-                        ),
+                        modifier = modifier,
                         clickEvent = {
                             when (it) {
                                 is MyPagerClickEvent.GoTo.CategoryEditClicked -> {
@@ -378,10 +380,7 @@ fun MyViewPager(
 
                 2 -> {
                     DdayBucketLayer(
-                        modifier = modifier.verticalScroll(
-                            state = rememberScrollState(),
-                            enabled = isListScrollable
-                        ),
+                        modifier = modifier,
                         viewModel = viewModel,
                         _isFilterUpdated = isFilterUpdated,
                         clickEvent = {

@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -59,32 +61,36 @@ fun SimpleBucketListView(
     achieveClicked: (String) -> Unit
 ) {
 
-    var data by remember { mutableStateOf(bucketList) }
-
-    LaunchedEffect(bucketList) {
-        data = bucketList
-    }
-
     val columModifier = Modifier
         .fillMaxSize()
         .padding(horizontal = 16.dp)
 
-    Column(
-        modifier = columModifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+    LazyColumn(
+        modifier = columModifier, verticalArrangement = Arrangement.spacedBy(
+            12.dp
+        )
     ) {
-        data.forEach { bucket ->
+        items(bucketList, key = { bucket -> bucket.id }) {
             SimpleBucketCard(
-                itemInfo = bucket,
+                itemInfo = it,
                 tabType = tabType,
                 isShowDday = showDday,
                 itemClicked = { itemClicked.invoke(it) },
                 achieveClicked = { achieveClicked.invoke(it) }
             )
         }
-
-        Spacer(modifier = Modifier.padding(bottom = 60.dp))
+        item { Spacer(modifier = Modifier.padding(bottom = 60.dp)) }
     }
+//    Column(
+//        modifier = columModifier,
+//        verticalArrangement = Arrangement.spacedBy(12.dp),
+//    ) {
+//        bucketList.forEach { bucket ->
+//
+//        }
+//
+//        Spacer(modifier = Modifier.padding(bottom = 60.dp))
+//    }
 }
 
 @Composable
@@ -95,16 +101,9 @@ fun SimpleBucketCard(
     itemClicked: (UIBucketInfoSimple) -> Unit,
     achieveClicked: (String) -> Unit
 ) {
-
-    val bucket = remember { mutableStateOf(itemInfo) }
-
-    LaunchedEffect(itemInfo) {
-        bucket.value = itemInfo
-    }
-
-    val bucketCount = remember { mutableIntStateOf(bucket.value.currentCount) }
+    val bucketCount = remember { mutableIntStateOf(itemInfo.currentCount) }
     val borderColor = remember { mutableStateOf(Color.Transparent) }
-    val isProgress = remember { mutableStateOf(bucket.value.isProgress()) }
+    val isProgress = remember { mutableStateOf(itemInfo.isProgress()) }
     val backgroundColor = remember { mutableStateOf(if (isProgress.value) Gray1 else Gray3) }
 
     Box(
@@ -122,7 +121,7 @@ fun SimpleBucketCard(
                 blurRadius = 4.dp,
             )
             .clip(RoundedCornerShape(4.dp))
-            .clickable { itemClicked(bucket.value) }
+            .clickable { itemClicked(itemInfo) }
             .background(
                 color = backgroundColor.value,
                 shape = RoundedCornerShape(4.dp)
@@ -150,7 +149,7 @@ fun SimpleBucketCard(
                 ) {
                     BucketCircularProgressBar(
                         progressState = {
-                            Log.e("ayhan", "state : $it , $bucketCount, ${bucket.value.goalCount}")
+                            Log.e("ayhan", "state : $it , $bucketCount, ${itemInfo.goalCount}")
                             if (it == BucketProgressState.PROGRESS_END) {
                                 if (tabType is ALL) {
                                     borderColor.value = Main2
@@ -160,11 +159,11 @@ fun SimpleBucketCard(
                                 bucketCount.intValue += 1
                             } else if (it == BucketProgressState.FINISHED) {
                                 borderColor.value = Color.Transparent
-                                if (bucket.value.goalCount <= bucketCount.intValue) {
+                                if (itemInfo.goalCount <= bucketCount.intValue) {
                                     isProgress.value = false
                                     backgroundColor.value = Gray3
                                 }
-                                achieveClicked(bucket.value.id)
+                                achieveClicked(itemInfo.id)
                             }
                         },
                         tabType = tabType
@@ -193,20 +192,20 @@ fun SimpleBucketCard(
             ) {
 
                 // Dday
-                if (bucket.value.dDay != null && isProgress.value && isShowDday) {
-                    DdayBadgeView(bucket.value)
+                if (itemInfo.dDay != null && isProgress.value && isShowDday) {
+                    DdayBadgeView(itemInfo)
                     Spacer(modifier = Modifier.height(10.dp))
                 } else {
                     Spacer(modifier = Modifier.height(22.dp))
                 }
 
                 // Title
-                TitleTextView(bucket.value.title, isProgress.value)
+                TitleTextView(itemInfo.title, isProgress.value)
 
                 // Progress
-                if (bucket.value.goalCount > 0 && isProgress.value) {
+                if (itemInfo.goalCount > 0 && isProgress.value) {
                     CountProgressView(
-                        _info = bucket.value,
+                        _info = itemInfo,
                         tabType = tabType
                     )
                     Spacer(modifier = Modifier.height(18.dp))
