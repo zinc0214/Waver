@@ -9,11 +9,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -23,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
@@ -38,9 +43,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.waver.model.WriteAddOption
 import com.zinc.waver.model.WriteFriend
+import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOptionsType2
 import com.zinc.waver.ui.design.theme.Gray1
@@ -74,6 +79,77 @@ fun WriteTitleView(
         fontSize = dpToSp(24.dp),
         color = Gray10
     )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun KeywordsOptionView(
+    modifier: Modifier,
+    keywordList: List<WriteKeyWord>,
+    optionClicked: () -> Unit
+) {
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .clickable { optionClicked() }
+    ) {
+        Divider(color = Gray4)
+
+        OptionTextView(
+            modifier = Modifier.padding(top = 18.dp),
+            text = stringResource(R.string.optionKeywordAddTitle)
+        )
+
+        if (keywordList.isNotEmpty()) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 28.dp)
+                    .padding(top = 12.dp, bottom = 18.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                keywordList.forEach { keyword ->
+                    MyText(text = "# ${keyword.text}", color = Main3, fontSize = dpToSp(16.dp))
+                }
+            }
+        } else {
+            Spacer(modifier = Modifier.padding(bottom = 18.dp))
+        }
+
+    }
+}
+
+@Composable
+private fun OptionTextView(
+    modifier: Modifier = Modifier,
+    text: String,
+    textColor: Color = Gray10,
+    arrowColor: Color = Gray10
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 28.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MyText(
+            text = text,
+            modifier = Modifier,
+            color = textColor,
+            fontSize = dpToSp(16.dp)
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Image(
+            modifier = Modifier
+                .padding(end = 20.dp)
+                .sizeIn(16.dp),
+            painter = painterResource(CommonR.drawable.ico_16_right),
+            colorFilter = ColorFilter.tint(arrowColor),
+            contentDescription = null
+        )
+    }
 }
 
 @Composable
@@ -163,25 +239,25 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
 
 
         }
-        FlowRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = if (option.showList.isEmpty()) 0.dp else 28.dp,
-                    bottom = if (option.showList.isEmpty()) 0.dp else 20.dp
-                ),
-            mainAxisSpacing = 12.dp,
-            crossAxisSpacing = 8.dp,
-        ) {
-            option.showList.forEach {
-                MyText(
-                    text = it,
-                    modifier = Modifier,
-                    color = Main3,
-                    fontSize = dpToSp(16.dp),
-                )
-            }
-        }
+//        FlowRow(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(
+//                    start = if (option.showList.isEmpty()) 0.dp else 28.dp,
+//                    bottom = if (option.showList.isEmpty()) 0.dp else 20.dp
+//                ),
+//            mainAxisSpacing = 12.dp,
+//            crossAxisSpacing = 8.dp,
+//        ) {
+//            option.showList.forEach {
+//                MyText(
+//                    text = it,
+//                    modifier = Modifier,
+//                    color = Main3,
+//                    fontSize = dpToSp(16.dp),
+//                )
+//            }
+//        }
 
     }
 }
@@ -483,6 +559,23 @@ private fun SelectOpenTypePopupPreview() {
     SelectOpenTypePopup(true, {}) {
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun OptionTextViewPreview() {
+    OptionTextView(text = "테스트")
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun KeywordsOptionPreview() {
+    KeywordsOptionView(
+        modifier = Modifier, keywordList = listOf(
+            WriteKeyWord(1, "키워드1"),
+            WriteKeyWord(2, "키워드2")
+        )
+    ) {}
 }
 
 //@Preview

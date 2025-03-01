@@ -186,7 +186,6 @@ interface WriteOptionsType2 {
     fun getFriendsEnableType(hasWaver: Boolean) =
         if (hasWaver) Enable
         else NoWaverPlus
-
 }
 
 fun parseUIBucketListInfo(

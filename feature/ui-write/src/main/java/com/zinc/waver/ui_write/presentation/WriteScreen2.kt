@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.waver.model.WriteAddOption
+import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOption1Info
 import com.zinc.waver.model.WriteOptionsType1
@@ -84,6 +85,8 @@ fun WriteScreen2(
     val showApiFailDialog = remember { mutableStateOf(false) }
     var hasWaverPlus by remember { mutableStateOf(false) }
     val showWaverPlus = remember { mutableStateOf(false) }
+
+//    var keywordOptionInfo = remember { KeywordsOptionInfo(keywordList = selectedKeyWords.value) }
 
     LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
@@ -137,14 +140,6 @@ fun WriteScreen2(
     }
 
     val optionsList = mutableListOf(
-        WriteAddOption(
-            type = WriteOptionsType2.TAG,
-            title = "키워드 추가",
-            showList = selectedKeyWords.value.map { "#${it.text}" },
-            dataList = selectedFriends.value.map { it.id },
-            clicked = {
-                optionScreenShow = it
-            }),
         WriteAddOption(
             type = FRIENDS(enableType = getFriendsEnableType(hasWaverPlus)),
             title = "함께할 친구 추가하기",
@@ -232,6 +227,7 @@ fun WriteScreen2(
             WriteScreen2ContentView(
                 viewModel = viewModel,
                 context = context,
+                selectedKeywordList = selectedKeyWords.value,
                 writeTotalInfo = writeTotalInfo,
                 optionsList = optionsList,
                 goToBack = {
@@ -254,6 +250,9 @@ fun WriteScreen2(
                         isScrapUsed.value =
                             (changedOption.type as WriteOptionsType2.SCRAP).isScrapUsed
                     }
+                },
+                keywordSelected = {
+                    optionScreenShow = WriteOptionsType2.TAG
                 }
             )
 
@@ -320,11 +319,13 @@ private fun WriteScreen2ContentView(
     modifier: Modifier = Modifier,
     context: Context,
     viewModel: WriteBucketListViewModel,
+    selectedKeywordList: List<WriteKeyWord>,
     writeTotalInfo: WriteTotalInfo,
     optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
-    optionValueChanged: (WriteAddOption) -> Unit
+    optionValueChanged: (WriteAddOption) -> Unit,
+    keywordSelected: () -> Unit,
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
@@ -432,6 +433,14 @@ private fun WriteScreen2ContentView(
                     })
             }
 
+            item {
+                KeywordsOptionView(
+                    modifier = Modifier.fillMaxWidth(),
+                    keywordList = selectedKeywordList
+                ) {
+                    keywordSelected()
+                }
+            }
             item {
                 // TODO : Flexible 로 수정 필요
                 optionsList.forEach {
