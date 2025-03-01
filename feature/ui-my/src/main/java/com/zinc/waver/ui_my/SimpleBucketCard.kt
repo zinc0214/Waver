@@ -68,9 +68,8 @@ fun SimpleBucketListView(
         .padding(horizontal = 16.dp)
 
     LazyColumn(
-        modifier = columModifier, verticalArrangement = Arrangement.spacedBy(
-            12.dp
-        )
+        modifier = columModifier,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(bucketList, key = { bucket -> bucket.id }) {
             SimpleBucketCard(
