@@ -21,14 +21,13 @@ data class DetailInfo(
     val pin: String,
     val scrapYn: YesOrNo,
     val isMine: YesOrNo,
-    val categoryId: Int,
-    val categoryName: String,
+    val isLike: YesOrNo,
+    val category: Category,
     val goalCount: Int,
     val userCount: Int,
+    val keywords: List<Keyword>,
     val completedDt: String?,
-    val keywordIds: List<Int>?,
-    val keywords: List<String>?,
-    val friends: List<Friend>?,
+    val friendUserIds: List<String>?,
     val images: List<String>?,
     val comment: List<Comment>?
 ) {
@@ -53,9 +52,15 @@ data class DetailInfo(
     )
 
     @Serializable
-    data class Friend(
-        val name: String,
-        val id: String
+    data class Category(
+        val id: Int,
+        val name: String
+    )
+
+    @Serializable
+    data class Keyword(
+        val id: Int,
+        val name: String
     )
 }
 

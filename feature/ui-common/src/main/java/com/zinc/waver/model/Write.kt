@@ -256,9 +256,7 @@ fun DetailInfo.toUpdateUiModel(
     title = this.title,
     options = getOptions(imagesList),
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 서버
-    keyWord = keywordIds.orEmpty().zip(keywords.orEmpty()) { id, keyword ->
-        WriteKeyWord(id, keyword)
-    },
+    keyWord = keywords.map { it -> WriteKeyWord(it.id, it.name) },
     tagFriends = emptyList(), // TODO : 서버
     isScrapUsed = this.scrapYn.isYes(),
     isForUpdate = true
@@ -287,7 +285,7 @@ private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List
     optionsList.add(
         WriteOption1Info.Category(
             WriteCategoryInfo(
-                id = categoryId, name = categoryName, defaultYn = YesOrNo.N
+                id = category.id, name = category.name, defaultYn = YesOrNo.N
             )
         )
     )

@@ -34,14 +34,14 @@ fun bucketDetailResponseToUiModel(
 
     val descInfo = DetailDescType.CommonDetailDescInfo(
         dDay = bucketInfo.completedDt,
-        keywordList = bucketInfo.keywordIds?.zip(bucketInfo.keywords.orEmpty()) { id, keyword ->
-            WriteKeyWord(id, keyword)
+        keywordList = bucketInfo.keywords.map {
+            WriteKeyWord(it.id, it.name)
         },
         title = bucketInfo.title,
         goalCount = bucketInfo.goalCount,
         userCount = bucketInfo.userCount,
         categoryInfo = WriteCategoryInfo(
-            id = bucketInfo.categoryId, name = bucketInfo.categoryName, defaultYn = YesOrNo.Y
+            id = bucketInfo.category.id, name = bucketInfo.category.name, defaultYn = YesOrNo.Y
         ),
         isScrap = bucketInfo.scrapYn.isYes(),
         status = if (bucketInfo.status == DetailInfo.CompleteStatus.PROGRESS) BucketStatus.PROGRESS else BucketStatus.COMPLETE,
