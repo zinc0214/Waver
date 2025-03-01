@@ -107,6 +107,11 @@ class WriteBucketListViewModel @Inject constructor(
                 val res = loadFriends.invoke()
                 Log.e("ayhan", "freinds : $res")
                 if (res.success) {
+//                    _searchFriendsResult.value = buildList {
+//                        repeat(10) {
+//                            add(WriteFriend(id = "$it", imageUrl = "", nickname = "카카$it"))
+//                        }
+//                    }
                     _searchFriendsResult.value = res.data.filter { it.mutualFollow }.map {
                         WriteFriend(it.id, it.imgUrl, it.name)
                     }

@@ -103,21 +103,102 @@ fun KeywordsOptionView(
             FlowRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 28.dp)
-                    .padding(top = 12.dp, bottom = 18.dp),
+                    .padding(top = 12.dp, bottom = 18.dp, start = 28.dp, end = 56.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 keywordList.forEach { keyword ->
-                    MyText(text = "# ${keyword.text}", color = Main3, fontSize = dpToSp(16.dp))
+                    MyText(text = "#${keyword.text}", color = Main3, fontSize = dpToSp(16.dp))
                 }
             }
         } else {
             Spacer(modifier = Modifier.padding(bottom = 18.dp))
         }
-
     }
 }
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun FriendsOptionView(
+    modifier: Modifier,
+    friendOption: WriteOptionsType2.FRIENDS,
+    friendsList: List<WriteFriend>,
+    optionClicked: (WriteOptionsType2.FRIENDS.EnableType) -> Unit
+) {
+    val color =
+        if (friendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.Enable) Gray10 else Gray6
+
+    val isNeedToWave = friendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus
+
+    val isValid = friendOption.enableType != WriteOptionsType2.FRIENDS.EnableType.Disable
+
+    val padding = if (isNeedToWave) 0.dp else 18.dp
+
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .clickable(isValid) { optionClicked(friendOption.enableType) }
+    ) {
+        Divider(color = Gray4)
+
+        Row(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 28.dp)
+                .padding(top = padding),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MyText(
+                text = stringResource(R.string.optionFriendAddTitle),
+                modifier = Modifier,
+                color = color,
+                fontSize = dpToSp(16.dp)
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (isNeedToWave) {
+                Image(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .padding(vertical = 14.dp),
+                    painter = painterResource(R.drawable.chip2),
+                    contentDescription = null
+                )
+            }
+
+            Image(
+                modifier = Modifier
+                    .padding(end = 20.dp)
+                    .sizeIn(16.dp),
+                painter = painterResource(CommonR.drawable.ico_16_right),
+                colorFilter = ColorFilter.tint(color),
+                contentDescription = null
+            )
+
+        }
+
+        if (friendsList.isNotEmpty()) {
+            FlowRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp, bottom = 18.dp, start = 28.dp, end = 56.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                friendsList.forEach { friend ->
+                    MyText(
+                        text = "@${friend.nickname}",
+                        color = Main3,
+                        fontSize = dpToSp(16.dp)
+                    )
+                }
+            }
+        } else {
+            Spacer(modifier = Modifier.padding(bottom = padding))
+        }
+    }
+}
+
 
 @Composable
 private fun OptionTextView(
@@ -204,7 +285,10 @@ private fun TextWithTagOptionView(option: WriteAddOption) {
     val textColor = if (isValid) Gray10 else Gray6
 
     Column {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             MyText(
                 text = option.title,
                 modifier = Modifier
@@ -576,6 +660,34 @@ private fun KeywordsOptionPreview() {
             WriteKeyWord(2, "키워드2")
         )
     ) {}
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FriendsOptionPreview() {
+    Column {
+        FriendsOptionView(
+            modifier = Modifier, friendsList = listOf(
+                WriteFriend(id = "1", imageUrl = "", nickname = "이름냠"),
+                WriteFriend(id = "1", imageUrl = "", nickname = "이름냠"),
+                WriteFriend(id = "1", imageUrl = "", nickname = "이름냠"),
+                WriteFriend(id = "1", imageUrl = "", nickname = "이름냠"),
+                WriteFriend(id = "1", imageUrl = "", nickname = "이름냠")
+            ), friendOption = WriteOptionsType2.FRIENDS(WriteOptionsType2.FRIENDS.EnableType.Enable)
+        ) {}
+
+        FriendsOptionView(
+            modifier = Modifier,
+            friendsList = listOf(),
+            friendOption = WriteOptionsType2.FRIENDS(WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus)
+        ) {}
+
+        FriendsOptionView(
+            modifier = Modifier,
+            friendsList = listOf(),
+            friendOption = WriteOptionsType2.FRIENDS(WriteOptionsType2.FRIENDS.EnableType.Disable)
+        ) {}
+    }
 }
 
 //@Preview

@@ -54,8 +54,6 @@ fun WriteSelectFriendsScreen(
     val scrollState = rememberLazyListState()
     val searchWord = remember { mutableStateOf("") }
 
-    viewModel.clearFriendsData()
-
     Column(
         modifier = Modifier
             .statusBarsPadding()

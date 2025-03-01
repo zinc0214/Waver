@@ -10,15 +10,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.zinc.waver.model.WriteAddOption
+import com.zinc.waver.model.WriteFriend
 import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOption1Info
@@ -85,8 +85,7 @@ fun WriteScreen2(
     val showApiFailDialog = remember { mutableStateOf(false) }
     var hasWaverPlus by remember { mutableStateOf(false) }
     val showWaverPlus = remember { mutableStateOf(false) }
-
-//    var keywordOptionInfo = remember { KeywordsOptionInfo(keywordList = selectedKeyWords.value) }
+    val friendOption = remember { FRIENDS(enableType = getFriendsEnableType(hasWaverPlus)) }
 
     LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
@@ -121,6 +120,7 @@ fun WriteScreen2(
 
     LaunchedEffect(hasWaverPlusAsState) {
         hasWaverPlus = hasWaverPlusAsState ?: false
+        friendOption.enableType = getFriendsEnableType(hasWaverPlus)
     }
 
     BackHandler(enabled = true) { // <-----
@@ -140,21 +140,6 @@ fun WriteScreen2(
     }
 
     val optionsList = mutableListOf(
-        WriteAddOption(
-            type = FRIENDS(enableType = getFriendsEnableType(hasWaverPlus)),
-            title = "함께할 친구 추가하기",
-            showList = selectedFriends.value.map { "@${it.nickname}" },
-            dataList = selectedFriends.value.map { it.id },
-            clicked = {
-                val isValid =
-                    (it as FRIENDS).enableType == FRIENDS.EnableType.Enable
-                if (isValid) {
-                    optionScreenShow = it
-                } else {
-                    showWaverPlus.value = true
-                }
-
-            }),
         WriteAddOption(
             type = WriteOptionsType2.OPEN,
             title = "공개설정",
@@ -229,6 +214,7 @@ fun WriteScreen2(
                 context = context,
                 selectedKeywordList = selectedKeyWords.value,
                 writeTotalInfo = writeTotalInfo,
+                friendsList = selectedFriends.value,
                 optionsList = optionsList,
                 goToBack = {
                     viewModel.clearData()
@@ -253,6 +239,14 @@ fun WriteScreen2(
                 },
                 keywordSelected = {
                     optionScreenShow = WriteOptionsType2.TAG
+                },
+                friendsOption = friendOption,
+                friendSelected = {
+                    if (it == FRIENDS.EnableType.Enable) {
+                        optionScreenShow = friendOption
+                    } else {
+                        showWaverPlus.value = true
+                    }
                 }
             )
 
@@ -281,12 +275,8 @@ fun WriteScreen2(
                             it != WriteOpenType.PRIVATE
                         optionsList[scrapIndex] = scarpOption
 
-                        val friendIndex =
-                            optionsList.indexOfFirst { option -> option.type is FRIENDS }
-                        val friendOption = optionsList[friendIndex]
-                        (friendOption.type as FRIENDS).enableType =
-                            if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else (friendOption.type as FRIENDS).enableType
-                        optionsList[friendIndex] = friendOption
+                        friendOption.enableType =
+                            if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else friendOption.enableType
                     }
                 )
             }
@@ -320,12 +310,15 @@ private fun WriteScreen2ContentView(
     context: Context,
     viewModel: WriteBucketListViewModel,
     selectedKeywordList: List<WriteKeyWord>,
+    friendsOption: FRIENDS,
+    friendsList: List<WriteFriend>,
     writeTotalInfo: WriteTotalInfo,
     optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
     optionValueChanged: (WriteAddOption) -> Unit,
     keywordSelected: () -> Unit,
+    friendSelected: (FRIENDS.EnableType) -> Unit
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
@@ -390,7 +383,7 @@ private fun WriteScreen2ContentView(
 
         val state = rememberLazyGridState()
 
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .constrainAs(contents) {
                     top.linkTo(appBar.bottom)
@@ -403,57 +396,56 @@ private fun WriteScreen2ContentView(
                     state = state,
                     orientation = Orientation.Vertical
                 ),
-            state = rememberLazyListState()
         ) {
-            item {
-                WriteTitleView(
-                    modifier = Modifier.padding(
-                        bottom = if (writeInfo1.getImagesPaths().isEmpty()) 150.dp else 32.dp
-                    ),
-                    title = writeTotalInfo.title
-                )
+            WriteTitleView(
+                modifier = Modifier.padding(
+                    bottom = if (writeInfo1.getImagesPaths().isEmpty()) 150.dp else 32.dp
+                ),
+                title = writeTotalInfo.title
+            )
+
+            gridItems(
+                data = writeInfo1.getImagesPaths(),
+                maxRow = 3,
+                modifier = Modifier
+                    .padding(horizontal = 28.dp)
+                    .padding(top = 28.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalSpace = 28.dp,
+                itemContent = {
+                    val info = createImageInfoWithPath(context = context, path = it, index = 0)
+                    ImageItem(imageInfo = info)
+                },
+                emptyContent = {
+                    Spacer(modifier = Modifier.size(80.dp))
+                })
+
+            KeywordsOptionView(
+                modifier = Modifier.fillMaxWidth(),
+                keywordList = selectedKeywordList
+            ) {
+                keywordSelected()
             }
 
-            item {
-                gridItems(
-                    data = writeInfo1.getImagesPaths(),
-                    maxRow = 3,
-                    modifier = Modifier
-                        .padding(horizontal = 28.dp)
-                        .padding(top = 28.dp)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalSpace = 28.dp,
-                    itemContent = {
-                        val info = createImageInfoWithPath(context = context, path = it, index = 0)
-                        ImageItem(imageInfo = info)
-                    },
-                    emptyContent = {
-                        Spacer(modifier = Modifier.size(80.dp))
-                    })
+            FriendsOptionView(
+                modifier = Modifier.fillMaxWidth(),
+                friendOption = friendsOption,
+                friendsList = friendsList
+            ) {
+                friendSelected(it)
             }
 
-            item {
-                KeywordsOptionView(
+            optionsList.forEach {
+                WriteAddOptionView(
                     modifier = Modifier.fillMaxWidth(),
-                    keywordList = selectedKeywordList
-                ) {
-                    keywordSelected()
-                }
-            }
-            item {
-                // TODO : Flexible 로 수정 필요
-                optionsList.forEach {
-                    WriteAddOptionView(
-                        modifier = Modifier.fillMaxWidth(),
-                        option = it,
-                        isLastItem = it == optionsList.last(),
-                        optionClicked = { it.clicked(it.type) },
-                        optionValueChanged = { option ->
-                            optionValueChanged(option)
-                        }
-                    )
-                }
+                    option = it,
+                    isLastItem = it == optionsList.last(),
+                    optionClicked = { it.clicked(it.type) },
+                    optionValueChanged = { option ->
+                        optionValueChanged(option)
+                    }
+                )
             }
         }
     }

@@ -28,5 +28,6 @@
     <string name="confirmBackLeftButton">유지</string>
     <string name="confirmBackRightButton">작성취소</string>
 
-    <string name="optionKeywordAddTitle">"키워드 추가"</string>
+    <string name="optionKeywordAddTitle">키워드 추가</string>
+    <string name="optionFriendAddTitle">함께할 친구 추가하기</string>
 </resources>
