@@ -7,6 +7,8 @@ import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.KeywordInfo
 import com.zinc.common.models.YesOrNo
 import com.zinc.common.utils.toYn
+import com.zinc.waver.model.WriteOptionsType2.FRIENDS.EnableType.Enable
+import com.zinc.waver.model.WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus
 import com.zinc.waver.ui.util.parseWithDday
 import com.zinc.waver.ui.util.toLocalData
 import com.zinc.waver.ui.util.toStringData
@@ -168,14 +170,23 @@ data class WriteCategoryInfo(
 interface WriteOptionsType2 {
     object TAG : WriteOptionsType2
     data class FRIENDS(
-        val isUsable: Boolean
-    ) : WriteOptionsType2
+        var enableType: EnableType
+    ) : WriteOptionsType2 {
+        enum class EnableType {
+            Enable, NoWaverPlus, Disable;
+        }
+    }
 
     object OPEN : WriteOptionsType2
     data class SCRAP(
         var isScrapAvailable: Boolean = false,
         var isScrapUsed: Boolean = false,
     ) : WriteOptionsType2
+
+    fun getFriendsEnableType(hasWaver: Boolean) =
+        if (hasWaver) Enable
+        else NoWaverPlus
+
 }
 
 fun parseUIBucketListInfo(

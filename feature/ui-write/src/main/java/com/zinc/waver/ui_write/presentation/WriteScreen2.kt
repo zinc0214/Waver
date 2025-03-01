@@ -37,6 +37,8 @@ import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOption1Info
 import com.zinc.waver.model.WriteOptionsType1
 import com.zinc.waver.model.WriteOptionsType2
+import com.zinc.waver.model.WriteOptionsType2.FRIENDS
+import com.zinc.waver.model.WriteOptionsType2.TAG.getFriendsEnableType
 import com.zinc.waver.model.WriteTotalInfo
 import com.zinc.waver.model.parseUIBucketListInfo
 import com.zinc.waver.model.parseWrite1Info
@@ -144,12 +146,13 @@ fun WriteScreen2(
                 optionScreenShow = it
             }),
         WriteAddOption(
-            type = WriteOptionsType2.FRIENDS(isUsable = hasWaverPlus),
+            type = FRIENDS(enableType = getFriendsEnableType(hasWaverPlus)),
             title = "함께할 친구 추가하기",
             showList = selectedFriends.value.map { "@${it.nickname}" },
             dataList = selectedFriends.value.map { it.id },
             clicked = {
-                val isValid = (it as WriteOptionsType2.FRIENDS).isUsable
+                val isValid =
+                    (it as FRIENDS).enableType == FRIENDS.EnableType.Enable
                 if (isValid) {
                     optionScreenShow = it
                 } else {
@@ -196,7 +199,7 @@ fun WriteScreen2(
                 )
             }
 
-            is WriteOptionsType2.FRIENDS -> {
+            is FRIENDS -> {
                 LaunchedEffect(Unit) {
                     viewModel.loadFriends()
                 }
@@ -261,14 +264,30 @@ fun WriteScreen2(
                         optionScreenShow = null
                     },
                     typeSelected = {
-                        selectedOpenType.value = it
+                        if (selectedFriends.value.isEmpty() && it == WriteOpenType.FRIENDS_OPEN) {
+                            Toast.makeText(
+                                context,
+                                R.string.optionIfHasNoFriends,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            selectedOpenType.value = it
+                        }
                         optionScreenShow = null
-                        val changedIndex =
+
+                        val scrapIndex =
                             optionsList.indexOfFirst { option -> option.type is WriteOptionsType2.SCRAP }
-                        val scarpOption = optionsList[changedIndex]
+                        val scarpOption = optionsList[scrapIndex]
                         (scarpOption.type as WriteOptionsType2.SCRAP).isScrapAvailable =
                             it != WriteOpenType.PRIVATE
-                        optionsList[changedIndex] = scarpOption
+                        optionsList[scrapIndex] = scarpOption
+
+                        val friendIndex =
+                            optionsList.indexOfFirst { option -> option.type is FRIENDS }
+                        val friendOption = optionsList[friendIndex]
+                        (friendOption.type as FRIENDS).enableType =
+                            if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else (friendOption.type as FRIENDS).enableType
+                        optionsList[friendIndex] = friendOption
                     }
                 )
             }
@@ -359,7 +378,7 @@ private fun WriteScreen2ContentView(
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
                                 keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.dataList.orEmpty(),
-                                tagFriends = optionsList.find { it.type is WriteOptionsType2.FRIENDS }?.dataList.orEmpty(),
+                                tagFriends = optionsList.find { it.type is FRIENDS }?.dataList.orEmpty(),
                                 isScrapAvailable = scrapOption.isScrapUsed
                             ),
                             isForUpdate = writeTotalInfo.isForUpdate

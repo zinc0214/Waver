@@ -120,7 +120,7 @@ fun WriteAddOptionView(
 @Composable
 private fun TextWithTagOptionView(option: WriteAddOption) {
     val isValid = when (val type = option.type) {
-        is WriteOptionsType2.FRIENDS -> type.isUsable
+        is WriteOptionsType2.FRIENDS -> type.enableType == WriteOptionsType2.FRIENDS.EnableType.Enable
         else -> true
     }
 
