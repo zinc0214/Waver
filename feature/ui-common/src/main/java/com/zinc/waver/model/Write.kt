@@ -12,20 +12,9 @@ import com.zinc.waver.model.WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus
 import com.zinc.waver.ui.util.parseWithDday
 import com.zinc.waver.ui.util.toLocalData
 import com.zinc.waver.ui.util.toStringData
-import com.zinc.waver.util.parseNavigationValue
-import com.zinc.waver.util.toNavigationValue
 import kotlinx.parcelize.Parcelize
 import java.io.File
 import java.io.Serializable
-
-data class WriteAddOption(
-    val type: WriteOptionsType2,
-    val title: String,
-    val showList: List<String>, // 보여줄 데이터
-    val dataList: List<String>, // 서버 전송용
-    val showDivider: Boolean = false,
-    val clicked: (WriteOptionsType2) -> Unit
-) : Serializable
 
 @Parcelize
 @kotlinx.serialization.Serializable
@@ -38,15 +27,7 @@ data class WriteTotalInfo(
     val tagFriends: List<WriteFriend> = emptyList(),
     val isScrapUsed: Boolean = false,
     val isForUpdate: Boolean = false,
-) : Serializable, Parcelable {
-    companion object {
-        fun toNavigationValue(value: WriteTotalInfo): String =
-            value.toNavigationValue()
-
-        fun parseNavigationValue(value: String): WriteTotalInfo =
-            value.parseNavigationValue()
-    }
-}
+) : Serializable, Parcelable
 
 fun WriteTotalInfo.parseWrite1Info() = WriteInfo1(this.title, this.options)
 
@@ -74,11 +55,6 @@ data class WriteInfo1(
             options.firstOrNull { it is WriteOption1Info.Images } ?: return emptyList()
         return (images as WriteOption1Info.Images).imagePaths
     }
-
-    fun getCategory(): WriteCategoryInfo {
-        val categoryInfo = options.firstOrNull { it is WriteOption1Info.Category }
-        return (categoryInfo as WriteOption1Info.Category).categoryInfo
-    }
 }
 
 fun List<KeywordInfo>.toUiModel(): List<WriteKeyWord> {
@@ -89,7 +65,7 @@ fun List<KeywordInfo>.toUiModel(): List<WriteKeyWord> {
 
 @kotlinx.serialization.Serializable
 data class WriteKeyWord(
-    val id: Int,
+    val id: String,
     val text: String
 ) : Serializable
 
@@ -104,8 +80,8 @@ enum class WriteOptionsType1 : Serializable {
     MEMO, IMAGE, CATEGORY, D_DAY, GOAL
 }
 
-enum class WriteOpenType(val text: String) {
-    PUBLIC("전체 공개"), PRIVATE("비공개"), FRIENDS_OPEN("친구에게만 공개")
+enum class WriteOpenType {
+    PUBLIC, PRIVATE, FRIENDS_OPEN
 }
 
 @Parcelize
@@ -176,12 +152,7 @@ interface WriteOptionsType2 {
             Enable, NoWaverPlus, Disable;
         }
     }
-
     object OPEN : WriteOptionsType2
-    data class SCRAP(
-        var isScrapAvailable: Boolean = false,
-        var isScrapUsed: Boolean = false,
-    ) : WriteOptionsType2
 
     fun getFriendsEnableType(hasWaver: Boolean) =
         if (hasWaver) Enable
@@ -206,7 +177,7 @@ fun parseUIBucketListInfo(
     targetDate = parseTargetDate(options),
     goalCount = parseGoalCount(options),
     categoryId = parseCategoryId(options),
-    tags = keyWord.joinToString(","),
+    keywords = keyWord.joinToString(","),
     exposureStatus = parseOpenType(writeOpenType),
     friendUserIds = tagFriends,
     scrapYn = isScrapAvailable.toYn()
@@ -249,7 +220,7 @@ data class UIAddBucketListInfo(
     val exposureStatus: ExposureStatus, // 공개여부
     val title: String,
     val memo: String?, // 메모
-    val tags: String = "", // 태그 목록(최대 5) - ","로 구분
+    val keywords: String = "", // 태그 목록(최대 5) - ","로 구분
     val friendUserIds: List<String>?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
     val scrapYn: YesOrNo, // 스크랩 여부
     val images: List<File>? = emptyList(), // 이미지 목록(최대 3)

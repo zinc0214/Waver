@@ -3,7 +3,7 @@ package com.zinc.domain.models
 import com.zinc.common.models.YesOrNo
 
 data class SavedKeywordItemsRequest(
-    val keywordIds: List<Int>
+    val keywordIds: List<String>
 )
 
 data class FeedListResponse(

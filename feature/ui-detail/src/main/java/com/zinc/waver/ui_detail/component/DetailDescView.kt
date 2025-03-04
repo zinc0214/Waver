@@ -131,7 +131,7 @@ private fun DetailDescViewPreview() {
         detailDescInfo = DetailDescType.CommonDetailDescInfo(
             dDay = null,
             status = BucketStatus.PROGRESS,
-            keywordList = listOf(WriteKeyWord(id = 0, text = "여행")),
+            keywordList = listOf(WriteKeyWord(id = "0", text = "여행")),
             title = "갸갸갸갸갸",
             goalCount = 0,
             userCount = 0,

@@ -31,7 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.waver.model.WriteAddOption
 import com.zinc.waver.model.WriteFriend
 import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.model.WriteOpenType
@@ -139,29 +138,6 @@ fun WriteScreen2(
         }
     }
 
-    val optionsList = mutableListOf(
-        WriteAddOption(
-            type = WriteOptionsType2.OPEN,
-            title = "공개설정",
-            showList = listOf(selectedOpenType.value.text),
-            dataList = listOf(selectedOpenType.value.text),
-            showDivider = true,
-            clicked = {
-                optionScreenShow = it
-            }),
-        WriteAddOption(
-            type = WriteOptionsType2.SCRAP(
-                isScrapAvailable = selectedOpenType.value != WriteOpenType.PRIVATE,
-                isScrapUsed = isScrapUsed.value
-            ),
-            title = "스크랩",
-            dataList = emptyList(),
-            showList = emptyList(),
-            clicked = {
-                optionScreenShow = null
-            }),
-    )
-
     if (optionScreenShow != null && optionScreenShow != WriteOptionsType2.OPEN) {
         when (optionScreenShow) {
             WriteOptionsType2.TAG -> {
@@ -214,8 +190,27 @@ fun WriteScreen2(
                 context = context,
                 selectedKeywordList = selectedKeyWords.value,
                 writeTotalInfo = writeTotalInfo,
-                friendsList = selectedFriends.value,
-                optionsList = optionsList,
+                selectedFriends = selectedFriends.value,
+                selectedOpenType = selectedOpenType,
+                keywordSelected = {
+                    optionScreenShow = WriteOptionsType2.TAG
+                },
+                friendsOption = friendOption,
+                friendSelected = {
+                    if (it == FRIENDS.EnableType.Enable) {
+                        optionScreenShow = friendOption
+                    } else {
+                        showWaverPlus.value = true
+                    }
+                },
+                isScrapUsed = isScrapUsed.value,
+                scrapChanged = {
+                    isScrapUsed.value = it
+                },
+                openType = selectedOpenType.value,
+                openTypeSelected = {
+                    optionScreenShow = WriteOptionsType2.OPEN
+                },
                 goToBack = {
                     viewModel.clearData()
                     goToBack(
@@ -227,27 +222,6 @@ fun WriteScreen2(
                         )
                     )
                 },
-                selectedOpenType = selectedOpenType,
-                optionValueChanged = { changedOption ->
-                    val changedIndex = optionsList.indexOfFirst { it.type == changedOption.type }
-                    optionsList[changedIndex] = changedOption
-
-                    if (changedOption.type is WriteOptionsType2.SCRAP) {
-                        isScrapUsed.value =
-                            (changedOption.type as WriteOptionsType2.SCRAP).isScrapUsed
-                    }
-                },
-                keywordSelected = {
-                    optionScreenShow = WriteOptionsType2.TAG
-                },
-                friendsOption = friendOption,
-                friendSelected = {
-                    if (it == FRIENDS.EnableType.Enable) {
-                        optionScreenShow = friendOption
-                    } else {
-                        showWaverPlus.value = true
-                    }
-                }
             )
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
@@ -267,14 +241,7 @@ fun WriteScreen2(
                             selectedOpenType.value = it
                         }
                         optionScreenShow = null
-
-                        val scrapIndex =
-                            optionsList.indexOfFirst { option -> option.type is WriteOptionsType2.SCRAP }
-                        val scarpOption = optionsList[scrapIndex]
-                        (scarpOption.type as WriteOptionsType2.SCRAP).isScrapAvailable =
-                            it != WriteOpenType.PRIVATE
-                        optionsList[scrapIndex] = scarpOption
-
+                        isScrapUsed.value = it != WriteOpenType.PRIVATE
                         friendOption.enableType =
                             if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else friendOption.enableType
                     }
@@ -311,14 +278,16 @@ private fun WriteScreen2ContentView(
     viewModel: WriteBucketListViewModel,
     selectedKeywordList: List<WriteKeyWord>,
     friendsOption: FRIENDS,
-    friendsList: List<WriteFriend>,
+    isScrapUsed: Boolean,
+    selectedFriends: List<WriteFriend>,
     writeTotalInfo: WriteTotalInfo,
-    optionsList: List<WriteAddOption>,
     goToBack: (WriteTotalInfo) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
-    optionValueChanged: (WriteAddOption) -> Unit,
     keywordSelected: () -> Unit,
-    friendSelected: (FRIENDS.EnableType) -> Unit
+    friendSelected: (FRIENDS.EnableType) -> Unit,
+    scrapChanged: (Boolean) -> Unit,
+    openType: WriteOpenType,
+    openTypeSelected: () -> Unit,
 ) {
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
@@ -361,9 +330,6 @@ private fun WriteScreen2ContentView(
                     }
 
                     WriteAppBarClickEvent.NextClicked -> {
-                        Log.e("ayhan", "optionList: $optionsList")
-                        val scrapOption =
-                            (optionsList.find { it.type is WriteOptionsType2.SCRAP })?.type as WriteOptionsType2.SCRAP
                         viewModel.addNewBucketList(
                             parseUIBucketListInfo(
                                 bucketId = writeTotalInfo.bucketId,
@@ -371,9 +337,9 @@ private fun WriteScreen2ContentView(
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
-                                keyWord = optionsList.find { it.type == WriteOptionsType2.TAG }?.dataList.orEmpty(),
-                                tagFriends = optionsList.find { it.type is FRIENDS }?.dataList.orEmpty(),
-                                isScrapAvailable = scrapOption.isScrapUsed
+                                keyWord = selectedKeywordList.map { it.id },
+                                tagFriends = selectedFriends.map { it.id },
+                                isScrapAvailable = isScrapUsed
                             ),
                             isForUpdate = writeTotalInfo.isForUpdate
                         )
@@ -431,22 +397,23 @@ private fun WriteScreen2ContentView(
             FriendsOptionView(
                 modifier = Modifier.fillMaxWidth(),
                 friendOption = friendsOption,
-                friendsList = friendsList
+                friendsList = selectedFriends
             ) {
                 friendSelected(it)
             }
 
-            optionsList.forEach {
-                WriteAddOptionView(
-                    modifier = Modifier.fillMaxWidth(),
-                    option = it,
-                    isLastItem = it == optionsList.last(),
-                    optionClicked = { it.clicked(it.type) },
-                    optionValueChanged = { option ->
-                        optionValueChanged(option)
-                    }
-                )
-            }
+            OpenTypeOptionView(
+                modifier = Modifier.fillMaxWidth(),
+                openType = openType,
+                optionClicked = openTypeSelected
+            )
+
+            WriteScrapOptionView(
+                modifier = Modifier.fillMaxWidth(),
+                isScrapAvailable = selectedOpenType.value == WriteOpenType.PUBLIC,
+                isScrapUsed = isScrapUsed,
+                scrapChanged = scrapChanged
+            )
         }
     }
 }

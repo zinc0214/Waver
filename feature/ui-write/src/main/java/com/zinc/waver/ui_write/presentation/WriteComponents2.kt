@@ -43,14 +43,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.zinc.waver.model.WriteAddOption
 import com.zinc.waver.model.WriteFriend
 import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.model.WriteOptionsType2
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray4
@@ -143,7 +141,7 @@ fun FriendsOptionView(
         Row(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(horizontal = 28.dp)
+                .padding(start = 28.dp)
                 .padding(top = padding),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -199,6 +197,38 @@ fun FriendsOptionView(
     }
 }
 
+@Composable
+fun OpenTypeOptionView(
+    modifier: Modifier,
+    openType: WriteOpenType,
+    optionClicked: () -> Unit
+) {
+    val typeText = when (openType) {
+        WriteOpenType.PUBLIC -> stringResource(R.string.optionOpenTypePublic)
+        WriteOpenType.PRIVATE -> stringResource(R.string.optionOpenTypePrivate)
+        WriteOpenType.FRIENDS_OPEN -> stringResource(R.string.optionOpenTypeFriends)
+    }
+    Column(modifier = modifier
+        .fillMaxWidth()
+        .clickable { optionClicked() }
+    ) {
+        Divider(color = Gray4)
+        Divider(color = Gray2, thickness = 7.dp)
+        Divider(color = Gray3)
+
+        OptionTextView(
+            modifier = Modifier.padding(top = 18.dp),
+            text = stringResource(R.string.optionOpenTypeTitle)
+        )
+
+        MyText(
+            text = typeText,
+            modifier = Modifier.padding(top = 12.dp, bottom = 18.dp, start = 28.dp, end = 28.dp),
+            color = Main3,
+            fontSize = dpToSp(16.dp)
+        )
+    }
+}
 
 @Composable
 private fun OptionTextView(
@@ -210,7 +240,7 @@ private fun OptionTextView(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 28.dp),
+            .padding(start = 28.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         MyText(
@@ -230,119 +260,6 @@ private fun OptionTextView(
             colorFilter = ColorFilter.tint(arrowColor),
             contentDescription = null
         )
-    }
-}
-
-@Composable
-fun WriteAddOptionView(
-    modifier: Modifier,
-    option: WriteAddOption,
-    isLastItem: Boolean,
-    optionClicked: () -> Unit,
-    optionValueChanged: (WriteAddOption) -> Unit
-) {
-    Column(modifier = modifier.clickable { optionClicked() }) {
-
-        Divider(color = Gray3)
-
-        if (option.showDivider) {
-            Divider(color = Gray2, thickness = 8.dp)
-            Divider(color = Gray3)
-        }
-
-        if (option.type is WriteOptionsType2.SCRAP) {
-            val scrapOption = option.type as WriteOptionsType2.SCRAP
-            WriteScrapOptionView(
-                modifier = Modifier.fillMaxWidth(),
-                isScrapAvailable = scrapOption.isScrapAvailable,
-                isScrapUsed = scrapOption.isScrapUsed,
-                scrapChanged = { isScrapUsed ->
-                    scrapOption.isScrapUsed = isScrapUsed
-                    optionValueChanged(
-                        option.copy {
-                            (it as WriteOptionsType2.SCRAP).isScrapUsed = isScrapUsed
-                        }
-                    )
-                })
-        } else {
-            TextWithTagOptionView(option)
-        }
-
-        if (isLastItem) {
-            Divider(color = Gray3)
-        }
-    }
-}
-
-@Composable
-private fun TextWithTagOptionView(option: WriteAddOption) {
-    val isValid = when (val type = option.type) {
-        is WriteOptionsType2.FRIENDS -> type.enableType == WriteOptionsType2.FRIENDS.EnableType.Enable
-        else -> true
-    }
-
-    val arrowColor = if (isValid) Gray11 else Gray4
-    val textColor = if (isValid) Gray10 else Gray6
-
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            MyText(
-                text = option.title,
-                modifier = Modifier
-                    .padding(
-                        start = 28.dp,
-                        top = 18.dp,
-                        end = 28.dp,
-                        bottom = if (option.showList.isEmpty()) 18.dp else 12.dp
-                    ),
-                color = textColor,
-                fontSize = dpToSp(16.dp)
-            )
-
-
-            Modifier.weight(1f)
-
-            if (!isValid) {
-                Image(
-                    modifier = Modifier
-                        .padding(end = 8.dp),
-                    painter = painterResource(R.drawable.chip2),
-                    contentDescription = null
-                )
-            }
-            Image(
-                modifier = Modifier
-                    .padding(end = 20.dp),
-                painter = painterResource(CommonR.drawable.ico_16_right),
-                colorFilter = ColorFilter.tint(arrowColor),
-                contentDescription = null
-            )
-
-
-        }
-//        FlowRow(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(
-//                    start = if (option.showList.isEmpty()) 0.dp else 28.dp,
-//                    bottom = if (option.showList.isEmpty()) 0.dp else 20.dp
-//                ),
-//            mainAxisSpacing = 12.dp,
-//            crossAxisSpacing = 8.dp,
-//        ) {
-//            option.showList.forEach {
-//                MyText(
-//                    text = it,
-//                    modifier = Modifier,
-//                    color = Main3,
-//                    fontSize = dpToSp(16.dp),
-//                )
-//            }
-//        }
-
     }
 }
 
@@ -468,6 +385,77 @@ fun WriteSelectFriendItem(
 }
 
 @Composable
+fun WriteScrapOptionView(
+    modifier: Modifier,
+    isScrapAvailable: Boolean,
+    isScrapUsed: Boolean,
+    scrapChanged: (Boolean) -> Unit
+) {
+    val context = LocalContext.current
+
+    Column(modifier = modifier) {
+
+        Divider(color = Gray3)
+
+        Row(
+            modifier = Modifier
+                .padding(start = 28.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            MyText(
+                text = stringResource(id = R.string.optionScrap),
+                color = if (isScrapAvailable) Gray10 else Gray7,
+                fontSize = dpToSp(16.dp)
+            )
+
+            IconButton(
+                modifier = Modifier
+                    .size(16.dp)
+                    .padding(start = 2.dp),
+                onClick = {
+
+                },
+                image = R.drawable.btn_16_info,
+                contentDescription = stringResource(id = R.string.optionScrapInfoDesc)
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            if (isScrapAvailable) {
+                Switch(
+                    modifier = Modifier
+                        .padding(vertical = 12.5.dp)
+                        .padding(end = 20.dp),
+                    isSwitchOn = isScrapUsed,
+                    switchChanged = {
+                        scrapChanged(it)
+                    }
+                )
+            } else {
+                SwitchOnlyView(
+                    modifier = Modifier
+                        .padding(vertical = 12.5.dp)
+                        .padding(end = 20.dp)
+                        .pointerInput(Unit) {
+                            detectTapGestures(
+                                onTap = {
+                                    Toast.makeText(
+                                        context,
+                                        R.string.optionScrapNotAvailable,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            )
+                        }
+                )
+            }
+        }
+
+        Divider(color = Gray4)
+    }
+}
+
+@Composable
 fun SelectOpenTypePopup(
     isPrivateAvailable: Boolean,
     onDismissRequest: () -> Unit,
@@ -544,99 +532,6 @@ fun SelectOpenTypePopup(
     }
 }
 
-
-@Composable
-fun WriteScrapOptionView(
-    modifier: Modifier,
-    isScrapAvailable: Boolean,
-    isScrapUsed: Boolean,
-    scrapChanged: (Boolean) -> Unit
-) {
-    val context = LocalContext.current
-
-    Column(modifier = modifier) {
-
-        ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
-            val (title, switch) = createRefs()
-
-            Row(
-                modifier = Modifier
-                    .constrainAs(title) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        bottom.linkTo(parent.bottom)
-                    }
-                    .padding(
-                        start = 28.dp,
-                        top = 18.dp,
-                        end = 28.dp,
-                        bottom = 18.dp
-                    ),
-                verticalAlignment = Alignment.CenterVertically) {
-                MyText(
-                    text = stringResource(id = R.string.optionScrap),
-                    color = if (isScrapAvailable) Gray10 else Gray7,
-                    fontSize = dpToSp(16.dp)
-                )
-
-                IconButton(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .padding(start = 2.dp),
-                    onClick = {
-
-                    },
-                    image = R.drawable.btn_16_info,
-                    contentDescription = stringResource(id = R.string.optionScrapInfoDesc)
-                )
-            }
-
-            if (isScrapAvailable) {
-                Switch(
-                    modifier = Modifier
-                        .constrainAs(switch) {
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        }
-                        .padding(vertical = 12.5.dp)
-                        .padding(end = 20.dp),
-                    isSwitchOn = isScrapUsed,
-                    switchChanged = {
-                        scrapChanged(it)
-                    }
-                )
-            } else {
-                SwitchOnlyView(
-                    modifier = Modifier
-                        .constrainAs(switch) {
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        }
-                        .padding(vertical = 12.5.dp)
-                        .padding(end = 20.dp)
-                        .pointerInput(Unit) {
-                            detectTapGestures(
-                                onTap = {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            R.string.optionScrapNotAvailable,
-                                            Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                                }
-                            )
-                        }
-                )
-            }
-
-
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun SelectOpenTypePopupPreview() {
@@ -656,8 +551,8 @@ private fun OptionTextViewPreview() {
 private fun KeywordsOptionPreview() {
     KeywordsOptionView(
         modifier = Modifier, keywordList = listOf(
-            WriteKeyWord(1, "키워드1"),
-            WriteKeyWord(2, "키워드2")
+            WriteKeyWord("1", "키워드1"),
+            WriteKeyWord("2", "키워드2")
         )
     ) {}
 }
@@ -690,13 +585,27 @@ private fun FriendsOptionPreview() {
     }
 }
 
-//@Preview
-//@Composable
-//private fun WriteScrapOptionPreview() {
-//    WriteScrapOptionView(
-//        modifier = Modifier, isScrapAvailable = false,
-//        isScrapUsed = true,
-//        {},
-//        option
-//    )
-//}
+@Preview(showBackground = true)
+@Composable
+private fun WriteScrapOptionPreview() {
+    Column {
+        WriteScrapOptionView(
+            modifier = Modifier,
+            isScrapAvailable = true,
+            isScrapUsed = true,
+            scrapChanged = {}
+        )
+        WriteScrapOptionView(
+            modifier = Modifier,
+            isScrapAvailable = false,
+            isScrapUsed = false,
+            scrapChanged = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun OPenTypeOptionPreview() {
+    OpenTypeOptionView(modifier = Modifier, openType = WriteOpenType.PUBLIC, optionClicked = {})
+}

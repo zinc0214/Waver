@@ -112,7 +112,7 @@ private fun FeedScreen(
     pullToRefreshEvent: () -> Unit,
     loadNextPageEvent: () -> Unit,
     feedClickEvent: (FeedClickEvent) -> Unit,
-    keywordSaved: (List<Int>) -> Unit,
+    keywordSaved: (List<String>) -> Unit,
     updateLoadStatus: (FeedLoadStatus) -> Unit
 ) {
 
@@ -206,7 +206,7 @@ private fun FeedScreenPreview1() {
 @Preview
 @Composable
 private fun FeedScreenPreview2() {
-    val keyword = mutableListOf(UIFeedKeyword(id = 1, keyword = "여행가자"))
+    val keyword = mutableListOf(UIFeedKeyword(id = "1", keyword = "여행가자"))
     FeedScreen(
         loadNextPageEvent = {},
         pullToRefreshEvent = {},

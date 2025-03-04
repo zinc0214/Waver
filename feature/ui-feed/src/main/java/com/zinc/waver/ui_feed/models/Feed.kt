@@ -6,7 +6,7 @@ import com.zinc.waver.model.MyProfileInfoUi
 import kotlinx.serialization.Serializable
 
 data class UIFeedKeyword(
-    val id: Int,
+    val id: String,
     val keyword: String
 )
 

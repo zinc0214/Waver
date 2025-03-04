@@ -54,10 +54,10 @@ import com.zinc.waver.ui_feed.models.UIFeedKeyword
 @Composable
 fun FeedKeywordsLayer(
     keywords: List<UIFeedKeyword>,
-    recommendClicked: (MutableList<Int>) -> Unit
+    recommendClicked: (MutableList<String>) -> Unit
 ) {
 
-    val selectedKeywordsList = remember { mutableListOf<Int>() }
+    val selectedKeywordsList = remember { mutableListOf<String>() }
 
     Log.e("ayhan", "selectedKeywordsList :$selectedKeywordsList")
 
@@ -176,7 +176,7 @@ private fun BodyContent(
     keywords: List<UIFeedKeyword>,
     recommendClicked: () -> Unit,
     modifier: Modifier,
-    updateSelectedKeyword: (Int, Boolean) -> Unit,
+    updateSelectedKeyword: (String, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     Box(modifier = modifier, content = {
@@ -205,7 +205,7 @@ private fun ChipBodyContent(
     modifier: Modifier = Modifier,
     state: LazyGridState,
     keywords: List<UIFeedKeyword>,
-    updateSelectedKeyword: (Int, Boolean) -> Unit,
+    updateSelectedKeyword: (String, Boolean) -> Unit,
     scrollChanged: (Float) -> Unit
 ) {
     LazyVerticalGrid(

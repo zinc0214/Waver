@@ -65,7 +65,7 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun savedKeywordList(list: List<Int>) {
+    fun savedKeywordList(list: List<String>) {
         _loadStatusEvent.value = FeedLoadStatus.None
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {

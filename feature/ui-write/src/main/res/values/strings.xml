@@ -30,4 +30,5 @@
 
     <string name="optionKeywordAddTitle">키워드 추가</string>
     <string name="optionFriendAddTitle">함께할 친구 추가하기</string>
+    <string name="optionOpenTypeTitle">공개설정</string>
 </resources>
