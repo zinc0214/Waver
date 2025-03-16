@@ -132,6 +132,7 @@ fun CloseDetailScreen(
 
                                 MyBucketMoreMenuEvent.GoToDelete -> {
                                     optionPopUpShowed.value = false
+                                    viewModel.deleteMyBucket()
                                 }
                             }
                         }
