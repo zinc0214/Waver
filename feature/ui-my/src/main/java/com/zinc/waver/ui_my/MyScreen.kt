@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_my
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -76,7 +75,6 @@ import com.zinc.waver.ui_my.viewModel.MyViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MyScreen(
     itemSelected: (HomeItemSelected) -> Unit,

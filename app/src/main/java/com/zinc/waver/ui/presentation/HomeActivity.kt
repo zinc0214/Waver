@@ -73,6 +73,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this)
         checkInAppBilling()
+        viewModel.loadProfileInfo()
 
         setContent {
             enableEdgeToEdge()

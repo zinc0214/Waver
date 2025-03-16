@@ -27,8 +27,13 @@ data class ProfileInfo(
     val bio: String?,
     val badgeTitle: String?,
     val badgeImgUrl: String?,
-    val followYn: YesOrNo? = YesOrNo.N
-)
+    val followYn: YesOrNo? = YesOrNo.N,
+    val premiumStatus: PremiumStatus
+) {
+    enum class PremiumStatus {
+        NONE, ACTIVE, EXPIRED
+    }
+}
 
 data class TopProfile(
     val isFollowed: Boolean = false,
