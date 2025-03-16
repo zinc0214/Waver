@@ -11,6 +11,7 @@ import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.DeleteBucketComment
 import com.zinc.domain.usecases.detail.GoalCountUpdate
+import com.zinc.domain.usecases.detail.HideBucketComment
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
@@ -33,7 +34,8 @@ class DetailViewModel @Inject constructor(
     private val addBucketComment: AddBucketComment,
     private val deleteBucketComment: DeleteBucketComment,
     private val goalCountUpdate: GoalCountUpdate,
-    private val saveBucketLike: SaveBucketLike
+    private val saveBucketLike: SaveBucketLike,
+    private val hideBucketComment: HideBucketComment
 ) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
@@ -91,6 +93,18 @@ class DetailViewModel @Inject constructor(
                 getBucketDetail(bucketId!!, writerId!!, isMine!!)
             } else {
                 _loadFail.value = DetailLoadFailStatus.LikeFail
+            }
+        }
+    }
+
+    fun hideComment(commentId: String) {
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
+            val response = hideBucketComment(commentId)
+            Log.e("ayhan", "comment hide $response")
+            if (response.success) {
+                getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
+                _loadFail.value = DetailLoadFailStatus.LoadFail
             }
         }
     }

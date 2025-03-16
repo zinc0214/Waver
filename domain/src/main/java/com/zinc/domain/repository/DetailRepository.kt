@@ -11,4 +11,5 @@ interface DetailRepository {
     suspend fun requestGoalCountUpdate(id: String, goalCount: Int): CommonResponse
     suspend fun loadProfile(isMine: Boolean, writerId: String?): ProfileResponse
     suspend fun deleteBucketComment(id: String): CommonResponse
+    suspend fun hideBucketComment(id: String): CommonResponse
 }

@@ -151,6 +151,10 @@ fun OpenDetailScreen(
                 OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike -> {
                     viewModel.saveBucketLike()
                 }
+
+                is OpenBucketDetailInternalEvent.ViewModelEvent.HideComment -> {
+                    viewModel.hideComment(event.commentId)
+                }
             }
         }
     }
@@ -348,6 +352,7 @@ private fun InternalOpenDetailScreen(
                                 is OpenDetailEditTextViewEvent.BucketLike -> {
                                     updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
                                 }
+
                                 is OpenDetailEditTextViewEvent.SendComment -> {
                                     updateInternalEvent(
                                         OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
@@ -620,7 +625,14 @@ private fun ShowOptionEvent(
                     },
                     commentOptionClicked = {
                         when (it) {
-                            is OtherCommentOptionClicked.Hide -> TODO()
+                            is OtherCommentOptionClicked.Hide -> {
+                                updateInternalEvent(
+                                    OpenBucketDetailInternalEvent.ViewModelEvent.HideComment(
+                                        commentId = it.commentId
+                                    )
+                                )
+                            }
+
                             is OtherCommentOptionClicked.Report -> {
                                 val reportInfo = ReportInfo(
                                     id = commenter.commentId,
@@ -665,9 +677,6 @@ private fun ShowOptionEvent(
                 updateInternalEvent = updateInternalEvent
             )
         }
-
-//        OpenBucketDetailInternalEvent.Achieve -> TODO()
-//        is OpenBucketDetailInternalEvent.AddComment -> TODO()
 
         else -> {
             // Do Nothing

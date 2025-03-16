@@ -49,4 +49,8 @@ internal class DetailRepositoryImpl @Inject constructor(
     override suspend fun deleteBucketComment(id: String): CommonResponse {
         return waverApi.deleteComment(id)
     }
+
+    override suspend fun hideBucketComment(id: String): CommonResponse {
+        return waverApi.hideComment(id)
+    }
 }

@@ -279,6 +279,10 @@ interface WaverApi {
     @DELETE("/comment/{id}")
     suspend fun deleteComment(@Path("id") id: String): CommonResponse
 
+    // 댓글 숨김
+    @POST("/comment/{id}/hide")
+    suspend fun hideComment(@Path("id") id: String): CommonResponse
+
     // 더보기 > 차단된 유저 목록
     @GET("/follow/blockUsers")
     suspend fun loadBlockedUsers(): BlockedUserResponse

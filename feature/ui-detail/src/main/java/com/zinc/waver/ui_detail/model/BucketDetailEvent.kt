@@ -38,7 +38,6 @@ sealed interface OpenBucketDetailInternalEvent {
     // 버킷 달성 횟수 수정
     data class ShowUpdateGoalCountDialog(val count: Int) : OpenBucketDetailInternalEvent
 
-
     // 버킷 우측상단 옵션선택
     sealed interface BucketMore : OpenBucketDetailInternalEvent {
         data class My(val event: MyBucketMoreMenuEvent) : BucketMore
@@ -64,6 +63,9 @@ sealed interface OpenBucketDetailInternalEvent {
         data class AddComment(val comment: AddBucketCommentRequest) : ViewModelEvent
 
         data object BucketLike : ViewModelEvent
+
+        // 댓글 숨기기
+        data class HideComment(val commentId: String) : ViewModelEvent
     }
 
 }
