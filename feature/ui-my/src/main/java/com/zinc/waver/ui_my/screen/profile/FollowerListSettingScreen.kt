@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -118,7 +117,6 @@ private fun FollowerListSettingScreen(
 
                     RoundChip(
                         modifier = Modifier
-                            .defaultMinSize(minWidth = 56.dp, minHeight = 30.dp)
                             .clip(RoundedCornerShape(15.dp))
                             .clickable {
                                 requestUnFollow(member)
@@ -131,7 +129,7 @@ private fun FollowerListSettingScreen(
                             },
                         chipRadius = 15.dp,
                         textModifier = Modifier.padding(
-                            horizontal = 22.dp,
+                            horizontal = 16.dp,
                             vertical = 5.dp
                         ),
                         selectedTextColor = Gray9,
@@ -139,7 +137,8 @@ private fun FollowerListSettingScreen(
                         unSelectedBorderColor = Gray4,
                         text = stringResource(id = R.string.followerBlockButton),
                         isSelected = false,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 13.dp
                     )
                 }
             })
