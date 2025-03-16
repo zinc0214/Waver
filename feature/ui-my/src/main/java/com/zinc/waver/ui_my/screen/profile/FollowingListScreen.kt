@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.common.models.OtherProfileInfo
 import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
+import com.zinc.waver.ui.presentation.screen.blank.FriendsBlank
 import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.viewModel.FollowViewModel
 

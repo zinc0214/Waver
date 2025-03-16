@@ -32,6 +32,7 @@ import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.presentation.component.RoundChip
 import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
+import com.zinc.waver.ui.presentation.screen.blank.FriendsBlank
 import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.viewModel.FollowViewModel
 

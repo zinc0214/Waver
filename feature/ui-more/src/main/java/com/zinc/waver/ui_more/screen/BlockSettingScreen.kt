@@ -2,6 +2,7 @@ package com.zinc.waver.ui_more.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,9 +14,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.presentation.screen.blank.FriendsBlank
+import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.BlockMemberView
 import com.zinc.waver.ui_more.components.BlockTitle
 import com.zinc.waver.ui_more.viewModel.BlockSettingViewModel
@@ -31,23 +35,27 @@ fun BlockSettingScreen(
         mutableStateOf(blockedUserListAsState)
     }
 
-    LaunchedEffect(blockedUserListAsState) {
-        if (blockedUserListAsState == null) {
-            viewModel.loadBlockUserList()
-        } else {
-            blockedUserList.value = blockedUserListAsState
-        }
+    LaunchedEffect(Unit) {
+        viewModel.loadBlockUserList()
     }
 
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .statusBarsPadding()) {
+    LaunchedEffect(blockedUserListAsState) {
+        blockedUserList.value = blockedUserListAsState
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+    ) {
         BlockTitle {
             onBackPressed()
         }
         if (blockedUserList.value.isNullOrEmpty()) {
-            // TODO : 빈 리스트!
-            MyText("비어있어요.")
+            FriendsBlank(
+                guideText = stringResource(R.string.hasNoBlockUser),
+                modifier = Modifier.fillMaxSize()
+            )
         } else {
             LazyColumn(contentPadding = PaddingValues(top = 16.dp)) {
                 items(items = blockedUserList.value.orEmpty(), key = { member ->
@@ -59,4 +67,10 @@ fun BlockSettingScreen(
         }
 
     }
+}
+
+@Preview
+@Composable
+private fun BlockSettingScreenPreview() {
+    BlockSettingScreen {}
 }

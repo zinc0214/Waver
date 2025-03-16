@@ -1,4 +1,4 @@
-package com.zinc.waver.ui_my.screen.profile
+package com.zinc.waver.ui.presentation.screen.blank
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
-import com.zinc.waver.ui_my.R
+import com.zinc.waver.ui_common.R
 
 @Composable
 fun FriendsBlank(
