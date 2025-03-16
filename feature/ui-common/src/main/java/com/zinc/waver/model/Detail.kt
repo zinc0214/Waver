@@ -2,12 +2,6 @@ package com.zinc.waver.model
 
 import com.zinc.common.models.BucketStatus
 
-//data class DetailInfo(
-//    val detailProfileInfo: ProfileInfo,
-//    val detailDescInfo: DetailDescInfo,
-//    val commentInfo: CommentInfo
-//)
-
 sealed class DetailDescType {
     data class WriterProfileInfoUi(
         val profileImage: String?,

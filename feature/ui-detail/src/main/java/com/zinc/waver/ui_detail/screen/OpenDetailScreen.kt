@@ -442,8 +442,7 @@ private fun InternalOpenDetailScreen(
                 if (info.searchText.isNotEmpty()) {
                     val removePrefixText = info.searchText.replace("@", "")
                     val searchedList =
-                        validMentionList?.filter { it.nickName.contains(removePrefixText) }
-                            .orEmpty()
+                        validMentionList.filter { it.nickName.contains(removePrefixText) }
                     if (searchedList.isNotEmpty()) {
                         MentionSearchListPopup(
                             searchedList = searchedList,
@@ -538,7 +537,7 @@ private fun handleMoreEvent(
         is OpenBucketDetailInternalEvent.BucketMore.Other -> {
             when (moreEvent.event) {
                 is OtherBucketMenuEvent.GoToHide -> {
-
+                    // TODO : 다른사람 버킷 숨기기
                 }
 
                 is OtherBucketMenuEvent.GoToReport -> {
