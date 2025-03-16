@@ -23,4 +23,6 @@ interface MyRepository {
     suspend fun searchDdayBucketList(query: String): AllBucketListResponse
 
     suspend fun achieveMyBucket(id: String): CommonResponse
+
+    suspend fun requestUserBlock(userId: String): CommonResponse
 }

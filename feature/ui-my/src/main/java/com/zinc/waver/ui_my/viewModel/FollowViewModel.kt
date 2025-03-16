@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.utils.cehCommonTitle
 import com.zinc.domain.usecases.my.LoadFollowList
+import com.zinc.domain.usecases.other.RequestBlockUser
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.waver.ui.viewmodel.CommonViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class FollowViewModel @Inject constructor(
     private val loadFollowList: LoadFollowList,
     private val requestUnfollowUser: RequestUnfollowUser,
-    private val requestFollowUser: RequestFollowUser
+    private val requestFollowUser: RequestFollowUser,
+    private val requestBlockUser: RequestBlockUser
 ) : CommonViewModel() {
 
     private val _followingList = MutableLiveData<List<OtherProfileInfo>>()
@@ -70,13 +72,7 @@ class FollowViewModel @Inject constructor(
                 requestUnfollowUser.invoke(unfollowUser.id).apply {
                     Log.e("ayhan", "response : $this")
                     if (success) {
-                        val removeIndex =
-                            _followingList.value?.indexOfFirst { it == unfollowUser } ?: -1
-                        if (removeIndex > -1) {
-                            val list = _followingList.value?.toMutableList()
-                            list?.removeAt(removeIndex)
-                            _followingList.value = list
-                        }
+                        loadFollowList()
                     }
                 }
             }.getOrElse {
@@ -85,20 +81,27 @@ class FollowViewModel @Inject constructor(
         }
     }
 
+
+    fun requestUserBlock(blockUser: OtherProfileInfo) {
+        viewModelScope.launch(CEH) {
+            requestBlockUser.invoke(blockUser.id).apply {
+                Log.e("ayhan", "response : $this")
+                if (success) {
+                    loadFollowList()
+                } else {
+                    _loadFail.value = cehCommonTitle to null
+                }
+            }
+        }
+    }
+
     fun requestFollow(followUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {
             requestFollowUser.invoke(followUser.id).apply {
                 if (success) {
-                    val updateList = _followerList.value?.toMutableList()
-                    val updateUser = followUser.copy(mutualFollow = true)
-                    updateList?.replaceAll {
-                        if (it.id == updateUser.id) {
-                            updateUser
-                        } else {
-                            it
-                        }
-                    }
-                    _followerList.value = updateList
+                    loadFollowList()
+                } else {
+                    _loadFail.value = cehCommonTitle to null
                 }
             }
         }

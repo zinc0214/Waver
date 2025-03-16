@@ -231,7 +231,6 @@ interface WaverApi {
     // 검색 > 최근검색어 > 삭제
     @DELETE("/explore/recentSearch/{keyword}")
     suspend fun deleteSearchRecentWord(
-
         @Path("keyword") keyword: String
     ): CommonResponse
 
@@ -295,5 +294,10 @@ interface WaverApi {
     @POST("/feeds/{id}/scrap")
     suspend fun copyOtherBucket(
         @Path("id") id: String
+    ): CommonResponse
+
+    @POST("/follow/block")
+    suspend fun requestUserBlock(
+        @Query("blockUserId ") blockUserId: String
     ): CommonResponse
 }

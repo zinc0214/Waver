@@ -49,8 +49,8 @@ fun FollowerListSettingScreen(
 
     FollowerListSettingScreen(
         followerList = followerList.orEmpty(),
-        requestUnFollow = {
-            viewModel.requestUnfollow(it)
+        requestBlock = {
+            viewModel.requestUserBlock(it)
         },
         goToBack = goToBack,
         goToOtherHome = goToOtherHome,
@@ -61,7 +61,7 @@ fun FollowerListSettingScreen(
 @Composable
 private fun FollowerListSettingScreen(
     followerList: List<OtherProfileInfo>,
-    requestUnFollow: (OtherProfileInfo) -> Unit,
+    requestBlock: (OtherProfileInfo) -> Unit,
     goToBack: () -> Unit,
     goToOtherHome: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -119,7 +119,7 @@ private fun FollowerListSettingScreen(
                         modifier = Modifier
                             .clip(RoundedCornerShape(15.dp))
                             .clickable {
-                                requestUnFollow(member)
+                                requestBlock(member)
                             }
                             .constrainAs(unFollowButton) {
                                 top.linkTo(parent.top)
@@ -151,7 +151,7 @@ private fun FollowerListSettingScreen(
 private fun FollowerListSettingScreenPreview1() {
     FollowerListSettingScreen(
         followerList = listOf(),
-        requestUnFollow = {},
+        requestBlock = {},
         goToBack = {},
         goToOtherHome = {}
     )
@@ -169,7 +169,7 @@ private fun FollowerListSettingScreenPreview2() {
                 mutualFollow = false
             )
         ),
-        requestUnFollow = {},
+        requestBlock = {},
         goToBack = {},
         goToOtherHome = {}
     )
