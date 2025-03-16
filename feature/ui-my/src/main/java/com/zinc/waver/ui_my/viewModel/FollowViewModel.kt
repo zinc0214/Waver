@@ -40,43 +40,39 @@ class FollowViewModel @Inject constructor(
 
     fun loadFollowList() {
         viewModelScope.launch(CEH) {
-            runCatching {
-                loadFollowList.invoke().apply {
-                    Log.e("ayhan", "loadFollowList: $this")
+            loadFollowList.invoke().apply {
+                Log.e("ayhan", "loadFollowList: $this")
+                if (this.success) {
                     _followerList.value = this.data.followerUsers
+                } else {
+                    _loadFail.value = cehCommonTitle to null
                 }
-            }.getOrElse {
-                Log.e("ayhan", "loadFollowList fail2: ${it.message}")
-                _loadFail.value = cehCommonTitle to null
             }
         }
     }
 
     fun loadFollowingList() {
         viewModelScope.launch(CEH) {
-            runCatching {
-                loadFollowList.invoke().apply {
-                    Log.e("ayhan", "loadFollowList: $this")
+            loadFollowList.invoke().apply {
+                Log.e("ayhan", "loadFollowList: $this")
+                if (this.success) {
                     _followingList.value = this.data.followingUsers
+                } else {
+                    _loadFail.value = cehCommonTitle to null
                 }
-            }.getOrElse {
-                Log.e("ayhan", "loadFollowList fail2: ${it.message}")
-                _loadFail.value = cehCommonTitle to null
             }
         }
     }
 
     fun requestUnfollow(unfollowUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {
-            runCatching {
-                requestUnfollowUser.invoke(unfollowUser.id).apply {
-                    Log.e("ayhan", "response : $this")
-                    if (success) {
-                        loadFollowList()
-                    }
+            requestUnfollowUser.invoke(unfollowUser.id).apply {
+                Log.e("ayhan", "response : $this")
+                if (success) {
+                    loadFollowingList()
+                } else {
+                    _loadFail.value = cehCommonTitle to null
                 }
-            }.getOrElse {
-                _loadFail.value = cehCommonTitle to null
             }
         }
     }

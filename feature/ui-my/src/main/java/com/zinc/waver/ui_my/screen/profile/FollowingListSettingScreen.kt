@@ -50,7 +50,7 @@ fun FollowingListSettingScreen(
     val apiFailState = remember { mutableStateOf(apiFailed) }
     var followingList by remember { mutableStateOf(followingListState) }
 
-    if (followingList.isNullOrEmpty()) {
+    LaunchedEffect(Unit) {
         viewModel.loadFollowingList()
     }
 
