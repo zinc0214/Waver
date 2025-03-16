@@ -10,6 +10,7 @@ import com.zinc.common.models.ProfileInfo
 import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.detail.AddBucketComment
 import com.zinc.domain.usecases.detail.DeleteBucketComment
+import com.zinc.domain.usecases.detail.DeleteMyBucket
 import com.zinc.domain.usecases.detail.GoalCountUpdate
 import com.zinc.domain.usecases.detail.HideBucketComment
 import com.zinc.domain.usecases.detail.LoadBucketDetail
@@ -35,7 +36,8 @@ class DetailViewModel @Inject constructor(
     private val deleteBucketComment: DeleteBucketComment,
     private val goalCountUpdate: GoalCountUpdate,
     private val saveBucketLike: SaveBucketLike,
-    private val hideBucketComment: HideBucketComment
+    private val hideBucketComment: HideBucketComment,
+    private val deleteMyBucket: DeleteMyBucket
 ) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
@@ -46,6 +48,9 @@ class DetailViewModel @Inject constructor(
 
     private val _loadFail = SingleLiveEvent<DetailLoadFailStatus?>()
     val loadFail: LiveData<DetailLoadFailStatus?> get() = _loadFail
+
+    private val _goToBack = SingleLiveEvent<Boolean>()
+    val goToBack: LiveData<Boolean> get() = _goToBack
 
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: ProfileInfo
@@ -103,6 +108,18 @@ class DetailViewModel @Inject constructor(
             Log.e("ayhan", "comment hide $response")
             if (response.success) {
                 getBucketDetail(bucketId!!, writerId!!, isMine!!)
+            } else {
+                _loadFail.value = DetailLoadFailStatus.LoadFail
+            }
+        }
+    }
+
+    fun deleteMyBucket() {
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
+            val response = deleteMyBucket(bucketId!!)
+            Log.e("ayhan", "comment hide $response")
+            if (response.success) {
+                _goToBack.value = true
             } else {
                 _loadFail.value = DetailLoadFailStatus.LoadFail
             }

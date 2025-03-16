@@ -66,6 +66,9 @@ sealed interface OpenBucketDetailInternalEvent {
 
         // 댓글 숨기기
         data class HideComment(val commentId: String) : ViewModelEvent
+
+        // 버킷 삭제
+        data object DeleteBucket : ViewModelEvent
     }
 
 }

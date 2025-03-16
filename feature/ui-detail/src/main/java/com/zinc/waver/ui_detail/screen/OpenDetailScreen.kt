@@ -95,6 +95,7 @@ fun OpenDetailScreen(
     val detailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val validMentionList by viewModel.validMentionList.observeAsState()
     val loadFailAsState by viewModel.loadFail.observeAsState()
+    val bucketDeleteAsState by viewModel.goToBack.observeAsState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -116,6 +117,12 @@ fun OpenDetailScreen(
     LaunchedEffect(detailInfoAsState) {
         detailInfoAsState?.let {
             detailInfo = it
+        }
+    }
+
+    LaunchedEffect(bucketDeleteAsState) {
+        if (bucketDeleteAsState == true) {
+            backPress()
         }
     }
 
@@ -154,6 +161,10 @@ fun OpenDetailScreen(
 
                 is OpenBucketDetailInternalEvent.ViewModelEvent.HideComment -> {
                     viewModel.hideComment(event.commentId)
+                }
+
+                OpenBucketDetailInternalEvent.ViewModelEvent.DeleteBucket -> {
+                    viewModel.deleteMyBucket()
                 }
             }
         }
@@ -517,7 +528,9 @@ private fun handleMoreEvent(
                 }
 
                 is MyBucketMoreMenuEvent.GoToDelete -> {
-
+                    updateInternalEvent(
+                        OpenBucketDetailInternalEvent.ViewModelEvent.DeleteBucket
+                    )
                 }
             }
         }

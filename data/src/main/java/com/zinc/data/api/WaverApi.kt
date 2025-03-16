@@ -283,6 +283,10 @@ interface WaverApi {
     @POST("/comment/{id}/hide")
     suspend fun hideComment(@Path("id") id: String): CommonResponse
 
+    // 버킷리스트 삭제
+    @DELETE("/bucketlist/{id}")
+    suspend fun deleteMyBucket(@Path("id") id: String): CommonResponse
+
     // 더보기 > 차단된 유저 목록
     @GET("/follow/blockUsers")
     suspend fun loadBlockedUsers(): BlockedUserResponse

@@ -12,4 +12,5 @@ interface DetailRepository {
     suspend fun loadProfile(isMine: Boolean, writerId: String?): ProfileResponse
     suspend fun deleteBucketComment(id: String): CommonResponse
     suspend fun hideBucketComment(id: String): CommonResponse
+    suspend fun deleteMyBucket(id: String): CommonResponse
 }
