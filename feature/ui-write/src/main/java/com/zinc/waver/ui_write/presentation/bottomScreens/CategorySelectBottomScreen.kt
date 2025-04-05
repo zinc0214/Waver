@@ -16,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -108,6 +109,7 @@ private fun CategorySelectView(
                     color = Main4,
                     fontSize = dpToSp(dp = 15.dp),
                     style = TextStyle(textAlign = TextAlign.Center),
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
