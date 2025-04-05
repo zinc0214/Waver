@@ -12,4 +12,5 @@ interface MoreRepository {
     suspend fun checkAlreadyUsedNickName(name: String): CommonResponse
     suspend fun loadBlockedUsers(): BlockedUserResponse
     suspend fun loadMyWaeInfo(): LoadMyWaveInfoResponse
+    suspend fun requestBlockUserRelease(userId: Int): CommonResponse
 }

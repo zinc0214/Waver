@@ -44,4 +44,8 @@ internal class MoreRepositoryImpl @Inject constructor(
     override suspend fun loadMyWaeInfo(): LoadMyWaveInfoResponse {
         return waverApi.loadMyWaveInfo()
     }
+
+    override suspend fun requestBlockUserRelease(userId: Int): CommonResponse {
+        return waverApi.requestBlockUserRelease(userId.toString())
+    }
 }

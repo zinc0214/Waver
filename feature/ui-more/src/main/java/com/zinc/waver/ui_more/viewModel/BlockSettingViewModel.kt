@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.domain.usecases.more.LoadBlockedUsers
+import com.zinc.domain.usecases.more.RequestBlockUserRelease
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.ui_more.models.BlockMemberData
 import com.zinc.waver.ui_more.models.toUIModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BlockSettingViewModel @Inject constructor(
-    private val loadBlockedUsers: LoadBlockedUsers
+    private val loadBlockedUsers: LoadBlockedUsers,
+    private val requestBlockUserRelease: RequestBlockUserRelease
 ) : CommonViewModel() {
 
     private val _loadError = SingleLiveEvent<Boolean>()
@@ -35,6 +37,20 @@ class BlockSettingViewModel @Inject constructor(
                 } else {
                     _loadError.value = true
                 }
+            }
+        }
+    }
+
+    fun requestBlockUserRelease(userId: Int) {
+        _loadError.value = false
+
+        viewModelScope.launch(ceh(_loadError, true)) {
+            val result = requestBlockUserRelease.invoke(userId)
+            Log.e("ayhan", "result : $result")
+            if (result.success) {
+                loadBlockUserList()
+            } else {
+                _loadError.value = true
             }
         }
     }

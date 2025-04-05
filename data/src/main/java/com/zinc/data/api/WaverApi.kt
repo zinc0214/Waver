@@ -310,6 +310,12 @@ interface WaverApi {
         @Query("blockUserId") blockUserId: String
     ): CommonResponse
 
+    // 내 웨이브 정보
     @GET("/my/badgeInfo")
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
+
+    @POST("/follow/block/release")
+    suspend fun requestBlockUserRelease(
+        @Query("blockedUserId") blockedUserId: String
+    ): CommonResponse
 }

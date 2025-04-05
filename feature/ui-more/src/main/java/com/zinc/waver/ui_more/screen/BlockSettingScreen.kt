@@ -70,7 +70,9 @@ fun BlockSettingScreen(
                 items(items = blockedUserList.value.orEmpty(), key = { member ->
                     member.id
                 }, itemContent = { member ->
-                    BlockMemberView(member)
+                    BlockMemberView(member, blockReleaseEvent = {
+                        viewModel.requestBlockUserRelease(member.id)
+                    })
                 })
             }
         }

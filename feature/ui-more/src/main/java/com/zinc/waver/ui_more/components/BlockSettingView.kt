@@ -45,7 +45,7 @@ internal fun BlockTitle(backClicked: () -> Unit) {
 }
 
 @Composable
-internal fun BlockMemberView(memberData: BlockMemberData) {
+internal fun BlockMemberView(memberData: BlockMemberData, blockReleaseEvent: () -> Unit) {
 
     Row(
         modifier = Modifier
@@ -91,7 +91,7 @@ internal fun BlockMemberView(memberData: BlockMemberData) {
                 .border(width = 1.dp, shape = RoundedCornerShape(15.dp), color = Gray4)
                 .clip(shape = RoundedCornerShape(15.dp))
                 .clickable(onClick = {
-
+                    blockReleaseEvent()
                 }, role = Role.Button)
                 .padding(horizontal = 16.dp, vertical = 5.dp)
         )
