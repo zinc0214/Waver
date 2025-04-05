@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
@@ -33,17 +35,17 @@ import com.zinc.waver.util.shadow
 
 @Composable
 fun CategoryListView(categoryInfoList: List<UICategoryInfo>, clicked: (UICategoryInfo) -> Unit) {
-    Column(
+    LazyColumn(
         modifier = Modifier
             .padding(horizontal = 16.dp)
             .padding(bottom = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        categoryInfoList.forEach { category ->
+        items(categoryInfoList, key = { category -> category.id }) {
             CategoryCard(
-                categoryInfo = category,
-                clicked = {
-                    clicked(it)
+                categoryInfo = it,
+                clicked = { info ->
+                    clicked(info)
                 }
             )
         }

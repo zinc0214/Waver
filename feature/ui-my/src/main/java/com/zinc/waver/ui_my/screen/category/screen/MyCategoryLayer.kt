@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -72,11 +71,7 @@ fun CategoryLayer(
         }
     }
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(Gray2)
-    ) {
+    Column(modifier = modifier.background(Gray2)) {
         TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
         Spacer(modifier = Modifier.height(16.dp))
         CategoryListView(categoryList.value.orEmpty()) {
