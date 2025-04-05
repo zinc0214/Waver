@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_more.viewModel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -29,6 +30,7 @@ class BlockSettingViewModel @Inject constructor(
         viewModelScope.launch(ceh(_loadError, true)) {
             loadBlockedUsers.invoke().apply {
                 if (success) {
+                    Log.e("ayhan", "blockUser : $data")
                     _blockedUserList.value = data.toUIModel()
                 } else {
                     _loadError.value = true

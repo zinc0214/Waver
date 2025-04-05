@@ -13,7 +13,7 @@ data class BlockedUserResponse(
     data class BlockedUserInfo(
         val blockedUserId: Int,
         val blockedUserName: String,
-        val blockedImgUrl: String
+        val blockedImgUrl: String?
     )
 }
 

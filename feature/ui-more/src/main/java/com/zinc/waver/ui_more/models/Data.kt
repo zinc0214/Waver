@@ -79,7 +79,7 @@ fun List<BlockedUserResponse.BlockedUserInfo>.toUIModel() = map {
 }
 
 data class BlockMemberData(
-    val profileUrl: String,
+    val profileUrl: String?,
     val nickName: String,
     val id: Int
 )

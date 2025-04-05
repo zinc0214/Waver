@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.screen.blank.FriendsBlank
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.BlockMemberView
@@ -30,10 +31,12 @@ fun BlockSettingScreen(
 ) {
     val viewModel: BlockSettingViewModel = hiltViewModel()
     val blockedUserListAsState by viewModel.blockedUserList.observeAsState()
+    val loadError by viewModel.loadError.observeAsState()
 
     val blockedUserList = remember {
         mutableStateOf(blockedUserListAsState)
     }
+    val showError = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadBlockUserList()
@@ -41,6 +44,12 @@ fun BlockSettingScreen(
 
     LaunchedEffect(blockedUserListAsState) {
         blockedUserList.value = blockedUserListAsState
+    }
+
+    LaunchedEffect(loadError) {
+        if (loadError == true) {
+            showError.value = true
+        }
     }
 
     Column(
@@ -65,7 +74,12 @@ fun BlockSettingScreen(
                 })
             }
         }
+    }
 
+    if (showError.value) {
+        ApiFailDialog() {
+            onBackPressed()
+        }
     }
 }
 
