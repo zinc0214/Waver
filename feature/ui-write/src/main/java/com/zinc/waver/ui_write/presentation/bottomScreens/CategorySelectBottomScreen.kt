@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_write.presentation.bottomScreens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.common.models.CategoryInfo
 import com.zinc.common.models.YesOrNo
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
@@ -61,6 +63,7 @@ private fun CategorySelectView(
 
             LazyColumn(
                 modifier = Modifier.constrainAs(category) {
+                    top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     bottom.linkTo(addButton.top)
@@ -69,7 +72,7 @@ private fun CategorySelectView(
                     start = 28.dp,
                     end = 28.dp,
                     top = 39.dp,
-                    bottom = 26.dp
+                    bottom = 50.dp
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -92,6 +95,7 @@ private fun CategorySelectView(
 
             Column(modifier = Modifier
                 .fillMaxWidth()
+                .background(Gray1)
                 .constrainAs(addButton) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -121,7 +125,15 @@ private fun CategorySelectView(
 @Preview(showBackground = true)
 private fun CategorySelectBottomScreenPreview() {
     CategorySelectView(categoryInfoList = buildList {
-        add(CategoryInfo(id = 0, name = "여행", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
-        add(CategoryInfo(id = 11, name = "여행234", defaultYn = YesOrNo.Y, bucketlistCount = "10"))
+        repeat(20) {
+            add(
+                CategoryInfo(
+                    id = it,
+                    name = "여행+$it",
+                    defaultYn = YesOrNo.Y,
+                    bucketlistCount = "10"
+                )
+            )
+        }
     }, confirmed = {}, goToAddCategory = {})
 }
