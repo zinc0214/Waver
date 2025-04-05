@@ -44,6 +44,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.zinc.common.models.MyBadge
+import com.zinc.common.models.MyWaveInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
@@ -54,7 +56,6 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
-import com.zinc.waver.ui_more.models.MyWaveInfo
 import com.zinc.waver.ui_more.viewModel.MyWaveManageViewModel
 import com.zinc.waver.ui_common.R as CommonR
 
@@ -69,13 +70,13 @@ fun MyWaveManageScreen(
     val myWaveInfo = remember {
         mutableStateOf(myWaveInfoAsState)
     }
-    var selectedBadge: MyWaveInfo.BadgeInfo? by remember {
+    var selectedBadge: MyBadge? by remember {
         mutableStateOf(null)
     }
 
     LaunchedEffect(key1 = myWaveInfoAsState) {
         myWaveInfo.value = myWaveInfoAsState
-        selectedBadge = myWaveInfo.value?.badgeList?.firstOrNull()
+        selectedBadge = myWaveInfo.value?.badges?.firstOrNull()
     }
 
     if (myWaveInfo.value == null) {
@@ -83,9 +84,11 @@ fun MyWaveManageScreen(
     }
 
     myWaveInfo.value?.let { info ->
-        Column(modifier = modifier
-            .fillMaxSize()
-            .statusBarsPadding()) {
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+        ) {
             HeaderView(info = info) {
                 onBackPressed()
             }
@@ -106,6 +109,7 @@ fun MyWaveManageScreen(
 
 @Composable
 private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
+    val currentBadgeInfo = info.badges.firstOrNull { it.id == info.currentBadge }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -144,11 +148,11 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
 
         Image(
             painter = rememberAsyncImagePainter(
-                model = info.badgeUrl,
+                model = currentBadgeInfo?.id, // TODO : 이미지로 변경 필요
                 placeholder = painterResource(CommonR.drawable.testimg),
                 error = painterResource(CommonR.drawable.testimg)
             ),
-            contentDescription = info.badgeTitle,
+            contentDescription = currentBadgeInfo?.name,
             modifier = Modifier
                 .padding(top = 12.dp, end = 32.dp)
                 .size(60.dp)
@@ -176,8 +180,8 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
 @Composable
 private fun ContentView(
     info: MyWaveInfo,
-    selectedBadge: MyWaveInfo.BadgeInfo,
-    badgeSelected: (MyWaveInfo.BadgeInfo) -> Unit,
+    selectedBadge: MyBadge,
+    badgeSelected: (MyBadge) -> Unit,
     modifier: Modifier
 ) {
     LazyVerticalGrid(
@@ -195,7 +199,7 @@ private fun ContentView(
             MyWaveStatusView(info)
         }
 
-        items(items = info.badgeList, key = { it.name + it.grade }) { info ->
+        items(items = info.badges, key = { it.name + it.step }) { info ->
             GridItemSpan(1)
             BadgeView(
                 info = info,
@@ -216,9 +220,15 @@ private fun MyWaveStatusView(info: MyWaveInfo, modifier: Modifier = Modifier) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            StatusView(count = info.badgeCount, text = stringResource(id = R.string.badgeCount))
-            StatusView(count = info.likedCount, text = stringResource(id = R.string.likedCount))
-            StatusView(count = info.bucketCount, text = stringResource(id = R.string.bucketCount))
+            StatusView(
+                count = info.totalBadgeCount,
+                text = stringResource(id = R.string.badgeCount)
+            )
+            StatusView(count = info.totalLikeCount, text = stringResource(id = R.string.likedCount))
+            StatusView(
+                count = info.totalBucketCount,
+                text = stringResource(id = R.string.bucketCount)
+            )
         }
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -247,8 +257,8 @@ private fun StatusView(count: Int, text: String) {
 
 @Composable
 private fun BadgeView(
-    info: MyWaveInfo.BadgeInfo,
-    selectedBadge: MyWaveInfo.BadgeInfo,
+    info: MyBadge,
+    selectedBadge: MyBadge,
     badgeSelected: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -270,7 +280,7 @@ private fun BadgeView(
     ) {
         Image(
             painter = rememberAsyncImagePainter(
-                model = info.url,
+                model = info.step, // TODO : 이미지 적용 필요
                 placeholder = painterResource(CommonR.drawable.testimg),
                 error = painterResource(CommonR.drawable.testimg)
             ),
@@ -290,7 +300,7 @@ private fun BadgeView(
         )
 
         MyText(
-            text = "${info.grade}${stringResource(id = R.string.badgeGrade)}",
+            text = "${info.step}${stringResource(id = R.string.badgeGrade)}",
             color = Gray8,
             fontSize = dpToSp(dp = 14.dp),
             modifier = Modifier.padding(top = 2.dp)
@@ -304,33 +314,22 @@ private fun BadgeView(
 private fun HeaderPreview() {
 
     val info = MyWaveInfo(
-        badgeCount = 5685,
-        likedCount = 2627,
-        bucketCount = 6723,
-        badgeUrl = "",
-        badgeTitle = "Title",
-        badgeList = buildList {
-            add(MyWaveInfo.BadgeInfo(url = "", name = "요리", grade = 0))
-            add(MyWaveInfo.BadgeInfo(url = "", name = "취미", grade = 1))
-            add(MyWaveInfo.BadgeInfo(url = "", name = "반려동물", grade = 3))
-
-            repeat(20) {
-                add(
-                    MyWaveInfo.BadgeInfo(
-                        url = "",
-                        name = "요리$it",
-                        grade = it
-                    )
-                )
-            }
-        }
+        totalBadgeCount = 100,
+        totalLikeCount = 2,
+        totalBucketCount = 30,
+        currentBadge = 1,
+        badges = listOf(
+            MyBadge(0, "요리", 1),
+            MyBadge(1, "요리", 2),
+            MyBadge(2, "요리", 3)
+        )
     )
 
     Column {
         HeaderView(info) {}
         ContentView(
             info = info,
-            selectedBadge = info.badgeList[0],
+            selectedBadge = info.badges.first(),
             badgeSelected = {},
             Modifier.fillMaxWidth()
         )

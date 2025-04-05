@@ -14,7 +14,6 @@ import com.zinc.waver.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.waver.ui_more.models.toUi
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -25,12 +24,6 @@ class MoreViewModel @Inject constructor(
     private val updateProfileInfo: UpdateProfileInfo,
     private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname
 ) : CommonViewModel() {
-
-    private fun CEH(event: SingleLiveEvent<Boolean>, value: Boolean) =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-            Log.e(TAG, "loadMyProfile: $throwable")
-            event.value = value
-        }
 
     private val _profileInfo = MutableLiveData<UIMoreMyProfileInfo>()
     val profileInfo: LiveData<UIMoreMyProfileInfo> get() = _profileInfo
@@ -48,7 +41,7 @@ class MoreViewModel @Inject constructor(
     val isAlreadyUsedNickName: LiveData<Boolean> get() = _isAlreadyUsedNickName
 
     fun loadMyProfile() {
-        viewModelScope.launch(CEH(_profileLoadFail, true)) {
+        viewModelScope.launch(ceh(_profileLoadFail, true)) {
             loadProfileInfo.invoke().apply {
                 Log.e(TAG, "loadMyProfile: $this")
                 if (success) {
@@ -61,7 +54,7 @@ class MoreViewModel @Inject constructor(
     }
 
     fun updateMyProfile(name: String, bio: String, profileImage: File? = null) {
-        viewModelScope.launch(CEH(_profileUpdateFail, false)) {
+        viewModelScope.launch(ceh(_profileUpdateFail, false)) {
             val request = UpdateProfileRequest(
                 name = name,
                 bio = bio,
@@ -79,7 +72,7 @@ class MoreViewModel @Inject constructor(
     }
 
     fun checkIsAlreadyUsedName(name: String) {
-        viewModelScope.launch(CEH(_isAlreadyUsedNickName, true)) {
+        viewModelScope.launch(ceh(_isAlreadyUsedNickName, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {

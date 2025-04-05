@@ -15,6 +15,7 @@ import com.zinc.common.models.HomeProfileResponse
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.KeywordResponse
 import com.zinc.common.models.LoadCategoryResponse
+import com.zinc.common.models.LoadMyWaveInfoResponse
 import com.zinc.common.models.LoadTokenByEmailRequest
 import com.zinc.common.models.LoadTokenByEmailResponse
 import com.zinc.common.models.LoadWriteSelectableFriendsResponse
@@ -306,6 +307,9 @@ interface WaverApi {
 
     @POST("/follow/block")
     suspend fun requestUserBlock(
-        @Query("blockUserId ") blockUserId: String
+        @Query("blockUserId") blockUserId: String
     ): CommonResponse
+
+    @GET("/my/badgeInfo")
+    suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
 }
