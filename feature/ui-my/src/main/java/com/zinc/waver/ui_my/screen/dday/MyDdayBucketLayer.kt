@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_my.screen.dday
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.model.MyTabType.DDAY
+import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
@@ -83,7 +85,7 @@ fun DdayBucketLayer(
     }
 
     bucketInfo.value?.let {
-        Column(modifier = modifier) {
+        Column(modifier = modifier.background(Gray2)) {
             DdayFilterAndSearchImageView(clickEvent = clickEvent)
 
             if (it.bucketList.isNotEmpty()) {

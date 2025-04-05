@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -27,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -105,7 +105,10 @@ private fun ProfileTextView(
                 modifier = Modifier.padding(end = 8.dp)
             )
 
-            Box(
+            MyText(
+                text = stringResource(id = R.string.goToBadgeChangeButtonText),
+                color = Gray8,
+                fontSize = dpToSp(dp = 12.dp),
                 modifier = Modifier
                     .background(shape = RoundedCornerShape(10.dp), color = Gray2)
                     .border(width = 1.dp, shape = RoundedCornerShape(10.dp), color = Gray3)
@@ -113,16 +116,10 @@ private fun ProfileTextView(
                     .clickable(onClick = {
                         goToMyWave()
                     }, role = Role.Button)
-                    .width(width = 40.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                MyText(
-                    text = stringResource(id = R.string.goToBadgeChangeButtonText),
-                    color = Gray8,
-                    fontSize = dpToSp(dp = 12.dp),
-                    modifier = Modifier.padding(top = 4.dp, bottom = 3.dp)
-                )
-            }
+                    .width(width = 40.dp)
+                    .padding(top = 4.dp, bottom = 3.dp),
+                textAlign = TextAlign.Center
+            )
         }
 
         MyText(
