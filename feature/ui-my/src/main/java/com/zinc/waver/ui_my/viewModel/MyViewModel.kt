@@ -243,52 +243,33 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    // TODO : 제거
-    private fun loadDummyProfile() {
-        val topProfile = TopProfile(
-            name = "한아로해봐",
-            imgUrl = "ddd",
-            percent = 0.6f,
-            badgeImgUrl = "",
-            badgeTitle = "안녕 반가우이잇",
-            bio = "나는 ESFP 한아라고 불러줘?",
-            followingCount = "20",
-            followerCount = "10"
-        )
-        _profileInfo.value = topProfile
-    }
-
-    fun loadAllBucketList() {
+    fun loadAllBucketList(status: BucketStatus? = null) {
         val allBucketListRequest = AllBucketListRequest(
             dDayBucketOnly = YesOrNo.N.name,
             isPassed = null,
-            status = loadStatusFilter(),
+            status = status ?: loadStatusFilter(),
             sort = loadSortFilter()
         )
 
         Log.e("ayhan", "allBucketListRequest : ${allBucketListRequest}")
 
-        viewModelScope.launch {
-            runCatching {
-                loadAllBucketList.invoke(
-                    //token,
-                    allBucketListRequest
-                ).apply {
-                    if (this.success) {
-                        val data = this.data
-                        Log.e("ayhan", "allBucketList : $this")
-                        val uiALlBucketType = AllBucketList(
-                            processingCount = data.progressCount.toString(),
-                            succeedCount = data.completedCount.toString(),
-                            bucketList = data.bucketlist.parseToUI()
-                        )
-                        _allBucketItem.value = uiALlBucketType
-                        _allFilterLoadFinished.value = false
-                    }
+        viewModelScope.launch(ceh(_dataLoadFailed, true)) {
+            _dataLoadFailed.value = false
 
+            loadAllBucketList.invoke(allBucketListRequest).apply {
+                if (this.success) {
+                    val data = this.data
+                    Log.e("ayhan", "allBucketList : $this")
+                    val uiALlBucketType = AllBucketList(
+                        processingCount = data.progressCount.toString(),
+                        succeedCount = data.completedCount.toString(),
+                        bucketList = data.bucketlist.parseToUI()
+                    )
+                    _allBucketItem.value = uiALlBucketType
+                    _allFilterLoadFinished.value = false
+                } else {
+                    _dataLoadFailed.value = true
                 }
-            }.getOrElse {
-
             }
         }
     }
@@ -349,7 +330,9 @@ class MyViewModel @Inject constructor(
             is ALL -> searchAllBucket(searchWord = searchWord)
             is DDAY -> searchDdayBucket(searchWord = searchWord)
             is CATEGORY -> searchCategoryItems(searchWord = searchWord)
-            is CHALLENGE -> searchChallenge(searchWord = searchWord)
+            is CHALLENGE -> {
+                // TODO : 챌린지 기능 추가 필요
+            }
         }
     }
 
@@ -474,10 +457,6 @@ class MyViewModel @Inject constructor(
                 _searchFailed.call()
             }
         }
-    }
-
-    private fun searchChallenge(searchWord: String) {
-        // TODO
     }
 
     fun achieveBucket(id: String, type: MyTabType) {

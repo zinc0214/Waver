@@ -130,6 +130,7 @@ sealed interface MyPagerClickEvent {
         data class BucketItemClicked(val info: UIBucketInfoSimple) : GoTo
         data class CategoryItemClicked(val info: UICategoryInfo) : GoTo
         data object CategoryEditClicked : GoTo
+        data class GoToStatusBucketList(val status: BucketStatus) : GoTo
     }
 }
 

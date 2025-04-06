@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.zinc.common.models.BucketStatus
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
 import com.zinc.waver.model.MyTabType
@@ -31,6 +32,7 @@ import com.zinc.waver.ui_my.MyScreen
 import com.zinc.waver.ui_my.SearchBottomView
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_my.screen.alarm.AlarmScreen
+import com.zinc.waver.ui_my.screen.all.StatusBucketListScreen
 import com.zinc.waver.ui_my.screen.category.screen.CategoryBucketListScreen
 import com.zinc.waver.ui_my.screen.profile.FollowerListScreen
 import com.zinc.waver.ui_my.screen.profile.FollowerListSettingScreen
@@ -169,6 +171,32 @@ internal fun NavGraphBuilder.homeCategoryBucketListNavGraph(
         }
     )
 }
+
+internal fun NavGraphBuilder.homeStatusBucketListNavGraph(
+    backPress: () -> Unit,
+    bucketClicked: (String, Boolean, NavBackStackEntry) -> Unit
+) {
+    composable(
+        route = "${MainDestinations.MY_STATUS_BUCKET_LIST}/{${MainDestinations.STATUS_INFO}}",
+        arguments = listOf(
+            navArgument(MainDestinations.STATUS_INFO) {
+                type = NavType.BoolType
+            }
+        )) { entry ->
+        val arguments = entry.arguments
+        val statusInfo = arguments?.getBoolean(MainDestinations.STATUS_INFO) ?: true
+        val statusType = if (statusInfo) BucketStatus.PROGRESS else BucketStatus.COMPLETE
+
+        StatusBucketListScreen(
+            status = statusType,
+            onBackPressed = backPress,
+            bucketItemClicked = { id, isPrivate ->
+                bucketClicked(id, isPrivate, entry)
+            }
+        )
+    }
+}
+
 
 internal fun NavGraphBuilder.homeCategoryEditNavGraph(backPress: () -> Unit) {
     composable(MainDestinations.MY_CATEGORY_EDIT) { entry ->
@@ -450,6 +478,8 @@ object MainDestinations {
     const val SELECT_TAB = "select_tab"
     const val MY_CATEGORY_BUCKET_LIST = "my_category_bucket_list"
     const val CATEGORY_INFO = "category_info"
+    const val MY_STATUS_BUCKET_LIST = "my_status_bucket_list"
+    const val STATUS_INFO = "status_info"
 
     object FOLLOWING {
         const val MY_FOLLOWING = "my_following"

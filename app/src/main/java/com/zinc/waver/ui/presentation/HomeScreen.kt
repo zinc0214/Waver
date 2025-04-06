@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.ExposureStatus
 import com.zinc.waver.model.HomeItemSelected
 import com.zinc.waver.model.MySearchClickEvent
@@ -41,6 +42,7 @@ import com.zinc.waver.util.nav.homeMore
 import com.zinc.waver.util.nav.homeMy
 import com.zinc.waver.util.nav.homeMyBucketSearch
 import com.zinc.waver.util.nav.homeSearch
+import com.zinc.waver.util.nav.homeStatusBucketListNavGraph
 import com.zinc.waver.util.nav.moreAlarmNavGraph
 import com.zinc.waver.util.nav.moreAppInfoNavGraph
 import com.zinc.waver.util.nav.moreBlockNavGraph
@@ -160,6 +162,13 @@ fun HomeScreen(
                                         selected.categoryInfo, nav
                                     )
                                 }
+
+                                is HomeItemSelected.GoToStatusBucketList -> {
+                                    appState.navigateToStatusBucketList(
+                                        isProgress = selected.bucketStatus == BucketStatus.PROGRESS,
+                                        from = nav
+                                    )
+                                }
                             }
                         },
 
@@ -207,6 +216,17 @@ fun HomeScreen(
 
                     }
 
+                    homeStatusBucketListNavGraph(
+                        backPress = appState::backPress,
+                        bucketClicked = { id, isPrivate, nav ->
+                            if (isPrivate) {
+                                appState.navigateToCloseBucketDetail(id, nav)
+                            } else {
+                                appState.navigateToOpenBucketDetail(id, "NoId", true, nav)
+                            }
+                        },
+                    )
+
                     homeCategoryBucketListNavGraph(
                         backPress = appState::backPress,
                         bucketClicked = { id, isPrivate, nav ->
@@ -231,7 +251,8 @@ fun HomeScreen(
                             appState.navigateToOtherHome(nav, id)
                         })
 
-                    myFollowingSettingNavGraph(backPress = appState::backPress,
+                    myFollowingSettingNavGraph(
+                        backPress = appState::backPress,
                         goToOtherHome = { nav, id ->
                             appState.navigateToOtherHome(nav, id)
                         })
@@ -245,7 +266,8 @@ fun HomeScreen(
                             appState.navigateToOtherHome(nav, id)
                         })
 
-                    myFollowerSettingNavGraph(backPress = appState::backPress,
+                    myFollowerSettingNavGraph(
+                        backPress = appState::backPress,
                         goToOtherHome = { nav, id ->
                             appState.navigateToOtherHome(nav, id)
                         })
@@ -283,26 +305,26 @@ fun HomeScreen(
                     )
                     searchDirectNavGraph(
                         backPress = appState::backPress, searchEvent =
-                        { event, nav ->
-                            when (event) {
-                                SearchGoToEvent.GoToSearch -> {
-                                    appState.navigateToSearch(nav)
-                                }
+                            { event, nav ->
+                                when (event) {
+                                    SearchGoToEvent.GoToSearch -> {
+                                        appState.navigateToSearch(nav)
+                                    }
 
-                                is SearchGoToEvent.GoToOpenBucket -> {
-                                    appState.navigateToOpenBucketDetail(
-                                        event.bucketId,
-                                        event.userId,
-                                        false,
-                                        nav
-                                    )
-                                }
+                                    is SearchGoToEvent.GoToOpenBucket -> {
+                                        appState.navigateToOpenBucketDetail(
+                                            event.bucketId,
+                                            event.userId,
+                                            false,
+                                            nav
+                                        )
+                                    }
 
-                                is SearchGoToEvent.GoToOtherUser -> {
-                                    appState.navigateToOtherHome(nav, event.id)
+                                    is SearchGoToEvent.GoToOtherUser -> {
+                                        appState.navigateToOtherHome(nav, event.id)
+                                    }
                                 }
-                            }
-                        })
+                            })
                     writeNavGraph(
                         action = { actionType ->
                             action(actionType)

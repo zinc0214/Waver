@@ -113,6 +113,13 @@ class WaverAppState(
         }
     }
 
+    fun navigateToStatusBucketList(isProgress: Boolean, from: NavBackStackEntry) {
+        // In order to discard duplicated navigation events, we check the Lifecycle
+        if (from.lifecycleIsResumed()) {
+            navController.navigate("${MainDestinations.MY_STATUS_BUCKET_LIST}/${isProgress}")
+        }
+    }
+
     fun navigateToCategoryBucketList(categoryInfo: UICategoryInfo, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             val infoParse = UICategoryInfo.toNavigationValue(categoryInfo)
@@ -128,7 +135,8 @@ class WaverAppState(
 
     fun navigateToWriteBucket(updateId: String, from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
-            navController.navigate("${WriteDestinations.GO_TO_WRITE}/${updateId}",
+            navController.navigate(
+                "${WriteDestinations.GO_TO_WRITE}/${updateId}",
                 navOptions {
                     popUpTo(findStartDestination(navController.graph).id) {
                         inclusive = false

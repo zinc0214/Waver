@@ -2,6 +2,7 @@ package com.zinc.waver.ui_my.screen.all
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.zinc.common.models.BucketStatus
 import com.zinc.waver.model.AllBucketList
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.ALL
@@ -162,7 +164,8 @@ fun AllBucketTopView(
                 .padding(top = 16.dp, start = 22.dp)
                 .align(Alignment.CenterVertically),
             proceedingBucketCount = data.processingCount,
-            succeedBucketCount = data.succeedCount
+            succeedBucketCount = data.succeedCount,
+            clickEvent = clickEvent
         )
 
         FilterAndSearchImageView(
@@ -180,7 +183,8 @@ fun AllBucketTopView(
 private fun BucketStateView(
     modifier: Modifier = Modifier,
     proceedingBucketCount: String,
-    succeedBucketCount: String
+    succeedBucketCount: String,
+    clickEvent: (MyPagerClickEvent) -> Unit,
 ) {
     val proceedingText =
         stringResource(string.proceedingText) + " " + proceedingBucketCount
@@ -190,7 +194,15 @@ private fun BucketStateView(
         modifier = modifier,
         horizontalArrangement = Arrangement.End
     ) {
-        MyText(text = proceedingText, fontSize = dpToSp(13.dp), color = Gray8)
+        MyText(
+            text = proceedingText,
+            fontSize = dpToSp(13.dp),
+            color = Gray8,
+            modifier = Modifier.clickable {
+                clickEvent.invoke(
+                    MyPagerClickEvent.GoTo.GoToStatusBucketList(status = BucketStatus.PROGRESS)
+                )
+            })
         HorizontalDivider(
             color = Gray4,
             modifier = Modifier
@@ -199,7 +211,15 @@ private fun BucketStateView(
                 .width(1.dp)
                 .align(Alignment.CenterVertically)
         )
-        MyText(text = succeedingText, fontSize = dpToSp(13.dp), color = Gray8)
+        MyText(
+            text = succeedingText,
+            fontSize = dpToSp(13.dp),
+            color = Gray8,
+            modifier = Modifier.clickable {
+                clickEvent.invoke(
+                    MyPagerClickEvent.GoTo.GoToStatusBucketList(status = BucketStatus.COMPLETE)
+                )
+            })
     }
 }
 

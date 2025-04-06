@@ -264,7 +264,8 @@ fun MyTabLayer(
                 .padding(start = 16.dp, top = 24.dp)
         ) {
             itemsIndexed(items = tabItems, itemContent = { index, tab ->
-                MyTab(mySection = tab,
+                MyTab(
+                    mySection = tab,
                     isSelected = pagerState.currentPage == index,
                     tabWidths = tabWidths,
                     currentIndex = index,
@@ -332,6 +333,10 @@ fun MyViewPager(
 
                                 is MyPagerClickEvent.AchieveBucketClicked -> {
                                     viewModel.achieveBucket(it.id, ALL)
+                                }
+
+                                is MyPagerClickEvent.GoTo.GoToStatusBucketList -> {
+                                    itemSelected.invoke(HomeItemSelected.GoToStatusBucketList(it.status))
                                 }
 
                                 else -> {
@@ -431,12 +436,14 @@ private fun MyTab(
     val textStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = dpToSp(15.dp))
     val density = LocalDensity.current
 
-    Column(modifier = Modifier
-        .padding(start = 12.dp, end = 12.dp)
-        .clickable {
-            isClicked(currentIndex)
-        }) {
-        MyText(text = stringResource(id = mySection.getTitle()),
+    Column(
+        modifier = Modifier
+            .padding(start = 12.dp, end = 12.dp)
+            .clickable {
+                isClicked(currentIndex)
+            }) {
+        MyText(
+            text = stringResource(id = mySection.getTitle()),
             style = if (isSelected) textStyle.copy(color = Gray10)
             else textStyle.copy(color = Gray6),
             onTextLayout = { textLayoutResult ->
