@@ -2,6 +2,7 @@ package com.zinc.waver.model
 
 import com.zinc.common.models.BucketInfoSimple
 import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.BucketType
 import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.ExposureStatus
 import com.zinc.waver.ui.design.theme.Error2
@@ -35,7 +36,8 @@ fun BucketInfoSimple.parseToUI(): UIBucketInfoSimple {
         goalCount = this.goalCount,
         dDay = this.dDay,
         status = this.status,
-        exposureStatues = this.exposureStatus
+        exposureStatues = this.exposureStatus,
+        bucketType = this.bucketType
     )
 }
 
@@ -45,6 +47,7 @@ data class UIBucketInfoSimple(
     var currentCount: Int = 0,
     val goalCount: Int = 0,
     val dDay: Int? = null,
+    val bucketType: BucketType,
     val exposureStatues: ExposureStatus,
     val status: BucketStatus = BucketStatus.PROGRESS,
     val isChallenge: Boolean = false
