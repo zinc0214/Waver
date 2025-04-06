@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -116,8 +115,7 @@ private fun ProfileTextView(
                     .clickable(onClick = {
                         goToMyWave()
                     }, role = Role.Button)
-                    .width(width = 40.dp)
-                    .padding(top = 4.dp, bottom = 3.dp),
+                    .padding(start = 8.dp, end = 8.dp),
                 textAlign = TextAlign.Center
             )
         }
