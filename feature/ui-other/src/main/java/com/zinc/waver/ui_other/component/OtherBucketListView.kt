@@ -53,16 +53,6 @@ fun OtherBucketListView(
 
         Spacer(modifier = Modifier.height(140.dp))
     }
-
-//    LazyColumn(
-//        modifier = modifier,
-//        contentPadding = PaddingValues(bottom = 140.dp),
-//        verticalArrangement = Arrangement.spacedBy(12.dp),
-//    ) {
-//        itemsIndexed(data, key = { _, item -> item.bucketId }) { _, bucket ->
-//
-//        }
-//    }
 }
 
 @Composable
