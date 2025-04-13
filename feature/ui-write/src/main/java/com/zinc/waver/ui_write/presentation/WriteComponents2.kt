@@ -1,7 +1,9 @@
 package com.zinc.waver.ui_write.presentation
 
 import android.widget.Toast
+import androidx.compose.foundation.BasicTooltipBox
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,11 +21,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberBasicTooltipState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TooltipDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,8 +67,10 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.Switch
 import com.zinc.waver.ui.presentation.component.SwitchOnlyView
+import com.zinc.waver.ui.util.HtmlText2
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_write.R
+import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
@@ -86,9 +94,10 @@ fun KeywordsOptionView(
     keywordList: List<WriteKeyWord>,
     optionClicked: () -> Unit
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .clickable { optionClicked() }
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { optionClicked() }
     ) {
         Divider(color = Gray4)
 
@@ -132,9 +141,10 @@ fun FriendsOptionView(
 
     val padding = if (isNeedToWave) 0.dp else 18.dp
 
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .clickable(isValid) { optionClicked(friendOption.enableType) }
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(isValid) { optionClicked(friendOption.enableType) }
     ) {
         Divider(color = Gray4)
 
@@ -208,9 +218,10 @@ fun OpenTypeOptionView(
         WriteOpenType.PRIVATE -> stringResource(R.string.optionOpenTypePrivate)
         WriteOpenType.FRIENDS_OPEN -> stringResource(R.string.optionOpenTypeFriends)
     }
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .clickable { optionClicked() }
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { optionClicked() }
     ) {
         Divider(color = Gray4)
         Divider(color = Gray2, thickness = 7.dp)
@@ -384,14 +395,18 @@ fun WriteSelectFriendItem(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun WriteScrapOptionView(
     modifier: Modifier,
     isScrapAvailable: Boolean,
     isScrapUsed: Boolean,
-    scrapChanged: (Boolean) -> Unit
+    scrapChanged: (Boolean) -> Unit,
 ) {
     val context = LocalContext.current
+    val tooltipPosition = TooltipDefaults.rememberRichTooltipPositionProvider((-100).dp)
+    val tooltipState = rememberBasicTooltipState(isPersistent = true)
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = modifier) {
 
@@ -402,22 +417,45 @@ fun WriteScrapOptionView(
                 .padding(start = 28.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            MyText(
-                text = stringResource(id = R.string.optionScrap),
-                color = if (isScrapAvailable) Gray10 else Gray7,
-                fontSize = dpToSp(16.dp)
-            )
-
-            IconButton(
-                modifier = Modifier
-                    .size(16.dp)
-                    .padding(start = 2.dp),
-                onClick = {
-
+            BasicTooltipBox(
+                positionProvider = tooltipPosition,
+                tooltip = {
+                    HtmlText2(
+                        html = stringResource(R.string.optionScrapInfoDescGuide),
+                        fontSize = 14.dp,
+                        modifier = Modifier
+                            .background(
+                                color = Gray1,
+                                shape = RoundedCornerShape(4.dp)
+                            )
+                            .border(width = 1.dp, color = Gray3, shape = RoundedCornerShape(4.dp))
+                            .padding(16.dp)
+                    )
                 },
-                image = R.drawable.btn_16_info,
-                contentDescription = stringResource(id = R.string.optionScrapInfoDesc)
-            )
+                state = tooltipState
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MyText(
+                        text = stringResource(id = R.string.optionScrap),
+                        color = if (isScrapAvailable) Gray10 else Gray7,
+                        fontSize = dpToSp(16.dp)
+                    )
+                    IconButton(
+                        modifier = Modifier
+                            .padding(start = 2.dp)
+                            .size(16.dp),
+                        onClick = {
+                            coroutineScope.launch {
+                                tooltipState.show()
+                            }
+                        },
+                        image = R.drawable.btn_16_info,
+                        contentDescription = stringResource(id = R.string.optionScrapInfoDesc)
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
