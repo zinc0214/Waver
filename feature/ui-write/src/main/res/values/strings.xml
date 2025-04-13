@@ -19,6 +19,7 @@
     <string name="optionOpenTypePrivate">비공개</string>
     <string name="optionScrap">스크랩</string>
     <string name="optionScrapInfoDesc">스크랩이란?</string>
+    <string name="optionScrapInfoDescGuide"><![CDATA[스크랩을 허용하면 다른 사용자가<br><font color=#007bff>이 버킷리스트를 복사</font>할 수 있어요.]]></string>
     <string name="optionScrapNotAvailable">버킷리스트를 공개로 설정해주세요</string>
     <string name="optionIfFriendsNotEmptyOpenPrivateDetect">함께할 친구가 있다면 버킷리스트를 비공개로 설정할 수 없어요</string>
     <string name="addBucketListSucceed">버킷리스트가 등록되었어요</string>

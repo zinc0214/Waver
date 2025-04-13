@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.compose.bom.tooling)
     implementation(libs.compose.bom.livedata)
     implementation(libs.compose.bom.foundation)
+    implementation(libs.androidx.material3)
 
     implementation(libs.compose.accompanist.permissions)
     implementation(libs.compose.constraintlayout)
