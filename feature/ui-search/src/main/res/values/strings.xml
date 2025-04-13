@@ -1,12 +1,12 @@
 <resources>
-    <string name="searchTitle">검색</string>
-    <string name="recentSearch">최근 검색어</string>
-    <string name="recommendSearch">추천 키워드</string>
-    <string name="showMore">더보기</string>
-    <string name="searchLoadFail">검색 로드 실패</string>
-    <string name="searchHint">리스트를 검색하세요</string>
-    <string name="keywordRefresh">키워드 새로고침</string>
-    <string name="searchProfileImage">프로필 이미지</string>
+    <string name="searchTitle">Search</string>
+    <string name="recentSearch">Recent Searches</string>
+    <string name="recommendSearch">Recommended Keywords</string>
+    <string name="showMore">Show More</string>
+    <string name="searchLoadFail">Failed to load search results</string>
+    <string name="searchHint">Search the list</string>
+    <string name="keywordRefresh">Refresh Keywords</string>
+    <string name="searchProfileImage">Profile Image</string>
 
-    <string name="searchWordBlankText"> 에 대한\n 검색결과가 없습니다.</string>
+    <string name="searchWordBlankText">No search results for\n </string>
 </resources>

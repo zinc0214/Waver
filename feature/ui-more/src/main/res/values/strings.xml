@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="moreTitle">더보기</string>
-    <string name="goToBadgeChangeButtonText">변경</string>
-    <string name="goToUpdateProfile">프로필 관리</string>
-    <string name="goToJoinWaverClub">웨이버 플러스 알아보기</string>
-    <string name="waverPlusBenefitDesc1">1주일 </string>
-    <string name="waverPlusBenefitDesc2">광고 제거/무제한 버킷리스트 무료</string>
+    <string name="moreTitle">More</string>
+    <string name="goToBadgeChangeButtonText">Change</string>
+    <string name="goToUpdateProfile">Manage Profile</string>
+    <string name="goToJoinWaverClub">Learn About Waver Plus</string>
+    <string name="waverPlusBenefitDesc1">1 Week </string>
+    <string name="waverPlusBenefitDesc2">Ad-Free / Unlimited Bucket List for Free</string>
 
-    <!-- 더보기 메뉴 -->
-    <string name="moreMenuAlarm">알림 설정</string>
-    <string name="moreMenuBlock">차단 관리</string>
-    <string name="moreMenuCs">고객 센터</string>
-    <string name="moreMenuAppInfo">앱 정보</string>
-    <string name="moreMenuLogout">로그아웃</string>
+    <!-- More Menu -->
+    <string name="moreMenuAlarm">Notification Settings</string>
+    <string name="moreMenuBlock">Blocked Users</string>
+    <string name="moreMenuCs">Customer Support</string>
+    <string name="moreMenuAppInfo">App Info</string>
+    <string name="moreMenuLogout">Log Out</string>
 
-    <!--알림 설정-->
-    <string name="alarmSettingTitle">알림 설정</string>
-    <string name="alarmSettingServiceAlarm">서비스 알림</string>
-    <string name="alarmSettingNewFollower">새 팔로워</string>
-    <string name="alarmSettingLike">좋아요</string>
-    <string name="alarmSettingDday">디데이</string>
-    <string name="alarmSettingDdayDesc">디데이가 다가온 버킷리스트가 있을 경우 알림 수신</string>
-    <string name="alarmSettingComment">댓글</string>
-    <string name="alarmSettingCommentDesc">작성한 버킷리스트에 댓글이 작성될 경우,\n 멘션이 되었을 경우에 알림 수신</string>
-    <string name="alarmSettingFriends">함께한 친구들의 활동</string>
-    <string name="alarmSettingFriendsDesc"> 버킷리스트를 함께하는 경우,\n친구들의 진행상황 알림</string>
-    <string name="alarmSettingBenefitAlarm">혜택 알림</string>
-    <string name="alarmSettingEvent">이벤트</string>
-    <string name="alarmSettingUpdate">업데이트</string>
+    <!-- Notification Settings -->
+    <string name="alarmSettingTitle">Notification Settings</string>
+    <string name="alarmSettingServiceAlarm">Service Notifications</string>
+    <string name="alarmSettingNewFollower">New Follower</string>
+    <string name="alarmSettingLike">Likes</string>
+    <string name="alarmSettingDday">D-Day</string>
+    <string name="alarmSettingDdayDesc">Receive notifications when a D-Day bucket list is coming up</string>
+    <string name="alarmSettingComment">Comments</string>
+    <string name="alarmSettingCommentDesc">Get notified when someone comments on your bucket list or mentions you</string>
+    <string name="alarmSettingFriends">Friend Activities</string>
+    <string name="alarmSettingFriendsDesc">Receive updates when friends you share bucket lists with make progress</string>
+    <string name="alarmSettingBenefitAlarm">Promotions</string>
+    <string name="alarmSettingEvent">Events</string>
+    <string name="alarmSettingUpdate">App Updates</string>
 
-    <!-- 차단 관리-->
-    <string name="blockSettingTitle">차단 관리</string>
-    <string name="nonBlocking">해제</string>
-    <string name="hasNoBlockUser">차단한 사용자가 없습니다.</string>
+    <!-- Blocked Users -->
+    <string name="blockSettingTitle">Blocked Users</string>
+    <string name="nonBlocking">Unblock</string>
+    <string name="hasNoBlockUser">You haven’t blocked anyone.</string>
 
-    <!-- 프로필 관리 -->
-    <string name="profileSettingTitle">프로필 관리</string>
-    <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
-    <string name="profileUpdateFailTitle">변경이 실패했습니다.\n다시 시도해주세요.</string>
-    <string name="loadFailProfile">프로필 로드 실패</string>
+    <!-- Profile Management -->
+    <string name="profileSettingTitle">Manage Profile</string>
+    <string name="profileUpdateSuccessTitle">Changes saved successfully.</string>
+    <string name="profileUpdateFailTitle">Failed to save changes.\nPlease try again.</string>
+    <string name="loadFailProfile">Failed to load profile</string>
 
-    <!-- 고객 센터 -->
-    <string name="csFAQ">자주 묻는 질문</string>
-    <string name="csServiceQuestion">서비스 문의하기</string>
+    <!-- Customer Support -->
+    <string name="csFAQ">Frequently Asked Questions</string>
+    <string name="csServiceQuestion">Contact Support</string>
 
-    <!-- 앱 정보 -->
-    <string name="appInfoTitle">앱 정보</string>
-    <string name="appName">베리버킷</string>
-    <string name="needToUpdateApp">최신 버전 업데이트</string>
-    <string name="alreadyUsedLatelyApp">최신 버전 사용 중</string>
+    <!-- App Info -->
+    <string name="appInfoTitle">App Info</string>
+    <string name="appName">VeryBucket</string>
+    <string name="needToUpdateApp">Update to the latest version</string>
+    <string name="alreadyUsedLatelyApp">You’re using the latest version</string>
 
-    <!-- 내 웨이브 -->
-    <string name="myWave">내 웨이브</string>
-    <string name="badgeCount">뱃지획득</string>
-    <string name="likedCount">좋아요</string>
-    <string name="bucketCount">버킷리스트</string>
-    <string name="badgeGrade">단계</string>
+    <!-- My Wave -->
+    <string name="myWave">My Wave</string>
+    <string name="badgeCount">Badges Earned</string>
+    <string name="likedCount">Likes</string>
+    <string name="bucketCount">Bucket Lists</string>
+    <string name="badgeGrade">Level</string>
 
-    <!-- 로그아웃 -->
-    <string name="logoutTitle">로그아웃 하시겠어요?</string>
-    <string name="logoutButton">로그아웃</string>
+    <!-- Logout -->
+    <string name="logoutTitle">Do you want to log out?</string>
+    <string name="logoutButton">Log Out</string>
 </resources>

@@ -1,0 +1,14 @@
+<resources>
+    <!-- Report -->
+    <string name="commentReportTitle">댓글 신고</string>
+    <string name="bucketReportTitle">버킷리스트 신고</string>
+    <string name="reportWriter">작성자</string>
+    <string name="reportContents">내용</string>
+    <string name="reportItemButton">신고버튼</string>
+    <string name="reportActionButton">신고하기</string>
+    <string name="reportEtc">기타</string>
+    <string name="reportTextFieldHint">신고 사유를 입력해주세요. (최대 500자) </string>
+
+    <string name="commentReportSucceed">신고를 완료했습니다.</string>
+    <string name="commentReportFail">다시 시도해주세요.</string>
+</resources>

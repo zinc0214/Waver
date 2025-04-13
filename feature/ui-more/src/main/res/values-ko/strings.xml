@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="moreTitle">더보기</string>
+    <string name="goToBadgeChangeButtonText">변경</string>
+    <string name="goToUpdateProfile">프로필 관리</string>
+    <string name="goToJoinWaverClub">웨이버 플러스 알아보기</string>
+    <string name="waverPlusBenefitDesc1">1주일 </string>
+    <string name="waverPlusBenefitDesc2">광고 제거/무제한 버킷리스트 무료</string>
+
+    <!-- 더보기 메뉴 -->
+    <string name="moreMenuAlarm">알림 설정</string>
+    <string name="moreMenuBlock">차단 관리</string>
+    <string name="moreMenuCs">고객 센터</string>
+    <string name="moreMenuAppInfo">앱 정보</string>
+    <string name="moreMenuLogout">로그아웃</string>
+
+    <!--알림 설정-->
+    <string name="alarmSettingTitle">알림 설정</string>
+    <string name="alarmSettingServiceAlarm">서비스 알림</string>
+    <string name="alarmSettingNewFollower">새 팔로워</string>
+    <string name="alarmSettingLike">좋아요</string>
+    <string name="alarmSettingDday">디데이</string>
+    <string name="alarmSettingDdayDesc">디데이가 다가온 버킷리스트가 있을 경우 알림 수신</string>
+    <string name="alarmSettingComment">댓글</string>
+    <string name="alarmSettingCommentDesc">작성한 버킷리스트에 댓글이 작성될 경우,\n 멘션이 되었을 경우에 알림 수신</string>
+    <string name="alarmSettingFriends">함께한 친구들의 활동</string>
+    <string name="alarmSettingFriendsDesc"> 버킷리스트를 함께하는 경우,\n친구들의 진행상황 알림</string>
+    <string name="alarmSettingBenefitAlarm">혜택 알림</string>
+    <string name="alarmSettingEvent">이벤트</string>
+    <string name="alarmSettingUpdate">업데이트</string>
+
+    <!-- 차단 관리-->
+    <string name="blockSettingTitle">차단 관리</string>
+    <string name="nonBlocking">해제</string>
+    <string name="hasNoBlockUser">차단한 사용자가 없습니다.</string>
+
+    <!-- 프로필 관리 -->
+    <string name="profileSettingTitle">프로필 관리</string>
+    <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
+    <string name="profileUpdateFailTitle">변경이 실패했습니다.\n다시 시도해주세요.</string>
+    <string name="loadFailProfile">프로필 로드 실패</string>
+
+    <!-- 고객 센터 -->
+    <string name="csFAQ">자주 묻는 질문</string>
+    <string name="csServiceQuestion">서비스 문의하기</string>
+
+    <!-- 앱 정보 -->
+    <string name="appInfoTitle">앱 정보</string>
+    <string name="appName">베리버킷</string>
+    <string name="needToUpdateApp">최신 버전 업데이트</string>
+    <string name="alreadyUsedLatelyApp">최신 버전 사용 중</string>
+
+    <!-- 내 웨이브 -->
+    <string name="myWave">내 웨이브</string>
+    <string name="badgeCount">뱃지획득</string>
+    <string name="likedCount">좋아요</string>
+    <string name="bucketCount">버킷리스트</string>
+    <string name="badgeGrade">단계</string>
+
+    <!-- 로그아웃 -->
+    <string name="logoutTitle">로그아웃 하시겠어요?</string>
+    <string name="logoutButton">로그아웃</string>
+</resources>

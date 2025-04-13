@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- My -->
+    <string name="alarm">알람</string>
+    <string name="more">더보기</string>
+    <string name="followerText">팔로워</string>
+    <string name="followingText">팔로잉</string>
+    <string name="unfollowingText">팔로잉 해제</string>
+    <string name="unfollowingButton">해제</string>
+    <string name="followingButton">팔로우</string>
+    <string name="followSetting">관리</string>
+    <string name="followerSetting">팔로워 관리</string>
+    <string name="followerBlockButton">차단</string>
+    <string name="followingBlankText">팔로잉하고있는 웨이버가 없습니다.</string>
+    <string name="followerBlankText">팔로워가 없습니다.</string>
+
+    <!-- My > All -->
+    <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
+    <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
+    <string name="allHasNoBucketListDesc1">버킷리스트를 등록</string>
+    <string name="allHasNoBucketListDesc2">하고\n인기 웨이버가 되어보세요.</string>
+
+    <!-- My > All > Filter -->
+    <string name="showBucketList">표시할 버킷리스트</string>
+    <string name="proceedingBucketList">진행중인 버킷리스트</string>
+    <string name="succeedBucketList">완료된 버킷리스트</string>
+    <string name="sortStandard">정렬 기준</string>
+    <string name="sortByUpdate">업데이트 순</string>
+    <string name="sortByCreate">등록 순</string>
+    <string name="showContent">표시 항목</string>
+    <string name="showDday">디데이</string>
+
+    <!-- My > Dday > Filter -->
+    <string name="dDayPreBucketList">디데이가 지나지 않은 버킷리스트</string>
+    <string name="dDayGoneBucketList">디데이가 지난 버킷리스트</string>
+
+    <!-- My > Category -->
+    <string name="recommendCategory">추천 카테고리</string>
+    <string name="recommendTag">#</string>
+    <string name="categoryEdit">편집</string>
+    <string name="categorySearchImageViewDesc">카테고리 검색</string>
+    <string name="categoryBlankText"> 에는\n 버킷리스트가 없어요</string>
+    <string name="addNewBucket">버킷리스트 만들기</string>
+
+    <!-- My > Dday -->
+    <string name="ddayComment">지난 Dday가 1개 있어요</string>
+    <string name="ddaySearchImageViewDesc">디데이 버킷리스트 검색</string>
+    <string name="ddayFilterImageViewDesc">디데이 버킷리스트 필터</string>
+    <string name="ddayEmptyGuide">디데이가 설정된 버킷리스트가 없습니다.</string>
+
+    <!-- My > Dday > Filter -->
+    <string name="dday">디데이가 지나지 않은 버킷리스트</string>
+    <string name="noDdayBucketList">디데이가 지나지 않은 버킷리스트</string>
+    <string name="ddayPastBucketList">디데이가 지난 버킷리스트</string>
+
+    <!-- My > Search -->
+    <string name="myBucketSearchHint">리스트를 검색하세요</string>
+
+    <!-- My > Alarm -->
+    <string name="alarmTitle">알림</string>
+    <string name="alarmIconDesc">알람 아이콘 이미지</string>
+
+</resources>

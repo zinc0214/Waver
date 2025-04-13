@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Feed > Content -->
-    <string name="feedContentTitle">마이 피드</string>
-    <string name="feedImageView">피드 이미지</string>
-    <string name="feedProfileImage">프로필 이미지</string>
+    <string name="feedContentTitle">My Feed</string>
+    <string name="feedImageView">Feed image</string>
+    <string name="feedProfileImage">Profile image</string>
 
     <!-- Feed > Recommend -->
-    <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>
-    <string name="feedRecommendSmallTitle">관심 키워드 선택</string>
-    <string name="recommendBucketList">버킷 추천받기</string>
-    <string name="keywordRefresh">키워드 새로고침</string>
-    <string name="feedBlankGuide">정보를 가져오지 못했어요.\n 아래로 당겨 피드를 새로고침해주세요.</string>
+    <string name="feedRecommendTitle">Please select\nkeywords you\'re interested in.</string>
+    <string name="feedRecommendSmallTitle">Select keywords</string>
+    <string name="recommendBucketList">Get bucket list recommendations</string>
+    <string name="keywordRefresh">Refresh keywords</string>
+    <string name="feedBlankGuide">Couldn\'t load the information.\nPull down to refresh the feed.</string>
 
     <!-- Feed Common -->
-    <string name="feedLoadFailTitle">데이터 로드 실패</string>
-    <string name="feedLoadFailContent">다시 시도해주세요.</string>
-    <string name="feedLoadRetry">확인</string>
+    <string name="feedLoadFailTitle">Failed to load data</string>
+    <string name="feedLoadFailContent">Please try again.</string>
+    <string name="feedLoadRetry">OK</string>
 </resources>

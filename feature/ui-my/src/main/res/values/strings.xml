@@ -1,63 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- My -->
-    <string name="alarm">알람</string>
-    <string name="more">더보기</string>
-    <string name="followerText">팔로워</string>
-    <string name="followingText">팔로잉</string>
-    <string name="unfollowingText">팔로잉 해제</string>
-    <string name="unfollowingButton">해제</string>
-    <string name="followingButton">팔로우</string>
-    <string name="followSetting">관리</string>
-    <string name="followerSetting">팔로워 관리</string>
-    <string name="followerBlockButton">차단</string>
-    <string name="followingBlankText">팔로잉하고있는 웨이버가 없습니다.</string>
-    <string name="followerBlankText">팔로워가 없습니다.</string>
+    <string name="alarm">Alarm</string>
+    <string name="more">More</string>
+    <string name="followerText">Followers</string>
+    <string name="followingText">Following</string>
+    <string name="unfollowingText">Unfollow</string>
+    <string name="unfollowingButton">Unfollow</string>
+    <string name="followingButton">Follow</string>
+    <string name="followSetting">Manage</string>
+    <string name="followerSetting">Manage Followers</string>
+    <string name="followerBlockButton">Block</string>
+    <string name="followingBlankText">You’re not following anyone.</string>
+    <string name="followerBlankText">You have no followers.</string>
 
     <!-- My > All -->
-    <string name="allSearchImageViewDesc">전체 버킷리스트 검색</string>
-    <string name="allFilterImageViewDesc">전체 버킷리스트 필터</string>
-    <string name="allHasNoBucketListDesc1">버킷리스트를 등록</string>
-    <string name="allHasNoBucketListDesc2">하고\n인기 웨이버가 되어보세요.</string>
+    <string name="allSearchImageViewDesc">Search all bucket lists</string>
+    <string name="allFilterImageViewDesc">Filter all bucket lists</string>
+    <string name="allHasNoBucketListDesc1">Add your bucket list</string>
+    <string name="allHasNoBucketListDesc2">and become a popular Waver.</string>
 
     <!-- My > All > Filter -->
-    <string name="showBucketList">표시할 버킷리스트</string>
-    <string name="proceedingBucketList">진행중인 버킷리스트</string>
-    <string name="succeedBucketList">완료된 버킷리스트</string>
-    <string name="sortStandard">정렬 기준</string>
-    <string name="sortByUpdate">업데이트 순</string>
-    <string name="sortByCreate">등록 순</string>
-    <string name="showContent">표시 항목</string>
-    <string name="showDday">디데이</string>
+    <string name="showBucketList">Bucket lists to show</string>
+    <string name="proceedingBucketList">In Progress</string>
+    <string name="succeedBucketList">Completed</string>
+    <string name="sortStandard">Sort by</string>
+    <string name="sortByUpdate">Latest Update</string>
+    <string name="sortByCreate">Newest First</string>
+    <string name="showContent">Show items</string>
+    <string name="showDday">D-Day</string>
 
     <!-- My > Dday > Filter -->
-    <string name="dDayPreBucketList">디데이가 지나지 않은 버킷리스트</string>
-    <string name="dDayGoneBucketList">디데이가 지난 버킷리스트</string>
+    <string name="dDayPreBucketList">Upcoming D-Day Bucket Lists</string>
+    <string name="dDayGoneBucketList">Past D-Day Bucket Lists</string>
 
     <!-- My > Category -->
-    <string name="recommendCategory">추천 카테고리</string>
+    <string name="recommendCategory">Recommended Categories</string>
     <string name="recommendTag">#</string>
-    <string name="categoryEdit">편집</string>
-    <string name="categorySearchImageViewDesc">카테고리 검색</string>
-    <string name="categoryBlankText"> 에는\n 버킷리스트가 없어요</string>
-    <string name="addNewBucket">버킷리스트 만들기</string>
+    <string name="categoryEdit">Edit</string>
+    <string name="categorySearchImageViewDesc">Search by category</string>
+    <string name="categoryBlankText">No bucket lists in this category</string>
+    <string name="addNewBucket">Create Bucket List</string>
 
     <!-- My > Dday -->
-    <string name="ddayComment">지난 Dday가 1개 있어요</string>
-    <string name="ddaySearchImageViewDesc">디데이 버킷리스트 검색</string>
-    <string name="ddayFilterImageViewDesc">디데이 버킷리스트 필터</string>
-    <string name="ddayEmptyGuide">디데이가 설정된 버킷리스트가 없습니다.</string>
+    <string name="ddayComment">You have 1 past D-Day</string>
+    <string name="ddaySearchImageViewDesc">Search D-Day bucket lists</string>
+    <string name="ddayFilterImageViewDesc">Filter D-Day bucket lists</string>
+    <string name="ddayEmptyGuide">No bucket lists with D-Day set.</string>
 
     <!-- My > Dday > Filter -->
-    <string name="dday">디데이가 지나지 않은 버킷리스트</string>
-    <string name="noDdayBucketList">디데이가 지나지 않은 버킷리스트</string>
-    <string name="ddayPastBucketList">디데이가 지난 버킷리스트</string>
+    <string name="dday">Upcoming D-Day Bucket Lists</string>
+    <string name="noDdayBucketList">Upcoming D-Day Bucket Lists</string>
+    <string name="ddayPastBucketList">Past D-Day Bucket Lists</string>
 
     <!-- My > Search -->
-    <string name="myBucketSearchHint">리스트를 검색하세요</string>
+    <string name="myBucketSearchHint">Search your lists</string>
 
     <!-- My > Alarm -->
-    <string name="alarmTitle">알림</string>
-    <string name="alarmIconDesc">알람 아이콘 이미지</string>
-
+    <string name="alarmTitle">Notifications</string>
+    <string name="alarmIconDesc">Alarm icon image</string>
 </resources>

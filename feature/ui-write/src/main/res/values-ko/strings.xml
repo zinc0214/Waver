@@ -1,0 +1,35 @@
+<resources>
+    <string name="writeGoToNext">다음</string>
+    <string name="writeGoToFinish">완료</string>
+    <string name="writeTitleHintText">새로운 목표를 작성해보세요.</string>
+    <string name="writeMemoHintText">메모를 작성해주세요.</string>
+    <string name="addMemoDesc">메모 추가하기</string>
+    <string name="addImageDesc">이미지 추가하기</string>
+    <string name="addImageWaverPlusDesc">웨이버 플러스 기능입니다.</string>
+    <string name="addCategoryDesc">카테고리 추가하기</string>
+    <string name="addDdayDesc">디데이 추가하기</string>
+    <string name="addGoalDesc">달성횟수 추가하기</string>
+    <string name="writeSelectKeyWordGuide">키워드는 3개까지 선택 가능합니다.</string>
+    <string name="showSelectedAllFriends">전체보기</string>
+    <string name="optionCategoryAddButton">카테고리 편집</string>
+    <string name="optionCalendarSelect">달력으로 선택하기</string>
+    <string name="optionOpenType">공개설정</string>
+    <string name="optionOpenTypePublic">전체공개</string>
+    <string name="optionOpenTypeFriends">친구에게만 공개</string>
+    <string name="optionOpenTypePrivate">비공개</string>
+    <string name="optionScrap">스크랩</string>
+    <string name="optionScrapInfoDesc">스크랩이란?</string>
+    <string name="optionScrapInfoDescGuide"><![CDATA[<font color=#444444>스크랩을 허용하면 다른 사용자가</font><br><font color=#007bff>이 버킷리스트를 복사</font><font color=#444444>할 수 있어요.</font>]]></string>
+    <string name="optionScrapNotAvailable">버킷리스트를 공개로 설정해주세요</string>
+    <string name="optionIfFriendsNotEmptyOpenPrivateDetect">함께할 친구가 있다면 버킷리스트를 비공개로 설정할 수 없어요</string>
+    <string name="addBucketListSucceed">버킷리스트가 등록되었어요</string>
+    <string name="optionIfHasNoFriends">함께할 친구가 없습니다.</string>
+
+    <string name="confirmBackTitle">입력한 내용이 저장되지 않아요.\n작성을 취소할까요?</string>
+    <string name="confirmBackLeftButton">유지</string>
+    <string name="confirmBackRightButton">작성취소</string>
+
+    <string name="optionKeywordAddTitle">키워드 추가</string>
+    <string name="optionFriendAddTitle">함께할 친구 추가하기</string>
+    <string name="optionOpenTypeTitle">공개설정</string>
+</resources>

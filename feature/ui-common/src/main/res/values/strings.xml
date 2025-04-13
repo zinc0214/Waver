@@ -2,135 +2,137 @@
 <resources>
 
     <!-- Common -->
-    <string name="cancel">취소</string>
-    <string name="apply">적용</string>
-    <string name="proceedingText">진행중</string>
-    <string name="succeedText">완료</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+    <string name="proceedingText">In Progress</string>
+    <string name="succeedText">Completed</string>
     <string name="blank"> </string>
-    <string name="hide">숨기기</string>
-    <string name="report">신고</string>
-    <string name="edit">수정</string>
-    <string name="edit2">편집</string>
-    <string name="delete">삭제</string>
-    <string name="next">다음</string>
-    <string name="countChange">완료횟수변경</string>
-    <string name="selected">선택 버튼</string>
-    <string name="copy">버킷리스트 복사 버튼</string>
-    <string name="backDesc">뒤로가기</string>
-    <string name="closeDesc">닫기</string>
-    <string name="moreButtonDesc">더보기 버튼</string>
-    <string name="nextButtonDesc">다음 버튼</string>
-    <string name="deleteButtonDesc">삭제 버튼</string>
-    <string name="addDesc">추가</string>
-    <string name="confirm">확인</string>
-    <string name="update">변경</string>
-    <string name="searchHint">검색어를 입력해주세요.</string>
-    <string name="apiFailTitle">데이터 로드 실패</string>
-    <string name="apiFailMessage">다시 시도해주세요.</string>
+    <string name="hide">Hide</string>
+    <string name="report">Report</string>
+    <string name="edit">Edit</string>
+    <string name="edit2">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="next">Next</string>
+    <string name="countChange">Change Completion Count</string>
+    <string name="selected">Select Button</string>
+    <string name="copy">Copy Bucket List</string>
+    <string name="backDesc">Back</string>
+    <string name="closeDesc">Close</string>
+    <string name="moreButtonDesc">More Button</string>
+    <string name="nextButtonDesc">Next Button</string>
+    <string name="deleteButtonDesc">Delete Button</string>
+    <string name="addDesc">Add</string>
+    <string name="confirm">OK</string>
+    <string name="update">Update</string>
+    <string name="searchHint">Please enter a search term.</string>
+    <string name="apiFailTitle">Failed to Load Data</string>
+    <string name="apiFailMessage">Please try again.</string>
 
-    <string name="optionGoalCount">목표 달성 횟수(반복)</string>
+    <string name="optionGoalCount">Target Achievement Count (Repeat)</string>
     <string name="zeroGoalCount">0</string>
-    <string name="countIsNotValidToast">목표 달성 횟수는 최소 1 이상으로 설정해주세요</string>
+    <string name="countIsNotValidToast">Please set the target count to at least 1.</string>
 
-    <string name="profileImgDesc">프로필 이미지</string>
+    <string name="profileImgDesc">Profile Image</string>
 
-    <string name="monthDesc">뭐든</string>
+    <string name="monthDesc">Anything</string>
 
-    <string name="bucketCopySucceedToast">버킷리스트가 복사되었습니다</string>
+    <string name="bucketCopySucceedToast">Bucket list copied</string>
 
     <!-- Login -->
-    <string name="goToLogin">로그인</string>
+    <string name="goToLogin">Login</string>
+
     <!-- My > TabTitle -->
-    <string name="allTab">전체</string>
-    <string name="categoryTab">카테고리</string>
-    <string name="ddayTab">디데이</string>
-    <string name="challengeTab">챌린지</string>
+    <string name="allTab">All</string>
+    <string name="categoryTab">Category</string>
+    <string name="ddayTab">D-Day</string>
+    <string name="challengeTab">Challenge</string>
 
-    <!--이미지-->
-    <string name="profileImageDesc">프로필 이미지</string>
-    <string name="selectGallery">앨범에서 사진 선택</string>
-    <string name="selectCamera">사진 촬영</string>
-    <string name="bucketImage">이미지</string>
+    <!-- Image -->
+    <string name="profileImageDesc">Profile Image</string>
+    <string name="selectGallery">Select from Gallery</string>
+    <string name="selectCamera">Take Photo</string>
+    <string name="bucketImage">Image</string>
 
-    <!--타이틀뷰-->
-    <string name="finishDesc">완료</string>
+    <!-- Title View -->
+    <string name="finishDesc">Completed</string>
 
-    <!--카테고리-->
-    <string name="addNewCategoryTitle">카테고리 추가</string>
-    <string name="addNewCategoryHint">카테고리명 입력</string>
-    <string name="addNewCategoryNotAvailable">카테고리명을 입력해주세요!</string>
-    <string name="editCategoryNameTitle">카테고리명 변경</string>
-    <string name="editCategoryNameNotAvailable">카테고리명을 수정 또는 입력해주세요!</string>
-    <string name="categoryEditTitle">카테고리 편집</string>
-    <string name="categoryItemEdit">카테고리 편집</string>
-    <string name="categoryNameEdit">이름 변경</string>
-    <string name="categoryDelete">삭제</string>
-    <string name="categoryAddSucceed">카테고리가 추가되었습니다.</string>
-    <string name="categoryAdd">카테고리 추가하기</string>
+    <!-- Category -->
+    <string name="addNewCategoryTitle">Add Category</string>
+    <string name="addNewCategoryHint">Enter Category Name</string>
+    <string name="addNewCategoryNotAvailable">Please enter a category name!</string>
+    <string name="editCategoryNameTitle">Edit Category Name</string>
+    <string name="editCategoryNameNotAvailable">Please edit or enter a category name!</string>
+    <string name="categoryEditTitle">Edit Category</string>
+    <string name="categoryItemEdit">Edit Category</string>
+    <string name="categoryNameEdit">Rename</string>
+    <string name="categoryDelete">Delete</string>
+    <string name="categoryAddSucceed">Category added successfully.</string>
+    <string name="categoryAdd">Add Category</string>
 
-    <!-- 로드 실패 -->
-    <string name="retryDesc">다시 시도해주세요</string>
-    <string name="requestFailDesc">요청에 실패했습니다</string>
+    <!-- Load Fail -->
+    <string name="retryDesc">Please try again</string>
+    <string name="requestFailDesc">Request failed</string>
 
-    <!-- 프로필 생성 / 수정 -->
-    <string name="addProfileNickname">닉네임을 입력하세요</string>
-    <string name="enterBioDesc">님을 알려주세요.</string>
-    <string name="moreProfileImageDesc">프로필 이미지</string>
-    <string name="profileChangeDesc">프로필 이미지 변경</string>
-    <string name="profileSettingNickNameTitle">닉네임</string>
-    <string name="profileSettingBioTitle">소개문구</string>
-    <string name="alreadyUsedNickNameGuide">사용 중인 닉네임입니다.</string>
-    <string name="nicknameCheckFail">닉네임 중복 확인에 실패했습니다.\n다시 시도해주세요.</string>
+    <!-- Profile Create / Edit -->
+    <string name="addProfileNickname">Enter your nickname</string>
+    <string name="enterBioDesc">Tell us about yourself.</string>
+    <string name="moreProfileImageDesc">Profile Image</string>
+    <string name="profileChangeDesc">Change Profile Image</string>
+    <string name="profileSettingNickNameTitle">Nickname</string>
+    <string name="profileSettingBioTitle">Bio</string>
+    <string name="alreadyUsedNickNameGuide">Nickname already in use.</string>
+    <string name="nicknameCheckFail">Nickname check failed.\nPlease try again.</string>
 
-    <!-- 버킷 상세 -->
-    <string name="loadBucketFail">버킷리스트 로드 실패</string>
-    <string name="achieveBucketFail">버킷리스트 달성 실패</string>
-    <string name="togetherImageDesc">함께하는 버킷리스트</string>
+    <!-- Bucket Detail -->
+    <string name="loadBucketFail">Failed to load bucket list</string>
+    <string name="achieveBucketFail">Failed to complete bucket list</string>
+    <string name="togetherImageDesc">Shared Bucket List</string>
 
-    <!-- 광고 id -->
+    <!-- Ad ID -->
     <string name="writeAdId">ca-app-pub-7493874486999773/1437019991</string>
     <string name="badgeAdId">ca-app-pub-6302671173915322/6244920706</string>
 
-    <!-- 뱃지 -->
-    <string name="badgeAchieveText">뱃지 챌린지 달성!</string>
-    <string name="badgeAchieveGrade">단계</string>
+    <!-- Badge -->
+    <string name="badgeAchieveText">Badge Challenge Achieved!</string>
+    <string name="badgeAchieveGrade">Level</string>
 
-    <!-- 웨이브 플러스 -->
-    <string name="wavePlus">웨이버 플러스</string>
-    <string name="wavePlusOption1_1"><![CDATA[<b><font color=#444444>모든</font><font color=#007bff> 광고제거</font></b>]]></string>
-    <string name="wavePlusOption1_2">클린한 웨이버 피드</string>
-    <string name="wavePlusOption2_1"><![CDATA[<b><font color=#444444>무제한</font><font color=#007bff> 함께하기 가능</font></b>]]></string>
-    <string name="wavePlusOption2_2">친구들과 더 많은 챌린지</string>
-    <string name="wavePlusOption3_1"><![CDATA[<b><font color=#444444>더 많은</font><font color=#007bff> 사진 업로드</font></b>]]></string>
-    <string name="wavePlusOption3_2">나만의 버킷리스트</string>
-    <string name="wavePlusOption4_1"><![CDATA[<b><font color=#444444>무제한</font><font color=#007bff> 버킷리스트</font></b>]]></string>
-    <string name="wavePlusOption4_2">나만의 다양한 챌린지</string>
-    <string name="wavePlusGuide1">버킷리스트</string>
-    <string name="wavePlusGuide2">제한없이</string>
-    <string name="wavePlusGuide3">즐기기</string>
-    <string name="payTitle1">할인된 요금</string>
-    <string name="payTitle2">으로</string>
-    <string name="payTitle3">웨이버 플러스</string>
-    <string name="payTitle4">혜택 즐기기</string>
-    <string name="yearPayText"><![CDATA[<font color=#222222><b>연간</b> 혜택 이용권</font>]]></string>
-    <string name="yearBenefit">1주일 무료 + 웨이버 플러스</string>
-    <string name="payPerMonth">월</string>
-    <string name="payPerMonthValue">4,166원</string>
-    <string name="payTotalYear">50,000원</string>
-    <string name="monthPayText"><![CDATA[<font color=#222222><b>월간</b> 혜택 이용권</font>]]></string>
-    <string name="monthBenefit">웨이버 플러스</string>
-    <string name="monthTotal">5,000원</string>
-    <string name="startWavePlus">웨이버 플러스 시작하기</string>
-    <string name="waverPlusBottomSheetDesc">버킷리스트 제한없이 즐기기</string>
-    <string name="waverPlusBottomSheetYear1">연간</string>
-    <string name="waverPlusBottomSheetYear2">50,000원 / 년</string>
-    <string name="waverPlusBottomSheetYear3">12개월(월 4,166원)</string>
-    <string name="waverPlusBottomSheetMonth1">월간</string>
-    <string name="waverPlusBottomSheetMonth2">5,000원 / 월</string>
-    <string name="waverPlusBottomSheetDesc1">무료체험은 1회만 가능합니다.</string>
-    <string name="waverPlusBottomSheetDesc2">무료체험 기간이 종료된 후, 유료 결제로 자동 전환됩니다.</string>
-    <string name="waverPlusBottomSheetDesc3">구독 취소는 플레이스토어 내에서 언제든지 가능합니다.</string>
-    <string name="waverPlusBottomSheetDesc4">결제 해지 및 환불 방법은 고객센터에서 확인가능합니다.</string>
-    <string name="waverPlusBottomSheetColorText">고객센터</string>
-    <string name="waverPlusBottomSheetButton">웨이버 플러스 구독하기</string>
+    <!-- Wave Plus -->
+    <string name="wavePlus">Waver Plus</string>
+    <string name="wavePlusOption1_1"><![CDATA[<b><font color=#444444>Remove</font><font color=#007bff> All Ads</font></b>]]></string>
+    <string name="wavePlusOption1_2">Clean Waver Feed</string>
+    <string name="wavePlusOption2_1"><![CDATA[<b><font color=#444444>Unlimited</font><font color=#007bff> Challenges Together</font></b>]]></string>
+    <string name="wavePlusOption2_2">More Challenges with Friends</string>
+    <string name="wavePlusOption3_1"><![CDATA[<b><font color=#444444>More</font><font color=#007bff> Photo Uploads</font></b>]]></string>
+    <string name="wavePlusOption3_2">Your Own Bucket List</string>
+    <string name="wavePlusOption4_1"><![CDATA[<b><font color=#444444>Unlimited</font><font color=#007bff> Bucket Lists</font></b>]]></string>
+    <string name="wavePlusOption4_2">More Personal Challenges</string>
+    <string name="wavePlusGuide1">Bucket List</string>
+    <string name="wavePlusGuide2">Without Limits</string>
+    <string name="wavePlusGuide3">Enjoy</string>
+    <string name="payTitle1">Discounted Price</string>
+    <string name="payTitle2">for</string>
+    <string name="payTitle3">Waver Plus</string>
+    <string name="payTitle4">Enjoy the Benefits</string>
+    <string name="yearPayText"><![CDATA[<font color=#222222><b>Annual</b> Subscription</font>]]></string>
+    <string name="yearBenefit">1 Week Free + Waver Plus</string>
+    <string name="payPerMonth">Per Month</string>
+    <string name="payPerMonthValue">4,166$</string>
+    <string name="payTotalYear">50,000$</string>
+    <string name="monthPayText"><![CDATA[<font color=#222222><b>Monthly</b> Subscription</font>]]></string>
+    <string name="monthBenefit">Waver Plus</string>
+    <string name="monthTotal">5,000$</string>
+    <string name="startWavePlus">Start Waver Plus</string>
+    <string name="waverPlusBottomSheetDesc">Enjoy Bucket Lists Without Limits</string>
+    <string name="waverPlusBottomSheetYear1">Annual</string>
+    <string name="waverPlusBottomSheetYear2">50,000$ / year</string>
+    <string name="waverPlusBottomSheetYear3">12 months (4,166/month)</string>
+    <string name="waverPlusBottomSheetMonth1">Monthly</string>
+    <string name="waverPlusBottomSheetMonth2">5,000$ / month</string>
+    <string name="waverPlusBottomSheetDesc1">Free trial available only once.</string>
+    <string name="waverPlusBottomSheetDesc2">Subscription will auto-renew after the trial period.</string>
+    <string name="waverPlusBottomSheetDesc3">You can cancel anytime via Play Store.</string>
+    <string name="waverPlusBottomSheetDesc4">Refunds and cancellations are handled by customer service.</string>
+    <string name="waverPlusBottomSheetColorText">Customer Service</string>
+    <string name="waverPlusBottomSheetButton">Subscribe to Waver Plus</string>
+
 </resources>
