@@ -1,6 +1,6 @@
 <resources>
     <string name="writeGoToNext">Next</string>
-    <string name="writeGoToFinish">Finish</string>
+    <string name="writeGoToFinish">Done</string>
     <string name="writeTitleHintText">Write a new goal</string>
     <string name="writeMemoHintText">Write a memo</string>
     <string name="addMemoDesc">Add memo</string>

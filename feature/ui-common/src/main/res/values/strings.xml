@@ -5,7 +5,7 @@
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
     <string name="proceedingText">In Progress</string>
-    <string name="succeedText">Completed</string>
+    <string name="succeedText">Done</string>
     <string name="blank"> </string>
     <string name="hide">Hide</string>
     <string name="report">Report</string>
@@ -54,7 +54,7 @@
     <string name="bucketImage">Image</string>
 
     <!-- Title View -->
-    <string name="finishDesc">Completed</string>
+    <string name="finishDesc">Done</string>
 
     <!-- Category -->
     <string name="addNewCategoryTitle">Add Category</string>

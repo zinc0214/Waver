@@ -1,6 +1,6 @@
 <resources>
     <!-- Detail -->
-    <string name="successButtonText">Completed</string>
+    <string name="successButtonText">Done</string>
     <string name="likeButtonDesc">Like button</string>
     <string name="commentButtonDesc">Tag button</string>
     <string name="commentSendButtonDesc">Send comment button</string>
