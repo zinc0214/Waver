@@ -11,6 +11,7 @@
     <string name="report">Report</string>
     <string name="edit">Edit</string>
     <string name="edit2">Edit</string>
+    <string name="block">Block</string>
     <string name="delete">Delete</string>
     <string name="next">Next</string>
     <string name="countChange">Change Completion Count</string>
@@ -99,16 +100,16 @@
     <!-- Wave Plus -->
     <string name="wavePlus">Waver Plus</string>
     <string name="wavePlusOption1_1"><![CDATA[<b><font color=#444444>Remove</font><font color=#007bff> All Ads</font></b>]]></string>
-    <string name="wavePlusOption1_2">Clean Waver Feed</string>
-    <string name="wavePlusOption2_1"><![CDATA[<b><font color=#444444>Unlimited</font><font color=#007bff> Challenges Together</font></b>]]></string>
-    <string name="wavePlusOption2_2">More Challenges with Friends</string>
-    <string name="wavePlusOption3_1"><![CDATA[<b><font color=#444444>More</font><font color=#007bff> Photo Uploads</font></b>]]></string>
-    <string name="wavePlusOption3_2">Your Own Bucket List</string>
-    <string name="wavePlusOption4_1"><![CDATA[<b><font color=#444444>Unlimited</font><font color=#007bff> Bucket Lists</font></b>]]></string>
-    <string name="wavePlusOption4_2">More Personal Challenges</string>
-    <string name="wavePlusGuide1">Bucket List</string>
+    <string name="wavePlusOption1_2">A Clean Waver Feed</string>
+    <string name="wavePlusOption2_1"><![CDATA[<b><font color=#444444>Unlimited</font><font color=#007bff> Collaboration</font></b>]]></string>
+    <string name="wavePlusOption2_2">Challenge with Friends</string>
+    <string name="wavePlusOption3_1"><![CDATA[<b><font color=#444444>Upload</font><font color=#007bff> More Photos</font></b>]]></string>
+    <string name="wavePlusOption3_2">Your Personal Bucket List</string>
+    <string name="wavePlusOption4_1"><![CDATA[<b><font color=#007bff>Unlimited Bucket Lists</font></b>]]></string>
+    <string name="wavePlusOption4_2">Create Various Challenges</string>
+    <string name="wavePlusGuide1">Enjoy Your Bucket List</string>
     <string name="wavePlusGuide2">Without Limits</string>
-    <string name="wavePlusGuide3">Enjoy</string>
+    <string name="wavePlusGuide3"> </string>
     <string name="payTitle1">Discounted Price</string>
     <string name="payTitle2">for</string>
     <string name="payTitle3">Waver Plus</string>

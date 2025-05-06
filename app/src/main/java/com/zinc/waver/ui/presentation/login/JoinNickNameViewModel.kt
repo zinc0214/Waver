@@ -55,6 +55,7 @@ class JoinNickNameViewModel @Inject constructor(
 
         viewModelScope.launch(ceh(_failCheckNickname, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
+                _failCheckNickname.value = false
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
                     _isAlreadyUsedNickName.value = false
@@ -108,9 +109,8 @@ class JoinNickNameViewModel @Inject constructor(
                 val res = loginByEmail(email)
                 if (res.success) {
                     preferenceDataStoreModule.setLoginEmail(email)
-                    res.data?.let { token ->
-                        preferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
-                        preferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
+                    res.accessToken.let { token ->
+                        preferenceDataStoreModule.setAccessToken("Bearer $token")
                     }
                     _goToLogin.value = true
                 } else {

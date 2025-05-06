@@ -44,15 +44,19 @@ import com.zinc.waver.model.DetailAppBarClickEvent
 import com.zinc.waver.model.DetailClickEvent
 import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.model.DetailLoadFailStatus
+import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.model.ReportInfo
 import com.zinc.waver.model.ReportType
 import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.model.WriteCategoryInfo
 import com.zinc.waver.model.WriteOpenType
+import com.zinc.waver.ui.design.theme.Gray7
+import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.util.Keyboard
 import com.zinc.waver.ui.design.util.isLastItemVisible
 import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_detail.component.DetailSuccessButtonView
 import com.zinc.waver.ui_detail.component.DetailTopAppBar
@@ -82,6 +86,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalTime
+import com.zinc.waver.ui_detail.R as DetailR
 
 @Composable
 fun OpenDetailScreen(
@@ -165,6 +170,10 @@ fun OpenDetailScreen(
 
                 OpenBucketDetailInternalEvent.ViewModelEvent.DeleteBucket -> {
                     viewModel.deleteMyBucket()
+                }
+
+                OpenBucketDetailInternalEvent.ViewModelEvent.BlockUser -> {
+                    viewModel.blockBucketWriter()
                 }
             }
         }
@@ -344,12 +353,13 @@ private fun InternalOpenDetailScreen(
             }
 
             // 최하단 EditTextView
-            Column(modifier = Modifier
-                .constrainAs(editView) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }) {
+            Column(
+                modifier = Modifier
+                    .constrainAs(editView) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }) {
                 AnimatedVisibility(
                     isAvailableShowComment,
                     enter = slideInVertically(initialOffsetY = { it / 2 })
@@ -536,8 +546,8 @@ private fun handleMoreEvent(
 
         is OpenBucketDetailInternalEvent.BucketMore.Other -> {
             when (moreEvent.event) {
-                is OtherBucketMenuEvent.GoToHide -> {
-                    // TODO : 다른사람 버킷 숨기기
+                is OtherBucketMenuEvent.GoToBlock -> {
+
                 }
 
                 is OtherBucketMenuEvent.GoToReport -> {
@@ -608,6 +618,7 @@ private fun ShowOptionEvent(
         }
 
         OpenBucketDetailInternalEvent.CommentTagListDialog -> TODO()
+
         is OpenBucketDetailInternalEvent.CommentOption -> {
             val commenter = commentList[internalEvent.index]
 
@@ -687,6 +698,27 @@ private fun ShowOptionEvent(
                 achieve = {},
                 backPress = {},
                 updateInternalEvent = updateInternalEvent
+            )
+        }
+
+        is OpenBucketDetailInternalEvent.BlockUserCheck -> {
+            CommonDialogView(
+                message = stringResource(DetailR.string.userBlockConfirmTitle),
+                dismissAvailable = false,
+                leftButtonInfo = DialogButtonInfo(
+                    text = R.string.cancel,
+                    color = Gray7
+                ),
+                leftButtonEvent = {
+                    updateInternalEvent(OpenBucketDetailInternalEvent.None)
+                },
+                rightButtonInfo = DialogButtonInfo(
+                    text = R.string.block,
+                    color = Main4
+                ),
+                rightButtonEvent = {
+                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BlockUser)
+                }
             )
         }
 

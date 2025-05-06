@@ -16,6 +16,7 @@ import com.zinc.domain.usecases.detail.HideBucketComment
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
+import com.zinc.domain.usecases.other.RequestBlockUser
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.CommentMentionInfo
 import com.zinc.waver.model.DetailLoadFailStatus
@@ -37,7 +38,8 @@ class DetailViewModel @Inject constructor(
     private val goalCountUpdate: GoalCountUpdate,
     private val saveBucketLike: SaveBucketLike,
     private val hideBucketComment: HideBucketComment,
-    private val deleteMyBucket: DeleteMyBucket
+    private val deleteMyBucket: DeleteMyBucket,
+    private val requestBlockUser: RequestBlockUser
 ) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
@@ -126,6 +128,21 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun blockBucketWriter() {
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
+            writerId?.let {
+                requestBlockUser.invoke(it).apply {
+                    Log.e("ayhan", "response : $this")
+                    if (success) {
+                        _goToBack.value = true
+                    } else {
+                        _loadFail.value = DetailLoadFailStatus.LoadFail
+                    }
+                }
+            }
+        }
+    }
+
     fun getBucketDetail(
         bucketId: String,
         writerId: String?,
@@ -138,7 +155,6 @@ class DetailViewModel @Inject constructor(
         this.isMine = isMine
 
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
-            // TODO : 다른사람 프로필 조회도 필요해!!!
             val job1 = launch { getBucketDetailData(bucketId, isMine) }
             val job2 = launch { getProfileInfo(isMine = isMine, writerId = writerId) }
 

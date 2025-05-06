@@ -38,6 +38,9 @@ sealed interface OpenBucketDetailInternalEvent {
     // 버킷 달성 횟수 수정
     data class ShowUpdateGoalCountDialog(val count: Int) : OpenBucketDetailInternalEvent
 
+    // 유저 차단 팝업 노출
+    data object BlockUserCheck : OpenBucketDetailInternalEvent
+
     // 버킷 우측상단 옵션선택
     sealed interface BucketMore : OpenBucketDetailInternalEvent {
         data class My(val event: MyBucketMoreMenuEvent) : BucketMore
@@ -69,6 +72,9 @@ sealed interface OpenBucketDetailInternalEvent {
 
         // 버킷 삭제
         data object DeleteBucket : ViewModelEvent
+
+        // 유저 차단
+        data object BlockUser : OpenBucketDetailInternalEvent
     }
 
 }

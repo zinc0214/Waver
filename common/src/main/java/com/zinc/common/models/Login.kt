@@ -39,7 +39,7 @@ data class LoadTokenByEmailRequest(
 )
 
 data class LoadTokenByEmailResponse(
-    val data: JoinAccessToken?,
+    val accessToken: String,
     val success: Boolean,
     val code: String,
     val message: String

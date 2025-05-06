@@ -34,9 +34,8 @@ class JoinEmailViewModel @Inject constructor(
             runCatching {
                 val res = loginByEmail(email)
                 if (res.success) {
-                    res.data?.let { token ->
-                        preferenceDataStoreModule.setAccessToken("Bearer ${token.accessToken}")
-                        preferenceDataStoreModule.setRefreshToken("Bearer ${token.refreshToken}")
+                    res.accessToken.let { token ->
+                        preferenceDataStoreModule.setAccessToken("Bearer $token")
                     }
                     _isAlreadyUsedEmail.value = true
                 } else {

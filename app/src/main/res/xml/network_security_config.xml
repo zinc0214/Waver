@@ -2,7 +2,8 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="true" />
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">http://100.24.67.193</domain>
-        <domain includeSubdomains="true">100.24.67.193</domain>
+        <domain includeSubdomains="true">http://3.35.9.200</domain>
+        <domain includeSubdomains="true">3.35.9.200</domain>
+        <domain includeSubdomains="true">3.35.9.200:8080</domain>
     </domain-config>
 </network-security-config>

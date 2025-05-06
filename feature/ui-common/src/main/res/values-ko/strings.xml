@@ -9,6 +9,7 @@
     <string name="blank"> </string>
     <string name="hide">숨기기</string>
     <string name="report">신고</string>
+    <string name="block">차단</string>
     <string name="edit">수정</string>
     <string name="edit2">편집</string>
     <string name="delete">삭제</string>

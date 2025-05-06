@@ -8,6 +8,6 @@ interface MyBucketMoreMenuEvent {
 
 
 interface OtherBucketMenuEvent {
-    object GoToHide : OtherBucketMenuEvent
+    object GoToBlock : OtherBucketMenuEvent
     object GoToReport : OtherBucketMenuEvent
 }

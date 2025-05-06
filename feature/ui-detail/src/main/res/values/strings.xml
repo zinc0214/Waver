@@ -17,4 +17,6 @@
     <string name="commentDelete">Delete</string>
     <string name="commentHide">Hide</string>
     <string name="commentReport">Report</string>
+
+    <string name="userBlockConfirmTitle">Blocking this bucket list will make it unavailable.\nAre you sure you want to block it?</string>
 </resources>
