@@ -54,7 +54,7 @@ class FeedViewModel @Inject constructor(
                     } else if (this.success.not()) {
                         _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
                     } else {
-                        _feedItems.value = this.data.toUIModel()
+                        _feedItems.value = this.toUIModel()
                     }
                     _loadStatusEvent.value = FeedLoadStatus.Success
                 }

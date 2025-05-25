@@ -33,7 +33,7 @@ data class UIFeedInfo(
     }
 }
 
-fun FeedListResponse.FeedData.toUIModel() = this.list.map { item ->
+fun FeedListResponse.toUIModel() = this.data.map { item ->
     UIFeedInfo(
         bucketId = item.id,
         writerId = item.user.id,
