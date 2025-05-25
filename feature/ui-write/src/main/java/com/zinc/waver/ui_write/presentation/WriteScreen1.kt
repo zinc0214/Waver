@@ -497,9 +497,9 @@ fun WriteScreen1(
         if (showWaverPlus.value) {
             WaverPlusGuideScreen(onBackPressed = {
                 showWaverPlus.value = false
-            }) { type ->
+            }, inAppBillingShow = { type ->
                 event.invoke(WriteEvent.ActivityAction(ActionWithActivity.InAppBilling(type)))
-            }
+            })
         }
     }
 }

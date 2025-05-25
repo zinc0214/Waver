@@ -43,20 +43,24 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.HtmlText2
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R
+import java.util.Locale
 
 @Composable
-internal fun WavePlusPayView(modifier: Modifier = Modifier) {
+internal fun WavePlusPayView(locale: Locale, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(top = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WavePlusPayTitleView(modifier = Modifier.align(Alignment.CenterHorizontally))
+        WavePlusPayTitleView(
+            locale = locale,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        WavePlusPayYearView()
+        WavePlusPayYearView(locale = locale)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -66,7 +70,7 @@ internal fun WavePlusPayView(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
+private fun WavePlusPayTitleView(locale: Locale, modifier: Modifier = Modifier) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
@@ -88,12 +92,19 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
 
         MyText(
             text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Sub_D3, fontWeight = FontWeight.Bold)) {
-                    append(stringResource(id = R.string.payTitle1))
+                if (locale == Locale.KOREA) {
+                    withStyle(style = SpanStyle(color = Sub_D3, fontWeight = FontWeight.Bold)) {
+                        append(stringResource(id = R.string.payTitle1))
+                    }
+                    withStyle(style = SpanStyle(color = Gray9, fontWeight = FontWeight.Bold)) {
+                        append(stringResource(id = R.string.payTitle2))
+                    }
+                } else {
+                    withStyle(style = SpanStyle(color = Gray9, fontWeight = FontWeight.Bold)) {
+                        append(stringResource(id = R.string.payTitle1))
+                    }
                 }
-                withStyle(style = SpanStyle(color = Gray9, fontWeight = FontWeight.Bold)) {
-                    append(stringResource(id = R.string.payTitle2))
-                }
+
             },
             fontSize = dpToSp(dp = 22.dp),
             modifier = Modifier
@@ -113,7 +124,36 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
                 val (titleF, divider) = createRefs()
 
                 MyText(
-                    text = stringResource(id = R.string.payTitle3),
+                    text = buildAnnotatedString {
+                        if (locale == Locale.KOREA) {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Main4,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(stringResource(id = R.string.payTitle3))
+                            }
+                        } else {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Gray9,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(stringResource(id = R.string.payTitle2))
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Main4,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
+                                append(" " + stringResource(id = R.string.payTitle3))
+                            }
+                        }
+
+                    },
                     color = Main4,
                     fontWeight = FontWeight.Bold,
                     fontSize = dpToSp(dp = 22.dp),
@@ -123,30 +163,34 @@ fun WavePlusPayTitleView(modifier: Modifier = Modifier) {
                         top.linkTo(parent.top)
                     })
 
-                Divider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .constrainAs(divider) {
-                            start.linkTo(titleF.start)
-                            end.linkTo(titleF.end)
-                            top.linkTo(titleF.bottom)
-                            width = Dimension.fillToConstraints
-                        }, thickness = 2.dp, color = Main4
-                )
+                if (locale == Locale.KOREA) {
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .constrainAs(divider) {
+                                start.linkTo(titleF.start)
+                                end.linkTo(titleF.end)
+                                top.linkTo(titleF.bottom)
+                                width = Dimension.fillToConstraints
+                            }, thickness = 2.dp, color = Main4
+                    )
+                }
             }
 
-            MyText(
-                text = " " + stringResource(id = R.string.payTitle4),
-                color = Gray9,
-                fontWeight = FontWeight.Bold,
-                fontSize = dpToSp(dp = 22.dp)
-            )
+            if (locale == Locale.KOREA) {
+                MyText(
+                    text = " " + stringResource(id = R.string.payTitle4),
+                    color = Gray9,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = dpToSp(dp = 22.dp)
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun WavePlusPayYearView(modifier: Modifier = Modifier) {
+private fun WavePlusPayYearView(locale: Locale, modifier: Modifier = Modifier) {
 
     Column(
         modifier = modifier
@@ -188,26 +232,28 @@ private fun WavePlusPayYearView(modifier: Modifier = Modifier) {
                 )
             )
 
-            MyText(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = Gray9, fontWeight = FontWeight.Bold)) {
-                        append(stringResource(id = R.string.payPerMonth) + " ")
-                    }
-                    withStyle(style = SpanStyle(color = Main4, fontWeight = FontWeight.Bold)) {
-                        append(stringResource(id = R.string.payPerMonthValue))
-                    }
-                },
-                fontWeight = FontWeight.SemiBold,
-                fontSize = dpToSp(
-                    dp = 14.dp
-                ),
-                modifier = Modifier
-                    .padding(start = 8.5.dp)
-                    .background(
-                        color = Main1, shape = RoundedCornerShape(4.dp)
-                    )
-                    .padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 3.dp)
-            )
+            if (locale == Locale.KOREA) {
+                MyText(
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Gray9, fontWeight = FontWeight.Bold)) {
+                            append(stringResource(id = R.string.payPerMonth) + " ")
+                        }
+                        withStyle(style = SpanStyle(color = Main4, fontWeight = FontWeight.Bold)) {
+                            append(stringResource(id = R.string.payPerMonthValue))
+                        }
+                    },
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = dpToSp(
+                        dp = 14.dp
+                    ),
+                    modifier = Modifier
+                        .padding(start = 8.5.dp)
+                        .background(
+                            color = Main1, shape = RoundedCornerShape(4.dp)
+                        )
+                        .padding(start = 10.dp, end = 10.dp, top = 1.dp, bottom = 3.dp)
+                )
+            }
         }
 
         MyText(
@@ -295,5 +341,5 @@ fun WavePlusPayMonthView(modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun WavePlusPayPreView() {
-    WavePlusPayView()
+    WavePlusPayView(locale = Locale.ENGLISH)
 }

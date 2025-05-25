@@ -275,7 +275,8 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUpBilling(type: WaverPlusType, isForPurchase: Boolean) {
-        val subs = ChooseSubscription(this,
+        val subs = ChooseSubscription(
+            this,
             isForPurchase = isForPurchase,
             subsDone = {
                 viewModel.updateWaverPlus(true)

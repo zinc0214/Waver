@@ -31,23 +31,32 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray11
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.model.WaverPlusType
+import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.DpToPx
 import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-fun WaverPlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlusType) -> Unit) {
+fun WaverPlusGuideScreen(
+    onBackPressed: () -> Unit,
+    inAppBillingShow: (WaverPlusType) -> Unit,
+    viewModel: CommonViewModel = hiltViewModel()
+) {
 
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     var scrollPosition by remember { mutableIntStateOf(0) }
+    val locale = context.resources.configuration.locales.get(0)
 
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.value }
@@ -110,7 +119,7 @@ fun WaverPlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlus
 
                 WavePlusTopView()
 
-                WavePlusPayView()
+                WavePlusPayView(locale)
 
                 Spacer(modifier = Modifier.height(45.dp))
 
@@ -125,7 +134,8 @@ fun WaverPlusGuideScreen(onBackPressed: () -> Unit, inAppBillingShow: (WaverPlus
                     .background(color = closeButtonBg)
             ) {
                 Column {
-                    IconButton(image = CommonR.drawable.btn_40_close,
+                    IconButton(
+                        image = CommonR.drawable.btn_40_close,
                         contentDescription = stringResource(id = CommonR.string.closeDesc),
                         modifier = Modifier
                             .padding(start = 14.dp, top = 8.dp, bottom = 8.dp)

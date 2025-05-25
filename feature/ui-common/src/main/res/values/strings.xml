@@ -110,18 +110,18 @@
     <string name="wavePlusGuide1">Enjoy Your Bucket List</string>
     <string name="wavePlusGuide2">Without Limits</string>
     <string name="wavePlusGuide3"> </string>
-    <string name="payTitle1">Discounted Price</string>
-    <string name="payTitle2">for</string>
+    <string name="payTitle1">Enjoy More for</string>
+    <string name="payTitle2">Less with</string>
     <string name="payTitle3">Waver Plus</string>
-    <string name="payTitle4">Enjoy the Benefits</string>
-    <string name="yearPayText"><![CDATA[<font color=#222222><b>Annual</b> Subscription</font>]]></string>
+    <string name="payTitle4"> </string>
+    <string name="yearPayText"><![CDATA[<font color=#222222><b>Annual Plan</b></font>]]></string>
     <string name="yearBenefit">1 Week Free + Waver Plus</string>
     <string name="payPerMonth">Per Month</string>
     <string name="payPerMonthValue">4,166$</string>
-    <string name="payTotalYear">50,000$</string>
-    <string name="monthPayText"><![CDATA[<font color=#222222><b>Monthly</b> Subscription</font>]]></string>
+    <string name="payTotalYear">$38.50/year</string>
+    <string name="monthPayText"><![CDATA[<font color=#222222><b>Monthly Plan</b></font>]]></string>
     <string name="monthBenefit">Waver Plus</string>
-    <string name="monthTotal">5,000$</string>
+    <string name="monthTotal">$3.85/month</string>
     <string name="startWavePlus">Start Waver Plus</string>
     <string name="waverPlusBottomSheetDesc">Enjoy Bucket Lists Without Limits</string>
     <string name="waverPlusBottomSheetYear1">Annual</string>
