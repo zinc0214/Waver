@@ -39,8 +39,12 @@ data class LoadTokenByEmailRequest(
 )
 
 data class LoadTokenByEmailResponse(
-    val accessToken: String,
+    val data: AccessTokenDto,
     val success: Boolean,
     val code: String,
     val message: String
+)
+
+data class AccessTokenDto(
+    val accessToken: String
 )

@@ -109,7 +109,7 @@ class JoinNickNameViewModel @Inject constructor(
                 val res = loginByEmail(email)
                 if (res.success) {
                     preferenceDataStoreModule.setLoginEmail(email)
-                    res.accessToken.let { token ->
+                    res.data.accessToken.let { token ->
                         preferenceDataStoreModule.setAccessToken("Bearer $token")
                     }
                     _goToLogin.value = true

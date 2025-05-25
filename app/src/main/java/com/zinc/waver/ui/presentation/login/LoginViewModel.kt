@@ -56,9 +56,9 @@ class LoginViewModel @Inject constructor(
         _loginFail.value = false
         viewModelScope.launch(ceh(_loginFail, true)) {
             val result = loginByEmail(email)
-            Log.e("ayhan", "loadUserToken result : ${result.accessToken}")
+            Log.e("ayhan", "loadUserToken result : ${result.data.accessToken}")
             if (result.success) {
-                val data = result.accessToken
+                val data = result.data.accessToken
                 preferenceDataStoreModule.setAccessToken("Bearer $data")
                 preferenceDataStoreModule.setLoginEmail(email)
                 _goToMain.value = true
