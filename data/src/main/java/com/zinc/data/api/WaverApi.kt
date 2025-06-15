@@ -24,8 +24,6 @@ import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.FeedListResponse
-import com.zinc.domain.models.OtherBucketListResponse
-import com.zinc.domain.models.OtherFollowDataResponse
 import com.zinc.domain.models.OtherHomeResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
@@ -268,14 +266,6 @@ interface WaverApi {
     suspend fun loadOtherProfileInfo(
         @Query("otherUserId") id: String,
     ): ProfileResponse
-
-    @GET("/waver/other/bucketlist/{otherUserId}")
-    suspend fun loadOtherBucketList(
-        @Path("otherUserId") id: String,
-    ): OtherBucketListResponse
-
-    @GET("/waver/other/follow/count/{otherUserId}")
-    suspend fun loadOtherFollowData(@Path("otherUserId") id: String): OtherFollowDataResponse
 
     @GET("/waver/my/{otherUserId}")
     suspend fun loadOtherHome(@Path("otherUserId") id: String): OtherHomeResponse
