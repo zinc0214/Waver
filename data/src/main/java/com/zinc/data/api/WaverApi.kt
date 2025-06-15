@@ -67,7 +67,7 @@ interface WaverApi {
     suspend fun loadMyProfileInfo(): HomeProfileResponse
 
     // 전체버킷리스트 조회
-    @GET("/waver/bucketList")
+    @GET("/waver/bucket")
     suspend fun loadAllBucketList(
         @Query("dDayBucketOnly") dDayBucketOnly: String? = null,
         @Query("isPassed") isPassed: String? = null,

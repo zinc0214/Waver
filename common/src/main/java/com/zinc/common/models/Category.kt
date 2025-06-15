@@ -15,7 +15,7 @@ data class CategoryInfo(
     val id: Int,
     val name: String,
     val defaultYn: YesOrNo = YesOrNo.Y,
-    val bucketlistCount: String
+    val bucketCount: String
 )
 
 @Serializable

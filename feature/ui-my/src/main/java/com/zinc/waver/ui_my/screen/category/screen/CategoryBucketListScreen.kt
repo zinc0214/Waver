@@ -66,6 +66,8 @@ fun CategoryBucketListScreen(
     LaunchedEffect(key1 = apiFailed) {
         if (apiFailed is CategoryLoadFailStatus.BucketLoadFail) {
             showApiFail.value = true
+        } else {
+            showApiFail.value = false
         }
     }
 

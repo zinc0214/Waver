@@ -133,7 +133,7 @@ private fun CategorySelectBottomScreenPreview() {
                     id = it,
                     name = "여행+$it",
                     defaultYn = YesOrNo.Y,
-                    bucketlistCount = "10"
+                    bucketCount = "10"
                 )
             )
         }

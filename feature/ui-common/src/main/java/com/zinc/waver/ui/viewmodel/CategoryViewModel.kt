@@ -40,8 +40,8 @@ class CategoryViewModel @Inject constructor(
     private val _categoryBucketList = MutableLiveData<List<UIBucketInfoSimple>>()
     val categoryBucketList: LiveData<List<UIBucketInfoSimple>> get() = _categoryBucketList
 
-    private val _loadFail = SingleLiveEvent<CategoryLoadFailStatus>()
-    val loadFail: LiveData<CategoryLoadFailStatus> get() = _loadFail
+    private val _loadFail = SingleLiveEvent<CategoryLoadFailStatus?>()
+    val loadFail: LiveData<CategoryLoadFailStatus?> get() = _loadFail
 
     private var orderType = AllBucketListSortType.CREATED
 

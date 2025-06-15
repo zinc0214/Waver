@@ -28,7 +28,7 @@ fun List<CategoryInfo>.parseUI() = map {
         id = it.id,
         name = it.name,
         defaultYn = it.defaultYn,
-        count = it.bucketlistCount
+        count = it.bucketCount
     )
 }
 
