@@ -47,7 +47,7 @@ internal fun WavePlusGuideOptionView(option: WaverPlusOption, modifier: Modifier
                 contentScale = ContentScale.FillWidth
             )
 
-            Column(modifier = Modifier.padding(start = 40.dp)) {
+            Column(modifier = Modifier.padding(start = 28.dp)) {
                 HtmlText2(
                     html = option.title,
                     fontSize = 15.dp
