@@ -240,7 +240,7 @@ interface WaverApi {
     suspend fun saveBucketLike(@Path("id") id: String): CommonResponse
 
     // 피드 > 다른사람 버킷리스트 상세
-    @GET("/waver/bucketlist/{id}")
+    @GET("/waver/bucket/{id}")
     suspend fun loadOtherBucketDetail(@Path("id") id: String): BucketDetailResponse
 
     // 버킷리스트 상세 > 댓글 달기
@@ -263,9 +263,9 @@ interface WaverApi {
     @GET("/waver/follow/mutual")
     suspend fun loadWriteSelectableFriends(): LoadWriteSelectableFriendsResponse
 
-    @GET("/waver/other/profile/{otherUserId}")
+    @GET("/waver/user/profile")
     suspend fun loadOtherProfileInfo(
-        @Path("otherUserId") id: String,
+        @Query("otherUserId") id: String,
     ): ProfileResponse
 
     @GET("/waver/other/bucketlist/{otherUserId}")

@@ -18,8 +18,8 @@ data class DetailInfo(
     val memo: String?,
     val exposureStatus: ExposureStatus,
     val status: CompleteStatus,
-    val pin: String,
-    val scrapYn: YesOrNo,
+    val pin: YesOrNo,
+    val complete: YesOrNo,
     val isMine: YesOrNo,
     val isLike: YesOrNo,
     val category: Category,
@@ -27,7 +27,7 @@ data class DetailInfo(
     val userCount: Int,
     val keywords: List<Keyword>,
     val completedDt: String?,
-    val friendUserIds: List<String>?,
+    val friendUsers: List<FriendUser>?,
     val images: List<String>?,
     val comment: List<Comment>?
 ) {
@@ -39,6 +39,12 @@ data class DetailInfo(
     enum class ExposureStatus {
         PUBLIC, FOLLOWER, PRIVATE
     }
+
+    @Serializable
+    data class FriendUser(
+        val id: String,
+        val name: String
+    )
 
     @Serializable
     data class Comment(
@@ -59,7 +65,7 @@ data class DetailInfo(
 
     @Serializable
     data class Keyword(
-        val id: String,
+        val id: String?,
         val name: String
     )
 }
