@@ -2,6 +2,7 @@ package com.zinc.waver.ui_detail.screen
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Column
@@ -309,6 +310,7 @@ private fun InternalOpenDetailScreen(
                         }
 
                         is DetailClickEvent.GoToOtherProfile -> {
+                            Log.e("ayhan", "GoToOtherProfile : ${it.id}")
                             goToOutEvent.invoke(OpenBucketDetailEvent2.GoToOtherProfile(it.id))
                         }
                     }

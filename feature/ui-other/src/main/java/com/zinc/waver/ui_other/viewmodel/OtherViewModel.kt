@@ -9,6 +9,7 @@ import com.zinc.domain.usecases.other.LoadOtherInfo
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.waver.ui.viewmodel.CommonViewModel
+import com.zinc.waver.ui_other.model.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,14 +28,15 @@ class OtherViewModel @Inject constructor(
     val otherHomeData: LiveData<OtherProfileHomeData> get() = _otherHomeData
 
     fun loadOtherInfo(userId: String) {
+        Log.e("ayhan", "loadOther : userId : $userId")
         _loadFail.value = false
         viewModelScope.launch(ceh(_loadFail, true)) {
             val result = loadOtherInfo.invoke(userId)
             Log.e("ayhan", "loadOtherInfo : $result")
-            if (result == null || !result.isSuccess || result.data == null) {
-                _loadFail.value = true
+            if (result.success) {
+                _otherHomeData.value = result.data.toUiModel()
             } else {
-                _otherHomeData.value = result.data
+                _loadFail.value = true
             }
         }
     }
@@ -44,7 +46,7 @@ class OtherViewModel @Inject constructor(
             if (follow) {
                 val result = followUser.invoke(userId)
                 if (result.success) {
-                    updateProfile(true)
+                    loadOtherInfo(userId)
                     _loadFail.value = false
                 } else {
                     _loadFail.value = true
@@ -52,22 +54,12 @@ class OtherViewModel @Inject constructor(
             } else {
                 val result = unfollowUser.invoke(userId)
                 if (result.success) {
-                    updateProfile(false)
+                    loadOtherInfo(userId)
                     _loadFail.value = false
                 } else {
                     _loadFail.value = true
                 }
             }
         }
-    }
-
-    private fun updateProfile(updateFollow: Boolean) {
-        if (otherHomeData.value == null) return
-
-        val topProfile = otherHomeData.value!!.profile
-        val updateProfile = topProfile.copy(isFollowed = updateFollow)
-        val updateData = otherHomeData.value?.copy(profile = updateProfile)
-
-        _otherHomeData.value = updateData
     }
 }

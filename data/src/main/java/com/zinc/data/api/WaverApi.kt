@@ -26,6 +26,7 @@ import com.zinc.common.models.YesOrNo
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.OtherBucketListResponse
 import com.zinc.domain.models.OtherFollowDataResponse
+import com.zinc.domain.models.OtherHomeResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
 import com.zinc.domain.models.SearchRecommendResponse
@@ -275,6 +276,9 @@ interface WaverApi {
 
     @GET("/waver/other/follow/count/{otherUserId}")
     suspend fun loadOtherFollowData(@Path("otherUserId") id: String): OtherFollowDataResponse
+
+    @GET("/waver/my/{otherUserId}")
+    suspend fun loadOtherHome(@Path("otherUserId") id: String): OtherHomeResponse
 
     // 댓글 삭제
     @DELETE("/waver/comment/{id}")

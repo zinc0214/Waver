@@ -167,7 +167,7 @@ class DetailViewModel @Inject constructor(
             Log.e("ayhan", "getBucketDetail: $bucketDetailData , $profileInfo")
 
             _bucketBucketDetailUiInfo.value =
-                bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine)
+                bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine, writerId)
         }
     }
 

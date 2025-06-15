@@ -4,6 +4,7 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.WaverApi
 import com.zinc.domain.models.OtherBucketListResponse
 import com.zinc.domain.models.OtherFollowDataResponse
+import com.zinc.domain.models.OtherHomeResponse
 import com.zinc.domain.repository.OtherRepository
 import javax.inject.Inject
 
@@ -26,5 +27,9 @@ class OtherRepositoryImpl @Inject constructor(
         otherUserId: String
     ): OtherFollowDataResponse {
         return waverApi.loadOtherFollowData(otherUserId)
+    }
+
+    override suspend fun loadOtherHome(otherUserId: String): OtherHomeResponse {
+        return waverApi.loadOtherHome(otherUserId)
     }
 }

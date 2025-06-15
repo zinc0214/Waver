@@ -21,7 +21,8 @@ import com.zinc.waver.ui.util.toStringData
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
     profileInfo: ProfileInfo, // TODO : 글쓴사람 프로필로 바꿔야함
-    isMine: Boolean
+    isMine: Boolean,
+    writerId: String?
 ): BucketDetailUiInfo {
 
     val writerProfileInfoUi = DetailDescType.WriterProfileInfoUi(
@@ -29,7 +30,7 @@ fun bucketDetailResponseToUiModel(
         badgeImage = profileInfo.badgeImgUrl.orEmpty(),
         titlePosition = profileInfo.bio.orEmpty(),
         nickName = profileInfo.name,
-        userId = profileInfo.userId.orEmpty()
+        userId = writerId.orEmpty()
     )
 
     val descInfo = DetailDescType.CommonDetailDescInfo(
