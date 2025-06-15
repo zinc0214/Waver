@@ -132,7 +132,7 @@ private fun JoinCreateProfile1(
         remember { mutableStateOf(createProfileInfo.imgPath) }
 
     val isButtonEnabled =
-        nickNameData == checkedNickName && nickNameData.isNotEmpty() && !isAlreadyUsedNickName
+        nickNameData == checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && !isAlreadyUsedNickName
     val isAlreadyUsedName =
         checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
 
@@ -311,6 +311,16 @@ private fun ProfileNickNameEditView(
                 modifier = Modifier.padding(top = 7.5.dp),
                 text = stringResource(id = text),
                 color = Error2,
+                fontSize = dpToSp(dp = 12.dp)
+            )
+        }
+
+        if (prevNickName.length < 3) {
+            val text = CommonR.string.enterCharacter
+            MyText(
+                modifier = Modifier.padding(top = 7.5.dp),
+                text = stringResource(id = text),
+                color = Gray6,
                 fontSize = dpToSp(dp = 12.dp)
             )
         }

@@ -83,6 +83,7 @@
     <string name="profileSettingBioTitle">Bio</string>
     <string name="alreadyUsedNickNameGuide">Nickname already in use.</string>
     <string name="nicknameCheckFail">Nickname check failed.\nPlease try again.</string>
+    <string name="enterCharacter">Please enter at least 3 characters.</string>
 
     <!-- Bucket Detail -->
     <string name="loadBucketFail">Failed to load bucket list</string>
