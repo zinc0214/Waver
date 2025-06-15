@@ -77,7 +77,7 @@ class MoreViewModel @Inject constructor(
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
                     _isAlreadyUsedNickName.value = false
-                } else if (code == "3000") {
+                } else if (code == "6001") {
                     _isAlreadyUsedNickName.value = true
                 } else {
                     _profileUpdateFail.value = false

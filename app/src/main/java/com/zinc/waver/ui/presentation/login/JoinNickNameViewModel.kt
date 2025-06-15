@@ -59,7 +59,7 @@ class JoinNickNameViewModel @Inject constructor(
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
                     _isAlreadyUsedNickName.value = false
-                } else if (code == "3000") {
+                } else if (code == "6001") {
                     _isAlreadyUsedNickName.value = true
                 } else {
                     _failCheckNickname.value = true
