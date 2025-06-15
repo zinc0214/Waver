@@ -47,7 +47,7 @@ fun FeedListResponse.toUIModel() = this.data.map { item ->
         liked = item.likeYn?.isYes() ?: false,
         likeCount = item.like,
         commentCount = item.commentCount,
-        isScraped = item.isScraped
+        isScraped = item.scrapYn?.isYes() ?: false
     )
 }
 

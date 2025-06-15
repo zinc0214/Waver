@@ -20,7 +20,7 @@ data class FeedListResponse(
         val user: UserInfo,
         val like: Int,
         val commentCount: Int,
-        val isScraped: Boolean = false,
+        val scrapYn: YesOrNo?,
         val likeYn: YesOrNo?
 
     ) {
