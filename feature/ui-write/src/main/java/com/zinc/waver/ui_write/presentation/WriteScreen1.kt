@@ -311,7 +311,7 @@ fun WriteScreen1(
 
                     GOAL -> {
                         GoalCountBottomScreen(
-                            originCount = originCount.value.toString(),
+                            originCount = originCount.intValue.toString(),
                             canceled = {
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
@@ -322,7 +322,7 @@ fun WriteScreen1(
                                 )
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
-                                originCount.value = it.toInt()
+                                originCount.intValue = it.toInt()
                             })
                         isNeedToBottomSheetOpen.invoke(true)
                     }
@@ -459,10 +459,11 @@ fun WriteScreen1(
                             bottom.linkTo(parent.bottom)
                         },
                     currentClickedOptions = updatedWriteOptions.map { it.type() }.toSet(),
-                    optionClicked = { option ->
-                        val isAlreadySelected = updatedWriteOptions.find { it.type() == option }
+                    optionClicked = { clickedOption ->
+                        val isAlreadySelected =
+                            updatedWriteOptions.find { it.type() == clickedOption }
                         if (isAlreadySelected != null) {
-                            when (option) {
+                            when (clickedOption) {
                                 IMAGE,
                                 MEMO,
                                 CATEGORY,
@@ -472,10 +473,10 @@ fun WriteScreen1(
                                 }
                             }
                         } else {
-                            when (option) {
+                            when (clickedOption) {
                                 IMAGE -> {
                                     if (imageList.value.isEmpty()) {
-                                        selectedOption = option
+                                        selectedOption = clickedOption
                                     } else {
                                         updatedWriteOptions.add(
                                             WriteOption1Info.Images(imageList.value.map { it.path })
@@ -484,7 +485,7 @@ fun WriteScreen1(
                                 }
 
                                 MEMO, CATEGORY, D_DAY, GOAL -> {
-                                    selectedOption = option
+                                    selectedOption = clickedOption
                                 }
                             }
                         }
