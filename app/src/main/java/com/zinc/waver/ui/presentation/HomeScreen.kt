@@ -2,13 +2,17 @@ package com.zinc.waver.ui.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.ExposureStatus
@@ -72,305 +76,447 @@ fun HomeScreen(
                 .background(color = Gray1)
                 .navigationBarsPadding()
         ) {
-            Scaffold(
-                bottomBar = {
-                    if (appState.shouldShowBottomBar && shownBottomSheet.value.not()) {
-                        HomeBottomBar(
-                            tabs = appState.bottomBarTabs,
-                            currentRoute = appState.currentRoute!!,
-                            navigateToRoute = {
-                                appState.navigateToBottomBarRoute(it)
-                                appState.currentHomeRoute.value = it
-                            }
-                        ) {
-                            appState.navigateToWriteBucket(
-                                "NoId",
-                                appState.navController.currentBackStackEntry!!
-                            )
-                        }
-                    }
-                }, scaffoldState = appState.scaffoldState
-            ) { innerPaddingModifier ->
-                NavHost(
-                    navController = appState.navController,
-                    startDestination = HomeSections.MY.route,
-                    modifier = Modifier.padding(innerPaddingModifier)
-                ) {
-                    homeFeed(onFeedClicked = { bucketId, userId, nav ->
-                        appState.navigateToOpenBucketDetail(bucketId, userId, false, nav)
-                    })
-                    homeSearch(
-                        onSearchEvent = { event, nav ->
-                            when (event) {
-                                SearchGoToEvent.GoToSearch -> {
-                                    appState.navigateToSearch(nav)
-                                }
+            HomeScaffold(
+                appState = appState,
+                shownBottomSheet = shownBottomSheet,
+                action = action
+            )
+        }
+    }
+}
 
-                                is SearchGoToEvent.GoToOpenBucket -> {
-                                    appState.navigateToOpenBucketDetail(
-                                        event.bucketId,
-                                        event.userId,
-                                        false,
-                                        nav
-                                    )
-                                }
+@Composable
+private fun HomeScaffold(
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>,
+    action: (ActionWithActivity) -> Unit
+) {
+    Scaffold(
+        bottomBar = {
+            HomeBottomBarContent(
+                appState = appState,
+                shownBottomSheet = shownBottomSheet
+            )
+        },
+        scaffoldState = appState.scaffoldState
+    ) { padding ->
+        HomeNavHost(
+            appState = appState,
+            shownBottomSheet = shownBottomSheet,
+            action = action,
+            padding = padding
+        )
+    }
+}
 
-                                is SearchGoToEvent.GoToOtherUser -> {
-                                    appState.navigateToOtherHome(nav, event.id)
-                                }
-                            }
-                        },
-                    )
-                    homeMore(
-                        moreItemClicked = { type, nav ->
-                            when (type) {
-                                ALARM -> appState.navigateToMoreAlarmSetting(nav)
-                                BLOCK -> appState.navigateToMoreBlockSetting(nav)
-                                APP_INFO -> {
-                                    appState.navigateToMoreAppInfo(nav)
-                                }
+@Composable
+private fun HomeBottomBarContent(
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>
+) {
+    if (appState.shouldShowBottomBar && shownBottomSheet.value.not()) {
+        HomeBottomBar(
+            tabs = appState.bottomBarTabs,
+            currentRoute = appState.currentRoute!!,
+            navigateToRoute = {
+                appState.navigateToBottomBarRoute(it)
+                appState.currentHomeRoute.value = it
+            }
+        ) {
+            appState.navigateToWriteBucket(
+                "NoId",
+                appState.navController.currentBackStackEntry!!
+            )
+        }
+    }
+}
 
-                                PROFILE -> appState.navigateToMoreProfileSetting(nav)
-                                MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
-                                WAVE_PLUS -> appState.navigateToWavePlusGuide(nav)
-                                MoreItemType.CS_QNA -> action(ActionWithActivity.GoToQNAEmail)
-                                LOGOUT -> action(ActionWithActivity.Logout)
-                                else -> {
-                                    // Do Nothing
-                                }
-                            }
-                        },
-                        backPress = appState::backPress
-                    )
-                    homeMy(
-                        onBucketSelected = { selected, nav ->
-                            when (selected) {
-                                is HomeItemSelected.GoToDetailHomeItem -> {
-                                    if (selected.bucketInfo.exposureStatues == ExposureStatus.PRIVATE) {
-                                        appState.navigateToCloseBucketDetail(
-                                            selected.bucketInfo.id, nav
-                                        )
-                                    } else {
-                                        appState.navigateToOpenBucketDetail(
-                                            selected.bucketInfo.id, "NoId", true, nav
-                                        )
-                                    }
-                                }
+@Composable
+private fun HomeNavHost(
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>,
+    action: (ActionWithActivity) -> Unit,
+    padding: PaddingValues
+) {
+    NavHost(
+        navController = appState.navController,
+        startDestination = HomeSections.MY.route,
+        modifier = Modifier.padding(padding)
+    ) {
+        setupMainScreens(appState, shownBottomSheet, action)
+        setupDetailScreens(appState, action)
+        setupMoreScreens(appState, action)
+    }
+}
 
-                                is HomeItemSelected.GoToCategoryBucketList -> {
-                                    appState.navigateToCategoryBucketList(
-                                        selected.categoryInfo, nav
-                                    )
-                                }
+private fun NavGraphBuilder.setupMainScreens(
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>,
+    action: (ActionWithActivity) -> Unit
+) {
+    // Feed Screen
+    homeFeed(onFeedClicked = { bucketId, userId, nav ->
+        appState.navigateToOpenBucketDetail(bucketId, userId, false, nav)
+    })
 
-                                is HomeItemSelected.GoToStatusBucketList -> {
-                                    appState.navigateToStatusBucketList(
-                                        isProgress = selected.bucketStatus == BucketStatus.PROGRESS,
-                                        from = nav
-                                    )
-                                }
-                            }
-                        },
+    // Search Screen
+    homeSearch(
+        onSearchEvent = { event, nav ->
+            handleSearchEvent(event, nav, appState)
+        }
+    )
 
-                        bottomSheetClicked = { event, nav ->
-                            if (event is BottomSheetScreenType.MyBucketSearchScreen) {
-                                appState.navigateToMySearch(event.selectTab, nav)
-                            } else if (event is BottomSheetScreenType.MyBucketFilterScreen) {
-                                shownBottomSheet.value = event.needToShown
-                            }
-                        },
+    // More Screen
+    homeMore(
+        moreItemClicked = { type, nav ->
+            handleMoreItemClick(type, nav, appState, action)
+        },
+        backPress = appState::backPress
+    )
 
-                        myTopEvent = { event, nav ->
-                            run {
-                                when (event) {
-                                    MyTopEvent.Alarm -> appState.navigateToAlarm(nav)
-                                    MyTopEvent.Follower -> appState.navigateToFollowerList(nav)
-                                    MyTopEvent.Following -> appState.navigateToFollowingList(nav)
-                                }
-                            }
-                        },
+    // My Screen
+    homeMy(
+        onBucketSelected = { selected, nav ->
+            handleBucketSelected(selected, nav, appState)
+        },
+        bottomSheetClicked = { event, nav ->
+            handleBottomSheetClick(event, nav, appState, shownBottomSheet)
+        },
+        myTopEvent = { event, nav ->
+            handleMyTopEvent(event, nav, appState)
+        },
+        goToCategoryEdit = { nav ->
+            appState.navigateToCategoryEdit(nav)
+        }
+    )
 
-                        goToCategoryEdit = { nav ->
-                            appState.navigateToCategoryEdit(nav)
-                        }
-                    )
+    // My Bucket Search
+    homeMyBucketSearch { event, nav ->
+        handleMySearchEvent(event, nav, appState, shownBottomSheet)
+    }
+}
 
+private fun NavGraphBuilder.setupDetailScreens(
+    appState: WaverAppState,
+    action: (ActionWithActivity) -> Unit
+) {
+    // Status Bucket List
+    homeStatusBucketListNavGraph(
+        backPress = appState::backPress,
+        bucketClicked = { id, isPrivate, nav ->
+            handleBucketClick(id, isPrivate, nav, appState)
+        }
+    )
 
-                    homeMyBucketSearch { event, nav ->
-                        when (event) {
-                            is MySearchClickEvent.BucketItemClicked -> {
-                                if (event.isPrivate) {
-                                    appState.navigateToCloseBucketDetail(event.id, nav)
-                                } else {
-                                    appState.navigateToOpenBucketDetail(event.id, "NoId", true, nav)
-                                }
-                            }
+    // Category Bucket List
+    homeCategoryBucketListNavGraph(
+        backPress = appState::backPress,
+        bucketClicked = { id, isPrivate, nav ->
+            handleBucketClick(id, isPrivate, nav, appState)
+        },
+        goToAddBucket = {
+            appState.navigateToWriteBucket("NoId", it)
+        }
+    )
 
-                            is MySearchClickEvent.CategoryItemClicked -> TODO() // 다음은 여기하자!!!!
+    // Category Edit
+    homeCategoryEditNavGraph(backPress = appState::backPress)
 
-                            is MySearchClickEvent.CloseClicked -> {
-                                shownBottomSheet.value = false
-                                appState.backPress()
-                            }
-                        }
+    // Following List
+    myFollowingListNavGraph(
+        backPress = appState::backPress,
+        goToSetting = { nav ->
+            appState.navigateToFollowingSettingList(from = nav)
+        },
+        goToOtherHome = { nav, id ->
+            appState.navigateToOtherHome(nav, id)
+        }
+    )
 
-                    }
+    // Following Setting
+    myFollowingSettingNavGraph(
+        backPress = appState::backPress,
+        goToOtherHome = { nav, id ->
+            appState.navigateToOtherHome(nav, id)
+        }
+    )
 
-                    homeStatusBucketListNavGraph(
-                        backPress = appState::backPress,
-                        bucketClicked = { id, isPrivate, nav ->
-                            if (isPrivate) {
-                                appState.navigateToCloseBucketDetail(id, nav)
-                            } else {
-                                appState.navigateToOpenBucketDetail(id, "NoId", true, nav)
-                            }
-                        },
-                    )
+    // Follower List
+    myFollowerListNavGraph(
+        backPress = appState::backPress,
+        goToSetting = {
+            appState.navigateToFollowerSettingList(it)
+        },
+        goToOtherHome = { nav, id ->
+            appState.navigateToOtherHome(nav, id)
+        }
+    )
 
-                    homeCategoryBucketListNavGraph(
-                        backPress = appState::backPress,
-                        bucketClicked = { id, isPrivate, nav ->
-                            if (isPrivate) {
-                                appState.navigateToCloseBucketDetail(id, nav)
-                            } else {
-                                appState.navigateToOpenBucketDetail(id, "NoId", true, nav)
-                            }
-                        },
-                        goToAddBucket = {
-                            appState.navigateToWriteBucket("NoId", it)
-                        })
+    // Follower Setting
+    myFollowerSettingNavGraph(
+        backPress = appState::backPress,
+        goToOtherHome = { nav, id ->
+            appState.navigateToOtherHome(nav, id)
+        }
+    )
 
-                    homeCategoryEditNavGraph(backPress = appState::backPress)
+    // Open Bucket Detail
+    openBucketDetailNavGraph(
+        goToBucketDetailEvent = { eventInfo, nav ->
+            handleOpenBucketDetailEvent(eventInfo, nav, appState)
+        },
+        backPress = appState::backPress
+    )
 
-                    myFollowingListNavGraph(
-                        backPress = appState::backPress,
-                        goToSetting = { nav ->
-                            appState.navigateToFollowingSettingList(from = nav)
-                        },
-                        goToOtherHome = { nav, id ->
-                            appState.navigateToOtherHome(nav, id)
-                        })
+    // Close Bucket Detail
+    closeBucketDetailNavGraph(
+        goToBucketDetailEvent = { eventInfo, _ ->
+            handleCloseBucketDetailEvent(eventInfo, appState)
+        },
+        backPress = appState::backPress
+    )
 
-                    myFollowingSettingNavGraph(
-                        backPress = appState::backPress,
-                        goToOtherHome = { nav, id ->
-                            appState.navigateToOtherHome(nav, id)
-                        })
+    // Search Direct
+    searchDirectNavGraph(
+        backPress = appState::backPress,
+        searchEvent = { event, nav ->
+            handleSearchEvent(event, nav, appState)
+        }
+    )
 
-                    myFollowerListNavGraph(
-                        backPress = appState::backPress,
-                        goToSetting = {
-                            appState.navigateToFollowerSettingList(it)
-                        },
-                        goToOtherHome = { nav, id ->
-                            appState.navigateToOtherHome(nav, id)
-                        })
+    // Write
+    writeNavGraph(
+        action = { actionType ->
+            action(actionType)
+        },
+        backPress = {
+            appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
+        },
+        goToAddCategory = {
+            appState.navigateToCategoryEdit(it)
+        },
+        goToHome = {
+            appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
+        }
+    )
 
-                    myFollowerSettingNavGraph(
-                        backPress = appState::backPress,
-                        goToOtherHome = { nav, id ->
-                            appState.navigateToOtherHome(nav, id)
-                        })
+    // Other Home
+    goToOtherHomeNavGraph { event, from ->
+        handleOtherHomeEvent(event, from, appState)
+    }
+}
 
-                    openBucketDetailNavGraph(
-                        goToBucketDetailEvent = { eventInfo, nav ->
-                            when (eventInfo) {
-                                is OpenBucketDetailEvent2.Update -> {
-                                    appState.navigateToWriteBucket(
-                                        eventInfo.info.bucketId ?: "NoId",
-                                        appState.navController.currentBackStackEntry!!
-                                    )
-                                }
+private fun NavGraphBuilder.setupMoreScreens(
+    appState: WaverAppState,
+    action: (ActionWithActivity) -> Unit
+) {
+    alarmNavGraph(backPress = appState::backPress)
+    moreAlarmNavGraph(backPress = appState::backPress)
+    moreBlockNavGraph(backPress = appState::backPress)
+    moreProfileNavGraph(
+        backPress = appState::backPress,
+        action = { action(it) }
+    )
+    moreAppInfoNavGraph(
+        backPress = appState::backPress,
+        moreItemClicked = { /* Do nothing */ }
+    )
+    myWaveManageNavGraph(backPress = appState::backPress)
+    wavePlusGuideNavGraph(
+        backPress = appState::backPress,
+        inAppBillingShow = { action.invoke(ActionWithActivity.InAppBilling(it)) }
+    )
+}
 
-                                is OpenBucketDetailEvent2.GoToOtherProfile -> {
-                                    appState.navigateToOtherHome(nav, eventInfo.id)
-                                }
-                            }
-                        },
-                        backPress = appState::backPress
-                    )
+// Event Handler Functions
+private fun handleSearchEvent(
+    event: SearchGoToEvent,
+    nav: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    when (event) {
+        SearchGoToEvent.GoToSearch -> {
+            appState.navigateToSearch(nav)
+        }
 
-                    closeBucketDetailNavGraph(
-                        goToBucketDetailEvent = { eventInfo, nav ->
-                            when (eventInfo) {
-                                is CloseBucketDetailEvent.Update -> {
-                                    appState.navigateToWriteBucket(
-                                        eventInfo.info.bucketId ?: "NoId",
-                                        appState.navController.currentBackStackEntry!!
-                                    )
-                                }
-                            }
-                        },
-                        backPress = appState::backPress
-                    )
-                    searchDirectNavGraph(
-                        backPress = appState::backPress, searchEvent =
-                            { event, nav ->
-                                when (event) {
-                                    SearchGoToEvent.GoToSearch -> {
-                                        appState.navigateToSearch(nav)
-                                    }
+        is SearchGoToEvent.GoToOpenBucket -> {
+            appState.navigateToOpenBucketDetail(
+                event.bucketId,
+                event.userId,
+                false,
+                nav
+            )
+        }
 
-                                    is SearchGoToEvent.GoToOpenBucket -> {
-                                        appState.navigateToOpenBucketDetail(
-                                            event.bucketId,
-                                            event.userId,
-                                            false,
-                                            nav
-                                        )
-                                    }
+        is SearchGoToEvent.GoToOtherUser -> {
+            appState.navigateToOtherHome(nav, event.id)
+        }
+    }
+}
 
-                                    is SearchGoToEvent.GoToOtherUser -> {
-                                        appState.navigateToOtherHome(nav, event.id)
-                                    }
-                                }
-                            })
-                    writeNavGraph(
-                        action = { actionType ->
-                            action(actionType)
-                        },
-                        backPress = {
-                            appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
-                        },
-                        goToAddCategory = {
-                            appState.navigateToCategoryEdit(it)
-                        },
-                        goToHome = {
-                            appState.navigateToBottomBarRoute(appState.currentHomeRoute.value)
-                        })
-                    alarmNavGraph(backPress = appState::backPress)
-                    moreAlarmNavGraph(backPress = appState::backPress)
-                    moreBlockNavGraph(backPress = appState::backPress)
-                    moreProfileNavGraph(
-                        backPress = appState::backPress,
-                        action = {
-                            action(it)
-                        }
-                    )
-                    moreAppInfoNavGraph(
-                        backPress = appState::backPress,
-                        moreItemClicked = {
+private fun handleMoreItemClick(
+    type: MoreItemType,
+    nav: NavBackStackEntry,
+    appState: WaverAppState,
+    action: (ActionWithActivity) -> Unit
+) {
+    when (type) {
+        ALARM -> appState.navigateToMoreAlarmSetting(nav)
+        BLOCK -> appState.navigateToMoreBlockSetting(nav)
+        APP_INFO -> appState.navigateToMoreAppInfo(nav)
+        PROFILE -> appState.navigateToMoreProfileSetting(nav)
+        MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
+        WAVE_PLUS -> appState.navigateToWavePlusGuide(nav)
+        MoreItemType.CS_QNA -> action(ActionWithActivity.GoToQNAEmail)
+        LOGOUT -> action(ActionWithActivity.Logout)
+        else -> { /* Do Nothing */
+        }
+    }
+}
 
-                        }
-                    )
-                    goToOtherHomeNavGraph { event, from ->
-                        when (event) {
-                            is OtherHomeEvent.GoToBack -> appState.backPress()
-                            is OtherHomeEvent.GoToOtherBucket -> appState.navigateToOpenBucketDetail(
-                                bucketId = event.bucketId.toString(),
-                                writerId = event.writerId,
-                                isMine = false,
-                                from = from
-                            )
-                        }
-                    }
-                    myWaveManageNavGraph(backPress = appState::backPress)
-                    wavePlusGuideNavGraph(
-                        backPress = appState::backPress,
-                        inAppBillingShow = { action.invoke(ActionWithActivity.InAppBilling(it)) })
-                }
+private fun handleBucketSelected(
+    selected: HomeItemSelected,
+    nav: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    when (selected) {
+        is HomeItemSelected.GoToDetailHomeItem -> {
+            if (selected.bucketInfo.exposureStatues == ExposureStatus.PRIVATE) {
+                appState.navigateToCloseBucketDetail(selected.bucketInfo.id, nav)
+            } else {
+                appState.navigateToOpenBucketDetail(
+                    selected.bucketInfo.id, "NoId", true, nav
+                )
             }
         }
+
+        is HomeItemSelected.GoToCategoryBucketList -> {
+            appState.navigateToCategoryBucketList(selected.categoryInfo, nav)
+        }
+
+        is HomeItemSelected.GoToStatusBucketList -> {
+            appState.navigateToStatusBucketList(
+                isProgress = selected.bucketStatus == BucketStatus.PROGRESS,
+                from = nav
+            )
+        }
+    }
+}
+
+private fun handleBottomSheetClick(
+    event: BottomSheetScreenType,
+    nav: NavBackStackEntry,
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>
+) {
+    when (event) {
+        is BottomSheetScreenType.MyBucketSearchScreen -> {
+            appState.navigateToMySearch(event.selectTab, nav)
+        }
+
+        is BottomSheetScreenType.MyBucketFilterScreen -> {
+            shownBottomSheet.value = event.needToShown
+        }
+    }
+}
+
+private fun handleMyTopEvent(
+    event: MyTopEvent,
+    nav: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    when (event) {
+        MyTopEvent.Alarm -> appState.navigateToAlarm(nav)
+        MyTopEvent.Follower -> appState.navigateToFollowerList(nav)
+        MyTopEvent.Following -> appState.navigateToFollowingList(nav)
+    }
+}
+
+private fun handleMySearchEvent(
+    event: MySearchClickEvent,
+    nav: NavBackStackEntry,
+    appState: WaverAppState,
+    shownBottomSheet: MutableState<Boolean>
+) {
+    when (event) {
+        is MySearchClickEvent.BucketItemClicked -> {
+            if (event.isPrivate) {
+                appState.navigateToCloseBucketDetail(event.id, nav)
+            } else {
+                appState.navigateToOpenBucketDetail(event.id, "NoId", true, nav)
+            }
+        }
+
+        is MySearchClickEvent.CategoryItemClicked -> {
+            // TODO: 다음은 여기하자!!!!
+        }
+
+        is MySearchClickEvent.CloseClicked -> {
+            shownBottomSheet.value = false
+            appState.backPress()
+        }
+    }
+}
+
+private fun handleBucketClick(
+    id: String,
+    isPrivate: Boolean,
+    nav: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    if (isPrivate) {
+        appState.navigateToCloseBucketDetail(id, nav)
+    } else {
+        appState.navigateToOpenBucketDetail(id, "NoId", true, nav)
+    }
+}
+
+private fun handleOpenBucketDetailEvent(
+    eventInfo: OpenBucketDetailEvent2,
+    nav: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    when (eventInfo) {
+        is OpenBucketDetailEvent2.Update -> {
+            appState.navigateToWriteBucket(
+                eventInfo.info.bucketId ?: "NoId",
+                appState.navController.currentBackStackEntry!!
+            )
+        }
+
+        is OpenBucketDetailEvent2.GoToOtherProfile -> {
+            appState.navigateToOtherHome(nav, eventInfo.id)
+        }
+    }
+}
+
+private fun handleCloseBucketDetailEvent(
+    eventInfo: CloseBucketDetailEvent,
+    appState: WaverAppState
+) {
+    when (eventInfo) {
+        is CloseBucketDetailEvent.Update -> {
+            appState.navigateToWriteBucket(
+                eventInfo.info.bucketId ?: "NoId",
+                appState.navController.currentBackStackEntry!!
+            )
+        }
+    }
+}
+
+private fun handleOtherHomeEvent(
+    event: OtherHomeEvent,
+    from: NavBackStackEntry,
+    appState: WaverAppState
+) {
+    when (event) {
+        is OtherHomeEvent.GoToBack -> appState.backPress()
+        is OtherHomeEvent.GoToOtherBucket -> appState.navigateToOpenBucketDetail(
+            bucketId = event.bucketId.toString(),
+            writerId = event.writerId,
+            isMine = false,
+            from = from
+        )
     }
 }
 
