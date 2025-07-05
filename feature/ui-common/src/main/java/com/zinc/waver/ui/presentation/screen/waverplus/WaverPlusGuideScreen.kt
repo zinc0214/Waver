@@ -92,6 +92,7 @@ fun WaverPlusGuideScreen(
 
     ModalBottomSheetLayout(
         modifier = Modifier
+            .background(closeButtonBg)
             .statusBarsPadding()
             .navigationBarsPadding()
             .imePadding(),
@@ -154,7 +155,7 @@ fun WaverPlusGuideScreen(
 }
 
 
-@Preview()
+@Preview(showSystemUi = true)
 @Composable
 private fun WavePlusGuidePreview() {
     WaverPlusGuideScreen({}, inAppBillingShow = {})
