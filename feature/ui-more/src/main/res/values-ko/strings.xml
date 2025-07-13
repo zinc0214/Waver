@@ -45,6 +45,11 @@
     <string name="csServiceQuestion">서비스 문의하기</string>
 
     <!-- 앱 정보 -->
+    <string name="appInfoTerms">이용약관</string>
+    <string name="appInfoPrivacyPolicy">개인 정보 처리 방침</string>
+    <string name="appInfoOpenSource">오픈 소스 라이브러리</string>
+
+    <!-- 앱 정보 -->
     <string name="appInfoTitle">앱 정보</string>
     <string name="appName">베리버킷</string>
     <string name="needToUpdateApp">최신 버전 업데이트</string>

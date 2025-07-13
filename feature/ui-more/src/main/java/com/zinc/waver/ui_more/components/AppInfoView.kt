@@ -39,7 +39,8 @@ import com.zinc.waver.ui_more.models.AppInfoItemType
 
 @Composable
 internal fun AppInfoTitle(backClicked: () -> Unit) {
-    TitleView(title = stringResource(id = R.string.appInfoTitle),
+    TitleView(
+        title = stringResource(id = R.string.appInfoTitle),
         leftIconType = TitleIconType.BACK,
         isDividerVisible = true,
         onLeftIconClicked = {
@@ -128,9 +129,24 @@ private fun AppUpdateButton(modifier: Modifier, isLately: Boolean, gotoUpdate: (
 @Composable
 internal fun AppInfoMoreItemsView(itemClicked: (AppInfoItemType) -> Unit) {
     val itemList = buildList {
-        add(AppInfoItemData(text = "이용약관", type = AppInfoItemType.USE_TERMS))
-        add(AppInfoItemData(text = "개인 정보 처리 방침", type = AppInfoItemType.PERSONAL_TERMS))
-        add(AppInfoItemData(text = "오츤 소스 라이브러리", type = AppInfoItemType.OPEN_SOURCE))
+        add(
+            AppInfoItemData(
+                text = stringResource(R.string.appInfoTerms),
+                type = AppInfoItemType.USE_TERMS
+            )
+        )
+        add(
+            AppInfoItemData(
+                text = stringResource(R.string.appInfoPrivacyPolicy),
+                type = AppInfoItemType.PERSONAL_TERMS
+            )
+        )
+        add(
+            AppInfoItemData(
+                text = stringResource(R.string.appInfoOpenSource),
+                type = AppInfoItemType.OPEN_SOURCE
+            )
+        )
     }
     Column(modifier = Modifier.fillMaxWidth()) {
         itemList.forEach {

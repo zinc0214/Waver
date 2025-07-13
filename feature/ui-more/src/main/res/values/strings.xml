@@ -50,6 +50,10 @@
     <string name="needToUpdateApp">Update to the latest version</string>
     <string name="alreadyUsedLatelyApp">You’re using the latest version</string>
 
+    <string name="appInfoTerms">Terms</string>
+    <string name="appInfoPrivacyPolicy">Privacy Policy</string>
+    <string name="appInfoOpenSource">Open Source Libraries</string>
+
     <!-- My Wave -->
     <string name="myWave">My Wave</string>
     <string name="badgeCount">Badges Earned</string>
