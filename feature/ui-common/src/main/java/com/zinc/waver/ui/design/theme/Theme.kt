@@ -27,12 +27,12 @@ private val LightColorPalette = Colors(
 )
 
 val notoSansKr = FontFamily(
-    Font(R.font.notosans_kr_black, FontWeight.Black, FontStyle.Normal),
-    Font(R.font.notosans_kr_bold, FontWeight.Bold, FontStyle.Normal),
-    Font(R.font.notosans_kr_light, FontWeight.Light, FontStyle.Normal),
-    Font(R.font.notosans_kr_medium, FontWeight.Medium, FontStyle.Normal),
-    Font(R.font.notosans_kr_regular, FontWeight.Normal, FontStyle.Normal),
-    Font(R.font.notosans_kr_thin, FontWeight.Thin, FontStyle.Normal)
+    Font(R.font.pretendard_black, FontWeight.Black, FontStyle.Normal),
+    Font(R.font.pretendard_bold, FontWeight.Bold, FontStyle.Normal),
+    Font(R.font.pretendard_light, FontWeight.Light, FontStyle.Normal),
+    Font(R.font.pretendard_medium, FontWeight.Medium, FontStyle.Normal),
+    Font(R.font.pretendard_regular, FontWeight.Normal, FontStyle.Normal),
+    Font(R.font.pretendard_thin, FontWeight.Thin, FontStyle.Normal)
 )
 
 @Composable

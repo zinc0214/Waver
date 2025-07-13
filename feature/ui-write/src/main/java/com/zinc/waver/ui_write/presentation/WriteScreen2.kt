@@ -147,7 +147,7 @@ fun WriteScreen2(
                 WriteSelectKeyWordScreen(
                     closeClicked = { optionScreenShow = null },
                     originKeyWord = keyWordList.value.orEmpty(),
-                    selectedKeyWords = selectedKeyWords.value,
+                    selectedKeyWords = selectedKeyWords.value.orEmpty(),
                     addKeyWordClicked = {
                         selectedKeyWords.value = it
                         optionScreenShow = null
@@ -161,11 +161,11 @@ fun WriteScreen2(
                 }
                 WriteSelectFriendsScreen(
                     closeClicked = { optionScreenShow = null },
-                    selectedFriends = selectedFriends.value,
+                    selectedFriends = selectedFriends.value.orEmpty(),
                     originFriends = originFriendList.value.orEmpty(),
                     addFriendsClicked = {
                         selectedFriends.value = it
-                        if (selectedFriends.value.isNotEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {
+                        if (!selectedFriends.value.isNullOrEmpty() && selectedOpenType.value == WriteOpenType.PRIVATE) {
                             selectedOpenType.value = WriteOpenType.PUBLIC
                             Toast.makeText(
                                 context,
@@ -226,12 +226,12 @@ fun WriteScreen2(
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
-                    isPrivateAvailable = selectedFriends.value.isEmpty(),
+                    isPrivateAvailable = !selectedFriends.value.isNullOrEmpty(),
                     onDismissRequest = {
                         optionScreenShow = null
                     },
                     typeSelected = {
-                        if (selectedFriends.value.isEmpty() && it == WriteOpenType.FRIENDS_OPEN) {
+                        if (!selectedFriends.value.isNullOrEmpty() && it == WriteOpenType.FRIENDS_OPEN) {
                             Toast.makeText(
                                 context,
                                 R.string.optionIfHasNoFriends,
@@ -276,10 +276,10 @@ private fun WriteScreen2ContentView(
     modifier: Modifier = Modifier,
     context: Context,
     viewModel: WriteBucketListViewModel,
-    selectedKeywordList: List<WriteKeyWord>,
+    selectedKeywordList: List<WriteKeyWord>?,
     friendsOption: FRIENDS,
     isScrapUsed: Boolean,
-    selectedFriends: List<WriteFriend>,
+    selectedFriends: List<WriteFriend>?,
     writeTotalInfo: WriteTotalInfo,
     goToBack: (WriteTotalInfo) -> Unit,
     selectedOpenType: MutableState<WriteOpenType>,
@@ -337,8 +337,8 @@ private fun WriteScreen2ContentView(
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
-                                keyWord = selectedKeywordList.map { it.code },
-                                tagFriends = selectedFriends.map { it.id },
+                                keywords = selectedKeywordList?.map { it.code },
+                                tagFriends = selectedFriends?.map { it.id },
                                 isScrapAvailable = isScrapUsed
                             ),
                             isForUpdate = writeTotalInfo.isForUpdate
@@ -389,7 +389,7 @@ private fun WriteScreen2ContentView(
 
             KeywordsOptionView(
                 modifier = Modifier.fillMaxWidth(),
-                keywordList = selectedKeywordList
+                keywordList = selectedKeywordList.orEmpty()
             ) {
                 keywordSelected()
             }
@@ -397,7 +397,7 @@ private fun WriteScreen2ContentView(
             FriendsOptionView(
                 modifier = Modifier.fillMaxWidth(),
                 friendOption = friendsOption,
-                friendsList = selectedFriends
+                friendsList = selectedFriends.orEmpty()
             ) {
                 friendSelected(it)
             }

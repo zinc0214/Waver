@@ -32,7 +32,7 @@ fun HtmlText2(
     html: String,
     modifier: Modifier = Modifier,
     fontSize: Dp,
-    fontFamily: Int = R.font.notosans_kr_regular
+    fontFamily: Int = R.font.pretendard_regular
 ) {
     AndroidView(
         modifier = modifier,

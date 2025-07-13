@@ -23,8 +23,8 @@ data class WriteTotalInfo(
     val title: String = "",
     val options: List<WriteOption1Info> = emptyList(),
     val writeOpenType: WriteOpenType = WriteOpenType.PUBLIC,
-    val keyWord: List<WriteKeyWord> = emptyList(),
-    val tagFriends: List<WriteFriend> = emptyList(),
+    val keyWord: List<WriteKeyWord>? = null,
+    val tagFriends: List<WriteFriend>? = null,
     val isScrapUsed: Boolean = false,
     val isForUpdate: Boolean = false,
 ) : Serializable, Parcelable
@@ -166,8 +166,8 @@ fun parseUIBucketListInfo(
     options: List<WriteOption1Info> = emptyList(),
     writeOpenType: WriteOpenType,
     imageFiles: List<File>,
-    keyWord: List<String>,
-    tagFriends: List<String>,
+    keywords: List<String>?,
+    tagFriends: List<String>?,
     isScrapAvailable: Boolean = false
 ) = UIAddBucketListInfo(
     bucketId = bucketId,
@@ -178,7 +178,7 @@ fun parseUIBucketListInfo(
     targetDate = parseTargetDate(options),
     goalCount = parseGoalCount(options),
     categoryId = parseCategoryId(options),
-    keywords = keyWord.joinToString(","),
+    keywords = keywords?.joinToString(","),
     exposureStatus = parseOpenType(writeOpenType),
     friendUserIds = tagFriends,
     scrapYn = isScrapAvailable.toYn()
@@ -221,7 +221,7 @@ data class UIAddBucketListInfo(
     val exposureStatus: ExposureStatus, // 공개여부
     val title: String,
     val memo: String?, // 메모
-    val keywords: String = "", // 태그 목록(최대 5) - ","로 구분
+    val keywords: String?, // 태그 목록(최대 5) - ","로 구분
     val friendUserIds: List<String>?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
     val scrapYn: YesOrNo, // 스크랩 여부
     val images: List<File>? = emptyList(), // 이미지 목록(최대 3)

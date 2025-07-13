@@ -229,7 +229,7 @@ private fun InternalOpenDetailScreen(
     val newTaggedText: MutableState<TaggedTextInfo?> = remember { mutableStateOf(null) }
 
     // 태그된 사람들
-    val taggedMemberList = mutableListOf<String>()
+    val taggedMemberIdList = mutableListOf<String>()
 
     // 검색할 텍스트와 관련된 정보들
     val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
@@ -380,9 +380,9 @@ private fun InternalOpenDetailScreen(
                                     updateInternalEvent(
                                         OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
                                             AddBucketCommentRequest(
-                                                bucketlistId = detailInfo.bucketId.toInt(),
+                                                bucketId = detailInfo.bucketId.toInt(),
                                                 content = it.sendText,
-                                                mentionIds = "" //TODO : 수정필요
+                                                mentionIds = taggedMemberIdList
                                             )
                                         )
                                     )
@@ -394,8 +394,8 @@ private fun InternalOpenDetailScreen(
                                     commentText.value = textInfo.updateText
                                     newTaggedText.value = null
 
-                                    taggedMemberList.clear()
-                                    taggedMemberList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
+                                    taggedMemberIdList.clear()
+                                    taggedMemberIdList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
 
                                     // "@" 태그 위치 확인
                                     val tagIndexMap = mutableListOf<Int>()
