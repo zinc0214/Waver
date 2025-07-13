@@ -126,7 +126,7 @@ fun WriteSelectKeyWordScreen(
                                 .padding(horizontal = 8.dp, vertical = 14.dp),
                             selectedTextColor = Main3,
                             unSelectedTextColor = Gray7,
-                            text = keywordItem.text,
+                            text = keywordItem.name,
                             isSelected = selected,
                             fontWeight = FontWeight.Bold
                         )

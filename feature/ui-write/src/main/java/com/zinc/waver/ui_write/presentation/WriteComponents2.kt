@@ -115,7 +115,7 @@ fun KeywordsOptionView(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 keywordList.forEach { keyword ->
-                    MyText(text = "#${keyword.text}", color = Main3, fontSize = dpToSp(16.dp))
+                    MyText(text = "#${keyword.name}", color = Main3, fontSize = dpToSp(16.dp))
                 }
             }
         } else {

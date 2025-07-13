@@ -337,7 +337,7 @@ private fun WriteScreen2ContentView(
                                 options = writeTotalInfo.options,
                                 writeOpenType = selectedOpenType.value,
                                 imageFiles = imagesInfo.map { it.file },
-                                keyWord = selectedKeywordList.map { it.id },
+                                keyWord = selectedKeywordList.map { it.code },
                                 tagFriends = selectedFriends.map { it.id },
                                 isScrapAvailable = isScrapUsed
                             ),

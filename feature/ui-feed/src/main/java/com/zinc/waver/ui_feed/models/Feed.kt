@@ -10,7 +10,7 @@ data class UIFeedKeyword(
     val keyword: String
 )
 
-fun List<KeywordInfo>.parseUI() = map { UIFeedKeyword(id = it.id, keyword = it.name) }
+fun List<KeywordInfo>.parseUI() = map { UIFeedKeyword(id = it.code, keyword = it.name) }
 
 @Serializable
 data class UIFeedInfo(

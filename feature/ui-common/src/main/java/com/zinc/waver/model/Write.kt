@@ -59,14 +59,14 @@ data class WriteInfo1(
 
 fun List<KeywordInfo>.toUiModel(): List<WriteKeyWord> {
     return map {
-        WriteKeyWord(it.id, it.name)
+        WriteKeyWord(it.code, it.name)
     }
 }
 
 @kotlinx.serialization.Serializable
 data class WriteKeyWord(
-    val id: String,
-    val text: String
+    val code: String,
+    val name: String
 ) : Serializable
 
 @kotlinx.serialization.Serializable
@@ -282,6 +282,6 @@ private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List
 
 private fun List<KeywordInfo>.parseUI() = map { keyword ->
     WriteKeyWord(
-        id = keyword.id, text = keyword.name
+        code = keyword.code, name = keyword.name
     )
 }

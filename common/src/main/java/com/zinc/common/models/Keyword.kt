@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class KeywordInfo(
-    val id: String,
+    val code: String,
     val name: String
 )
 
