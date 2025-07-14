@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_more.models
 
 import com.zinc.common.models.BlockedUserResponse
+import com.zinc.common.models.MyBadge
 import com.zinc.waver.ui_more.R
 
 data class UIMoreMyProfileInfo(
@@ -91,4 +92,12 @@ enum class AppInfoItemType {
 data class AppInfoItemData(
     val text: String,
     val type: AppInfoItemType
+)
+
+data class MyWaverTotalInfo(
+    val totalBadgeCount: Int,
+    val totalLikeCount: Int,
+    val totalBucketCount: Int,
+    val badgeImgUrl: String,
+    val badges: List<MyBadge>
 )

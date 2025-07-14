@@ -2,6 +2,7 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.LoadMyWaveBadgeResponse
 import com.zinc.common.models.LoadMyWaveInfoResponse
 import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.WaverApi
@@ -41,11 +42,15 @@ internal class MoreRepositoryImpl @Inject constructor(
         return waverApi.loadBlockedUsers()
     }
 
-    override suspend fun loadMyWaeInfo(): LoadMyWaveInfoResponse {
-        return waverApi.loadMyWaveInfo()
+    override suspend fun loadMyBadgeInfo(): LoadMyWaveBadgeResponse {
+        return waverApi.loadMyWaveBadge()
     }
 
     override suspend fun requestBlockUserRelease(userId: Int): CommonResponse {
         return waverApi.requestBlockUserRelease(userId.toString())
+    }
+
+    override suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse {
+        return waverApi.loadMyWaveInfo()
     }
 }

@@ -45,7 +45,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.common.models.MyBadge
-import com.zinc.common.models.MyWaveInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
@@ -56,7 +55,9 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
+import com.zinc.waver.ui_more.models.MyWaverTotalInfo
 import com.zinc.waver.ui_more.viewModel.MyWaveManageViewModel
+import java.util.UUID
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
@@ -65,7 +66,7 @@ fun MyWaveManageScreen(
     modifier: Modifier = Modifier,
     viewModel: MyWaveManageViewModel = hiltViewModel()
 ) {
-    val myWaveInfoAsState by viewModel.myWaveInfo.observeAsState()
+    val myWaveInfoAsState by viewModel.myWaverInfo.observeAsState()
 
     val myWaveInfo = remember {
         mutableStateOf(myWaveInfoAsState)
@@ -89,7 +90,7 @@ fun MyWaveManageScreen(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-            HeaderView(info = info) {
+            HeaderView(info = info, selectedBadge = selectedBadge) {
                 onBackPressed()
             }
 
@@ -108,8 +109,8 @@ fun MyWaveManageScreen(
 }
 
 @Composable
-private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
-    val currentBadgeInfo = info.badges.firstOrNull { it.id == info.currentBadge }
+private fun HeaderView(info: MyWaverTotalInfo, selectedBadge: MyBadge?, onBackPressed: () -> Unit) {
+    val currentBadgeInfo = info.badges.firstOrNull { it.imgUrl == selectedBadge?.imgUrl }
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -148,11 +149,11 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
 
         Image(
             painter = rememberAsyncImagePainter(
-                model = currentBadgeInfo?.id, // TODO : 이미지로 변경 필요
+                model = currentBadgeInfo?.imgUrl, // TODO : 이미지로 변경 필요
                 placeholder = painterResource(CommonR.drawable.testimg),
                 error = painterResource(CommonR.drawable.testimg)
             ),
-            contentDescription = currentBadgeInfo?.name,
+            contentDescription = currentBadgeInfo?.title,
             modifier = Modifier
                 .padding(top = 12.dp, end = 32.dp)
                 .size(60.dp)
@@ -179,7 +180,7 @@ private fun HeaderView(info: MyWaveInfo, onBackPressed: () -> Unit) {
 
 @Composable
 private fun ContentView(
-    info: MyWaveInfo,
+    info: MyWaverTotalInfo,
     selectedBadge: MyBadge,
     badgeSelected: (MyBadge) -> Unit,
     modifier: Modifier
@@ -199,7 +200,7 @@ private fun ContentView(
             MyWaveStatusView(info)
         }
 
-        items(items = info.badges, key = { it.name + it.step }) { info ->
+        items(items = info.badges, key = { it.title + it.step + UUID.randomUUID() }) { info ->
             GridItemSpan(1)
             BadgeView(
                 info = info,
@@ -213,7 +214,7 @@ private fun ContentView(
 }
 
 @Composable
-private fun MyWaveStatusView(info: MyWaveInfo, modifier: Modifier = Modifier) {
+private fun MyWaveStatusView(info: MyWaverTotalInfo, modifier: Modifier = Modifier) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = modifier
@@ -280,11 +281,11 @@ private fun BadgeView(
     ) {
         Image(
             painter = rememberAsyncImagePainter(
-                model = info.step, // TODO : 이미지 적용 필요
+                model = info.imgUrl, // TODO : 이미지 적용 필요
                 placeholder = painterResource(CommonR.drawable.testimg),
                 error = painterResource(CommonR.drawable.testimg)
             ),
-            contentDescription = info.name,
+            contentDescription = info.title,
             modifier = Modifier
                 .padding(horizontal = 23.dp)
                 .size(50.dp),
@@ -292,7 +293,7 @@ private fun BadgeView(
         )
 
         MyText(
-            text = info.name,
+            text = info.title,
             color = textColor,
             fontSize = dpToSp(dp = 16.dp),
             fontWeight = FontWeight.SemiBold,
@@ -300,7 +301,7 @@ private fun BadgeView(
         )
 
         MyText(
-            text = "${info.step}${stringResource(id = R.string.badgeGrade)}",
+            text = info.step.text(),
             color = Gray8,
             fontSize = dpToSp(dp = 14.dp),
             modifier = Modifier.padding(top = 2.dp)
@@ -313,20 +314,20 @@ private fun BadgeView(
 @Composable
 private fun HeaderPreview() {
 
-    val info = MyWaveInfo(
+    val info = MyWaverTotalInfo(
         totalBadgeCount = 100,
         totalLikeCount = 2,
         totalBucketCount = 30,
-        currentBadge = 1,
+        badgeImgUrl = "",
         badges = listOf(
-            MyBadge(0, "요리", 1),
-            MyBadge(1, "요리", 2),
-            MyBadge(2, "요리", 3)
+            MyBadge("요리", "1", MyBadge.Step.STEP0),
+            MyBadge("요리", "2", MyBadge.Step.STEP1),
+            MyBadge("요리", "3", MyBadge.Step.STEP2)
         )
     )
 
     Column {
-        HeaderView(info) {}
+        HeaderView(info, selectedBadge = MyBadge("음식", "2", MyBadge.Step.STEP1)) {}
         ContentView(
             info = info,
             selectedBadge = info.badges.first(),
