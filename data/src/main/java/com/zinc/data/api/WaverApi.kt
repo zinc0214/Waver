@@ -313,6 +313,7 @@ interface WaverApi {
     @GET("/waver/my/info")
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
 
+    // 사용자 차단 해제
     @POST("/waver/follow/block/release")
     suspend fun requestBlockUserRelease(
         @Query("blockedUserId") blockedUserId: String
