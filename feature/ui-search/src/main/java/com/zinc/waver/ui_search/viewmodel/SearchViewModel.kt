@@ -38,8 +38,8 @@ class SearchViewModel @Inject constructor(
     private val _searchRecommendItems = MutableLiveData<SearchRecommendItems>()
     val searchRecommendItems: LiveData<SearchRecommendItems> get() = _searchRecommendItems
 
-    private val _searchResultItems = MutableLiveData<SearchResultItems>()
-    val searchResultItems: LiveData<SearchResultItems> get() = _searchResultItems
+    private val _searchResultItems = MutableLiveData<SearchResultItems?>()
+    val searchResultItems: LiveData<SearchResultItems?> get() = _searchResultItems
 
     private val _loadFail = MutableLiveData<String?>(null)
     val loadFail: LiveData<String?> get() = _loadFail
@@ -61,7 +61,7 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchRecommend.invoke()
             if (response.success) {
-                _searchRecommendItems.value = response.data.parseUI()
+                _searchRecommendItems.value = response.data?.parseUI()
             } else {
                 _loadFail.value = response.message
             }

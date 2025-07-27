@@ -27,7 +27,7 @@ data class SearchResultResponse(
 }
 
 data class SearchRecommendResponse(
-    val data: RecommendData,
+    val data: RecommendData?,
     val success: Boolean,
     val code: String,
     val message: String
