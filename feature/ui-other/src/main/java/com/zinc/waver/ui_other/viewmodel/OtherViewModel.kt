@@ -43,8 +43,13 @@ class OtherViewModel @Inject constructor(
 
     fun changeFollowStatus(userId: String, follow: Boolean) {
         viewModelScope.launch(ceh(_loadFail, true)) {
+            Log.e("ayhan", "changeFollowStatus 1 result : $follow. $userId")
+
             if (follow) {
                 val result = followUser.invoke(userId)
+
+                Log.e("ayhan", "changeFollowStatus 2 result : $result")
+
                 if (result.success) {
                     loadOtherInfo(userId)
                     _loadFail.value = false

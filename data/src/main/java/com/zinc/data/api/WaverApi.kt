@@ -24,7 +24,9 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
+import com.zinc.domain.models.CommentReport
 import com.zinc.domain.models.FeedListResponse
+import com.zinc.domain.models.FollowOtherUserRequest
 import com.zinc.domain.models.OtherHomeResponse
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
@@ -177,13 +179,13 @@ interface WaverApi {
     // 펄로오 > 언팔하기
     @POST("/waver/follow/unfollow")
     suspend fun requestUnfollow(
-        @Query("followUserId") followUserId: String
+        @Body request: FollowOtherUserRequest
     ): CommonResponse
 
     // 팔로우 하기
     @POST("/waver/follow")
     suspend fun requestFollow(
-        @Query("followUserId") followUserId: String
+        @Body request: FollowOtherUserRequest
     ): CommonResponse
 
     // 프로필편집 > 프로필조회
@@ -254,12 +256,6 @@ interface WaverApi {
         @Body goalCount: RequestGoalCountUpdate
     ): CommonResponse
 
-    @POST("/waver/comment/{id}/report")
-    suspend fun requestCommentReport(
-        @Path("id") id: String,
-        @Query("reason") reason: String
-    ): CommonResponse
-
     @GET("/waver/follow/mutual")
     suspend fun loadWriteSelectableFriends(): LoadWriteSelectableFriendsResponse
 
@@ -292,6 +288,13 @@ interface WaverApi {
     suspend fun requestBucketReport(
         @Path("id") id: String,
         @Query("reason") reason: String
+    ): CommonResponse
+
+    // 댓글 신고
+    @PATCH("/waver/comment/{id}/report")
+    suspend fun requestBucketCommentReport(
+        @Path("id") id: String,
+        @Body reason: CommentReport
     ): CommonResponse
 
     // 버킷 복사

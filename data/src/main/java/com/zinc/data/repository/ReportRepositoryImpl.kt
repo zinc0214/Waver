@@ -4,6 +4,7 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.ReportItem
 import com.zinc.common.models.ReportItems
 import com.zinc.data.api.WaverApi
+import com.zinc.domain.models.CommentReport
 import com.zinc.domain.repository.ReportRepository
 import javax.inject.Inject
 
@@ -56,7 +57,7 @@ internal class ReportRepositoryImpl @Inject constructor(
     }
 
     override suspend fun reportComment(id: String, reason: String): CommonResponse {
-        return waverApi.requestCommentReport(id, reason)
+        return waverApi.requestBucketCommentReport(id, CommentReport(reason))
     }
 
     override suspend fun reportBucket(id: String, reason: String): CommonResponse {
