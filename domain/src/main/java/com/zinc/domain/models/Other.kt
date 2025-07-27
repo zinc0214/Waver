@@ -3,7 +3,6 @@ package com.zinc.domain.models
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.ExposureStatus
-import com.zinc.common.models.YesOrNo
 
 data class OtherHomeResponse(
     val success: Boolean,
@@ -12,7 +11,7 @@ data class OtherHomeResponse(
     val data: OtherHomeInfo
 ) {
     data class OtherHomeInfo(
-        val followYn: YesOrNo?,
+        val isFollowing: Boolean,
         val imgUrl: String?,
         val name: String,
         val bio: String?,
@@ -20,14 +19,14 @@ data class OtherHomeResponse(
         val badgeImgUrl: String?,
         val followingCount: Int,
         val followerCount: Int,
-        val bucketInfo: BucketInfo,
-        val totalCount: Int,
-        val completedCount: Int,
-        val progressCount: Int
+        val bucketInfo: BucketInfo
     )
 
     data class BucketInfo(
-        val bucketlist: List<BucketList>
+        val bucketlist: List<BucketList>,
+        val totalCount: Int,
+        val completedCount: Int,
+        val progressCount: Int
     )
 
     data class BucketList(

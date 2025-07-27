@@ -34,7 +34,6 @@ import coil.request.ImageRequest
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui_common.R
 
-
 @Composable
 fun ProfileCircularProgressBar(
     percentage: Float,

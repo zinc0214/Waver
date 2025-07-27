@@ -8,10 +8,10 @@ import com.zinc.domain.models.OtherHomeResponse
 fun OtherHomeResponse.OtherHomeInfo.toUiModel(): OtherProfileHomeData {
     return OtherProfileHomeData(
         profile = TopProfile(
-            isFollowed = followYn?.isYes() ?: false,
+            isFollowed = isFollowing,
             name = name,
             imgUrl = imgUrl,
-            percent = completedCount.toFloat() / totalCount.toFloat(),
+            percent = bucketInfo.completedCount.toFloat() / bucketInfo.totalCount.toFloat(),
             badgeImgUrl = badgeImgUrl,
             badgeTitle = badgeTitle,
             bio = bio,
