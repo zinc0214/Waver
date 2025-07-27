@@ -776,7 +776,7 @@ private fun InternalOpenDetailScreenPreview() {
             writerProfileInfo = DetailDescType.WriterProfileInfoUi(
                 profileImage = null,
                 badgeImage = "",
-                titlePosition = "안녕나는한아야",
+                badgeTitle = "안녕나는한아야",
                 nickName = "김한아",
                 userId = "1"
             ),

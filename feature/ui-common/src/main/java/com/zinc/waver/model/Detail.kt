@@ -6,14 +6,14 @@ sealed class DetailDescType {
     data class WriterProfileInfoUi(
         val profileImage: String?,
         val badgeImage: String,
-        val titlePosition: String,
+        val badgeTitle: String,
         val nickName: String,
         val userId: String
     ) : DetailDescType() {
         fun toUi() = UiProfileInfo(
             profileImage = this.profileImage,
             badgeImage = this.badgeImage,
-            titlePosition = this.titlePosition,
+            titlePosition = this.badgeTitle,
             nickName = this.nickName
         )
     }

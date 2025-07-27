@@ -28,7 +28,7 @@ fun bucketDetailResponseToUiModel(
     val writerProfileInfoUi = DetailDescType.WriterProfileInfoUi(
         profileImage = profileInfo.imgUrl,
         badgeImage = profileInfo.badgeImgUrl.orEmpty(),
-        titlePosition = profileInfo.bio.orEmpty(),
+        badgeTitle = profileInfo.badgeTitle.orEmpty(),
         nickName = profileInfo.name,
         userId = writerId.orEmpty()
     )
