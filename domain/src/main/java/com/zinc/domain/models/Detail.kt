@@ -4,6 +4,6 @@ data class RequestGoalCountUpdate(
     val goalCount: Int
 )
 
-data class CommentReport(
+data class ReportReasonRequest(
     val reason: String
 )

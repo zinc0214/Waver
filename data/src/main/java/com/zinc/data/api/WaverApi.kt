@@ -24,10 +24,10 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.common.models.RefreshTokenResponse
 import com.zinc.common.models.ReorderedCategoryRequest
 import com.zinc.common.models.YesOrNo
-import com.zinc.domain.models.CommentReport
 import com.zinc.domain.models.FeedListResponse
 import com.zinc.domain.models.FollowOtherUserRequest
 import com.zinc.domain.models.OtherHomeResponse
+import com.zinc.domain.models.ReportReasonRequest
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
 import com.zinc.domain.models.SearchRecommendResponse
@@ -179,13 +179,13 @@ interface WaverApi {
     // 펄로오 > 언팔하기
     @POST("/waver/follow/unfollow")
     suspend fun requestUnfollow(
-        @Body request: FollowOtherUserRequest
+        @Body followUserId: FollowOtherUserRequest
     ): CommonResponse
 
     // 팔로우 하기
     @POST("/waver/follow")
     suspend fun requestFollow(
-        @Body request: FollowOtherUserRequest
+        @Body followUserId: FollowOtherUserRequest
     ): CommonResponse
 
     // 프로필편집 > 프로필조회
@@ -284,17 +284,17 @@ interface WaverApi {
     suspend fun loadBlockedUsers(): BlockedUserResponse
 
     // 버킷리스트 신고
-    @POST("/waver/feed/{id}/report")
+    @POST("/waver/feeds/{id}/report")
     suspend fun requestBucketReport(
         @Path("id") id: String,
-        @Query("reason") reason: String
+        @Body reason: ReportReasonRequest
     ): CommonResponse
 
     // 댓글 신고
     @PATCH("/waver/comment/{id}/report")
     suspend fun requestBucketCommentReport(
         @Path("id") id: String,
-        @Body reason: CommentReport
+        @Body reason: ReportReasonRequest
     ): CommonResponse
 
     // 버킷 복사
