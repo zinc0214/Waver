@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,27 +29,6 @@ import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_common.R as CommonR
-
-//@Composable
-//fun ImageScreen(
-//    modifier: Modifier = Modifier,
-//    images: List<UserSelectedImageInfo>,
-//    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
-//) {
-//
-//    LazyVerticalGrid(
-//        columns = GridCells.Adaptive(minSize = 80.dp),
-//        state = rememberLazyGridState(),
-//        modifier = modifier,
-//        horizontalArrangement = Arrangement.spacedBy(32.dp),
-//        verticalArrangement = Arrangement.spacedBy(10.dp)
-//    ) {
-//
-//        items(items = images, key = { it.parseKey() }) { imageInfo ->
-//            ImageItem(imageInfo, deleteImage)
-//        }
-//    }
-//}
 
 @Composable
 fun ImageItem(
@@ -63,6 +44,7 @@ fun ImageItem(
 
         Image(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(0.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .constrainAs(image) {
@@ -71,7 +53,10 @@ fun ImageItem(
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                 },
-            painter = rememberAsyncImagePainter(model = imageInfo.uri),
+            painter = rememberAsyncImagePainter(
+                model = imageInfo.uri,
+                contentScale = ContentScale.Crop
+            ),
             contentDescription = "Captured image"
         )
 

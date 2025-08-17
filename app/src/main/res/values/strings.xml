@@ -25,4 +25,7 @@
 
     <string name="goToWaveQna">Contact Wave Support</string>
     <string name="failToGetImage">Failed to retrieve image</string>
+
+    <string name="imageCropperTitle">Image Cropper</string>
+    <string name="imageCropSave">save</string>
 </resources>

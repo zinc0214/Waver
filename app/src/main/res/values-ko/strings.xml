@@ -26,4 +26,6 @@
     <string name="goToWaveQna">웨이브 문의하기</string>
     <string name="failToGetImage">"이미지를 가져오는데 실패했습니다."</string>
 
+    <string name="imageCropperTitle">이미지 자르기</string>
+    <string name="imageCropSave">저장</string>
 </resources>

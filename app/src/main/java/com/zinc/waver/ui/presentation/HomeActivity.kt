@@ -1,12 +1,12 @@
 package com.zinc.waver.ui.presentation
 
-import android.app.Activity
 import android.content.Intent
 import android.content.Intent.createChooser
-import android.media.MediaScannerConnection
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,13 +16,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import com.google.android.gms.ads.MobileAds
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import com.zinc.waver.R
 import com.zinc.waver.model.AddImageType
+import com.zinc.waver.model.UserSelectedImageInfo
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
@@ -32,7 +35,6 @@ import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
 import com.zinc.waver.util.createImageFile
-import com.zinc.waver.util.getImageFileWithImageInfo
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
@@ -49,14 +51,22 @@ class HomeActivity : AppCompatActivity() {
     private var isNeedToShowPermission = false
     private lateinit var checkPermissionAction: ActionWithActivity.CheckPermission
 
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            // Use the cropped image URI.
+            Log.e("ayhan", "croppedImageUri : ${result.cropRect}")
+            photoUri = result.uriContent
+            getFile(result)
+        } else {
+            val exception = result.error
+        }
+    }
+
     private val cameraLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == RESULT_OK) {
                 photoUri?.let {
                     cropImage(it)
-                    MediaScannerConnection.scanFile(
-                        this, arrayOf(it.path), null
-                    ) { _, _ -> }
                 }
             }
         }
@@ -125,7 +135,6 @@ class HomeActivity : AppCompatActivity() {
                     HomeScreen(action = {
                         when (it) {
                             is ActionWithActivity.AddImage -> {
-                                // AddImageActivity.startWithLauncher(this, it.type)
                                 takePhotoAction = it
                                 if (it.type == AddImageType.CAMERA) {
                                     takePhoto()
@@ -172,28 +181,6 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
-                val result = CropImage.getActivityResult(data)
-                if (resultCode == Activity.RESULT_OK) {
-                    result.uri?.let {
-                        photoUri = result.uri
-                        getFile()
-                    }
-                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                    val error = result.error
-                    Toast.makeText(
-                        this,
-                        resources.getString(R.string.failToGetImage),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
-
     private fun takePhoto() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         var photoFile: File? = null
@@ -233,7 +220,7 @@ class HomeActivity : AppCompatActivity() {
             .setCropShape(CropImageView.CropShape.RECTANGLE).start(this)
     }
 
-    private fun getFile() {
+    private fun getFile(result: CropImageView.CropResult) {
         if (photoUri == null) {
             Toast.makeText(
                 this,
@@ -241,16 +228,15 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            val info = getImageFileWithImageInfo(photoUri!!, imageCount++)
-            if (photoUri == null) {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.failToGetImage),
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                takePhotoAction.succeed(info!!)
+            val imageInfo = result.uriContent?.let { uri ->
+                UserSelectedImageInfo(
+                    key = imageCount++,
+                    uri = uri,
+                    file = File(uri.path!!),
+                    path = result.getUriFilePath(this).orEmpty()
+                )
             }
+            takePhotoAction.succeed(imageInfo!!)
         }
     }
 
@@ -258,11 +244,10 @@ class HomeActivity : AppCompatActivity() {
         val send = Intent(Intent.ACTION_SENDTO)
         val uriText = "mailto:" + Uri.encode("mybury.info@gmail.com") +
                 "?subject=" + Uri.encode("<" + resources.getString(R.string.goToWaveQna) + ">")
-        val uri = Uri.parse(uriText)
+        val uri = uriText.toUri()
 
         send.data = uri
-        ContextCompat.startActivity(
-            this,
+        startActivity(
             createChooser(send, resources.getString(R.string.goToWaveQna)),
             null
         )
