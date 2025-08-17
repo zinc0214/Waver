@@ -59,6 +59,7 @@ import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui_common.R
+import com.zinc.waver.ui_detail.component.CommentEditView
 import com.zinc.waver.ui_detail.component.DetailSuccessButtonView
 import com.zinc.waver.ui_detail.component.DetailTopAppBar
 import com.zinc.waver.ui_detail.component.GoalCountUpdateDialog
@@ -70,14 +71,11 @@ import com.zinc.waver.ui_detail.component.OtherCommentOptionClicked
 import com.zinc.waver.ui_detail.component.OtherCommentSelectedDialog
 import com.zinc.waver.ui_detail.component.OtherDetailAppBarMoreMenuDialog
 import com.zinc.waver.ui_detail.component.ShowReportScreen
-import com.zinc.waver.ui_detail.component.mention.CommentEditTextView2
-import com.zinc.waver.ui_detail.component.mention.MentionSearchListPopup
 import com.zinc.waver.ui_detail.model.GoalCountUpdateEvent
 import com.zinc.waver.ui_detail.model.MentionSearchInfo
 import com.zinc.waver.ui_detail.model.MyBucketMoreMenuEvent
 import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
 import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent
-import com.zinc.waver.ui_detail.model.OpenDetailEditTextViewEvent
 import com.zinc.waver.ui_detail.model.OtherBucketMenuEvent
 import com.zinc.waver.ui_detail.model.TaggedTextInfo
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
@@ -86,7 +84,6 @@ import com.zinc.waver.util.createImageInfoWithPath
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import java.time.LocalTime
 import com.zinc.waver.ui_detail.R as DetailR
 
 @Composable
@@ -234,6 +231,8 @@ private fun InternalOpenDetailScreen(
     // 검색할 텍스트와 관련된 정보들
     val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
 
+    var previewComment by remember { mutableStateOf("") }
+
     LaunchedEffect(listScrollState.isLastItemVisible) {
         if (memoHeight == 0 && needToAddButtonSpace) {
             val targetItem2 = listScrollState.layoutInfo.visibleItemsInfo
@@ -366,128 +365,149 @@ private fun InternalOpenDetailScreen(
                     isAvailableShowComment,
                     enter = slideInVertically(initialOffsetY = { it / 2 })
                 ) {
-                    CommentEditTextView2(
-                        originText = commentText.value,
-                        newTaggedInfo = newTaggedText.value,
-                        isLiked = detailInfo.isLiked,
-                        commentEvent = {
-                            when (it) {
-                                is OpenDetailEditTextViewEvent.BucketLike -> {
-                                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
-                                }
-
-                                is OpenDetailEditTextViewEvent.SendComment -> {
-                                    updateInternalEvent(
-                                        OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
-                                            AddBucketCommentRequest(
-                                                bucketId = detailInfo.bucketId.toInt(),
-                                                content = it.sendText,
-                                                mentionIds = taggedMemberIdList
-                                            )
-                                        )
+                    CommentEditView(
+                        onCommentChanged = {
+                            previewComment = it
+                        },
+                        mentionableUsers = validMentionList,
+                        sendCommend = {
+                            updateInternalEvent(
+                                OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
+                                    AddBucketCommentRequest(
+                                        bucketId = detailInfo.bucketId.toInt(),
+                                        content = it,
+                                        mentionIds = taggedMemberIdList
                                     )
-                                    commentText.value = ""
-                                }
-
-                                is OpenDetailEditTextViewEvent.TextChanged -> {
-                                    val textInfo = it
-                                    commentText.value = textInfo.updateText
-                                    newTaggedText.value = null
-
-                                    taggedMemberIdList.clear()
-                                    taggedMemberIdList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
-
-                                    // "@" 태그 위치 확인
-                                    val tagIndexMap = mutableListOf<Int>()
-                                    textInfo.updateText.mapIndexed { index, c ->
-                                        if (c == '@') {
-                                            tagIndexMap.add(index)
-                                        }
-                                    }
-
-                                    // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
-                                    if (tagIndexMap.isNotEmpty()) {
-                                        tagIndexMap.lastOrNull { index ->
-                                            it.index > index
-                                        }?.let { tagIndex ->
-
-                                            // 커서의 위치가 전체 길이보다 뒤이면 리턴
-                                            if (textInfo.index > textInfo.updateText.length) {
-                                                mentionSearchInfo.value = null
-                                                return@CommentEditTextView2
-                                            }
-
-                                            val needToSearchText =
-                                                textInfo.updateText.substring(
-                                                    tagIndex,
-                                                    textInfo.index
-                                                )
-
-                                            if (needToSearchText.isNotEmpty()) {
-                                                val info =
-                                                    MentionSearchInfo(
-                                                        needToSearchText,
-                                                        tagIndex,
-                                                        textInfo.index,
-                                                        textInfo.taggedList
-                                                    )
-
-                                                mentionSearchInfo.value = info
-
-                                            } else {
-                                                mentionSearchInfo.value = null
-                                            }
-
-                                        }
-                                    } else {
-                                        mentionSearchInfo.value = null
-                                    }
-                                }
-                            }
-                        }
-
-                    )
-                }
-            }
-
-            mentionSearchInfo.value?.let { info ->
-                if (info.searchText.isNotEmpty()) {
-                    val removePrefixText = info.searchText.replace("@", "")
-                    val searchedList =
-                        validMentionList.filter { it.nickName.contains(removePrefixText) }
-                    if (searchedList.isNotEmpty()) {
-                        MentionSearchListPopup(
-                            searchedList = searchedList,
-                            mentionSelected = {
-
-                                var makeTaggedText = commentText.value
-                                val nickName = "@" + it.nickName + " "
-
-                                val rangeEndIndex =
-                                    if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
-                                makeTaggedText = makeTaggedText.replaceRange(
-                                    info.startIndex,
-                                    rangeEndIndex,
-                                    nickName
                                 )
-
-                                val currentTime = LocalTime.now()
-                                val timeString = currentTime.toString().substring(0, 8)
-
-                                newTaggedText.value =
-                                    TaggedTextInfo(
-                                        id = "${info.startIndex}${timeString}",
-                                        text = nickName,
-                                        startIndex = info.startIndex,
-                                        endIndex = info.startIndex + nickName.length - 1
-                                    )
-                                commentText.value = makeTaggedText
-                                mentionSearchInfo.value = null
-                            }
-                        )
-                    }
+                            )
+                        },
+                        isLike = detailInfo.isLiked,
+                        onLikeChanged = {
+                            updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
+                        }
+                    )
+//                    CommentEditTextView2(
+//                        originText = commentText.value,
+//                        newTaggedInfo = newTaggedText.value,
+//                        isLiked = detailInfo.isLiked,
+//                        commentEvent = {
+//                            when (it) {
+//                                is OpenDetailEditTextViewEvent.BucketLike -> {
+//                                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
+//                                }
+//
+//                                is OpenDetailEditTextViewEvent.SendComment -> {
+//                                    updateInternalEvent(
+//                                        OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
+//                                            AddBucketCommentRequest(
+//                                                bucketId = detailInfo.bucketId.toInt(),
+//                                                content = it.sendText,
+//                                                mentionIds = taggedMemberIdList
+//                                            )
+//                                        )
+//                                    )
+//                                    commentText.value = ""
+//                                }
+//
+//                                is OpenDetailEditTextViewEvent.TextChanged -> {
+//                                    val textInfo = it
+//                                    commentText.value = textInfo.updateText
+//                                    newTaggedText.value = null
+//
+//                                    taggedMemberIdList.clear()
+//                                    taggedMemberIdList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
+//
+//                                    // "@" 태그 위치 확인
+//                                    val tagIndexMap = mutableListOf<Int>()
+//                                    textInfo.updateText.mapIndexed { index, c ->
+//                                        if (c == '@') {
+//                                            tagIndexMap.add(index)
+//                                        }
+//                                    }
+//
+//                                    // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
+//                                    if (tagIndexMap.isNotEmpty()) {
+//                                        tagIndexMap.lastOrNull { index ->
+//                                            it.index > index
+//                                        }?.let { tagIndex ->
+//
+//                                            // 커서의 위치가 전체 길이보다 뒤이면 리턴
+//                                            if (textInfo.index > textInfo.updateText.length) {
+//                                                mentionSearchInfo.value = null
+//                                                return@CommentEditTextView2
+//                                            }
+//
+//                                            val needToSearchText =
+//                                                textInfo.updateText.substring(
+//                                                    tagIndex,
+//                                                    textInfo.index
+//                                                )
+//
+//                                            if (needToSearchText.isNotEmpty()) {
+//                                                val info =
+//                                                    MentionSearchInfo(
+//                                                        needToSearchText,
+//                                                        tagIndex,
+//                                                        textInfo.index,
+//                                                        textInfo.taggedList
+//                                                    )
+//
+//                                                mentionSearchInfo.value = info
+//
+//                                            } else {
+//                                                mentionSearchInfo.value = null
+//                                            }
+//
+//                                        }
+//                                    } else {
+//                                        mentionSearchInfo.value = null
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//                    )
                 }
             }
+
+//            mentionSearchInfo.value?.let { info ->
+//                if (info.searchText.isNotEmpty()) {
+//                    val removePrefixText = info.searchText.replace("@", "")
+//                    val searchedList =
+//                        validMentionList.filter { it.nickName.contains(removePrefixText) }
+//                    if (searchedList.isNotEmpty()) {
+//                        MentionSearchListPopup(
+//                            searchedList = searchedList,
+//                            mentionSelected = {
+//
+//                                var makeTaggedText = commentText.value
+//                                val nickName = "@" + it.nickName + " "
+//
+//                                val rangeEndIndex =
+//                                    if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
+//                                makeTaggedText = makeTaggedText.replaceRange(
+//                                    info.startIndex,
+//                                    rangeEndIndex,
+//                                    nickName
+//                                )
+//
+//                                val currentTime = LocalTime.now()
+//                                val timeString = currentTime.toString().substring(0, 8)
+//
+//                                newTaggedText.value =
+//                                    TaggedTextInfo(
+//                                        id = "${info.startIndex}${timeString}",
+//                                        text = nickName,
+//                                        startIndex = info.startIndex,
+//                                        endIndex = info.startIndex + nickName.length - 1
+//                                    )
+//                                commentText.value = makeTaggedText
+//                                mentionSearchInfo.value = null
+//                            }
+//                        )
+//                    }
+//                }
+//            }
         }
     }
 
