@@ -7,6 +7,7 @@ import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
 import com.zinc.data.api.WaverApi
+import com.zinc.domain.models.FollowOtherUserRequest
 import com.zinc.domain.repository.MyRepository
 import javax.inject.Inject
 
@@ -35,11 +36,11 @@ internal class MyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestUnfollow(userId: String): CommonResponse {
-        return waverApi.requestUnfollow(userId)
+        return waverApi.requestUnfollow(FollowOtherUserRequest(userId))
     }
 
     override suspend fun requestFollow(userId: String): CommonResponse {
-        return waverApi.requestFollow(userId)
+        return waverApi.requestFollow(FollowOtherUserRequest(userId))
     }
 
     override suspend fun searchAllBucketList(query: String): AllBucketListResponse {

@@ -214,10 +214,25 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun cropImage(photoUri: Uri) {
-        CropImage.activity(photoUri).setGuidelines(CropImageView.Guidelines.ON)
-            .setAllowFlipping(false).setAspectRatio(1, 1)
-            .setScaleType(CropImageView.ScaleType.CENTER_CROP)
-            .setCropShape(CropImageView.CropShape.RECTANGLE).start(this)
+        Log.e("ayhan", "cropImage : $photoUri")
+        cropImage.launch(
+            CropImageContractOptions(
+                uri = photoUri,
+                cropImageOptions = CropImageOptions(
+                    maxZoom = 3,
+                    showCropLabel = true,
+                    showCropOverlay = true,
+                    guidelines = CropImageView.Guidelines.ON,
+                    outputCompressFormat = Bitmap.CompressFormat.PNG,
+                    cropMenuCropButtonTitle = getString(R.string.imageCropSave),
+                    activityTitle = getString(R.string.imageCropperTitle),
+                    aspectRatioX = 1,
+                    aspectRatioY = 1,
+                    fixAspectRatio = true,  // 이 옵션을 true로 설정하면 사용자가 비율을 변경할 수 없음
+                    initialCropWindowPaddingRatio = 0f  // 크롭 윈도우가 이미지를 꽉 채우도록 설정
+                )
+            )
+        )
     }
 
     private fun getFile(result: CropImageView.CropResult) {
