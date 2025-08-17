@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_detail.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -39,7 +40,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -68,6 +68,7 @@ fun CommentEditView(
     var textFieldValue by remember { mutableStateOf(TextFieldValue("")) }
     var showMentionPopup by remember { mutableStateOf(false) }
     var isFocused by remember { mutableStateOf(false) }
+    val mentionableUsersNameList = mentionableUsers.map { it.nickName }
 
     fun getMentionEndPosition(text: String, mentionStart: Int): Int {
         return text.indexOf(" ", mentionStart).let {
@@ -83,7 +84,10 @@ fun CommentEditView(
             if (atIndex == -1) break
 
             val endIndex = getMentionEndPosition(text, atIndex)
-            if (cursorPosition > atIndex && cursorPosition <= endIndex) {
+            val atText = text.substring(atIndex + 1, endIndex)
+            val isUserText = mentionableUsersNameList.contains(atText)
+
+            if (cursorPosition > atIndex && cursorPosition <= endIndex && isUserText) {
                 return true
             }
             startIndex = endIndex + 1
@@ -112,28 +116,58 @@ fun CommentEditView(
     // 멘션된 텍스트를 파란색으로 강조하는 함수
     fun createAnnotatedString(text: String): AnnotatedString {
         return buildAnnotatedString {
+            val mentionedList = mutableListOf<TextRange>()
+
             var startIndex = 0
             while (startIndex < text.length) {
                 val mentionStart = text.indexOf("@", startIndex)
+                val mentionEnd = getMentionEndPosition(text, mentionStart)
+
+                // @의 시작과 끝의 텍스트 확인
+                val atText = text.substring(mentionStart + 1, mentionEnd)
+                val isUserText = mentionableUsersNameList.contains(atText)
+
                 if (mentionStart == -1) {
-                    append(text.substring(startIndex))
                     break
                 }
 
-                // @ 이전의 텍스트 추가
-                append(text.substring(startIndex, mentionStart))
-
-                val mentionEnd = getMentionEndPosition(text, mentionStart)
-
-                // 멘션 텍스트를 Main5 색상으로 강조
-                withStyle(SpanStyle(color = Main5)) {
-                    append(text.substring(mentionStart, mentionEnd))
-                }
-
                 startIndex = mentionEnd
+
+                if (isUserText) {
+                    mentionedList.add(TextRange(mentionStart, mentionEnd))
+                }
+            }
+
+            append(text)
+
+            mentionedList.forEach {
+                addStyle(
+                    style = SpanStyle(color = Main5),
+                    start = it.start,
+                    end = it.end
+                )
             }
         }
     }
+
+    fun findNearesAtPreviousCusortPosition(textFieldValue: TextFieldValue): Int {
+        val text = textFieldValue.text
+        val cursorPosition = textFieldValue.selection.start
+
+        if (cursorPosition == 0 || text.isEmpty()) {
+            return -1
+        }
+
+        // 커서 위치 바로 전부터 문자열의 시작까지 역방향으로 탐색
+        for (i in (cursorPosition - 1) downTo 0) {
+            if (text[i] == '@') {
+                return i // 가장 가까운 '@'의 인덱스 반환
+            }
+        }
+
+        return -1 // 커서 앞에 '@'가 없는 경우
+    }
+
 
     Box(
         modifier = modifier.fillMaxWidth()
@@ -164,7 +198,16 @@ fun CommentEditView(
                             .fillMaxWidth()
                             .padding(top = 3.dp)
                     ) {
-                        val searchText = textFieldValue.text.substringAfterLast("@").lowercase()
+                        val startIndex = findNearesAtPreviousCusortPosition(textFieldValue)
+                        val endIndex = getMentionEndPosition(textFieldValue.text, startIndex)
+                        val searchText =
+                            textFieldValue.text.substring(startIndex + 1, endIndex).lowercase()
+
+                        Log.e(
+                            "ayhan ",
+                            "searchText : $searchText, startIndex : $startIndex, endIndex : $endIndex"
+                        )
+
                         val filteredUsers = if (searchText.isEmpty()) {
                             mentionableUsers
                         } else {
@@ -176,12 +219,22 @@ fun CommentEditView(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        val beforeMention =
-                                            textFieldValue.text.substringBeforeLast("@")
-                                        val newText = beforeMention + "@${user.nickName} "
-                                        val newCursorPosition = newText.length
+                                        val needChangeIndex =
+                                            findNearesAtPreviousCusortPosition(textFieldValue)
+                                        if (needChangeIndex == -1) return@clickable
+
+                                        val newText = "@${user.nickName} "
+                                        val changeText = textFieldValue.text.replaceRange(
+                                            needChangeIndex,
+                                            needChangeIndex + 1,
+                                            newText
+                                        )
+                                        Log.e("ayhan", "changeText :$changeText")
+
+                                        val newCursorPosition = needChangeIndex + newText.length
+
                                         textFieldValue = TextFieldValue(
-                                            annotatedString = createAnnotatedString(newText),
+                                            annotatedString = createAnnotatedString(changeText),
                                             selection = TextRange(newCursorPosition)
                                         )
                                         showMentionPopup = false
@@ -251,9 +304,9 @@ fun CommentEditView(
                             MyTextField(
                                 value = textFieldValue,
                                 onValueChange = { newValue ->
-                                    val atIndex = newValue.text.lastIndexOf("@")
                                     val cursorPosition = newValue.selection.start
                                     val oldCursorPosition = textFieldValue.selection.start
+                                    val atIndex = findNearesAtPreviousCusortPosition(newValue)
 
                                     // 현재 입력이 삭제인지 확인
                                     val isDeleting =
@@ -270,18 +323,21 @@ fun CommentEditView(
                                             deleteMention(textFieldValue.text, oldCursorPosition)
                                         textFieldValue = TextFieldValue(
                                             text = newText,
-                                            selection = TextRange(newText.length)
+                                            selection = TextRange(newText.length) // TODO : 이거 원래는 삭제된 위치로 보내야함... 하...
                                         )
                                         onCommentChanged(newText)
                                         showMentionPopup = false
                                     } else {
                                         // 일반 텍스트 입력 (멘션 영역 밖이거나 새로운 입력)
                                         textFieldValue = newValue.copy()
+                                        Log.e("ayhan", "newValue : ${newValue.text}")
+
                                         onCommentChanged(newValue.text)
 
                                         // 입력이 완료된 후 AnnotatedString 적용
                                         if (newValue.composition != null) {
                                             // 조합 중인 텍스트가 있으면 하이라이팅하지 않음
+                                            // TODO : 이러면 입력 중에 하이라이팅이 아예 안먹는 문제가 있음 어케 해야되누...
                                             return@MyTextField
                                         }
                                         textFieldValue = textFieldValue.copy(
@@ -289,12 +345,40 @@ fun CommentEditView(
                                         )
 
                                         // @ 입력 감지 및 팝업 표시
-                                        showMentionPopup = atIndex != -1 && cursorPosition > atIndex
+                                        val mentionText =
+                                            if (atIndex != -1 && cursorPosition > atIndex) {
+                                                val textAfterAt =
+                                                    newValue.text.substring(atIndex + 1)
+                                                if (textAfterAt.contains(" ")) {
+                                                    // @ 뒤에 공백이 있으면 멘션이 완성된 것으로 간주
+                                                    if (cursorPosition <= atIndex + textAfterAt.indexOf(
+                                                            " "
+                                                        )
+                                                    ) {
+                                                        textAfterAt.substring(
+                                                            0,
+                                                            textAfterAt.indexOf(" ")
+                                                        ).trim()
+                                                    } else {
+                                                        ""
+                                                    }
+                                                } else {
+                                                    textAfterAt.trim()
+                                                }
+                                            } else ""
+
+                                        Log.e(
+                                            "ayhan",
+                                            "mentionText : $mentionText, atIndex : $atIndex, cursorPosition : $cursorPosition"
+                                        )
+
+                                        // @ 다음에 실제 입력된 텍스트가 있고, 공백 이전일 때만 팝업 표시
+                                        showMentionPopup =
+                                            mentionText.isNotEmpty() || (atIndex != -1 && cursorPosition == atIndex + 1)
                                     }
                                 },
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(top = 8.dp)
                                     .onFocusChanged { isFocused = it.isFocused },
                                 textStyle = TextStyle(
                                     color = Gray9,
@@ -305,14 +389,20 @@ fun CommentEditView(
                                     autoCorrect = false
                                 ),
                                 decorationBox = { innerTextField ->
-                                    if (textFieldValue.text.isEmpty()) {
-                                        MyText(
-                                            text = "버킷리스트를 응원해주세요!",
-                                            color = Gray6,
-                                            fontSize = dpToSp(13.dp)
-                                        )
+                                    Box(
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentAlignment = Alignment.CenterStart
+                                    ) {
+                                        if (textFieldValue.text.isEmpty()) {
+                                            MyText(
+                                                text = "버킷리스트를 응원해주세요!",
+                                                color = Gray6,
+                                                fontSize = dpToSp(13.dp),
+                                                fontWeight = FontWeight.Medium
+                                            )
+                                        }
+                                        innerTextField()
                                     }
-                                    innerTextField()
                                 }
                             )
                         }
