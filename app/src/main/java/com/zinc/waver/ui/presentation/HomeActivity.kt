@@ -34,6 +34,7 @@ import com.zinc.waver.ui.presentation.screen.ads.AdFullScreen
 import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
+import com.zinc.waver.util.FileUtil.getFileFromUri
 import com.zinc.waver.util.createImageFile
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -243,15 +244,32 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            val imageInfo = result.uriContent?.let { uri ->
-                UserSelectedImageInfo(
-                    key = imageCount++,
-                    uri = uri,
-                    file = File(uri.path!!),
-                    path = result.getUriFilePath(this).orEmpty()
-                )
+//            val imageInfo = result.uriContent?.let { uri ->
+//                UserSelectedImageInfo(
+//                    key = imageCount++,
+//                    uri = uri,
+//                    file = File(uri.path!!),
+//                    path = result.getUriFilePath(this).orEmpty()
+//                )
+//            }
+//            takePhotoAction.succeed(imageInfo!!)
+            handleImageResult(result)
+        }
+    }
+
+    private fun handleImageResult(result: CropImageView.CropResult) {
+        if (result.isSuccessful) {
+            result.uriContent?.let { uri ->
+                getFileFromUri(this, uri)?.let { file ->
+                    val imageInfo = UserSelectedImageInfo(
+                        key = imageCount++,
+                        uri = uri,
+                        file = file,
+                        path = file.path
+                    )
+                    takePhotoAction.succeed(imageInfo)
+                }
             }
-            takePhotoAction.succeed(imageInfo!!)
         }
     }
 
