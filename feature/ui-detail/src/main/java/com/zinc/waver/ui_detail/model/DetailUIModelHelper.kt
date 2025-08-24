@@ -20,7 +20,7 @@ import com.zinc.waver.ui.util.toStringData
 
 fun bucketDetailResponseToUiModel(
     bucketInfo: DetailInfo,
-    profileInfo: ProfileInfo, // TODO : 글쓴사람 프로필로 바꿔야함
+    profileInfo: ProfileInfo,
     isMine: Boolean,
     writerId: String?
 ): BucketDetailUiInfo {
