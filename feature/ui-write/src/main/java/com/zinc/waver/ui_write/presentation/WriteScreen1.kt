@@ -127,6 +127,7 @@ fun WriteScreen1(
 
     LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
+        viewModel.loadCategory()
     }
 
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {

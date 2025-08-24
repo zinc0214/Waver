@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.DetailInfo
+import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.login.PreferenceDataStoreModule
+import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadFriends
 import com.zinc.domain.usecases.keyword.LoadKeyWord
@@ -29,6 +31,7 @@ class WriteBucketListViewModel @Inject constructor(
     private val loadBucketDetail: LoadBucketDetail,
     private val loadKeyWord: LoadKeyWord,
     private val loadFriends: LoadFriends,
+    private val loadCategoryList: LoadCategoryList,
     private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
@@ -53,9 +56,18 @@ class WriteBucketListViewModel @Inject constructor(
     private val _hasWaverPlus = MutableLiveData<Boolean>()
     val hasWaverPlus: LiveData<Boolean> get() = _hasWaverPlus
 
+    private val _defaultCategoryId = MutableLiveData<Int>()
 
     fun clearData() {
         _loadFail.value = null
+    }
+
+    fun loadCategory() {
+        viewModelScope.launch(ceh(_loadFail, "카테고리 로드 실패" to "다시 시도해주세요")) {
+            val result = loadCategoryList.invoke()
+            _defaultCategoryId.value = result.data.firstOrNull { it.defaultYn == YesOrNo.Y }?.id
+            Log.e("ayhan", "category : $result")
+        }
     }
 
     fun addNewBucketList(writeInfo: UIAddBucketListInfo, isForUpdate: Boolean) {
@@ -64,6 +76,8 @@ class WriteBucketListViewModel @Inject constructor(
             Log.e("ayhan", "addBucketResult fail1 : ${throwable.cause}")
             Log.e("ayhan", "Imagrs : ${writeInfo.images}")
         }) {
+            val categoryId = if (writeInfo.categoryId == -1) _defaultCategoryId.value
+                ?: -1 else writeInfo.categoryId
             runCatching {
                 _loadFail.value = null
                 val result = addNewBucketList.invoke(
@@ -79,7 +93,7 @@ class WriteBucketListViewModel @Inject constructor(
                         images = writeInfo.images,
                         targetDate = writeInfo.targetDate,
                         goalCount = writeInfo.goalCount,
-                        categoryId = writeInfo.categoryId
+                        categoryId = categoryId
                     ),
                     isForUpdate = isForUpdate
                 )

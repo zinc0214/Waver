@@ -23,7 +23,7 @@ internal class WriteRepositoryImpl @Inject constructor(
         val exposureStatus = addBucketListRequest.exposureStatus.toMultipartFile("exposureStatus")
         val title = addBucketListRequest.title.toMultipartFile("title")
         val memo = addBucketListRequest.memo?.toMultipartFile("memo")
-        val keywordIds = addBucketListRequest.keywords?.toMultipartFile("keywords")
+        val keywords = addBucketListRequest.keywords?.toMultipartFile("keywords")
         val friendUserIds = addBucketListRequest.friendUserIds?.toMultipartFile("friendUserIds")
         val scrapYn = addBucketListRequest.scrapYn.toMultipartFile("scrapYn")
         val images = addBucketListRequest.images?.map {
@@ -39,7 +39,7 @@ internal class WriteRepositoryImpl @Inject constructor(
                 exposureStatus,
                 title,
                 memo,
-                keywordIds,
+                keywords,
                 friendUserIds,
                 scrapYn,
                 images,
@@ -54,7 +54,7 @@ internal class WriteRepositoryImpl @Inject constructor(
                 exposureStatus,
                 title,
                 memo,
-                keywordIds,
+                keywords,
                 friendUserIds,
                 scrapYn,
                 images,

@@ -137,7 +137,7 @@ interface WaverApi {
         @Part exposureStatus: MultipartBody.Part, // 공개여부
         @Part title: MultipartBody.Part,
         @Part memo: MultipartBody.Part?, // 메모
-        @Part keywordIds: MultipartBody.Part?, // 키워드 (태그) 키워드 목록(최대 5) - ","로 구분
+        @Part keywords: MultipartBody.Part?, // 키워드 (태그) 키워드 목록(최대 5) - ","로 구분
         @Part friendUserIds: MultipartBody.Part?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
         @Part scrapYn: MultipartBody.Part, // 스크랩 여부
         @Part images: List<MultipartBody.Part>?, // 이미지 목록(최대 3)
@@ -154,7 +154,7 @@ interface WaverApi {
         @Part exposureStatus: MultipartBody.Part, // 공개여부
         @Part title: MultipartBody.Part,
         @Part memo: MultipartBody.Part?, // 메모
-        @Part keywordIds: MultipartBody.Part?, // 키워드 (태그) 키워드 목록(최대 5) - ","로 구분
+        @Part keywords: MultipartBody.Part?, // 키워드 (태그) 키워드 목록(최대 5) - ","로 구분
         @Part friendUserIds: MultipartBody.Part?, // 함께할 친구 ID - 함께하기인 경우 최소 1명 필수(최대 5)
         @Part scrapYn: MultipartBody.Part, // 스크랩 여부
         @Part images: List<MultipartBody.Part>?, // 이미지 목록(최대 3)

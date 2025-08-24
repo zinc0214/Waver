@@ -212,7 +212,7 @@ private fun parseGoalCount(options: List<WriteOption1Info>): Int {
 private fun parseCategoryId(options: List<WriteOption1Info>): Int {
     return options.firstOrNull { it is WriteOption1Info.Category }?.let {
         (it as WriteOption1Info.Category).categoryInfo.id
-    } ?: 0
+    } ?: -1
 }
 
 data class UIAddBucketListInfo(
@@ -227,7 +227,7 @@ data class UIAddBucketListInfo(
     val images: List<File>? = emptyList(), // 이미지 목록(최대 3)
     val targetDate: String?, // 목표완료일(yyyy-MM-dd)
     val goalCount: Int = 0, //  목표 횟수
-    val categoryId: Int = 0 // 카테고리 ID
+    val categoryId: Int // 카테고리 ID
 )
 
 
