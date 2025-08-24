@@ -62,7 +62,7 @@ data class BucketDetailUiInfo(
     val togetherInfo: TogetherInfo? = null,
     val isMine: Boolean,
     val isDone: Boolean,
-    val isLiked: Boolean
+    val isLike: Boolean
 ) {
     val canShowCompleteButton get() = isMine && !isDone
     fun getButtonIndex(): Int {

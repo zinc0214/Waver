@@ -238,7 +238,7 @@ fun DetailInfo.toUpdateUiModel(
     title = this.title,
     options = getOptions(imagesList),
     writeOpenType = WriteOpenType.PUBLIC, // TODO : 서버
-    keyWord = keywords.map { it -> WriteKeyWord(it.id.orEmpty(), it.name) },
+    keyWord = keywords.map { it -> WriteKeyWord(it.code.orEmpty(), it.name) },
     tagFriends = emptyList(), // TODO : 서버
     isScrapUsed = this.pin.isYes(),
     isForUpdate = true
@@ -253,7 +253,7 @@ private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List
         )
     }
 
-    completedDt?.let {
+    targetDate?.let {
         val dDayLocalDate = it.toLocalData()
         optionsList.add(
             WriteOption1Info.Dday(dDayLocalDate.toStringData(), dDayLocalDate.parseWithDday())

@@ -34,9 +34,9 @@ fun bucketDetailResponseToUiModel(
     )
 
     val descInfo = DetailDescType.CommonDetailDescInfo(
-        dDay = bucketInfo.completedDt,
+        dDay = bucketInfo.targetDate,
         keywordList = bucketInfo.keywords.map {
-            WriteKeyWord(it.id.orEmpty(), it.name)
+            WriteKeyWord(it.code.orEmpty(), it.name)
         },
         title = bucketInfo.title,
         goalCount = bucketInfo.goalCount,
@@ -75,7 +75,7 @@ fun bucketDetailResponseToUiModel(
         togetherInfo = null,
         isMine = isMine,
         isDone = bucketInfo.status == DetailInfo.CompleteStatus.COMPLETE,
-        isLiked = false // TODO : 데이터 받아야됨
+        isLike = bucketInfo.isLike.isYes()
     )
 }
 

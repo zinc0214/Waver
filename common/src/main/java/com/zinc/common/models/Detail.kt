@@ -26,7 +26,7 @@ data class DetailInfo(
     val goalCount: Int,
     val userCount: Int,
     val keywords: List<Keyword>,
-    val completedDt: String?,
+    val targetDate: String?,
     val friendUsers: List<FriendUser>?,
     val images: List<String>?,
     val comment: List<Comment>?
@@ -65,7 +65,7 @@ data class DetailInfo(
 
     @Serializable
     data class Keyword(
-        val id: String?,
+        val code: String?,
         val name: String
     )
 }

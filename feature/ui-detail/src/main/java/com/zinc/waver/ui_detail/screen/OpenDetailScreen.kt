@@ -381,7 +381,7 @@ private fun InternalOpenDetailScreen(
                                 )
                             )
                         },
-                        isLike = detailInfo.isLiked,
+                        isLike = detailInfo.isLike,
                         onLikeChanged = {
                             updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
                         }
@@ -833,7 +833,7 @@ private fun InternalOpenDetailScreenPreview() {
             togetherInfo = null,
             isMine = true,
             isDone = false,
-            isLiked = false
+            isLike = false
         ),
         validMentionList = emptyList(),
         internalEvent = OpenBucketDetailInternalEvent.None,
