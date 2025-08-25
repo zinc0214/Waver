@@ -77,6 +77,7 @@ interface WaverApi {
         @Query("status") status: BucketStatus? = null,
         @Query("sort") sort: AllBucketListSortType? = AllBucketListSortType.ORDERED,
         @Query("categoryId") categoryId: String? = null,
+        @Query("query") query: String? = null,
     ): AllBucketListResponse
 
     // 카테고리 전체 로드
@@ -114,7 +115,7 @@ interface WaverApi {
     ): CommonResponse
 
     // 버킷리스트 상세
-    @GET("/waver/bucketList/{id}")
+    @GET("/waver/bucket/{id}")
     suspend fun loadBucketDetail(
         @Path("id") id: String
     ): BucketDetailResponse

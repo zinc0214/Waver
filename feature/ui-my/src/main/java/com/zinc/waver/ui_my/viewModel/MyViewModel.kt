@@ -245,7 +245,7 @@ class MyViewModel @Inject constructor(
 
     fun loadAllBucketList(status: BucketStatus? = null) {
         val allBucketListRequest = AllBucketListRequest(
-            dDayBucketOnly = YesOrNo.N.name,
+            dDayBucketOnly = null,
             isPassed = null,
             status = status ?: loadStatusFilter(),
             sort = loadSortFilter()
@@ -257,6 +257,9 @@ class MyViewModel @Inject constructor(
             _dataLoadFailed.value = false
 
             loadAllBucketList.invoke(allBucketListRequest).apply {
+
+                Log.e("ayhan", "allBucketListRequest2 : $this")
+
                 if (this.success) {
                     val data = this.data
                     Log.e("ayhan", "allBucketList : $this")
@@ -286,7 +289,7 @@ class MyViewModel @Inject constructor(
     fun loadDdayBucketList() {
         val allBucketListRequest = AllBucketListRequest(
             dDayBucketOnly = YesOrNo.Y.name,
-            isPassed = null,
+            isPassed = YesOrNo.N.name,
             status = null,
             sort = loadSortFilter()
         )

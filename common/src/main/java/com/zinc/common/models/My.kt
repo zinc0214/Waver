@@ -62,7 +62,7 @@ data class AllBucketList(
 
 @Serializable
 data class AllBucketListRequest(
-    val dDayBucketOnly: String, // d-day 버킷여부
+    val dDayBucketOnly: String?, // d-day 버킷여부
     val isPassed: String?, // d-day 지난 버킷 조회 여부
     val status: BucketStatus?, // 진행상태
     val sort: AllBucketListSortType
@@ -101,9 +101,9 @@ data class BucketInfoSimple(
     val id: String,
     val bucketType: BucketType,
     val title: String,
+    val exposureStatus: ExposureStatus,
     val status: BucketStatus,
     val dDay: Int? = null,
     var userCount: Int = 0,
-    val goalCount: Int = 0,
-    val exposureStatus: ExposureStatus
+    val goalCount: Int = 0
 )

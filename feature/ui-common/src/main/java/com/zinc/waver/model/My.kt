@@ -13,6 +13,7 @@ import com.zinc.waver.ui_common.R
 import com.zinc.waver.util.parseNavigationValue
 import com.zinc.waver.util.toNavigationValue
 import java.io.Serializable
+import kotlin.math.absoluteValue
 
 data class AllBucketList(
     val processingCount: String,
@@ -55,17 +56,17 @@ data class UIBucketInfoSimple(
     val dDayText = dDay?.let {
         when {
             it == 0 -> "D-day"
-            it < 0 -> "D$it"
-            else -> "D+$it"
+            it < 0 -> "D+${it.absoluteValue}"
+            else -> "D-$it"
         }
     }
 
     val dDayBadgeColor =
         dDay?.let {
             if (isChallenge.not()) {
-                if (it <= 0) Sub_D3 else Error2
+                if (it <= 0) Error2 else Sub_D3
             } else if (isChallenge) {
-                if (it <= 0) Main4 else Gray6
+                if (it <= 0) Gray6 else Main4
             } else {
                 Sub_D3
             }
