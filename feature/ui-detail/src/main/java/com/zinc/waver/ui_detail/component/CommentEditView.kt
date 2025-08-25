@@ -8,10 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -287,18 +284,15 @@ fun CommentEditView(
 
                 Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(36.dp)
                         .background(color = Color.White, shape = RoundedCornerShape(8.dp))
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
+                                .fillMaxWidth()
                                 .padding(start = 10.dp, end = 10.dp)
                         ) {
                             MyTextField(
@@ -378,7 +372,7 @@ fun CommentEditView(
                                     }
                                 },
                                 modifier = Modifier
-                                    .fillMaxSize()
+                                    .heightIn(max = 78.dp, min = 36.dp)
                                     .onFocusChanged { isFocused = it.isFocused },
                                 textStyle = TextStyle(
                                     color = Gray9,
@@ -390,7 +384,7 @@ fun CommentEditView(
                                 ),
                                 decorationBox = { innerTextField ->
                                     Box(
-                                        modifier = Modifier.fillMaxSize(),
+                                        modifier = Modifier,
                                         contentAlignment = Alignment.CenterStart
                                     ) {
                                         if (textFieldValue.text.isEmpty()) {

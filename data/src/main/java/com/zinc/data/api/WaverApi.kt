@@ -130,7 +130,7 @@ interface WaverApi {
     suspend fun loadFeedItems(): FeedListResponse
 
     // 버킷리스트 등록
-    @POST("/waver/bucketlist")
+    @POST("/waver/bucket")
     @Multipart
     suspend fun addNewBucketList(
         @Part bucketType: MultipartBody.Part,
