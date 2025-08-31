@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -16,8 +17,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -284,7 +283,11 @@ fun CommentEditView(
 
                 Box(
                     modifier = Modifier
-                        .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+                        .background(
+                            color = Color.White,
+                            shape = RoundedCornerShape(8.dp)
+                        )
+                        .fillMaxWidth()
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -292,8 +295,9 @@ fun CommentEditView(
                     ) {
                         Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 10.dp, end = 10.dp)
+                                .weight(1f)
+                                .heightIn(max = 78.dp, min = 36.dp),
+                            contentAlignment = Alignment.CenterStart
                         ) {
                             MyTextField(
                                 value = textFieldValue,
@@ -372,7 +376,7 @@ fun CommentEditView(
                                     }
                                 },
                                 modifier = Modifier
-                                    .heightIn(max = 78.dp, min = 36.dp)
+                                    .padding(start = 10.dp, end = 10.dp)
                                     .onFocusChanged { isFocused = it.isFocused },
                                 textStyle = TextStyle(
                                     color = Gray9,
@@ -384,7 +388,7 @@ fun CommentEditView(
                                 ),
                                 decorationBox = { innerTextField ->
                                     Box(
-                                        modifier = Modifier,
+                                        modifier = Modifier.fillMaxWidth(),
                                         contentAlignment = Alignment.CenterStart
                                     ) {
                                         if (textFieldValue.text.isEmpty()) {
@@ -402,27 +406,26 @@ fun CommentEditView(
                         }
 
                         if (isFocused) {
-                            IconButton(
-                                onClick = {
-                                    if (textFieldValue.text.isNotEmpty()) {
-                                        sendCommend(textFieldValue.text)
-                                        textFieldValue = TextFieldValue("")
+                            Image(
+                                painter = painterResource(
+                                    id = if (textFieldValue.text.isEmpty()) {
+                                        R.drawable.comment_send_off
+                                    } else {
+                                        R.drawable.comment_send_on
                                     }
-                                }
-                            ) {
-                                Icon(
-                                    painter = painterResource(
-                                        id = if (textFieldValue.text.isEmpty()) {
-                                            R.drawable.comment_send_off
-                                        } else {
-                                            R.drawable.comment_send_on
+                                ),
+                                contentDescription = "Send comment",
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .clickable {
+                                        if (textFieldValue.text.isNotEmpty()) {
+                                            sendCommend(textFieldValue.text)
+                                            textFieldValue = TextFieldValue("")
                                         }
-                                    ),
-                                    contentDescription = "Send comment",
-                                    modifier = Modifier.size(24.dp),
-                                    tint = Color.Unspecified
-                                )
-                            }
+                                    },
+                            )
+                        } else {
+                            Spacer(modifier = Modifier.size(24.dp))
                         }
                     }
                 }
