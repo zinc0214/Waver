@@ -22,7 +22,6 @@ import java.time.LocalDate
 
 var lengthOfWeek: Int = 0
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarView(
     year: Int = 0,

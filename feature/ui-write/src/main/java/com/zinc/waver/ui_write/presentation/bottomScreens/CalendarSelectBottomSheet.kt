@@ -38,6 +38,7 @@ import com.zinc.waver.ui_write.presentation.bottomScreens.CalendarViewType.CALEN
 import com.zinc.waver.ui_write.presentation.bottomScreens.CalendarViewType.PICKER
 import com.zinc.waver.ui_write.viewmodel.DateViewModel
 import java.time.LocalDate
+import java.time.YearMonth
 import java.util.Calendar
 
 
@@ -65,7 +66,8 @@ fun CalendarSelectBottomSheet(
                     currentYear = currentLocalDate.year,
                     currentMonth = currentLocalDate.monthValue,
                     navigateMonth = { year: Int, month: Int ->
-                        currentLocalDate = LocalDate.of(year, month, currentLocalDate.dayOfMonth)
+                        currentLocalDate =
+                            LocalDate.of(year, month, YearMonth.of(year, month).lengthOfMonth())
                     },
                     selectedDate = currentLocalDate,
                     updateSelectedDate = {
@@ -116,7 +118,8 @@ private fun CalendarTypeView(
     updateSelectedDate: (LocalDate) -> Unit,
     changeViewType: (CalendarViewType) -> Unit
 ) {
-    CalendarView(year = currentYear, month = currentMonth,
+    CalendarView(
+        year = currentYear, month = currentMonth,
         onDayPressed = { localDate ->
             updateSelectedDate(localDate)
         }, onNavigateMonthPressed = { month: Int, year: Int ->
@@ -172,7 +175,8 @@ private fun DatePickerView(
                     changeViewType(CALENDAR)
                 })
 
-        Divider(color = Main2,
+        Divider(
+            color = Main2,
             thickness = 1.dp,
             modifier = Modifier
                 .padding(top = 2.dp)
