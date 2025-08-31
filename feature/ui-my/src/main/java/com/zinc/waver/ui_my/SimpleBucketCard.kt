@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
+import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.ExposureStatus
 import com.zinc.waver.model.BucketProgressState
 import com.zinc.waver.model.MyTabType
@@ -289,7 +290,7 @@ private fun CountProgressView(
     val countProgressColor =
         if (tabType is ALL) {
             Main2
-        } else if (info.dDay != null && info.dDay!! > 0) {
+        } else if (info.getDdayType() == DdaySortType.PLUS || info.getDdayType() == DdaySortType.D_DAY) {
             Error2
         } else {
             Sub_D3

@@ -74,8 +74,8 @@ data class UIBucketInfoSimple(
 
     fun getDdayType(): DdaySortType? = dDay?.let {
         if (it == 0) DdaySortType.D_DAY
-        else if (it < 0) DdaySortType.MINUS
-        else DdaySortType.PLUS
+        else if (it < 0) DdaySortType.PLUS
+        else DdaySortType.MINUS
     }
 
     fun isProgress() = status == BucketStatus.PROGRESS && goalCount > currentCount

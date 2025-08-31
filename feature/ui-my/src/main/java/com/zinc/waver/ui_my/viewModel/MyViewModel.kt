@@ -287,9 +287,19 @@ class MyViewModel @Inject constructor(
         if (_orderType.value == 1) AllBucketListSortType.CREATED else AllBucketListSortType.UPDATED
 
     fun loadDdayBucketList() {
+        val isPassed = if (isShowPlusDday.value == true && isShownMinusDday.value == true) {
+            null
+        } else if (isShowPlusDday.value == true) {
+            YesOrNo.N.name
+        } else if (isShownMinusDday.value == true) {
+            YesOrNo.Y.name
+        } else {
+            null
+        }
+
         val allBucketListRequest = AllBucketListRequest(
             dDayBucketOnly = YesOrNo.Y.name,
-            isPassed = YesOrNo.N.name,
+            isPassed = isPassed,
             status = null,
             sort = loadSortFilter()
         )
