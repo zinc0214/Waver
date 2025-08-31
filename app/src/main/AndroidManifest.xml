@@ -60,7 +60,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="WaverApplication.provider"
+            android:authorities="com.zinc.waver.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

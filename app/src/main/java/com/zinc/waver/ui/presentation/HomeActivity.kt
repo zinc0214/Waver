@@ -199,7 +199,9 @@ class HomeActivity : AppCompatActivity() {
 
         if (photoFile != null) {
             photoUri = FileProvider.getUriForFile(
-                this, "WaverApplication.provider", photoFile
+                this,
+                "com.zinc.waver.fileprovider",  // authorities를 수정된 값으로 변경
+                photoFile
             )
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             cameraLauncher.launch(intent)
@@ -260,14 +262,20 @@ class HomeActivity : AppCompatActivity() {
     private fun handleImageResult(result: CropImageView.CropResult) {
         if (result.isSuccessful) {
             result.uriContent?.let { uri ->
-                getFileFromUri(this, uri)?.let { file ->
-                    val imageInfo = UserSelectedImageInfo(
-                        key = imageCount++,
-                        uri = uri,
-                        file = file,
-                        path = file.path
-                    )
-                    takePhotoAction.succeed(imageInfo)
+                try {
+                    val file = getFileFromUri(this, uri)
+                    if (file != null) {
+                        val imageInfo = UserSelectedImageInfo(
+                            key = imageCount++,
+                            uri = uri,
+                            file = file,
+                            path = file.absolutePath  // absolutePath 사용
+                        )
+                        takePhotoAction.succeed(imageInfo)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Toast.makeText(this, "이미지 처리 중 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
                 }
             }
         }
