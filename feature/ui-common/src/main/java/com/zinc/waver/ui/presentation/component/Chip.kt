@@ -1,11 +1,15 @@
 package com.zinc.waver.ui.presentation.component
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -33,14 +37,16 @@ fun RoundChip(
     fontWeight: FontWeight,
     isSelected: Boolean
 ) {
-    Card(
-        border = BorderStroke(
-            color = if (isSelected) selectedBorderColor else unSelectedBorderColor,
-            width = 1.dp
-        ),
-        shape = RoundedCornerShape(chipRadius),
-        modifier = modifier.clip(RoundedCornerShape(chipRadius)),
-        elevation = 0.dp
+    Box(
+        modifier = modifier
+            .background(color = Color.White, RoundedCornerShape(chipRadius))
+            .clip(RoundedCornerShape(chipRadius))
+            .border(
+                color = if (isSelected) selectedBorderColor else unSelectedBorderColor,
+                width = 1.dp,
+                shape = RoundedCornerShape(chipRadius)
+            ),
+        contentAlignment = Alignment.Center
     ) {
         MyText(
             text = text,
@@ -61,6 +67,20 @@ private fun RoundChipPreview() {
         textModifier = Modifier.padding(horizontal = 8.dp, vertical = 14.dp),
         text = "칩테스트",
         isSelected = false,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Preview
+@Composable
+private fun RoundChipPreview2() {
+    RoundChip(
+        modifier = Modifier
+            .widthIn(min = 80.dp)
+            .heightIn(min = 30.dp)
+            .clip(RoundedCornerShape(15.dp)),
+        text = "칩테스트",
+        isSelected = true,
         fontWeight = FontWeight.Bold
     )
 }

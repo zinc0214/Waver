@@ -131,7 +131,7 @@ private fun FollowerListSettingScreen(
                         chipRadius = 15.dp,
                         textModifier = Modifier.padding(
                             horizontal = 16.dp,
-                            vertical = 5.dp
+                            vertical = 3.dp
                         ),
                         selectedTextColor = Gray9,
                         unSelectedTextColor = Gray9,

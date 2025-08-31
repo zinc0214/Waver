@@ -94,6 +94,7 @@ class FollowViewModel @Inject constructor(
     fun requestFollow(followUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {
             requestFollowUser.invoke(followUser.id).apply {
+                Log.e("ayhan", "requestFollowUser : $this, userId : ${followUser.id}")
                 if (success) {
                     loadFollowList()
                 } else {

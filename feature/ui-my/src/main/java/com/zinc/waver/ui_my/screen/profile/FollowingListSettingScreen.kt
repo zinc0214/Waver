@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,6 +28,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.zinc.common.models.OtherProfileInfo
+import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.presentation.component.RoundChip
 import com.zinc.waver.ui.presentation.component.TitleIconType
@@ -143,7 +143,6 @@ private fun FollowingListSettingScreen(
 
                     RoundChip(
                         modifier = Modifier
-                            .defaultMinSize(minWidth = 56.dp, minHeight = 30.dp)
                             .clip(RoundedCornerShape(15.dp))
                             .clickable {
                                 requestUnfollow(member)
@@ -155,12 +154,17 @@ private fun FollowingListSettingScreen(
 
                             },
                         chipRadius = 15.dp,
-                        textModifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
+                        textModifier = Modifier.padding(
+                            horizontal = 16.dp,
+                            vertical = 3.dp
+                        ),
                         selectedTextColor = Gray9,
                         unSelectedTextColor = Gray9,
+                        unSelectedBorderColor = Gray4,
                         text = stringResource(id = R.string.unfollowingButton),
                         isSelected = false,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 13.dp
                     )
                 }
             })

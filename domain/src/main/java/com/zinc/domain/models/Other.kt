@@ -43,5 +43,5 @@ data class OtherHomeResponse(
 }
 
 data class FollowOtherUserRequest(
-    val followUserId: String
+    val followUserId: Int
 ) : Serializable

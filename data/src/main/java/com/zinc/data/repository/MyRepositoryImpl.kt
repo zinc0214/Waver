@@ -36,11 +36,11 @@ internal class MyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun requestUnfollow(userId: String): CommonResponse {
-        return waverApi.requestUnfollow(FollowOtherUserRequest(userId))
+        return waverApi.requestUnfollow(FollowOtherUserRequest(userId.toInt()))
     }
 
     override suspend fun requestFollow(userId: String): CommonResponse {
-        return waverApi.requestFollow(FollowOtherUserRequest(userId))
+        return waverApi.requestFollow(FollowOtherUserRequest(userId.toInt()))
     }
 
     override suspend fun searchAllBucketList(query: String): AllBucketListResponse {
