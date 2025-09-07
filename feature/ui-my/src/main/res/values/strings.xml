@@ -29,6 +29,7 @@
     <string name="sortByCreate">Newest First</string>
     <string name="showContent">Show items</string>
     <string name="showDday">D-Day</string>
+    <string name="needToShowOne">Select at least one bucket list.</string>
 
     <!-- My > Dday > Filter -->
     <string name="dDayPreBucketList">Upcoming D-Day Bucket Lists</string>

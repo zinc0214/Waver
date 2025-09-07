@@ -29,6 +29,7 @@
     <string name="sortByCreate">등록 순</string>
     <string name="showContent">표시 항목</string>
     <string name="showDday">디데이</string>
+    <string name="needToShowOne">표시할 버킷리스트는 최소 1개 이상이어야 합니다.</string>
 
     <!-- My > Dday > Filter -->
     <string name="dDayPreBucketList">디데이가 지나지 않은 버킷리스트</string>

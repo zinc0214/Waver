@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_my.screen.dday
 
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray2
@@ -32,6 +34,7 @@ fun MyDdayBucketFilterBottomScreen(
     negativeEvent: () -> Unit,
     positiveEvent: () -> Unit
 ) {
+    val context = LocalContext.current
 
     val showMinusPref by viewModel.isShownMinusDday.observeAsState()
     val showPlusPref by viewModel.isShowPlusDday.observeAsState()
@@ -100,10 +103,18 @@ fun MyDdayBucketFilterBottomScreen(
                 negativeEvent()
             },
             positiveEvent = {
-                viewModel.updateDdayBucketFilter(
-                    isMinusShow = minusBucketListSelectedState.value,
-                    isPlusShow = plusBucketListSelectedState.value
-                )
+                if (minusBucketListSelectedState.value == false && plusBucketListSelectedState.value == false) {
+                    Toast.makeText(
+                        context,
+                        R.string.needToShowOne,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.updateDdayBucketFilter(
+                        isMinusShow = minusBucketListSelectedState.value,
+                        isPlusShow = plusBucketListSelectedState.value
+                    )
+                }
             })
     }
 }

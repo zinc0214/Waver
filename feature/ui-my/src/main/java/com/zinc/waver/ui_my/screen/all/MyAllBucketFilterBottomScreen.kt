@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_my.screen.all
 
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zinc.waver.ui.design.theme.Gray2
@@ -35,6 +37,7 @@ fun MyAllBucketFilterBottomScreen(
     negativeEvent: () -> Unit,
     positiveEvent: () -> Unit
 ) {
+    val context = LocalContext.current
 
     val showProgressPref by viewModel.showProgress.observeAsState()
     val showSucceedPref by viewModel.showSucceed.observeAsState()
@@ -104,7 +107,8 @@ fun MyAllBucketFilterBottomScreen(
             modifier = Modifier.padding(top = 32.dp, bottom = 15.dp)
         )
         proceedingBucketListSelectedState.value?.let { isProceed ->
-            LabelWithSwitchView(modifier = Modifier.padding(bottom = 10.dp),
+            LabelWithSwitchView(
+                modifier = Modifier.padding(bottom = 10.dp),
                 textLabel = R.string.proceedingBucketList,
                 isChecked = isProceed,
                 checkedChanged = {
@@ -113,7 +117,8 @@ fun MyAllBucketFilterBottomScreen(
         }
 
         succeedBucketListSelectedState.value?.let { isSucceed ->
-            LabelWithSwitchView(textLabel = R.string.succeedBucketList,
+            LabelWithSwitchView(
+                textLabel = R.string.succeedBucketList,
                 isChecked = isSucceed,
                 checkedChanged = {
                     succeedBucketListSelectedState.value = it
@@ -136,7 +141,8 @@ fun MyAllBucketFilterBottomScreen(
         )
 
         sortSelectedState.value?.let { sortType ->
-            LabelWithRadioView(modifier = Modifier,
+            LabelWithRadioView(
+                modifier = Modifier,
                 itemLabels = listOf(0 to R.string.sortByUpdate, 1 to R.string.sortByCreate),
                 selectedIndex = sortType,
                 changedSelectedItem = {
@@ -158,7 +164,8 @@ fun MyAllBucketFilterBottomScreen(
         )
 
         ddayShowSelectedState.value?.let { showDday ->
-            LabelWithSwitchView(modifier = Modifier.padding(bottom = 30.dp),
+            LabelWithSwitchView(
+                modifier = Modifier.padding(bottom = 30.dp),
                 textLabel = R.string.showDday,
                 isChecked = showDday,
                 checkedChanged = {
@@ -168,12 +175,20 @@ fun MyAllBucketFilterBottomScreen(
 
         BottomButtonView(
             positiveEvent = {
-                viewModel.updateAllBucketFilter(
-                    isProgress = proceedingBucketListSelectedState.value,
-                    isSucceed = succeedBucketListSelectedState.value,
-                    orderType = sortSelectedState.value,
-                    showDday = ddayShowSelectedState.value
-                )
+                if (proceedingBucketListSelectedState.value == false && succeedBucketListSelectedState.value == false) {
+                    Toast.makeText(
+                        context,
+                        R.string.needToShowOne,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    viewModel.updateAllBucketFilter(
+                        isProgress = proceedingBucketListSelectedState.value,
+                        isSucceed = succeedBucketListSelectedState.value,
+                        orderType = sortSelectedState.value,
+                        showDday = ddayShowSelectedState.value
+                    )
+                }
             },
             negativeEvent = {
                 proceedingBucketListSelectedState.value = showProgressPref
