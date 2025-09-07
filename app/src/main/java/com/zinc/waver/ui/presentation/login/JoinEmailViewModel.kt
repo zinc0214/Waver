@@ -31,18 +31,14 @@ class JoinEmailViewModel @Inject constructor(
 
     fun goToLogin(email: String) {
         viewModelScope.launch(ceh(_failEmailCheck, true)) {
-            runCatching {
-                val res = loginByEmail(email)
-                if (res.success) {
-                    res.data.accessToken.let { token ->
-                        preferenceDataStoreModule.setAccessToken("Bearer $token")
-                    }
-                    _isAlreadyUsedEmail.value = true
-                } else {
-                    _goToMakeNickName.value = email
+            val res = loginByEmail(email)
+            if (res.success) {
+                res.data.accessToken.let { token ->
+                    preferenceDataStoreModule.setAccessToken("Bearer $token")
                 }
-            }.getOrElse {
-                _failEmailCheck.value = true
+                _isAlreadyUsedEmail.value = true
+            } else {
+                _goToMakeNickName.value = email
             }
         }
     }

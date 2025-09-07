@@ -52,12 +52,5 @@ class AlarmViewModel @Inject constructor(
                 )
             }
         )
-//        accessToken.value?.let {
-//            viewModelScope.launch {
-//                _alarmList.value = loadAlarmList.invoke(it)
-//            }.runCatching {
-//
-//            }
-//        }
     }
 }

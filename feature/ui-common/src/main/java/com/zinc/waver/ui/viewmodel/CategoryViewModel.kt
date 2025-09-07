@@ -54,15 +54,11 @@ class CategoryViewModel @Inject constructor(
     fun loadCategoryList() {
         _loadFail.value = null
         viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.LoadFail)) {
-            runCatching {
-                val result = loadCategoryList.invoke()
-                Log.e("ayhan", "loadCategoryList : $result")
-                if (result.success) {
-                    _categoryInfoList.value = result.data.parseUI()
-                } else {
-                    _loadFail.value = CategoryLoadFailStatus.LoadFail
-                }
-            }.getOrElse {
+            val result = loadCategoryList.invoke()
+            Log.e("ayhan", "loadCategoryList : $result")
+            if (result.success) {
+                _categoryInfoList.value = result.data.parseUI()
+            } else {
                 _loadFail.value = CategoryLoadFailStatus.LoadFail
             }
         }
@@ -123,17 +119,13 @@ class CategoryViewModel @Inject constructor(
 
     fun loadCategoryBucketList(categoryId: Int) {
         _loadFail.value = null
-        runCatching {
-            viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.BucketLoadFail)) {
-                val response = loadCategoryBucketList.invoke(categoryId.toString(), orderType)
-                if (response.success) {
-                    _categoryBucketList.value = response.data.bucketlist.parseToUI()
-                } else {
-                    _loadFail.value = CategoryLoadFailStatus.BucketLoadFail
-                }
+        viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.BucketLoadFail)) {
+            val response = loadCategoryBucketList.invoke(categoryId.toString(), orderType)
+            if (response.success) {
+                _categoryBucketList.value = response.data.bucketlist.parseToUI()
+            } else {
+                _loadFail.value = CategoryLoadFailStatus.BucketLoadFail
             }
-        }.getOrElse {
-            _loadFail.value = CategoryLoadFailStatus.BucketLoadFail
         }
     }
 

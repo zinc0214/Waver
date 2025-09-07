@@ -78,34 +78,29 @@ class WriteBucketListViewModel @Inject constructor(
         }) {
             val categoryId = if (writeInfo.categoryId == -1) _defaultCategoryId.value
                 ?: -1 else writeInfo.categoryId
-            runCatching {
-                _loadFail.value = null
-                val result = addNewBucketList.invoke(
-                    addBucketListRequest = AddBucketListRequest(
-                        bucketId = writeInfo.bucketId,
-                        bucketType = writeInfo.bucketType,
-                        exposureStatus = writeInfo.exposureStatus,
-                        title = writeInfo.title,
-                        memo = writeInfo.memo,
-                        keywords = writeInfo.keywords,
-                        friendUserIds = writeInfo.friendUserIds?.joinToString { "," },
-                        scrapYn = writeInfo.scrapYn,
-                        images = writeInfo.images,
-                        targetDate = writeInfo.targetDate,
-                        goalCount = writeInfo.goalCount,
-                        categoryId = categoryId
-                    ),
-                    isForUpdate = isForUpdate
-                )
-                Log.e("ayhan", "addBucketResult : $result")
-                if (result.success) {
-                    _addNewBucketListResult.value = true
-                } else {
-                    _loadFail.value = "버킷리스트 생성 실패" to result.message
-                }
-            }.getOrElse {
-                _loadFail.value = "버킷리스트 생성 실패" to it.message.toString()
-                Log.e("ayhan", "addBucketResult : fail2 ${it.message}")
+            _loadFail.value = null
+            val result = addNewBucketList.invoke(
+                addBucketListRequest = AddBucketListRequest(
+                    bucketId = writeInfo.bucketId,
+                    bucketType = writeInfo.bucketType,
+                    exposureStatus = writeInfo.exposureStatus,
+                    title = writeInfo.title,
+                    memo = writeInfo.memo,
+                    keywords = writeInfo.keywords,
+                    friendUserIds = writeInfo.friendUserIds?.joinToString { "," },
+                    scrapYn = writeInfo.scrapYn,
+                    images = writeInfo.images,
+                    targetDate = writeInfo.targetDate,
+                    goalCount = writeInfo.goalCount,
+                    categoryId = categoryId
+                ),
+                isForUpdate = isForUpdate
+            )
+            Log.e("ayhan", "addBucketResult : $result")
+            if (result.success) {
+                _addNewBucketListResult.value = true
+            } else {
+                _loadFail.value = "버킷리스트 생성 실패" to result.message
             }
         }
     }
@@ -116,24 +111,15 @@ class WriteBucketListViewModel @Inject constructor(
 
     fun loadFriends() {
         viewModelScope.launch(ceh(_loadFail, "친구 로드 실패" to "로드 실패!")) {
-            runCatching {
-                _loadFail.value = null
-                val res = loadFriends.invoke()
-                Log.e("ayhan", "freinds : $res")
-                if (res.success) {
-//                    _searchFriendsResult.value = buildList {
-//                        repeat(10) {
-//                            add(WriteFriend(id = "$it", imageUrl = "", nickname = "카카$it"))
-//                        }
-//                    }
-                    _searchFriendsResult.value = res.data.filter { it.mutualFollow }.map {
-                        WriteFriend(it.id, it.imgUrl, it.name)
-                    }
-                } else {
-                    _loadFail.value = "친구 로드 실패" to res.message
+            _loadFail.value = null
+            val res = loadFriends.invoke()
+            Log.e("ayhan", "freinds : $res")
+            if (res.success) {
+                _searchFriendsResult.value = res.data.filter { it.mutualFollow }.map {
+                    WriteFriend(it.id, it.imgUrl, it.name)
                 }
-            }.getOrElse {
-                _loadFail.value = "친구 로드 실패" to "로드 실패!"
+            } else {
+                _loadFail.value = "친구 로드 실패" to res.message
             }
         }
     }
@@ -149,16 +135,12 @@ class WriteBucketListViewModel @Inject constructor(
         viewModelScope.launch(CoroutineExceptionHandler { coroutineContext, throwable ->
             _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
         }) {
-            runCatching {
-                val result = loadKeyWord.invoke()
-                Log.e("ayhan", "laodKeywrod : $result")
-                if (result.success) {
-                    _keywordList.value = result.data?.toUiModel()
-                } else {
-                    _loadFail.value = "키워드 로딩 실패" to result.message
-                }
-            }.getOrElse {
-                _loadFail.value = "키워드 로딩 실패" to "데이터 로드에 실패했습니다."
+            val result = loadKeyWord.invoke()
+            Log.e("ayhan", "laodKeywrod : $result")
+            if (result.success) {
+                _keywordList.value = result.data?.toUiModel()
+            } else {
+                _loadFail.value = "키워드 로딩 실패" to result.message
             }
         }
     }
@@ -171,15 +153,11 @@ class WriteBucketListViewModel @Inject constructor(
         _loadFail.value = null
         if (bucketId.isBlank().not() && bucketId != "NoId") {
             viewModelScope.launch(ceh(_loadFail, "버킷리스트 로드 실패" to "다시 시도해주세요")) {
-                runCatching {
-                    val result = loadBucketDetail(bucketId, true)
-                    Log.e("ayhan", "loadBucketDetai; $result")
-                    if (result.success) {
-                        _prevWriteDataForUpdate.value = result.data
-                    } else {
-                        _loadFail.value = "버킷리스트 로드 실패" to "데이터 로드에 실패했습니다."
-                    }
-                }.getOrElse {
+                val result = loadBucketDetail(bucketId, true)
+                Log.e("ayhan", "loadBucketDetai; $result")
+                if (result.success) {
+                    _prevWriteDataForUpdate.value = result.data
+                } else {
                     _loadFail.value = "버킷리스트 로드 실패" to "데이터 로드에 실패했습니다."
                 }
             }

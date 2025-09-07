@@ -46,21 +46,16 @@ class FeedViewModel @Inject constructor(
     fun loadFeedItems() {
         _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
         viewModelScope.launch(loadCeh) {
-            runCatching {
-                loadFeedItems.invoke().apply {
-                    Log.e("ayhan", "feedListResponse : $this")
-                    if (this.code == "5000") {
-                        loadFeedKeyWords()
-                    } else if (this.success.not()) {
-                        _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
-                    } else {
-                        _feedItems.value = this.toUIModel()
-                    }
-                    _loadStatusEvent.value = FeedLoadStatus.Success
+            loadFeedItems.invoke().apply {
+                Log.e("ayhan", "feedListResponse : $this")
+                if (this.code == "5000") {
+                    loadFeedKeyWords()
+                } else if (this.success.not()) {
+                    _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
+                } else {
+                    _feedItems.value = this.toUIModel()
                 }
-            }.getOrElse {
-                val hasData = _feedItems.value != null
-                _loadStatusEvent.value = FeedLoadStatus.LoadFail(hasData)
+                _loadStatusEvent.value = FeedLoadStatus.Success
             }
         }
     }
@@ -69,14 +64,10 @@ class FeedViewModel @Inject constructor(
         _loadStatusEvent.value = FeedLoadStatus.None
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
-            runCatching {
-                val response = savedKeywordItems.invoke(list)
-                if (response.success) {
-                    loadFeedItems()
-                } else {
-                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
-                }
-            }.getOrElse {
+            val response = savedKeywordItems.invoke(list)
+            if (response.success) {
+                loadFeedItems()
+            } else {
                 _loadStatusEvent.value = FeedLoadStatus.ToastFail
             }
         }
@@ -86,15 +77,11 @@ class FeedViewModel @Inject constructor(
         _loadStatusEvent.value = FeedLoadStatus.None
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
-            runCatching {
-                val response = saveBucketLike.invoke(bucketId)
-                Log.e("ayhan", "response : $response")
-                if (response.success) {
-                    loadFeedItems()
-                } else {
-                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
-                }
-            }.getOrElse {
+            val response = saveBucketLike.invoke(bucketId)
+            Log.e("ayhan", "response : $response")
+            if (response.success) {
+                loadFeedItems()
+            } else {
                 _loadStatusEvent.value = FeedLoadStatus.ToastFail
             }
         }
@@ -104,16 +91,12 @@ class FeedViewModel @Inject constructor(
         _loadStatusEvent.value = FeedLoadStatus.None
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
-            runCatching {
-                val response = copyOtherBucket.invoke(bucketId)
-                Log.e("ayhan", "response : $response")
-                if (response.success) {
-                    loadFeedItems()
-                    _loadStatusEvent.value = FeedLoadStatus.CopySuccess
-                } else {
-                    _loadStatusEvent.value = FeedLoadStatus.ToastFail
-                }
-            }.getOrElse {
+            val response = copyOtherBucket.invoke(bucketId)
+            Log.e("ayhan", "response : $response")
+            if (response.success) {
+                loadFeedItems()
+                _loadStatusEvent.value = FeedLoadStatus.CopySuccess
+            } else {
                 _loadStatusEvent.value = FeedLoadStatus.ToastFail
             }
         }
@@ -122,18 +105,14 @@ class FeedViewModel @Inject constructor(
     private fun loadFeedKeyWords() {
         _loadStatusEvent.value = FeedLoadStatus.KeywordLoading
         viewModelScope.launch(loadCeh) {
-            runCatching {
-                loadFeedKeyWords.invoke().apply {
-                    Log.e("ayhan", "feed response : $this")
-                    if (success) {
-                        _feedKeyWords.value = data?.parseUI()
-                        _loadStatusEvent.value = FeedLoadStatus.Success
-                    } else {
-                        _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
-                    }
+            loadFeedKeyWords.invoke().apply {
+                Log.e("ayhan", "feed response : $this")
+                if (success) {
+                    _feedKeyWords.value = data?.parseUI()
+                    _loadStatusEvent.value = FeedLoadStatus.Success
+                } else {
+                    _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
                 }
-            }.getOrElse {
-                _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
             }
         }
     }

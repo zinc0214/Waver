@@ -44,9 +44,7 @@ class JoinNickNameViewModel @Inject constructor(
     ) {
         viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
-            runCatching {
-                createNewProfile(email, nickName, bio, image)
-            }
+            createNewProfile(email, nickName, bio, image)
         }
     }
 
@@ -78,26 +76,21 @@ class JoinNickNameViewModel @Inject constructor(
         viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
             _goToLogin.value = false
-            runCatching {
-                val res = createProfile(
-                    CreateProfileRequest(
-                        email = email,
-                        name = nickName,
-                        bio = bio,
-                        profileImage = image
-                    )
-                )
-                Log.e("ayhan", "createNewProfile success : $res")
-                if (res.success) {
-                    goToLogin(email)
-                } else if (res.code == "3000") {
-                    _isAlreadyUsedNickName.value = true
-                } else {
-                    _failJoin.value = true
-                }
 
-            }.getOrElse {
-                Log.e("ayhan", "createNewProfile fatil : $it")
+            val res = createProfile(
+                CreateProfileRequest(
+                    email = email,
+                    name = nickName,
+                    bio = bio,
+                    profileImage = image
+                )
+            )
+            Log.e("ayhan", "createNewProfile success : $res")
+            if (res.success) {
+                goToLogin(email)
+            } else if (res.code == "3000") {
+                _isAlreadyUsedNickName.value = true
+            } else {
                 _failJoin.value = true
             }
         }
@@ -105,18 +98,14 @@ class JoinNickNameViewModel @Inject constructor(
 
     private fun goToLogin(email: String) {
         viewModelScope.launch(ceh(_failJoin, true)) {
-            runCatching {
-                val res = loginByEmail(email)
-                if (res.success) {
-                    preferenceDataStoreModule.setLoginEmail(email)
-                    res.data.accessToken.let { token ->
-                        preferenceDataStoreModule.setAccessToken("Bearer $token")
-                    }
-                    _goToLogin.value = true
-                } else {
-                    _failJoin.value = true
+            val res = loginByEmail(email)
+            if (res.success) {
+                preferenceDataStoreModule.setLoginEmail(email)
+                res.data.accessToken.let { token ->
+                    preferenceDataStoreModule.setAccessToken("Bearer $token")
                 }
-            }.getOrElse {
+                _goToLogin.value = true
+            } else {
                 _failJoin.value = true
             }
         }

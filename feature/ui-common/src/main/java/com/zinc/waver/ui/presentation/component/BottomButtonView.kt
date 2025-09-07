@@ -51,8 +51,6 @@ fun BottomButtonView(
         )
 
         Row(modifier = Modifier.fillMaxWidth()) {
-            //  val (leftContent, divider, rightContent) = createRefs()
-
             if (negativeEvent != null && negative != null) {
                 Box(
                     modifier = Modifier

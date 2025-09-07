@@ -30,20 +30,18 @@ class ReportViewModel @Inject constructor(
     private val _requestFail = SingleLiveEvent<Boolean>()
     val requestFail: LiveData<Boolean> get() = _requestFail
 
-    fun loadReportItmes() {
-        viewModelScope.launch {
-            runCatching {
-                loadReportItems.invoke().apply {
-                    _reportItemList.value = this
-                }
-            }.getOrElse {
-
+    fun loadReportItems() {
+        viewModelScope.launch(ceh(_requestFail, true)) {
+            _requestFail.value = false
+            loadReportItems.invoke().apply {
+                _reportItemList.value = this
             }
         }
     }
 
     fun requestReportComment(id: String, reason: String) {
         viewModelScope.launch(ceh(_requestFail, true)) {
+            _requestFail.value = false
             val result = requestReportComment.invoke(id, reason)
             Log.e("ayhan", "requestReportComment result : $reason\n $result")
             if (result.success) {
@@ -56,6 +54,7 @@ class ReportViewModel @Inject constructor(
 
     fun requestReportBucket(id: String, reason: String) {
         viewModelScope.launch(ceh(_requestFail, true)) {
+            _requestFail.value = false
             val result = requestReportBucket.invoke(id, reason)
             Log.e("ayhan", "requestReportComment result : $reason\n $result")
             if (result.success) {

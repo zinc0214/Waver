@@ -42,7 +42,7 @@ fun ReportScreen(
     reportInfo: ReportInfo, backPress: () -> Unit, succeedReported: () -> Unit
 ) {
     val viewModel: ReportViewModel = hiltViewModel()
-    viewModel.loadReportItmes()
+    viewModel.loadReportItems()
 
     val reportItems by viewModel.reportItemList.observeAsState()
     val commentReportSucceedAsState by viewModel.commentReportSucceed.observeAsState()

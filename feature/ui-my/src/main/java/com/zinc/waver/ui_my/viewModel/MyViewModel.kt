@@ -210,33 +210,30 @@ class MyViewModel @Inject constructor(
 
     fun loadProfile() {
         _showLoading.value = true
-        viewModelScope.launch(ceh(_dataLoadFailed, true)) {
-            runCatching {
-                val response = loadHomeProfileInfo.invoke()
-                if (response.success) {
-                    val data = response.data
-                    val topProfile = TopProfile(
-                        name = data.name,
-                        imgUrl = data.imgUrl,
-                        badgeImgUrl = data.badgeUrl,
-                        badgeTitle = data.badgeTitle,
-                        bio = data.bio,
-                        followingCount = data.followingCount,
-                        followerCount = data.followerCount,
-                        percent = data.bucketInfo.grade()
-                    )
+        viewModelScope.launch(CoroutineExceptionHandler { _, _ ->
+            _dataLoadFailed.value = false
+            _showLoading.value = false
+        }) {
+            val response = loadHomeProfileInfo.invoke()
+            if (response.success) {
+                val data = response.data
+                val topProfile = TopProfile(
+                    name = data.name,
+                    imgUrl = data.imgUrl,
+                    badgeImgUrl = data.badgeUrl,
+                    badgeTitle = data.badgeTitle,
+                    bio = data.bio,
+                    followingCount = data.followingCount,
+                    followerCount = data.followerCount,
+                    percent = data.bucketInfo.grade()
+                )
 
-                    Log.e("ayhan", "homeProfike : $topProfile")
-                    _profileInfo.value = topProfile
-                    _dataLoadFailed.value = false
-                    _showLoading.value = false
-                } else {
-                    //  Log.e("ayhan", "Fail Load Profile not success")
-                    _dataLoadFailed.value = false
-                    _showLoading.value = false
-                }
-            }.getOrElse {
-                Log.e("ayhan", "Fail Load Profile : $it")
+                Log.e("ayhan", "homeProfike : $topProfile")
+                _profileInfo.value = topProfile
+                _dataLoadFailed.value = false
+                _showLoading.value = false
+            } else {
+                //  Log.e("ayhan", "Fail Load Profile not success")
                 _dataLoadFailed.value = false
                 _showLoading.value = false
             }
@@ -304,35 +301,36 @@ class MyViewModel @Inject constructor(
             sort = loadSortFilter()
         )
 
-        viewModelScope.launch {
-            runCatching {
-                loadAllBucketList.invoke(allBucketListRequest).apply {
-                    if (this.success) {
-                        val data = this.data
-                        val uiAllBucketList = AllBucketList(
-                            processingCount = data.progressCount.toString(),
-                            succeedCount = data.completedCount.toString(),
-                            bucketList = data.bucketlist.parseToUI()
-                        )
+        viewModelScope.launch(CoroutineExceptionHandler { _, _ ->
+            _dataLoadFailed.value = false
+            _showLoading.value = false
+        }) {
+            _showLoading.value = true
+            loadAllBucketList.invoke(allBucketListRequest).apply {
+                if (this.success) {
+                    val data = this.data
+                    val uiAllBucketList = AllBucketList(
+                        processingCount = data.progressCount.toString(),
+                        succeedCount = data.completedCount.toString(),
+                        bucketList = data.bucketlist.parseToUI()
+                    )
 
-                        val filteredList =
-                            if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
-                                uiAllBucketList.bucketList
-                            } else if (_isShowPlusDday.value == true) {
-                                uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
-                            } else if (_isShownMinusDday.value == true) {
-                                uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
-                            } else {
-                                uiAllBucketList.bucketList
-                            }
+                    val filteredList =
+                        if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
+                            uiAllBucketList.bucketList
+                        } else if (_isShowPlusDday.value == true) {
+                            uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
+                        } else if (_isShownMinusDday.value == true) {
+                            uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
+                        } else {
+                            uiAllBucketList.bucketList
+                        }
 
-                        _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
-                        _ddayFilterLoadFinished.value = false
-                        Log.e("ayhan", "filteredList : $filteredList")
-                    }
+                    _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
+                    _ddayFilterLoadFinished.value = false
+                    _showLoading.value = false
+                    Log.e("ayhan", "filteredList : $filteredList")
                 }
-            }.getOrElse {
-
             }
         }
     }
@@ -413,22 +411,16 @@ class MyViewModel @Inject constructor(
 
     private fun searchAllBucket(searchWord: String) {
         viewModelScope.launch(searchCeh) {
-            runCatching {
-                searchAllBucketList.invoke(searchWord).apply {
-                    if (this.success) {
-                        _searchBucketResult.value = Pair(
-                            ALL,
-                            this.data.bucketlist
-                        )
-                    } else {
-                        Log.e("ayhan", "searchFail 3 : ${this.message}")
-                        _searchFailed.call()
-                    }
-
+            searchAllBucketList.invoke(searchWord).apply {
+                if (this.success) {
+                    _searchBucketResult.value = Pair(
+                        ALL,
+                        this.data.bucketlist
+                    )
+                } else {
+                    Log.e("ayhan", "searchFail 3 : ${this.message}")
+                    _searchFailed.call()
                 }
-            }.getOrElse {
-                Log.e("ayhan", "searchFail 2 : ${it.message}")
-                _searchFailed.call()
             }
         }
     }
@@ -451,23 +443,18 @@ class MyViewModel @Inject constructor(
 
     private fun searchCategoryItems(searchWord: String) {
         viewModelScope.launch(searchCeh) {
-            runCatching {
-                searchCategoryList.invoke(searchWord).apply {
-                    Log.e("ayhan", "category : $this")
-                    if (this.success) {
-                        val parseData = data.parseUI()
-                        _searchBucketResult.value = Pair(
-                            CATEGORY,
-                            parseData
-                        )
-                    } else {
-                        _searchFailed.call()
-                        Log.e("ayhan", "searchCategoryItems Fail3 : $message")
-                    }
+            searchCategoryList.invoke(searchWord).apply {
+                Log.e("ayhan", "category : $this")
+                if (this.success) {
+                    val parseData = data.parseUI()
+                    _searchBucketResult.value = Pair(
+                        CATEGORY,
+                        parseData
+                    )
+                } else {
+                    _searchFailed.call()
+                    Log.e("ayhan", "searchCategoryItems Fail3 : $message")
                 }
-            }.getOrElse {
-                Log.e("ayhan", "searchCategoryItems Fail2 : ${it.message}")
-                _searchFailed.call()
             }
         }
     }

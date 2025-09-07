@@ -76,67 +76,55 @@ class SearchViewModel @Inject constructor(
         _searchResultItems.value = null
 
         viewModelScope.launch(ceh(_loadFail, "")) {
-            runCatching {
-                val response = loadSearchResult.invoke(searchWord)
-                Log.e("ayhan", "loadSearchResult : $response")
-                if (response.success) {
-                    prevSearchWord = searchWord
-                    _searchResultItems.value = response.data.parseUI()
+            val response = loadSearchResult.invoke(searchWord)
+            Log.e("ayhan", "loadSearchResult : $response")
+            if (response.success) {
+                prevSearchWord = searchWord
+                _searchResultItems.value = response.data.parseUI()
 
-                } else {
-                    _loadFail.value = response.message
-                }
-            }.getOrElse {
-                _loadFail.value = ""
+            } else {
+                _loadFail.value = response.message
             }
         }
     }
 
     fun deleteRecentWord(deleteWord: String) {
         viewModelScope.launch(ceh(_loadFail, "")) {
-            runCatching {
-                val response = deleteRecentWord.invoke(deleteWord)
-                if (response.success) {
-                    val originRecentWords =
-                        _searchRecommendItems.value?.recentWords?.toMutableList()
-                    originRecentWords?.remove(deleteWord)
-                    _searchRecommendItems.value = _searchRecommendItems.value?.copy(
-                        recentWords = originRecentWords.orEmpty()
-                    )
-                } else {
-                    _loadFail.value = response.message
-                }
-            }.getOrElse {
-                _loadFail.value = ""
+            val response = deleteRecentWord.invoke(deleteWord)
+            if (response.success) {
+                val originRecentWords =
+                    _searchRecommendItems.value?.recentWords?.toMutableList()
+                originRecentWords?.remove(deleteWord)
+                _searchRecommendItems.value = _searchRecommendItems.value?.copy(
+                    recentWords = originRecentWords.orEmpty()
+                )
+            } else {
+                _loadFail.value = response.message
             }
         }
     }
 
     fun requestFollow(userId: String, isAlreadyFollowed: Boolean) {
         viewModelScope.launch(ceh(_actionFail, null)) {
-            runCatching {
-                if (isAlreadyFollowed) {
-                    val response = requestUnFollow.invoke(userId)
-                    if (response.success) {
-                        loadSearchResult(prevSearchWord)
-                    } else {
-                        _actionFail.call()
-                    }
+            if (isAlreadyFollowed) {
+                val response = requestUnFollow.invoke(userId)
+                if (response.success) {
+                    loadSearchResult(prevSearchWord)
                 } else {
-                    val response = requestFollow.invoke(userId)
-                    if (response.success) {
-                        loadSearchResult(prevSearchWord)
-                    } else {
-                        _actionFail.call()
-                    }
+                    _actionFail.call()
+                }
+            } else {
+                val response = requestFollow.invoke(userId)
+                if (response.success) {
+                    loadSearchResult(prevSearchWord)
+                } else {
+                    _actionFail.call()
                 }
             }
         }
     }
 
     private fun loadRecommendListDummy(): RecommendList {
-
-
         val bucketItem = listOf(
             SearchBucketItem(
                 bucketId = "1",
