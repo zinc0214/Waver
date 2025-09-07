@@ -148,7 +148,7 @@ interface WaverApi {
     ): CommonResponse
 
     // 버킷리스트 수정
-    @POST("/waver/bucketlist/{id}")
+    @POST("/waver/bucket/{id}")
     @Multipart
     suspend fun updateBucketList(
         @Part bucketType: MultipartBody.Part,
@@ -209,19 +209,19 @@ interface WaverApi {
     ): CommonResponse
 
     // 버킷리스트 전체 검색
-    @GET("/waver/bucketList")
+    @GET("/waver/bucket")
     suspend fun searchAllBucketList(
         @Query("query") query: String
     ): AllBucketListResponse
 
     // 디데이 버킷리스트 검색
-    @GET("/waver/bucketList")
+    @GET("/waver/bucket")
     suspend fun searchDdayBucketList(
         @Query("dDayBucketOnly") dDayBucketOnly: String? = YesOrNo.Y.name
     ): AllBucketListResponse
 
     // 버킷리스트 달성
-    @GET("/waver/bucketList/{id}/achieve")
+    @GET("/waver/bucket/{id}/achieve")
     suspend fun achieveBucket(@Path("id") id: String): CommonResponse
 
     // 검색 > 버킷리스트 검색
@@ -251,7 +251,7 @@ interface WaverApi {
     suspend fun addBucketComment(@Body request: AddBucketCommentRequest): CommonResponse
 
     // 내 버킷리스트 > 달성횟수 변경
-    @PATCH("/waver/bucketlist/{id}/goalCount")
+    @PATCH("/waver/bucket/{id}/goalCount")
     suspend fun requestGoalCountUpdate(
         @Path("id") id: String,
         @Body goalCount: RequestGoalCountUpdate
@@ -277,7 +277,7 @@ interface WaverApi {
     suspend fun hideComment(@Path("id") id: String): CommonResponse
 
     // 버킷리스트 삭제
-    @DELETE("/waver/bucketlist/{id}")
+    @DELETE("/waver/bucket/{id}")
     suspend fun deleteMyBucket(@Path("id") id: String): CommonResponse
 
     // 더보기 > 차단된 유저 목록
