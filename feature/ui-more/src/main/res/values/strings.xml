@@ -6,6 +6,7 @@
     <string name="goToJoinWaverClub">Learn About Waver Plus</string>
     <string name="waverPlusBenefitDesc1">1 Week </string>
     <string name="waverPlusBenefitDesc2">Ad-Free / Unlimited Bucket List for Free</string>
+    <string name="usedWavePlus">You have Waver Plus</string>
 
     <!-- More Menu -->
     <string name="moreMenuAlarm">Notification Settings</string>

@@ -8,10 +8,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +43,7 @@ import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.design.theme.Main3
+import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
@@ -49,8 +53,10 @@ import com.zinc.waver.ui_common.R as CommonR
 @Composable
 internal fun MoreTopProfileView(
     info: UIMoreMyProfileInfo,
+    hasWaverPlus: Boolean,
     goToMyWave: () -> Unit,
-    goToProfileUpdate: () -> Unit
+    goToProfileUpdate: () -> Unit,
+    goToWavePlus: () -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -67,7 +73,9 @@ internal fun MoreTopProfileView(
                 width = Dimension.fillToConstraints
             },
             info = info,
-            goToMyWave = goToMyWave
+            hasWaverPlus = hasWaverPlus,
+            goToMyWave = goToMyWave,
+            goToWavePlus = goToWavePlus
         )
 
         ProfileImageView(modifier = Modifier.constrainAs(imageView) {
@@ -75,15 +83,16 @@ internal fun MoreTopProfileView(
             end.linkTo(parent.end)
         }, profileUrl = info.imgUrl)
 
-        ProfileUpdateButtonView(modifier = Modifier
-            .constrainAs(buttonView) {
-                top.linkTo(imageView.bottom, 20.dp)
-                top.linkTo(textView.bottom, 20.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            }
-            .fillMaxWidth()) { goToProfileUpdate() }
+        ProfileUpdateButtonView(
+            modifier = Modifier
+                .constrainAs(buttonView) {
+                    top.linkTo(imageView.bottom, 20.dp)
+                    top.linkTo(textView.bottom, 20.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .fillMaxWidth()) { goToProfileUpdate() }
     }
 }
 
@@ -91,7 +100,9 @@ internal fun MoreTopProfileView(
 private fun ProfileTextView(
     modifier: Modifier,
     info: UIMoreMyProfileInfo,
+    hasWaverPlus: Boolean,
     goToMyWave: () -> Unit,
+    goToWavePlus: () -> Unit,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -132,6 +143,32 @@ private fun ProfileTextView(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.padding(top = 4.dp)
         )
+
+        if (hasWaverPlus) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .clickable {
+                        goToWavePlus()
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                MyText(
+                    text = stringResource(R.string.usedWavePlus),
+                    color = Main4,
+                    fontSize = dpToSp(dp = 14.dp),
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(2.dp))
+                Image(
+                    painter = painterResource(id = CommonR.drawable.ico_16_right),
+                    colorFilter = ColorFilter.tint(Main4),
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+
+        }
     }
 }
 
@@ -187,9 +224,11 @@ private fun ProfileTextPreView() {
             bio = "나는 나는 멋쟁이 토마통"
         ),
         modifier = Modifier,
+        hasWaverPlus = true,
         goToMyWave = {
 
-        }
+        },
+        goToWavePlus = {}
     )
 }
 
@@ -210,6 +249,7 @@ private fun ProfilePreview() {
             badgeTitle = "이제 버킷리스트를 시작한",
             bio = "나는 나는 멋쟁이 토마통"
         ),
-        {}, {}
+        hasWaverPlus = true,
+        {}, {}, goToWavePlus = {}
     )
 }

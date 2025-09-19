@@ -6,6 +6,7 @@
     <string name="goToJoinWaverClub">웨이버 플러스 알아보기</string>
     <string name="waverPlusBenefitDesc1">1주일 </string>
     <string name="waverPlusBenefitDesc2">광고 제거/무제한 버킷리스트 무료</string>
+    <string name="usedWavePlus">웨이버 플러스 이용 중</string>
 
     <!-- 더보기 메뉴 -->
     <string name="moreMenuAlarm">알림 설정</string>

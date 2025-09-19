@@ -93,9 +93,7 @@ class ChooseSubscription(
                     for (purchase in purchases) {
                         Log.e("ayhan", "queryPurchasesAsync : purchase :$purchase")
 
-                        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED &&
-                            purchase.products.contains(subscriptionPlanId) && purchase.isAcknowledged
-                        ) {
+                        if (purchase.products.contains(subscriptionPlanId) && purchase.isAcknowledged) {
                             _subscriptions.update {
                                 val newList = it.toMutableList()
                                 newList.addAll(purchase.products)
@@ -131,41 +129,37 @@ class ChooseSubscription(
         subscriptionPlanId: String,
         planId: String
     ) {
+
         val queryProductDetailsParams =
-            QueryProductDetailsParams.newBuilder()
-                .setProductList(
-                    listOf(
-                        QueryProductDetailsParams.Product.newBuilder()
-                            .setProductId(subscriptionPlanId)
-                            .setProductType(BillingClient.ProductType.SUBS)
-                            .build(),
-                    )
+            QueryProductDetailsParams.newBuilder().setProductList(
+                listOf(
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(subscriptionPlanId)
+                        .setProductType(BillingClient.ProductType.SUBS)
+                        .build()
                 )
-                .build()
+            ).build()
 
         Log.e("ayhan", "queryProductDetailsParams  :$queryProductDetailsParams")
 
-        billingClient.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, productDetailsList ->
-
-            Log.e("ayhan", "billingResult  :${productDetailsList.firstOrNull()}")
-
+        billingClient.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, queryProductDetailsResult ->
             if (billingResult.responseCode == BillingResponseCode.OK) {
                 var offerToken = ""
-                val productDetails = productDetailsList.firstOrNull { productDetails ->
-                    productDetails.subscriptionOfferDetails?.any {
-                        Log.e(
-                            "ayhan",
-                            "subscriptionOfferDetails ${it.basePlanId}. $subscriptionPlanId"
-                        )
-                        if (it.basePlanId == planId) {
-                            offerToken = it.offerToken
-                            true
-                        } else {
-                            false
-                        }
-                    } == true
-                }
-
+                val productDetails =
+                    queryProductDetailsResult.productDetailsList.firstOrNull { product ->
+                        product.subscriptionOfferDetails?.any {
+                            Log.e(
+                                "ayhan",
+                                "subscriptionOfferDetails ${it.basePlanId}. $subscriptionPlanId"
+                            )
+                            if (it.basePlanId == planId) {
+                                offerToken = it.offerToken
+                                true
+                            } else {
+                                false
+                            }
+                        } == true
+                    }
                 Log.e("ayhan", "productDetails  :$productDetails")
 
                 productDetails?.let {
@@ -185,8 +179,25 @@ class ChooseSubscription(
             } else {
                 Log.e("ayhan", "querySubscriptionPlans  :$${billingResult.responseCode}")
             }
+
+            queryProductDetailsResult.unfetchedProductList.forEach { product ->
+                Log.e("ayhan", "Unfetched product: $product")
+            }
         }
     }
+
+//        val queryProductDetailsParams =
+//            QueryProductDetailsParams.newBuilder()
+//                .setProductList(
+//                    listOf(
+//                        QueryProductDetailsParams.Product.newBuilder()
+//                            .setProductId(subscriptionPlanId)
+//                            .setProductType(BillingClient.ProductType.SUBS)
+//                            .build(),
+//                    )
+//                )
+//                .build()
+
 
     private fun handlePurchase(purchase: Purchase) {
         val consumeParams = ConsumeParams.newBuilder()

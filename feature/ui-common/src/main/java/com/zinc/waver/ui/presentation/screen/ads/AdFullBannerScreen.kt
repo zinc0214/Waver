@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdView
 
 @Composable
 fun AdFullScreen(modifier: Modifier = Modifier) {
-    val writeId = "ca-app-pub-3940256099942544/1033173712"
+    val writeId = "ca-app-pub-3940256099942544/6300978111"
     val adRequest = AdRequest.Builder().build()
 
     Box(modifier = modifier) {

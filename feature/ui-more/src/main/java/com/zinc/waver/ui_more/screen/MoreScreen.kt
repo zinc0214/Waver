@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.presentation.ListPopupView
 import com.zinc.waver.ui.presentation.component.MyText
@@ -45,12 +45,14 @@ fun MoreScreen(
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
     val loadProfileFail by viewModel.profileLoadFail.observeAsState()
+    val hasWaverPlus by viewModel.hasWaverPlus.observeAsState()
 
     val showApiFailDialog = remember { mutableStateOf(false) }
     val profileInfo = remember { mutableStateOf(profileInfoAsState) }
 
     LaunchedEffect(Unit) {
         viewModel.loadMyProfile()
+        viewModel.checkHasWaverPlus()
     }
 
     LaunchedEffect(key1 = loadProfileFail) {
@@ -65,13 +67,19 @@ fun MoreScreen(
         MoreTitleView()
 
         profileInfo.value?.let { info ->
-            MoreTopProfileView(info,
+            MoreTopProfileView(
+                info,
+                hasWaverPlus = hasWaverPlus == true,
                 goToMyWave = { moreItemClicked(MoreItemType.MY_WAVE) },
-                goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) })
+                goToProfileUpdate = { moreItemClicked(MoreItemType.PROFILE) },
+                goToWavePlus = { moreItemClicked(MoreItemType.WAVE_PLUS) }
+            )
 
-            WaverClubLabelView(enterClubClick = {
-                moreItemClicked(MoreItemType.WAVE_PLUS)
-            })
+            if (hasWaverPlus == false) {
+                WaverClubLabelView(enterClubClick = {
+                    moreItemClicked(MoreItemType.WAVE_PLUS)
+                })
+            }
 
             MoreItemsView {
                 when (it) {
@@ -109,7 +117,8 @@ fun MoreScreen(
     }
 
     if (csPopupShow) {
-        ListPopupView(modifier = Modifier,
+        ListPopupView(
+            modifier = Modifier,
             title = stringResource(R.string.moreMenuCs),
             onDismissRequest = {
                 csPopupShow = false

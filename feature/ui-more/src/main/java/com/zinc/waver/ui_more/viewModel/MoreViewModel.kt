@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.utils.TAG
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.models.UpdateProfileRequest
 import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
 import com.zinc.domain.usecases.more.LoadProfileInfo
@@ -14,6 +15,7 @@ import com.zinc.waver.ui_more.models.UIMoreMyProfileInfo
 import com.zinc.waver.ui_more.models.toUi
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -22,7 +24,8 @@ import javax.inject.Inject
 class MoreViewModel @Inject constructor(
     private val loadProfileInfo: LoadProfileInfo,
     private val updateProfileInfo: UpdateProfileInfo,
-    private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname
+    private val checkAlreadyUsedNickname: CheckAlreadyUsedNickname,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _profileInfo = MutableLiveData<UIMoreMyProfileInfo>()
@@ -39,6 +42,9 @@ class MoreViewModel @Inject constructor(
 
     private val _isAlreadyUsedNickName = SingleLiveEvent<Boolean>()
     val isAlreadyUsedNickName: LiveData<Boolean> get() = _isAlreadyUsedNickName
+
+    private val _hasWaverPlus = MutableLiveData<Boolean>()
+    val hasWaverPlus: LiveData<Boolean> get() = _hasWaverPlus
 
     fun loadMyProfile() {
         viewModelScope.launch(ceh(_profileLoadFail, true)) {
@@ -82,6 +88,14 @@ class MoreViewModel @Inject constructor(
                 } else {
                     _profileUpdateFail.value = false
                 }
+            }
+        }
+    }
+
+    fun checkHasWaverPlus() {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadHasWaverPlus.collectLatest { value ->
+                _hasWaverPlus.value = value
             }
         }
     }
