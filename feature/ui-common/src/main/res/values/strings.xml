@@ -4,7 +4,7 @@
     <!-- Common -->
     <string name="cancel">Cancel</string>
     <string name="apply">Apply</string>
-    <string name="proceedingText">In Progress</string>
+    <string name="proceedingText">Progress</string>
     <string name="succeedText">Done</string>
     <string name="blank"> </string>
     <string name="hide">Hide</string>

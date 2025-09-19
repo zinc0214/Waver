@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.waver.ui.design.theme.Gray1
@@ -90,7 +91,7 @@ fun FeedCardView(
                 profileInfo = feedInfo.profileInfo().toUi()
             )
             ProcessView(
-                modifier = Modifier.padding(top = 25.dp, start = 10.dp),
+                modifier = Modifier.padding(top = 23.dp, start = 10.dp),
                 isProcessing = feedInfo.isProcessing
             )
             TitleView(
@@ -130,7 +131,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(61.dp, 21.dp)
+                    .size(60.dp, 20.dp)
                     .align(Alignment.Center)
             )
             MyText(
@@ -245,4 +246,27 @@ private fun BottomStateView(
                 }
         )
     }
+}
+
+@Composable
+@Preview
+private fun FeedCardViewPreview() {
+    FeedCardView(
+        feedInfo = UIFeedInfo(
+            bucketId = "1",
+            writerId = "11",
+            profileImage = null,
+            badgeImage = "",
+            titlePosition = "나는야 주스될거야",
+            nickName = "Sean Barker",
+            imageList = listOf("https://picsum.photos/200/300"),
+            isProcessing = true,
+            title = "dolorum",
+            liked = false,
+            likeCount = 7367,
+            commentCount = 3546,
+            isScraped = false
+        ),
+        clickEvent = {}
+    )
 }
