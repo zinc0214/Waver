@@ -30,7 +30,6 @@ import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.model.WaverPlusType
-import com.zinc.waver.ui.presentation.screen.ads.AdFullScreen
 import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
@@ -177,8 +176,6 @@ class HomeActivity : AppCompatActivity() {
                     }
                 }
             }
-
-            AdFullScreen()
         }
     }
 

@@ -77,7 +77,7 @@ class WriteBucketListViewModel @Inject constructor(
             Log.e("ayhan", "Imagrs : ${writeInfo.images}")
         }) {
             val categoryId = if (writeInfo.categoryId == -1) _defaultCategoryId.value
-                ?: -1 else writeInfo.categoryId
+                ?: 1 else writeInfo.categoryId
             _loadFail.value = null
             val result = addNewBucketList.invoke(
                 addBucketListRequest = AddBucketListRequest(
