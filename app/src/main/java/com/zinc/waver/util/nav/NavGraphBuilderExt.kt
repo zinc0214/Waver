@@ -362,13 +362,14 @@ internal fun NavGraphBuilder.moreProfileNavGraph(
 
 internal fun NavGraphBuilder.moreAppInfoNavGraph(
     backPress: () -> Unit,
-    moreItemClicked: (AppInfoItemType) -> Unit
-
+    onAppInfoItemClicked: (AppInfoItemType) -> Unit,
+    withdrawEvent: () -> Unit
 ) {
     composable(MoreDestinations.MORE_APP_INFO) {
         AppInfoScreen(
             onBackClicked = { backPress() },
-            moreItemClicked = moreItemClicked
+            onAppInfoItemClicked = onAppInfoItemClicked,
+            withdrawEvent = withdrawEvent
         )
     }
 }

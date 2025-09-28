@@ -53,4 +53,8 @@ internal class MoreRepositoryImpl @Inject constructor(
     override suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse {
         return waverApi.loadMyWaveInfo()
     }
+
+    override suspend fun requestWithdrawal(): CommonResponse {
+        return waverApi.requestWithdraw()
+    }
 }

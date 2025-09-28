@@ -323,4 +323,9 @@ interface WaverApi {
     suspend fun requestBlockUserRelease(
         @Query("blockedUserId") blockedUserId: String
     ): CommonResponse
+
+    // 회원탈퇴
+    @POST("/waver/user/withdraw")
+    suspend fun requestWithdraw(): CommonResponse
+
 }

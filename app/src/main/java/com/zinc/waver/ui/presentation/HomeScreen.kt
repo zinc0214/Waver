@@ -319,7 +319,10 @@ private fun NavGraphBuilder.setupMoreScreens(
     )
     moreAppInfoNavGraph(
         backPress = appState::backPress,
-        moreItemClicked = { /* Do nothing */ }
+        onAppInfoItemClicked = { /* Do nothing */ },
+        withdrawEvent = {
+            action(ActionWithActivity.Logout)
+        }
     )
     myWaveManageNavGraph(backPress = appState::backPress)
     wavePlusGuideNavGraph(
