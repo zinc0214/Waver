@@ -2,6 +2,7 @@ package com.zinc.waver.ui_my
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
@@ -423,7 +424,10 @@ private fun MyTab(
     Column(
         modifier = Modifier
             .padding(start = 12.dp, end = 12.dp)
-            .clickable {
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            ) {
                 isClicked(currentIndex)
             }) {
         MyText(
