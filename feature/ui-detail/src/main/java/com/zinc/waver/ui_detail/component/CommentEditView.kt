@@ -416,6 +416,7 @@ fun CommentEditView(
                                 ),
                                 contentDescription = "Send comment",
                                 modifier = Modifier
+                                    .padding(end = 4.dp)
                                     .size(28.dp)
                                     .clickable {
                                         if (textFieldValue.text.isNotEmpty()) {
