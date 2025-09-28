@@ -218,7 +218,7 @@ fun SimpleBucketCard(
                 TitleTextView(itemInfo.title, isProgress.value)
 
                 // Progress
-                if (itemInfo.goalCount > 0 && isProgress.value) {
+                if (itemInfo.goalCount > 1 && isProgress.value) {
                     CountProgressView(
                         _info = itemInfo,
                         tabType = tabType
