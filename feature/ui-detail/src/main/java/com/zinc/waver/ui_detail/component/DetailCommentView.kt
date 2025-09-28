@@ -118,7 +118,7 @@ private fun CommentDescView(
         Image(
             painter = rememberAsyncImagePainter(
                 model = comment.profileImage,
-                error = painterResource(id = com.zinc.waver.ui_common.R.drawable.testimg)
+                error = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_placeholder)
             ),
             contentDescription = stringResource(
                 id = R.string.profileImage

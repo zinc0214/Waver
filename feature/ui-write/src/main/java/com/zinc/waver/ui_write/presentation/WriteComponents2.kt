@@ -349,7 +349,7 @@ fun WriteSelectFriendItem(
             val (profileImage, nickNameView) = createRefs()
 
             Image(
-                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.testimg),
+                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_placeholder),
                 contentDescription = stringResource(
                     id = CommonR.string.profileImageDesc
                 ),

@@ -126,7 +126,7 @@ private fun TogetherMemberItemView(
                 modifier = Modifier.size(50.dp),
                 content = {
                     Image(
-                        painter = painterResource(id = R.drawable.testimg),
+                        painter = painterResource(id = R.drawable.profile_placeholder),
                         contentDescription = stringResource(
                             id = R.string.profileImgDesc
                         ),
@@ -138,7 +138,7 @@ private fun TogetherMemberItemView(
                             .align(Alignment.TopStart)
                     )
                     Image(
-                        painter = painterResource(id = R.drawable.badge_small),
+                        painter = painterResource(id = R.drawable.badge_placeholder),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(start = 4.dp)

@@ -57,8 +57,8 @@ internal fun BlockMemberView(memberData: BlockMemberData, blockReleaseEvent: () 
         Image(
             painter = rememberAsyncImagePainter(
                 model = memberData.profileUrl,
-                placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.testimg),
-                error = painterResource(com.zinc.waver.ui_common.R.drawable.testimg)
+                placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.profile_placeholder),
+                error = painterResource(com.zinc.waver.ui_common.R.drawable.profile_placeholder)
             ),
             contentDescription = stringResource(
                 id = CommonR.string.moreProfileImageDesc

@@ -125,8 +125,8 @@ private fun MentionItem(
         Image(
             painter = rememberAsyncImagePainter(
                 model = item.profileImage,
-                placeholder = painterResource(CommonR.drawable.testimg),
-                error = painterResource(CommonR.drawable.testimg)
+                placeholder = painterResource(CommonR.drawable.profile_placeholder),
+                error = painterResource(CommonR.drawable.profile_placeholder)
             ),
             contentDescription = stringResource(
                 id = R.string.profileImage

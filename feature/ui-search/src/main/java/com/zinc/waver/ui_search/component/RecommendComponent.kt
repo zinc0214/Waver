@@ -270,7 +270,7 @@ fun RecommendBucketItemView(
         Column {
             if (item.thumbnail != null) {
                 Image(
-                    painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.testimg),
+                    painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_placeholder),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxWidth()

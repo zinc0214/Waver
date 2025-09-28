@@ -122,11 +122,11 @@ private fun JoinCreateProfile2(
         Image(
             painter = rememberAsyncImagePainter(
                 model = createProfileInfo.imgPath,
-                placeholder = painterResource(id = com.zinc.waver.ui_common.R.drawable.testimg),
-                error = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_icon_1)
+                placeholder = painterResource(id = CommonR.drawable.profile_placeholder),
+                error = painterResource(id = CommonR.drawable.profile_placeholder)
             ),
             contentDescription = stringResource(
-                id = com.zinc.waver.ui_common.R.string.moreProfileImageDesc
+                id = CommonR.string.moreProfileImageDesc
             ),
             contentScale = ContentScale.Crop,
             modifier = Modifier

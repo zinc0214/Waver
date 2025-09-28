@@ -46,8 +46,8 @@ import com.zinc.waver.ui_common.R
 fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
     val painter = rememberAsyncImagePainter(
         model = info.badgeUrl,
-        placeholder = painterResource(R.drawable.testimg),
-        error = painterResource(R.drawable.testimg)
+        placeholder = painterResource(R.drawable.badge_placeholder),
+        error = painterResource(R.drawable.badge_placeholder)
     )
 
     Dialog(onDismissRequest = { onDismissRequest() }) {

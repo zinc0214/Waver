@@ -242,8 +242,8 @@ fun CommentEditView(
                             ) {
                                 AsyncImage(
                                     model = user.profileImage,
-                                    error = painterResource(com.zinc.waver.ui_common.R.drawable.testimg),
-                                    placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.testimg),
+                                    error = painterResource(com.zinc.waver.ui_common.R.drawable.profile_placeholder),
+                                    placeholder = painterResource(com.zinc.waver.ui_common.R.drawable.profile_placeholder),
                                     contentDescription = "Profile image",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier

@@ -150,8 +150,8 @@ private fun HeaderView(info: MyWaverTotalInfo, selectedBadge: MyBadge?, onBackPr
         Image(
             painter = rememberAsyncImagePainter(
                 model = currentBadgeInfo?.imgUrl, // TODO : 이미지로 변경 필요
-                placeholder = painterResource(CommonR.drawable.testimg),
-                error = painterResource(CommonR.drawable.testimg)
+                placeholder = painterResource(CommonR.drawable.badge_placeholder),
+                error = painterResource(CommonR.drawable.badge_placeholder)
             ),
             contentDescription = currentBadgeInfo?.title,
             modifier = Modifier
@@ -282,8 +282,8 @@ private fun BadgeView(
         Image(
             painter = rememberAsyncImagePainter(
                 model = info.imgUrl, // TODO : 이미지 적용 필요
-                placeholder = painterResource(CommonR.drawable.testimg),
-                error = painterResource(CommonR.drawable.testimg)
+                placeholder = painterResource(CommonR.drawable.badge_placeholder),
+                error = painterResource(CommonR.drawable.badge_placeholder)
             ),
             contentDescription = info.title,
             modifier = Modifier
