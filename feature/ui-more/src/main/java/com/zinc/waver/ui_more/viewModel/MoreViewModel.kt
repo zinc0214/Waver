@@ -46,6 +46,9 @@ class MoreViewModel @Inject constructor(
     private val _hasWaverPlus = MutableLiveData<Boolean>()
     val hasWaverPlus: LiveData<Boolean> get() = _hasWaverPlus
 
+    private val _loginEmail = MutableLiveData<String>()
+    val loginEmail: LiveData<String> get() = _loginEmail
+
     fun loadMyProfile() {
         viewModelScope.launch(ceh(_profileLoadFail, true)) {
             loadProfileInfo.invoke().apply {
@@ -96,6 +99,14 @@ class MoreViewModel @Inject constructor(
         viewModelScope.launch {
             preferenceDataStoreModule.loadHasWaverPlus.collectLatest { value ->
                 _hasWaverPlus.value = value
+            }
+        }
+    }
+
+    fun loadLoginEmail() {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadLoginedEmail.collectLatest { value ->
+                _loginEmail.value = value
             }
         }
     }

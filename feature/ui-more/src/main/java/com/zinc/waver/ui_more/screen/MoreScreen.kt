@@ -46,6 +46,7 @@ fun MoreScreen(
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
     val loadProfileFail by viewModel.profileLoadFail.observeAsState()
     val hasWaverPlus by viewModel.hasWaverPlus.observeAsState()
+    val email by viewModel.loginEmail.observeAsState()
 
     val showApiFailDialog = remember { mutableStateOf(false) }
     val profileInfo = remember { mutableStateOf(profileInfoAsState) }
@@ -53,6 +54,7 @@ fun MoreScreen(
     LaunchedEffect(Unit) {
         viewModel.loadMyProfile()
         viewModel.checkHasWaverPlus()
+        viewModel.loadLoginEmail()
     }
 
     LaunchedEffect(key1 = loadProfileFail) {
@@ -81,18 +83,20 @@ fun MoreScreen(
                 })
             }
 
-            MoreItemsView {
-                when (it) {
-                    MoreItemType.LOGOUT -> {
-                        logoutPopupShow = true
-                    }
+            if (!email.isNullOrBlank()) {
+                MoreItemsView(email.orEmpty()) {
+                    when (it) {
+                        MoreItemType.LOGOUT -> {
+                            logoutPopupShow = true
+                        }
 
-                    MoreItemType.CS -> {
-                        csPopupShow = true
-                    }
+                        MoreItemType.CS -> {
+                            csPopupShow = true
+                        }
 
-                    else -> {
-                        moreItemClicked(it)
+                        else -> {
+                            moreItemClicked(it)
+                        }
                     }
                 }
             }
