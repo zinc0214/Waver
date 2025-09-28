@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.common.models.AddBucketCommentRequest
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.YesOrNo
@@ -58,6 +58,7 @@ import com.zinc.waver.ui.design.util.isLastItemVisible
 import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
+import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_detail.component.CommentEditView
 import com.zinc.waver.ui_detail.component.DetailSuccessButtonView
@@ -99,9 +100,10 @@ fun OpenDetailScreen(
     val validMentionList by viewModel.validMentionList.observeAsState()
     val loadFailAsState by viewModel.loadFail.observeAsState()
     val bucketDeleteAsState by viewModel.goToBack.observeAsState()
+    val showLoadingAsState by viewModel.showLoading.observeAsState()
 
     val keyboardController = LocalSoftwareKeyboardController.current
-
+    val showLoading = remember { mutableStateOf(false) }
     var detailInfo by remember { mutableStateOf(detailInfoAsState) }
     var internalEvent: OpenBucketDetailInternalEvent by remember {
         mutableStateOf(
@@ -111,6 +113,10 @@ fun OpenDetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.loadInitData(detailId, writerId, isMine)
+    }
+
+    LaunchedEffect(showLoadingAsState) {
+        showLoading.value = showLoadingAsState == true
     }
 
     LaunchedEffect(loadFailAsState) {
@@ -191,6 +197,10 @@ fun OpenDetailScreen(
                 backPress()
             }
         )
+    }
+
+    if (showLoading.value) {
+        WaverLoading()
     }
 }
 

@@ -226,7 +226,7 @@ fun WriteScreen2(
 
             if (optionScreenShow == WriteOptionsType2.OPEN) {
                 SelectOpenTypePopup(
-                    isPrivateAvailable = !selectedFriends.value.isNullOrEmpty(),
+                    isPrivateAvailable = selectedFriends.value.isNullOrEmpty(),
                     onDismissRequest = {
                         optionScreenShow = null
                     },

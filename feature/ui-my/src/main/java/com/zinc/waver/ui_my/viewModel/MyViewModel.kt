@@ -105,9 +105,6 @@ class MyViewModel @Inject constructor(
     private val _ddayFilterSavedFinished = MutableLiveData<Boolean>()
     val ddayFilterSavedFinished: LiveData<Boolean> get() = _ddayFilterSavedFinished
 
-    private val _showLoading = MutableLiveData<Boolean>()
-    val showLoading: LiveData<Boolean> get() = _showLoading
-
     private var isPrefChanged = false
 
     private val searchCeh = CoroutineExceptionHandler { _, throwable ->
@@ -209,10 +206,8 @@ class MyViewModel @Inject constructor(
     }
 
     fun loadProfile() {
-        _showLoading.value = true
         viewModelScope.launch(CoroutineExceptionHandler { _, _ ->
             _dataLoadFailed.value = false
-            _showLoading.value = false
         }) {
             val response = loadHomeProfileInfo.invoke()
             if (response.success) {
@@ -231,11 +226,9 @@ class MyViewModel @Inject constructor(
                 Log.e("ayhan", "homeProfike : $topProfile")
                 _profileInfo.value = topProfile
                 _dataLoadFailed.value = false
-                _showLoading.value = false
             } else {
                 //  Log.e("ayhan", "Fail Load Profile not success")
                 _dataLoadFailed.value = false
-                _showLoading.value = false
             }
         }
     }
@@ -303,9 +296,7 @@ class MyViewModel @Inject constructor(
 
         viewModelScope.launch(CoroutineExceptionHandler { _, _ ->
             _dataLoadFailed.value = false
-            _showLoading.value = false
         }) {
-            _showLoading.value = true
             loadAllBucketList.invoke(allBucketListRequest).apply {
                 if (this.success) {
                     val data = this.data
@@ -328,7 +319,6 @@ class MyViewModel @Inject constructor(
 
                     _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
                     _ddayFilterLoadFinished.value = false
-                    _showLoading.value = false
                     Log.e("ayhan", "filteredList : $filteredList")
                 }
             }

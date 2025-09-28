@@ -14,23 +14,18 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.DetailAppBarClickEvent
 import com.zinc.waver.model.DetailLoadFailStatus
@@ -41,6 +36,7 @@ import com.zinc.waver.ui.design.theme.BaseTheme
 import com.zinc.waver.ui.design.util.rememberScrollContext
 import com.zinc.waver.ui.presentation.component.ImageViewPagerInsideIndicator
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_detail.component.DetailDescView
 import com.zinc.waver.ui_detail.component.DetailMemoView
@@ -67,19 +63,10 @@ fun CloseDetailScreen(
 
     val vmDetailInfoAsState by viewModel.bucketBucketDetailUiInfo.observeAsState()
     val loadFailAsState by viewModel.loadFail.observeAsState()
+    val showLoadingAsState by viewModel.showLoading.observeAsState()
 
-    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
-    DisposableEffect(lifecycleOwner.value) {
-        val lifecycle = lifecycleOwner.value.lifecycle
-        val observer = LifecycleEventObserver { owner, event ->
-            if (event == Lifecycle.Event.ON_CREATE) {
-                viewModel.getBucketDetail(detailId, "", true)
-            }
-        }
-        lifecycle.addObserver(observer)
-        onDispose {
-            lifecycle.removeObserver(observer)
-        }
+    LaunchedEffect(Unit) {
+        viewModel.getBucketDetail(detailId, "", true)
     }
 
     val detailInfo = remember { mutableStateOf(vmDetailInfoAsState) }
@@ -90,6 +77,7 @@ fun CloseDetailScreen(
 
     val loadFail = remember { mutableStateOf(loadFailAsState) }
     val showLoadFailDialog = remember { mutableStateOf(false) }
+    val showLoading = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = vmDetailInfoAsState) {
         detailInfo.value = vmDetailInfoAsState
@@ -100,6 +88,10 @@ fun CloseDetailScreen(
             loadFail.value = loadFailAsState
             showLoadFailDialog.value = true
         }
+    }
+
+    LaunchedEffect(showLoadingAsState) {
+        showLoading.value = showLoadingAsState == true
     }
 
     detailInfo.value?.let { info ->
@@ -226,6 +218,10 @@ fun CloseDetailScreen(
                 }
             }
         }
+    }
+
+    if (showLoading.value) {
+        WaverLoading()
     }
 
     if (showLoadFailDialog.value) {

@@ -65,7 +65,6 @@ import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.presentation.component.MyText
-import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_my.screen.all.AllBucketLayer
@@ -87,8 +86,6 @@ fun MyScreen(
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
 
-    val showLoadingAsState by viewModel.showLoading.observeAsState()
-
     val profileInfo = remember {
         mutableStateOf(profileInfoAsState)
     }
@@ -96,8 +93,6 @@ fun MyScreen(
     val configuration = LocalConfiguration.current
 
     val pagerHeight = configuration.screenHeightDp.dp - 128.dp
-
-    val showLoading = remember { mutableStateOf(false) }
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState(pageCount = { tabItems.size })
@@ -118,12 +113,6 @@ fun MyScreen(
 
     LaunchedEffect(key1 = profileInfoAsState) {
         profileInfo.value = profileInfoAsState
-    }
-
-    LaunchedEffect(showLoadingAsState) {
-        // Log.e("ayhan", "showLoadingAsState : $showLoadingAsState")
-        showLoading.value = showLoadingAsState == true
-        //  Log.e("ayhan", "showLoading : $showLoading")
     }
 
     ////////////////////////////
@@ -236,12 +225,7 @@ fun MyScreen(
             }
         }
     }
-
-    if (showLoading.value) {
-        WaverLoading()
-    }
 }
-
 
 @Composable
 fun MyTabLayer(

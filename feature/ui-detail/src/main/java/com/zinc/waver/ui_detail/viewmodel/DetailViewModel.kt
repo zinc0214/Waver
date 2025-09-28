@@ -54,6 +54,9 @@ class DetailViewModel @Inject constructor(
     private val _goToBack = SingleLiveEvent<Boolean>()
     val goToBack: LiveData<Boolean> get() = _goToBack
 
+    private val _showLoading = MutableLiveData<Boolean>()
+    val showLoading: LiveData<Boolean> get() = _showLoading
+
     private lateinit var bucketDetailData: DetailInfo
     private lateinit var profileInfo: ProfileInfo
 
@@ -63,9 +66,7 @@ class DetailViewModel @Inject constructor(
 
     fun loadInitData(bucketId: String, writerId: String?, isMine: Boolean) {
         _loadFail.value = null
-
-        viewModelScope.launch {
-
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
             val job1 = launch { getBucketDetail(bucketId, writerId, isMine) }
             val job2 = launch { getValidMentionList() }
 
@@ -74,6 +75,7 @@ class DetailViewModel @Inject constructor(
             }.getOrElse {
                 Log.e("ayhan", "getOrlElse, ${it.message}")
                 _loadFail.value = DetailLoadFailStatus.LoadFail
+                _showLoading.value = false
             }
         }
     }
@@ -155,6 +157,8 @@ class DetailViewModel @Inject constructor(
         this.isMine = isMine
 
         viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
+            _showLoading.value = true
+
             val job1 = launch { getBucketDetailData(bucketId, isMine) }
             val job2 = launch { getProfileInfo(isMine = isMine, writerId = writerId) }
 
@@ -168,6 +172,7 @@ class DetailViewModel @Inject constructor(
 
             _bucketBucketDetailUiInfo.value =
                 bucketDetailResponseToUiModel(bucketDetailData, profileInfo, isMine, writerId)
+            _showLoading.value = false
         }
     }
 
