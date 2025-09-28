@@ -35,6 +35,7 @@ import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
 import com.zinc.waver.util.FileUtil.getFileFromUri
 import com.zinc.waver.util.createImageFile
+import com.zinc.waver.util.dp2px
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
@@ -224,6 +225,8 @@ class HomeActivity : AppCompatActivity() {
                     showCropOverlay = true,
                     guidelines = CropImageView.Guidelines.ON,
                     outputCompressFormat = Bitmap.CompressFormat.PNG,
+                    outputRequestWidth = dp2px(70),
+                    outputRequestHeight = dp2px(70),
                     cropMenuCropButtonTitle = getString(R.string.imageCropSave),
                     activityTitle = getString(R.string.imageCropperTitle),
                     aspectRatioX = 1,

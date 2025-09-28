@@ -41,7 +41,6 @@ fun ProfileUpdateView(
     updatePath: MutableState<String?>,
     imageUpdateButtonClicked: () -> Unit
 ) {
-
     val context = LocalContext.current
     val profileUri =
         if (updatePath.value != null) createImageInfoWithPath(
@@ -52,7 +51,10 @@ fun ProfileUpdateView(
     var showPermission by remember { mutableStateOf(false) }
     var hasPermission by remember { mutableStateOf(false) }
 
-    Log.e("ayhan", "showPermission1 : ${showPermission} , ${hasPermission}")
+    Log.e(
+        "ayhan",
+        "showPermission1 : ${showPermission} , ${hasPermission}, $updatePath, $profileUri"
+    )
 
     if (!hasPermission || showPermission) {
         Log.e("ayhan", "showPermission")
@@ -71,12 +73,14 @@ fun ProfileUpdateView(
     ) {
 
         val (profileImg, updateButton) = createRefs()
-
         Image(
             painter = rememberAsyncImagePainter(
                 model = profileUri,
-                placeholder = painterResource(id = R.drawable.profile_icon_1),
-                error = painterResource(id = R.drawable.profile_icon_1)
+                placeholder = painterResource(id = R.drawable.profile_placeholder),
+                error = painterResource(id = R.drawable.profile_placeholder),
+                onError = {
+                    Log.e("ayhan", "Image Load Error : ${it.result.throwable}")
+                }
             ),
             contentDescription = stringResource(
                 id = R.string.moreProfileImageDesc

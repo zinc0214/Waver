@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.R
 import com.zinc.waver.ui.design.theme.Error2
@@ -57,6 +58,7 @@ import com.zinc.waver.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.util.FileUtil.getFileFromUri
 import java.io.File
 import com.zinc.waver.ui_common.R as CommonR
 
@@ -153,6 +155,28 @@ private fun JoinCreateProfile1(
         if (bottomSheetScaffoldState.currentValue == ModalBottomSheetValue.Hidden) {
             showSelectCameraType = false
         }
+    }
+
+    LaunchedEffect(Unit) {
+        val randomProfile = listOf(
+            CommonR.drawable.profile_icon_1,
+            CommonR.drawable.profile_icon_2,
+            CommonR.drawable.profile_icon_3
+        ).random()
+
+        try {
+            val uri = ("android.resource://" + context.packageName + "/" + randomProfile).toUri();
+            val file = getFileFromUri(context, uri)
+            Log.e("ayhan", "randomProfile : $randomProfile , $uri , $file")
+            if (file != null) {
+                updateImageFile.value = file
+                updateImagePath.value = file.path
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(context, "이미지 처리 중 오류가 발생했습니다", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     ModalBottomSheetLayout(

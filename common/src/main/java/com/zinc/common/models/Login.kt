@@ -11,8 +11,7 @@ data class JoinResponse(
 )
 
 data class JoinAccessToken(
-    val accessToken: String,
-    val refreshToken: String
+    val accessToken: String
 )
 
 data class CreateProfileRequest(
