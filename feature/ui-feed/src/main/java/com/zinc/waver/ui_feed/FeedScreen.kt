@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui_feed.models.FeedClickEvent

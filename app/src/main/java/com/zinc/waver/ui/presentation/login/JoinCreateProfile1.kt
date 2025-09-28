@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -40,7 +41,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.R
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray1
@@ -255,6 +256,7 @@ private fun ProfileNickNameEditView(
 ) {
 
     val showError = isAlreadyUsedName || isCheckFail
+    var isFocused by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -269,11 +271,11 @@ private fun ProfileNickNameEditView(
             fontSize = dpToSp(dp = 14.dp)
         )
 
-
         MyTextField(
             modifier = Modifier
                 .padding(top = 16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .onFocusChanged { isFocused = it.isFocused },
             value = prevNickName,
             singleLine = true,
             textStyle = TextStyle(fontSize = dpToSp(dp = 20.dp)),
@@ -286,7 +288,7 @@ private fun ProfileNickNameEditView(
             },
             decorationBox = { innerTextField ->
                 Row {
-                    if (prevNickName.isEmpty()) {
+                    if (prevNickName.isEmpty() && !isFocused) {
                         MyText(
                             text = stringResource(CommonR.string.addProfileNickname),
                             color = Gray4,

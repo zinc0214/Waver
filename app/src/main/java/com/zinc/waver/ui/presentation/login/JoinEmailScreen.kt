@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
@@ -164,20 +164,21 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
                 .padding(bottom = 8.dp)
         )
 
-        Box(modifier = Modifier
-            .constrainAs(button) {
-                start.linkTo(parent.start)
-                top.linkTo(guide.bottom)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            }
-            .padding(start = 40.dp, end = 40.dp, top = 72.dp)
-            .clickable {
-                emailClicked()
-            }
-            .background(color = Gray1, shape = RoundedCornerShape(2.dp))
-            .border(width = 1.dp, color = Gray3, shape = RoundedCornerShape(2.dp))
-            .padding(top = 13.dp, bottom = 14.dp, start = 24.dp, end = 106.dp)
+        Box(
+            modifier = Modifier
+                .constrainAs(button) {
+                    start.linkTo(parent.start)
+                    top.linkTo(guide.bottom)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .padding(start = 40.dp, end = 40.dp, top = 72.dp)
+                .clickable {
+                    emailClicked()
+                }
+                .background(color = Gray1, shape = RoundedCornerShape(2.dp))
+                .border(width = 1.dp, color = Gray3, shape = RoundedCornerShape(2.dp))
+                .padding(top = 13.dp, bottom = 14.dp, start = 24.dp, end = 106.dp)
         ) {
 
             Row(
@@ -252,7 +253,10 @@ private fun googleLogin(idToken: String, goToEmailCheck: (String) -> Unit) {
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success
-                Log.e("ayhan", "googleLogin : ${task.result.user?.email}")
+                Log.e(
+                    "ayhan",
+                    "googleLogin : ${task.result.user?.uid}, ${task.result.user?.providerData}, ${task.result.user?.providerId}"
+                )
                 goToEmailCheck(task.result.user?.email.orEmpty())
             } else {
                 // Sign in failed
