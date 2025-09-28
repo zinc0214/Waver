@@ -162,6 +162,7 @@ fun OpenDetailScreen(
 
                 is OpenBucketDetailInternalEvent.ViewModelEvent.AddComment -> {
                     viewModel.requestAddBucketComment(event.comment)
+                    keyboardController?.hide()
                 }
 
                 OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike -> {
