@@ -58,6 +58,7 @@ import com.zinc.waver.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.util.FileUtil.getFileFromUri
 import java.io.File
 import com.zinc.waver.ui_common.R as CommonR
@@ -135,7 +136,9 @@ private fun JoinCreateProfile1(
         remember { mutableStateOf(createProfileInfo.imgPath) }
 
     val isButtonEnabled =
-        nickNameData == checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && !isAlreadyUsedNickName
+        nickNameData == checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && !isAlreadyUsedNickName && isValidNicknameCheck(
+            nickNameData
+        )
     val isAlreadyUsedName =
         checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
 
@@ -278,10 +281,13 @@ private fun ProfileNickNameEditView(
     isAlreadyUsedName: Boolean,
     isCheckFail: Boolean
 ) {
-
     val showError = isAlreadyUsedName || isCheckFail
     var isFocused by remember { mutableStateOf(false) }
+    var isValidNickname by remember { mutableStateOf(false) }
 
+    LaunchedEffect(prevNickName) {
+        isValidNickname = isValidNicknameCheck(prevNickName)
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -341,7 +347,7 @@ private fun ProfileNickNameEditView(
             )
         }
 
-        if (prevNickName.length < 3) {
+        if (prevNickName.length < 3 || !isValidNickname) {
             val text = CommonR.string.enterCharacter
             MyText(
                 modifier = Modifier.padding(top = 7.5.dp),

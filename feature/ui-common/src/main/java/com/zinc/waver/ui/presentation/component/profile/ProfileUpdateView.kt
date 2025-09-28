@@ -31,6 +31,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
+import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.util.CameraPermission
 import com.zinc.waver.ui_common.R
@@ -73,29 +74,37 @@ fun ProfileUpdateView(
     ) {
 
         val (profileImg, updateButton) = createRefs()
-        Image(
-            painter = rememberAsyncImagePainter(
-                model = profileUri,
-                placeholder = painterResource(id = R.drawable.profile_placeholder),
-                error = painterResource(id = R.drawable.profile_placeholder),
-                onError = {
-                    Log.e("ayhan", "Image Load Error : ${it.result.throwable}")
-                }
-            ),
-            contentDescription = stringResource(
-                id = R.string.moreProfileImageDesc
-            ),
-            contentScale = ContentScale.Crop,
+        Box(
             modifier = Modifier
                 .constrainAs(profileImg) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom)
                 }
-                .size(70.dp, 70.dp)
-                .aspectRatio(1f)
-                .clip(shape = RoundedCornerShape(28.dp))
-        )
+                .border(width = 1.dp, shape = CircleShape, color = Gray2)
+                .size(70.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = rememberAsyncImagePainter(
+                    model = profileUri,
+                    placeholder = painterResource(id = R.drawable.profile_placeholder),
+                    error = painterResource(id = R.drawable.profile_placeholder),
+                    onError = {
+                        Log.e("ayhan", "Image Load Error : ${it.result.throwable}")
+                    }
+                ),
+                contentDescription = stringResource(
+                    id = R.string.moreProfileImageDesc
+                ),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(70.dp, 70.dp)
+                    .aspectRatio(1f)
+                    .clip(shape = RoundedCornerShape(28.dp))
+            )
+
+        }
 
         Box(
             modifier = Modifier

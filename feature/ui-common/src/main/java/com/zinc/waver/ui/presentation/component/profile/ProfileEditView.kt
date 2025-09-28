@@ -24,6 +24,7 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.MyTextField
 import com.zinc.waver.ui.presentation.model.ProfileEditData
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.ui_common.R
 
 @Composable
@@ -38,6 +39,7 @@ fun ProfileEditView(
     var currentText by remember { mutableStateOf(editDataState.value.prevText) }
     var currentTextSize by remember { mutableStateOf(currentText.length) }
     val isAlreadyUsedNameState = remember { mutableStateOf(isAlreadyUsedName) }
+    var isValidNickname by remember { mutableStateOf(false) }
     val isNickNameType = editDataState.value.dataType == ProfileEditData.ProfileDataType.NICKNAME
     val titleText = if (isNickNameType) {
         stringResource(id = R.string.profileSettingNickNameTitle)
@@ -49,6 +51,9 @@ fun ProfileEditView(
         editDataState.value = editData
     })
 
+    LaunchedEffect(currentText) {
+        isValidNickname = isValidNicknameCheck(currentText)
+    }
     LaunchedEffect(key1 = isAlreadyUsedName) {
         isAlreadyUsedNameState.value = isAlreadyUsedName
     }
@@ -93,7 +98,7 @@ fun ProfileEditView(
                     changeText
                 }
                 currentTextSize = currentText.length
-                dataChanged(changeText)
+                dataChanged(currentText)
             })
 
         Divider(
@@ -110,5 +115,18 @@ fun ProfileEditView(
                 fontSize = dpToSp(dp = 12.dp)
             )
         }
+
+        if (isNickNameType) {
+            if (currentTextSize < 3 || !isValidNickname) {
+                val text = R.string.enterCharacter
+                MyText(
+                    modifier = Modifier.padding(top = 7.5.dp),
+                    text = stringResource(id = text),
+                    color = Gray6,
+                    fontSize = dpToSp(dp = 12.dp)
+                )
+            }
+        }
+
     }
 }

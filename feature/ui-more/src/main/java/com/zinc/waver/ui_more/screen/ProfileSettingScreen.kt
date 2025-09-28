@@ -35,6 +35,7 @@ import com.zinc.waver.ui.presentation.component.profile.ProfileEditView
 import com.zinc.waver.ui.presentation.component.profile.ProfileUpdateView
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.model.ProfileEditData
+import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.ProfileSettingTitle
 import com.zinc.waver.ui_more.viewModel.MoreViewModel
@@ -199,7 +200,7 @@ fun ProfileSettingScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ProfileSettingTitle(
-                    saveButtonEnable = isDataChanged.value,
+                    saveButtonEnable = isDataChanged.value && isValidNicknameCheck(nickNameData.value.prevText),
                     backClicked = {
                         onBackPressed()
                     },
