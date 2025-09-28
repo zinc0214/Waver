@@ -9,7 +9,7 @@ class SavedKeywordItems @Inject constructor(
     private val feedRepository: FeedRepository
 ) {
     suspend operator fun invoke(list: List<String>): CommonResponse {
-        val request = SavedKeywordItemsRequest(keywordIds = list)
+        val request = SavedKeywordItemsRequest(keywordCodes = list)
         return feedRepository.savedKeywordItems(request)
     }
 }

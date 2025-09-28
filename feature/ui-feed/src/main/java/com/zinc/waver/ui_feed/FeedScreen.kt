@@ -133,16 +133,16 @@ private fun FeedScreen(
 
     ) {
         if (keywordList.isNotEmpty()) {
-            FeedKeywordsLayer(keywords = keywordList, recommendClicked = { list ->
-                keywordSaved(list)
-            })
-
             if (loadStatus is FeedLoadStatus.LoadFail) {
                 if (loadStatus.hasData) {
                     updateLoadStatus(FeedLoadStatus.ToastFail)
                 } else {
                     FeedBlankView()
                 }
+            } else {
+                FeedKeywordsLayer(keywords = keywordList, recommendClicked = { list ->
+                    keywordSaved(list)
+                })
             }
         } else {
             FeedLayer(
@@ -222,13 +222,14 @@ private fun FeedScreenPreview2() {
 @Preview(showBackground = true)
 @Composable
 private fun FeedScreenPreview3() {
+    val keyword = mutableListOf(UIFeedKeyword(id = "1", keyword = "여행가자"))
     FeedScreen(
         loadNextPageEvent = {},
         pullToRefreshEvent = {},
         loadStatus = FeedLoadStatus.LoadFail(false),
         updateLoadStatus = {},
         feedList = emptyList(),
-        keywordList = emptyList(),
+        keywordList = keyword,
         feedClickEvent = { },
         keywordSaved = {}
     )

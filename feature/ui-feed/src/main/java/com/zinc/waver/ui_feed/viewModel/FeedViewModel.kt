@@ -48,7 +48,7 @@ class FeedViewModel @Inject constructor(
         viewModelScope.launch(loadCeh) {
             loadFeedItems.invoke().apply {
                 Log.e("ayhan", "feedListResponse : $this")
-                if (this.code == "5000") {
+                if (this.code == "8000") {
                     loadFeedKeyWords()
                 } else if (this.success.not()) {
                     _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
@@ -65,6 +65,7 @@ class FeedViewModel @Inject constructor(
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
             val response = savedKeywordItems.invoke(list)
+            Log.e("ayhan", "response : $response")
             if (response.success) {
                 loadFeedItems()
             } else {
