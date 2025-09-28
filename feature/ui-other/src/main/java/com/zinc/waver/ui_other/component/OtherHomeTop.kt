@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zinc.common.models.TopProfile
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray5
 import com.zinc.waver.ui.design.theme.Gray7
@@ -43,6 +44,7 @@ fun OtherHomeProfile(
 ) {
     Column(
         modifier = Modifier
+            .background(color = Gray1)
             .fillMaxWidth()
     ) {
         TitleView(
