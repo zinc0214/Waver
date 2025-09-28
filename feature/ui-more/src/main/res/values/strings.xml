@@ -65,4 +65,6 @@
     <!-- Logout -->
     <string name="logoutTitle">Do you want to log out?</string>
     <string name="logoutButton">Log Out</string>
+
+    <string name="deleteAccountButton">Delete Account</string>
 </resources>

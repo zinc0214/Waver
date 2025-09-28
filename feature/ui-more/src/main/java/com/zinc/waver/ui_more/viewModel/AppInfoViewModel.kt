@@ -25,4 +25,8 @@ class AppInfoViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteAccount() {
+
+    }
 }

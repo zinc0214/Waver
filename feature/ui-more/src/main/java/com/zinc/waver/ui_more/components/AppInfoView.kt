@@ -179,3 +179,9 @@ private fun AppLogoAndVersionPreview() {
     }
 
 }
+
+@Preview
+@Composable
+private fun AppInfoMoreItemsViewPreview() {
+    AppInfoMoreItemsView {}
+}

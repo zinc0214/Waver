@@ -366,7 +366,10 @@ internal fun NavGraphBuilder.moreAppInfoNavGraph(
 
 ) {
     composable(MoreDestinations.MORE_APP_INFO) {
-        AppInfoScreen(onBackClicked = { backPress() }, moreItemClicked = moreItemClicked)
+        AppInfoScreen(
+            onBackClicked = { backPress() },
+            moreItemClicked = moreItemClicked
+        )
     }
 }
 

@@ -66,4 +66,6 @@
     <!-- 로그아웃 -->
     <string name="logoutTitle">로그아웃 하시겠어요?</string>
     <string name="logoutButton">로그아웃</string>
+
+    <string name="deleteAccountButton">회원탈퇴</string>
 </resources>
