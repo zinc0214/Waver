@@ -8,6 +8,6 @@ import javax.inject.Inject
 class LoginByEmail @Inject constructor(
     private val loginRepository: LoginRepository
 ) {
-    suspend operator fun invoke(email: String) =
-        loginRepository.requestLogin(LoadTokenByEmailRequest(email))
+    suspend operator fun invoke(uid: String) =
+        loginRepository.requestLogin(LoadTokenByEmailRequest(uid))
 }

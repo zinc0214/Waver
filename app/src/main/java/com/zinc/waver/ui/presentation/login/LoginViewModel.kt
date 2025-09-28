@@ -37,7 +37,7 @@ class LoginViewModel @Inject constructor(
         isLoginChecked = true
         _needToStartJoin.value = false
         viewModelScope.launch {
-            preferenceDataStoreModule.loadLoginedEmail.collectLatest {
+            preferenceDataStoreModule.loadLoginedEmailUid.collectLatest {
                 //   Log.e("ayhan", "checkHasLoginEmail : $it")
                 if (it.isNotEmpty()) {
                     _needToStartLoadToken.value = it
@@ -52,15 +52,15 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loadLoginToken(email: String) {
+    fun loadLoginToken(emailUid: String) {
         _loginFail.value = false
         viewModelScope.launch(ceh(_loginFail, true)) {
-            val result = loginByEmail(email)
+            val result = loginByEmail(emailUid)
             Log.e("ayhan", "loadUserToken result : ${result.data.accessToken}")
             if (result.success) {
                 val data = result.data.accessToken
                 preferenceDataStoreModule.setAccessToken("Bearer $data")
-                preferenceDataStoreModule.setLoginEmail(email)
+                preferenceDataStoreModule.setLoginEmailUid(emailUid)
                 _goToMain.value = true
             } else {
                 _loginFail.value = true

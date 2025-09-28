@@ -1,6 +1,7 @@
 package com.zinc.common.models
 
 import java.io.File
+import java.io.Serializable
 
 data class JoinResponse(
     val data: JoinAccessToken?,
@@ -17,10 +18,11 @@ data class JoinAccessToken(
 data class CreateProfileRequest(
     val accountType: String = "ANDROID",
     val email: String,
+    val uid: String,
     val name: String,
     val bio: String? = null,
     val profileImage: File? = null
-)
+) : Serializable
 
 data class RefreshTokenResponse(
     val data: RefreshAccessToken?,
@@ -35,7 +37,7 @@ data class RefreshAccessToken(
 )
 
 data class LoadTokenByEmailRequest(
-    val email: String
+    val uid: String
 )
 
 data class LoadTokenByEmailResponse(

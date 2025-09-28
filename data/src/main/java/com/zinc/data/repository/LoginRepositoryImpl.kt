@@ -19,11 +19,12 @@ class LoginRepositoryImpl @Inject constructor(
     ): JoinResponse {
         val accountType = createProfileRequest.accountType.toMultipartFile("accountType")
         val email = createProfileRequest.email.toMultipartFile("email")
+        val uid = createProfileRequest.uid.toMultipartFile("uid")
         val name = createProfileRequest.name.toMultipartFile("name")
         val bio = createProfileRequest.bio?.toMultipartFile("bio")
         val profileImage = createProfileRequest.profileImage?.fileToMultipartFile("profileImage")
 
-        return waverApi.crateProfile(accountType, email, name, bio, profileImage)
+        return waverApi.crateProfile(accountType, email, uid, name, bio, profileImage)
     }
 
     override suspend fun refreshToken(): RefreshTokenResponse {

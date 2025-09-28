@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.waver.R
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray1
@@ -57,7 +58,7 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun JoinCreateProfile2(
-    email: String,
+    emailInfo: GoogleEmailInfo,
     createProfileInfo: CreateProfileInfo,
     goToMain: () -> Unit,
     goToBack: () -> Unit
@@ -80,7 +81,7 @@ fun JoinCreateProfile2(
         goToBack = goToBack,
         goToJoin = { bio ->
             createUserViewModel.join(
-                email = email,
+                emailInfo = emailInfo,
                 nickName = createProfileInfo.nickName,
                 bio = bio,
                 image = createProfileInfo.imgFile

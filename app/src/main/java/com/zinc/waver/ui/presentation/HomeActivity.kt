@@ -104,7 +104,7 @@ class HomeActivity : AppCompatActivity() {
                     }, goToBack = {
                         finish()
                     }, goToLogin = {
-                        retryEmail.value = it
+                        retryEmail.value = it.email
                         showScreenType.value =
                             ShowParentScreenType.Login
                     }, addImageAction = {

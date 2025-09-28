@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.datastore.login.PreferenceDataStoreModule
+import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
@@ -20,8 +21,8 @@ class JoinEmailViewModel @Inject constructor(
     private val _failEmailCheck = SingleLiveEvent<Boolean>()
     val failEmailCheck: LiveData<Boolean> get() = _failEmailCheck
 
-    private val _goToMakeNickName = SingleLiveEvent<String>()
-    val goToMakeNickName: LiveData<String> get() = _goToMakeNickName
+    private val _goToMakeNickName = SingleLiveEvent<GoogleEmailInfo>()
+    val goToMakeNickName: LiveData<GoogleEmailInfo> get() = _goToMakeNickName
 
     private val _isAlreadyUsedEmail = SingleLiveEvent<Boolean>()
     val isAlreadyUsedEmail: LiveData<Boolean> get() = _isAlreadyUsedEmail
@@ -29,23 +30,24 @@ class JoinEmailViewModel @Inject constructor(
     private val _goToLogin = MutableLiveData<Boolean>()
     val goToLogin: LiveData<Boolean> get() = _goToLogin
 
-    fun goToLogin(email: String) {
+    fun goToLogin(emailInfo: GoogleEmailInfo) {
         viewModelScope.launch(ceh(_failEmailCheck, true)) {
-            val res = loginByEmail(email)
+            val res = loginByEmail(emailInfo.uid)
             if (res.success) {
                 res.data.accessToken.let { token ->
                     preferenceDataStoreModule.setAccessToken("Bearer $token")
                 }
                 _isAlreadyUsedEmail.value = true
             } else {
-                _goToMakeNickName.value = email
+                _goToMakeNickName.value = emailInfo
             }
         }
     }
 
-    fun savedLoginEmail(email: String) {
+    fun savedLoginEmail(emailInfo: GoogleEmailInfo) {
         viewModelScope.launch {
-            preferenceDataStoreModule.setLoginEmail(email)
+            preferenceDataStoreModule.setLoginEmail(emailInfo.email)
+            preferenceDataStoreModule.setLoginEmailUid(emailInfo.uid)
             _goToLogin.value = true
         }
     }

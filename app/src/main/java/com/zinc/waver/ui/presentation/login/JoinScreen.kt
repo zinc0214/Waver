@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
 import com.zinc.waver.ui.presentation.model.BadgePopupInfo
@@ -15,7 +16,7 @@ import com.zinc.waver.ui.presentation.screen.badge.BadgePopupScreen
 fun JoinScreen(
     goToMain: () -> Unit,
     goToBack: () -> Unit,
-    goToLogin: (String) -> Unit,
+    goToLogin: (GoogleEmailInfo) -> Unit,
     addImageAction: (ActionWithActivity.AddImage) -> Unit,
 ) {
 
@@ -26,7 +27,7 @@ fun JoinScreen(
     var isFirstCreate by remember { mutableStateOf(false) }
     var createProfileInfo by remember { mutableStateOf(CreateProfileInfo()) }
 
-    val joinTryEmail: MutableState<String?> = remember { mutableStateOf(null) }
+    val joinTryEmail: MutableState<GoogleEmailInfo?> = remember { mutableStateOf(null) }
 
     var showBadgePopup by remember { mutableStateOf(false) }
 
@@ -47,16 +48,18 @@ fun JoinScreen(
             addImageAction = addImageAction
         )
     } else if (isFirstCreate) {
-        JoinCreateProfile2(
-            email = joinTryEmail.value.orEmpty(),
-            createProfileInfo = createProfileInfo,
-            goToMain = {
-                showBadgePopup = true
-            },
-            goToBack = {
-                isFirstCreate = false
-            }
-        )
+        joinTryEmail.value?.let {
+            JoinCreateProfile2(
+                emailInfo = it,
+                createProfileInfo = createProfileInfo,
+                goToMain = {
+                    showBadgePopup = true
+                },
+                goToBack = {
+                    isFirstCreate = false
+                }
+            )
+        }
     }
 
     if (showBadgePopup) {

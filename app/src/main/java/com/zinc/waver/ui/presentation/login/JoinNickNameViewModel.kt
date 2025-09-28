@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.CreateProfileRequest
 import com.zinc.datastore.login.PreferenceDataStoreModule
+import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.domain.usecases.login.CreateProfile
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
@@ -37,14 +38,14 @@ class JoinNickNameViewModel @Inject constructor(
     val failCheckNickname: LiveData<Boolean> get() = _failCheckNickname
 
     fun join(
-        email: String,
+        emailInfo: GoogleEmailInfo,
         nickName: String,
         bio: String? = null,
         image: File? = null
     ) {
         viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
-            createNewProfile(email, nickName, bio, image)
+            createNewProfile(emailInfo, nickName, bio, image)
         }
     }
 
@@ -68,7 +69,7 @@ class JoinNickNameViewModel @Inject constructor(
     }
 
     private fun createNewProfile(
-        email: String,
+        emailInfo: GoogleEmailInfo,
         nickName: String,
         bio: String? = null,
         image: File? = null
@@ -79,7 +80,8 @@ class JoinNickNameViewModel @Inject constructor(
 
             val res = createProfile(
                 CreateProfileRequest(
-                    email = email,
+                    email = emailInfo.email,
+                    uid = emailInfo.uid,
                     name = nickName,
                     bio = bio,
                     profileImage = image
@@ -87,7 +89,7 @@ class JoinNickNameViewModel @Inject constructor(
             )
             Log.e("ayhan", "createNewProfile success : $res")
             if (res.success) {
-                goToLogin(email)
+                goToLogin(emailInfo)
             } else if (res.code == "3000") {
                 _isAlreadyUsedNickName.value = true
             } else {
@@ -96,11 +98,12 @@ class JoinNickNameViewModel @Inject constructor(
         }
     }
 
-    private fun goToLogin(email: String) {
+    private fun goToLogin(emailInfo: GoogleEmailInfo) {
         viewModelScope.launch(ceh(_failJoin, true)) {
-            val res = loginByEmail(email)
+            val res = loginByEmail(emailInfo.uid)
             if (res.success) {
-                preferenceDataStoreModule.setLoginEmail(email)
+                preferenceDataStoreModule.setLoginEmail(emailInfo.email)
+                preferenceDataStoreModule.setLoginEmailUid(emailInfo.uid)
                 res.data.accessToken.let { token ->
                     preferenceDataStoreModule.setAccessToken("Bearer $token")
                 }

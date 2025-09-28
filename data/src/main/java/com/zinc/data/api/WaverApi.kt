@@ -56,6 +56,7 @@ interface WaverApi {
     suspend fun crateProfile(
         @Part accountType: MultipartBody.Part, // 기기 유형
         @Part email: MultipartBody.Part,
+        @Part uid: MultipartBody.Part,
         @Part name: MultipartBody.Part,
         @Part bio: MultipartBody.Part?,
         @Part profileImage: MultipartBody.Part?

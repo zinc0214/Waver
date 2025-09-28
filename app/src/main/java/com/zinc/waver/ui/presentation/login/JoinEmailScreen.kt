@@ -40,6 +40,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.waver.BuildConfig
 import com.zinc.waver.R
 import com.zinc.waver.model.DialogButtonInfo
@@ -58,9 +59,9 @@ import com.zinc.waver.ui_common.R as CommonR
 // 회원가입1 > 이메일 입력
 @Composable
 fun JoinEmailScreen(
-    goToNexPage: (String) -> Unit,
+    goToNexPage: (GoogleEmailInfo) -> Unit,
     goToBack: () -> Unit,
-    goToLogin: (String) -> Unit,
+    goToLogin: (GoogleEmailInfo) -> Unit,
 ) {
     val viewModel: JoinEmailViewModel = hiltViewModel()
 
@@ -78,7 +79,7 @@ fun JoinEmailScreen(
     val failApiAsState by viewModel.failEmailCheck.observeAsState()
     val isFailApi = remember { mutableStateOf(false) }
 
-    val prevLoginEmail = remember { mutableStateOf("") }
+    val prevLoginEmail = remember { mutableStateOf<GoogleEmailInfo?>(null) }
 
     LaunchedEffect(key1 = checkAlreadyUsedEmailAsState) {
         isAlreadyUsedEmail.value = checkAlreadyUsedEmailAsState ?: false
@@ -96,7 +97,7 @@ fun JoinEmailScreen(
 
     LaunchedEffect(key1 = goToLoginAsState) {
         if (goToLoginAsState == true) {
-            goToLogin(prevLoginEmail.value)
+            prevLoginEmail.value?.let { goToLogin(it) }
         }
     }
 
@@ -118,7 +119,8 @@ fun JoinEmailScreen(
             },
             rightButtonEvent = {
                 isAlreadyUsedEmail.value = false
-                viewModel.savedLoginEmail(prevLoginEmail.value)
+                Log.e("ayhan", "goToLogin : ${prevLoginEmail.value}")
+                prevLoginEmail.value?.let { viewModel.savedLoginEmail(it) }
             }
         )
     }
@@ -206,7 +208,7 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
 }
 
 @Composable
-fun GoogleSignInButton(goToEmailCheck: (String) -> Unit) {
+fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -245,7 +247,7 @@ fun GoogleSignInButton(goToEmailCheck: (String) -> Unit) {
     })
 }
 
-private fun googleLogin(idToken: String, goToEmailCheck: (String) -> Unit) {
+private fun googleLogin(idToken: String, goToEmailCheck: (GoogleEmailInfo) -> Unit) {
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -257,7 +259,12 @@ private fun googleLogin(idToken: String, goToEmailCheck: (String) -> Unit) {
                     "ayhan",
                     "googleLogin : ${task.result.user?.uid}, ${task.result.user?.providerData}, ${task.result.user?.providerId}"
                 )
-                goToEmailCheck(task.result.user?.email.orEmpty())
+                goToEmailCheck(
+                    GoogleEmailInfo(
+                        email = task.result.user?.email ?: "",
+                        uid = task.result.user?.uid ?: ""
+                    )
+                )
             } else {
                 // Sign in failed
             }

@@ -22,6 +22,7 @@ class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context:
     private val accessTokenKey = stringPreferencesKey("accessToken")
     private val refreshTokenKey = stringPreferencesKey("refreshToken")
     private val loginedEmailKey = stringPreferencesKey("loginedEmailKey")
+    private val loginedEmailUidKey = stringPreferencesKey("loginedEmailUidKey")
     private val userIdKey = stringPreferencesKey("userIdKey")
     private val waverPlusKey = booleanPreferencesKey("waverPlusKey")
 
@@ -51,6 +52,10 @@ class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context:
         preferences[loginedEmailKey] ?: ""
     }
 
+    val loadLoginedEmailUid: Flow<String> = loginDataStore.data.map { preferences ->
+        preferences[loginedEmailUidKey] ?: ""
+    }
+
     suspend fun setLoginEmail(email: String) {
         loginDataStore.edit { preferences ->
             preferences[loginedEmailKey] = email
@@ -62,6 +67,14 @@ class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context:
             preferences.clear()
         }
     }
+
+
+    suspend fun setLoginEmailUid(uid: String) {
+        loginDataStore.edit { preferences ->
+            preferences[loginedEmailUidKey] = uid
+        }
+    }
+
 
     val loadUserIdKey: Flow<String> = loginDataStore.data.map { preferences ->
         preferences[userIdKey] ?: ""
