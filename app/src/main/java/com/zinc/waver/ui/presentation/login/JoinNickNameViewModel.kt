@@ -50,14 +50,12 @@ class JoinNickNameViewModel @Inject constructor(
     }
 
     fun checkIsAlreadyUsedName(name: String) {
-        _isAlreadyUsedNickName.value = true
-
         viewModelScope.launch(ceh(_failCheckNickname, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
-                _failCheckNickname.value = false
+                _isAlreadyUsedNickName.value = false
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
-                    _isAlreadyUsedNickName.value = false
+                    _isAlreadyUsedNickName.value = true
                 } else if (code == "6001") {
                     _isAlreadyUsedNickName.value = true
                 } else {

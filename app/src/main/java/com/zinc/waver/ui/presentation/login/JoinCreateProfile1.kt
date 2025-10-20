@@ -91,7 +91,7 @@ fun JoinCreateProfile1(
     }
 
     JoinCreateProfile1(
-        isAlreadyUsedNickName = isAlreadyUsedNickName ?: true,
+        isAlreadyUsedNickName = isAlreadyUsedNickName ?: false,
         goToNext = {
             if (isAlreadyUsedNickName == false) {
                 goToNext(it)
@@ -136,11 +136,11 @@ private fun JoinCreateProfile1(
         remember { mutableStateOf(createProfileInfo.imgPath) }
 
     val isButtonEnabled =
-        nickNameData == checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && !isAlreadyUsedNickName && isValidNicknameCheck(
+        nickNameData != checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && isValidNicknameCheck(
             nickNameData
         )
     val isAlreadyUsedName =
-        checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
+        nickNameData == checkedNickName && checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
 
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
@@ -258,7 +258,7 @@ private fun JoinCreateProfile1(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = if (isButtonEnabled) Main4 else Gray5)
-                    .clickable(isButtonEnabled) {
+                    .clickable(isButtonEnabled || !isAlreadyUsedName) {
                         goToNext(
                             CreateProfileInfo(
                                 nickName = nickNameData,
