@@ -81,7 +81,7 @@ fun ProfileUpdateView(
                     start.linkTo(parent.start)
                     bottom.linkTo(parent.bottom)
                 }
-                .border(width = 1.dp, shape = CircleShape, color = Gray2)
+                .border(width = 1.dp, shape = RoundedCornerShape(28.dp), color = Gray2)
                 .size(70.dp),
             contentAlignment = Alignment.Center
         ) {
