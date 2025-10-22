@@ -4,15 +4,15 @@ import java.io.File
 import java.io.Serializable
 
 data class JoinResponse(
-    val data: JoinAccessToken?,
     val success: Boolean,
     val code: String,
-    val message: String
-)
+    val message: String,
+    val data: String? // 에러 아닐 때는 수정해야 할 듯...
+) : Serializable
 
 data class JoinAccessToken(
     val accessToken: String
-)
+) : Serializable
 
 data class CreateProfileRequest(
     val accountType: String = "ANDROID",

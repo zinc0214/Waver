@@ -25,8 +25,8 @@ class JoinNickNameViewModel @Inject constructor(
     private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
-    private val _isAlreadyUsedNickName = MutableLiveData<Boolean>()
-    val isAlreadyUsedNickName: LiveData<Boolean> get() = _isAlreadyUsedNickName
+    private val _isAlreadyUsedNickName = MutableLiveData<Boolean?>()
+    val isAlreadyUsedNickName: LiveData<Boolean?> get() = _isAlreadyUsedNickName
 
     private val _goToLogin = SingleLiveEvent<Boolean>()
     val goToLogin: LiveData<Boolean> get() = _goToLogin
@@ -52,10 +52,10 @@ class JoinNickNameViewModel @Inject constructor(
     fun checkIsAlreadyUsedName(name: String) {
         viewModelScope.launch(ceh(_failCheckNickname, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
-                _isAlreadyUsedNickName.value = false
+                _isAlreadyUsedNickName.value = null
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
-                    _isAlreadyUsedNickName.value = true
+                    _isAlreadyUsedNickName.value = false
                 } else if (code == "6001") {
                     _isAlreadyUsedNickName.value = true
                 } else {
@@ -86,11 +86,12 @@ class JoinNickNameViewModel @Inject constructor(
                 )
             )
             Log.e("ayhan", "createNewProfile success : $res")
-            if (res.success) {
-                goToLogin(emailInfo)
-            } else if (res.code == "3000") {
+            if (res.code == "6001") {
                 _isAlreadyUsedNickName.value = true
+            } else if (res.success) {
+                goToLogin(emailInfo)
             } else {
+                Log.e("ayhan", "createNewProfile fail : $res")
                 _failJoin.value = true
             }
         }

@@ -1,9 +1,6 @@
 package com.zinc.waver.ui.presentation.login
 
 import android.util.Log
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -23,6 +20,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,14 +32,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.PasswordCredential
+import androidx.credentials.PublicKeyCredential
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.zinc.domain.models.GoogleEmailInfo
-import com.zinc.waver.BuildConfig
 import com.zinc.waver.R
 import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Gray1
@@ -211,64 +212,93 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
 fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
+    var showGoogleEmailSelect by remember { mutableStateOf(false) }
+    val credentialManager = CredentialManager.create(context)
+    val googleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(context.getString(R.string.default_web_client_id))
+        .setAutoSelectEnabled(true)
+        .build()
 
-    // Remember launcher for activity result
-    val googleSignInLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            if (account != null) {
-                coroutineScope.launch {
-                    googleLogin(account.idToken!!, goToEmailCheck)
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
+
+    LaunchedEffect(showGoogleEmailSelect) {
+        if (showGoogleEmailSelect) {
+            coroutineScope.launch {
+                try {
+                    val result = credentialManager.getCredential(
+                        request = request,
+                        context = context,
+                    )
+                    handleSignIn(result, goToEmailCheck)
+                } catch (e: Exception) {
+                    // Handle failure
                 }
             }
-        } catch (e: ApiException) {
-            // Handle sign-in error
-            Toast.makeText(
-                context,
-                "실패 : ${e.status}, ${e.printStackTrace()}",
-                Toast.LENGTH_LONG
-            ).show()
+            showGoogleEmailSelect = false
         }
     }
 
+
     // Google Sign-In Button
     EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.GOOGLE_WEB_ID)
-            .requestEmail()
-            .build()
-        val googleSignInClient = GoogleSignIn.getClient(context.applicationContext, gso)
-        googleSignInClient.revokeAccess().addOnCompleteListener {
-            googleSignInLauncher.launch(googleSignInClient.signInIntent)
-        }
+        showGoogleEmailSelect = true
     })
 }
 
-private fun googleLogin(idToken: String, goToEmailCheck: (GoogleEmailInfo) -> Unit) {
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+fun handleSignIn(result: GetCredentialResponse, goToEmailCheck: (GoogleEmailInfo) -> Unit) {
+    // Handle the successfully returned credential.
+    val credential = result.credential
+    val responseJson: String
 
-    val credential = GoogleAuthProvider.getCredential(idToken, null)
-    auth.signInWithCredential(credential)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign in success
-                Log.e(
-                    "ayhan",
-                    "googleLogin : ${task.result.user?.uid}, ${task.result.user?.providerData}, ${task.result.user?.providerId}"
-                )
-                goToEmailCheck(
-                    GoogleEmailInfo(
-                        email = task.result.user?.email ?: "",
-                        uid = task.result.user?.uid ?: ""
+    when (credential) {
+
+        // Passkey credential
+        is PublicKeyCredential -> {
+            // Share responseJson such as a GetCredentialResponse to your server to validate and
+            // authenticate
+            responseJson = credential.authenticationResponseJson
+            Log.e("ayhan", "PublicKeyCredential responseJson : $responseJson")
+        }
+
+        // Password credential
+        is PasswordCredential -> {
+            // Send ID and password to your server to validate and authenticate.
+            val username = credential.id
+            val password = credential.password
+            Log.e("ayhan", "PasswordCredential username : $username, password : $password")
+        }
+
+        // GoogleIdToken credential
+        is CustomCredential -> {
+            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                try {
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(credential.data)
+                    val idToken = googleIdTokenCredential.idToken
+                    val email = googleIdTokenCredential.id
+                    Log.e("ayhan", "GoogleIdToken idToken : $idToken \n email : $email")
+                    Log.e(
+                        "ayhan",
+                        "GoogleIdToken idToken : ${idToken.drop(50)}\n last : ${idToken.takeLast(100)}"
                     )
-                )
+                    goToEmailCheck(GoogleEmailInfo(email = email, uid = idToken.takeLast(100)))
+                } catch (e: GoogleIdTokenParsingException) {
+                    Log.e("ayhan", "Received an invalid google id token response", e)
+                }
             } else {
-                // Sign in failed
+                // Catch any unrecognized custom credential type here.
+                Log.e("ayhan", "Unexpected type of credential")
             }
         }
+
+        else -> {
+            // Catch any unrecognized credential type here.
+            Log.e("ayhan", "Unexpected type of credential")
+        }
+    }
 }
 
 @Preview(showBackground = true)

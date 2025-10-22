@@ -93,11 +93,12 @@ fun JoinCreateProfile1(
     JoinCreateProfile1(
         isAlreadyUsedNickName = isAlreadyUsedNickName ?: false,
         goToNext = {
+            savedCreateInfo = it
+
             if (isAlreadyUsedNickName == false) {
                 goToNext(it)
             } else {
                 createUserViewModel.checkIsAlreadyUsedName(it.nickName)
-                savedCreateInfo = it
             }
         },
         isCheckFail = isCheckFail ?: false,
