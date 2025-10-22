@@ -79,11 +79,15 @@ fun FeedKeywordsLayer(
             mutableStateOf(false)
         }
 
-        LaunchedEffect(key1 = offset) {
+        LaunchedEffect(firstVisibleIndex) {
             // Scroll Down
-            if (offset < prevOffset && !isScrolled.value) {
+            Log.e(
+                "ayhan",
+                "offset : $offset, prevOffset : $prevOffset, firstVisibleIndex : $firstVisibleIndex"
+            )
+            if (firstVisibleIndex >= 3) {
                 isScrolled.value = true
-            } else if (offset > prevOffset && firstVisibleIndex == 0) {
+            } else if (firstVisibleIndex == 0) {
                 isScrolled.value = false
             }
             prevOffset = offset
@@ -111,7 +115,8 @@ fun FeedKeywordsLayer(
                 })
             }
 
-            BodyContent(state = scrollState,
+            BodyContent(
+                state = scrollState,
                 keywords = keywords,
                 recommendClicked = {
                     recommendClicked.invoke(selectedKeywordsList)
