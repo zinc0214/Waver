@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_feed
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -41,6 +42,8 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     val feedKeyWords by viewModel.feedKeyWords.observeAsState()
     val feedItems by viewModel.feedItems.observeAsState()
 
+    Log.e("ayhan", "feedItems : $feedItems")
+
     var loadStatus by remember {
         mutableStateOf(loadStatusAsState)
     }
@@ -56,7 +59,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
     FeedScreen(
         loadStatus = loadStatus ?: FeedLoadStatus.None,
         feedList = feedItems.orEmpty(),
-        keywordList = feedKeyWords.orEmpty(),
+        keywordList = feedKeyWords,
         updateLoadStatus = {
             loadStatus = it
         },
@@ -108,7 +111,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
 private fun FeedScreen(
     loadStatus: FeedLoadStatus,
     feedList: List<UIFeedInfo>,
-    keywordList: List<UIFeedKeyword>,
+    keywordList: List<UIFeedKeyword>?,
     pullToRefreshEvent: () -> Unit,
     loadNextPageEvent: () -> Unit,
     feedClickEvent: (FeedClickEvent) -> Unit,
@@ -132,7 +135,9 @@ private fun FeedScreen(
             .pullRefresh(pullRefreshState)
 
     ) {
-        if (keywordList.isNotEmpty()) {
+        if (keywordList == null) {
+            FeedScreenLoading()
+        } else if (keywordList.isNotEmpty()) {
             if (loadStatus is FeedLoadStatus.LoadFail) {
                 if (loadStatus.hasData) {
                     updateLoadStatus(FeedLoadStatus.ToastFail)
@@ -234,3 +239,13 @@ private fun FeedScreenPreview3() {
         keywordSaved = {}
     )
 }
+
+
+@Preview(showBackground = true)
+@Composable
+private fun FeedScreenPreview4() {
+    FeedScreen(
+        goToBucket = { _, _ -> }
+    )
+}
+
