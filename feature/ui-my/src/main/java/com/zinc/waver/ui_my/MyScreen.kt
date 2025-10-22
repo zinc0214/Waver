@@ -38,6 +38,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -45,6 +46,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -92,8 +94,19 @@ fun MyScreen(
     }
 
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
 
-    val pagerHeight = configuration.screenHeightDp.dp - 128.dp
+    var profileHeight by remember {
+        mutableStateOf(0.dp)
+    }
+
+    var pagerHeight by remember {
+        mutableStateOf(configuration.screenHeightDp.dp - profileHeight)
+    }
+
+    LaunchedEffect(profileHeight) {
+        pagerHeight = (configuration.screenHeightDp.dp - profileHeight)
+    }
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState(pageCount = { tabItems.size })
@@ -188,42 +201,41 @@ fun MyScreen(
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
-        profileInfo.value?.let {
+        Column(
+            modifier = Modifier
+                .statusBarsPadding()
+                .nestedScroll(nestedScrollConnection)
+                .verticalScroll(parentScrollState)
+        ) {
 
-            Column(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .nestedScroll(nestedScrollConnection)
-                    .verticalScroll(parentScrollState)
-            ) {
-
-                MyTopLayer(profileInfo = profileInfo.value) {
-                    myTopEvent(it)
-                }
-
-                MyTabLayer(tabItems, pagerState, coroutineScope)
-
-                MyViewPager(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(pagerHeight),
-                    pagerState = pagerState,
-                    viewModel = viewModel,
-                    isFilterUpdated = isFilterUpdated.value,
-                    itemSelected = itemSelected,
-                    bottomSheetClicked = {
-                        bottomSheetClicked(it)
-
-                        if (it is BottomSheetScreenType.MyBucketFilterScreen) {
-                            myTabType.intValue = pagerState.currentPage
-                            isNeedToBottomSheetOpen.invoke(it.needToShown)
-                            isFilterUpdated.value = false
-                        }
-                    },
-                    goToCategoryEdit = goToCategoryEdit,
-                    coroutineScope = coroutineScope
-                )
+            MyTopLayer(profileInfo = profileInfo.value, layoutChanged = {
+                profileHeight = it
+            }) {
+                myTopEvent(it)
             }
+
+            MyTabLayer(tabItems, pagerState, coroutineScope)
+
+            MyViewPager(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(pagerHeight),
+                pagerState = pagerState,
+                viewModel = viewModel,
+                isFilterUpdated = isFilterUpdated.value,
+                itemSelected = itemSelected,
+                bottomSheetClicked = {
+                    bottomSheetClicked(it)
+
+                    if (it is BottomSheetScreenType.MyBucketFilterScreen) {
+                        myTabType.intValue = pagerState.currentPage
+                        isNeedToBottomSheetOpen.invoke(it.needToShown)
+                        isFilterUpdated.value = false
+                    }
+                },
+                goToCategoryEdit = goToCategoryEdit,
+                coroutineScope = coroutineScope
+            )
         }
     }
 }

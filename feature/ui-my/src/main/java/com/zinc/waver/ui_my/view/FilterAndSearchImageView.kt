@@ -19,6 +19,7 @@ import com.zinc.waver.model.MyTabType.ALL
 import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui_my.R
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun FilterAndSearchImageView(
@@ -35,7 +36,7 @@ fun FilterAndSearchImageView(
                 clickEvent(MyPagerClickEvent.BottomSheet.FilterClicked(tabType, true))
             },
             modifier = Modifier.size(32.dp),
-            image = R.drawable.btn_32_filter,
+            image = CommonR.drawable.btn_32_filter,
             contentDescription = if (tabType is ALL) stringResource(R.string.allFilterImageViewDesc)
             else stringResource(
                 R.string.ddayFilterImageViewDesc

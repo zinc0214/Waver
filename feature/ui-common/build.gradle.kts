@@ -75,4 +75,7 @@ dependencies {
 
     // PlayService Ads
     implementation(libs.play.services.ads)
+
+    // shimmer
+    implementation(libs.shimmer)
 }

@@ -59,4 +59,6 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit.serialization)
+
+    implementation(libs.shimmer)
 }

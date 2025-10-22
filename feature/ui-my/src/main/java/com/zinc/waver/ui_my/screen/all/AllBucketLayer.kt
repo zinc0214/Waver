@@ -39,6 +39,8 @@ import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.presentation.screen.blank.AllBucketItemLoading
+import com.zinc.waver.ui.presentation.screen.blank.AllBucketTopLoading
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R.string
 import com.zinc.waver.ui_my.R
@@ -109,11 +111,13 @@ fun AllBucketLayer(
         }
     }
 
-    bucketInfo?.let { it ->
-        Column(modifier.background(Gray2)) {
+    Column(modifier.background(Gray2)) {
+        if (bucketInfo == null) {
+            AllBucketTopLoading(modifier = Modifier)
+        } else {
             AllBucketTopView(
                 modifier = Modifier,
-                allBucketInfo = it,
+                allBucketInfo = bucketInfo!!,
                 clickEvent = { event ->
                     clickEvent(event)
 
@@ -123,21 +127,24 @@ fun AllBucketLayer(
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
+        }
 
-            if (it.bucketList.isNotEmpty()) {
-                SimpleBucketListView(
-                    bucketList = it.bucketList,
-                    tabType = ALL,
-                    showDday = ddayShow.value ?: true,
-                    itemClicked = {
-                        clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
-                    },
-                    achieveClicked = {
-                        viewModel.achieveBucket(it, ALL)
-                    })
-            } else {
-                BlankView(modifier = Modifier.fillMaxWidth())
-            }
+
+        if (bucketInfo == null) {
+            AllBucketItemLoading()
+        } else if (bucketInfo!!.bucketList.isNotEmpty()) {
+            SimpleBucketListView(
+                bucketList = bucketInfo!!.bucketList,
+                tabType = ALL,
+                showDday = ddayShow.value ?: true,
+                itemClicked = {
+                    clickEvent.invoke(MyPagerClickEvent.GoTo.BucketItemClicked(it))
+                },
+                achieveClicked = {
+                    viewModel.achieveBucket(it, ALL)
+                })
+        } else {
+            BlankView(modifier = Modifier.fillMaxWidth())
         }
     }
 }
