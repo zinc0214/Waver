@@ -224,15 +224,16 @@ class HomeActivity : AppCompatActivity() {
                     showCropLabel = true,
                     showCropOverlay = true,
                     guidelines = CropImageView.Guidelines.ON,
-                    outputCompressFormat = Bitmap.CompressFormat.PNG,
-                    outputRequestWidth = dp2px(70),
-                    outputRequestHeight = dp2px(70),
+                    outputCompressFormat = Bitmap.CompressFormat.JPEG, // PNG 대신 JPEG 사용 (더 작은 파일 크기)
+                    outputCompressQuality = 50, // 압축 품질 설정 (1-100)
+                    outputRequestWidth = dp2px(50), // 크기 줄임
+                    outputRequestHeight = dp2px(50), // 크기 줄임
                     cropMenuCropButtonTitle = getString(R.string.imageCropSave),
                     activityTitle = getString(R.string.imageCropperTitle),
                     aspectRatioX = 1,
                     aspectRatioY = 1,
-                    fixAspectRatio = true,  // 이 옵션을 true로 설정하면 사용자가 비율을 변경할 수 없음
-                    initialCropWindowPaddingRatio = 0f  // 크롭 윈도우가 이미지를 꽉 채우도록 설정
+                    fixAspectRatio = true,
+                    initialCropWindowPaddingRatio = 0f
                 )
             )
         )
