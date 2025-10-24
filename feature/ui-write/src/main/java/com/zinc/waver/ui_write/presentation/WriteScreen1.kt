@@ -6,6 +6,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -378,14 +379,15 @@ fun WriteScreen1(
                         }
                     })
 
-                LazyColumn(modifier = Modifier
-                    .constrainAs(contents) {
-                        top.linkTo(appBar.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        bottom.linkTo(option.top)
-                        height = Dimension.fillToConstraints
-                    }) {
+                LazyColumn(
+                    modifier = Modifier
+                        .constrainAs(contents) {
+                            top.linkTo(appBar.bottom)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                            bottom.linkTo(option.top)
+                            height = Dimension.fillToConstraints
+                        }) {
 
                     item {
                         WriteTitleFieldView(
@@ -405,7 +407,11 @@ fun WriteScreen1(
                     item {
                         if (updatedWriteOptions.find { it.type() == MEMO } != null) {
                             MemoOptionView(
-                                modifier = Modifier.padding(top = 28.dp),
+                                modifier = Modifier
+                                    .padding(top = 28.dp)
+                                    .clickable {
+                                        selectedOption = MEMO
+                                    },
                                 memoText = originMemo.value
                             )
                         }
