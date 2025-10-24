@@ -13,12 +13,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -84,7 +88,8 @@ fun WriteAppBar(
                     bottom.linkTo(parent.bottom)
                 }
                 .padding(start = 10.dp, end = 18.dp, top = 10.dp, bottom = 10.dp)
-                .clickable(enabled = nextButtonClickable,
+                .clickable(
+                    enabled = nextButtonClickable,
                     onClick = { clickEvent(WriteAppBarClickEvent.NextClicked) })
                 .padding(start = 10.dp, end = 10.dp, top = 6.dp, bottom = 6.dp),
             text = stringResource(id = rightText),
@@ -110,29 +115,47 @@ fun WriteAppBar(
 fun WriteTitleFieldView(
     modifier: Modifier,
     title: String,
+    shouldFocus: Boolean = false,
     textChanged: (String) -> Unit
 ) {
     val hintText = stringResource(id = R.string.writeTitleHintText)
     var titleText by remember { mutableStateOf(TextFieldValue(title)) }
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(shouldFocus) {
+        if (shouldFocus) {
+            try {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     MyTextField(
-        modifier = modifier,
+        modifier = modifier
+            .focusRequester(focusRequester),
         value = titleText,
         textStyle = TextStyle(
-            color = Gray10, fontSize = dpToSp(24.dp), fontWeight = FontWeight.Medium
+            color = Gray10,
+            fontSize = dpToSp(24.dp),
+            fontWeight = FontWeight.Medium
         ),
         onValueChange = {
             titleText = it
             textChanged(titleText.text)
         },
+        singleLine = true,
         decorationBox = { innerTextField ->
             Row {
                 if (titleText.text.isEmpty()) {
                     MyText(text = hintText, color = Gray6, fontSize = dpToSp(24.dp))
                 }
-                innerTextField()  //<-- Add this
+                innerTextField()
             }
-        },
+        }
     )
 }
 

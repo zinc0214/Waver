@@ -148,13 +148,18 @@ fun WriteScreen1(
     }
 
 
+    // 텍스트 필드 초기 포커스를 위한 상태
+    val shouldFocusTitle = remember { mutableStateOf(true) }
+
     // 키보드 이벤트
-    if (isKeyboardStatus == Keyboard.Closed || selectedOption != null) {
-        if (selectedOption == MEMO || selectedOption == GOAL) {
-            // Do Nothing
-        } else {
-            focusManager.clearFocus()
-            keyboardController?.hide()
+    LaunchedEffect(isKeyboardStatus, selectedOption) {
+        if (isKeyboardStatus == Keyboard.Closed || selectedOption != null) {
+            if (selectedOption == MEMO || selectedOption == GOAL) {
+                // Do Nothing
+            } else {
+                focusManager.clearFocus()
+                keyboardController?.hide()
+            }
         }
     }
 
@@ -383,14 +388,17 @@ fun WriteScreen1(
                     }) {
 
                     item {
-                        WriteTitleFieldView(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 28.dp)
-                            .padding(horizontal = 28.dp),
+                        WriteTitleFieldView(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 28.dp)
+                                .padding(horizontal = 28.dp),
                             title = title.value,
+                            shouldFocus = shouldFocusTitle.value,
                             textChanged = {
                                 title.value = it
                                 nextButtonClickable.value = it.isNotEmpty()
+                                shouldFocusTitle.value = false
                             })
                     }
 
@@ -505,5 +513,3 @@ fun WriteScreen1(
         }
     }
 }
-
-
