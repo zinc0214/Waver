@@ -95,7 +95,7 @@ sealed class WriteOption1Info : Serializable, Parcelable {
         WriteOption1Info(), Serializable
 
     @kotlinx.serialization.Serializable
-    data class GoalCount(val goalCount: Int = 1) : WriteOption1Info(), Serializable
+    data class GoalCount(val goalCount: Int = 2) : WriteOption1Info(), Serializable
 
     @kotlinx.serialization.Serializable
     data class Category(val categoryInfo: WriteCategoryInfo) : WriteOption1Info(), Serializable

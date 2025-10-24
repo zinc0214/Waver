@@ -49,7 +49,7 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun GoalCountBottomScreen(
-    originCount: String = "0",
+    originCount: String = "1",
     canceled: () -> Unit,
     confirmed: (String) -> Unit
 ) {
@@ -136,7 +136,7 @@ fun GoalCountBottomScreen(
                     if (editedGoalCount.text.isEmpty()) {
                         MyText(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "0",
+                            text = "1",
                             color = if (disableState) Gray7 else Gray10,
                             fontSize = dpToSp(22.dp),
                             textAlign = TextAlign.Center,
