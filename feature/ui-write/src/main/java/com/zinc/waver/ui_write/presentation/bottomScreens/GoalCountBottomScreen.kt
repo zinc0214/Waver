@@ -12,14 +12,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -48,10 +53,32 @@ fun GoalCountBottomScreen(
     canceled: () -> Unit,
     confirmed: (String) -> Unit
 ) {
-    var editedGoalCount by remember { mutableStateOf(TextFieldValue(originCount)) }
+    var editedGoalCount by remember {
+        mutableStateOf(
+            TextFieldValue(
+                originCount,
+                selection = TextRange(originCount.length) // 커서를 텍스트 끝으로 위치
+            )
+        )
+    }
     val disableState =
         originCount == editedGoalCount.text || editedGoalCount.text == "0" || editedGoalCount.text.isEmpty()
     val context = LocalContext.current
+    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    LaunchedEffect(Unit) {
+        try {
+            focusRequester.requestFocus()
+            keyboardController?.show()
+            // 포커스 시 커서 위치를 텍스트 끝으로 설정
+            editedGoalCount = editedGoalCount.copy(
+                selection = TextRange(editedGoalCount.text.length)
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         MyText(
@@ -78,7 +105,8 @@ fun GoalCountBottomScreen(
                     width = 1.dp,
                     shape = RoundedCornerShape(4.dp),
                     color = if (disableState) Gray4 else Main3
-                ),
+                )
+                .focusRequester(focusRequester),
             value = editedGoalCount,
             textStyle = TextStyle(
                 color = if (disableState) Gray7 else Gray10,
@@ -87,7 +115,11 @@ fun GoalCountBottomScreen(
                 fontSize = dpToSp(dp = 22.dp)
             ),
             onValueChange = {
-                if (it.text.isDigitsOnly()) editedGoalCount = it
+                if (it.text.isDigitsOnly()) {
+                    editedGoalCount = it.copy(
+                        selection = TextRange(it.text.length) // 입력 시에도 커서를 끝으로 유지
+                    )
+                }
             },
             maxLines = 1,
             keyboardOptions = KeyboardOptions.Default.copy(
