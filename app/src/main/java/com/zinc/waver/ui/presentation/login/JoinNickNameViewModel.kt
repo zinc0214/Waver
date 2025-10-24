@@ -13,6 +13,7 @@ import com.zinc.domain.usecases.more.CheckAlreadyUsedNickname
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -53,6 +54,7 @@ class JoinNickNameViewModel @Inject constructor(
         viewModelScope.launch(ceh(_failCheckNickname, true)) {
             checkAlreadyUsedNickname.invoke(name).apply {
                 _isAlreadyUsedNickName.value = null
+                delay(100)
                 Log.e("ayhan", "check Alreay $this")
                 if (success) {
                     _isAlreadyUsedNickName.value = false

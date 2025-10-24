@@ -9,6 +9,7 @@ import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.CommonResponse2
 import com.zinc.common.models.EditCategoryNameRequest
 import com.zinc.common.models.FollowResponse
 import com.zinc.common.models.HomeProfileResponse
@@ -207,7 +208,7 @@ interface WaverApi {
     @GET("/waver/user/profile/name")
     suspend fun checkAlreadyUsedNickname(
         @Query("name") name: String
-    ): CommonResponse
+    ): CommonResponse2
 
     // 버킷리스트 전체 검색
     @GET("/waver/bucket")

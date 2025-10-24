@@ -2,6 +2,7 @@ package com.zinc.data.repository
 
 import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.CommonResponse
+import com.zinc.common.models.CommonResponse2
 import com.zinc.common.models.LoadMyWaveBadgeResponse
 import com.zinc.common.models.LoadMyWaveInfoResponse
 import com.zinc.common.models.ProfileResponse
@@ -34,7 +35,7 @@ internal class MoreRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun checkAlreadyUsedNickName(name: String): CommonResponse {
+    override suspend fun checkAlreadyUsedNickName(name: String): CommonResponse2 {
         return waverApi.checkAlreadyUsedNickname(name)
     }
 

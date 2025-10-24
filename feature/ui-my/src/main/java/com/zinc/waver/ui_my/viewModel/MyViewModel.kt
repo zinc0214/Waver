@@ -29,6 +29,7 @@ import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
@@ -245,6 +246,8 @@ class MyViewModel @Inject constructor(
 
         viewModelScope.launch(ceh(_dataLoadFailed, true)) {
             _dataLoadFailed.value = false
+
+            delay(5000)
 
             loadAllBucketList.invoke(allBucketListRequest).apply {
 

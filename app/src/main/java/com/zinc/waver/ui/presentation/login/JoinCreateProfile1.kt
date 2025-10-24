@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -71,31 +70,38 @@ fun JoinCreateProfile1(
 ) {
     val createUserViewModel: JoinNickNameViewModel = hiltViewModel()
 
-    val isAlreadyUsedNickName by createUserViewModel.isAlreadyUsedNickName.observeAsState()
+    val isAlreadyUsedNickNameAsState by createUserViewModel.isAlreadyUsedNickName.observeAsState()
     val isCheckFail by createUserViewModel.failCheckNickname.observeAsState()
     var savedCreateInfo: CreateProfileInfo? by remember { mutableStateOf(null) }
 
     var nickNameData by remember { mutableStateOf(createProfileInfo.nickName) }
-    var checkedNickName by remember { mutableStateOf(createProfileInfo.nickName) }
+    var checkedNickName by remember { mutableStateOf("") }
+    var isAlreadyUsedNickName by remember { mutableStateOf(false) }
 
-    LaunchedEffect(isAlreadyUsedNickName) {
-        if (isAlreadyUsedNickName == false) {
+
+    LaunchedEffect(isAlreadyUsedNickNameAsState) {
+        isAlreadyUsedNickName = isAlreadyUsedNickNameAsState == true
+
+        if (isAlreadyUsedNickNameAsState == false) {
             savedCreateInfo?.let {
                 goToNext(it)
             }
         } else {
             savedCreateInfo = null
         }
-
         checkedNickName = nickNameData
     }
 
+    LaunchedEffect(nickNameData) {
+        isAlreadyUsedNickName = nickNameData != checkedNickName
+    }
+
     JoinCreateProfile1(
-        isAlreadyUsedNickName = isAlreadyUsedNickName ?: false,
+        isAlreadyUsedNickName = isAlreadyUsedNickName,
         goToNext = {
             savedCreateInfo = it
 
-            if (isAlreadyUsedNickName == false) {
+            if (isAlreadyUsedNickNameAsState == false) {
                 goToNext(it)
             } else {
                 createUserViewModel.checkIsAlreadyUsedName(it.nickName)
@@ -108,9 +114,6 @@ fun JoinCreateProfile1(
         updateNickName = {
             nickNameData = it
         },
-        checkNickName = {
-            createUserViewModel.checkIsAlreadyUsedName(nickNameData)
-        },
         addImageAction = addImageAction
     )
 }
@@ -122,7 +125,6 @@ private fun JoinCreateProfile1(
     createProfileInfo: CreateProfileInfo,
     nickNameData: String,
     checkedNickName: String,
-    checkNickName: () -> Unit,
     updateNickName: (String) -> Unit,
     addImageAction: (ActionWithActivity.AddImage) -> Unit,
     goToNext: (CreateProfileInfo) -> Unit,
@@ -137,12 +139,9 @@ private fun JoinCreateProfile1(
         remember { mutableStateOf(createProfileInfo.imgPath) }
 
     val isButtonEnabled =
-        nickNameData != checkedNickName && nickNameData.isNotEmpty() && nickNameData.length > 2 && isValidNicknameCheck(
+        (if (checkedNickName.isNotEmpty()) nickNameData != checkedNickName else true) && nickNameData.isNotEmpty() && nickNameData.length > 2 && isValidNicknameCheck(
             nickNameData
         )
-    val isAlreadyUsedName =
-        nickNameData == checkedNickName && checkedNickName.isNotEmpty() && nickNameData.isNotEmpty() && isAlreadyUsedNickName
-
     val bottomSheetScaffoldState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden, skipHalfExpanded = true
     )
@@ -238,11 +237,8 @@ private fun JoinCreateProfile1(
 
             ProfileNickNameEditView(
                 prevNickName = nickNameData,
-                isAlreadyUsedName = isAlreadyUsedName,
+                isAlreadyUsedName = isAlreadyUsedNickName && nickNameData == checkedNickName,
                 isCheckFail = isCheckFail,
-                checkNickname = {
-                    checkNickName()
-                },
                 dataChanged = {
                     updateNickName(it)
                 }
@@ -259,7 +255,7 @@ private fun JoinCreateProfile1(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = if (isButtonEnabled) Main4 else Gray5)
-                    .clickable(isButtonEnabled || !isAlreadyUsedName) {
+                    .clickable(isButtonEnabled) {
                         goToNext(
                             CreateProfileInfo(
                                 nickName = nickNameData,
@@ -277,7 +273,6 @@ private fun JoinCreateProfile1(
 @Composable
 private fun ProfileNickNameEditView(
     prevNickName: String,
-    checkNickname: () -> Unit,
     dataChanged: (String) -> Unit,
     isAlreadyUsedName: Boolean,
     isCheckFail: Boolean
@@ -311,9 +306,6 @@ private fun ProfileNickNameEditView(
             singleLine = true,
             textStyle = TextStyle(fontSize = dpToSp(dp = 20.dp)),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(onDone = {
-                checkNickname()
-            }),
             onValueChange = { changeText ->
                 dataChanged(changeText)
             },
@@ -371,8 +363,7 @@ private fun JoinNickNameScreenPreview() {
         isCheckFail = false,
         checkedNickName = "",
         updateNickName = {},
-        addImageAction = {},
-        checkNickName = {})
+        addImageAction = {})
 }
 
 @Preview(showBackground = true)
@@ -380,7 +371,6 @@ private fun JoinNickNameScreenPreview() {
 private fun ProfileNickNameEditViewPreview() {
     ProfileNickNameEditView(
         prevNickName = "",
-        checkNickname = {},
         dataChanged = {},
         isAlreadyUsedName = false,
         isCheckFail = false

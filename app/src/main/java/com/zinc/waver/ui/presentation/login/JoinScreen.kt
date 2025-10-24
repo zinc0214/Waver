@@ -1,5 +1,6 @@
 package com.zinc.waver.ui.presentation.login
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -26,6 +27,8 @@ fun JoinScreen(
 
     var isFirstCreate by remember { mutableStateOf(false) }
     var createProfileInfo by remember { mutableStateOf(CreateProfileInfo()) }
+
+    Log.e("ayhan", "createProfileInfo : $createProfileInfo")
 
     val joinTryEmail: MutableState<GoogleEmailInfo?> = remember { mutableStateOf(null) }
 
