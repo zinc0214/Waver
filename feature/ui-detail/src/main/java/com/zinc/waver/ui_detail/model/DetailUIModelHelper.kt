@@ -36,7 +36,7 @@ fun bucketDetailResponseToUiModel(
     val descInfo = DetailDescType.CommonDetailDescInfo(
         dDay = bucketInfo.targetDate,
         keywordList = bucketInfo.keywords.map {
-            WriteKeyWord(it.code.orEmpty(), it.name)
+            WriteKeyWord(it.code, it.name)
         },
         title = bucketInfo.title,
         goalCount = bucketInfo.goalCount,

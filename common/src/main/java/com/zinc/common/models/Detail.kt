@@ -65,7 +65,7 @@ data class DetailInfo(
 
     @Serializable
     data class Keyword(
-        val code: String?,
+        val code: String,
         val name: String
     )
 }

@@ -7,7 +7,7 @@ data class JoinResponse(
     val success: Boolean,
     val code: String,
     val message: String,
-    val data: String? // 에러 아닐 때는 수정해야 할 듯...
+    val data: Any? // 에러 아닐 때는 수정해야 할 듯...
 ) : Serializable
 
 data class JoinAccessToken(

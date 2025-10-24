@@ -58,7 +58,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
 
     FeedScreen(
         loadStatus = loadStatus ?: FeedLoadStatus.None,
-        feedList = feedItems.orEmpty(),
+        feedList = feedItems,
         keywordList = feedKeyWords,
         updateLoadStatus = {
             loadStatus = it
@@ -110,7 +110,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
 @Composable
 private fun FeedScreen(
     loadStatus: FeedLoadStatus,
-    feedList: List<UIFeedInfo>,
+    feedList: List<UIFeedInfo>?,
     keywordList: List<UIFeedKeyword>?,
     pullToRefreshEvent: () -> Unit,
     loadNextPageEvent: () -> Unit,
@@ -135,9 +135,9 @@ private fun FeedScreen(
             .pullRefresh(pullRefreshState)
 
     ) {
-        if (keywordList == null) {
+        if (keywordList == null && feedList == null) {
             FeedScreenLoading()
-        } else if (keywordList.isNotEmpty()) {
+        } else if (keywordList?.isNotEmpty() == true) {
             if (loadStatus is FeedLoadStatus.LoadFail) {
                 if (loadStatus.hasData) {
                     updateLoadStatus(FeedLoadStatus.ToastFail)
@@ -152,7 +152,7 @@ private fun FeedScreen(
         } else {
             FeedLayer(
                 feedClicked = feedClickEvent,
-                feedItems = feedList,
+                feedItems = feedList.orEmpty(),
                 showPageLoading = loadStatus == FeedLoadStatus.PagingLoading,
                 showLoadFail = loadStatus is FeedLoadStatus.LoadFail,
                 loadNextPage = loadNextPageEvent

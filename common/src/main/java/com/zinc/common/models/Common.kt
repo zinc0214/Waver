@@ -7,6 +7,12 @@ data class CommonResponse(
     val message: String
 )
 
+data class CommonResponse2(
+    val success: Boolean,
+    val code: String,
+    val message: String
+)
+
 enum class YesOrNo {
     Y, N;
 

@@ -38,7 +38,8 @@ class FeedViewModel @Inject constructor(
     private val _loadStatusEvent = SingleLiveEvent<FeedLoadStatus>()
     val loadStatusEvent: LiveData<FeedLoadStatus> get() = _loadStatusEvent
 
-    private val loadCeh = CoroutineExceptionHandler { _, _ ->
+    private val loadCeh = CoroutineExceptionHandler { _, t ->
+        Log.e("ayhan", "loadCeh : ${t.message}")
         val hasData = _feedItems.value != null
         _loadStatusEvent.value = FeedLoadStatus.LoadFail(hasData)
     }
