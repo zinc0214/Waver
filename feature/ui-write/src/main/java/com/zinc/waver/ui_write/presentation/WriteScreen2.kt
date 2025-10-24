@@ -375,7 +375,6 @@ private fun WriteScreen2ContentView(
                 maxRow = 3,
                 modifier = Modifier
                     .padding(horizontal = 28.dp)
-                    .padding(top = 28.dp)
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalSpace = 28.dp,

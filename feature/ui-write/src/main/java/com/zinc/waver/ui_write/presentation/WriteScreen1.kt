@@ -418,13 +418,14 @@ fun WriteScreen1(
                     }
 
                     item {
+                        val hasMemo = updatedWriteOptions.find { it.type() == MEMO } != null
                         if (updatedWriteOptions.find { it.type() == IMAGE } != null) {
                             gridItems(
                                 data = imageList.value,
                                 maxRow = 3,
                                 modifier = Modifier
                                     .padding(horizontal = 28.dp)
-                                    .padding(top = 28.dp)
+                                    .padding(top = if (hasMemo) 28.dp else 32.dp)
                                     .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(
                                     32.dp,
