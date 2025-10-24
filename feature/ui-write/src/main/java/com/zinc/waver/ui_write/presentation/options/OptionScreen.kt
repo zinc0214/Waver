@@ -1,7 +1,6 @@
 package com.zinc.waver.ui_write.presentation.options
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -17,10 +17,11 @@ import com.zinc.waver.model.WriteOption1Info
 import com.zinc.waver.model.WriteOptionsType1
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray8
+import com.zinc.waver.ui.design.theme.Shadow
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
+import com.zinc.waver.util.shadow
 
 @Composable
 fun OptionScreen(options: List<WriteOption1Info>) {
@@ -36,8 +37,13 @@ fun OptionScreen(options: List<WriteOption1Info>) {
             ConstraintLayout(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .shadow(
+                        color = Shadow,
+                        offsetX = (0).dp,
+                        offsetY = (1).dp,
+                        blurRadius = 4.dp,
+                    )
                     .background(color = Gray1, shape = RoundedCornerShape(4.dp))
-                    .border(width = 1.dp, color = Gray4, shape = RoundedCornerShape(4.dp))
             ) {
                 val (title, content) = createRefs()
 
@@ -73,4 +79,15 @@ fun OptionScreen(options: List<WriteOption1Info>) {
         }
 
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun OptionScreenPreview() {
+    OptionScreen(
+        options = listOf(
+            WriteOption1Info.Memo("오늘은 정말 즐거운 하루였다."),
+            WriteOption1Info.GoalCount(10)
+        )
+    )
 }

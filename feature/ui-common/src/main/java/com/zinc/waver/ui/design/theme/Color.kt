@@ -13,6 +13,7 @@ val Gray8 = Color(0xFF666666)
 val Gray9 = Color(0xFF444444)
 val Gray10 = Color(0xFF222222)
 val Gray11 = Color(0xFF000000)
+val Shadow = Color(0x6693959D)
 
 val Error1 = Color(0xFFFFD0C4)
 val Error2 = Color(0xFFFF8668)
