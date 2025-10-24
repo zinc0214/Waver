@@ -1,8 +1,8 @@
 package com.zinc.waver.ui_write.presentation.options
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,7 @@ import com.zinc.waver.model.UserSelectedImageInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
+import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_common.R as CommonR
@@ -38,7 +38,9 @@ fun ImageItem(
     ConstraintLayout(
         modifier = Modifier
             .size(80.dp)
+            .border(1.dp, color = Gray3, shape = RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
+
     ) {
         val (icon, image) = createRefs()
 
@@ -78,8 +80,8 @@ fun ImageItem(
                 contentDescription = "닫기"
             )
         }
-
     }
+
 }
 
 @Composable
@@ -87,36 +89,36 @@ fun AddImageItem(
     hasWaverPlus: Boolean,
     addButtonClicked: () -> Unit
 ) {
-    Card(
-        backgroundColor = Gray3,
-        shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(1.dp, Gray2),
-        elevation = 0.dp,
+    val borderColor = if (hasWaverPlus) Gray3 else Main4
+
+    Box(
         modifier = Modifier
             .size(80.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
                 addButtonClicked()
             }
+            .border(1.dp, color = borderColor, shape = RoundedCornerShape(10.dp))
+            .background(Gray2, RoundedCornerShape(10.dp))
+
+
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Image(
-                painter = painterResource(id = CommonR.drawable.btn_20_add),
-                contentDescription = stringResource(id = R.string.addImageDesc)
-            )
-        }
+        Image(
+            painter = painterResource(id = CommonR.drawable.btn_20_add),
+            contentDescription = stringResource(id = R.string.addImageDesc),
+            modifier = Modifier.align(Alignment.Center)
+        )
 
         if (!hasWaverPlus) {
-            Box(contentAlignment = Alignment.TopEnd) {
-                Image(
-                    modifier = Modifier.size(width = 56.dp, height = 24.dp),
-                    painter = painterResource(id = R.drawable.chip),
-                    contentDescription = stringResource(id = R.string.addImageWaverPlusDesc)
-                )
-            }
+            Image(
+                modifier = Modifier
+                    .size(width = 67.dp, height = 32.dp)
+                    .align(Alignment.TopEnd),
+                painter = painterResource(id = R.drawable.chip),
+                contentDescription = stringResource(id = R.string.addImageWaverPlusDesc)
+            )
         }
     }
-
 }
 
 @Preview
