@@ -125,6 +125,8 @@ fun WriteScreen2(
     BackHandler(enabled = true) { // <-----
         if (optionScreenShow != null) {
             optionScreenShow = null
+        } else if (showWaverPlus.value) {
+            showWaverPlus.value = false
         } else {
             viewModel.clearData()
             goToBack(
