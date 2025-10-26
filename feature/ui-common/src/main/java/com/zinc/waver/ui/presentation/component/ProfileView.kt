@@ -1,6 +1,7 @@
 package com.zinc.waver.ui.presentation.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.model.UiProfileInfo
+import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.util.dpToSp
@@ -31,10 +33,10 @@ import com.zinc.waver.ui_common.R
 @Composable
 fun ProfileView(
     modifier: Modifier = Modifier,
-    imageSize: Dp = 36.dp,
-    profileSize: Dp = 32.dp,
-    profileRadius: Dp = 12.dp,
-    badgeSize: Pair<Dp, Dp> = Pair(18.dp, 20.dp),
+    imageSize: Dp,
+    profileSize: Dp,
+    profileRadius: Dp,
+    badgeSize: Dp,
     nickNameTextSize: TextUnit = dpToSp(12.dp),
     titlePositionTextSize: TextUnit = dpToSp(12.dp),
     nickNameTextColor: Color = Gray9,
@@ -76,7 +78,7 @@ private fun ProfileImageView(
     imageSize: Dp,
     profileSize: Dp,
     profileRadius: Dp,
-    badgeSize: Pair<Dp, Dp>,
+    badgeSize: Dp,
     profileUrl: String?,
     badgeUrl: String
 ) {
@@ -96,6 +98,7 @@ private fun ProfileImageView(
                 modifier = Modifier
                     .size(profileSize, profileSize)
                     .aspectRatio(1f)
+                    .border(1.dp, Gray2, shape = RoundedCornerShape(profileRadius))
                     .clip(shape = RoundedCornerShape(profileRadius))
                     .align(Alignment.TopStart)
             )
@@ -108,7 +111,7 @@ private fun ProfileImageView(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 4.dp)
-                    .size(badgeSize.first, badgeSize.second)
+                    .size(badgeSize)
                     .align(Alignment.BottomEnd),
                 alignment = Alignment.BottomEnd
             )
@@ -143,6 +146,10 @@ private fun ProfileTextView(
 @Preview
 private fun ProfilePreview() {
     ProfileView(
+        profileSize = 36.dp,
+        profileRadius = 10.dp,
+        badgeSize = 16.dp,
+        imageSize = 40.dp,
         profileInfo = UiProfileInfo(
             profileImage = "",
             badgeImage = "",

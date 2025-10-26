@@ -25,7 +25,7 @@ fun DetailProfileView(
         imageSize = 48.dp,
         profileSize = 44.dp,
         profileRadius = 16.dp,
-        badgeSize = Pair(24.dp, 27.dp),
+        badgeSize = 22.dp,
         nickNameTextSize = dpToSp(14.dp),
         titlePositionTextSize = dpToSp(13.dp),
         nickNameTextColor = Gray10,

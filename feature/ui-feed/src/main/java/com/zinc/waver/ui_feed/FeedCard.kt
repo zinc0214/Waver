@@ -88,7 +88,11 @@ fun FeedCardView(
         Column {
             ProfileView(
                 modifier = Modifier.padding(top = 20.dp),
-                profileInfo = feedInfo.profileInfo().toUi()
+                profileInfo = feedInfo.profileInfo().toUi(),
+                profileSize = 32.dp,
+                badgeSize = 20.dp,
+                imageSize = 33.dp,
+                profileRadius = 12.dp
             )
             ProcessView(
                 modifier = Modifier.padding(top = 23.dp, start = 10.dp),
