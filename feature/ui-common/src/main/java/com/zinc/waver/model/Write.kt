@@ -45,9 +45,9 @@ data class WriteInfo1(
         return (dDayInfo as WriteOption1Info.Dday)
     }
 
-    fun getGoalCount(): Int {
-        val goalCount = options.firstOrNull { it is WriteOption1Info.GoalCount } ?: return 1
-        return (goalCount as WriteOption1Info.GoalCount).goalCount
+    fun getGoalCount(): Int? {
+        val goalCount = options.firstOrNull { it is WriteOption1Info.GoalCount }
+        return (goalCount as? WriteOption1Info.GoalCount)?.goalCount
     }
 
     fun getImagesPaths(): List<String> {

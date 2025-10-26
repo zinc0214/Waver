@@ -49,7 +49,7 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun GoalCountBottomScreen(
-    originCount: String = "1",
+    originCount: String = "2",
     canceled: () -> Unit,
     confirmed: (String) -> Unit
 ) {
@@ -126,7 +126,6 @@ fun GoalCountBottomScreen(
                 imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.Number
             ),
-            //  onValueChange = { if (it.isDigitsOnly()) text = it },
             decorationBox = { innerTextField ->
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -136,7 +135,7 @@ fun GoalCountBottomScreen(
                     if (editedGoalCount.text.isEmpty()) {
                         MyText(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "1",
+                            text = "2",
                             color = if (disableState) Gray7 else Gray10,
                             fontSize = dpToSp(22.dp),
                             textAlign = TextAlign.Center,
@@ -157,7 +156,7 @@ fun GoalCountBottomScreen(
                 canceled()
             },
             positiveEvent = {
-                if (editedGoalCount.text == "0") {
+                if (editedGoalCount.text == "0" || editedGoalCount.text == "1") {
                     Toast.makeText(
                         context,
                         CommonR.string.countIsNotValidToast,

@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -180,7 +179,7 @@ fun WriteScreen1(
 
     val title = remember { mutableStateOf(originWriteInfo1.title) }
     val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
-    val originCount = remember { mutableIntStateOf(originWriteInfo1.getGoalCount()) }
+    val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
     val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
     val imageList = remember { mutableStateOf(loadedImages) }
 
@@ -318,7 +317,7 @@ fun WriteScreen1(
 
                     GOAL -> {
                         GoalCountBottomScreen(
-                            originCount = originCount.intValue.toString(),
+                            originCount = originCount.value?.toString() ?: "2",
                             canceled = {
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
@@ -329,7 +328,7 @@ fun WriteScreen1(
                                 )
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
-                                originCount.intValue = it.toInt()
+                                originCount.value = it.toInt()
                             })
                         isNeedToBottomSheetOpen.invoke(true)
                     }

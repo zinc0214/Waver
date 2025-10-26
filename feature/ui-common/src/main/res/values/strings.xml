@@ -31,7 +31,7 @@
 
     <string name="optionGoalCount">Target Achievement Count (Repeat)</string>
     <string name="zeroGoalCount">0</string>
-    <string name="countIsNotValidToast">Please set the target count to at least 1.</string>
+    <string name="countIsNotValidToast">Please set the target count to at least 2.</string>
 
     <string name="profileImgDesc">Profile Image</string>
 
