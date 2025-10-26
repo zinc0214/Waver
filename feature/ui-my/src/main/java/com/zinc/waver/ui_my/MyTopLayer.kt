@@ -103,7 +103,7 @@ private fun FollowStateLayer(
             topProfile.followerCount,
             stringResource(id = R.string.followerText)
         ) { followClicked(MyTopEvent.Follower) }
-        Spacer(modifier = Modifier.width(70.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         FollowStateView(
             modifier = Modifier.align(Alignment.CenterVertically),
             topProfile.followingCount, stringResource(id = R.string.followingText)
