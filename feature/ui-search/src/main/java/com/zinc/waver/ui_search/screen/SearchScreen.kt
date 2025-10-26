@@ -78,7 +78,6 @@ fun SearchScreen(
             listState = listScrollState,
             title = searchWord,
             closeClicked = {
-                isClosed = true
                 closeEvent.invoke()
             },
             modifier = Modifier
