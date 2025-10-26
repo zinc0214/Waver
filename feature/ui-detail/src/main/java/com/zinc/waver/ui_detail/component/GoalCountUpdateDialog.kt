@@ -24,12 +24,12 @@ fun GoalCountUpdateDialog(
     SingleTextFieldDialogView(
         titleText = stringResource(id = CommonR.string.optionGoalCount),
         prevText = updateGoalCount,
-        filedHintText = stringResource(id = CommonR.string.zeroGoalCount),
+        filedHintText = "2",
         saveNotAvailableToastText = stringResource(id = CommonR.string.countIsNotValidToast),
         textFieldAlignment = TextFieldAlignment.CENTER,
         keyboardType = KeyboardType.Number,
-        enableCondition = { currentCount != updateGoalCount && updateGoalCount != "0" && updateGoalCount.isNotEmpty() },
-        saveAvailableCondition = { updateGoalCount != "0" },
+        enableCondition = { currentCount != updateGoalCount && updateGoalCount != "0" && updateGoalCount != "1" && updateGoalCount.isNotEmpty() },
+        saveAvailableCondition = { updateGoalCount != "0" && updateGoalCount != "1" && updateGoalCount.isNotEmpty() },
         event = {
             when (it) {
                 SingleTextFieldDialogEvent.Close -> event.invoke(GoalCountUpdateEvent.Close)

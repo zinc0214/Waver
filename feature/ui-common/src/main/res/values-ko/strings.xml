@@ -30,7 +30,6 @@
     <string name="apiFailMessage">다시 시도해주세요.</string>
 
     <string name="optionGoalCount">목표 달성 횟수(반복)</string>
-    <string name="zeroGoalCount">0</string>
     <string name="countIsNotValidToast">목표 달성 횟수는 최소 2 이상으로 설정해주세요</string>
 
     <string name="profileImgDesc">프로필 이미지</string>
