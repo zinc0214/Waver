@@ -140,13 +140,14 @@ fun FriendsOptionView(
     val isValid = friendOption.enableType != WriteOptionsType2.FRIENDS.EnableType.Disable
 
     val padding = if (isNeedToWave) 0.dp else 18.dp
+    val dividerColor = if (isNeedToWave) Main3 else Gray4
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .clickable(isValid) { optionClicked(friendOption.enableType) }
     ) {
-        Divider(color = Gray4)
+        Divider(color = dividerColor)
 
         Row(
             modifier = modifier
@@ -204,6 +205,9 @@ fun FriendsOptionView(
         } else {
             Spacer(modifier = Modifier.padding(bottom = padding))
         }
+
+
+        Divider(color = dividerColor)
     }
 }
 
@@ -223,7 +227,6 @@ fun OpenTypeOptionView(
             .fillMaxWidth()
             .clickable { optionClicked() }
     ) {
-        Divider(color = Gray4)
         Divider(color = Gray2, thickness = 7.dp)
         Divider(color = Gray3)
 
