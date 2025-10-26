@@ -220,6 +220,7 @@ fun ProfileSettingScreen(
                 Spacer(modifier = Modifier.padding(top = 44.dp))
 
                 ProfileUpdateView(
+                    currentProfileUri = profile.imgUrl,
                     updatePath = updateImagePath,
                     imageUpdateButtonClicked = {
                         showSelectCameraType = true

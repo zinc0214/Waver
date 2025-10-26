@@ -39,6 +39,7 @@ import com.zinc.waver.util.createImageInfoWithPath
 
 @Composable
 fun ProfileUpdateView(
+    currentProfileUri: String?,
     updatePath: MutableState<String?>,
     imageUpdateButtonClicked: () -> Unit
 ) {
@@ -48,7 +49,7 @@ fun ProfileUpdateView(
             context = context,
             path = updatePath.value!!,
             index = 0
-        ).uri else null
+        ).uri else currentProfileUri
     var showPermission by remember { mutableStateOf(false) }
     var hasPermission by remember { mutableStateOf(false) }
 
@@ -147,5 +148,5 @@ internal fun CheckCameraPermission(isAvailable: (Boolean) -> Unit) {
 private fun ProfileUpdateViewPreview() {
     val updateImageFile: MutableState<String?> = remember { mutableStateOf("") }
 
-    ProfileUpdateView(updatePath = updateImageFile, imageUpdateButtonClicked = {})
+    ProfileUpdateView("", updatePath = updateImageFile, imageUpdateButtonClicked = {})
 }

@@ -228,6 +228,7 @@ private fun JoinCreateProfile1(
             Spacer(modifier = Modifier.padding(top = 36.dp))
 
             ProfileUpdateView(
+                currentProfileUri = null,
                 updatePath = updateImagePath,
                 imageUpdateButtonClicked = {
                     showSelectCameraType = true
