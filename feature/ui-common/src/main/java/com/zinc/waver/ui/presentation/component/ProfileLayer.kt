@@ -29,7 +29,7 @@ fun ProfileLayer(profileInfo: TopProfile) {
                 badgeImageUrl = profileInfo.badgeImgUrl.orEmpty()
             )
         }
-        Spacer(modifier = Modifier.height(6.dp))
+        Spacer(modifier = Modifier.height(8.dp))
         MyText(
             modifier = Modifier
                 .padding(start = 26.dp, end = 26.dp)
@@ -51,7 +51,7 @@ fun ProfileLayer(profileInfo: TopProfile) {
             color = Gray10,
             textAlign = TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         if (profileInfo.bio?.isNotEmpty() == true) {
             MyText(
                 modifier = Modifier
