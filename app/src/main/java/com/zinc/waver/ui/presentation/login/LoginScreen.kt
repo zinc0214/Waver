@@ -94,24 +94,6 @@ fun LoginScreen(
         }
 
         if (needToShowJoinDialog.value == true) {
-//            CommonDialogView(
-//                title = stringResource(id = R.string.notLoginedEamil),
-//                message = stringResource(id = R.string.goToJoinMessage),
-//                dismissAvailable = false,
-//                negative = DialogButtonInfo(
-//                    text = com.zinc.waver.ui_common.R.string.cancel,
-//                    color = Gray10
-//                ),
-//                positive = DialogButtonInfo(text = R.string.goToJoin, color = Main4),
-//                negativeEvent = {
-//                    goToFinish()
-//                    needToShowJoinDialog.value = false
-//                },
-//                positiveEvent = {
-//                    goToJoin()
-//                    needToShowJoinDialog.value = false
-//                }
-//            )
             goToJoin()
         }
     }

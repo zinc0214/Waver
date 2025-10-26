@@ -39,6 +39,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.waver.R
+import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
@@ -52,6 +53,7 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.MyTextField
 import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
+import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R as CommonR
@@ -67,11 +69,18 @@ fun JoinCreateProfile2(
 
     val failJoinAsState by createUserViewModel.failJoin.observeAsState()
     val goToLoginAsState by createUserViewModel.goToLogin.observeAsState()
+    val isAlreadyUsedNickNameAsState by createUserViewModel.isAlreadyUsedNickName.observeAsState()
 
-
+    var showErrorPopup by remember { mutableStateOf(false) }
     LaunchedEffect(goToLoginAsState) {
         if (goToLoginAsState == true) {
             goToMain()
+        }
+    }
+
+    LaunchedEffect(isAlreadyUsedNickNameAsState) {
+        if (isAlreadyUsedNickNameAsState == true) {
+            showErrorPopup = true
         }
     }
 
@@ -88,6 +97,19 @@ fun JoinCreateProfile2(
             )
         }
     )
+
+    if (showErrorPopup) {
+        CommonDialogView(
+            message = stringResource(R.string.joinFailDesc),
+            dismissAvailable = false,
+            rightButtonInfo = DialogButtonInfo(
+                text = CommonR.string.confirm,
+                color = Main4
+            ),
+            rightButtonEvent = {
+                goToBack()
+            })
+    }
 }
 
 @Composable
