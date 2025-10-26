@@ -40,12 +40,12 @@ fun RoundChip(
     Box(
         modifier = modifier
             .background(color = Color.White, RoundedCornerShape(chipRadius))
-            .clip(RoundedCornerShape(chipRadius))
             .border(
                 color = if (isSelected) selectedBorderColor else unSelectedBorderColor,
                 width = 1.dp,
                 shape = RoundedCornerShape(chipRadius)
-            ),
+            )
+            .clip(RoundedCornerShape(chipRadius)),
         contentAlignment = Alignment.Center
     ) {
         MyText(
