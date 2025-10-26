@@ -56,7 +56,7 @@ internal fun NavGraphBuilder.homeMy(
     myTopEvent: (MyTopEvent, NavBackStackEntry) -> Unit,
     goToCategoryEdit: (NavBackStackEntry) -> Unit,
 ) {
-    composable(HomeSections.MY.route, exitTransition = null, enterTransition = null) { from ->
+    composable(HomeSections.MY.route) { from ->
         MyScreen(
             itemSelected = {
                 onBucketSelected.invoke(it, from)

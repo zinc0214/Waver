@@ -1,5 +1,7 @@
 package com.zinc.waver.ui.presentation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -141,6 +143,12 @@ private fun HomeNavHost(
     NavHost(
         navController = appState.navController,
         startDestination = HomeSections.MY.route,
+        enterTransition = {
+            EnterTransition.None
+        },
+        exitTransition = {
+            ExitTransition.None
+        },
         modifier = Modifier.padding(padding)
     ) {
         setupMainScreens(appState, shownBottomSheet, action)
@@ -522,4 +530,3 @@ private fun handleOtherHomeEvent(
         )
     }
 }
-
