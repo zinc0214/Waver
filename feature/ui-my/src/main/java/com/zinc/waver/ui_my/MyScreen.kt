@@ -258,7 +258,7 @@ fun MyTabLayer(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Gray1)
-                .padding(start = 16.dp, top = 24.dp)
+                .padding(start = 28.dp, top = 46.dp)
         ) {
             itemsIndexed(items = tabItems, itemContent = { index, tab ->
                 MyTab(
