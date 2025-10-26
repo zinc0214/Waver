@@ -15,8 +15,9 @@ data class SearchResultResponse(
 
     data class SearchResultBucketList(
         val id: Int,
-        val writerId: String? = null,
-        val title: String
+        val userId: String,
+        val title: String,
+        val scrapYn: YesOrNo?
     )
 
     data class SearchResultUser(
