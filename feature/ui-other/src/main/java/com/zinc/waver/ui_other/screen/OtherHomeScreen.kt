@@ -22,6 +22,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.ui.design.theme.Gray2
@@ -29,6 +30,7 @@ import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_other.component.OtherBucketListView
 import com.zinc.waver.ui_other.component.OtherHomeProfile
+import com.zinc.waver.ui_other.component.OtherProfileLoading
 import com.zinc.waver.ui_other.model.OtherHomeEvent
 import com.zinc.waver.ui_other.viewmodel.OtherViewModel
 
@@ -79,17 +81,24 @@ fun OtherHomeScreen(
     }
 
 
-    profileHomeData.value?.let { homeData ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .background(Gray2)
-                .nestedScroll(nestedScrollConnection)
-                .verticalScroll(parentScrollState)
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .background(Gray2)
+            .nestedScroll(nestedScrollConnection)
+            .verticalScroll(parentScrollState)
+    ) {
+
+        if (profileHomeData.value == null) {
+            OtherProfileLoading(
+                goToBack = {
+                    otherHomeEvent.invoke(OtherHomeEvent.GoToBack)
+                }
+            )
+        } else {
             OtherHomeProfile(
-                profileInfo = homeData.profile,
+                profileInfo = profileHomeData.value!!.profile,
                 changeFollowStatus = { changeFollow ->
                     viewModel.changeFollowStatus(userId, changeFollow)
                 },
@@ -104,7 +113,7 @@ fun OtherHomeScreen(
                     .fillMaxHeight()
                     .padding(top = 24.dp)
                     .padding(horizontal = 16.dp),
-                bucketList = homeData.bucketList,
+                bucketList = profileHomeData.value!!.bucketList,
                 itemClicked = { bucketId ->
                     otherHomeEvent.invoke(OtherHomeEvent.GoToOtherBucket(bucketId, userId))
                 }
@@ -121,4 +130,10 @@ fun OtherHomeScreen(
             otherHomeEvent(OtherHomeEvent.GoToBack)
         }
     }
+}
+
+@Preview
+@Composable
+private fun OtherHomeScreenPreview() {
+    OtherHomeScreen("", {})
 }

@@ -157,7 +157,7 @@ fun AllBucketItemLoading(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.Companion
+        modifier = Modifier
             .shimmer()
             .padding(top = 20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)

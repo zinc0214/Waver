@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,6 +34,8 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.ProfileLayer
 import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
+import com.zinc.waver.ui.presentation.screen.blank.AllBucketItemLoading
+import com.zinc.waver.ui.presentation.screen.blank.MyTopLayerLoading
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_other.R
 
@@ -160,22 +163,59 @@ private fun FollowCountTextView(modifier: Modifier, text: String, number: String
     }
 }
 
+@Composable
+fun OtherProfileLoading(
+    goToBack: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .background(color = Gray1)
+            .fillMaxWidth()
+    ) {
+        TitleView(
+            title = "",
+            leftIconType = TitleIconType.BACK,
+            isDividerVisible = false,
+            onLeftIconClicked = {
+                goToBack()
+            }
+        )
+        Spacer(modifier = Modifier.padding(top = 18.dp))
+        MyTopLayerLoading()
+        Spacer(modifier = Modifier.padding(top = 71.dp))
+
+        Box(modifier = Modifier.background(Gray2)) {
+            AllBucketItemLoading()
+        }
+    }
+}
 
 @Composable
 @Preview
 private fun OtherHomeProfilePreview() {
-    OtherHomeProfile(
-        profileInfo = TopProfile(
-            isFollowed = false,
-            name = "안녕다른사람",
-            imgUrl = null,
-            percent = 0.3f,
-            badgeImgUrl = null,
-            badgeTitle = "신나는여행자",
-            bio = "나는다른사람이라고해요",
-            followerCount = "10",
-            followingCount = "20"
-        ),
-        {}, {}
-    )
+    Box() {
+        OtherProfileLoading() {}
+
+        OtherHomeProfile(
+            profileInfo = TopProfile(
+                isFollowed = false,
+                name = "안녕다른사람",
+                imgUrl = null,
+                percent = 0.3f,
+                badgeImgUrl = null,
+                badgeTitle = "신나는여행자",
+                bio = "나는다른사람이라고해요",
+                followerCount = "10",
+                followingCount = "20"
+            ),
+            {}, {}
+        )
+    }
+
+}
+
+@Preview
+@Composable
+private fun OtherProfileLoadingPreview() {
+    OtherProfileLoading() {}
 }
