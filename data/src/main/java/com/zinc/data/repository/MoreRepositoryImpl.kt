@@ -58,4 +58,8 @@ internal class MoreRepositoryImpl @Inject constructor(
     override suspend fun requestWithdrawal(): CommonResponse {
         return waverApi.requestWithdraw()
     }
+
+    override suspend fun updateMyBadge(badgeId: Int): CommonResponse {
+        return waverApi.updateMyBadge(badgeId)
+    }
 }

@@ -43,6 +43,7 @@ data class MyWaverInfo(
 
 @Serializable
 data class MyBadge(
+    val id: Int,
     val title: String,
     val imgUrl: String,
     val step: Step

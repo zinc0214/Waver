@@ -319,6 +319,10 @@ interface WaverApi {
     @GET("/waver/my/info")
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
 
+    // 뱃지 업데이트
+    @POST("/waver/badge/{badgeId}")
+    suspend fun updateMyBadge(@Path("badgeId") badgeId: Int): CommonResponse
+
     // 사용자 차단 해제
     @POST("/waver/follow/block/release")
     suspend fun requestBlockUserRelease(

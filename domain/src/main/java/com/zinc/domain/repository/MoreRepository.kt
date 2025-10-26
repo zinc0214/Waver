@@ -17,4 +17,5 @@ interface MoreRepository {
     suspend fun requestBlockUserRelease(userId: Int): CommonResponse
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
     suspend fun requestWithdrawal(): CommonResponse
+    suspend fun updateMyBadge(badgeId: Int): CommonResponse
 }

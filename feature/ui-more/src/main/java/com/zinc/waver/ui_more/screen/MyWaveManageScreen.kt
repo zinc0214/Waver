@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_more.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -67,6 +68,7 @@ fun MyWaveManageScreen(
     viewModel: MyWaveManageViewModel = hiltViewModel()
 ) {
     val myWaveInfoAsState by viewModel.myWaverInfo.observeAsState()
+    val succeedUpdate by viewModel.updateSucceed.observeAsState()
 
     val myWaveInfo = remember {
         mutableStateOf(myWaveInfoAsState)
@@ -75,9 +77,22 @@ fun MyWaveManageScreen(
         mutableStateOf(null)
     }
 
+
     LaunchedEffect(key1 = myWaveInfoAsState) {
         myWaveInfo.value = myWaveInfoAsState
         selectedBadge = myWaveInfo.value?.badges?.firstOrNull()
+    }
+
+    LaunchedEffect(succeedUpdate) {
+        if (succeedUpdate == true) {
+            onBackPressed()
+        }
+    }
+
+    BackHandler {
+        viewModel.updateMySelectBadge(
+            selectedBadge?.id ?: myWaveInfo.value?.badges?.first()?.id ?: -1
+        )
     }
 
     if (myWaveInfo.value == null) {
@@ -91,7 +106,9 @@ fun MyWaveManageScreen(
                 .statusBarsPadding()
         ) {
             HeaderView(info = info, selectedBadge = selectedBadge) {
-                onBackPressed()
+                viewModel.updateMySelectBadge(
+                    selectedBadge?.id ?: myWaveInfo.value?.badges?.first()?.id ?: -1
+                )
             }
 
             selectedBadge?.let { badge ->
@@ -320,14 +337,14 @@ private fun HeaderPreview() {
         totalBucketCount = 30,
         badgeImgUrl = "",
         badges = listOf(
-            MyBadge("요리", "1", MyBadge.Step.STEP0),
-            MyBadge("요리", "2", MyBadge.Step.STEP1),
-            MyBadge("요리", "3", MyBadge.Step.STEP2)
+            MyBadge(1, "요리", "1", MyBadge.Step.STEP0),
+            MyBadge(2, "요리", "2", MyBadge.Step.STEP1),
+            MyBadge(3, "요리", "3", MyBadge.Step.STEP2)
         )
     )
 
     Column {
-        HeaderView(info, selectedBadge = MyBadge("음식", "2", MyBadge.Step.STEP1)) {}
+        HeaderView(info, selectedBadge = MyBadge(1, "음식", "2", MyBadge.Step.STEP1)) {}
         ContentView(
             info = info,
             selectedBadge = info.badges.first(),
