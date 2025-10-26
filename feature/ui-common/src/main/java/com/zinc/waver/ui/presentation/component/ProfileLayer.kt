@@ -52,14 +52,16 @@ fun ProfileLayer(profileInfo: TopProfile) {
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(8.dp))
-        MyText(
-            modifier = Modifier
-                .padding(start = 26.dp, end = 26.dp)
-                .align(Alignment.CenterHorizontally),
-            text = profileInfo.bio ?: "",
-            fontSize = dpToSp(14.dp),
-            color = Gray7,
-            textAlign = TextAlign.Center
-        )
+        if (profileInfo.bio?.isNotEmpty() == true) {
+            MyText(
+                modifier = Modifier
+                    .padding(start = 26.dp, end = 26.dp)
+                    .align(Alignment.CenterHorizontally),
+                text = profileInfo.bio ?: "",
+                fontSize = dpToSp(14.dp),
+                color = Gray7,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
