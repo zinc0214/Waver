@@ -1,5 +1,6 @@
 package com.zinc.domain.models
 
+import com.zinc.common.models.BucketType
 import com.zinc.common.models.YesOrNo
 
 data class SearchResultResponse(
@@ -44,4 +45,26 @@ data class SearchRecommendResponse(
         val name: String,
         val count: Int
     )
+}
+
+data class SearchPopularAndRecommendResponse(
+    val data: RecommendData,
+    val success: Boolean,
+    val code: String,
+    val message: String
+) {
+    data class RecommendData(
+        val popularKeyword: List<String>,
+        val popularList: List<BucketItem>,
+        val recommendKeyword: List<String>,
+        val recommendList: List<BucketItem>
+    ) {
+        data class BucketItem(
+            val id: Int,
+            val bucketType: BucketType,
+            val title: String,
+            val imgUrl: String,
+            val scrapYn: YesOrNo?
+        )
+    }
 }

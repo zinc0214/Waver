@@ -31,6 +31,7 @@ import com.zinc.domain.models.OtherHomeResponse
 import com.zinc.domain.models.ReportReasonRequest
 import com.zinc.domain.models.RequestGoalCountUpdate
 import com.zinc.domain.models.SavedKeywordItemsRequest
+import com.zinc.domain.models.SearchPopularAndRecommendResponse
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
 import okhttp3.MultipartBody
@@ -225,6 +226,10 @@ interface WaverApi {
     // 버킷리스트 달성
     @GET("/waver/bucket/{id}/achieve")
     suspend fun achieveBucket(@Path("id") id: String): CommonResponse
+
+    // 검색 > 인기검색어, 추천버킷리스트 조회
+    @GET("waver/bucket/popular")
+    suspend fun loadSearchPopularAndRecommend(): SearchPopularAndRecommendResponse
 
     // 검색 > 버킷리스트 검색
     @GET("/waver/explore")

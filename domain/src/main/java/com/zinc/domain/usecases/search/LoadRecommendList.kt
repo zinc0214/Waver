@@ -1,8 +1,11 @@
 package com.zinc.domain.usecases.search
 
-//class LoadRecommendList @Inject constructor(
-//    private val searchRepository: SearchRepository
-//) {
-//    suspend operator fun invoke() =
-//        searchRepository.loadRecommendList()
-//}
+import com.zinc.domain.repository.SearchRepository
+import javax.inject.Inject
+
+class LoadSearchPopularAndRecommend @Inject constructor(
+    private val searchRepository: SearchRepository
+) {
+    suspend operator fun invoke() =
+        searchRepository.loadSearchPopularAndRecommend()
+}

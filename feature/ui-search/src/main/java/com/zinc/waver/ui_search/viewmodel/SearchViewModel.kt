@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
+import com.zinc.domain.usecases.search.LoadSearchPopularAndRecommend
 import com.zinc.domain.usecases.search.LoadSearchRecommend
 import com.zinc.domain.usecases.search.LoadSearchResult
 import com.zinc.waver.ui.viewmodel.CommonViewModel
@@ -24,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-//    private val loadRecommendList: LoadRecommendList,
+    private val loadSearchPopularAndRecommend: LoadSearchPopularAndRecommend,
     private val loadSearchResult: LoadSearchResult,
     private val loadSearchRecommend: LoadSearchRecommend,
     private val deleteRecentWord: DeleteRecentWord,
@@ -50,9 +51,12 @@ class SearchViewModel @Inject constructor(
     var prevSearchWord: String = ""
 
     fun loadRecommendList() {
-        viewModelScope.launch {
-            runCatching {
-                _recommendList.value = loadRecommendListDummy()
+        viewModelScope.launch(ceh(_loadFail, "")) {
+            val response = loadSearchPopularAndRecommend.invoke()
+            if (response.success) {
+                _recommendList.value = response.data.parseUI()
+            } else {
+                _loadFail.value = response.message
             }
         }
     }
@@ -157,14 +161,14 @@ class SearchViewModel @Inject constructor(
             type = RecommendType.POPULAR,
             tagList = listOf("여행", "공부", "문화"),
             items = bucketItem,
-            title = "인기"
+            //title = "인기"
         )
 
         val recommendItem = RecommendItem(
             type = RecommendType.RECOMMEND,
             tagList = listOf("제주도", "1박2일", "가족여행"),
             items = bucketItem,
-            title = "추천"
+            // title = "추천"
         )
 
         return RecommendList(listOf(popularItem, recommendItem))

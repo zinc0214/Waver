@@ -205,6 +205,10 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
             .padding(horizontal = 28.dp)
     ) {
         Column(modifier = Modifier.weight(1f)) {
+            val title = when (type) {
+                RecommendType.POPULAR -> stringResource(id = R.string.popularSearchBucket)
+                RecommendType.RECOMMEND -> stringResource(id = R.string.recommendSearchBucket)
+            }
             Row {
                 Image(
                     painter = if (type == RecommendType.POPULAR) painterResource(CommonR.drawable.btn_32_like_on) else painterResource(
@@ -213,7 +217,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                MyText(text = recommendItem.title, fontSize = dpToSp(15.dp), color = Gray10)
+                MyText(text = title, fontSize = dpToSp(15.dp), color = Gray10)
             }
 
             TagListView(
@@ -303,9 +307,10 @@ fun RecommendBucketItemView(
                         width = Dimension.fillToConstraints
                     })
 
-                IconButton(onClick = {
-                    // can copied if is unCopied
-                },
+                IconButton(
+                    onClick = {
+                        // can copied if is unCopied
+                    },
                     image = if (item.isCopied) com.zinc.waver.ui_common.R.drawable.btn_32_copy_on else com.zinc.waver.ui_common.R.drawable.btn_32_copy_off,
                     contentDescription = stringResource(id = com.zinc.waver.ui_common.R.string.copy),
                     modifier = Modifier
@@ -353,7 +358,6 @@ private fun RecommendTitlePreview() {
 
     RecommendTitleView(
         recommendItem = RecommendItem(
-            title = "delenit",
             type = RecommendType.RECOMMEND,
             tagList = listOf("제주도", "1박2일", "좀 길어버린 텍스투"),
             items = listOf()

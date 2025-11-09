@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_search.model
 
+import com.zinc.domain.models.SearchPopularAndRecommendResponse
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
 
@@ -41,6 +42,44 @@ fun SearchRecommendResponse.RecommendData.parseUI(): SearchRecommendItems {
     return SearchRecommendItems(recentWords = recentWords, recommendWords = recommendWords)
 }
 
+fun SearchPopularAndRecommendResponse.RecommendData.parseUI(): RecommendList {
+    val popularItems =
+        RecommendItem(
+            type = RecommendType.POPULAR,
+            tagList = popularKeyword,
+            items = this.popularList.map {
+                SearchBucketItem(
+                    bucketId = it.id.toString(),
+                    writerId = "1", // TODO : writer id 붙이기
+                    thumbnail = null,
+                    title = it.title,
+                    isCopied = it.scrapYn?.isYes() == true
+                )
+            },
+
+            )
+
+    val recommendItems = RecommendItem(
+        type = RecommendType.RECOMMEND,
+        tagList = recommendKeyword,
+        items = this.recommendList.map {
+            SearchBucketItem(
+                bucketId = it.id.toString(),
+                writerId = "1", // TODO : writer id 붙이기
+                thumbnail = null,
+                title = it.title,
+                isCopied = it.scrapYn?.isYes() == true
+            )
+        })
+
+    val items = listOf(
+        popularItems,
+        recommendItems
+    )
+
+    return RecommendList(items = items)
+}
+
 data class RecommendList(
     val items: List<RecommendItem>
 )
@@ -54,7 +93,6 @@ enum class SearchRecommendType {
 }
 
 data class RecommendItem(
-    val title: String,
     val type: RecommendType,
     val tagList: List<String>,
     val items: List<SearchBucketItem>
