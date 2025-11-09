@@ -8,7 +8,7 @@ import com.zinc.domain.models.OtherHomeResponse
 fun OtherHomeResponse.OtherHomeInfo.toUiModel(): OtherProfileHomeData {
     return OtherProfileHomeData(
         profile = TopProfile(
-            isFollowed = isFollowing,
+            isFollowed = isFollowing.isYes(),
             name = name,
             imgUrl = imgUrl,
             percent = bucketInfo.completedCount.toFloat() / bucketInfo.totalCount.toFloat(),

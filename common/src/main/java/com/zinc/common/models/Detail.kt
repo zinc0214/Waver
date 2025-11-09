@@ -75,4 +75,3 @@ data class AddBucketCommentRequest(
     val content: String,
     val mentionIds: List<String>
 )
-

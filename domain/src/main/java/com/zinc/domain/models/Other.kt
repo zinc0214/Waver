@@ -3,6 +3,7 @@ package com.zinc.domain.models
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
 import com.zinc.common.models.ExposureStatus
+import com.zinc.common.models.YesOrNo
 import java.io.Serializable
 
 data class OtherHomeResponse(
@@ -12,7 +13,8 @@ data class OtherHomeResponse(
     val data: OtherHomeInfo
 ) {
     data class OtherHomeInfo(
-        val isFollowing: Boolean,
+        val id: String,
+        val isFollowing: YesOrNo,
         val imgUrl: String?,
         val name: String,
         val bio: String?,
