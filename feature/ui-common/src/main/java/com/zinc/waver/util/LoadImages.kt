@@ -54,3 +54,4 @@ fun loadImageFile(path: String, index: Int): UserSelectedImageInfo? {
         photoUri = Uri.parse(path), key = index
     )
 }
+

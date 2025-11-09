@@ -1,5 +1,9 @@
 package com.zinc.waver.ui.presentation.login
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -40,6 +44,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.R
@@ -60,7 +65,27 @@ import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.util.FileUtil.getFileFromUri
 import java.io.File
+import java.io.FileOutputStream
 import com.zinc.waver.ui_common.R as CommonR
+
+// helper: drawable을 bitmap으로 변환
+private fun drawableToBitmap(drawable: Drawable, reqWidth: Int = -1, reqHeight: Int = -1): Bitmap {
+    val width = when {
+        reqWidth > 0 -> reqWidth
+        drawable.intrinsicWidth > 0 -> drawable.intrinsicWidth
+        else -> 512
+    }
+    val height = when {
+        reqHeight > 0 -> reqHeight
+        drawable.intrinsicHeight > 0 -> drawable.intrinsicHeight
+        else -> 512
+    }
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    drawable.setBounds(0, 0, canvas.width, canvas.height)
+    drawable.draw(canvas)
+    return bitmap
+}
 
 @Composable
 fun JoinCreateProfile1(
@@ -168,12 +193,67 @@ private fun JoinCreateProfile1(
         ).random()
 
         try {
-            val uri = ("android.resource://" + context.packageName + "/" + randomProfile).toUri();
-            val file = getFileFromUri(context, uri)
+            val uri = ("android.resource://" + context.packageName + "/" + randomProfile).toUri()
+
+            // 먼저 FileUtil을 사용해 파일을 만들어본다 (요청에 따라 FileUtil 수정은 하지 않음)
+            val file = try {
+                getFileFromUri(context, uri)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+
             Log.e("ayhan", "randomProfile : $randomProfile , $uri , $file")
             if (file != null) {
-                updateImageFile.value = file
-                updateImagePath.value = file.path
+                // 파일에서 비트맵 디코드가 가능한지 확인
+                val decoded = try {
+                    BitmapFactory.decodeFile(file.path)
+                } catch (_: Throwable) {
+                    null
+                }
+
+                if (decoded != null) {
+                    try {
+                        if (!decoded.isRecycled) decoded.recycle()
+                    } catch (_: Exception) {
+                    }
+                    updateImageFile.value = file
+                    updateImagePath.value = "file://${file.path}"
+                } else {
+                    // decode 실패: 리소스가 벡터(XML)일 가능성이 있음. Drawable로 직접 렌더링해서 파일로 저장
+                    try {
+                        val drawable: Drawable? = ResourcesCompat.getDrawable(
+                            context.resources,
+                            randomProfile,
+                            context.theme
+                        )
+                        if (drawable != null) {
+                            val bmp = drawableToBitmap(drawable)
+                            val outFile =
+                                File(context.cacheDir, "random_profile_${randomProfile}.png")
+                            FileOutputStream(outFile).use { fos ->
+                                bmp.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                                fos.flush()
+                            }
+                            // 메모리 해제
+                            try {
+                                if (!bmp.isRecycled) bmp.recycle()
+                            } catch (_: Exception) {
+                            }
+
+                            updateImageFile.value = outFile
+                            updateImagePath.value = "file://${outFile.path}"
+                        } else {
+                            // drawable도 못 얻으면 기존 파일을 사용하거나 null
+                            updateImageFile.value = file
+                            updateImagePath.value = "file://${file.path}"
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        updateImageFile.value = file
+                        updateImagePath.value = "file://${file.path}"
+                    }
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
