@@ -101,8 +101,9 @@ fun ProfileUpdateView(
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(70.dp, 70.dp)
-                    .aspectRatio(1f)
                     .clip(shape = RoundedCornerShape(28.dp))
+                    .border(shape = RoundedCornerShape(28.dp), color = Gray2, width = 1.dp)
+                    .aspectRatio(1f)
             )
 
         }

@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Main4
@@ -39,6 +40,7 @@ import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.ProfileSettingTitle
 import com.zinc.waver.ui_more.viewModel.MoreViewModel
+import com.zinc.waver.util.FileUtil.getFileFromUri
 import kotlinx.coroutines.launch
 import java.io.File
 import com.zinc.waver.ui_common.R as CommonR
@@ -49,6 +51,7 @@ fun ProfileSettingScreen(
     addImageAction: (ActionWithActivity.AddImage) -> Unit,
 ) {
 
+    val context = LocalContext.current
     val viewModel: MoreViewModel = hiltViewModel()
 
     val profileInfoAsState by viewModel.profileInfo.observeAsState()
@@ -124,6 +127,17 @@ fun ProfileSettingScreen(
         profileInfo.value = profileInfoAsState
         nickNameData.value = nickNameData.value.copy(prevText = profileInfo.value?.name.orEmpty())
         bioData.value = bioData.value.copy(prevText = profileInfo.value?.bio.orEmpty())
+        Log.e(
+            "ayhan",
+            "profileInfoAsState?.imgUrl?.toUri() :${profileInfoAsState?.imgUrl?.toUri()}"
+        )
+        profileInfoAsState?.imgUrl?.toUri()?.let { uri ->
+            Log.e("ayhan", "uri :$uri")
+            getFileFromUri(context, uri)?.let {
+                Log.e("ayhan", "file :$it")
+                updateImageFile.value = it
+            }
+        }
     }
 
     LaunchedEffect(
@@ -145,7 +159,6 @@ fun ProfileSettingScreen(
             }
         }
     }
-    val context = LocalContext.current
 
     LaunchedEffect(bottomSheetScaffoldState.currentValue) {
         when (bottomSheetScaffoldState.currentValue) {

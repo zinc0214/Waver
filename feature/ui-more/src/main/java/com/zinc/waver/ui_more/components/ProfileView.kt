@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -187,7 +186,7 @@ private fun ProfileImageView(modifier: Modifier, profileUrl: String) {
         contentScale = ContentScale.Crop,
         modifier = modifier
             .size(70.dp, 70.dp)
-            .aspectRatio(1f)
+            .border(shape = RoundedCornerShape(28.dp), color = Gray2, width = 1.dp)
             .clip(shape = RoundedCornerShape(28.dp))
     )
 }

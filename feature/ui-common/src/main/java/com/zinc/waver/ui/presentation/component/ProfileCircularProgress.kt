@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
@@ -33,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui_common.R
@@ -95,8 +93,7 @@ fun ProfileCenterImage(profileImageUrl: String) {
             .padding(3.dp)
             .height(80.dp)
             .width(80.dp)
-            .background(color = Gray3, shape = CircleShape)
-            .border(width = 1.dp, color = Gray2, shape = CircleShape)
+            .border(width = 1.dp, color = Gray3, shape = CircleShape)
             .clip(shape = CircleShape)
     )
 }
