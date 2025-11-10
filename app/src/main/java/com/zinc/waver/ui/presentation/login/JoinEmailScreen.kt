@@ -38,6 +38,8 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.credentials.exceptions.NoCredentialException
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -210,13 +212,15 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
 
 @Composable
 fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
+    val clientId = "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com"
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     var showGoogleEmailSelect by remember { mutableStateOf(false) }
+    var showError by remember { mutableStateOf("") }
     val credentialManager = CredentialManager.create(context)
     val googleIdOption = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)
-        .setServerClientId(context.getString(R.string.default_web_client_id))
+        .setFilterByAuthorizedAccounts(false)//then false
+        .setServerClientId(clientId)
         .setAutoSelectEnabled(true)
         .build()
 
@@ -232,15 +236,35 @@ fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
                         request = request,
                         context = context,
                     )
+                    showError = ""
                     handleSignIn(result, goToEmailCheck)
+                } catch (e: NoCredentialException) {
+                    // 사용자가 계정 선택을 취소하거나 선택 가능한 계정이 없는 경우
+                    Log.e("ayhan", "No credentials available", e)
+                    showError = "No credentials available"  // 일반적인 상황이므로 에러 표시하지 않음
+                } catch (e: GetCredentialException) {
+                    // Google Play Services 문제 또는 네트워크 문제
+                    Log.e("ayhan", "Failed to get credentials", e)
+                    showError = "Failed to get credentials"
                 } catch (e: Exception) {
-                    // Handle failure
+                    // 기타 예외 상황
+                    Log.e("ayhan", "Google Sign-In failed", e)
+                    showError = "Google Sign-In failed"
                 }
             }
             showGoogleEmailSelect = false
         }
     }
 
+    if (showError.isNotEmpty()) {
+        CommonDialogView(
+            title = stringResource(id = R.string.joinFailTitle),
+            message = stringResource(id = R.string.loginRetry) + "\n${showError}",
+            dismissAvailable = true,
+            rightButtonInfo = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
+            rightButtonEvent = { showError = "" },
+        )
+    }
 
     // Google Sign-In Button
     EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {

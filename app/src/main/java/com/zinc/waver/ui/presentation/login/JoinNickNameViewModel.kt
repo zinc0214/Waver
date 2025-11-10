@@ -74,6 +74,7 @@ class JoinNickNameViewModel @Inject constructor(
         bio: String? = null,
         image: File? = null
     ) {
+        Log.e("ayhan", "createNewProfile called :$emailInfo")
         viewModelScope.launch(ceh(_failJoin, true)) {
             _failJoin.value = false
             _goToLogin.value = false
