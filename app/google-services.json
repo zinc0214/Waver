@@ -1,49 +1,57 @@
 {
   "project_info": {
-    "project_number": "121106798779",
-    "project_id": "waver-668e3",
-    "storage_bucket": "waver-668e3.firebasestorage.app"
+    "project_number": "350001178006",
+    "project_id": "waver-478413",
+    "storage_bucket": "waver-478413.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:121106798779:android:e264a8cd0e688776b8f19e",
+        "mobilesdk_app_id": "1:350001178006:android:2603d04d5053b1715a29b7",
         "android_client_info": {
           "package_name": "com.zinc.waver"
         }
       },
       "oauth_client": [
         {
-          "client_id": "121106798779-boqf7j6ljlvlsulkd5td9pn2duns20a0.apps.googleusercontent.com",
+          "client_id": "350001178006-2bh68ejhfkfuuhd5djk4bvqv0jfbsneb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.zinc.waver",
-            "certificate_hash": "9bdb4b635135e675079b50842855d6e90e5cb1f0"
+            "certificate_hash": "4ec208b14f6a3e4273be22bcbf1f73c7d219cf30"
           }
         },
         {
-          "client_id": "121106798779-fdas3g4p2ib5kmp80379pdd4ohdd6egs.apps.googleusercontent.com",
+          "client_id": "350001178006-52l522vsv9g2dpadoc6u5cj5mlt3v0gp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.zinc.waver",
-            "certificate_hash": "503ca0cc06e1a8eb621ab2adee4c355986c2ca83"
+            "certificate_hash": "a11cb4907ff9ccb30f760e58ad007aedf810df2f"
           }
         },
         {
-          "client_id": "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com",
+          "client_id": "350001178006-j5qlude5bgf5ta5iubeu4k3sbpvrpq5c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zinc.waver",
+            "certificate_hash": "519570a303c5141d521c68d12ca6d1f750ecb267"
+          }
+        },
+        {
+          "client_id": "350001178006-4sc63qivs4f5fng3vpjmts0bl4l8e5f1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAob8YQmOaJfPDRHSHTFjtd0m3PXEbz2T8"
+          "current_key": "AIzaSyBTY_9FvywQU5hWPxNyZWyTWwzDOEl-a9E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com",
+              "client_id": "350001178006-4sc63qivs4f5fng3vpjmts0bl4l8e5f1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

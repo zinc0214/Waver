@@ -1,5 +1,7 @@
 package com.zinc.waver.ui.presentation.login
 
+import BuildConfig.GoogleWebClientId
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,10 +39,13 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
+import androidx.credentials.exceptions.GetCredentialCancellationException
+import androidx.credentials.exceptions.GetCredentialCustomException
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.credentials.exceptions.NoCredentialException
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.zinc.domain.models.GoogleEmailInfo
@@ -55,7 +59,7 @@ import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import com.zinc.waver.ui_common.R as CommonR
 
 
@@ -84,6 +88,7 @@ fun JoinEmailScreen(
 
     val prevLoginEmail = remember { mutableStateOf<GoogleEmailInfo?>(null) }
 
+
     LaunchedEffect(key1 = checkAlreadyUsedEmailAsState) {
         isAlreadyUsedEmail.value = checkAlreadyUsedEmailAsState ?: false
     }
@@ -104,10 +109,11 @@ fun JoinEmailScreen(
         }
     }
 
-    GoogleSignInButton(goToEmailCheck = {
-        viewModel.goToLogin(it)
-        prevLoginEmail.value = it
-    })
+    GoogleSignInButton2(
+        goToEmailCheck = {
+            viewModel.goToLogin(it)
+            prevLoginEmail.value = it
+        })
 
     if (isAlreadyUsedEmail.value) {
         CommonDialogView(
@@ -210,48 +216,87 @@ private fun EmailView(modifier: Modifier, emailClicked: () -> Unit) {
     }
 }
 
+//This code will not work on Android versions < UPSIDE_DOWN_CAKE when GetCredentialException is
+//is thrown.
+suspend fun signIn(
+    request: GetCredentialRequest,
+    context: Context,
+    goToEmailCheck: (GoogleEmailInfo) -> Unit
+): Exception? {
+    val credentialManager = CredentialManager.create(context)
+    val failureMessage = "Sign in failed!"
+    val e: Exception? = null
+    //using delay() here helps prevent NoCredentialException when the BottomSheet Flow is triggered
+    //on the initial running of our app
+    delay(500)
+    try {
+        // The getCredential is called to request a credential from Credential Manager.
+        val result = credentialManager.getCredential(
+            request = request,
+            context = context,
+        )
+        Log.i("ayhan", "(☞ﾟヮﾟ)☞  Sign in Successful!  ☜(ﾟヮﾟ☜)")
+
+        handleSignIn(result, goToEmailCheck)
+
+    } catch (e: GetCredentialException) {
+        Log.e("ayhan", "$failureMessage: Failure getting credentials", e)
+        return e
+
+    } catch (e: GoogleIdTokenParsingException) {
+        Log.e("ayhan", "$failureMessage: Issue with parsing received GoogleIdToken", e)
+
+    } catch (e: NoCredentialException) {
+        Log.e("ayhan", "$failureMessage: No credentials found", e)
+        return e
+
+    } catch (e: GetCredentialCustomException) {
+        Log.e("ayhan", "$failureMessage: Issue with custom credential request", e)
+
+    } catch (e: GetCredentialCancellationException) {
+        Log.e("ayhan", "$failureMessage: Sign-in was cancelled", e)
+    }
+    return e
+}
+
+
 @Composable
 fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
-    val clientId = "121106798779-djvl2b93o6kq7trp4u42btt53v8e1fos.apps.googleusercontent.com"
-    val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
     var showGoogleEmailSelect by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf("") }
-    val credentialManager = CredentialManager.create(context)
-    val googleIdOption = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)//then false
-        .setServerClientId(clientId)
-        .setAutoSelectEnabled(true)
-        .build()
-
-    val request: GetCredentialRequest = GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOption)
-        .build()
 
     LaunchedEffect(showGoogleEmailSelect) {
         if (showGoogleEmailSelect) {
-            coroutineScope.launch {
-                try {
-                    val result = credentialManager.getCredential(
-                        request = request,
-                        context = context,
-                    )
-                    showError = ""
-                    handleSignIn(result, goToEmailCheck)
-                } catch (e: NoCredentialException) {
-                    // 사용자가 계정 선택을 취소하거나 선택 가능한 계정이 없는 경우
-                    Log.e("ayhan", "No credentials available", e)
-                    showError = "No credentials available"  // 일반적인 상황이므로 에러 표시하지 않음
-                } catch (e: GetCredentialException) {
-                    // Google Play Services 문제 또는 네트워크 문제
-                    Log.e("ayhan", "Failed to get credentials", e)
-                    showError = "Failed to get credentials"
-                } catch (e: Exception) {
-                    // 기타 예외 상황
-                    Log.e("ayhan", "Google Sign-In failed", e)
-                    showError = "Google Sign-In failed"
-                }
+            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(true)
+                .setServerClientId(GoogleWebClientId)
+                .build()
+
+            // Create a credential request with the Google ID option.
+            val request: GetCredentialRequest = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+
+            // Attempt to sign in with the created request using an authorized account
+            val e = signIn(request, context, goToEmailCheck)
+            // If the sign-in fails with NoCredentialException,  there are no authorized accounts.
+            // In this case, we attempt to sign in again with filtering disabled.
+            if (e is NoCredentialException) {
+                val googleIdOptionFalse: GetGoogleIdOption = GetGoogleIdOption.Builder()
+                    .setFilterByAuthorizedAccounts(false)
+                    .setServerClientId(GoogleWebClientId)
+                    .build()
+
+                val requestFalse: GetCredentialRequest = GetCredentialRequest.Builder()
+                    .addCredentialOption(googleIdOptionFalse)
+                    .build()
+
+                signIn(requestFalse, context, goToEmailCheck)
             }
+
+            showError = e?.message ?: ""
+
             showGoogleEmailSelect = false
         }
     }
@@ -270,6 +315,76 @@ fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
     EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {
         showGoogleEmailSelect = true
     })
+}
+
+@Composable
+fun GoogleSignInButton2(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
+    val context = LocalContext.current
+    var showGoogleEmailSelect by remember { mutableStateOf(false) }
+    var showError by remember { mutableStateOf("") }
+
+    LaunchedEffect(showGoogleEmailSelect) {
+        if (showGoogleEmailSelect) {
+            val googleIdOption = GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(false)
+                .setServerClientId(GoogleWebClientId)
+                .build()
+            val request = GetCredentialRequest.Builder()
+                .addCredentialOption(googleIdOption)
+                .build()
+            try {
+                val result = CredentialManager.create(context).getCredential(
+                    context = context,
+                    request = request
+                )
+                handleSignIn(result, goToEmailCheck)
+            } catch (e: NoCredentialException) {
+                Log.i("ayhan", "NoCredentialException: ", e)
+                handleNoCredentialException(context, goToEmailCheck)
+            } catch (e: GetCredentialException) {
+                Log.i("ayhan", "GetCredentialException: ", e)
+            }
+
+            showGoogleEmailSelect = false
+        }
+    }
+
+    if (showError.isNotEmpty()) {
+        CommonDialogView(
+            title = stringResource(id = R.string.joinFailTitle),
+            message = stringResource(id = R.string.loginRetry) + "\n${showError}",
+            dismissAvailable = true,
+            rightButtonInfo = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
+            rightButtonEvent = { showError = "" },
+        )
+    }
+
+    // Google Sign-In Button
+    EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {
+        showGoogleEmailSelect = true
+    })
+}
+
+
+private suspend fun handleNoCredentialException(
+    context: Context,
+    goToEmailCheck: (GoogleEmailInfo) -> Unit
+) {
+    try {
+        val signInWithGoogleOption = GetSignInWithGoogleOption
+            .Builder(serverClientId = GoogleWebClientId)
+            .build()
+        val request = GetCredentialRequest.Builder()
+            .addCredentialOption(signInWithGoogleOption)
+            .build()
+        val result = CredentialManager.create(context).getCredential(
+            context = context,
+            request = request
+        )
+        handleSignIn(result, goToEmailCheck)
+    } catch (e: Exception) {
+        Log.e("ayhan", "handleNoCredentialException: ", e)
+    }
 }
 
 fun handleSignIn(result: GetCredentialResponse, goToEmailCheck: (GoogleEmailInfo) -> Unit) {

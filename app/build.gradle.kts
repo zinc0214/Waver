@@ -34,6 +34,15 @@ android {
     buildFeatures {
         buildConfig = true // Enable BuildConfig
     }
+    signingConfigs {
+        // 기존 debug 설정은 Android Studio가 자동으로 관리합니다.
+        create("release") {
+            storeFile = file(property("MYAPP_RELEASE_STORE_FILE") as String)
+            storePassword = property("MYAPP_RELEASE_STORE_PASSWORD") as String
+            keyAlias = property("MYAPP_RELEASE_KEY_ALIAS") as String
+            keyPassword = property("MYAPP_RELEASE_KEY_PASSWORD") as String
+        }
+    }
 
     buildTypes {
         release {
@@ -42,7 +51,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     buildFeatures {
