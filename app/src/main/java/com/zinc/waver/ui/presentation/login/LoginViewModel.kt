@@ -39,19 +39,18 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             preferenceDataStoreModule.loadLoginedEmailUid.collectLatest {
 
-                _needToStartLoadToken.value = "111"
                 _needToStartJoin.value = false
 
-                //   Log.e("ayhan", "checkHasLoginEmail : $it")
-//                if (it.isNotEmpty()) {
-//                    _needToStartLoadToken.value = it
-//                    _needToStartJoin.value = false
-//                } else if (retryEmail.isNotEmpty()) {
-//                    _needToStartLoadToken.value = it
-//                    _needToStartJoin.value = false
-//                } else {
-//                    _needToStartJoin.value = true
-//                }
+                Log.e("ayhan", "checkHasLoginEmail : $it")
+                if (it.isNotEmpty()) {
+                    _needToStartLoadToken.value = it
+                    _needToStartJoin.value = false
+                } else if (retryEmail.isNotEmpty()) {
+                    _needToStartLoadToken.value = it
+                    _needToStartJoin.value = false
+                } else {
+                    _needToStartJoin.value = true
+                }
             }
         }
     }
