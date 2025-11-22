@@ -21,7 +21,6 @@ import com.zinc.waver.ui_search.model.SearchResultItems
 import com.zinc.waver.ui_search.model.parseUI
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -66,7 +65,6 @@ class SearchViewModel @Inject constructor(
     fun loadRecommendList() {
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchPopularAndRecommend.invoke()
-            delay(5000L)
             Log.e("ayhan", "loadRecommendList : $response")
             if (response.success) {
                 _recommendList.value = response.data.parseUI(userId)
