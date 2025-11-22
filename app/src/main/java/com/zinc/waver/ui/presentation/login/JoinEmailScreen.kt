@@ -59,7 +59,6 @@ import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
-import kotlinx.coroutines.delay
 import com.zinc.waver.ui_common.R as CommonR
 
 
@@ -228,7 +227,6 @@ suspend fun signIn(
     val e: Exception? = null
     //using delay() here helps prevent NoCredentialException when the BottomSheet Flow is triggered
     //on the initial running of our app
-    delay(500)
     try {
         // The getCredential is called to request a credential from Credential Manager.
         val result = credentialManager.getCredential(
