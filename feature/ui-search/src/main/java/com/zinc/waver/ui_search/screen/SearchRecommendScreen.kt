@@ -42,8 +42,8 @@ fun SearchRecommendScreen(
         recommendList?.let { list ->
             RecommendListView(
                 recommendList = list,
-                bucketClicked = { bucketId, userId ->
-                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId))
+                bucketClicked = { bucketId, userId, isMine ->
+                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId, isMine))
                 },
                 isFirstItemShown = { isTop ->
                     isFirstItemShown = isTop

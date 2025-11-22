@@ -12,9 +12,10 @@ data class HomeProfileResponse(
 
 @Serializable
 data class HomeProfileInfo(
+    val id: String,
     val name: String, // 프로필네임
     val imgUrl: String?, // 프로필이미지
-    val badgeUrl: String?,
+    val badgeImgUrl: String?,
     val badgeTitle: String,
     val bio: String,
     val followingCount: String,

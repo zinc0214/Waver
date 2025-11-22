@@ -74,6 +74,7 @@ private fun FeedLayerPreview() {
         repeat(10) {
             add(
                 UIFeedInfo(
+                    isMine = false,
                     bucketId = it.toString(),
                     writerId = it.toString() + 100,
                     profileImage = null,

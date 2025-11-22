@@ -4,11 +4,12 @@ import com.zinc.domain.models.SearchPopularAndRecommendResponse
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
 
-fun SearchResultResponse.SearchResult.parseUI(): SearchResultItems {
+fun SearchResultResponse.SearchResult.parseUI(userId: String): SearchResultItems {
     val bucketItems = this.bucketlist.map {
         SearchBucketItem(
+            isMine = it.userId == userId,
             bucketId = it.id.toString(),
-            writerId = it.userId, // TODO : writer id 붙이기
+            writerId = it.userId,
             thumbnail = null,
             title = it.title,
             isCopied = it.scrapYn?.isYes() == true
@@ -42,13 +43,14 @@ fun SearchRecommendResponse.RecommendData.parseUI(): SearchRecommendItems {
     return SearchRecommendItems(recentWords = recentWords, recommendWords = recommendWords)
 }
 
-fun SearchPopularAndRecommendResponse.RecommendData.parseUI(): RecommendList {
+fun SearchPopularAndRecommendResponse.RecommendData.parseUI(userId: String): RecommendList {
     val popularItems =
         RecommendItem(
             type = RecommendType.POPULAR,
             tagList = popularKeyword,
             items = this.popularList.map {
                 SearchBucketItem(
+                    isMine = false, // TODO : id 붙이기
                     bucketId = it.id.toString(),
                     writerId = "1", // TODO : writer id 붙이기
                     thumbnail = null,
@@ -64,6 +66,7 @@ fun SearchPopularAndRecommendResponse.RecommendData.parseUI(): RecommendList {
         tagList = recommendKeyword,
         items = this.recommendList.map {
             SearchBucketItem(
+                isMine = false, // TODO : id 붙이기
                 bucketId = it.id.toString(),
                 writerId = "1", // TODO : writer id 붙이기
                 thumbnail = null,
@@ -99,6 +102,7 @@ data class RecommendItem(
 )
 
 data class SearchBucketItem(
+    val isMine: Boolean,
     val bucketId: String,
     val writerId: String,
     val thumbnail: String? = null,

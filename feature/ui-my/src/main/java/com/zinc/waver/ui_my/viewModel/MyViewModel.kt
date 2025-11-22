@@ -11,6 +11,7 @@ import com.zinc.common.models.DdaySortType
 import com.zinc.common.models.TopProfile
 import com.zinc.common.models.YesOrNo
 import com.zinc.datastore.bucketListFilter.FilterPreferenceDataStoreModule
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.category.SearchCategoryList
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.my.LoadAllBucketList
@@ -42,7 +43,8 @@ class MyViewModel @Inject constructor(
     private val searchCategoryList: SearchCategoryList,
     private val searchDdayBucketList: SearchDdayBucketList,
     private val achieveMyBucket: AchieveMyBucket,
-    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule
+    private val filterPreferenceDataStoreModule: FilterPreferenceDataStoreModule,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _profileInfo = MutableLiveData<TopProfile>()
@@ -215,13 +217,15 @@ class MyViewModel @Inject constructor(
                 val topProfile = TopProfile(
                     name = data.name,
                     imgUrl = data.imgUrl,
-                    badgeImgUrl = data.badgeUrl,
+                    badgeImgUrl = data.badgeImgUrl,
                     badgeTitle = data.badgeTitle,
                     bio = data.bio,
                     followingCount = data.followingCount,
                     followerCount = data.followerCount,
                     percent = data.bucketInfo.grade()
                 )
+
+                preferenceDataStoreModule.setUserIdKey(data.id)
 
                 Log.e("ayhan", "homeProfike : $topProfile")
                 _profileInfo.value = topProfile

@@ -14,6 +14,7 @@ fun List<KeywordInfo>.parseUI() = map { UIFeedKeyword(id = it.code, keyword = it
 
 @Serializable
 data class UIFeedInfo(
+    val isMine: Boolean,
     val bucketId: String,
     val writerId: String,
     val profileImage: String?,
@@ -29,8 +30,9 @@ data class UIFeedInfo(
     val isScraped: Boolean,
 )
 
-fun FeedListResponse.toUIModel() = this.data.map { item ->
+fun FeedListResponse.toUIModel(userId: String) = this.data.map { item ->
     UIFeedInfo(
+        isMine = item.user.id == userId,
         bucketId = item.id,
         writerId = item.user.id,
         profileImage = item.user.imgUrl,
@@ -59,7 +61,8 @@ fun UIFeedInfo.profileInfo(): MyProfileInfoUi {
 sealed interface FeedClickEvent {
     data class Like(val isLike: Boolean, val id: String) : FeedClickEvent
     data class Scrap(val id: String) : FeedClickEvent
-    data class GoToBucket(val bucketId: String, val userId: String) : FeedClickEvent
+    data class GoToBucket(val bucketId: String, val userId: String, val isMine: Boolean) :
+        FeedClickEvent
 }
 
 sealed class FeedLoadStatus {

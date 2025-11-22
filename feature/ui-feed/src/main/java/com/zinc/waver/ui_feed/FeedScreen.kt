@@ -33,7 +33,7 @@ import com.zinc.waver.ui_feed.viewModel.FeedViewModel
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
-fun FeedScreen(goToBucket: (String, String) -> Unit) {
+fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
 
     val context = LocalContext.current
 
@@ -72,7 +72,7 @@ fun FeedScreen(goToBucket: (String, String) -> Unit) {
         feedClickEvent = { event ->
             when (event) {
                 is FeedClickEvent.GoToBucket -> {
-                    goToBucket(event.bucketId, event.userId)
+                    goToBucket(event.bucketId, event.userId, event.isMine)
                 }
 
                 is FeedClickEvent.Like -> {
@@ -178,6 +178,7 @@ private fun FeedScreenPreview1() {
         repeat(10) {
             add(
                 UIFeedInfo(
+                    isMine = false,
                     bucketId = "1",
                     writerId = "11",
                     profileImage = null,
@@ -245,7 +246,7 @@ private fun FeedScreenPreview3() {
 @Composable
 private fun FeedScreenPreview4() {
     FeedScreen(
-        goToBucket = { _, _ -> }
+        goToBucket = { _, _, _ -> }
     )
 }
 

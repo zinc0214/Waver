@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
@@ -20,6 +21,7 @@ import com.zinc.waver.ui_search.model.SearchResultItems
 import com.zinc.waver.ui_search.model.parseUI
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +32,8 @@ class SearchViewModel @Inject constructor(
     private val loadSearchRecommend: LoadSearchRecommend,
     private val deleteRecentWord: DeleteRecentWord,
     private val requestFollow: RequestFollowUser,
-    private val requestUnFollow: RequestUnfollowUser
+    private val requestUnFollow: RequestUnfollowUser,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _recommendList = MutableLiveData<RecommendList>()
@@ -49,13 +52,22 @@ class SearchViewModel @Inject constructor(
     val actionFail: LiveData<Nothing> get() = _actionFail
 
     var prevSearchWord: String = ""
+    private var userId = ""
+
+    init {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadUserIdKey.collectLatest { value ->
+                userId = value
+            }
+        }
+    }
 
     fun loadRecommendList() {
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchPopularAndRecommend.invoke()
             Log.e("ayhan", "loadRecommendList : $response")
             if (response.success) {
-                _recommendList.value = response.data.parseUI()
+                _recommendList.value = response.data.parseUI(userId)
             } else {
                 _loadFail.value = response.message
             }
@@ -86,7 +98,7 @@ class SearchViewModel @Inject constructor(
             Log.e("ayhan", "loadSearchResult : $response")
             if (response.success) {
                 prevSearchWord = searchWord
-                _searchResultItems.value = response.data.parseUI()
+                _searchResultItems.value = response.data.parseUI(userId)
 
             } else {
                 _loadFail.value = response.message
@@ -133,6 +145,7 @@ class SearchViewModel @Inject constructor(
     private fun loadRecommendListDummy(): RecommendList {
         val bucketItem = listOf(
             SearchBucketItem(
+                isMine = false,
                 bucketId = "1",
                 thumbnail = "1",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
@@ -140,18 +153,21 @@ class SearchViewModel @Inject constructor(
                 isCopied = false
             ),
             SearchBucketItem(
+                isMine = false,
                 bucketId = "2",
                 title = "버킷리스트 타이틀",
                 writerId = "32",
                 isCopied = true
             ),
             SearchBucketItem(
+                isMine = false,
                 bucketId = "3",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
                 writerId = "32",
                 isCopied = false
             ),
             SearchBucketItem(
+                isMine = false,
                 bucketId = "4",
                 title = "버킷리스트 타이틀",
                 writerId = "32",

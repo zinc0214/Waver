@@ -75,11 +75,11 @@ internal fun NavGraphBuilder.homeMy(
 }
 
 internal fun NavGraphBuilder.homeFeed(
-    onFeedClicked: (String, String, NavBackStackEntry) -> Unit
+    onFeedClicked: (String, String, Boolean, NavBackStackEntry) -> Unit
 ) {
     composable(HomeSections.FEED.route) { from ->
-        FeedScreen(goToBucket = { bucketId, userId ->
-            onFeedClicked(bucketId, userId, from)
+        FeedScreen(goToBucket = { bucketId, userId, isMine ->
+            onFeedClicked(bucketId, userId, isMine, from)
         })
     }
 }

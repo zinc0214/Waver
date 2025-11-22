@@ -82,7 +82,13 @@ fun FeedCardView(
                 RoundedCornerShape(8.dp)
             )
             .clickable {
-                clickEvent.invoke(FeedClickEvent.GoToBucket(feedInfo.bucketId, feedInfo.writerId))
+                clickEvent.invoke(
+                    FeedClickEvent.GoToBucket(
+                        feedInfo.bucketId,
+                        feedInfo.writerId,
+                        feedInfo.isMine
+                    )
+                )
             }
     ) {
         Column {
@@ -128,7 +134,8 @@ fun FeedCardView(
 
 @Composable
 private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
-    Box(modifier = modifier,
+    Box(
+        modifier = modifier,
         content = {
             Image(
                 painter = painterResource(id = if (isProcessing) R.drawable.status_process_img else R.drawable.stauts_success_img),
@@ -216,7 +223,8 @@ private fun BottomStateView(
                     clickEvent.invoke(
                         FeedClickEvent.GoToBucket(
                             feedInfo.bucketId,
-                            feedInfo.writerId
+                            feedInfo.writerId,
+                            feedInfo.isMine
                         )
                     )
                 },
@@ -257,6 +265,7 @@ private fun BottomStateView(
 private fun FeedCardViewPreview() {
     FeedCardView(
         feedInfo = UIFeedInfo(
+            isMine = false,
             bucketId = "1",
             writerId = "11",
             profileImage = null,

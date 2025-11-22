@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.common.CopyOtherBucket
 import com.zinc.domain.usecases.common.SaveBucketLike
 import com.zinc.domain.usecases.feed.LoadFeedItems
@@ -18,6 +19,7 @@ import com.zinc.waver.ui_feed.models.toUIModel
 import com.zinc.waver.util.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,7 +29,8 @@ class FeedViewModel @Inject constructor(
     private val loadFeedItems: LoadFeedItems,
     private val savedKeywordItems: SavedKeywordItems,
     private val saveBucketLike: SaveBucketLike,
-    private val copyOtherBucket: CopyOtherBucket
+    private val copyOtherBucket: CopyOtherBucket,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
     private val _feedKeyWords = MutableLiveData<List<UIFeedKeyword>>()
     val feedKeyWords: LiveData<List<UIFeedKeyword>> get() = _feedKeyWords
@@ -44,6 +47,16 @@ class FeedViewModel @Inject constructor(
         _loadStatusEvent.value = FeedLoadStatus.LoadFail(hasData)
     }
 
+    private var userId: String = ""
+
+    init {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadUserIdKey.collectLatest { value ->
+                userId = value
+            }
+        }
+    }
+
     fun loadFeedItems() {
         _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
         viewModelScope.launch(loadCeh) {
@@ -54,7 +67,8 @@ class FeedViewModel @Inject constructor(
                 } else if (this.success.not()) {
                     _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
                 } else {
-                    _feedItems.value = this.toUIModel()
+                    _feedItems.value = this.toUIModel(userId)
+                    Log.e("ayhan", "feedData : userId : $userId")
                 }
                 _loadStatusEvent.value = FeedLoadStatus.Success
             }

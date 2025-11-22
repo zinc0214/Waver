@@ -161,7 +161,7 @@ fun RecommendDivider(modifier: Modifier = Modifier) {
 @Composable
 fun RecommendListView(
     recommendList: RecommendList,
-    bucketClicked: (String, String) -> Unit,
+    bucketClicked: (String, String, Boolean) -> Unit,
     isFirstItemShown: (Boolean) -> Unit
 ) {
 
@@ -239,7 +239,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
 @Composable
 fun RecommendBucketListView(
     list: List<SearchBucketItem>,
-    bucketClicked: (String, String) -> Unit,
+    bucketClicked: (String, String, Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -258,7 +258,7 @@ fun RecommendBucketListView(
 fun RecommendBucketItemView(
     modifier: Modifier = Modifier,
     item: SearchBucketItem,
-    bucketClicked: (String, String) -> Unit
+    bucketClicked: (String, String, Boolean) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
@@ -268,7 +268,7 @@ fun RecommendBucketItemView(
         modifier = modifier
             .padding(top = 12.dp)
             .clickable {
-                bucketClicked(item.bucketId, item.writerId)
+                bucketClicked(item.bucketId, item.writerId, item.isMine)
             }
     ) {
         Column {

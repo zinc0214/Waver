@@ -163,8 +163,8 @@ private fun NavGraphBuilder.setupMainScreens(
     action: (ActionWithActivity) -> Unit
 ) {
     // Feed Screen
-    homeFeed(onFeedClicked = { bucketId, userId, nav ->
-        appState.navigateToOpenBucketDetail(bucketId, userId, false, nav)
+    homeFeed(onFeedClicked = { bucketId, userId, isMine, nav ->
+        appState.navigateToOpenBucketDetail(bucketId, userId, isMine, nav)
     })
 
     // Search Screen
@@ -354,7 +354,7 @@ private fun handleSearchEvent(
             appState.navigateToOpenBucketDetail(
                 event.bucketId,
                 event.userId,
-                false,
+                event.isMine,
                 nav
             )
         }
