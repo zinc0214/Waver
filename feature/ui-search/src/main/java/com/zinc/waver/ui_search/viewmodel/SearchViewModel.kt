@@ -53,6 +53,7 @@ class SearchViewModel @Inject constructor(
     fun loadRecommendList() {
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchPopularAndRecommend.invoke()
+            Log.e("ayhan", "loadRecommendList : $response")
             if (response.success) {
                 _recommendList.value = response.data.parseUI()
             } else {
@@ -64,6 +65,7 @@ class SearchViewModel @Inject constructor(
     fun loadSearchRecommendItems() {
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchRecommend.invoke()
+            Log.e("ayhan", "loadSearchRecommendItems : $response")
             if (response.success) {
                 _searchRecommendItems.value = response.data?.parseUI()
             } else {

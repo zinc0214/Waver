@@ -80,7 +80,7 @@ private fun FeedLayerPreview() {
                     badgeImage = "consul",
                     titlePosition = "dictumst",
                     nickName = "Cherry McConnell",
-                    imageList = listOf(),
+                    images = listOf(),
                     isProcessing = false,
                     title = "wisi",
                     liked = false,

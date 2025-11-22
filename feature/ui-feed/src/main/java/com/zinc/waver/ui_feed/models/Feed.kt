@@ -20,18 +20,14 @@ data class UIFeedInfo(
     val badgeImage: String,
     val titlePosition: String,
     val nickName: String,
-    val imageList: List<String>? = null,
+    val images: List<String>? = null,
     val isProcessing: Boolean,
     val title: String,
     val liked: Boolean,
     val likeCount: Int,
     val commentCount: Int,
     val isScraped: Boolean,
-) {
-    fun hasImage(): Boolean {
-        return !imageList.isNullOrEmpty()
-    }
-}
+)
 
 fun FeedListResponse.toUIModel() = this.data.map { item ->
     UIFeedInfo(
@@ -41,7 +37,7 @@ fun FeedListResponse.toUIModel() = this.data.map { item ->
         badgeImage = item.user.badgeImgUrl.orEmpty(),
         titlePosition = item.user.badgeTitle.orEmpty(),
         nickName = item.user.name,
-        imageList = item.images,
+        images = item.images,
         isProcessing = item.status == FeedListResponse.FeedItemResponse.FeedItemBucketStatus.PROGRESS,
         title = item.title,
         liked = item.likeYn?.isYes() ?: false,

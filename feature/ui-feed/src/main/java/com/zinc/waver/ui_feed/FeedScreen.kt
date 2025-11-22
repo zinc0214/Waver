@@ -137,7 +137,7 @@ private fun FeedScreen(
     ) {
         if (keywordList == null && feedList == null) {
             FeedScreenLoading()
-        } else if (keywordList?.isNotEmpty() == true) {
+        } else if (keywordList?.isNotEmpty() == true && feedList == null) {
             if (loadStatus is FeedLoadStatus.LoadFail) {
                 if (loadStatus.hasData) {
                     updateLoadStatus(FeedLoadStatus.ToastFail)
@@ -184,7 +184,7 @@ private fun FeedScreenPreview1() {
                     badgeImage = "",
                     titlePosition = "나는야 주스될거야",
                     nickName = "Sean Barker",
-                    imageList = listOf(),
+                    images = listOf(),
                     isProcessing = true,
                     title = "dolorum",
                     liked = false,

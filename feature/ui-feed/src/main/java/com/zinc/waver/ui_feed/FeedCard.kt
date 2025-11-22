@@ -105,12 +105,12 @@ fun FeedCardView(
                 title = feedInfo.title
             )
 
-            if (feedInfo.imageList.isNullOrEmpty().not()) {
+            if (feedInfo.images.isNullOrEmpty().not()) {
                 ImageView(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
                         .padding(top = 20.dp),
-                    imageList = feedInfo.imageList.orEmpty()
+                    imageList = feedInfo.images
                 )
             }
 
@@ -263,7 +263,7 @@ private fun FeedCardViewPreview() {
             badgeImage = "",
             titlePosition = "나는야 주스될거야",
             nickName = "Sean Barker",
-            imageList = listOf("https://picsum.photos/200/300"),
+            images = listOf("https://picsum.photos/200/300"),
             isProcessing = true,
             title = "dolorum",
             liked = false,
