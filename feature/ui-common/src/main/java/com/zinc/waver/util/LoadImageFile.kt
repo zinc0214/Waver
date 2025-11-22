@@ -4,19 +4,19 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.graphics.scale
-import com.zinc.waver.model.UserSelectedImageInfo
+import com.zinc.waver.model.LoadedImageInfo
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-fun getImageFileWithImageInfo(photoUri: Uri, key: Int): UserSelectedImageInfo? {
+fun getImageFileWithImageInfo(photoUri: Uri, key: Int): LoadedImageInfo? {
     if (photoUri.path.isNullOrEmpty()) {
         return null
     }
     val src = BitmapFactory.decodeFile(photoUri.path)
     val resized = src.scale(700, 700)
     val imageFile = saveBitmapAsFile(resized, photoUri.path!!)
-    return UserSelectedImageInfo(
+    return LoadedImageInfo(
         key = key,
         uri = photoUri,
         file = imageFile,

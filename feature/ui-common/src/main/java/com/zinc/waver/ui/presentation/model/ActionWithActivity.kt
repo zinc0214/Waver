@@ -1,11 +1,11 @@
 package com.zinc.waver.ui.presentation.model
 
 import com.zinc.waver.model.AddImageType
-import com.zinc.waver.model.UserSelectedImageInfo
+import com.zinc.waver.model.LoadedImageInfo
 
 sealed class ActionWithActivity {
     data class AddImage(
-        val type: AddImageType, val failed: () -> Unit, val succeed: (UserSelectedImageInfo) -> Unit
+        val type: AddImageType, val failed: () -> Unit, val succeed: (LoadedImageInfo) -> Unit
     ) : ActionWithActivity()
 
     data class CheckPermission(

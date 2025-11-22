@@ -71,7 +71,7 @@ import com.zinc.waver.ui_write.presentation.options.ImageItem
 import com.zinc.waver.ui_write.presentation.options.MemoScreen
 import com.zinc.waver.ui_write.presentation.options.OptionScreen
 import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
-import com.zinc.waver.util.createImageInfoWithPath
+import com.zinc.waver.util.loadImageFiles
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -175,7 +175,7 @@ fun WriteScreen1(
         }
     }
 
-    val loadedImages = createImageInfoWithPath(context, images = originWriteInfo1.getImagesPaths())
+    val loadedImages = loadImageFiles(context, images = originWriteInfo1.getImagesPaths())
 
     val title = remember { mutableStateOf(originWriteInfo1.title) }
     val originMemo = remember { mutableStateOf(originWriteInfo1.getMemo()) }
@@ -246,6 +246,7 @@ fun WriteScreen1(
                                         succeed = { imageInfo ->
                                             Log.e("ayhan", "imageInfo : $imageInfo")
                                             imageList.value += imageInfo
+                                            Log.e("ayhan", "imageList : ${imageList.value}")
                                             selectedOption = null
                                             isNeedToBottomSheetOpen.invoke(false)
 

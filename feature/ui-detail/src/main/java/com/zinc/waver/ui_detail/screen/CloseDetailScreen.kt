@@ -29,8 +29,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.DetailAppBarClickEvent
 import com.zinc.waver.model.DetailLoadFailStatus
+import com.zinc.waver.model.LoadedImageInfo
 import com.zinc.waver.model.SuccessButtonInfo
-import com.zinc.waver.model.UserSelectedImageInfo
 import com.zinc.waver.model.WriteTotalInfo
 import com.zinc.waver.ui.design.theme.BaseTheme
 import com.zinc.waver.ui.design.util.rememberScrollContext
@@ -73,7 +73,7 @@ fun CloseDetailScreen(
     val optionPopUpShowed = remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
     val goalCountUpdatePopUpShowed = remember { mutableStateOf(false) } // 달성횟수 팝업 노출 여부
-    val imageInfos = remember { mutableListOf<UserSelectedImageInfo>() }
+    val imageInfos = remember { mutableListOf<LoadedImageInfo>() }
 
     val loadFail = remember { mutableStateOf(loadFailAsState) }
     val showLoadFailDialog = remember { mutableStateOf(false) }

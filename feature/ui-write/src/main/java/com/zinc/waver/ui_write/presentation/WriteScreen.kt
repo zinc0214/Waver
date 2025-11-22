@@ -20,7 +20,7 @@ import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.waver.ui_write.R
 import com.zinc.waver.ui_write.model.WriteEvent
 import com.zinc.waver.ui_write.viewmodel.WriteBucketListViewModel
-import com.zinc.waver.util.createImageInfoWithPath
+import com.zinc.waver.util.downloadImagesWithCoil
 
 @Composable
 fun WriteScreen(
@@ -66,7 +66,7 @@ fun WriteScreen(
             val info = prevWriteDataForUpdateAsState
             val imageInfo = DetailDescType.ImageInfo(info?.images.orEmpty())
             val imageToUiModel =
-                createImageInfoWithPath(context = context, images = imageInfo.imageList)
+                downloadImagesWithCoil(context = context, images = imageInfo.imageList)
 
             writeBucketListViewModel.savedWriteData(info?.toUpdateUiModel(imageToUiModel))
         }

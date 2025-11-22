@@ -25,7 +25,7 @@ import com.canhub.cropper.CropImageView
 import com.google.android.gms.ads.MobileAds
 import com.zinc.waver.R
 import com.zinc.waver.model.AddImageType
-import com.zinc.waver.model.UserSelectedImageInfo
+import com.zinc.waver.model.LoadedImageInfo
 import com.zinc.waver.ui.presentation.login.JoinScreen
 import com.zinc.waver.ui.presentation.login.LoginScreen
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
@@ -266,7 +266,7 @@ class HomeActivity : AppCompatActivity() {
                 try {
                     val file = getFileFromUri(this, uri)
                     if (file != null) {
-                        val imageInfo = UserSelectedImageInfo(
+                        val imageInfo = LoadedImageInfo(
                             key = imageCount++,
                             uri = uri,
                             file = file,

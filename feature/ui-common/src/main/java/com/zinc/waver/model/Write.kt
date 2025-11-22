@@ -232,7 +232,7 @@ data class UIAddBucketListInfo(
 
 
 fun DetailInfo.toUpdateUiModel(
-    imagesList: List<UserSelectedImageInfo>
+    imagesList: List<LoadedImageInfo>
 ) = WriteTotalInfo(
     bucketId = this.id,
     title = this.title,
@@ -244,7 +244,7 @@ fun DetailInfo.toUpdateUiModel(
     isForUpdate = true
 )
 
-private fun DetailInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List<WriteOption1Info> {
+private fun DetailInfo.getOptions(imagesList: List<LoadedImageInfo>): List<WriteOption1Info> {
     val optionsList = mutableListOf<WriteOption1Info>()
 
     memo?.let {

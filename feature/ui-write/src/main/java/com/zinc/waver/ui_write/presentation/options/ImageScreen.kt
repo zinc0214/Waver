@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.compose.rememberAsyncImagePainter
-import com.zinc.waver.model.UserSelectedImageInfo
+import com.zinc.waver.model.LoadedImageInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
@@ -32,8 +32,8 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun ImageItem(
-    imageInfo: UserSelectedImageInfo,
-    deleteImage: ((UserSelectedImageInfo) -> Unit)? = null
+    imageInfo: LoadedImageInfo,
+    deleteImage: ((LoadedImageInfo) -> Unit)? = null
 ) {
     ConstraintLayout(
         modifier = Modifier

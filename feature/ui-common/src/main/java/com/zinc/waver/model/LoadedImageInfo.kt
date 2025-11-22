@@ -6,12 +6,9 @@ import kotlinx.parcelize.Parcelize
 import java.io.File
 
 @Parcelize
-data class UserSelectedImageInfo(
+data class LoadedImageInfo(
     private val key: Int,
     val uri: Uri,
     val file: File,
     val path: String
-) : java.io.Serializable, Parcelable {
-    fun parseKey() = key.toString() + uri.toString()
-    fun intKey() = key
-}
+) : java.io.Serializable, Parcelable

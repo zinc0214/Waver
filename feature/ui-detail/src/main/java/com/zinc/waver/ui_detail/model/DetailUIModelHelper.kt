@@ -7,7 +7,7 @@ import com.zinc.common.models.YesOrNo
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.Comment
 import com.zinc.waver.model.DetailDescType
-import com.zinc.waver.model.UserSelectedImageInfo
+import com.zinc.waver.model.LoadedImageInfo
 import com.zinc.waver.model.WriteCategoryInfo
 import com.zinc.waver.model.WriteFriend
 import com.zinc.waver.model.WriteKeyWord
@@ -81,7 +81,7 @@ fun bucketDetailResponseToUiModel(
 
 
 fun BucketDetailUiInfo.toUpdateUiModel(
-    imagesList: List<UserSelectedImageInfo>
+    imagesList: List<LoadedImageInfo>
 ) = WriteTotalInfo(
     bucketId = this.bucketId,
     title = this.descInfo.title,
@@ -97,7 +97,7 @@ fun BucketDetailUiInfo.toUpdateUiModel(
     isForUpdate = false
 )
 
-private fun BucketDetailUiInfo.getOptions(imagesList: List<UserSelectedImageInfo>): List<WriteOption1Info> {
+private fun BucketDetailUiInfo.getOptions(imagesList: List<LoadedImageInfo>): List<WriteOption1Info> {
     val optionsList = mutableListOf<WriteOption1Info>()
 
     memoInfo?.let {
