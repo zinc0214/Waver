@@ -6,7 +6,7 @@
     <string name="recommendSearch">Recommended Keywords</string>
     <string name="showMore">Show More</string>
     <string name="searchLoadFail">Failed to load search results</string>
-    <string name="searchHint">Search the list</string>
+    <string name="searchHint">Type a keyword to search</string>
     <string name="keywordRefresh">Refresh Keywords</string>
     <string name="searchProfileImage">Profile Image</string>
 

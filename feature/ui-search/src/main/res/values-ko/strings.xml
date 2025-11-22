@@ -6,7 +6,7 @@
     <string name="recommendSearch">추천 키워드</string>
     <string name="showMore">더보기</string>
     <string name="searchLoadFail">검색 로드 실패</string>
-    <string name="searchHint">리스트를 검색하세요</string>
+    <string name="searchHint">검색어를 입력해주세요.</string>
     <string name="keywordRefresh">키워드 새로고침</string>
     <string name="searchProfileImage">프로필 이미지</string>
 
