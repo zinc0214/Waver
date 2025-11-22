@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray2
@@ -98,7 +99,7 @@ private fun SearchTextView(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = Gray1)
-            .padding(top = 20.dp, bottom = 29.dp, start = 28.dp, end = 28.dp)
+            .padding(top = 20.dp, bottom = 24.dp, start = 28.dp, end = 28.dp)
             .height(48.dp)
             .background(shape = RoundedCornerShape(8.dp), color = Gray2)
             .clickable {
@@ -131,7 +132,7 @@ private fun SearchTextView(
                     })
 
             Image(
-                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.btn_32_search),
+                painter = painterResource(id = CommonR.drawable.btn_32_search),
                 contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
@@ -175,9 +176,7 @@ fun RecommendListView(
         modifier = Modifier
             .fillMaxWidth(),
         state = listScrollState,
-        contentPadding = PaddingValues(
-            top = 16.dp, bottom = 32.dp
-        )
+        contentPadding = PaddingValues(bottom = 32.dp)
     ) {
         items(
             items = recommendList.items,
@@ -217,7 +216,12 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
                         .size(24.dp)
                         .padding(end = 4.dp)
                 )
-                MyText(text = title, fontSize = dpToSp(15.dp), color = Gray10)
+                MyText(
+                    text = title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = dpToSp(15.dp),
+                    color = Gray10
+                )
             }
 
             TagListView(
@@ -274,11 +278,16 @@ fun RecommendBucketItemView(
         Column {
             if (item.thumbnail != null) {
                 Image(
-                    painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_placeholder),
+                    painter =
+                        rememberAsyncImagePainter(
+                            model = item.thumbnail,
+                            error = painterResource(id = CommonR.drawable.profile_placeholder)
+                        ),
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 12.dp, top = 12.dp, end = 12.dp)
+                        .padding(top = 12.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .size(280.dp, 140.dp)
                 )
             }
 
@@ -288,6 +297,7 @@ fun RecommendBucketItemView(
                 MyText(
                     text = item.title,
                     fontSize = dpToSp(14.dp),
+                    fontWeight = FontWeight.Medium,
                     color = Gray10,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
@@ -311,8 +321,8 @@ fun RecommendBucketItemView(
                     onClick = {
                         // can copied if is unCopied
                     },
-                    image = if (item.isCopied) com.zinc.waver.ui_common.R.drawable.btn_32_copy_on else com.zinc.waver.ui_common.R.drawable.btn_32_copy_off,
-                    contentDescription = stringResource(id = com.zinc.waver.ui_common.R.string.copy),
+                    image = if (item.isCopied) CommonR.drawable.btn_32_copy_on else CommonR.drawable.btn_32_copy_off,
+                    contentDescription = stringResource(id = CommonR.string.copy),
                     modifier = Modifier
                         .constrainAs(copiedIcon) {
                             top.linkTo(parent.top)
@@ -355,7 +365,6 @@ fun KeyWordChangeButton(modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 private fun RecommendTitlePreview() {
-
     RecommendTitleView(
         recommendItem = RecommendItem(
             type = RecommendType.RECOMMEND,
@@ -372,5 +381,23 @@ private fun RecommendTopBarPreview() {
         modifier = Modifier.fillMaxWidth(),
         isFirstItemShown = true,
         editViewClicked = {}
+    )
+}
+
+@Preview
+@Composable
+private fun RecommendBucketItemViewPreview() {
+    RecommendBucketItemView(
+        modifier = Modifier,
+        item = SearchBucketItem(
+            isMine = false,
+            bucketId = "1",
+            writerId = "1",
+            thumbnail = "11",
+            title = "이것은 추천 버킷 아이템 뷰 프리뷰입니다. 이 텍스트는 꽤 길어서 어떻게 보일지 궁금하네요.",
+            isCopied = false
+        ),
+        bucketClicked = { string: String, string1: String, bool: Boolean -> }
+
     )
 }
