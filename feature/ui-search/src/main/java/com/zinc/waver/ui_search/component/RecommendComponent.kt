@@ -364,3 +364,13 @@ private fun RecommendTitlePreview() {
         )
     )
 }
+
+@Preview
+@Composable
+private fun RecommendTopBarPreview() {
+    RecommendTopBar(
+        modifier = Modifier.fillMaxWidth(),
+        isFirstItemShown = true,
+        editViewClicked = {}
+    )
+}

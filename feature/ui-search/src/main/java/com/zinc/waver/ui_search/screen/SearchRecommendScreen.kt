@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.ui_search.component.RecommendListView
 import com.zinc.waver.ui_search.component.RecommendTopBar
+import com.zinc.waver.ui_search.component.SearchRecommendLoading
 import com.zinc.waver.ui_search.model.SearchGoToEvent
 import com.zinc.waver.ui_search.viewmodel.SearchViewModel
 
@@ -27,9 +28,11 @@ fun SearchRecommendScreen(
 
     var isFirstItemShown by remember { mutableStateOf(true) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .statusBarsPadding()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
         RecommendTopBar(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -39,16 +42,26 @@ fun SearchRecommendScreen(
             }
         )
 
-        recommendList?.let { list ->
-            RecommendListView(
-                recommendList = list,
-                bucketClicked = { bucketId, userId, isMine ->
-                    onSearchEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId, isMine))
-                },
-                isFirstItemShown = { isTop ->
-                    isFirstItemShown = isTop
-                }
-            )
+        if (recommendList == null) {
+            SearchRecommendLoading()
+        } else {
+            recommendList?.let { list ->
+                RecommendListView(
+                    recommendList = list,
+                    bucketClicked = { bucketId, userId, isMine ->
+                        onSearchEvent.invoke(
+                            SearchGoToEvent.GoToOpenBucket(
+                                bucketId,
+                                userId,
+                                isMine
+                            )
+                        )
+                    },
+                    isFirstItemShown = { isTop ->
+                        isFirstItemShown = isTop
+                    }
+                )
+            }
         }
     }
 }

@@ -62,4 +62,6 @@ dependencies {
     implementation(libs.hilt.navigation)
     kapt(libs.hilt.compiler)
 
+    // shimmer
+    implementation(libs.shimmer)
 }
