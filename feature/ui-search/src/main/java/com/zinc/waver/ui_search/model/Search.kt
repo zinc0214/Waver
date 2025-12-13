@@ -50,25 +50,24 @@ fun SearchPopularAndRecommendResponse.RecommendData.parseUI(userId: String): Rec
             tagList = popularKeyword,
             items = this.popularList.map {
                 SearchBucketItem(
-                    isMine = false, // TODO : id 붙이기
+                    isMine = userId == it.userId,
                     bucketId = it.id.toString(),
-                    writerId = "1", // TODO : writer id 붙이기
+                    writerId = it.userId,
                     thumbnail = null,
                     title = it.title,
                     isCopied = it.scrapYn?.isYes() == true
                 )
             },
-
-            )
+        )
 
     val recommendItems = RecommendItem(
         type = RecommendType.RECOMMEND,
         tagList = recommendKeyword,
         items = this.recommendList.map {
             SearchBucketItem(
-                isMine = false, // TODO : id 붙이기
+                isMine = userId == it.userId,
                 bucketId = it.id.toString(),
-                writerId = "1", // TODO : writer id 붙이기
+                writerId = it.userId,
                 thumbnail = null,
                 title = it.title,
                 isCopied = it.scrapYn?.isYes() == true

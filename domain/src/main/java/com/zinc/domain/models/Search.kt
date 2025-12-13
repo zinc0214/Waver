@@ -1,6 +1,8 @@
 package com.zinc.domain.models
 
+import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.BucketType
+import com.zinc.common.models.ExposureStatus
 import com.zinc.common.models.YesOrNo
 
 data class SearchResultResponse(
@@ -61,10 +63,21 @@ data class SearchPopularAndRecommendResponse(
     ) {
         data class BucketItem(
             val id: Int,
+            val userId: String,
             val bucketType: BucketType,
             val title: String,
-            val imgUrl: String,
-            val scrapYn: YesOrNo?
+            val exposureStatus: ExposureStatus,
+            val status: BucketStatus,
+            val userCount: Int,
+            val goalCount: Int,
+            val likeCount: Int,
+            val scrapYn: YesOrNo?,
+            val keyword: List<RecommendKeyword>
+        )
+
+        data class RecommendKeyword(
+            val code: String,
+            val name: String
         )
     }
 }
