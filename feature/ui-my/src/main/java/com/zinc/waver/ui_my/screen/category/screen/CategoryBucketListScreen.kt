@@ -122,7 +122,7 @@ fun CategoryBucketListScreen(
                                     item.isPrivate()
                                 )
                             },
-                            achieveClicked = { myViewModel.achieveBucket(it, MyTabType.ALL) }
+                            achieveAnimDone = { myViewModel.achieveBucket(it, MyTabType.ALL) }
                         )
                     }
                 }

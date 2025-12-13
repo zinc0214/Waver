@@ -56,7 +56,7 @@ fun HorizontalProgressBar(
         modifier = modifier
             .width(176.dp)
             .height(8.dp)
-            .clip(RoundedCornerShape(2.dp)), // Rounded edges
+            .clip(RoundedCornerShape(6.dp)), // Rounded edges
         progress = progressAnimation,
         color = countProgressColor,
         backgroundColor = Gray3

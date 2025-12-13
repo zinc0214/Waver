@@ -1,10 +1,10 @@
 package com.zinc.waver.ui_my
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,7 +88,7 @@ fun SimpleBucketListView(
                 tabType = tabType,
                 isShowDday = showDday,
                 itemClicked = { itemClicked.invoke(it) },
-                achieveClicked = { achieveClicked.invoke(it) }
+                achieveAnimDone = { achieveClicked.invoke(it) }
             )
         }
         item { Spacer(modifier = Modifier.padding(bottom = 60.dp)) }
@@ -101,13 +101,13 @@ fun SimpleBucketCard(
     tabType: MyTabType,
     isShowDday: Boolean,
     itemClicked: (UIBucketInfoSimple) -> Unit,
-    achieveClicked: (String) -> Unit
+    achieveAnimDone: (String) -> Unit
 ) {
     val bucketCount = remember { mutableIntStateOf(itemInfo.currentCount) }
     val borderColor = remember { mutableStateOf(Color.Transparent) }
     val isProgress = remember { mutableStateOf(itemInfo.isProgress()) }
     val backgroundColor = remember { mutableStateOf(if (isProgress.value) Gray1 else Gray3) }
-
+    val achieveClicked = remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -152,7 +152,8 @@ fun SimpleBucketCard(
                         contentDescription = stringResource(CommonR.string.togetherImageDesc),
                         modifier = Modifier
                             .sizeIn(36.dp)
-                            .padding(end = 4.dp),
+                            .padding(end = 4.dp)
+                            .align(Alignment.CenterVertically),
                         colorFilter = ColorFilter.tint(color = Main2)
                     )
                 }
@@ -160,10 +161,17 @@ fun SimpleBucketCard(
                     Card(
                         shape = CircleShape,
                         elevation = 0.dp,
+                        modifier = Modifier
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                achieveClicked.value = true
+                            }
+                            .padding(vertical = 16.dp)
                     ) {
                         BucketCircularProgressBar(
                             progressState = {
-                                Log.e("ayhan", "state : $it , $bucketCount, ${itemInfo.goalCount}")
                                 if (it == BucketProgressState.PROGRESS_END) {
                                     if (tabType is ALL) {
                                         borderColor.value = Main2
@@ -177,10 +185,12 @@ fun SimpleBucketCard(
                                         isProgress.value = false
                                         backgroundColor.value = Gray3
                                     }
-                                    achieveClicked(itemInfo.id)
+                                    achieveClicked.value = false
+                                    achieveAnimDone(itemInfo.id)
                                 }
                             },
-                            tabType = tabType
+                            tabType = tabType,
+                            _animationPlayed = achieveClicked.value
                         )
                     }
                 }
@@ -209,9 +219,9 @@ fun SimpleBucketCard(
                 // Dday
                 if (itemInfo.dDay != null && isProgress.value && isShowDday) {
                     DdayBadgeView(itemInfo)
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
                 } else {
-                    Spacer(modifier = Modifier.height(22.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
                 }
 
                 // Title
@@ -223,9 +233,9 @@ fun SimpleBucketCard(
                         _info = itemInfo,
                         tabType = tabType
                     )
-                    Spacer(modifier = Modifier.height(18.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
                 } else {
-                    Spacer(modifier = Modifier.height(22.dp))
+                    Spacer(modifier = Modifier.height(18.dp))
                 }
             }
         }
@@ -296,25 +306,25 @@ private fun CountProgressView(
             Sub_D3
         }
 
-    Row(modifier = modifier.padding(top = 7.dp, bottom = 7.dp)) {
+    Row(modifier = modifier.padding(top = 7.dp)) {
         HorizontalProgressBar(
             Modifier
                 .align(Alignment.CenterVertically)
-                .height(8.dp),
+                .height(12.dp),
             info.currentCount,
             info.goalCount,
             countProgressColor
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         MyText(
             text = "${info.currentCount}",
             color = countProgressColor,
-            fontSize = dpToSp(13.dp),
+            fontSize = dpToSp(15.dp),
         )
         MyText(
             text = "/${info.goalCountText()}",
             color = Gray4,
-            fontSize = dpToSp(13.dp),
+            fontSize = dpToSp(15.dp),
         )
     }
 }
@@ -323,89 +333,109 @@ private fun CountProgressView(
 @Composable
 private fun SimpleBucketCardPreview1() {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "진핸 중인 버킷리스트 테스트를 해봅시다",
-            currentCount = 1,
-            goalCount = 10,
-            dDay = null,
-            exposureStatues = ExposureStatus.PUBLIC,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.ORIGINAL,
-        ), tabType = ALL, isShowDday = false, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "진핸 중인 버킷리스트 테스트를 해봅시다",
+                currentCount = 0,
+                goalCount = 1,
+                dDay = null,
+                exposureStatues = ExposureStatus.PUBLIC,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = false, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 10,
-            goalCount = 10,
-            dDay = null,
-            exposureStatues = ExposureStatus.PUBLIC,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.ORIGINAL,
-        ), tabType = ALL, isShowDday = false, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "진핸 중인 버킷리스트 테스트를 해봅시다",
+                currentCount = 1,
+                goalCount = 10,
+                dDay = null,
+                exposureStatues = ExposureStatus.PUBLIC,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = false, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 9,
-            goalCount = 10,
-            dDay = 10,
-            exposureStatues = ExposureStatus.PUBLIC,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.ORIGINAL,
-        ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 10,
+                goalCount = 10,
+                dDay = null,
+                exposureStatues = ExposureStatus.PUBLIC,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = false, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 9,
-            goalCount = 10,
-            dDay = -10,
-            exposureStatues = ExposureStatus.PUBLIC,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.ORIGINAL,
-        ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 9,
+                goalCount = 10,
+                dDay = 10,
+                exposureStatues = ExposureStatus.PUBLIC,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 9,
-            goalCount = 10,
-            dDay = -10,
-            exposureStatues = ExposureStatus.FOLLOWER,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.ORIGINAL,
-        ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 9,
+                goalCount = 10,
+                dDay = -10,
+                exposureStatues = ExposureStatus.PUBLIC,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 9,
-            goalCount = 10,
-            dDay = -10,
-            exposureStatues = ExposureStatus.FOLLOWER,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.TOGETHER,
-        ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 9,
+                goalCount = 10,
+                dDay = -10,
+                exposureStatues = ExposureStatus.FOLLOWER,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.ORIGINAL,
+            ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveAnimDone = {})
 
-        SimpleBucketCard(itemInfo = UIBucketInfoSimple(
-            id = "1",
-            title = "완료된 버킷리스트 테스트를 해봅시다",
-            currentCount = 10,
-            goalCount = 10,
-            dDay = -10,
-            exposureStatues = ExposureStatus.FOLLOWER,
-            status = BucketStatus.PROGRESS,
-            isChallenge = false,
-            bucketType = BucketType.TOGETHER,
-        ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveClicked = {})
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 9,
+                goalCount = 10,
+                dDay = -10,
+                exposureStatues = ExposureStatus.FOLLOWER,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.TOGETHER,
+            ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveAnimDone = {})
+
+        SimpleBucketCard(
+            itemInfo = UIBucketInfoSimple(
+                id = "1",
+                title = "완료된 버킷리스트 테스트를 해봅시다",
+                currentCount = 10,
+                goalCount = 10,
+                dDay = -10,
+                exposureStatues = ExposureStatus.FOLLOWER,
+                status = BucketStatus.PROGRESS,
+                isChallenge = false,
+                bucketType = BucketType.TOGETHER,
+            ), tabType = ALL, isShowDday = true, itemClicked = {}, achieveAnimDone = {})
     }
 
 }

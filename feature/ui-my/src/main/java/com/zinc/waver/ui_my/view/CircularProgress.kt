@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,12 +36,13 @@ import com.zinc.waver.ui_common.R
 fun BucketCircularProgressBar(
     progressState: (BucketProgressState) -> Unit,
     tabType: MyTabType,
-    radius: Dp = 16.dp,
+    _animationPlayed: Boolean,
+    radius: Dp = 18.dp,
     animDuration: Int = 1000,
     animDelay: Int = 0
 ) {
     var animationPlayed by remember {
-        mutableStateOf(false)
+        mutableStateOf(_animationPlayed)
     }
 
     var checkBoxShow by remember {
@@ -66,6 +68,11 @@ fun BucketCircularProgressBar(
         },
         label = "curPercentage"
     )
+
+    LaunchedEffect(_animationPlayed) {
+        animationPlayed = _animationPlayed
+    }
+
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -114,10 +121,10 @@ fun BucketCircularProgressBar(
         if (checkBoxShow) {
             Image(
                 painter =
-                if (tabType is ALL)
-                    painterResource(R.drawable.check_succeed)
-                else
-                    painterResource(R.drawable.check_succeed_dday),
+                    if (tabType is ALL)
+                        painterResource(R.drawable.check_succeed)
+                    else
+                        painterResource(R.drawable.check_succeed_dday),
                 contentDescription = null,
                 modifier = Modifier
                     .height(32.dp)
@@ -139,6 +146,6 @@ fun BucketCircularProgressBar(
 @Composable
 private fun BucketCircularProgressBarPreview() {
     BucketCircularProgressBar(
-        progressState = {}, tabType = ALL,
+        progressState = {}, tabType = ALL, _animationPlayed = true
     )
 }
