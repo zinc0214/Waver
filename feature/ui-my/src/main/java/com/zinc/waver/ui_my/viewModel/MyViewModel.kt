@@ -284,9 +284,9 @@ class MyViewModel @Inject constructor(
         val isPassed = if (isShowPlusDday.value == true && isShownMinusDday.value == true) {
             null
         } else if (isShowPlusDday.value == true) {
-            YesOrNo.N.name
-        } else if (isShownMinusDday.value == true) {
             YesOrNo.Y.name
+        } else if (isShownMinusDday.value == true) {
+            YesOrNo.N.name
         } else {
             null
         }
@@ -314,16 +314,15 @@ class MyViewModel @Inject constructor(
                         if (_isShownMinusDday.value == true && _isShowPlusDday.value == true) {
                             uiAllBucketList.bucketList
                         } else if (_isShowPlusDday.value == true) {
-                            uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS }
+                            uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.PLUS || it.getDdayType() == DdaySortType.D_DAY }
                         } else if (_isShownMinusDday.value == true) {
-                            uiAllBucketList.bucketList.filterNot { it.getDdayType() == DdaySortType.PLUS }
+                            uiAllBucketList.bucketList.filter { it.getDdayType() == DdaySortType.MINUS }
                         } else {
                             uiAllBucketList.bucketList
                         }
 
                     _ddayBucketList.value = uiAllBucketList.copy(bucketList = filteredList)
                     _ddayFilterLoadFinished.value = false
-                    Log.e("ayhan", "filteredList : $filteredList")
                 }
             }
         }
