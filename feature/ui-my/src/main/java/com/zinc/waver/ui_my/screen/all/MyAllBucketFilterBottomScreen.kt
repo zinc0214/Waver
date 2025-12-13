@@ -130,7 +130,7 @@ fun MyAllBucketFilterBottomScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 28.dp)
                 .padding(top = 17.dp, bottom = 27.dp)
-                .height(1.dp)
+                .height(0.5.dp)
                 .background(color = Gray3)
 
         )
@@ -155,7 +155,7 @@ fun MyAllBucketFilterBottomScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 28.dp)
                 .padding(top = 12.dp, bottom = 27.dp)
-                .height(1.dp)
+                .height(0.5.dp)
                 .background(color = Gray3)
 
         )
