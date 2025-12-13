@@ -291,7 +291,7 @@ private fun BadgeView(
                 shape = RoundedCornerShape(8.dp),
                 border = BorderStroke(width = 1.dp, color = borderColor)
             )
-            .clickable {
+            .clickable(info.step != MyBadge.Step.STEP0) {
                 badgeSelected()
             }
             .padding(top = 16.dp, bottom = 12.dp)
