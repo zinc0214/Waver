@@ -14,6 +14,7 @@ import com.zinc.domain.usecases.detail.DeleteMyBucket
 import com.zinc.domain.usecases.detail.GoalCountUpdate
 import com.zinc.domain.usecases.detail.HideBucketComment
 import com.zinc.domain.usecases.detail.LoadBucketDetail
+import com.zinc.domain.usecases.detail.LoadFriends
 import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
 import com.zinc.domain.usecases.other.RequestBlockUser
@@ -39,7 +40,8 @@ class DetailViewModel @Inject constructor(
     private val saveBucketLike: SaveBucketLike,
     private val hideBucketComment: HideBucketComment,
     private val deleteMyBucket: DeleteMyBucket,
-    private val requestBlockUser: RequestBlockUser
+    private val requestBlockUser: RequestBlockUser,
+    private val loadFriends: LoadFriends,
 ) : CommonViewModel() {
 
     private val _bucketBucketDetailUiInfo = MutableLiveData<BucketDetailUiInfo>()
@@ -185,40 +187,23 @@ class DetailViewModel @Inject constructor(
     }
 
     private fun getValidMentionList() {
-        val validMentionList = mutableListOf<CommentMentionInfo>()
-
-        repeat(10) {
-            validMentionList.add(
-                CommentMentionInfo(
-                    userId = "$it",
-                    profileImage = "",
-                    nickName = "가나다$it",
-                    isFriend = false,
-                    isSelected = false
-                )
-            )
+        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
+            val response = loadFriends()
+            if (response.success) {
+                val mentionList = response.data.filter { it.mutualFollow }.map {
+                    CommentMentionInfo(
+                        userId = it.id,
+                        profileImage = it.imgUrl,
+                        nickName = it.name,
+                        isFriend = it.mutualFollow,
+                        isSelected = false
+                    )
+                }
+                _validMentionList.value = mentionList
+            } else {
+                _loadFail.value = DetailLoadFailStatus.LoadFail
+            }
         }
-
-        validMentionList.add(
-            CommentMentionInfo(
-                userId = "a",
-                profileImage = "",
-                nickName = "나는우주야",
-                isFriend = false,
-                isSelected = false
-            )
-        )
-        validMentionList.add(
-            CommentMentionInfo(
-                userId = "b",
-                profileImage = "",
-                nickName = "한아",
-                isFriend = false,
-                isSelected = false
-            )
-        )
-
-        _validMentionList.value = validMentionList
     }
 
 
