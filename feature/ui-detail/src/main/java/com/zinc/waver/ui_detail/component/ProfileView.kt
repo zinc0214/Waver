@@ -1,15 +1,12 @@
 package com.zinc.waver.ui_detail.component
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.presentation.component.ProfileView
 import com.zinc.waver.ui.util.dpToSp
 
@@ -20,7 +17,6 @@ fun DetailProfileView(
 ) {
     ProfileView(
         modifier = Modifier
-            .border(width = 1.dp, color = Gray2, shape = RoundedCornerShape(12.dp))
             .padding(top = 28.dp)
             .padding(horizontal = 12.dp)
             .clickable {
