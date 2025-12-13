@@ -456,7 +456,7 @@ internal fun NavGraphBuilder.myWaveManageNavGraph(
     backPress: () -> Unit
 ) {
     composable(MoreDestinations.MY_WAVE_MANAGE) {
-        MyWaveManageScreen(onBackPressed = { backPress() })
+        MyWaveManageScreen(onBackPressed = backPress)
     }
 }
 
