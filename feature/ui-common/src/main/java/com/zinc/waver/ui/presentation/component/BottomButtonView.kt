@@ -22,6 +22,7 @@ import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray6
+import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R
@@ -29,7 +30,7 @@ import com.zinc.waver.ui_common.R
 @Composable
 fun BottomButtonView(
     negative: DialogButtonInfo? = DialogButtonInfo(
-        text = R.string.cancel, color = Gray6
+        text = R.string.cancel, color = Gray7
     ),
     positive: DialogButtonInfo = DialogButtonInfo(
         text = R.string.apply, color = Main4
