@@ -1,7 +1,9 @@
 package com.zinc.waver.ui_write.presentation.options
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.waver.model.WriteFriend
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.SearchEditView
@@ -108,8 +109,8 @@ fun WriteSelectFriendsScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 15.dp),
-                            mainAxisSpacing = 12.dp,
-                            crossAxisSpacing = 8.dp,
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             val list =
                                 if (needShowAllFriendButton.value) updateFriends.take(5) else updateFriends

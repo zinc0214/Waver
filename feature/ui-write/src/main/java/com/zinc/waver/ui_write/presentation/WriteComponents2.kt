@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -286,9 +285,9 @@ fun AddedFriendItem(
         modifier = Modifier
             .background(
                 color = Gray1,
-                shape = RoundedCornerShape(18.dp)
+                shape = RoundedCornerShape(24.dp)
             )
-            .border(width = 1.dp, shape = RoundedCornerShape(18.dp), color = Gray4),
+            .border(width = 1.dp, shape = RoundedCornerShape(24.dp), color = Gray4),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -296,19 +295,18 @@ fun AddedFriendItem(
             text = writeFriend.nickname,
             color = Gray9,
             fontSize = dpToSp(14.dp),
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp, bottom = 10.dp, end = 4.dp)
+            modifier = Modifier.padding(start = 14.dp, top = 10.dp, bottom = 10.dp, end = 4.dp)
         )
 
         IconButton(
             modifier = Modifier
-                .padding(8.dp)
-                .then(Modifier.size(20.dp)),
+                .padding(end = 8.dp)
+                .size(20.dp),
             onClick = {
                 deleteFriend(writeFriend)
             },
             image = CommonR.drawable.btn_20_delete,
-            contentDescription = stringResource(id = com.zinc.waver.ui_common.R.string.deleteButtonDesc)
+            contentDescription = stringResource(id = CommonR.string.deleteButtonDesc)
         )
     }
 }
@@ -352,7 +350,7 @@ fun WriteSelectFriendItem(
             val (profileImage, nickNameView) = createRefs()
 
             Image(
-                painter = painterResource(id = com.zinc.waver.ui_common.R.drawable.profile_placeholder),
+                painter = painterResource(id = CommonR.drawable.profile_placeholder),
                 contentDescription = stringResource(
                     id = CommonR.string.profileImageDesc
                 ),
@@ -361,6 +359,7 @@ fun WriteSelectFriendItem(
                     .padding(start = 12.dp)
                     .size(32.dp)
                     .aspectRatio(1f)
+                    .border(1.dp, Gray2, RoundedCornerShape(12.dp))
                     .clip(shape = RoundedCornerShape(12.dp))
                     .constrainAs(profileImage) {
                         linkTo(
@@ -649,4 +648,15 @@ private fun WriteScrapOptionPreview() {
 @Composable
 private fun OPenTypeOptionPreview() {
     OpenTypeOptionView(modifier = Modifier, openType = WriteOpenType.PUBLIC, optionClicked = {})
+}
+
+@Preview
+@Composable
+private fun AddedFriendItemPreview() {
+    AddedFriendItem(
+        writeFriend = WriteFriend(
+            id = "1", imageUrl = "", nickname = "친구이름"
+        ), deleteFriend = {}
+
+    )
 }
