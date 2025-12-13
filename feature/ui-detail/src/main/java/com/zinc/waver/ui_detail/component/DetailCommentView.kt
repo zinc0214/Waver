@@ -2,6 +2,7 @@ package com.zinc.waver.ui_detail.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.zinc.waver.model.Comment
 import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.ui.design.theme.Gray10
+import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray6
 import com.zinc.waver.ui.design.theme.Gray8
@@ -127,6 +129,7 @@ private fun CommentDescView(
             modifier = Modifier
                 .size(32.dp, 32.dp)
                 .aspectRatio(1f)
+                .border(1.dp, Gray2, RoundedCornerShape(12.dp))
                 .clip(shape = RoundedCornerShape(12.dp))
         )
 
@@ -168,13 +171,14 @@ fun CommentBlankPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun CommentDescPreview() {
-    CommentDescView(comment = Comment(
-        commentId = "1",
-        userId = "1",
-        profileImage = null,
-        nickName = "zllzlzlz",
-        comment = "안년녀ㅕ여여ㅕ영여영",
-        isMine = false,
-        isBlocked = false
-    ), commentIndex = 10, isLastItem = false, commentLongClicked = {})
+    CommentDescView(
+        comment = Comment(
+            commentId = "1",
+            userId = "1",
+            profileImage = null,
+            nickName = "zllzlzlz",
+            comment = "안년녀ㅕ여여ㅕ영여영",
+            isMine = false,
+            isBlocked = false
+        ), commentIndex = 10, isLastItem = false, commentLongClicked = {})
 }
