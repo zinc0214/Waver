@@ -2,6 +2,7 @@ package com.zinc.waver.ui.presentation.login
 
 import BuildConfig.GoogleWebClientId
 import android.content.Context
+import android.util.Base64
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -59,6 +60,7 @@ import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
+import org.json.JSONObject
 import com.zinc.waver.ui_common.R as CommonR
 
 
@@ -416,12 +418,13 @@ fun handleSignIn(result: GetCredentialResponse, goToEmailCheck: (GoogleEmailInfo
                         GoogleIdTokenCredential.createFrom(credential.data)
                     val idToken = googleIdTokenCredential.idToken
                     val email = googleIdTokenCredential.id
-                    Log.e("ayhan", "GoogleIdToken idToken : $idToken \n email : $email")
+                    val decodedString = decodeGoogleIdToken(idToken)
+
                     Log.e(
                         "ayhan",
-                        "GoogleIdToken idToken : ${idToken.drop(50)}\n last : ${idToken.takeLast(100)}"
+                        "GoogleIdToken idToken : $idToken \n email : $email \n decodedString : $decodedString"
                     )
-                    goToEmailCheck(GoogleEmailInfo(email = email, uid = idToken.takeLast(100)))
+                    goToEmailCheck(GoogleEmailInfo(email = email, uid = decodedString))
                 } catch (e: GoogleIdTokenParsingException) {
                     Log.e("ayhan", "Received an invalid google id token response", e)
                 }
@@ -435,6 +438,27 @@ fun handleSignIn(result: GetCredentialResponse, goToEmailCheck: (GoogleEmailInfo
             // Catch any unrecognized credential type here.
             Log.e("ayhan", "Unexpected type of credential")
         }
+    }
+}
+
+private fun decodeGoogleIdToken(idToken: String): String {
+    return try {
+        val parts = idToken.split(".")
+        if (parts.size != 3) {
+            Log.e("ayhan", "Invalid JWT format")
+            return ""
+        }
+
+        val payload = parts[1]
+        val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+        val jsonString = String(decodedBytes, Charsets.UTF_8)
+
+        // JSON 파싱해서 sub 값만 추출
+        val jsonObject = JSONObject(jsonString)
+        jsonObject.getString("sub")
+    } catch (e: Exception) {
+        Log.e("ayhan", "Failed to decode idToken", e)
+        ""
     }
 }
 
