@@ -23,7 +23,7 @@ internal class CategoryRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editCategoryName(id: Int, name: String): CommonResponse {
-        return waverApi.editCategoryName(EditCategoryNameRequest(id, name))
+        return waverApi.editCategoryName(id, EditCategoryNameRequest(name))
     }
 
     override suspend fun removeCategory(id: Int): CommonResponse {

@@ -100,8 +100,9 @@ interface WaverApi {
     ): CommonResponse
 
     // 카테고리 수정
-    @PATCH("/waver/category")
+    @PATCH("/waver/category/{id}")
     suspend fun editCategoryName(
+        @Path("id") id: Int,
         @Body request: EditCategoryNameRequest
     ): CommonResponse
 

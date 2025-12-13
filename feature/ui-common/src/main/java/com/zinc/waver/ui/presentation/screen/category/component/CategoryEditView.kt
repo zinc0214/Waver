@@ -3,6 +3,7 @@ package com.zinc.waver.ui.presentation.screen.category.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -26,9 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,10 +56,6 @@ import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
 import com.zinc.waver.ui.presentation.screen.category.model.CategoryEditOptionEvent
 import com.zinc.waver.ui.util.dpToSp
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorderAfterLongPress
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
@@ -108,7 +110,8 @@ internal fun CategoryEditAddView(
 fun VerticalReorderList(
     categoryList: List<UICategoryInfo>,
     addNewCategory: () -> Unit,
-    optionEvent: (CategoryEditOptionEvent) -> Unit
+    optionEvent: (CategoryEditOptionEvent) -> Unit,
+    onOrderChanged: (List<UICategoryInfo>) -> Unit = {}
 ) {
 
     var data by remember { mutableStateOf(categoryList) }
@@ -118,35 +121,83 @@ fun VerticalReorderList(
         data = categoryList
     }
 
-    val state = rememberReorderableLazyListState(onMove = { from, to ->
-        data = data.toMutableList().apply {
-            val toIndex = if (to.index < 1) 1 else to.index - 1
-            val fromIndex = if (from.index < 1) 1 else from.index - 1
-            add(toIndex, removeAt(fromIndex))
+    val lazyListState = rememberLazyListState()
+
+    val dragAndDropListState =
+        rememberDragAndDropListState(lazyListState) { from, to ->
+            data.toMutableList().move(from, to)
         }
-    }, onDragEnd = { _, _ ->
-        optionEvent.invoke(CategoryEditOptionEvent.ReorderedCategory(data))
-    })
-    LazyColumn(
-        state = state.listState,
-        modifier = Modifier.run {
-            reorderable(state)
-                .detectReorderAfterLongPress(state)
-        }
-    ) {
-        item {
-            CategoryEditAddView(addNewCategory)
-        }
-        itemsIndexed(data, key = { index, item -> item.id }) { index, item ->
-            ReorderableItem(state, key = item, orientationLocked = false) {
-                EditCategoryItemView(index, item, optionEvent)
+
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        CategoryEditAddView(addNewCategory)
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(1f)
+                .dragContainer(dragAndDropListState = dragAndDropListState),
+            state = dragAndDropListState.lazyListState
+        ) {
+            itemsIndexed(data) { index, category ->
+                DraggableItem(
+                    dragAndDropListState = dragAndDropListState,
+                    index = index
+                ) { modifier ->
+                    EditCategoryItemView(modifier, index, category, optionEvent = optionEvent)
+                }
             }
         }
     }
 }
 
+fun <T> MutableList<T>.move(from: Int, to: Int) {
+    if (from == to) return
+    val element = this.removeAt(from)
+    this.add(to, element)
+}
+
+fun Modifier.dragContainer(
+    dragAndDropListState: DragAndDropListState,
+): Modifier {
+    return this.pointerInput(Unit) {
+        detectDragGesturesAfterLongPress(
+            onDrag = { change, offset ->
+                change.consume()
+                dragAndDropListState.onDrag(offset)
+            },
+            onDragStart = { offset ->
+                dragAndDropListState.onDragStart(offset)
+            },
+            onDragEnd = { dragAndDropListState.onDragInterrupted() },
+            onDragCancel = { dragAndDropListState.onDragInterrupted() }
+        )
+    }
+}
+
+@Composable
+fun LazyItemScope.DraggableItem(
+    dragAndDropListState: DragAndDropListState,
+    index: Int,
+    content: @Composable LazyItemScope.(Modifier) -> Unit
+) {
+    val draggingModifier = Modifier
+        .composed {
+            val offsetOrNull =
+                dragAndDropListState.elementDisplacement.takeIf {
+                    index == dragAndDropListState.currentIndexOfDraggedItem
+                }
+            Modifier.graphicsLayer {
+                translationY = offsetOrNull ?: 0f
+            }
+        }
+    content(draggingModifier)
+}
+
+
 @Composable
 private fun EditCategoryItemView(
+    modifier: Modifier,
     index: Int,
     item: UICategoryInfo,
     optionEvent: (CategoryEditOptionEvent) -> Unit
@@ -155,7 +206,7 @@ private fun EditCategoryItemView(
     val expandedMenuIndex = remember { mutableStateOf(-1) }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .shadow(elevation = 1.dp)
     ) {
@@ -217,7 +268,11 @@ private fun EditCategoryItemView(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    optionEvent.invoke(CategoryEditOptionEvent.EditCategoryName(item))
+                                    optionEvent.invoke(
+                                        CategoryEditOptionEvent.EditCategoryName(
+                                            item
+                                        )
+                                    )
                                     expandedMenuIndex.value = -1
                                 }
                                 .padding(
@@ -256,7 +311,6 @@ private fun EditCategoryItemView(
             }
         }
     }
-
 }
 
 

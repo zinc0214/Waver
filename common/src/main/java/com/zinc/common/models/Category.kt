@@ -25,7 +25,6 @@ data class AddNewCategoryRequest(
 
 @Serializable
 data class EditCategoryNameRequest(
-    val id: Int,
     val name: String
 )
 
