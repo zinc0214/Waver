@@ -9,6 +9,7 @@
     <string name="searchHint">Type a keyword to search</string>
     <string name="keywordRefresh">Refresh Keywords</string>
     <string name="searchProfileImage">Profile Image</string>
+    <string name="noRecentSearch">No search history</string>
 
     <string name="searchWordBlankText">No search results for\n </string>
 </resources>

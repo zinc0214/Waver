@@ -108,7 +108,7 @@ class FeedViewModel @Inject constructor(
 
         viewModelScope.launch(ceh(_loadStatusEvent, FeedLoadStatus.ToastFail)) {
             val response = copyOtherBucket.invoke(bucketId)
-            Log.e("ayhan", "response : $response")
+            Log.e("ayhan", "copyOtherBucket response : $response")
             if (response.success) {
                 loadFeedItems()
                 _loadStatusEvent.value = FeedLoadStatus.CopySuccess

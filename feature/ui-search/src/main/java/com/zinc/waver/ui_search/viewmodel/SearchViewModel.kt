@@ -16,7 +16,6 @@ import com.zinc.waver.ui_search.model.RecommendItem
 import com.zinc.waver.ui_search.model.RecommendList
 import com.zinc.waver.ui_search.model.RecommendType
 import com.zinc.waver.ui_search.model.SearchBucketItem
-import com.zinc.waver.ui_search.model.SearchRecommendItems
 import com.zinc.waver.ui_search.model.SearchResultItems
 import com.zinc.waver.ui_search.model.parseUI
 import com.zinc.waver.util.SingleLiveEvent
@@ -39,8 +38,8 @@ class SearchViewModel @Inject constructor(
     private val _recommendList = MutableLiveData<RecommendList>()
     val recommendList: LiveData<RecommendList> get() = _recommendList
 
-    private val _searchRecommendItems = MutableLiveData<SearchRecommendItems>()
-    val searchRecommendItems: LiveData<SearchRecommendItems> get() = _searchRecommendItems
+    private val _searchRecentlyItems = MutableLiveData<List<String>>()
+    val searchRecentlyItems: LiveData<List<String>> get() = _searchRecentlyItems
 
     private val _searchResultItems = MutableLiveData<SearchResultItems?>()
     val searchResultItems: LiveData<SearchResultItems?> get() = _searchResultItems
@@ -74,12 +73,12 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun loadSearchRecommendItems() {
+    fun loadSearchRecentItems() {
         viewModelScope.launch(ceh(_loadFail, "")) {
             val response = loadSearchRecommend.invoke()
             Log.e("ayhan", "loadSearchRecommendItems : $response")
             if (response.success) {
-                _searchRecommendItems.value = response.data?.parseUI()
+                _searchRecentlyItems.value = response.data?.recentSearch
             } else {
                 _loadFail.value = response.message
             }
@@ -99,6 +98,7 @@ class SearchViewModel @Inject constructor(
             if (response.success) {
                 prevSearchWord = searchWord
                 _searchResultItems.value = response.data.parseUI(userId)
+                loadSearchRecentItems()
 
             } else {
                 _loadFail.value = response.message
@@ -111,11 +111,9 @@ class SearchViewModel @Inject constructor(
             val response = deleteRecentWord.invoke(deleteWord)
             if (response.success) {
                 val originRecentWords =
-                    _searchRecommendItems.value?.recentWords?.toMutableList()
+                    _searchRecentlyItems.value?.toMutableList()
                 originRecentWords?.remove(deleteWord)
-                _searchRecommendItems.value = _searchRecommendItems.value?.copy(
-                    recentWords = originRecentWords.orEmpty()
-                )
+                _searchRecentlyItems.value = originRecentWords.orEmpty()
             } else {
                 _loadFail.value = response.message
             }

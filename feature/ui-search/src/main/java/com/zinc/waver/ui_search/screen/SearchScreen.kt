@@ -22,7 +22,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.ui.presentation.component.SearchEditView
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui_search.R
-import com.zinc.waver.ui_search.component.RecommendKeyWordView
+import com.zinc.waver.ui_search.component.SearchRecentView
 import com.zinc.waver.ui_search.component.SearchResultBlankView
 import com.zinc.waver.ui_search.component.SearchResultView
 import com.zinc.waver.ui_search.component.SearchTopAppBar
@@ -37,7 +37,7 @@ fun SearchScreen(
     searchEvent: (SearchGoToEvent) -> Unit
 ) {
     val viewModel: SearchViewModel = hiltViewModel()
-    val searchRecommendItems by viewModel.searchRecommendItems.observeAsState()
+    val searchRecommendItems by viewModel.searchRecentlyItems.observeAsState()
     val searchResultItemsAsState by viewModel.searchResultItems.observeAsState()
     val loadFail by viewModel.loadFail.observeAsState()
 
@@ -48,7 +48,7 @@ fun SearchScreen(
     var showFailDialog by remember { mutableStateOf(null as String?) }
 
     LaunchedEffect(Unit) {
-        viewModel.loadSearchRecommendItems()
+        viewModel.loadSearchRecentItems()
     }
 
     LaunchedEffect(searchResultItemsAsState) {
@@ -127,9 +127,9 @@ fun SearchScreen(
             if (searchWord.isEmpty() || searchResultItems?.hasItems() == false) {
                 item {
                     searchRecommendItems?.let {
-                        RecommendKeyWordView(
-                            searchItems = it,
-                            showOnlyRecommend = searchWord.isNotEmpty(),
+                        SearchRecentView(
+                            modifier = Modifier.fillMaxSize(),
+                            recentWords = it,
                             itemClicked = { selectWord ->
                                 searchWord = selectWord
                                 viewModel.loadSearchResult(selectWord)
