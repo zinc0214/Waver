@@ -1,6 +1,7 @@
 package com.zinc.waver.ui_write.presentation.options
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +25,7 @@ import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.util.shadow
 
 @Composable
-fun OptionScreen(options: List<WriteOption1Info>) {
+fun OptionScreen(options: List<WriteOption1Info>, optionClicked: (WriteOptionsType1) -> Unit = {}) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,6 +45,9 @@ fun OptionScreen(options: List<WriteOption1Info>) {
                         blurRadius = 4.dp,
                     )
                     .background(color = Gray1, shape = RoundedCornerShape(4.dp))
+                    .clickable {
+                        optionClicked(option.type())
+                    }
             ) {
                 val (title, content) = createRefs()
 

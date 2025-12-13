@@ -161,6 +161,7 @@ fun OpenDetailScreen(
                 }
 
                 is OpenBucketDetailInternalEvent.ViewModelEvent.AddComment -> {
+                    Log.e("ayhan", "AddComment : ${event.comment}")
                     viewModel.requestAddBucketComment(event.comment)
                     keyboardController?.hide()
                 }

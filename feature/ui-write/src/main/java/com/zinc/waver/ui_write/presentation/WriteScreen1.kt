@@ -460,7 +460,9 @@ fun WriteScreen1(
                     }
 
                     item {
-                        OptionScreen(options = updatedWriteOptions.toList())
+                        OptionScreen(options = updatedWriteOptions.toList()) {
+                            selectedOption = it
+                        }
                     }
                 }
 
