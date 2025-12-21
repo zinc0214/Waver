@@ -104,7 +104,9 @@ class CategoryViewModel @Inject constructor(
         _loadFail.value = null
         val updatedList = _categoryInfoList.value.orEmpty()
         viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.ReorderFail)) {
-            val response = reorderCategory(updatedList.map { it.id.toString() })
+            val reorderList = updatedList.map { it.id.toString() }
+            Log.e("ayhan", "reorderCategory: $reorderList")
+            val response = reorderCategory(reorderList)
             if (response.success) {
                 loadCategoryList()
             } else {

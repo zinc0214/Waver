@@ -1,9 +1,11 @@
 package com.zinc.waver.ui.presentation.screen.category.component
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,9 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -23,13 +23,13 @@ import androidx.compose.material.DropdownMenu
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.PopupProperties
+import androidx.compose.ui.zIndex
 import com.zinc.waver.model.UICategoryInfo
 import com.zinc.waver.ui.design.theme.Error2
 import com.zinc.waver.ui.design.theme.Gray1
@@ -56,6 +57,7 @@ import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
 import com.zinc.waver.ui.presentation.screen.category.model.CategoryEditOptionEvent
 import com.zinc.waver.ui.util.dpToSp
+import kotlinx.coroutines.launch
 import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
@@ -76,7 +78,6 @@ internal fun CategoryEditTitleView(
         }
     )
 }
-
 
 @Composable
 internal fun CategoryEditAddView(
@@ -110,42 +111,78 @@ internal fun CategoryEditAddView(
 fun VerticalReorderList(
     categoryList: List<UICategoryInfo>,
     addNewCategory: () -> Unit,
-    optionEvent: (CategoryEditOptionEvent) -> Unit,
-    onOrderChanged: (List<UICategoryInfo>) -> Unit = {}
+    optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
+    //val data = remember { categoryList.toMutableList() }
 
-    var data by remember { mutableStateOf(categoryList) }
+    // 내부 관찰 가능한 리스트 유지
+    val items: SnapshotStateList<UICategoryInfo> = remember { mutableStateListOf() }
 
-    // categoryList가 변경되는 시점에서 data 값을 업데이트
+    // 외부에서 전달된 categoryList가 바뀌면 내부 상태를 동기화
     LaunchedEffect(categoryList) {
-        data = categoryList
+        items.clear()
+        items.addAll(categoryList)
     }
 
-    val lazyListState = rememberLazyListState()
-
-    val dragAndDropListState =
-        rememberDragAndDropListState(lazyListState) { from, to ->
-            data.toMutableList().move(from, to)
-        }
+    // 예: 드래그 콜백에서 items.move(...) 를 호출하고 변경된 리스트 전파
+    // 실제 UI/Drag&Drop 구현 부분은 기존 코드와 결합해서 사용
+    // 아래는 이동 처리 예시 함수 사용 방법
+    fun onReorder(from: Int, to: Int) {
+        items.move(from, to)
+        optionEvent(CategoryEditOptionEvent.ReorderedCategory(items.toList()))
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
 
         CategoryEditAddView(addNewCategory)
 
+        val scope = rememberCoroutineScope()
+        val listState =
+            rememberDragDropListState(onMove = { from, to ->
+                items.move(from, to)
+                Log.e("ayhan", "VerticalReorderListOnMove: ${items.toList()}")
+                optionEvent(CategoryEditOptionEvent.ReorderedCategory(items.toList()))
+            })
+
         LazyColumn(
+            state = listState.lazyListState,
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f)
-                .dragContainer(dragAndDropListState = dragAndDropListState),
-            state = dragAndDropListState.lazyListState
-        ) {
-            itemsIndexed(data) { index, category ->
-                DraggableItem(
-                    dragAndDropListState = dragAndDropListState,
-                    index = index
-                ) { modifier ->
-                    EditCategoryItemView(modifier, index, category, optionEvent = optionEvent)
+                .pointerInput(Unit) {
+                    detectDragGesturesAfterLongPress(
+                        onDragStart = { offset -> listState.onDragStart(offset) },
+                        onDragEnd = {
+                            listState.onDragInterrupted()
+                        },
+                        onDragCancel = { listState.onDragInterrupted() },
+                        onDrag = { change, offset ->
+                            change.consume()
+                            listState.onDrag(offset)
+                            if (listState.overscrollJob?.isActive == true) return@detectDragGesturesAfterLongPress
+                            listState.checkForOverScroll().takeIf { it != 0f }?.let {
+                                listState.overscrollJob =
+                                    scope.launch { listState.lazyListState.scrollBy(it) }
+                            } ?: listState.overscrollJob?.cancel()
+                        }
+                    )
                 }
+        ) {
+            itemsIndexed(items) { index, category ->
+                EditCategoryItemView(
+                    Modifier
+                        .zIndex(if (index == listState.currentIndexOfDraggedItem) 1f else 0f)
+                        .graphicsLayer {
+                            translationY =
+                                listState.elementDisplacement.takeIf { index == listState.currentIndexOfDraggedItem }
+                                    ?: 0f
+                            shadowElevation =
+                                4.dp.toPx().takeIf { index == listState.currentIndexOfDraggedItem }
+                                    ?: 0f
+                        },
+                    index,
+                    category,
+                    optionEvent = optionEvent
+                )
             }
         }
     }
@@ -153,47 +190,9 @@ fun VerticalReorderList(
 
 fun <T> MutableList<T>.move(from: Int, to: Int) {
     if (from == to) return
-    val element = this.removeAt(from)
+    val element = this.removeAt(from) ?: return
     this.add(to, element)
 }
-
-fun Modifier.dragContainer(
-    dragAndDropListState: DragAndDropListState,
-): Modifier {
-    return this.pointerInput(Unit) {
-        detectDragGesturesAfterLongPress(
-            onDrag = { change, offset ->
-                change.consume()
-                dragAndDropListState.onDrag(offset)
-            },
-            onDragStart = { offset ->
-                dragAndDropListState.onDragStart(offset)
-            },
-            onDragEnd = { dragAndDropListState.onDragInterrupted() },
-            onDragCancel = { dragAndDropListState.onDragInterrupted() }
-        )
-    }
-}
-
-@Composable
-fun LazyItemScope.DraggableItem(
-    dragAndDropListState: DragAndDropListState,
-    index: Int,
-    content: @Composable LazyItemScope.(Modifier) -> Unit
-) {
-    val draggingModifier = Modifier
-        .composed {
-            val offsetOrNull =
-                dragAndDropListState.elementDisplacement.takeIf {
-                    index == dragAndDropListState.currentIndexOfDraggedItem
-                }
-            Modifier.graphicsLayer {
-                translationY = offsetOrNull ?: 0f
-            }
-        }
-    content(draggingModifier)
-}
-
 
 @Composable
 private fun EditCategoryItemView(
