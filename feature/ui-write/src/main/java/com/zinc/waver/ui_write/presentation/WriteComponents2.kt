@@ -29,7 +29,12 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -131,12 +136,19 @@ fun FriendsOptionView(
     friendsList: List<WriteFriend>,
     optionClicked: (WriteOptionsType2.FRIENDS.EnableType) -> Unit
 ) {
+    var realFriendOption by remember { mutableStateOf(friendOption) }
+
+    LaunchedEffect(friendOption) {
+        realFriendOption = friendOption
+    }
+
     val color =
-        if (friendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.Enable) Gray10 else Gray6
+        if (realFriendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.Enable) Gray10 else Gray6
 
-    val isNeedToWave = friendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus
+    val isNeedToWave =
+        realFriendOption.enableType == WriteOptionsType2.FRIENDS.EnableType.NoWaverPlus
 
-    val isValid = friendOption.enableType != WriteOptionsType2.FRIENDS.EnableType.Disable
+    val isValid = realFriendOption.enableType != WriteOptionsType2.FRIENDS.EnableType.Disable
 
     val padding = if (isNeedToWave) 0.dp else 18.dp
     val dividerColor = if (isNeedToWave) Main3 else Gray4
@@ -144,7 +156,7 @@ fun FriendsOptionView(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clickable(isValid) { optionClicked(friendOption.enableType) }
+            .clickable(isValid) { optionClicked(realFriendOption.enableType) }
     ) {
         Divider(color = dividerColor)
 

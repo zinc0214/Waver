@@ -84,7 +84,8 @@ fun WriteScreen2(
     val showApiFailDialog = remember { mutableStateOf(false) }
     var hasWaverPlus by remember { mutableStateOf(false) }
     val showWaverPlus = remember { mutableStateOf(false) }
-    val friendOption = remember { FRIENDS(enableType = getFriendsEnableType(hasWaverPlus)) }
+    var friendOption =
+        remember { mutableStateOf(FRIENDS(enableType = getFriendsEnableType(hasWaverPlus))) }
 
     LaunchedEffect(Unit, showWaverPlus.value) {
         viewModel.checkHasWaverPlus()
@@ -119,7 +120,8 @@ fun WriteScreen2(
 
     LaunchedEffect(hasWaverPlusAsState) {
         hasWaverPlus = hasWaverPlusAsState ?: false
-        friendOption.enableType = getFriendsEnableType(hasWaverPlus)
+        friendOption.value = FRIENDS(enableType = getFriendsEnableType(hasWaverPlus))
+        Log.e("ayhan", "hasWaverPlus : $hasWaverPlus, friendOption : $friendOption")
     }
 
     BackHandler(enabled = true) { // <-----
@@ -186,7 +188,6 @@ fun WriteScreen2(
                 .fillMaxSize()
                 .statusBarsPadding()
         ) {
-
             WriteScreen2ContentView(
                 viewModel = viewModel,
                 context = context,
@@ -200,7 +201,7 @@ fun WriteScreen2(
                 friendsOption = friendOption,
                 friendSelected = {
                     if (it == FRIENDS.EnableType.Enable) {
-                        optionScreenShow = friendOption
+                        optionScreenShow = friendOption.value
                     } else {
                         showWaverPlus.value = true
                     }
@@ -244,8 +245,8 @@ fun WriteScreen2(
                         }
                         optionScreenShow = null
                         isScrapUsed.value = it != WriteOpenType.PRIVATE
-                        friendOption.enableType =
-                            if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else friendOption.enableType
+                        friendOption.value.enableType =
+                            if (it == WriteOpenType.PRIVATE) FRIENDS.EnableType.Disable else friendOption.value.enableType
                     }
                 )
             }
@@ -279,7 +280,7 @@ private fun WriteScreen2ContentView(
     context: Context,
     viewModel: WriteBucketListViewModel,
     selectedKeywordList: List<WriteKeyWord>?,
-    friendsOption: FRIENDS,
+    friendsOption: MutableState<FRIENDS>,
     isScrapUsed: Boolean,
     selectedFriends: List<WriteFriend>?,
     writeTotalInfo: WriteTotalInfo,
@@ -294,8 +295,6 @@ private fun WriteScreen2ContentView(
 
     val writeInfo1 = writeTotalInfo.parseWrite1Info()
     val imagesInfo = loadImageFiles(context, images = writeInfo1.getImagesPaths())
-
-    Log.e("ayhan", "imagesInfo :${imagesInfo}")
 
     ConstraintLayout(modifier = modifier.fillMaxSize()) {
 
@@ -397,7 +396,7 @@ private fun WriteScreen2ContentView(
 
             FriendsOptionView(
                 modifier = Modifier.fillMaxWidth(),
-                friendOption = friendsOption,
+                friendOption = friendsOption.value,
                 friendsList = selectedFriends.orEmpty()
             ) {
                 friendSelected(it)
