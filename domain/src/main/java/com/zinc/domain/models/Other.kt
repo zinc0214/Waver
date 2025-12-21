@@ -22,7 +22,7 @@ data class OtherHomeResponse(
         val badgeImgUrl: String?,
         val followingCount: Int,
         val followerCount: Int,
-        val bucketInfo: BucketInfo
+        val bucketInfo: BucketInfo?
     )
 
     data class BucketInfo(

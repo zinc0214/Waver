@@ -11,18 +11,22 @@ fun OtherHomeResponse.OtherHomeInfo.toUiModel(): OtherProfileHomeData {
             isFollowed = isFollowing.isYes(),
             name = name,
             imgUrl = imgUrl,
-            percent = bucketInfo.completedCount.toFloat() / bucketInfo.totalCount.toFloat(),
+            percent = run {
+                val completed = bucketInfo?.completedCount?.toFloat() ?: 0f
+                val total = bucketInfo?.totalCount?.toFloat() ?: 0f
+                if (total > 0f) completed / total else 0f
+            },
             badgeImgUrl = badgeImgUrl,
             badgeTitle = badgeTitle,
             bio = bio,
             followerCount = followerCount.toString(),
             followingCount = followingCount.toString()
-        ), bucketList = bucketInfo.bucketlist.map {
+        ), bucketList = bucketInfo?.bucketlist?.map {
             OtherProfileHomeData.OtherBucketInfo(
                 title = it.title,
                 bucketId = it.id,
                 isProgress = it.status == BucketStatus.PROGRESS
             )
-        }
+        }.orEmpty()
     )
 }
