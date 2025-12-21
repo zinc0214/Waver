@@ -9,4 +9,5 @@ sealed class SearchGoToEvent {
 
 sealed interface SearchActionEvent {
     data class RequestFollow(val userId: String, val alreadyFollowed: Boolean) : SearchActionEvent
+    data class RequestCopy(val bucketId: String) : SearchActionEvent
 }

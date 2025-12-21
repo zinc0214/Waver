@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.zinc.datastore.login.PreferenceDataStoreModule
+import com.zinc.domain.usecases.common.CopyOtherBucket
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.domain.usecases.search.DeleteRecentWord
@@ -32,6 +33,7 @@ class SearchViewModel @Inject constructor(
     private val deleteRecentWord: DeleteRecentWord,
     private val requestFollow: RequestFollowUser,
     private val requestUnFollow: RequestUnfollowUser,
+    private val copyOtherBucket: CopyOtherBucket,
     private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
@@ -46,6 +48,9 @@ class SearchViewModel @Inject constructor(
 
     private val _loadFail = MutableLiveData<String?>(null)
     val loadFail: LiveData<String?> get() = _loadFail
+
+    private val _copySucceed = MutableLiveData<Boolean>()
+    val copySucceed: LiveData<Boolean> get() = _copySucceed
 
     private val _actionFail = SingleLiveEvent<Nothing>()
     val actionFail: LiveData<Nothing> get() = _actionFail
@@ -140,6 +145,15 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    fun copyOtherBucket(bucketId: String) {
+        _copySucceed.value = _copySucceed.value?.not()
+        viewModelScope.launch(ceh(_actionFail, null)) {
+            val response = copyOtherBucket.invoke(bucketId)
+            Log.e("ayhan", "copyOtherBucket response : $response")
+            _copySucceed.value = response.success
+        }
+    }
+
     private fun loadRecommendListDummy(): RecommendList {
         val bucketItem = listOf(
             SearchBucketItem(
@@ -148,28 +162,28 @@ class SearchViewModel @Inject constructor(
                 thumbnail = "1",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
                 writerId = "32",
-                isCopied = false
+                isScrapAvailable = false
             ),
             SearchBucketItem(
                 isMine = false,
                 bucketId = "2",
                 title = "버킷리스트 타이틀",
                 writerId = "32",
-                isCopied = true
+                isScrapAvailable = true
             ),
             SearchBucketItem(
                 isMine = false,
                 bucketId = "3",
                 title = "버킷리스트 타이틀 2줄 가이드\n버킷리스트 타이틀 2줄일 경우",
                 writerId = "32",
-                isCopied = false
+                isScrapAvailable = false
             ),
             SearchBucketItem(
                 isMine = false,
                 bucketId = "4",
                 title = "버킷리스트 타이틀",
                 writerId = "32",
-                isCopied = true
+                isScrapAvailable = true
             )
         )
 

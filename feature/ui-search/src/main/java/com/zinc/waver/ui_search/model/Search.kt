@@ -11,7 +11,7 @@ fun SearchResultResponse.SearchResult.parseUI(userId: String): SearchResultItems
             writerId = it.userId,
             thumbnail = null,
             title = it.title,
-            isCopied = it.scrapYn?.isYes() == true
+            isScrapAvailable = it.scrapYn?.isYes() == true
         )
     }
 
@@ -41,7 +41,7 @@ fun SearchPopularAndRecommendResponse.RecommendData.parseUI(userId: String): Rec
                     writerId = it.userId,
                     thumbnail = null,
                     title = it.title,
-                    isCopied = it.scrapYn?.isYes() == true
+                    isScrapAvailable = it.scrapYn?.isYes() == true
                 )
             },
         )
@@ -56,7 +56,7 @@ fun SearchPopularAndRecommendResponse.RecommendData.parseUI(userId: String): Rec
                 writerId = it.userId,
                 thumbnail = null,
                 title = it.title,
-                isCopied = it.scrapYn?.isYes() == true
+                isScrapAvailable = it.scrapYn?.isYes() == true
             )
         })
 
@@ -88,7 +88,7 @@ data class SearchBucketItem(
     val writerId: String,
     val thumbnail: String? = null,
     val title: String,
-    val isCopied: Boolean,
+    val isScrapAvailable: Boolean,
 )
 
 data class KeyWordItem(

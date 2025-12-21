@@ -163,6 +163,7 @@ fun RecommendDivider(modifier: Modifier = Modifier) {
 fun RecommendListView(
     recommendList: RecommendList,
     bucketClicked: (String, String, Boolean) -> Unit,
+    copyBucket: (String) -> Unit,
     isFirstItemShown: (Boolean) -> Unit
 ) {
 
@@ -185,7 +186,8 @@ fun RecommendListView(
                 RecommendTitleView(it)
                 RecommendBucketListView(
                     it.items,
-                    bucketClicked = bucketClicked
+                    bucketClicked = bucketClicked,
+                    copyBucket = copyBucket
                 )
                 if (recommendList.items.last() != it) {
                     RecommendDivider(modifier = Modifier.padding(vertical = 32.dp))
@@ -244,6 +246,7 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
 fun RecommendBucketListView(
     list: List<SearchBucketItem>,
     bucketClicked: (String, String, Boolean) -> Unit,
+    copyBucket: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -252,7 +255,8 @@ fun RecommendBucketListView(
     ) {
         list.forEach {
             RecommendBucketItemView(
-                item = it, bucketClicked = bucketClicked
+                item = it, bucketClicked = bucketClicked, copyBucket = copyBucket
+
             )
         }
     }
@@ -262,7 +266,8 @@ fun RecommendBucketListView(
 fun RecommendBucketItemView(
     modifier: Modifier = Modifier,
     item: SearchBucketItem,
-    bucketClicked: (String, String, Boolean) -> Unit
+    bucketClicked: (String, String, Boolean) -> Unit,
+    copyBucket: (String) -> Unit
 ) {
     Card(
         backgroundColor = Gray1,
@@ -319,9 +324,10 @@ fun RecommendBucketItemView(
 
                 IconButton(
                     onClick = {
-                        // can copied if is unCopied
+                        copyBucket(item.bucketId)
                     },
-                    image = if (item.isCopied) CommonR.drawable.btn_32_copy_on else CommonR.drawable.btn_32_copy_off,
+                    enabled = item.isScrapAvailable,
+                    image = if (item.isScrapAvailable) CommonR.drawable.btn_32_copy_on else CommonR.drawable.btn_32_copy_off,
                     contentDescription = stringResource(id = CommonR.string.copy),
                     modifier = Modifier
                         .constrainAs(copiedIcon) {
@@ -395,9 +401,10 @@ private fun RecommendBucketItemViewPreview() {
             writerId = "1",
             thumbnail = "11",
             title = "이것은 추천 버킷 아이템 뷰 프리뷰입니다. 이 텍스트는 꽤 길어서 어떻게 보일지 궁금하네요.",
-            isCopied = false
+            isScrapAvailable = false
         ),
-        bucketClicked = { string: String, string1: String, bool: Boolean -> }
+        bucketClicked = { string: String, string1: String, bool: Boolean -> },
+        copyBucket = {}
 
     )
 }

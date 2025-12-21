@@ -73,6 +73,9 @@ fun SearchResultView(
             RecommendBucketItemView(item = it,
                 bucketClicked = { bucketId, userId, isMine ->
                     goToEvent.invoke(SearchGoToEvent.GoToOpenBucket(bucketId, userId, isMine))
+                },
+                copyBucket = { id ->
+                    actionEvent.invoke(SearchActionEvent.RequestCopy(id))
                 })
         }
 
