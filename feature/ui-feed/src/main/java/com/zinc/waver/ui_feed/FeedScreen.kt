@@ -191,7 +191,7 @@ private fun FeedScreenPreview1() {
                     liked = false,
                     likeCount = 7367,
                     commentCount = 3546,
-                    isScraped = false
+                    isScrapAvailable = false
                 )
             )
         }

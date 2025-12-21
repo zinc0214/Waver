@@ -244,11 +244,12 @@ private fun BottomStateView(
         }
 
         IconButton(
-            image = if (feedInfo.isScraped) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
+            image = if (feedInfo.isScrapAvailable) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
             contentDescription = null,
             onClick = {
                 clickEvent.invoke(FeedClickEvent.Scrap(feedInfo.bucketId))
             },
+            enabled = feedInfo.isScrapAvailable,
             modifier = Modifier
                 .size(32.dp)
                 .constrainAs(rightContent) {
@@ -278,7 +279,7 @@ private fun FeedCardViewPreview() {
             liked = false,
             likeCount = 7367,
             commentCount = 3546,
-            isScraped = false
+            isScrapAvailable = false
         ),
         clickEvent = {}
     )

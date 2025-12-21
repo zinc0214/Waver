@@ -87,7 +87,7 @@ private fun FeedLayerPreview() {
                     liked = false,
                     likeCount = 7133,
                     commentCount = 7659,
-                    isScraped = false
+                    isScrapAvailable = false
                 )
             )
         }

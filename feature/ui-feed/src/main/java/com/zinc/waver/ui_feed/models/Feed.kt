@@ -27,7 +27,7 @@ data class UIFeedInfo(
     val liked: Boolean,
     val likeCount: Int,
     val commentCount: Int,
-    val isScraped: Boolean,
+    val isScrapAvailable: Boolean,
 )
 
 fun FeedListResponse.toUIModel(userId: String) = this.data.map { item ->
@@ -45,7 +45,7 @@ fun FeedListResponse.toUIModel(userId: String) = this.data.map { item ->
         liked = item.likeYn?.isYes() ?: false,
         likeCount = item.like,
         commentCount = item.commentCount,
-        isScraped = item.scrapYn?.isYes() ?: false
+        isScrapAvailable = item.scrapYn?.isYes() ?: false
     )
 }
 
