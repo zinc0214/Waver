@@ -110,7 +110,7 @@ fun JoinEmailScreen(
         }
     }
 
-    GoogleSignInButton2(
+    GoogleSignInButton(
         goToEmailCheck = {
             viewModel.goToLogin(it)
             prevLoginEmail.value = it
@@ -259,66 +259,8 @@ suspend fun signIn(
     return e
 }
 
-
 @Composable
 fun GoogleSignInButton(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
-    val context = LocalContext.current
-    var showGoogleEmailSelect by remember { mutableStateOf(false) }
-    var showError by remember { mutableStateOf("") }
-
-    LaunchedEffect(showGoogleEmailSelect) {
-        if (showGoogleEmailSelect) {
-            val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(true)
-                .setServerClientId(GoogleWebClientId)
-                .build()
-
-            // Create a credential request with the Google ID option.
-            val request: GetCredentialRequest = GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
-                .build()
-
-            // Attempt to sign in with the created request using an authorized account
-            val e = signIn(request, context, goToEmailCheck)
-            // If the sign-in fails with NoCredentialException,  there are no authorized accounts.
-            // In this case, we attempt to sign in again with filtering disabled.
-            if (e is NoCredentialException) {
-                val googleIdOptionFalse: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                    .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(GoogleWebClientId)
-                    .build()
-
-                val requestFalse: GetCredentialRequest = GetCredentialRequest.Builder()
-                    .addCredentialOption(googleIdOptionFalse)
-                    .build()
-
-                signIn(requestFalse, context, goToEmailCheck)
-            }
-
-            showError = e?.message ?: ""
-
-            showGoogleEmailSelect = false
-        }
-    }
-
-    if (showError.isNotEmpty()) {
-        CommonDialogView(
-            title = stringResource(id = R.string.joinFailTitle),
-            message = stringResource(id = R.string.loginRetry) + "\n${showError}",
-            dismissAvailable = true,
-            rightButtonInfo = DialogButtonInfo(text = CommonR.string.closeDesc, color = Gray7),
-            rightButtonEvent = { showError = "" },
-        )
-    }
-
-    // Google Sign-In Button
-    EmailView(modifier = Modifier.fillMaxSize(), emailClicked = {
-        showGoogleEmailSelect = true
-    })
-}
-
-@Composable
-fun GoogleSignInButton2(goToEmailCheck: (GoogleEmailInfo) -> Unit) {
     val context = LocalContext.current
     var showGoogleEmailSelect by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf("") }

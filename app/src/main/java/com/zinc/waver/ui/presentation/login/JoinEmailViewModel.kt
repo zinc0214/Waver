@@ -3,8 +3,10 @@ package com.zinc.waver.ui.presentation.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.zinc.common.models.CreateProfileRequest
 import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.models.GoogleEmailInfo
+import com.zinc.domain.usecases.login.CreateProfile
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import com.zinc.waver.util.SingleLiveEvent
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class JoinEmailViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
+    private val createProfile: CreateProfile,
     private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
@@ -32,6 +35,7 @@ class JoinEmailViewModel @Inject constructor(
 
     fun goToLogin(emailInfo: GoogleEmailInfo) {
         viewModelScope.launch(ceh(_failEmailCheck, true)) {
+            _failEmailCheck.value = false
             val res = loginByEmail(emailInfo.uid)
             if (res.success) {
                 res.data.accessToken.let { token ->
@@ -41,6 +45,22 @@ class JoinEmailViewModel @Inject constructor(
             } else {
                 _goToMakeNickName.value = emailInfo
             }
+        }
+    }
+
+    // TODO: 삭제된 이메일인지 확인
+    private fun checkAlreadyDeleteEmail(emailInfo: GoogleEmailInfo) {
+        viewModelScope.launch(ceh(_failEmailCheck, true)) {
+            _failEmailCheck.value = false
+            val res = createProfile(
+                CreateProfileRequest(
+                    uid = emailInfo.uid,
+                    email = emailInfo.email,
+                    name = "이메일계정확인",
+                    bio = "빈값전달",
+                    profileImage = null,
+                )
+            )
         }
     }
 
