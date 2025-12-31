@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -16,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
-import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.BottomButtonView
@@ -88,8 +86,6 @@ fun CommonDialogView(
                     }
 
                     Spacer(modifier = Modifier.padding(top = 32.dp))
-
-                    Divider(color = Gray4, thickness = 1.dp)
 
                     BottomButtonView(
                         negative = leftButtonInfo,
