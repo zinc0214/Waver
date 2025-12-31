@@ -67,4 +67,7 @@
     <string name="logoutButton">Log Out</string>
 
     <string name="deleteAccountButton">Delete Account</string>
+    <string name="deleteAccountDialogTitle">Delete your account?</string>
+    <string name="deleteAccountDialogDesc">You cannot sign up again with a deleted account. Are you sure you want to continue?</string>
+    <string name="deleteAccountDialogButton">Delete Account</string>
 </resources>

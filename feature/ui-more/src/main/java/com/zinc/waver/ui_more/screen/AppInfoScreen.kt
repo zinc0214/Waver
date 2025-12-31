@@ -10,15 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Gray7
+import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
+import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.AppInfoMoreItemsView
@@ -26,6 +32,7 @@ import com.zinc.waver.ui_more.components.AppInfoTitle
 import com.zinc.waver.ui_more.components.AppVersionInfo
 import com.zinc.waver.ui_more.models.AppInfoItemType
 import com.zinc.waver.ui_more.viewModel.AppInfoViewModel
+import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun AppInfoScreen(
@@ -43,6 +50,8 @@ fun AppInfoScreen(
     val appVersion by viewModel.appVersion.observeAsState()
     val withdrawSucceed by viewModel.withdrawSucceed.observeAsState()
     val requestFail by viewModel.requestFail.observeAsState()
+
+    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = withdrawSucceed) {
         if (withdrawSucceed == true) {
@@ -73,7 +82,7 @@ fun AppInfoScreen(
             modifier = Modifier
                 .padding(start = 28.dp, bottom = 32.dp)
                 .clickable {
-                    viewModel.deleteAccount()
+                    showDeleteConfirmDialog = true
                 },
             text = stringResource(R.string.deleteAccountButton),
             fontSize = dpToSp(16.dp),
@@ -86,6 +95,29 @@ fun AppInfoScreen(
         ApiFailDialog() {
             viewModel.deleteAccount()
         }
+    }
+
+    if (showDeleteConfirmDialog) {
+        CommonDialogView(
+            title = stringResource(R.string.deleteAccountDialogTitle),
+            message = stringResource(R.string.deleteAccountDialogDesc),
+            dismissAvailable = false,
+            leftButtonInfo = DialogButtonInfo(
+                text = CommonR.string.cancel,
+                color = Gray7
+            ),
+            rightButtonInfo = DialogButtonInfo(
+                text = R.string.deleteAccountDialogButton,
+                color = Main4
+            ),
+            leftButtonEvent = {
+                showDeleteConfirmDialog = false
+            },
+            rightButtonEvent = {
+                showDeleteConfirmDialog = false
+                viewModel.deleteAccount()
+            }
+        )
     }
 }
 

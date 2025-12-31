@@ -68,4 +68,7 @@
     <string name="logoutButton">로그아웃</string>
 
     <string name="deleteAccountButton">회원탈퇴</string>
+    <string name="deleteAccountDialogTitle">회원 탈퇴 안내</string>
+    <string name="deleteAccountDialogDesc">탈퇴한 계정으로는 다시 회원가입할 수 없습니다. 정말 탈퇴하시겠습니까?</string>
+    <string name="deleteAccountDialogButton">탈퇴하기</string>
 </resources>
