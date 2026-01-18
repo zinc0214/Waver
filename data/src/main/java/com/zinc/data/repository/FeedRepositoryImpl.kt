@@ -14,8 +14,8 @@ internal class FeedRepositoryImpl @Inject constructor(
         return waverApi.loadKeywords()
     }
 
-    override suspend fun loadFeedItems(): FeedListResponse {
-        return waverApi.loadFeedItems()
+    override suspend fun loadFeedItems(nextKey: Int?): FeedListResponse {
+        return waverApi.loadFeedItems(nextKey)
     }
 
     override suspend fun savedKeywordItems(request: SavedKeywordItemsRequest) =

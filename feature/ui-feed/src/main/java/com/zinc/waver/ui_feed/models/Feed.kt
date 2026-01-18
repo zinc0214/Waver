@@ -30,7 +30,7 @@ data class UIFeedInfo(
     val isScrapAvailable: Boolean,
 )
 
-fun FeedListResponse.toUIModel(userId: String) = this.data.map { item ->
+fun FeedListResponse.toUIModel(userId: String) = this.data.data.map { item ->
     UIFeedInfo(
         isMine = item.user.id == userId,
         bucketId = item.id,

@@ -41,6 +41,7 @@ fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
     val loadStatusAsState by viewModel.loadStatusEvent.observeAsState()
     val feedKeyWords by viewModel.feedKeyWords.observeAsState()
     val feedItems by viewModel.feedItems.observeAsState()
+    val hasNextFeedPage by viewModel.hasFeedNextPage.observeAsState(false)
 
     Log.e("ayhan", "feedItems : $feedItems")
 
@@ -58,6 +59,7 @@ fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
 
     FeedScreen(
         loadStatus = loadStatus ?: FeedLoadStatus.None,
+        hasNextFeedPage = hasNextFeedPage,
         feedList = feedItems,
         keywordList = feedKeyWords,
         updateLoadStatus = {
@@ -67,7 +69,7 @@ fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
             viewModel.loadFeedItems()
         },
         loadNextPageEvent = {
-
+            viewModel.loadNextFeedItems()
         },
         feedClickEvent = { event ->
             when (event) {
@@ -110,6 +112,7 @@ fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
 @Composable
 private fun FeedScreen(
     loadStatus: FeedLoadStatus,
+    hasNextFeedPage: Boolean,
     feedList: List<UIFeedInfo>?,
     keywordList: List<UIFeedKeyword>?,
     pullToRefreshEvent: () -> Unit,
@@ -153,6 +156,7 @@ private fun FeedScreen(
             FeedLayer(
                 feedClicked = feedClickEvent,
                 feedItems = feedList.orEmpty(),
+                hasNextPage = hasNextFeedPage,
                 showPageLoading = loadStatus == FeedLoadStatus.PagingLoading,
                 showLoadFail = loadStatus is FeedLoadStatus.LoadFail,
                 loadNextPage = loadNextPageEvent
@@ -205,7 +209,8 @@ private fun FeedScreenPreview1() {
         feedList = mockFeedList,
         keywordList = emptyList(),
         feedClickEvent = { },
-        keywordSaved = {}
+        keywordSaved = {},
+        hasNextFeedPage = false
     )
 }
 
@@ -221,7 +226,8 @@ private fun FeedScreenPreview2() {
         feedList = emptyList(),
         keywordList = keyword,
         feedClickEvent = { },
-        keywordSaved = {}
+        keywordSaved = {},
+        hasNextFeedPage = false
     )
 }
 
@@ -237,7 +243,8 @@ private fun FeedScreenPreview3() {
         feedList = emptyList(),
         keywordList = keyword,
         feedClickEvent = { },
-        keywordSaved = {}
+        keywordSaved = {},
+        hasNextFeedPage = false
     )
 }
 

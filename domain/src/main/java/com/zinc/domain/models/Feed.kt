@@ -10,8 +10,13 @@ data class FeedListResponse(
     val success: Boolean,
     val code: String,
     val message: String,
-    val data: List<FeedItemResponse>
+    val data: FeedListData
 ) {
+    data class FeedListData(
+        val hasNext: Boolean,
+        val nextKey: Int,
+        val data: List<FeedItemResponse>
+    )
     data class FeedItemResponse(
         val id: String,
         val status: FeedItemBucketStatus,

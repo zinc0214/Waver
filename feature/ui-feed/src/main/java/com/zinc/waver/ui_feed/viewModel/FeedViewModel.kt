@@ -41,6 +41,9 @@ class FeedViewModel @Inject constructor(
     private val _loadStatusEvent = SingleLiveEvent<FeedLoadStatus>()
     val loadStatusEvent: LiveData<FeedLoadStatus> get() = _loadStatusEvent
 
+    private val _hasFeedNextPage = MutableLiveData<Boolean>()
+    val hasFeedNextPage: LiveData<Boolean> get() = _hasFeedNextPage
+
     private val loadCeh = CoroutineExceptionHandler { _, t ->
         Log.e("ayhan", "loadCeh : ${t.message}")
         val hasData = _feedItems.value != null
@@ -48,6 +51,7 @@ class FeedViewModel @Inject constructor(
     }
 
     private var userId: String = ""
+    private var feedNextKey: Int? = null
 
     init {
         viewModelScope.launch {
@@ -58,9 +62,13 @@ class FeedViewModel @Inject constructor(
     }
 
     fun loadFeedItems() {
-        _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
+        if (_hasFeedNextPage.value == true) {
+            _loadStatusEvent.value = FeedLoadStatus.PagingLoading
+        } else {
+            _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
+        }
         viewModelScope.launch(loadCeh) {
-            loadFeedItems.invoke().apply {
+            loadFeedItems.invoke(feedNextKey).apply {
                 Log.e("ayhan", "feedListResponse : $this")
                 if (this.code == "8000") {
                     loadFeedKeyWords()
@@ -68,12 +76,22 @@ class FeedViewModel @Inject constructor(
                     _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
                 } else {
                     _feedItems.value = this.toUIModel(userId)
+                    _hasFeedNextPage.value = this.data.hasNext
+                    feedNextKey = this.data.nextKey
                     Log.e("ayhan", "feedData : userId : $userId")
                 }
                 _loadStatusEvent.value = FeedLoadStatus.Success
             }
         }
     }
+
+    fun loadNextFeedItems() {
+        if (_hasFeedNextPage.value != true) {
+            return
+        }
+        loadFeedItems()
+    }
+
 
     fun savedKeywordList(list: List<String>) {
         _loadStatusEvent.value = FeedLoadStatus.None

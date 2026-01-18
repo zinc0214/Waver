@@ -1,11 +1,10 @@
 package com.zinc.waver.ui_feed
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,39 +18,51 @@ import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.models.UIFeedInfo
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun FeedLayer(
     modifier: Modifier = Modifier,
     feedItems: List<UIFeedInfo>,
+    hasNextPage: Boolean,
     showPageLoading: Boolean,
     loadNextPage: () -> Unit,
     showLoadFail: Boolean,
     feedClicked: (FeedClickEvent) -> Unit
 ) {
 
-    Column(
+    val listState = rememberLazyListState()
+
+    LazyColumn(
         modifier = modifier
-            .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .background(Gray2)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
+        state = listState
     ) {
 
-        TitleView(
-            modifier = Modifier
-                .padding(top = 24.dp)
-                .padding(horizontal = 12.dp)
-        )
-
-        if (feedItems.isNotEmpty()) {
-            FeedListView(
+        item {
+            TitleView(
                 modifier = Modifier
-                    .padding(top = 24.dp),
-                feedItems = feedItems,
-                feedClicked = feedClicked
+                    .padding(top = 24.dp)
+                    .padding(horizontal = 12.dp)
             )
-        } else if (showLoadFail) {
-            FeedBlankView(modifier = Modifier.padding(top = 220.dp))
+        }
+
+        item {
+            if (feedItems.isNotEmpty()) {
+                FeedListView(
+                    modifier = Modifier
+                        .padding(top = 24.dp),
+                    feedItems = feedItems,
+                    hasNextPage = hasNextPage,
+                    showPageLoading = showPageLoading,
+                    loadNextPage = loadNextPage,
+                    feedClicked = feedClicked,
+                    listState = listState
+                )
+            } else if (showLoadFail) {
+                FeedBlankView(modifier = Modifier.padding(top = 220.dp))
+            }
         }
     }
 }
@@ -97,7 +108,8 @@ private fun FeedLayerPreview() {
         showPageLoading = false,
         loadNextPage = {},
         feedClicked = {},
-        showLoadFail = false
+        showLoadFail = false,
+        hasNextPage = true
     )
 }
 
@@ -109,6 +121,7 @@ private fun BlankPreview() {
         showPageLoading = false,
         loadNextPage = {},
         feedClicked = {},
-        showLoadFail = true
+        showLoadFail = true,
+        hasNextPage = true
     )
 }

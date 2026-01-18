@@ -132,7 +132,9 @@ interface WaverApi {
 
     // 피드 조회
     @GET("/waver/feeds")
-    suspend fun loadFeedItems(): FeedListResponse
+    suspend fun loadFeedItems(
+        @Query("nextKey") nextKey: Int?
+    ): FeedListResponse
 
     // 버킷리스트 등록
     @POST("/waver/bucket")

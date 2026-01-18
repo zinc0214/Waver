@@ -7,6 +7,6 @@ import com.zinc.domain.models.SavedKeywordItemsRequest
 
 interface FeedRepository {
     suspend fun loadSelectableFeedKeyWords(): KeywordResponse
-    suspend fun loadFeedItems(): FeedListResponse
+    suspend fun loadFeedItems(nextKey: Int?): FeedListResponse
     suspend fun savedKeywordItems(request: SavedKeywordItemsRequest): CommonResponse
 }

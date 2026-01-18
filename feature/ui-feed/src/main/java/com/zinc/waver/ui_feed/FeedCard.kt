@@ -12,11 +12,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,12 +45,17 @@ import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.models.UIFeedInfo
 import com.zinc.waver.ui_feed.models.profileInfo
 import com.zinc.waver.util.shadow
+import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
 fun FeedListView(
     modifier: Modifier = Modifier,
+    listState: LazyListState,
     feedItems: List<UIFeedInfo>,
+    hasNextPage: Boolean,
+    showPageLoading: Boolean,
+    loadNextPage: () -> Unit,
     feedClicked: (FeedClickEvent) -> Unit
 ) {
     Column(modifier = modifier) {
@@ -57,6 +66,35 @@ fun FeedListView(
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
+
+        if (showPageLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                androidx.compose.material3.CircularProgressIndicator(
+                    color = Main4,
+                    strokeWidth = 2.dp,
+                    modifier = Modifier.size(24.dp)
+                )
+            }
+        }
+    }
+
+    // Observe visible items and trigger loadNextPage when user scrolls near the end (second-to-last)
+    LaunchedEffect(listState, feedItems, hasNextPage, showPageLoading) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.map { it.index } }
+            .collectLatest { visibleIndexes ->
+                val maxVisible = visibleIndexes.maxOrNull() ?: -1
+                if (hasNextPage && !showPageLoading && feedItems.size >= 2) {
+                    // trigger when second-to-last (or beyond) is visible
+                    if (maxVisible >= (feedItems.size - 2)) {
+                        loadNextPage()
+                    }
+                }
+            }
     }
 }
 
@@ -69,7 +107,7 @@ fun FeedCardView(
 
     Card(
         shape = RoundedCornerShape(8.dp),
-        backgroundColor = Gray1,
+        colors = CardDefaults.cardColors(containerColor = Gray1),
         modifier = Modifier
             .background(color = Gray1, shape = RoundedCornerShape(8.dp))
             .shadow(
