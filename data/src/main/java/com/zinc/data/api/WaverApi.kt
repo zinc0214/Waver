@@ -8,6 +8,8 @@ import com.zinc.common.models.AllBucketListSortType
 import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
+import com.zinc.common.models.CheckUserStatusRequest
+import com.zinc.common.models.CheckUserStatusResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.CommonResponse2
 import com.zinc.common.models.EditCategoryNameRequest
@@ -68,6 +70,9 @@ interface WaverApi {
     @POST("/waver/login")
     suspend fun requestLogin(@Body loadTokenByEmail: LoadTokenByEmailRequest): LoadTokenByEmailResponse
 
+    // 이메일 상태 조회
+    @POST("/waver/user/status")
+    suspend fun checkUserStatus(@Body loadTokenByEmail: CheckUserStatusRequest): CheckUserStatusResponse
     // 홈 > 프로필 조회
     @GET("/waver/my")
     suspend fun loadMyProfileInfo(): HomeProfileResponse

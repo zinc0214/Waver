@@ -14,6 +14,8 @@
     <string name="joinFailDesc">Registration failed.\nPlease try again.</string>
     <string name="alreadyUsedEmailTitle">Email already in use</string>
     <string name="alreadyUsedEmailDesc">Would you like to log in with this email?</string>
+    <string name="deletedUserTitle">Registration unavailable</string>
+    <string name="deletedUserDesc">This account has already been withdrawn and cannot be registered again.\nPlease use a different account.</string>
 
     <!-- Title Descriptions -->
     <string name="my">My</string>

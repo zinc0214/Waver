@@ -49,3 +49,26 @@ data class LoadTokenByEmailResponse(
 data class AccessTokenDto(
     val accessToken: String
 )
+
+data class CheckUserStatusRequest(
+    val email: String,
+    val uid: String
+)
+
+data class CheckUserStatusResponse(
+    val data: StatusInfo,
+    val success: Boolean,
+    val code: String,
+    val message: String
+) {
+    data class StatusInfo(
+        val status: Status,
+        val lastLoginAt: String?,
+        val withdrawnAt: String?
+    )
+
+    enum class Status {
+        ACTIVE,
+        WITHDRAWN
+    }
+}

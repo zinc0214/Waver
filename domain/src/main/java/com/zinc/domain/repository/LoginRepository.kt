@@ -1,5 +1,7 @@
 package com.zinc.domain.repository
 
+import com.zinc.common.models.CheckUserStatusRequest
+import com.zinc.common.models.CheckUserStatusResponse
 import com.zinc.common.models.CreateProfileRequest
 import com.zinc.common.models.JoinResponse
 import com.zinc.common.models.LoadTokenByEmailRequest
@@ -10,4 +12,5 @@ interface LoginRepository {
     suspend fun createProfile(createProfileRequest: CreateProfileRequest): JoinResponse
     suspend fun refreshToken(): RefreshTokenResponse
     suspend fun requestLogin(loginRequest: LoadTokenByEmailRequest): LoadTokenByEmailResponse
+    suspend fun checkUserStatus(checkUserStatusRequest: CheckUserStatusRequest): CheckUserStatusResponse
 }

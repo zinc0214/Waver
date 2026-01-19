@@ -3,9 +3,11 @@ package com.zinc.waver.ui.presentation.login
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.zinc.common.models.CreateProfileRequest
+import com.zinc.common.models.CheckUserStatusRequest
+import com.zinc.common.models.CheckUserStatusResponse
 import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.models.GoogleEmailInfo
+import com.zinc.domain.usecases.login.CheckUserStatus
 import com.zinc.domain.usecases.login.CreateProfile
 import com.zinc.domain.usecases.login.LoginByEmail
 import com.zinc.waver.ui.viewmodel.CommonViewModel
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class JoinEmailViewModel @Inject constructor(
     private val loginByEmail: LoginByEmail,
     private val createProfile: CreateProfile,
+    private val checkUserState: CheckUserStatus,
     private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
@@ -29,6 +32,9 @@ class JoinEmailViewModel @Inject constructor(
 
     private val _isAlreadyUsedEmail = SingleLiveEvent<Boolean>()
     val isAlreadyUsedEmail: LiveData<Boolean> get() = _isAlreadyUsedEmail
+
+    private val _isDeletedUser = MutableLiveData<Boolean>()
+    val isDeletedUser: LiveData<Boolean> get() = _isDeletedUser
 
     private val _goToLogin = MutableLiveData<Boolean>()
     val goToLogin: LiveData<Boolean> get() = _goToLogin
@@ -48,19 +54,27 @@ class JoinEmailViewModel @Inject constructor(
         }
     }
 
-    // TODO: 삭제된 이메일인지 확인
-    private fun checkAlreadyDeleteEmail(emailInfo: GoogleEmailInfo) {
+    fun checkUserStatus(emailInfo: GoogleEmailInfo) {
         viewModelScope.launch(ceh(_failEmailCheck, true)) {
             _failEmailCheck.value = false
-            val res = createProfile(
-                CreateProfileRequest(
-                    uid = emailInfo.uid,
-                    email = emailInfo.email,
-                    name = "이메일계정확인",
-                    bio = "빈값전달",
-                    profileImage = null,
-                )
+            val request = CheckUserStatusRequest(
+                uid = emailInfo.uid,
+                email = emailInfo.email
             )
+            val res = checkUserState(request)
+            if (res.success) {
+                when (res.data.status) {
+                    CheckUserStatusResponse.Status.ACTIVE -> {
+                        _isAlreadyUsedEmail.value = true
+                    }
+
+                    CheckUserStatusResponse.Status.WITHDRAWN -> {
+                        _isDeletedUser.value = true
+                    }
+                }
+            } else {
+                goToLogin(emailInfo)
+            }
         }
     }
 

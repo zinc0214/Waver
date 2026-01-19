@@ -14,6 +14,8 @@
     <string name="joinFailDesc">회원가입에 실패했습니다.\n다시 시도해주세요.</string>
     <string name="alreadyUsedEmailTitle">이미 사용중인 이메일입니다.</string>
     <string name="alreadyUsedEmailDesc">해당 이메일로 로그인하시겠습니까?</string>
+    <string name="deletedUserTitle">회원가입 불가</string>
+    <string name="deletedUserDesc">해당 계정은 이미 탈퇴 처리되어 다시 회원가입하실 수 없습니다.\n다른 계정으로 이용해주세요.</string>
 
     <!--타이틀 디스크립션-->
     <string name="my">마이</string>

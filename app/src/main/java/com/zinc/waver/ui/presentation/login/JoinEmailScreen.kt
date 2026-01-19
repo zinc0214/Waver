@@ -77,6 +77,10 @@ fun JoinEmailScreen(
     val checkAlreadyUsedEmailAsState by viewModel.isAlreadyUsedEmail.observeAsState()
     val isAlreadyUsedEmail = remember { mutableStateOf(false) }
 
+    // 이미 삭제된 유저인 경우
+    val isDeletedUserAsState by viewModel.isDeletedUser.observeAsState()
+    val isDeletedUser = remember { mutableStateOf(false) }
+
     // 존재하는 이메일이 없는 경우
     val goToMakeNickNameAsState by viewModel.goToMakeNickName.observeAsState()
 
@@ -110,9 +114,13 @@ fun JoinEmailScreen(
         }
     }
 
+    LaunchedEffect(isDeletedUserAsState) {
+        isDeletedUser.value = isDeletedUserAsState == true
+    }
+
     GoogleSignInButton(
         goToEmailCheck = {
-            viewModel.goToLogin(it)
+            viewModel.checkUserStatus(it)
             prevLoginEmail.value = it
         })
 
@@ -142,6 +150,18 @@ fun JoinEmailScreen(
             Log.e("ayhan", "api Faaaaaa")
             isFailApi.value = false
         }
+    }
+    if (isDeletedUser.value) {
+        CommonDialogView(
+            title = stringResource(id = R.string.deletedUserTitle),
+            message = stringResource(id = R.string.deletedUserDesc),
+            dismissAvailable = false,
+            rightButtonInfo = DialogButtonInfo(text = CommonR.string.confirm, color = Main4),
+            rightButtonEvent = {
+                isDeletedUser.value = false
+                goToBack()
+            }
+        )
     }
 }
 
