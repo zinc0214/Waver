@@ -68,6 +68,7 @@
     <string name="categoryDelete">Delete</string>
     <string name="categoryAddSucceed">Category added successfully.</string>
     <string name="categoryAdd">Add Category</string>
+    <string name="categoryReorderSucceed">Categories have been edited.</string>
 
     <!-- Load Fail -->
     <string name="retryDesc">Please try again</string>

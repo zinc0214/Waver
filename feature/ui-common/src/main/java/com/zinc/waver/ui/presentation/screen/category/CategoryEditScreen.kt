@@ -1,6 +1,7 @@
 package com.zinc.waver.ui.presentation.screen.category
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.model.CategoryLoadFailStatus
@@ -34,8 +36,11 @@ fun CategoryEditScreen(
     viewModel: CategoryViewModel = hiltViewModel()
 ) {
 
+    val context = LocalContext.current
+
     val categoryList by viewModel.categoryInfoList.observeAsState()
     val apiFailed by viewModel.loadFail.observeAsState()
+    val reorderSucceed by viewModel.sortSucceed.observeAsState()
 
     if (categoryList.isNullOrEmpty()) {
         viewModel.loadCategoryList()
@@ -47,6 +52,7 @@ fun CategoryEditScreen(
     val apiFailDialogShow = remember { mutableStateOf(false) }
     val apiFailState = remember { mutableStateOf(apiFailed) }
     val categoryItemState = remember { mutableStateOf(categoryList) }
+    val reorderSucceedState = remember { mutableStateOf(reorderSucceed) }
 
     LaunchedEffect(categoryList) {
         categoryItemState.value = categoryList
@@ -57,6 +63,10 @@ fun CategoryEditScreen(
             apiFailDialogShow.value = true
             apiFailState.value = apiFailed
         }
+    }
+
+    LaunchedEffect(reorderSucceed) {
+        reorderSucceedState.value = reorderSucceed
     }
 
     if (apiFailDialogShow.value) {
@@ -104,6 +114,12 @@ fun CategoryEditScreen(
                     }
                 }
             })
+    }
+
+    if (reorderSucceedState.value == true) {
+        Toast.makeText(context, stringResource(R.string.categoryReorderSucceed), Toast.LENGTH_SHORT)
+            .show()
+        reorderSucceedState.value = false
     }
 
 

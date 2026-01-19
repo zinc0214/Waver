@@ -43,6 +43,9 @@ class CategoryViewModel @Inject constructor(
     private val _loadFail = SingleLiveEvent<CategoryLoadFailStatus?>()
     val loadFail: LiveData<CategoryLoadFailStatus?> get() = _loadFail
 
+    private val _sortSucceed = MutableLiveData<Boolean?>()
+    val sortSucceed: LiveData<Boolean?> get() = _sortSucceed
+
     private var orderType = AllBucketListSortType.CREATED
 
     init {
@@ -102,6 +105,7 @@ class CategoryViewModel @Inject constructor(
 
     fun reorderCategory() {
         _loadFail.value = null
+        _sortSucceed.value = false
         val updatedList = _categoryInfoList.value.orEmpty()
         viewModelScope.launch(ceh(_loadFail, CategoryLoadFailStatus.ReorderFail)) {
             val reorderList = updatedList.map { it.id.toString() }
@@ -109,8 +113,10 @@ class CategoryViewModel @Inject constructor(
             val response = reorderCategory(reorderList)
             if (response.success) {
                 loadCategoryList()
+                _sortSucceed.value = true
             } else {
                 _loadFail.value = CategoryLoadFailStatus.ReorderFail
+                _sortSucceed.value = false
             }
         }
     }
