@@ -88,7 +88,7 @@ import kotlinx.coroutines.flow.onEach
 import com.zinc.waver.ui_detail.R as DetailR
 
 @Composable
-fun OpenDetailScreen(
+fun OpenDetailBucketListScreen(
     detailId: String,
     writerId: String,
     isMine: Boolean,

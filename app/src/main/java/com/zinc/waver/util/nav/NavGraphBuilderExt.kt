@@ -17,7 +17,7 @@ import com.zinc.waver.ui.presentation.screen.category.CategoryEditScreen
 import com.zinc.waver.ui.presentation.screen.waverplus.WaverPlusGuideScreen
 import com.zinc.waver.ui_detail.model.CloseBucketDetailEvent
 import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
-import com.zinc.waver.ui_detail.screen.OpenDetailScreen
+import com.zinc.waver.ui_detail.screen.OpenDetailBucketListScreen
 import com.zinc.waver.ui_feed.FeedScreen
 import com.zinc.waver.ui_more.models.AppInfoItemType
 import com.zinc.waver.ui_more.models.MoreItemType
@@ -392,7 +392,7 @@ internal fun NavGraphBuilder.openBucketDetailNavGraph(
         val detailId = arguments.getString(MainDestinations.BUCKET_ID_KEY) ?: ""
         val writerId = arguments.getString(MainDestinations.WRITER_ID_KEY) ?: ""
         val isMine = arguments.getBoolean(MainDestinations.BUCKET_IS_MINE)
-        OpenDetailScreen(
+        OpenDetailBucketListScreen(
             detailId = detailId,
             writerId = writerId,
             isMine = isMine,

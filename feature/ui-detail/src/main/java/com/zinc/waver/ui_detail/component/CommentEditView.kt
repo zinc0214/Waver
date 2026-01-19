@@ -372,7 +372,7 @@ fun CommentEditView(
 
                                         // @ 다음에 실제 입력된 텍스트가 있고, 공백 이전일 때만 팝업 표시
                                         showMentionPopup =
-                                            mentionText.isNotEmpty() || (atIndex != -1 && cursorPosition == atIndex + 1)
+                                            mentionableUsers.isNotEmpty() && (mentionText.isNotEmpty() || (atIndex != -1 && cursorPosition == atIndex + 1))
                                     }
                                 },
                                 modifier = Modifier
