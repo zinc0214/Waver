@@ -1,5 +1,5 @@
 [versions]
-androidTooldBuild = "8.13.2"
+androidTooldBuild = "9.0.0"
 credentials = "1.5.0"
 credentialsPlayServicesAuth = "1.5.0"
 firebaseBom = "34.8.0"
