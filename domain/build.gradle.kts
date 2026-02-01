@@ -15,8 +15,10 @@ android {
         minSdk = Versions.minSdk
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(18))
+        }
     }
 }
 
