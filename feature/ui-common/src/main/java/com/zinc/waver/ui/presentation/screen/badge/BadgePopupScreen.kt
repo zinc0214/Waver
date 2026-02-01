@@ -50,6 +50,7 @@ fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
         error = painterResource(R.drawable.badge_placeholder)
     )
 
+
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Column(
             modifier = Modifier
@@ -127,7 +128,6 @@ fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 private fun BadgePopupScreenPreview() {

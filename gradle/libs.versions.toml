@@ -124,7 +124,7 @@ lottie = "com.airbnb.android:lottie-compose:6.7.1"
 
 google-gson = "com.google.code.gson:gson:2.13.2"
 inapp-billing = "com.android.billingclient:billing-ktx:8.3.0"
-play-services-ads = "com.google.android.gms:play-services-ads:24.9.0"
+play-services-ads = "com.google.android.gms:play-services-ads:24.7.0"
 
 ##################################
 #test

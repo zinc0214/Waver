@@ -11,7 +11,8 @@ import com.google.android.gms.ads.AdView
 
 @Composable
 fun AdBannerScreen(modifier: Modifier = Modifier) {
-    val writeId = "ca-app-pub-3940256099942544/6300978111"
+    val adUnitId =
+        "ca-app-pub-6302671173915322/6244920706" //"ca-app-pub-3940256099942544/6300978111"
     val adRequest = AdRequest.Builder().build()
 
     Box(modifier = modifier) {
@@ -20,7 +21,7 @@ fun AdBannerScreen(modifier: Modifier = Modifier) {
             factory = { context ->
                 AdView(context).apply {
                     setAdSize(AdSize.BANNER)
-                    adUnitId = writeId
+                    this.adUnitId = adUnitId
                     loadAd(adRequest)
                 }
             },
