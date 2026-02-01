@@ -9,7 +9,6 @@ plugins {
 
 android {
     namespace = "com.zinc.waver.ui_report"
-    compileSdk = 34
 
     defaultConfig {
         minSdk = Versions.minSdk
