@@ -11,6 +11,6 @@
     <string name="searchProfileImage">프로필 이미지</string>
     <string name="noRecentSearch">최근 검색어 내역이 없습니다.</string>
 
-    <string name="searchWordBlankText"> 에 대한\n 검색결과가 없습니다.</string>
+    <string name="searchWordBlankText">일치하는 버킷리스트가 없습니다.</string>
 
 </resources>

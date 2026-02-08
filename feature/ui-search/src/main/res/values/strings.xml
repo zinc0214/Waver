@@ -11,5 +11,5 @@
     <string name="searchProfileImage">Profile Image</string>
     <string name="noRecentSearch">No search history</string>
 
-    <string name="searchWordBlankText">No search results for\n </string>
+    <string name="searchWordBlankText">No matching bucket lists found.</string>
 </resources>

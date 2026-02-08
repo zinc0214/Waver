@@ -1,10 +1,13 @@
 package com.zinc.waver.ui_search.screen
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -14,6 +17,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -128,15 +132,21 @@ fun SearchScreen(
             // 검색 결과가 없는 경우
             if (searchWord.isNotEmpty() && searchResultItems?.hasItems() == false) {
                 item {
-                    SearchResultBlankView(
-                        modifier = Modifier.animateItem(),
-                        searchWord = searchWord
-                    )
+                    Box(
+                        modifier = Modifier.fillParentMaxSize(), // 부모(LazyColumn)의 남은 영역을 채움
+                        contentAlignment = Alignment.Center // 내부 컨텐츠를 정중앙으로 배치
+                    ) {
+                        SearchResultBlankView(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(bottom = 100.dp) // 필요하면 크기 조정
+                        )
+                    }
                 }
             }
 
             // 최근 검색어 + 추천 키워드 화면
-            if (searchWord.isEmpty() || searchResultItems?.hasItems() == false) {
+            if (searchWord.isEmpty()) {
                 item {
                     searchRecommendItems?.let {
                         SearchRecentView(
