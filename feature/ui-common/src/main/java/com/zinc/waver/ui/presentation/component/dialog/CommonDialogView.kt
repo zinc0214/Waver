@@ -3,6 +3,7 @@ package com.zinc.waver.ui.presentation.component.dialog
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -55,8 +56,8 @@ fun CommonDialogView(
                 ) {
 
                     Spacer(modifier = Modifier.padding(top = 32.dp))
-                    // Title 영역
 
+                    // Title 영역
                     title?.let {
                         MyText(
                             modifier = Modifier
@@ -70,14 +71,16 @@ fun CommonDialogView(
                         )
                     }
 
+                    if (title != null) {
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
 
                     message?.let {
                         // Message 영역
                         MyText(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 28.dp)
-                                .padding(top = 16.dp),
+                                .padding(horizontal = 28.dp),
                             text = message,
                             fontSize = dpToSp(dp = 16.dp),
                             color = Gray9,
@@ -106,6 +109,18 @@ fun CommonDialogView(
 private fun TitleAndMessageDialogPreview() {
     CommonDialogView(
         title = "추가실패",
+        message = "뾰잉",
+        dismissAvailable = false,
+        rightButtonInfo = DialogButtonInfo(text = R.string.confirm, color = Main4),
+        leftButtonInfo = DialogButtonInfo(text = R.string.confirm, color = Gray9),
+        rightButtonEvent = {}
+    )
+}
+
+@Composable
+@Preview
+private fun TitleAndMessageDialogPreview2() {
+    CommonDialogView(
         message = "뾰잉",
         dismissAvailable = false,
         rightButtonInfo = DialogButtonInfo(text = R.string.confirm, color = Main4),
