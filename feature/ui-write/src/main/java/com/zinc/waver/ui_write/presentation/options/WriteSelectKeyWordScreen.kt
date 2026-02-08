@@ -1,15 +1,14 @@
 package com.zinc.waver.ui_write.presentation.options
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -24,15 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.flowlayout.FlowRow
 import com.zinc.waver.model.WriteKeyWord
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray2
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Main3
-import com.zinc.waver.ui.design.theme.Main4
-import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.RoundChip
 import com.zinc.waver.ui.util.dpToSp
@@ -56,6 +53,7 @@ fun WriteSelectKeyWordScreen(
 
     Column(
         modifier = Modifier
+            .fillMaxSize()
             .background(color = Gray2)
             .statusBarsPadding()
     ) {
@@ -101,8 +99,12 @@ fun WriteSelectKeyWordScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 34.dp),
-                    mainAxisSpacing = 24.dp,
-                    crossAxisSpacing = 17.dp,
+                    maxItemsInEachRow = 3,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        17.dp,
+                        alignment = Alignment.CenterHorizontally
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
                     originKeyWord.forEach { keywordItem ->
                         var selected by remember { mutableStateOf(updateKeyWords.value.any { it == keywordItem }) }
@@ -137,38 +139,30 @@ fun WriteSelectKeyWordScreen(
     }
 }
 
-
 @Composable
-private fun WriteSelectKeyWordAppBarLayout(
-    modifier: Modifier,
-    closeClicked: () -> Unit,
-    addClicked: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp)
-    ) {
-        IconButton(
-            image = com.zinc.waver.ui_common.R.drawable.btn_40_close,
-            contentDescription = stringResource(id = com.zinc.waver.ui_common.R.string.closeDesc),
-            modifier = Modifier
-                .padding(start = 14.dp, top = 6.dp, bottom = 6.dp)
-                .size(40.dp),
-            onClick = {
-                closeClicked()
-            })
+@Preview
+private fun WriteSelectKeyWordScreenPreview() {
+    val originKeyWord = listOf(
+        WriteKeyWord(
+            code = "1", name = "제주도"
+        ),
+        WriteKeyWord(
+            code = "2", name = "여행"
+        ),
+        WriteKeyWord(
+            code = "3", name = "아주아주긴키워드라서넘어가면"
+        ),
+        WriteKeyWord(
+            code = "4", name = "안년여영ㅇ"
+        )
+    )
+    WriteSelectKeyWordScreen(
+        closeClicked = {},
+        originKeyWord = originKeyWord,
+        selectedKeyWords = originKeyWord,
+        addKeyWordClicked = {
 
-        MyText(
-            text = stringResource(id = com.zinc.waver.ui_common.R.string.addDesc),
-            color = Main4,
-            fontSize = dpToSp(14.dp),
-            modifier = Modifier
-                .padding(10.dp)
-                .clickable {
-                    addClicked()
-                }
-                .padding(end = 18.dp)
-                .align(Alignment.CenterEnd))
-    }
+        },
+
+        )
 }
