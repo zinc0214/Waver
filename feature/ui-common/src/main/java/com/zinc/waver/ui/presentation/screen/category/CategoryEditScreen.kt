@@ -120,6 +120,7 @@ fun CategoryEditScreen(
         Toast.makeText(context, stringResource(R.string.categoryReorderSucceed), Toast.LENGTH_SHORT)
             .show()
         reorderSucceedState.value = false
+        backClicked()
     }
 
 
