@@ -256,7 +256,7 @@ private fun EditCategoryItemView(
                     DropdownMenu(
                         expanded = true,
                         onDismissRequest = { expandedMenuIndex.value = -1 },
-                        offset = DpOffset(58.dp, (-30).dp),
+                        offset = DpOffset((-58).dp, (-30).dp),
                         properties = PopupProperties(clippingEnabled = false)
                     ) {
 
