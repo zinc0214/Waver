@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -258,7 +259,7 @@ fun MyTabLayer(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = Gray1)
-                .padding(start = 28.dp, top = 46.dp)
+                .padding(start = 16.dp, top = 46.dp)
         ) {
             itemsIndexed(items = tabItems, itemContent = { index, tab ->
                 MyTab(
@@ -435,17 +436,18 @@ private fun MyTab(
 
     Column(
         modifier = Modifier
-            .padding(start = 12.dp, end = 12.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
             ) {
                 isClicked(currentIndex)
-            }) {
+            },
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         MyText(
             text = stringResource(id = mySection.getTitle()),
-            style = if (isSelected) textStyle.copy(color = Gray10)
-            else textStyle.copy(color = Gray6),
+            style = if (isSelected) textStyle.copy(color = Gray10) else textStyle.copy(color = Gray6),
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp),
             onTextLayout = { textLayoutResult ->
                 tabWidths[currentIndex] =
                     with(density) { textLayoutResult.size.width.toDp() }
@@ -455,7 +457,7 @@ private fun MyTab(
             modifier = Modifier
                 .padding(top = 8.dp)
                 .height(3.dp)
-                .width(tabWidths[currentIndex])
+                .width(tabWidths[currentIndex] + 6.dp)
                 .background(if (isSelected) Gray10 else Color.Transparent)
         )
     }
