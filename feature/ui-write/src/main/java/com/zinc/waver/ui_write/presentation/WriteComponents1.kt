@@ -147,7 +147,6 @@ fun WriteTitleFieldView(
             titleText = it
             textChanged(titleText.text)
         },
-        singleLine = true,
         decorationBox = { innerTextField ->
             Row {
                 if (titleText.text.isEmpty()) {
