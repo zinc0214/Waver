@@ -49,7 +49,7 @@ import com.zinc.waver.ui_common.R as CommonR
 
 @Composable
 fun GoalCountBottomScreen(
-    originCount: String = "2",
+    originCount: String = "",
     canceled: () -> Unit,
     confirmed: (String) -> Unit
 ) {

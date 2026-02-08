@@ -318,7 +318,7 @@ fun WriteScreen1(
 
                     GOAL -> {
                         GoalCountBottomScreen(
-                            originCount = originCount.value?.toString() ?: "2",
+                            originCount = originCount.value?.toString().orEmpty(),
                             canceled = {
                                 selectedOption = null
                                 isNeedToBottomSheetOpen.invoke(false)
