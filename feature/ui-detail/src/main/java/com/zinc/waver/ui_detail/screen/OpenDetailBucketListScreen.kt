@@ -182,6 +182,8 @@ fun OpenDetailBucketListScreen(
                     viewModel.blockBucketWriter()
                 }
             }
+
+            internalEvent = OpenBucketDetailInternalEvent.None
         }
     }
 
