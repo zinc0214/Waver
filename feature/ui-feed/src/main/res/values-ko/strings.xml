@@ -4,7 +4,7 @@
     <string name="feedContentTitle">마이 피드</string>
     <string name="feedImageView">피드 이미지</string>
     <string name="feedProfileImage">프로필 이미지</string>
-    <string name="feedPageLoading">웨이버 불러오는 중...</string
+    <string name="feedPageLoading">웨이버 불러오는 중...</string>
 
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">관심있는 키워드를\n선택해주세요.</string>

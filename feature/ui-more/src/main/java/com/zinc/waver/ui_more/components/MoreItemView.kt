@@ -3,6 +3,7 @@ package com.zinc.waver.ui_more.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +23,7 @@ import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray3
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui.presentation.screen.ads.MoreAdBannerScreen
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.models.MoreItemType
@@ -74,6 +76,9 @@ internal fun MoreItemsView(email: String, itemClicked: (MoreItemType) -> Unit) {
                 itemClicked(logout.type)
             }
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+        MoreAdBannerScreen()
     }
 }
 

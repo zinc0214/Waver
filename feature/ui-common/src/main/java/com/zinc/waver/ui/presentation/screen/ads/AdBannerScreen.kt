@@ -10,7 +10,7 @@ import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
 @Composable
-fun AdBannerScreen(modifier: Modifier = Modifier) {
+fun BadgeAdBannerScreen(modifier: Modifier = Modifier) {
     val adUnitId =
         "ca-app-pub-6302671173915322/6244920706" //"ca-app-pub-3940256099942544/6300978111"
     val adRequest = AdRequest.Builder().build()
@@ -31,3 +31,24 @@ fun AdBannerScreen(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun MoreAdBannerScreen(modifier: Modifier = Modifier) {
+    val adUnitId =
+        "ca-app-pub-6302671173915322/5768959004"
+    val adRequest = AdRequest.Builder().build()
+
+    Box(modifier = modifier) {
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = { context ->
+                AdView(context).apply {
+                    setAdSize(AdSize.BANNER)
+                    this.adUnitId = adUnitId
+                    loadAd(adRequest)
+                }
+            },
+            update = { adView ->
+                adView.loadAd(adRequest)
+            })
+    }
+}

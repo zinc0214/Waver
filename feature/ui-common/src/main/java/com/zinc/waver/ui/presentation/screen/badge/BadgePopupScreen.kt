@@ -38,7 +38,7 @@ import com.zinc.waver.ui.design.theme.Gray9
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.model.BadgePopupInfo
-import com.zinc.waver.ui.presentation.screen.ads.AdBannerScreen
+import com.zinc.waver.ui.presentation.screen.ads.BadgeAdBannerScreen
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R
 
@@ -109,7 +109,7 @@ fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
 
             Spacer(modifier = Modifier.padding(top = 9.dp))
 
-            AdBannerScreen()
+            BadgeAdBannerScreen()
 
             MyText(
                 text = stringResource(R.string.confirm),
