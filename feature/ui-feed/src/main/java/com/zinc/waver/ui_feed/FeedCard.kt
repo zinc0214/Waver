@@ -3,6 +3,7 @@ package com.zinc.waver.ui_feed
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Gray10
 import com.zinc.waver.ui.design.theme.Gray5
+import com.zinc.waver.ui.design.theme.Main3
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.theme.Main5
 import com.zinc.waver.ui.presentation.component.IconButton
@@ -41,12 +43,12 @@ import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.ProfileView
 import com.zinc.waver.ui.presentation.screen.ads.NativeScreen
 import com.zinc.waver.ui.util.dpToSp
-import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.models.UIFeedInfo
 import com.zinc.waver.ui_feed.models.profileInfo
 import com.zinc.waver.util.shadow
 import kotlinx.coroutines.flow.collectLatest
+import com.zinc.waver.ui_common.R as CommonR
 
 
 @Composable
@@ -72,18 +74,7 @@ fun FeedListView(
         Spacer(modifier = Modifier.height(60.dp))
 
         if (showPageLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 20.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                androidx.compose.material3.CircularProgressIndicator(
-                    color = Main4,
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
+            PageLoadingView()
         }
     }
 
@@ -180,7 +171,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
         modifier = modifier,
         content = {
             Image(
-                painter = painterResource(id = if (isProcessing) R.drawable.status_process_img else R.drawable.stauts_success_img),
+                painter = painterResource(id = if (isProcessing) CommonR.drawable.status_process_img else CommonR.drawable.stauts_success_img),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -189,7 +180,7 @@ private fun ProcessView(modifier: Modifier = Modifier, isProcessing: Boolean) {
             )
             MyText(
                 text = stringResource(
-                    id = if (isProcessing) R.string.proceedingText else R.string.succeedText
+                    id = if (isProcessing) CommonR.string.proceedingText else CommonR.string.succeedText
                 ),
                 color = if (isProcessing) Main4 else Main5,
                 fontSize = dpToSp(13.dp),
@@ -223,7 +214,8 @@ private fun BottomStateView(
     feedInfo: UIFeedInfo,
     clickEvent: (FeedClickEvent) -> Unit
 ) {
-    val likeImage = if (feedInfo.liked) R.drawable.btn_32_like_on else R.drawable.btn_32_like_off
+    val likeImage =
+        if (feedInfo.liked) CommonR.drawable.btn_32_like_on else CommonR.drawable.btn_32_like_off
     ConstraintLayout(modifier = modifier) {
         val (leftContent, rightContent) = createRefs()
 
@@ -259,7 +251,7 @@ private fun BottomStateView(
             Spacer(modifier = Modifier.width(12.dp))
 
             IconButton(
-                image = R.drawable.btn_32_comment,
+                image = CommonR.drawable.btn_32_comment,
                 contentDescription = null,
                 onClick = {
                     clickEvent.invoke(
@@ -286,7 +278,7 @@ private fun BottomStateView(
         }
 
         IconButton(
-            image = if (feedInfo.isScrapAvailable) R.drawable.btn_32_copy_on else R.drawable.btn_32_copy_off,
+            image = if (feedInfo.isScrapAvailable) CommonR.drawable.btn_32_copy_on else CommonR.drawable.btn_32_copy_off,
             contentDescription = null,
             onClick = {
                 clickEvent.invoke(FeedClickEvent.Scrap(feedInfo.bucketId))
@@ -299,6 +291,29 @@ private fun BottomStateView(
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 }
+        )
+    }
+}
+
+@Composable
+private fun PageLoadingView() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 52.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+        androidx.compose.material3.CircularProgressIndicator(
+            color = Main4,
+            strokeWidth = 2.dp,
+            modifier = Modifier.size(24.dp)
+        )
+        MyText(
+            text = stringResource(R.string.feedPageLoading),
+            modifier = Modifier.padding(top = 14.dp),
+            color = Main3
         )
     }
 }
@@ -325,4 +340,10 @@ private fun FeedCardViewPreview() {
         ),
         clickEvent = {}
     )
+}
+
+@Composable
+@Preview
+private fun PageLoadingPreview() {
+    PageLoadingView()
 }

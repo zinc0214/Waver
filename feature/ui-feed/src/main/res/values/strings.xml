@@ -3,7 +3,8 @@
     <!-- Feed > Content -->
     <string name="feedContentTitle">My Feed</string>
     <string name="feedImageView">Feed image</string>
-    <string name="feedProfileImage">Profile image</string>
+    <string name="feedProfileImage">Profile image</string>>
+    <string name="feedPageLoading">Loading Waver...</string>
 
     <!-- Feed > Recommend -->
     <string name="feedRecommendTitle">Please select\nkeywords you\'re interested in.</string>
