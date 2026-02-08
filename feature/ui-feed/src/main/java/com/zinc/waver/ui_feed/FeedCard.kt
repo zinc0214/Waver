@@ -39,6 +39,7 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.ImageViewPagerOutSideIndicator
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.ProfileView
+import com.zinc.waver.ui.presentation.screen.ads.NativeScreen
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_feed.models.FeedClickEvent
@@ -66,6 +67,9 @@ fun FeedListView(
             )
             Spacer(modifier = Modifier.height(12.dp))
         }
+
+        NativeScreen()
+        Spacer(modifier = Modifier.height(60.dp))
 
         if (showPageLoading) {
             Box(

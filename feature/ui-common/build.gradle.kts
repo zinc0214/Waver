@@ -80,4 +80,6 @@ dependencies {
 
     // shimmer
     implementation(libs.shimmer)
+
+    implementation(libs.androidx.material3)
 }
