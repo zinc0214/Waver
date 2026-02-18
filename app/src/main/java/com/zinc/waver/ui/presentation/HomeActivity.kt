@@ -224,7 +224,7 @@ class HomeActivity : AppCompatActivity() {
                     showCropLabel = true,
                     showCropOverlay = true,
                     guidelines = CropImageView.Guidelines.ON,
-                    outputCompressFormat = Bitmap.CompressFormat.JPEG, // PNG 대신 JPEG 사용 (더 작은 파일 크기)
+                    outputCompressFormat = Bitmap.CompressFormat.PNG, // PNG 대신 JPEG 사용 (더 작은 파일 크기)
                     outputCompressQuality = 50, // 압축 품질 설정 (1-100)
                     outputRequestWidth = dp2px(50), // 크기 줄임
                     outputRequestHeight = dp2px(50), // 크기 줄임

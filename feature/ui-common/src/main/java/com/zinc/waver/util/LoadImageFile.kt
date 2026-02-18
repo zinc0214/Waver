@@ -30,7 +30,7 @@ fun saveBitmapAsFile(bitmap: Bitmap?, filePath: String): File {
     try {
         file.createNewFile()
         os = FileOutputStream(file)
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 80, os)
+        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, os)
         os.close()
     } catch (e: Exception) {
         e.printStackTrace()
