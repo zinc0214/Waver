@@ -186,12 +186,20 @@ fun WriteScreen1(
     nextButtonClickable.value = title.value.isNotEmpty()
 
 
+    // 기존 option 값 제거?
+    fun deleteOption(type: WriteOptionsType1) {
+        updatedWriteOptions.find { it.type() == type }?.let {
+            updatedWriteOptions.remove(it)
+        }
+    }
+
 // 각 option 값이 들어왔을 때 해야하는 것들 정리
     if (selectedOption == MEMO) {
         MemoScreen(
             originMemo = originMemo.value,
             memoChanged = {
                 originMemo.value = it
+                deleteOption(MEMO)
                 updatedWriteOptions.add(
                     WriteOption1Info.Memo(it)
                 )
@@ -211,12 +219,6 @@ fun WriteScreen1(
         })
     }
 
-    // 기존 option 값 제거?
-    fun deleteOption(type: WriteOptionsType1) {
-        updatedWriteOptions.find { it.type() == type }?.let {
-            updatedWriteOptions.remove(it)
-        }
-    }
 
 // 바텀시트
     ModalBottomSheetLayout(
@@ -455,7 +457,8 @@ fun WriteScreen1(
                                 },
                                 emptyContent = {
                                     Spacer(modifier = Modifier.size(80.dp))
-                                })
+                                }
+                            )
                         }
                     }
 
