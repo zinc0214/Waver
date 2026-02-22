@@ -119,7 +119,7 @@ fun CategoryEditScreen(
     if (reorderSucceedState.value == true) {
         Toast.makeText(context, stringResource(R.string.categoryReorderSucceed), Toast.LENGTH_SHORT)
             .show()
-        reorderSucceedState.value = false
+        viewModel.resetSortSucceed()
         backClicked()
     }
 

@@ -137,6 +137,10 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun resetSortSucceed() {
+        _sortSucceed.value = null
+    }
+
     private suspend fun loadOrderTypeDataStore() {
         filterPreferenceDataStoreModule.apply {
             loadOrderType.collectLatest {
