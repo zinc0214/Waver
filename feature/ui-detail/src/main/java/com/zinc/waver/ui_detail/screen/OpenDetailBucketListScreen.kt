@@ -4,33 +4,33 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyListItemInfo
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -54,7 +54,6 @@ import com.zinc.waver.model.WriteOpenType
 import com.zinc.waver.ui.design.theme.Gray7
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.util.Keyboard
-import com.zinc.waver.ui.design.util.isLastItemVisible
 import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
@@ -73,18 +72,13 @@ import com.zinc.waver.ui_detail.component.OtherCommentSelectedDialog
 import com.zinc.waver.ui_detail.component.OtherDetailAppBarMoreMenuDialog
 import com.zinc.waver.ui_detail.component.ShowReportScreen
 import com.zinc.waver.ui_detail.model.GoalCountUpdateEvent
-import com.zinc.waver.ui_detail.model.MentionSearchInfo
 import com.zinc.waver.ui_detail.model.MyBucketMoreMenuEvent
 import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
 import com.zinc.waver.ui_detail.model.OpenBucketDetailInternalEvent
 import com.zinc.waver.ui_detail.model.OtherBucketMenuEvent
-import com.zinc.waver.ui_detail.model.TaggedTextInfo
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
 import com.zinc.waver.ui_detail.viewmodel.DetailViewModel
 import com.zinc.waver.util.createImageInfoWithPath
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import com.zinc.waver.ui_detail.R as DetailR
 
 @Composable
@@ -225,53 +219,12 @@ private fun InternalOpenDetailScreen(
     val listScrollState = rememberLazyListState()
     val titleIndex = if (detailInfo.imageInfo == null) 1 else 2
 
-    // 버킷리스트 content 내부에 달성완료 버튼을 노출할 여부
-    val needToAddButtonSpace = detailInfo.canShowCompleteButton
-
-    // 하단 comment 영역 노출 가능 여부
-    var isAvailableShowComment by remember { mutableStateOf(listScrollState.isLastItemVisible) }
-
-    var memoHeight by remember { mutableIntStateOf(0) }
-
-    // 댓글 값 저장
-    val commentText = remember { mutableStateOf("") }
-
-    // 새로 선택된 태그 정보
-    val newTaggedText: MutableState<TaggedTextInfo?> = remember { mutableStateOf(null) }
-
-    // 태그된 사람들
-    val taggedMemberIdList = mutableListOf<String>()
-
-    // 검색할 텍스트와 관련된 정보들
-    val mentionSearchInfo: MutableState<MentionSearchInfo?> = remember { mutableStateOf(null) }
-
-    var previewComment by remember { mutableStateOf("") }
-
-    LaunchedEffect(listScrollState.isLastItemVisible) {
-        if (memoHeight == 0 && needToAddButtonSpace) {
-            val targetItem2 = listScrollState.layoutInfo.visibleItemsInfo
-                .find { it.contentType == "buttonSpace" }
-
-            memoHeight = targetItem2?.offset ?: 0
+    val successButtonVisible by remember {
+        derivedStateOf {
+            listScrollState.layoutInfo.visibleItemsInfo
+                .find { it.key == "successButton" }
+                .isSuccessButtonVisible(listScrollState.layoutInfo.viewportSize.height)
         }
-    }
-
-    LaunchedEffect(listScrollState) {
-        snapshotFlow { listScrollState.firstVisibleItemScrollOffset }
-            .distinctUntilChanged()
-            .onEach {
-                val targetItem = listScrollState.layoutInfo.visibleItemsInfo
-                    .find { it.contentType == "buttonSpace" }
-
-                memoHeight = targetItem?.offset ?: 0
-
-                val isBottom = !listScrollState.canScrollForward
-                val isShowComment = listScrollState.isLastItemVisible
-
-                isAvailableShowComment =
-                    isBottom || isShowComment || keyboardStatus == Keyboard.Opened
-            }
-            .launchIn(this)
     }
 
     LaunchedEffect(keyboardStatus) {
@@ -336,38 +289,34 @@ private fun InternalOpenDetailScreen(
                         top.linkTo(parent.top)
                     })
 
-            if (detailInfo.canShowCompleteButton && keyboardStatus == Keyboard.Closed) {
-                DetailSuccessButtonView(
-                    modifier = Modifier
-                        .padding(bottom = 30.dp)
-                        .offset {
-                            IntOffset(
-                                x = 0,
-                                y = memoHeight
+            Column(
+                modifier = Modifier.constrainAs(floatingButtonView) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+            ) {
+                AnimatedVisibility(
+                    visible = !successButtonVisible,
+                    exit = fadeOut() + shrinkVertically(),
+                    enter = slideInVertically(initialOffsetY = { it })
+                ) {
+                    if (detailInfo.canShowCompleteButton && keyboardStatus == Keyboard.Closed) {
+                        DetailSuccessButtonView(
+                            modifier = Modifier
+                                .padding(bottom = 28.dp),
+                            successClicked = {
+                                updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.Achieve)
+                            },
+                            successButtonInfo = SuccessButtonInfo(
+                                goalCount = detailInfo.descInfo.goalCount,
+                                userCount = detailInfo.descInfo.userCount
                             )
-                        }
-                        .constrainAs(
-                            floatingButtonView
-                        ) {
-                            start.linkTo(parent.start)
-                            end.linkTo(parent.end)
-                            if (!needToAddButtonSpace || memoHeight == 0) {
-                                bottom.linkTo(parent.bottom)
-                            } else {
-                                top.linkTo(parent.top)
-                            }
-                        },
-                    successClicked = {
-                        updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.Achieve)
-                    },
-                    successButtonInfo = SuccessButtonInfo(
-                        goalCount = detailInfo.descInfo.goalCount,
-                        userCount = detailInfo.descInfo.userCount
-                    )
-                )
+                        )
+                    }
+                }
             }
 
-            // 최하단 EditTextView
             Column(
                 modifier = Modifier
                     .constrainAs(editView) {
@@ -376,13 +325,12 @@ private fun InternalOpenDetailScreen(
                         bottom.linkTo(parent.bottom)
                     }) {
                 AnimatedVisibility(
-                    isAvailableShowComment,
-                    enter = slideInVertically(initialOffsetY = { it / 2 })
+                    successButtonVisible,
+                    enter = slideInVertically(initialOffsetY = { it / 2 }),
+                    exit = slideOutVertically(targetOffsetY = { it })
                 ) {
                     CommentEditView(
-                        onCommentChanged = {
-                            previewComment = it
-                        },
+                        onCommentChanged = {},
                         mentionableUsers = validMentionList,
                         sendCommend = {
                             updateInternalEvent(
@@ -390,7 +338,7 @@ private fun InternalOpenDetailScreen(
                                     AddBucketCommentRequest(
                                         bucketId = detailInfo.bucketId.toInt(),
                                         content = it,
-                                        mentionIds = taggedMemberIdList
+                                        mentionIds = emptyList()
                                     )
                                 )
                             )
@@ -400,128 +348,8 @@ private fun InternalOpenDetailScreen(
                             updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
                         }
                     )
-//                    CommentEditTextView2(
-//                        originText = commentText.value,
-//                        newTaggedInfo = newTaggedText.value,
-//                        isLiked = detailInfo.isLiked,
-//                        commentEvent = {
-//                            when (it) {
-//                                is OpenDetailEditTextViewEvent.BucketLike -> {
-//                                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BucketLike)
-//                                }
-//
-//                                is OpenDetailEditTextViewEvent.SendComment -> {
-//                                    updateInternalEvent(
-//                                        OpenBucketDetailInternalEvent.ViewModelEvent.AddComment(
-//                                            AddBucketCommentRequest(
-//                                                bucketId = detailInfo.bucketId.toInt(),
-//                                                content = it.sendText,
-//                                                mentionIds = taggedMemberIdList
-//                                            )
-//                                        )
-//                                    )
-//                                    commentText.value = ""
-//                                }
-//
-//                                is OpenDetailEditTextViewEvent.TextChanged -> {
-//                                    val textInfo = it
-//                                    commentText.value = textInfo.updateText
-//                                    newTaggedText.value = null
-//
-//                                    taggedMemberIdList.clear()
-//                                    taggedMemberIdList.addAll(textInfo.taggedList.map { tagged -> tagged.id })
-//
-//                                    // "@" 태그 위치 확인
-//                                    val tagIndexMap = mutableListOf<Int>()
-//                                    textInfo.updateText.mapIndexed { index, c ->
-//                                        if (c == '@') {
-//                                            tagIndexMap.add(index)
-//                                        }
-//                                    }
-//
-//                                    // "@" 태그가 있는 경우, 현재 커서 위치와 비교해서 @__ 값 확인
-//                                    if (tagIndexMap.isNotEmpty()) {
-//                                        tagIndexMap.lastOrNull { index ->
-//                                            it.index > index
-//                                        }?.let { tagIndex ->
-//
-//                                            // 커서의 위치가 전체 길이보다 뒤이면 리턴
-//                                            if (textInfo.index > textInfo.updateText.length) {
-//                                                mentionSearchInfo.value = null
-//                                                return@CommentEditTextView2
-//                                            }
-//
-//                                            val needToSearchText =
-//                                                textInfo.updateText.substring(
-//                                                    tagIndex,
-//                                                    textInfo.index
-//                                                )
-//
-//                                            if (needToSearchText.isNotEmpty()) {
-//                                                val info =
-//                                                    MentionSearchInfo(
-//                                                        needToSearchText,
-//                                                        tagIndex,
-//                                                        textInfo.index,
-//                                                        textInfo.taggedList
-//                                                    )
-//
-//                                                mentionSearchInfo.value = info
-//
-//                                            } else {
-//                                                mentionSearchInfo.value = null
-//                                            }
-//
-//                                        }
-//                                    } else {
-//                                        mentionSearchInfo.value = null
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-//                    )
                 }
             }
-
-//            mentionSearchInfo.value?.let { info ->
-//                if (info.searchText.isNotEmpty()) {
-//                    val removePrefixText = info.searchText.replace("@", "")
-//                    val searchedList =
-//                        validMentionList.filter { it.nickName.contains(removePrefixText) }
-//                    if (searchedList.isNotEmpty()) {
-//                        MentionSearchListPopup(
-//                            searchedList = searchedList,
-//                            mentionSelected = {
-//
-//                                var makeTaggedText = commentText.value
-//                                val nickName = "@" + it.nickName + " "
-//
-//                                val rangeEndIndex =
-//                                    if (info.endIndex < makeTaggedText.length) info.endIndex + 1 else info.endIndex
-//                                makeTaggedText = makeTaggedText.replaceRange(
-//                                    info.startIndex,
-//                                    rangeEndIndex,
-//                                    nickName
-//                                )
-//
-//                                val currentTime = LocalTime.now()
-//                                val timeString = currentTime.toString().substring(0, 8)
-//
-//                                newTaggedText.value =
-//                                    TaggedTextInfo(
-//                                        id = "${info.startIndex}${timeString}",
-//                                        text = nickName,
-//                                        startIndex = info.startIndex,
-//                                        endIndex = info.startIndex + nickName.length - 1
-//                                    )
-//                                commentText.value = makeTaggedText
-//                                mentionSearchInfo.value = null
-//                            }
-//                        )
-//                    }
-//                }
-//            }
         }
     }
 
@@ -540,6 +368,15 @@ private fun InternalOpenDetailScreen(
             updateInternalEvent = updateInternalEvent
         )
     }
+}
+
+private fun LazyListItemInfo?.isSuccessButtonVisible(viewportHeight: Int): Boolean {
+    if (this == null) {
+        return false
+    }
+    val topIsVisible = this.offset >= 0
+    val bottomIsVisible = (this.offset + this.size) <= viewportHeight
+    return topIsVisible && bottomIsVisible
 }
 
 private fun handleMoreEvent(

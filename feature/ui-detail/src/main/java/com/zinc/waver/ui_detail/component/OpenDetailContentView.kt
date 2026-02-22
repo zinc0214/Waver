@@ -1,7 +1,6 @@
 package com.zinc.waver.ui_detail.component
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.CommentLongClicked
 import com.zinc.waver.model.DetailClickEvent
+import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.ui.presentation.component.ImageViewPagerInsideIndicator
 
 @Composable
@@ -52,27 +52,29 @@ fun OpenDetailContentView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 24.dp, start = 28.dp, end = 28.dp, bottom = 56.dp
+                            top = 24.dp, start = 28.dp, end = 28.dp
                         ),
                     memo = info.memoInfo?.memo!!
                 )
-            } else if (info.canShowCompleteButton)
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(56.dp)
-                )
+            }
         }
 
         if (info.canShowCompleteButton) {
-            item(key = "buttonSpace", contentType = "buttonSpace") {
-                Spacer(
+            item(key = "successButton", contentType = "successButton") {
+                DetailSuccessButtonView(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .height(56.dp)
+                        .padding(top = 28.dp, bottom = 28.dp),
+                    successClicked = {
+                        clickEvent(DetailClickEvent.SuccessClicked(info.bucketId))
+                    },
+                    successButtonInfo = SuccessButtonInfo(
+                        goalCount = info.descInfo.goalCount,
+                        userCount = info.descInfo.userCount
+                    )
                 )
             }
         }
+
 
         item(key = "friendsView") {
             if (info.togetherInfo != null) {
