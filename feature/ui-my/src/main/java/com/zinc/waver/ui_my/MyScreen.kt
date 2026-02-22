@@ -457,7 +457,7 @@ private fun MyTab(
             modifier = Modifier
                 .padding(top = 8.dp)
                 .height(3.dp)
-                .width(tabWidths[currentIndex] + 6.dp)
+                .width(tabWidths[currentIndex] + 10.dp)
                 .background(if (isSelected) Gray10 else Color.Transparent)
         )
     }
