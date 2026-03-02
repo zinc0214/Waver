@@ -92,7 +92,7 @@ fun TitleView(
                         bottom.linkTo(parent.bottom)
                     }
                     .padding(end = 18.dp)
-                    .clickable { onRightTextClicked?.let { it() } }
+                    .clickable(enabled = rightTextEnable) { onRightTextClicked?.let { it() } }
                     .padding(start = 6.dp, end = 6.dp, top = 6.dp, bottom = 6.dp)
             )
 
