@@ -227,6 +227,48 @@ private fun InternalOpenDetailScreen(
         }
     }
 
+    // 메모가 화면에 완전히 보이는지 확인
+    val isMemoFullyVisible by remember {
+        derivedStateOf {
+            val memoItem = listScrollState.layoutInfo.visibleItemsInfo.find {
+                it.key == "memoView"
+            }
+
+            if (memoItem == null) {
+                false // 메모가 화면에 보이지 않음
+            } else {
+                // 메모의 상단이 화면 상단 이상에 있고 (offset >= 0)
+                // 하단이 화면 하단 이내에 있으면 (offset + size <= viewportHeight) 완전히 보임
+                val topIsVisible = memoItem.offset >= 0
+                val bottomIsVisible =
+                    (memoItem.offset + memoItem.size) <= listScrollState.layoutInfo.viewportSize.height
+                topIsVisible && bottomIsVisible
+            }
+        }
+    }
+
+    // 댓글 라인이 화면에 보이는지 확인
+    val isCommentLineVisible by remember {
+        derivedStateOf {
+            listScrollState.layoutInfo.visibleItemsInfo.any {
+                it.key == "commentLine" || it.key == "commentLayer"
+            }
+        }
+    }
+
+    // 댓글 입력 화면 표시 조건:
+    // 1. 메모가 완전히 보이면 (스크롤이 필요 없으면) → 항상 표시
+    // 2. 메모가 완전히 보이지 않으면 (스크롤이 필요하면) → 댓글 라인이 보일 때만 표시
+    val commentEditViewVisible by remember {
+        derivedStateOf {
+            if (isMemoFullyVisible) {
+                true // 메모가 다 보임 → 항상 표시
+            } else {
+                isCommentLineVisible // 메모가 안 보임 (스크롤 필요) → 댓글 라인이 보일 때만 표시
+            }
+        }
+    }
+
     LaunchedEffect(keyboardStatus) {
         if (keyboardStatus == Keyboard.Opened) {
             val lastIndex = listScrollState.layoutInfo.totalItemsCount - 1
@@ -296,12 +338,16 @@ private fun InternalOpenDetailScreen(
                     bottom.linkTo(parent.bottom)
                 }
             ) {
+                // 플로팅 버튼은 다음 조건에서만 노출:
+                // 1. 자신의 버킷리스트이고 (!detailInfo.canShowCompleteButton == false)
+                // 2. 고정 달성완료 버튼이 화면에 보이지 않을 때 (!successButtonVisible)
+                // 3. 그리고 댓글 입력이 보이지 않을 때 (!commentEditViewVisible)
                 AnimatedVisibility(
-                    visible = !successButtonVisible,
+                    visible = detailInfo.canShowCompleteButton && !successButtonVisible && !commentEditViewVisible,
                     exit = fadeOut() + shrinkVertically(),
                     enter = slideInVertically(initialOffsetY = { it })
                 ) {
-                    if (detailInfo.canShowCompleteButton && keyboardStatus == Keyboard.Closed) {
+                    if (keyboardStatus == Keyboard.Closed) {
                         DetailSuccessButtonView(
                             modifier = Modifier
                                 .padding(bottom = 28.dp),
@@ -325,7 +371,7 @@ private fun InternalOpenDetailScreen(
                         bottom.linkTo(parent.bottom)
                     }) {
                 AnimatedVisibility(
-                    successButtonVisible,
+                    visible = commentEditViewVisible,
                     enter = slideInVertically(initialOffsetY = { it / 2 }),
                     exit = slideOutVertically(targetOffsetY = { it })
                 ) {
@@ -374,8 +420,10 @@ private fun LazyListItemInfo?.isSuccessButtonVisible(viewportHeight: Int): Boole
     if (this == null) {
         return false
     }
-    val topIsVisible = this.offset >= 0
-    val bottomIsVisible = (this.offset + this.size) <= viewportHeight
+    // 버튼의 상단이 뷰포트 하단보다 위에 있고 (버튼이 화면 위로 스크롤되지 않음)
+    // 버튼의 하단이 뷰포트 상단보다 아래에 있으면 (버튼이 화면 아래로 스크롤되지 않음)
+    val topIsVisible = this.offset < viewportHeight
+    val bottomIsVisible = (this.offset + this.size) > 0
     return topIsVisible && bottomIsVisible
 }
 
@@ -666,7 +714,7 @@ private fun InternalOpenDetailScreenPreview() {
                 isScrap = false,
                 isMine = true
             ),
-            memoInfo = DetailDescType.MemoInfo("메모를 썼다고 해보자구\n아주긴ㄱㄹ로\n일단 스크롤이 되어야 하거든\n부탁 좀 핳게 !!!"),
+            memoInfo = DetailDescType.MemoInfo("메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n메모를 썼다고 해보자구\n아주긴ㄱㄹ로\n일단 스크롤이 되어야 하거든\n부탁 좀 핳게 !!!"),
             commentInfo = DetailDescType.CommentInfo(
                 commentCount = 4402, commentList = listOf(
                     Comment(
