@@ -1,5 +1,5 @@
 package com.zinc.waver.model
 
 enum class AddImageType {
-    CAMERA, GALLERY
+    CAMERA, GALLERY, DEFAULT
 }

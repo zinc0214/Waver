@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_more.screen
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.zinc.waver.model.AddImageType
 import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.ImageSelectBottomScreen
@@ -39,6 +39,7 @@ import com.zinc.waver.ui.util.isValidNicknameCheck
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.ProfileSettingTitle
 import com.zinc.waver.ui_more.viewModel.MoreViewModel
+import com.zinc.waver.util.RandomProfileImageUtil
 import com.zinc.waver.util.downloadImageWithCoil
 import kotlinx.coroutines.launch
 import java.io.File
@@ -159,7 +160,6 @@ fun ProfileSettingScreen(
         when (bottomSheetScaffoldState.currentValue) {
             ModalBottomSheetValue.Hidden -> {
                 showSelectCameraType = false
-                isNeedToBottomSheetOpen(false)
             }
 
             else -> {
@@ -168,35 +168,50 @@ fun ProfileSettingScreen(
         }
     }
 
+    LaunchedEffect(showSelectCameraType) {
+        if (showSelectCameraType) {
+            bottomSheetScaffoldState.show()
+        } else {
+            bottomSheetScaffoldState.hide()
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
             if (showSelectCameraType) {
                 ImageSelectBottomScreen(selectedType = {
-                    addImageAction.invoke(
-                        ActionWithActivity.AddImage(
-                            type = it,
-                            failed = {
-                                Toast.makeText(
-                                    context,
-                                    "이미지 로드에 실패했습니다.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                isNeedToBottomSheetOpen.invoke(false)
-                            },
-                            succeed = { imageInfo ->
-                                Log.e("ayhan", "imageInfo : $imageInfo")
-
-                                isNeedToBottomSheetOpen.invoke(false)
-                                updateImagePath.value = imageInfo.path
-                                updateImageFile.value = imageInfo.file
-                            })
-                    )
-
+                    if (it == AddImageType.DEFAULT) {
+                        val file = RandomProfileImageUtil.getRandomProfileImageFile(context)
+                        if (file != null) {
+                            updateImageFile.value = file
+                            updateImagePath.value = "file://${file.path}"
+                        } else {
+                            Toast.makeText(context, "기본이미지 로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        }
+                        isNeedToBottomSheetOpen(false)
+                    } else {
+                        addImageAction.invoke(
+                            ActionWithActivity.AddImage(
+                                type = it,
+                                failed = {
+                                    Toast.makeText(
+                                        context,
+                                        "이미지 로드에 실패했습니다.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    isNeedToBottomSheetOpen(false)
+                                },
+                                succeed = { imageInfo ->
+                                    updateImagePath.value = imageInfo.path
+                                    updateImageFile.value = imageInfo.file
+                                    isNeedToBottomSheetOpen(false)
+                                }
+                            )
+                        )
+                    }
                 })
-                isNeedToBottomSheetOpen.invoke(true)
             }
-
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {

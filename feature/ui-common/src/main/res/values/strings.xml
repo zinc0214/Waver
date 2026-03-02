@@ -51,6 +51,7 @@
     <string name="profileImageDesc">Profile Image</string>
     <string name="selectGallery">Select from Gallery</string>
     <string name="selectCamera">Take Photo</string>
+    <string name="selectDefault">Default Image</string>
     <string name="bucketImage">Image</string>
 
     <!-- Title View -->

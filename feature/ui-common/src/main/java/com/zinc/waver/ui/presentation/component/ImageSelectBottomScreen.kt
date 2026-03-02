@@ -47,6 +47,18 @@ fun ImageSelectBottomScreen(
             fontSize = dpToSp(dp = 15.dp),
             color = Gray9
         )
+
+        MyText(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    selectedType(AddImageType.DEFAULT)
+                }
+                .padding(vertical = 16.dp),
+            text = stringResource(id = R.string.selectDefault),
+            fontSize = dpToSp(dp = 15.dp),
+            color = Gray9
+        )
     }
 }
 
