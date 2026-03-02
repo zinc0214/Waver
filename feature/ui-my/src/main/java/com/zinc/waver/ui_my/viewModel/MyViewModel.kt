@@ -131,6 +131,7 @@ class MyViewModel @Inject constructor(
             joinAll(job1, job2, job3, job4, job5)
             _dataLoadFailed.value = false
         }
+        _isNeedToUpdate.value = false
     }
 
     fun loadDdayBucketFilter() {

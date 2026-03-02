@@ -61,9 +61,7 @@ fun AllBucketLayer(
     val isNeedToUpdate by viewModel.isNeedToUpdate.observeAsState()
     val filterLoadFinishedAsState by viewModel.allFilterLoadFinished.observeAsState()
 
-    var bucketInfo by remember("bucketInfo") {
-        mutableStateOf(allBucketInfoAsState)
-    }
+    val bucketInfo = allBucketInfoAsState
     val ddayShow = remember {
         mutableStateOf(ddayShowPrefAsState)
     }
@@ -86,16 +84,11 @@ fun AllBucketLayer(
         ddayShow.value = ddayShowPrefAsState
     })
 
-    LaunchedEffect(key1 = allBucketInfoAsState, block = {
-        bucketInfo = allBucketInfoAsState
-        Log.e("ayhan", "bucketInfo : $bucketInfo")
-    })
 
     LaunchedEffect(key1 = isNeedToUpdate, block = {
         Log.e("ayhan", "isNeedToUpdate : $isNeedToUpdate")
 
         if (isNeedToUpdate == true) {
-            viewModel.needToReload(false)
             viewModel.loadAllBucketFilter()
             isFilterUpdated.value = false
             // 값 초기화
