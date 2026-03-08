@@ -17,6 +17,7 @@
 
     <!--알림 설정-->
     <string name="alarmSettingTitle">알림 설정</string>
+    <string name="pushNotificationPermission">푸시 알림</string>
     <string name="alarmSettingServiceAlarm">서비스 알림</string>
     <string name="alarmSettingNewFollower">새 팔로워</string>
     <string name="alarmSettingLike">좋아요</string>

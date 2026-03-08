@@ -47,7 +47,8 @@ import java.io.File
 import java.io.IOException
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(),
+    com.zinc.waver.ui_more.components.RequestPermissionCallbackProvider {
 
     private val viewModel by viewModels<HomeViewModel>()
 
@@ -57,6 +58,10 @@ class HomeActivity : AppCompatActivity() {
 
     private var isNeedToShowPermission = false
     private lateinit var checkPermissionAction: ActionWithActivity.CheckPermission
+
+    // 권한 요청 콜백 저장
+    private val permissionCallbacks =
+        mutableMapOf<Int, com.zinc.waver.ui_more.components.RequestPermissionCallback>()
 
     private val cropImage = registerForActivityResult(CropImageCustomContract()) { result ->
         if (result.isSuccessful) {
@@ -394,5 +399,33 @@ class HomeActivity : AppCompatActivity() {
             })
 
         subs.billingSetup(waverPlusType = type)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        // 권한 요청 결과 처리
+        val granted =
+            grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        notifyPermissionResult(requestCode, granted)
+    }
+
+    override fun registerPermissionCallback(
+        requestCode: Int,
+        callback: com.zinc.waver.ui_more.components.RequestPermissionCallback
+    ) {
+        permissionCallbacks[requestCode] = callback
+    }
+
+    override fun unregisterPermissionCallback(requestCode: Int) {
+        permissionCallbacks.remove(requestCode)
+    }
+
+    override fun notifyPermissionResult(requestCode: Int, granted: Boolean) {
+        permissionCallbacks[requestCode]?.onPermissionResult(granted)
     }
 }

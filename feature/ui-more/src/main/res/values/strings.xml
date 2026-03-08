@@ -17,6 +17,7 @@
 
     <!-- Notification Settings -->
     <string name="alarmSettingTitle">Notification Settings</string>
+    <string name="pushNotificationPermission">Push Notifications</string>
     <string name="alarmSettingServiceAlarm">Service Notifications</string>
     <string name="alarmSettingNewFollower">New Follower</string>
     <string name="alarmSettingLike">Likes</string>
