@@ -65,7 +65,8 @@ import com.zinc.waver.util.nav.writeNavGraph
 
 @Composable
 fun HomeScreen(
-    action: (ActionWithActivity) -> Unit
+    action: (ActionWithActivity) -> Unit,
+    startDestination: String = HomeSections.MY.route
 ) {
     BaseTheme {
         val appState = rememberWaverAppState()
@@ -81,7 +82,8 @@ fun HomeScreen(
             HomeScaffold(
                 appState = appState,
                 shownBottomSheet = shownBottomSheet,
-                action = action
+                action = action,
+                startDestination = startDestination
             )
         }
     }
@@ -91,7 +93,8 @@ fun HomeScreen(
 private fun HomeScaffold(
     appState: WaverAppState,
     shownBottomSheet: MutableState<Boolean>,
-    action: (ActionWithActivity) -> Unit
+    action: (ActionWithActivity) -> Unit,
+    startDestination: String = HomeSections.MY.route
 ) {
     Scaffold(
         bottomBar = {
@@ -106,7 +109,8 @@ private fun HomeScaffold(
             appState = appState,
             shownBottomSheet = shownBottomSheet,
             action = action,
-            padding = padding
+            padding = padding,
+            startDestination = startDestination
         )
     }
 }
@@ -138,11 +142,12 @@ private fun HomeNavHost(
     appState: WaverAppState,
     shownBottomSheet: MutableState<Boolean>,
     action: (ActionWithActivity) -> Unit,
-    padding: PaddingValues
+    padding: PaddingValues,
+    startDestination: String = HomeSections.MY.route
 ) {
     NavHost(
         navController = appState.navController,
-        startDestination = HomeSections.MY.route,
+        startDestination = startDestination,
         enterTransition = {
             EnterTransition.None
         },

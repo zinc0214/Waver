@@ -159,4 +159,7 @@ dependencies {
 
     // PlayService Ads
     implementation(libs.play.services.ads)
+
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-messaging")
 }
