@@ -10,7 +10,6 @@
 
     <!-- More Menu -->
     <string name="moreMenuAlarm">Notification Settings</string>
-    <string name="moreMenuBlock">Blocked Users</string>
     <string name="moreMenuCs">Customer Support</string>
     <string name="moreMenuAppInfo">App Info</string>
     <string name="moreMenuLogout">Log Out</string>

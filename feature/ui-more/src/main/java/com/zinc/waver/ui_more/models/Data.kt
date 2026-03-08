@@ -1,6 +1,5 @@
 package com.zinc.waver.ui_more.models
 
-import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.MyBadge
 import com.zinc.waver.ui_more.R
 
@@ -13,7 +12,7 @@ data class UIMoreMyProfileInfo(
 )
 
 enum class MoreItemType {
-    MY_WAVE, PROFILE, ALARM, BLOCK, CS, APP_INFO, LOGOUT, WAVE_PLUS, CS_QNA
+    MY_WAVE, PROFILE, ALARM, CS, APP_INFO, LOGOUT, WAVE_PLUS, CS_QNA
 }
 
 data class UIMoreItemData(
@@ -73,17 +72,6 @@ data class AlarmSwitchState(
     var isOn: Boolean
 )
 
-fun List<BlockedUserResponse.BlockedUserInfo>.toUIModel() = map {
-    BlockMemberData(
-        profileUrl = it.blockedImgUrl, nickName = it.blockedUserName, id = it.blockedUserId
-    )
-}
-
-data class BlockMemberData(
-    val profileUrl: String?,
-    val nickName: String,
-    val id: Int
-)
 
 enum class AppInfoItemType {
     USE_TERMS, PERSONAL_TERMS, OPEN_SOURCE

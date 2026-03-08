@@ -89,10 +89,6 @@ fun OtherDetailAppBarMoreMenuDialog(
                 offset = DpOffset(16.dp, 0.dp),
                 properties = PopupProperties(clippingEnabled = false)
             ) {
-                PppUpText(R.string.block) {
-                    event(Other(OtherBucketMenuEvent.GoToBlock))
-                }
-
                 PppUpText(R.string.report) {
                     event(Other(OtherBucketMenuEvent.GoToReport))
                 }

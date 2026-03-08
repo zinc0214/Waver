@@ -17,7 +17,6 @@ import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadFriends
 import com.zinc.domain.usecases.detail.LoadProfileInfo
 import com.zinc.domain.usecases.my.AchieveMyBucket
-import com.zinc.domain.usecases.other.RequestBlockUser
 import com.zinc.waver.model.BucketDetailUiInfo
 import com.zinc.waver.model.CommentMentionInfo
 import com.zinc.waver.model.DetailLoadFailStatus
@@ -40,7 +39,6 @@ class DetailViewModel @Inject constructor(
     private val saveBucketLike: SaveBucketLike,
     private val hideBucketComment: HideBucketComment,
     private val deleteMyBucket: DeleteMyBucket,
-    private val requestBlockUser: RequestBlockUser,
     private val loadFriends: LoadFriends,
 ) : CommonViewModel() {
 
@@ -128,21 +126,6 @@ class DetailViewModel @Inject constructor(
                 _goToBack.value = true
             } else {
                 _loadFail.value = DetailLoadFailStatus.LoadFail
-            }
-        }
-    }
-
-    fun blockBucketWriter() {
-        viewModelScope.launch(ceh(_loadFail, DetailLoadFailStatus.LoadFail)) {
-            writerId?.let {
-                requestBlockUser.invoke(it).apply {
-                    Log.e("ayhan", "response : $this")
-                    if (success) {
-                        _goToBack.value = true
-                    } else {
-                        _loadFail.value = DetailLoadFailStatus.LoadFail
-                    }
-                }
             }
         }
     }

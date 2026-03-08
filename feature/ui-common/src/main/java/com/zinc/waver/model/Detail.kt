@@ -80,8 +80,7 @@ data class Comment(
     val profileImage: String?,
     val nickName: String,
     val comment: String,
-    val isMine: Boolean,
-    val isBlocked: Boolean
+    val isMine: Boolean
 )
 
 data class TogetherInfo(

@@ -1,7 +1,6 @@
 package com.zinc.waver.ui_my.screen.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -11,15 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -27,9 +23,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.common.models.OtherProfileInfo
 import com.zinc.waver.ui.design.theme.Gray1
-import com.zinc.waver.ui.design.theme.Gray4
-import com.zinc.waver.ui.design.theme.Gray9
-import com.zinc.waver.ui.presentation.component.RoundChip
 import com.zinc.waver.ui.presentation.component.TitleIconType
 import com.zinc.waver.ui.presentation.component.TitleView
 import com.zinc.waver.ui.presentation.screen.blank.FriendsBlank
@@ -50,9 +43,6 @@ fun FollowerListSettingScreen(
 
     FollowerListSettingScreen(
         followerList = followerList.orEmpty(),
-        requestBlock = {
-            viewModel.requestUserBlock(it)
-        },
         goToBack = goToBack,
         goToOtherHome = goToOtherHome,
         modifier = Modifier.background(Gray1)
@@ -62,7 +52,6 @@ fun FollowerListSettingScreen(
 @Composable
 private fun FollowerListSettingScreen(
     followerList: List<OtherProfileInfo>,
-    requestBlock: (OtherProfileInfo) -> Unit,
     goToBack: () -> Unit,
     goToOtherHome: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -115,32 +104,6 @@ private fun FollowerListSettingScreen(
                             },
                         goToOtherHome = goToOtherHome
                     )
-
-                    RoundChip(
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(15.dp))
-                            .clickable {
-                                requestBlock(member)
-                            }
-                            .constrainAs(unFollowButton) {
-                                top.linkTo(parent.top)
-                                end.linkTo(parent.end)
-                                bottom.linkTo(parent.bottom)
-
-                            },
-                        chipRadius = 15.dp,
-                        textModifier = Modifier.padding(
-                            horizontal = 16.dp,
-                            vertical = 3.dp
-                        ),
-                        selectedTextColor = Gray9,
-                        unSelectedTextColor = Gray9,
-                        unSelectedBorderColor = Gray4,
-                        text = stringResource(id = R.string.followerBlockButton),
-                        isSelected = false,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 13.dp
-                    )
                 }
             })
         }
@@ -152,7 +115,6 @@ private fun FollowerListSettingScreen(
 private fun FollowerListSettingScreenPreview1() {
     FollowerListSettingScreen(
         followerList = listOf(),
-        requestBlock = {},
         goToBack = {},
         goToOtherHome = {}
     )
@@ -170,7 +132,6 @@ private fun FollowerListSettingScreenPreview2() {
                 mutualFollow = false
             )
         ),
-        requestBlock = {},
         goToBack = {},
         goToOtherHome = {}
     )

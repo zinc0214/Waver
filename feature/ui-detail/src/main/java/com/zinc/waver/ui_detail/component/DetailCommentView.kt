@@ -179,6 +179,5 @@ private fun CommentDescPreview() {
             nickName = "zllzlzlz",
             comment = "안년녀ㅕ여여ㅕ영여영",
             isMine = false,
-            isBlocked = false
         ), commentIndex = 10, isLastItem = false, commentLongClicked = {})
 }

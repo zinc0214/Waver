@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.zinc.common.models.OtherProfileInfo
 import com.zinc.common.utils.cehCommonTitle
 import com.zinc.domain.usecases.my.LoadFollowList
-import com.zinc.domain.usecases.other.RequestBlockUser
 import com.zinc.domain.usecases.other.RequestFollowUser
 import com.zinc.domain.usecases.other.RequestUnfollowUser
 import com.zinc.waver.ui.viewmodel.CommonViewModel
@@ -20,8 +19,7 @@ import javax.inject.Inject
 class FollowViewModel @Inject constructor(
     private val loadFollowList: LoadFollowList,
     private val requestUnfollowUser: RequestUnfollowUser,
-    private val requestFollowUser: RequestFollowUser,
-    private val requestBlockUser: RequestBlockUser
+    private val requestFollowUser: RequestFollowUser
 ) : CommonViewModel() {
 
     private val _followingList = MutableLiveData<List<OtherProfileInfo>>()
@@ -77,19 +75,6 @@ class FollowViewModel @Inject constructor(
         }
     }
 
-
-    fun requestUserBlock(blockUser: OtherProfileInfo) {
-        viewModelScope.launch(CEH) {
-            requestBlockUser.invoke(blockUser.id).apply {
-                Log.e("ayhan", "response : $this")
-                if (success) {
-                    loadFollowList()
-                } else {
-                    _loadFail.value = cehCommonTitle to null
-                }
-            }
-        }
-    }
 
     fun requestFollow(followUser: OtherProfileInfo) {
         viewModelScope.launch(CEH) {

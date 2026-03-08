@@ -5,7 +5,6 @@ import com.zinc.common.models.AddNewCategoryRequest
 import com.zinc.common.models.AlarmList
 import com.zinc.common.models.AllBucketListResponse
 import com.zinc.common.models.AllBucketListSortType
-import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.BucketDetailResponse
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.CheckUserStatusRequest
@@ -295,10 +294,6 @@ interface WaverApi {
     @DELETE("/waver/bucket/{id}")
     suspend fun deleteMyBucket(@Path("id") id: String): CommonResponse
 
-    // 더보기 > 차단된 유저 목록
-    @GET("/waver/follow/blockUsers")
-    suspend fun loadBlockedUsers(): BlockedUserResponse
-
     // 버킷리스트 신고
     @POST("/waver/feeds/{id}/report")
     suspend fun requestBucketReport(
@@ -319,11 +314,6 @@ interface WaverApi {
         @Path("id") id: String
     ): CommonResponse
 
-    @POST("/waver/follow/block")
-    suspend fun requestUserBlock(
-        @Query("blockUserId") blockUserId: String
-    ): CommonResponse
-
     // 내 웨이브 뱃지
     @GET("/waver/badge")
     suspend fun loadMyWaveBadge(): LoadMyWaveBadgeResponse
@@ -335,12 +325,6 @@ interface WaverApi {
     // 뱃지 업데이트
     @POST("/waver/badge/{badgeId}")
     suspend fun updateMyBadge(@Path("badgeId") badgeId: Int): CommonResponse
-
-    // 사용자 차단 해제
-    @POST("/waver/follow/block/release")
-    suspend fun requestBlockUserRelease(
-        @Query("blockedUserId") blockedUserId: String
-    ): CommonResponse
 
     // 회원탈퇴
     @POST("/waver/user/withdraw")

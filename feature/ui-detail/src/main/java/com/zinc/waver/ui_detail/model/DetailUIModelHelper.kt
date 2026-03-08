@@ -57,8 +57,7 @@ fun bucketDetailResponseToUiModel(
                 profileImage = comment.imgUrl,
                 nickName = comment.name,
                 comment = comment.content,
-                isMine = comment.isMyComment.isYes(),
-                isBlocked = comment.isBlocked.isYes()
+                isMine = comment.isMyComment.isYes()
             )
         })
     }

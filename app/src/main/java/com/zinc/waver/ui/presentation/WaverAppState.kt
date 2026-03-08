@@ -3,13 +3,22 @@ package com.zinc.waver.ui.presentation
 import android.content.res.Resources
 import androidx.compose.material.ScaffoldState
 import androidx.compose.material.rememberScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.*
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
+import androidx.navigation.NavGraph
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
 import com.zinc.waver.model.MyTabType
 import com.zinc.waver.model.UICategoryInfo
 import com.zinc.waver.ui.presentation.home.HomeSections
@@ -149,12 +158,6 @@ class WaverAppState(
     fun navigateToMoreAlarmSetting(from: NavBackStackEntry) {
         if (from.lifecycleIsResumed()) {
             navController.navigate(MoreDestinations.ALARM_SETTING)
-        }
-    }
-
-    fun navigateToMoreBlockSetting(from: NavBackStackEntry) {
-        if (from.lifecycleIsResumed()) {
-            navController.navigate(MoreDestinations.BLOCK_SETTING)
         }
     }
 

@@ -45,18 +45,14 @@ import com.zinc.waver.model.DetailAppBarClickEvent
 import com.zinc.waver.model.DetailClickEvent
 import com.zinc.waver.model.DetailDescType
 import com.zinc.waver.model.DetailLoadFailStatus
-import com.zinc.waver.model.DialogButtonInfo
 import com.zinc.waver.model.ReportInfo
 import com.zinc.waver.model.ReportType
 import com.zinc.waver.model.SuccessButtonInfo
 import com.zinc.waver.model.WriteCategoryInfo
 import com.zinc.waver.model.WriteOpenType
-import com.zinc.waver.ui.design.theme.Gray7
-import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.design.util.Keyboard
 import com.zinc.waver.ui.design.util.keyboardAsState
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
-import com.zinc.waver.ui.presentation.component.dialog.CommonDialogView
 import com.zinc.waver.ui.util.WaverLoading
 import com.zinc.waver.ui_common.R
 import com.zinc.waver.ui_detail.component.CommentEditView
@@ -79,7 +75,6 @@ import com.zinc.waver.ui_detail.model.OtherBucketMenuEvent
 import com.zinc.waver.ui_detail.model.toUpdateUiModel
 import com.zinc.waver.ui_detail.viewmodel.DetailViewModel
 import com.zinc.waver.util.createImageInfoWithPath
-import com.zinc.waver.ui_detail.R as DetailR
 
 @Composable
 fun OpenDetailBucketListScreen(
@@ -170,10 +165,6 @@ fun OpenDetailBucketListScreen(
 
                 OpenBucketDetailInternalEvent.ViewModelEvent.DeleteBucket -> {
                     viewModel.deleteMyBucket()
-                }
-
-                OpenBucketDetailInternalEvent.ViewModelEvent.BlockUser -> {
-                    viewModel.blockBucketWriter()
                 }
             }
 
@@ -622,27 +613,6 @@ private fun ShowOptionEvent(
             )
         }
 
-        is OpenBucketDetailInternalEvent.BlockUserCheck -> {
-            CommonDialogView(
-                message = stringResource(DetailR.string.userBlockConfirmTitle),
-                dismissAvailable = false,
-                leftButtonInfo = DialogButtonInfo(
-                    text = R.string.cancel,
-                    color = Gray7
-                ),
-                leftButtonEvent = {
-                    updateInternalEvent(OpenBucketDetailInternalEvent.None)
-                },
-                rightButtonInfo = DialogButtonInfo(
-                    text = R.string.block,
-                    color = Main4
-                ),
-                rightButtonEvent = {
-                    updateInternalEvent(OpenBucketDetailInternalEvent.ViewModelEvent.BlockUser)
-                }
-            )
-        }
-
         else -> {
             // Do Nothing
         }
@@ -723,8 +693,7 @@ private fun InternalOpenDetailScreenPreview() {
                         profileImage = "11111",
                         nickName = "Parker Montoya",
                         comment = "lorem",
-                        isMine = false,
-                        isBlocked = false
+                        isMine = false
                     )
                 )
 

@@ -54,8 +54,4 @@ internal class MyRepositoryImpl @Inject constructor(
     override suspend fun achieveMyBucket(id: String): CommonResponse {
         return waverApi.achieveBucket(id)
     }
-
-    override suspend fun requestUserBlock(userId: String): CommonResponse {
-        return waverApi.requestUserBlock(userId)
-    }
 }

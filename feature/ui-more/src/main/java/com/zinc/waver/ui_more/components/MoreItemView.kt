@@ -40,12 +40,6 @@ internal fun MoreItemsView(email: String, itemClicked: (MoreItemType) -> Unit) {
         )
         add(
             UIMoreItemData(
-                text = stringResource(R.string.moreMenuBlock),
-                type = MoreItemType.BLOCK
-            )
-        )
-        add(
-            UIMoreItemData(
                 text = stringResource(R.string.moreMenuCs),
                 type = MoreItemType.CS
             )

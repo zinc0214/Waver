@@ -53,8 +53,7 @@ data class DetailInfo(
         val userId: String,
         val imgUrl: String?,
         val name: String,
-        val content: String,
-        val isBlocked: YesOrNo
+        val content: String
     )
 
     @Serializable

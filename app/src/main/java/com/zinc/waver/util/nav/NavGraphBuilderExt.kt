@@ -23,7 +23,6 @@ import com.zinc.waver.ui_more.models.AppInfoItemType
 import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.screen.AlarmSettingScreen
 import com.zinc.waver.ui_more.screen.AppInfoScreen
-import com.zinc.waver.ui_more.screen.BlockSettingScreen
 import com.zinc.waver.ui_more.screen.MoreScreen
 import com.zinc.waver.ui_more.screen.MyWaveManageScreen
 import com.zinc.waver.ui_more.screen.ProfileSettingScreen
@@ -337,16 +336,6 @@ internal fun NavGraphBuilder.moreAlarmNavGraph(
     }
 }
 
-internal fun NavGraphBuilder.moreBlockNavGraph(
-    backPress: () -> Unit
-) {
-    composable(MoreDestinations.BLOCK_SETTING) {
-        BlockSettingScreen {
-            backPress()
-        }
-    }
-}
-
 internal fun NavGraphBuilder.moreProfileNavGraph(
     backPress: () -> Unit,
     action: (ActionWithActivity) -> Unit,
@@ -507,7 +496,6 @@ object WriteDestinations {
 
 object MoreDestinations {
     const val ALARM_SETTING = "alarm_setting"
-    const val BLOCK_SETTING = "block_setting"
     const val PROFILE_SETTING = "profile_setting"
     const val MORE_APP_INFO = "app_info"
     const val MY_WAVE_MANAGE = "my_wave_manage"

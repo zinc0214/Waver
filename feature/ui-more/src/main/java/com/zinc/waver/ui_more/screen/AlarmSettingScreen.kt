@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_more.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui_more.R
 import com.zinc.waver.ui_more.components.AlarmGroupItemView
 import com.zinc.waver.ui_more.components.AlarmGroupTitleView
@@ -63,6 +65,7 @@ fun AlarmSettingScreen(onBackPressed: () -> Unit) {
     }
 
     Column(modifier = Modifier
+        .background(color = Gray1)
         .fillMaxSize()
         .statusBarsPadding()) {
         AlarmTitle {

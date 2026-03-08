@@ -1,6 +1,5 @@
 package com.zinc.domain.repository
 
-import com.zinc.common.models.BlockedUserResponse
 import com.zinc.common.models.CommonResponse
 import com.zinc.common.models.CommonResponse2
 import com.zinc.common.models.LoadMyWaveBadgeResponse
@@ -12,9 +11,7 @@ interface MoreRepository {
     suspend fun loadProfileInfo(): ProfileResponse
     suspend fun updateProfileInfo(request: UpdateProfileRequest): CommonResponse
     suspend fun checkAlreadyUsedNickName(name: String): CommonResponse2
-    suspend fun loadBlockedUsers(): BlockedUserResponse
     suspend fun loadMyBadgeInfo(): LoadMyWaveBadgeResponse
-    suspend fun requestBlockUserRelease(userId: Int): CommonResponse
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
     suspend fun requestWithdrawal(): CommonResponse
     suspend fun updateMyBadge(badgeId: Int): CommonResponse

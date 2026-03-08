@@ -10,7 +10,6 @@
 
     <!-- 더보기 메뉴 -->
     <string name="moreMenuAlarm">알림 설정</string>
-    <string name="moreMenuBlock">차단 관리</string>
     <string name="moreMenuCs">고객 센터</string>
     <string name="moreMenuAppInfo">앱 정보</string>
     <string name="moreMenuLogout">로그아웃</string>
@@ -30,11 +29,6 @@
     <string name="alarmSettingBenefitAlarm">혜택 알림</string>
     <string name="alarmSettingEvent">이벤트</string>
     <string name="alarmSettingUpdate">업데이트</string>
-
-    <!-- 차단 관리-->
-    <string name="blockSettingTitle">차단 관리</string>
-    <string name="nonBlocking">해제</string>
-    <string name="hasNoBlockUser">차단한 사용자가 없습니다.</string>
 
     <!-- 프로필 관리 -->
     <string name="profileSettingTitle">프로필 관리</string>

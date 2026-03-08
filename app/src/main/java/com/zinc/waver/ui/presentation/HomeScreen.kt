@@ -30,7 +30,6 @@ import com.zinc.waver.ui_detail.model.OpenBucketDetailEvent2
 import com.zinc.waver.ui_more.models.MoreItemType
 import com.zinc.waver.ui_more.models.MoreItemType.ALARM
 import com.zinc.waver.ui_more.models.MoreItemType.APP_INFO
-import com.zinc.waver.ui_more.models.MoreItemType.BLOCK
 import com.zinc.waver.ui_more.models.MoreItemType.LOGOUT
 import com.zinc.waver.ui_more.models.MoreItemType.PROFILE
 import com.zinc.waver.ui_more.models.MoreItemType.WAVE_PLUS
@@ -51,7 +50,6 @@ import com.zinc.waver.util.nav.homeSearch
 import com.zinc.waver.util.nav.homeStatusBucketListNavGraph
 import com.zinc.waver.util.nav.moreAlarmNavGraph
 import com.zinc.waver.util.nav.moreAppInfoNavGraph
-import com.zinc.waver.util.nav.moreBlockNavGraph
 import com.zinc.waver.util.nav.moreProfileNavGraph
 import com.zinc.waver.util.nav.myFollowerListNavGraph
 import com.zinc.waver.util.nav.myFollowerSettingNavGraph
@@ -325,7 +323,6 @@ private fun NavGraphBuilder.setupMoreScreens(
 ) {
     alarmNavGraph(backPress = appState::backPress)
     moreAlarmNavGraph(backPress = appState::backPress)
-    moreBlockNavGraph(backPress = appState::backPress)
     moreProfileNavGraph(
         backPress = appState::backPress,
         action = { action(it) }
@@ -378,7 +375,6 @@ private fun handleMoreItemClick(
 ) {
     when (type) {
         ALARM -> appState.navigateToMoreAlarmSetting(nav)
-        BLOCK -> appState.navigateToMoreBlockSetting(nav)
         APP_INFO -> appState.navigateToMoreAppInfo(nav)
         PROFILE -> appState.navigateToMoreProfileSetting(nav)
         MoreItemType.MY_WAVE -> appState.navigateToMyWaveManage(nav)
