@@ -1,6 +1,10 @@
 package com.zinc.waver.ui_more.screen
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,9 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.zinc.waver.model.AddImageType
 import com.zinc.waver.model.DialogButtonInfo
+import com.zinc.waver.ui.design.theme.Gray1
 import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.ImageSelectBottomScreen
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
@@ -102,10 +108,6 @@ fun ProfileSettingScreen(
         showApiFailDialog.value = loadProfileFail ?: false
     }
 
-    LaunchedEffect(key1 = profileUpdateSucceedAsSate) {
-        showUpdateSucceedDialog.value = profileUpdateSucceedAsSate ?: false
-    }
-
     LaunchedEffect(key1 = profileUpdateFailAsState) {
         showUpdateFailDialog.value = profileUpdateFailAsState ?: false
     }
@@ -176,40 +178,115 @@ fun ProfileSettingScreen(
         }
     }
 
+    // 문자열 리소스를 미리 로드
+    val defaultImageFailedMsg = stringResource(id = R.string.defaultImageLoadFailed)
+    val imageFailedMsg = stringResource(id = R.string.imageLoadFailed)
+    val cameraPermissionMsg = stringResource(id = R.string.cameraPermissionRequired)
+    val galleryPermissionMsg = stringResource(id = R.string.galleryPermissionRequired)
+
+    val handleImageTypeSelection: (AddImageType) -> Unit = { imageType ->
+        when (imageType) {
+            AddImageType.DEFAULT -> {
+                val file = RandomProfileImageUtil.getRandomProfileImageFile(context)
+                if (file != null) {
+                    updateImageFile.value = file
+                    updateImagePath.value = "file://${file.path}"
+                } else {
+                    Toast.makeText(context, defaultImageFailedMsg, Toast.LENGTH_SHORT).show()
+                }
+                isNeedToBottomSheetOpen(false)
+            }
+
+            AddImageType.CAMERA -> {
+                // 카메라 권한 확인
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.CAMERA
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // 권한 있음 - 바로 카메라 실행
+                    addImageAction.invoke(
+                        ActionWithActivity.AddImage(
+                            type = AddImageType.CAMERA,
+                            failed = {
+                                Toast.makeText(
+                                    context,
+                                    imageFailedMsg,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                isNeedToBottomSheetOpen(false)
+                            },
+                            succeed = { imageInfo ->
+                                updateImagePath.value = imageInfo.path
+                                updateImageFile.value = imageInfo.file
+                                isNeedToBottomSheetOpen(false)
+                            }
+                        )
+                    )
+                } else {
+                    // 권한 없음 - 바텀시트 닫고 토스트 메시지 표시
+                    isNeedToBottomSheetOpen(false)
+                    Toast.makeText(
+                        context,
+                        cameraPermissionMsg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            AddImageType.GALLERY -> {
+                // 갤러리 권한 확인 (제한된 액세스 포함)
+                val galleryPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Manifest.permission.READ_MEDIA_IMAGES
+                } else {
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                }
+
+                val permissionStatus = ContextCompat.checkSelfPermission(
+                    context,
+                    galleryPermission
+                )
+
+                // PERMISSION_GRANTED(0) 또는 제한된 액세스 상태에서도 갤러리 접근 허용
+                if (permissionStatus == PackageManager.PERMISSION_GRANTED) {
+                    // 권한 있음 - 바로 갤러리 실행
+                    addImageAction.invoke(
+                        ActionWithActivity.AddImage(
+                            type = AddImageType.GALLERY,
+                            failed = {
+                                Toast.makeText(
+                                    context,
+                                    imageFailedMsg,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                isNeedToBottomSheetOpen(false)
+                            },
+                            succeed = { imageInfo ->
+                                updateImagePath.value = imageInfo.path
+                                updateImageFile.value = imageInfo.file
+                                isNeedToBottomSheetOpen(false)
+                            }
+                        )
+                    )
+                } else {
+                    // 권한 없음 - 바텀시트 닫고 토스트 메시지 표시
+                    isNeedToBottomSheetOpen(false)
+                    Toast.makeText(
+                        context,
+                        galleryPermissionMsg,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = bottomSheetScaffoldState,
         sheetContent = {
             if (showSelectCameraType) {
-                ImageSelectBottomScreen(selectedType = {
-                    if (it == AddImageType.DEFAULT) {
-                        val file = RandomProfileImageUtil.getRandomProfileImageFile(context)
-                        if (file != null) {
-                            updateImageFile.value = file
-                            updateImagePath.value = "file://${file.path}"
-                        } else {
-                            Toast.makeText(context, "기본이미지 로드에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                        }
-                        isNeedToBottomSheetOpen(false)
-                    } else {
-                        addImageAction.invoke(
-                            ActionWithActivity.AddImage(
-                                type = it,
-                                failed = {
-                                    Toast.makeText(
-                                        context,
-                                        "이미지 로드에 실패했습니다.",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    isNeedToBottomSheetOpen(false)
-                                },
-                                succeed = { imageInfo ->
-                                    updateImagePath.value = imageInfo.path
-                                    updateImageFile.value = imageInfo.file
-                                    isNeedToBottomSheetOpen(false)
-                                }
-                            )
-                        )
-                    }
+                ImageSelectBottomScreen(selectedType = { imageType ->
+                    handleImageTypeSelection(imageType)
                 })
             }
         },
@@ -219,7 +296,8 @@ fun ProfileSettingScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .statusBarsPadding(),
+                    .statusBarsPadding()
+                    .background(Gray1),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 ProfileSettingTitle(

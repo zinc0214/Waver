@@ -35,6 +35,10 @@
     <string name="profileUpdateSuccessTitle">변경이 완료되었습니다.</string>
     <string name="profileUpdateFailTitle">변경이 실패했습니다.\n다시 시도해주세요.</string>
     <string name="loadFailProfile">프로필 로드 실패</string>
+    <string name="cameraPermissionRequired">카메라 권한이 필요합니다. 설정에서 권한을 허용해주세요.</string>
+    <string name="galleryPermissionRequired">갤러리 접근 권한이 필요합니다. 설정에서 권한을 허용해주세요.</string>
+    <string name="imageLoadFailed">이미지 로드에 실패했습니다.</string>
+    <string name="defaultImageLoadFailed">기본이미지 로드에 실패했습니다.</string>
 
     <!-- 고객 센터 -->
     <string name="csFAQ">자주 묻는 질문</string>

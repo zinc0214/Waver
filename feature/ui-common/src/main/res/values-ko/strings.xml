@@ -49,8 +49,13 @@
     <string name="profileImageDesc">프로필 이미지</string>
     <string name="selectGallery">앨범에서 사진 선택</string>
     <string name="selectCamera">사진 촬영</string>
-    <string name="selectDefault">기본 이미지</string>
+    <string name="selectDefault">기본 이미지 사용</string>
     <string name="bucketImage">이미지</string>
+
+    <!-- 권한 -->
+    <string name="permissionRequestTitle">권한 요청</string>
+    <string name="permissionRequestMessage">카메라/갤러리 접근을 위해\n권한이 필요합니다</string>
+    <string name="permissionOkButton">확인</string>
 
     <!--타이틀뷰-->
     <string name="finishDesc">완료</string>

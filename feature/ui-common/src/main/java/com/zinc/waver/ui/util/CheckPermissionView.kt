@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.zinc.waver.ui.presentation.component.MyText
+import com.zinc.waver.ui_common.R
 
 
 @ExperimentalPermissionsApi
@@ -37,14 +39,16 @@ fun CheckPermissionView(
 
     val context = LocalContext.current
 
-    val permissionStates = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+    val permissionStates = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        // Android 13 이상: READ_MEDIA_IMAGES 사용
         rememberMultiplePermissionsState(
             listOf(
                 Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_MEDIA_LOCATION
+                Manifest.permission.READ_MEDIA_IMAGES
             )
         )
     } else {
+        // Android 12 이하: READ_EXTERNAL_STORAGE 사용
         rememberMultiplePermissionsState(
             listOf(
                 Manifest.permission.CAMERA,
@@ -74,30 +78,41 @@ fun CheckPermissionView(
         }
     })
 
-    if (permissionStates.allPermissionsGranted) {
+    // allPermissionsGranted 또는 하나 이상의 권한이 부여된 경우 true
+    val hasAnyPermission = permissionStates.permissions.any {
+        it.status is PermissionStatus.Granted
+    }
+
+    if (hasAnyPermission) {
         isAvailable(true)
     }
 
     permissionStates.permissions.forEach {
         when (it.permission) {
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_MEDIA_LOCATION,
+            Manifest.permission.READ_MEDIA_IMAGES,
             Manifest.permission.READ_EXTERNAL_STORAGE -> {
                 when (it.status) {
                     is PermissionStatus.Granted -> {
-
+                        // 권한 허용됨
                     }
 
                     is PermissionStatus.Denied -> {
-                        RationaleDialog(text = "카메라/갤러리 접근을 위해\n권한이 필요합니다",
-                            onRequestPermission = {
-                                val intent = Intent(
-                                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.parse("package:" + context.packageName)
-                                )
-                                context.startActivity(intent)
-                                isAvailable(false)
-                            })
+                        // 권한 거부됨 - 재요청 팝업 표시
+                        if ((it.status as PermissionStatus.Denied).shouldShowRationale) {
+                            RationaleDialog(
+                                titleResId = R.string.permissionRequestTitle,
+                                messageResId = R.string.permissionRequestMessage,
+                                buttonResId = R.string.permissionOkButton,
+                                onRequestPermission = {
+                                    val intent = Intent(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.parse("package:" + context.packageName)
+                                    )
+                                    context.startActivity(intent)
+                                    isAvailable(false)
+                                })
+                        }
                     }
                 }
             }
@@ -108,19 +123,25 @@ fun CheckPermissionView(
 
 @Composable
 private fun RationaleDialog(
-    text: String, onRequestPermission: () -> Unit
+    titleResId: Int,
+    messageResId: Int,
+    buttonResId: Int,
+    onRequestPermission: () -> Unit
 ) {
+    val title = stringResource(id = titleResId)
+    val message = stringResource(id = messageResId)
+    val buttonText = stringResource(id = buttonResId)
+
     AlertDialog(onDismissRequest = { },
         title = {
-            MyText(text = "Permission request")
+            MyText(text = title)
         }, text = {
-            MyText(text)
+            MyText(message)
         }, dismissButton = {
             Button(onClick = {
                 onRequestPermission()
-
             }) {
-                MyText("Ok")
+                MyText(buttonText)
             }
         }, confirmButton = {
 

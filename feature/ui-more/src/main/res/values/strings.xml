@@ -40,6 +40,10 @@
     <string name="profileUpdateSuccessTitle">Changes saved successfully.</string>
     <string name="profileUpdateFailTitle">Failed to save changes.\nPlease try again.</string>
     <string name="loadFailProfile">Failed to load profile</string>
+    <string name="cameraPermissionRequired">Camera permission is required. Please allow it in settings.</string>
+    <string name="galleryPermissionRequired">Gallery access permission is required. Please allow it in settings.</string>
+    <string name="imageLoadFailed">Failed to load image.</string>
+    <string name="defaultImageLoadFailed">Failed to load default image.</string>
 
     <!-- Customer Support -->
     <string name="csFAQ">Frequently Asked Questions</string>

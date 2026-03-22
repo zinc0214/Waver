@@ -50,7 +50,7 @@
     <string name="profileImageDesc">Profile Image</string>
     <string name="selectGallery">Select from Gallery</string>
     <string name="selectCamera">Take Photo</string>
-    <string name="selectDefault">Default Image</string>
+    <string name="selectDefault">Use Default Image</string>
     <string name="bucketImage">Image</string>
 
     <!-- Title View -->
@@ -91,8 +91,8 @@
     <string name="togetherImageDesc">Shared Bucket List</string>
 
     <!-- Ad ID -->
-    <string name="writeAdId">ca-app-pub-7493874486999773/1437019991</string>
-    <string name="badgeAdId">ca-app-pub-6302671173915322/6244920706</string>
+    <string name="writeAdId" translatable="false">ca-app-pub-7493874486999773/1437019991</string>
+    <string name="badgeAdId" translatable="false">ca-app-pub-6302671173915322/6244920706</string>
 
     <!-- Badge -->
     <string name="badgeAchieveText">Badge Challenge Achieved!</string>
@@ -136,5 +136,10 @@
     <string name="waverPlusBottomSheetDesc4">Refunds and cancellations are handled by customer service.</string>
     <string name="waverPlusBottomSheetColorText">Customer Service</string>
     <string name="waverPlusBottomSheetButton">Subscribe to Waver Plus</string>
+
+    <!-- Permission -->
+    <string name="permissionRequestTitle">Permission Request</string>
+    <string name="permissionRequestMessage">Camera and gallery access are required.\nPlease allow permissions in settings.</string>
+    <string name="permissionOkButton">OK</string>
 
 </resources>
