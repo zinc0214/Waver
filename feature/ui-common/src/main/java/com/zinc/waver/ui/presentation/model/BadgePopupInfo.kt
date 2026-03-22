@@ -1,7 +1,9 @@
 package com.zinc.waver.ui.presentation.model
 
+import androidx.annotation.DrawableRes
+
 data class BadgePopupInfo(
-    val badgeUrl: String,
+    @DrawableRes val badgeImage: Int,
     val badgeText: String,
     val badgeGrade: String
 )

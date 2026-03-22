@@ -45,7 +45,7 @@ import com.zinc.waver.ui_common.R
 @Composable
 fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
     val painter = rememberAsyncImagePainter(
-        model = info.badgeUrl,
+        model = info.badgeImage,
         placeholder = painterResource(R.drawable.badge_placeholder),
         error = painterResource(R.drawable.badge_placeholder)
     )
@@ -128,11 +128,16 @@ fun BadgePopupScreen(info: BadgePopupInfo, onDismissRequest: () -> Unit) {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun BadgePopupScreenPreview() {
     BadgePopupScreen(
-        info = BadgePopupInfo(badgeUrl = "badgeUrl", badgeText = "badgeText", badgeGrade = "1"),
+        info = BadgePopupInfo(
+            badgeImage = R.drawable.badge_placeholder,
+            badgeText = "badgeText",
+            badgeGrade = "1"
+        ),
         onDismissRequest = {}
     )
 }

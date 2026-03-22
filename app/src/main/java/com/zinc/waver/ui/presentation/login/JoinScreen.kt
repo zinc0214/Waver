@@ -10,13 +10,12 @@ import androidx.compose.runtime.setValue
 import com.zinc.domain.models.GoogleEmailInfo
 import com.zinc.waver.ui.presentation.login.model.CreateProfileInfo
 import com.zinc.waver.ui.presentation.model.ActionWithActivity
-import com.zinc.waver.ui.presentation.model.BadgePopupInfo
-import com.zinc.waver.ui.presentation.screen.badge.BadgePopupScreen
 
 @Composable
 fun JoinScreen(
     goToMain: () -> Unit,
     goToBack: () -> Unit,
+    goToBadgeInfo: () -> Unit,
     goToLogin: (GoogleEmailInfo) -> Unit,
     addImageAction: (ActionWithActivity.AddImage) -> Unit,
 ) {
@@ -66,14 +65,14 @@ fun JoinScreen(
     }
 
     if (showBadgePopup) {
-        BadgePopupScreen(info = BadgePopupInfo(
-            badgeUrl = "https://search.yahoo.com/search?p=audire",
-            badgeText = "요리",
-            badgeGrade = "1"
-        ), onDismissRequest = {
-            showBadgePopup = false
-            goToMain()
-        })
+        WelcomePopupScreen(
+            gotoStart = {
+                goToMain()
+            },
+            goToBadgeInfo = {
+                goToBadgeInfo()
+            }
+        )
     }
 }
 

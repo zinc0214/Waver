@@ -30,4 +30,10 @@
 
     <string name="imageCropperTitle">이미지 자르기</string>
     <string name="imageCropSave">저장</string>
+
+    <!-- 웰컴 팝업 -->
+    <string name="welcomePopupTitle">웨이버에 오신 걸 환영해요 🎉</string>
+    <string name="welcomePopupDescription">버킷리스트 공유 함께 올수록\n나만의 이야기를 담은 벗지가 하나씩 생겨요</string>
+    <string name="welcomePopupNegativeButton">뱃지 보러가기</string>
+    <string name="welcomePopupPositiveButton">시작하기</string>
 </resources>

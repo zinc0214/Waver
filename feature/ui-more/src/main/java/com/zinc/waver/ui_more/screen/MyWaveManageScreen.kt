@@ -93,6 +93,7 @@ fun MyWaveManageScreen(
         viewModel.updateMySelectBadge(
             selectedBadge?.id ?: myWaveInfo.value?.badges?.first()?.id ?: -1
         )
+        onBackPressed()
     }
 
     if (myWaveInfo.value == null) {
@@ -353,4 +354,3 @@ private fun HeaderPreview() {
         )
     }
 }
-

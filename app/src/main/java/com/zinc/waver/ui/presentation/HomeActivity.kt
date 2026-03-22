@@ -38,6 +38,7 @@ import com.zinc.waver.ui.presentation.model.WaverPlusType
 import com.zinc.waver.ui.presentation.screen.billing.ChooseSubscription
 import com.zinc.waver.ui.util.CheckPermissionView
 import com.zinc.waver.ui_detail.model.ShowParentScreenType
+import com.zinc.waver.ui_more.screen.MyWaveManageScreen
 import com.zinc.waver.util.CropImageCustomContract
 import com.zinc.waver.util.FileUtil.getFileFromUri
 import com.zinc.waver.util.createImageFile
@@ -140,7 +141,10 @@ class HomeActivity : AppCompatActivity(),
                         retryEmail.value = it.email
                         showScreenType.value =
                             ShowParentScreenType.Login
-                    }, addImageAction = {
+                    }, goToBadgeInfo = {
+                        showScreenType.value = ShowParentScreenType.BadgeInfo
+                    },
+                        addImageAction = {
                         takePhotoAction = it
                         if (it.type == AddImageType.CAMERA) {
                             takePhoto()
@@ -254,6 +258,14 @@ class HomeActivity : AppCompatActivity(),
                             isNeedToShowPermission = false
                         })
                     }
+                }
+
+                ShowParentScreenType.BadgeInfo -> {
+                    MyWaveManageScreen(
+                        onBackPressed = {
+                            showScreenType.value = ShowParentScreenType.Main
+                        }
+                    )
                 }
             }
         }

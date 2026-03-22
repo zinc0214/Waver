@@ -30,4 +30,10 @@
 
     <string name="imageCropperTitle">Image Cropper</string>
     <string name="imageCropSave">save</string>
+
+    <!-- Welcome Popup -->
+    <string name="welcomePopupTitle">Welcome to Waver 🎉</string>
+    <string name="welcomePopupDescription">As you share more bucket lists together,\nyour unique badge will grow</string>
+    <string name="welcomePopupNegativeButton">View Badges</string>
+    <string name="welcomePopupPositiveButton">Get Started</string>
 </resources>
