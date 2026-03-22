@@ -103,6 +103,9 @@ fun ProfileSettingScreen(
             )
         )
     }
+    LaunchedEffect(key1 = profileUpdateSucceedAsSate) {
+        showUpdateSucceedDialog.value = profileUpdateSucceedAsSate ?: false
+    }
 
     LaunchedEffect(key1 = loadProfileFail) {
         showApiFailDialog.value = loadProfileFail ?: false

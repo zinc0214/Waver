@@ -316,10 +316,10 @@ class HomeActivity : AppCompatActivity(),
                     showCropLabel = true,
                     showCropOverlay = true,
                     guidelines = CropImageView.Guidelines.ON,
-                    outputCompressFormat = Bitmap.CompressFormat.PNG, // PNG ���신 JPEG 사용 (더 작은 파일 크기)
-                    outputCompressQuality = 50, // 압축 품질 설정 (1-100)
-                    outputRequestWidth = dp2px(50), // 크기 줄임
-                    outputRequestHeight = dp2px(50), // 크기 줄임
+                    outputCompressFormat = Bitmap.CompressFormat.JPEG, // JPEG 사용 (더 작은 파일 크기)
+                    outputCompressQuality = 30, // 압축 품질 설정 (낮을수록 작음)
+                    outputRequestWidth = dp2px(100), // 100dp로 설정
+                    outputRequestHeight = dp2px(100), // 100dp로 설정
                     cropMenuCropButtonTitle = getString(R.string.imageCropSave),
                     activityTitle = getString(R.string.imageCropperTitle),
                     aspectRatioX = 1,
