@@ -6,17 +6,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -32,10 +29,11 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -43,13 +41,16 @@ import androidx.core.graphics.drawable.toBitmap
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.nativead.AdChoicesView
 import com.google.android.gms.ads.nativead.MediaView
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdView
 import com.zinc.waver.ui.design.theme.Gray1
+import com.zinc.waver.ui.design.theme.Gray2
+import com.zinc.waver.ui.design.theme.Gray3
+import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Gray5
+import com.zinc.waver.ui.design.theme.Gray7
+import com.zinc.waver.ui.design.theme.Gray8
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.util.shadow
@@ -97,7 +98,7 @@ fun loadNativeAd(context: Context, onAdLoaded: (NativeAd) -> Unit) {
             .forNativeAd { nativeAd -> onAdLoaded(nativeAd) }
             .withAdListener(
                 object : AdListener() {
-                    override fun onAdFailedToLoad(error: LoadAdError) {
+                    override fun onAdFailedToLoad(error: com.google.android.gms.ads.LoadAdError) {
                         Log.e("ayhan", "Native ad failed to load: ${error.message}")
                     }
 
@@ -141,112 +142,98 @@ fun DisplayNativeAdView(nativeAd: NativeAd) {
         // Call the NativeAdView composable to display the native ad.
         NativeAdView(nativeAd) {
             Column(modifier = Modifier.fillMaxWidth()) {
-                Box {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 20.dp, start = 17.dp, end = 17.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // If available, display the icon asset.
-                        nativeAd.icon?.let { icon ->
-                            NativeAdIconView(
-                                Modifier
-                                    .size(32.dp)
-                            ) {
-                                icon.drawable?.toBitmap()?.let { bitmap ->
-                                    Image(bitmap = bitmap.asImageBitmap(), "Icon")
-                                }
-                            }
-                        }
-                        Column(modifier = Modifier.padding(start = 12.dp)) {
-                            // If available, display the headline asset.
-                            nativeAd.headline?.let {
-                                NativeAdHeadlineView {
-                                    MyText(
-                                        text = it,
-                                        fontSize = dpToSp(12.dp)
-                                    )
-                                }
-                            }
-                            // If available, display the star rating asset.
-                            nativeAd.starRating?.let {
-                                NativeAdStarRatingView {
-                                    MyText(
-                                        text = "Rated $it",
-                                        fontSize = dpToSp(12.dp)
-                                    )
-                                }
+                // 상단: 앱 정보 영역
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 20.dp, top = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // 앱 아이콘
+                    nativeAd.icon?.let { icon ->
+                        NativeAdIconView(
+                            Modifier.size(32.dp)
+                        ) {
+                            icon.drawable?.toBitmap()?.let { bitmap ->
+                                Image(bitmap = bitmap.asImageBitmap(), "Icon")
                             }
                         }
                     }
-                    // Display the ad attribution.
-                    NativeAdAttribution(
-                        modifier = Modifier.align(Alignment.TopEnd),
-                        text = "Ad",
+
+                    // 앱 이름 및 평점
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 11.dp)
+                    ) {
+                        // 앱 이름
+                        nativeAd.headline?.let {
+                            NativeAdHeadlineView {
+                                MyText(
+                                    text = it,
+                                    fontSize = dpToSp(12.dp),
+                                    fontWeight = FontWeight.Normal,
+                                    color = Gray7
+                                )
+                            }
+                        }
+
+                        // 평점
+                        nativeAd.starRating?.let {
+                            NativeAdStarRatingView {
+                                MyText(
+                                    text = "⭐ Rated $it",
+                                    fontSize = dpToSp(12.dp),
+                                    color = Gray7
+                                )
+                            }
+                        }
+                    }
+
+                    // AD 배지
+                    NativeAdAttribution()
+                }
+
+                // 중앙: 광고 이미지 영역 (gray background)
+                Box(
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp)
+                        .fillMaxWidth()
+                        .background(color = Gray2),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NativeAdMediaView(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        scaleType = ImageView.ScaleType.FIT_CENTER
                     )
                 }
 
-                // If available, display the body asset.
+                // 설명 텍스트
                 nativeAd.body?.let {
-                    NativeAdBodyView(modifier = Modifier.padding(horizontal = 20.dp)) {
+                    NativeAdBodyView(modifier = Modifier.padding(12.dp)) {
                         MyText(
                             text = it,
-                            fontSize = dpToSp(18.dp)
+                            fontSize = dpToSp(13.dp)
                         )
                     }
                 }
 
-                // Display the media asset.
-                NativeAdMediaView(
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp)
-                        .fillMaxWidth(),
-                    scaleType = ImageView.ScaleType.FIT_CENTER
-                )
-
+                // 하단: CTA 버튼
                 nativeAd.callToAction?.let { callToAction ->
                     NativeAdCallToActionView(
                         Modifier
-                            .padding(horizontal = 20.dp)
+                            .padding(start = 12.dp, end = 12.dp, bottom = 24.dp)
                             .fillMaxWidth()
                     ) {
-                        NativeAdButton(text = callToAction)
+                        NativeAdButton(
+                            text = callToAction,
+                            modifier = Modifier.fillMaxWidth()
+                        )
                     }
                 }
-
-
-                Spacer(modifier = Modifier.height(20.dp))
-//                Row(
-//                    Modifier
-//                        .align(Alignment.End)
-//                        .padding(5.dp)
-//                ) {
-//                    // If available, display the price asset.
-//                    nativeAd.price?.let {
-//                        NativeAdPriceView(
-//                            Modifier
-//                                .padding(5.dp)
-//                                .align(Alignment.CenterVertically)
-//                        ) {
-//                            MyText(text = it)
-//                        }
-//                    }
-//                    // If available, display the store asset.
-//                    nativeAd.store?.let {
-//                        NativeAdStoreView(
-//                            Modifier
-//                                .padding(5.dp)
-//                                .align(Alignment.CenterVertically)
-//                        ) {
-//                            MyText(text = it)
-//                        }
-//                    }
-//                    // If available, display the call to action asset.
-//                    nativeAd.callToAction?.let { callToAction ->
-//                        NativeAdCallToActionView(Modifier.padding(5.dp)) { NativeAdButton(text = callToAction) }
-//                    }
-//                }
             }
         }
     }
@@ -317,26 +304,6 @@ fun NativeAdView(
 }
 
 /**
- * The ComposeWrapper container for an advertiserView inside a NativeAdView. This composable must be
- * invoked from within a `NativeAdView`.
- *
- * @param modifier modify the native ad view element.
- * @param content A composable function that defines the content of this native asset.
- */
-@Composable
-fun NativeAdAdvertiserView(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    val nativeAdView = LocalNativeAdView.current ?: throw IllegalStateException("NativeAdView null")
-    AndroidView(
-        factory = { context -> ComposeView(context) },
-        modifier = modifier,
-        update = { view ->
-            nativeAdView.advertiserView = view
-            view.setContent(content)
-        },
-    )
-}
-
-/**
  * The ComposeWrapper container for a bodyView inside a NativeAdView. This composable must be
  * invoked from within a `NativeAdView`.
  *
@@ -373,27 +340,6 @@ fun NativeAdCallToActionView(modifier: Modifier = Modifier, content: @Composable
             nativeAdView.callToActionView = view
             view.setContent(content)
         },
-    )
-}
-
-/**
- * The ComposeWrapper for a adChoicesView inside a NativeAdView. This composable must be invoked
- * from within a `NativeAdView`.
- *
- * @param modifier modify the native ad view element.
- */
-@Composable
-fun NativeAdChoicesView(modifier: Modifier = Modifier) {
-    val nativeAdView = LocalNativeAdView.current ?: throw IllegalStateException("NativeAdView null")
-    AndroidView(
-        factory = { context ->
-            AdChoicesView(context).apply {
-                minimumWidth = 15
-                minimumHeight = 15
-            }
-        },
-        modifier = modifier,
-        update = { view -> nativeAdView.adChoicesView = view },
     )
 }
 
@@ -458,26 +404,6 @@ fun NativeAdMediaView(modifier: Modifier = Modifier, scaleType: ImageView.ScaleT
 }
 
 /**
- * The ComposeWrapper container for a priceView inside a NativeAdView. This composable must be
- * invoked from within a `NativeAdView`.
- *
- * @param modifier modify the native ad view element.
- * @param content A composable function that defines the content of this native asset.
- */
-@Composable
-fun NativeAdPriceView(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    val nativeAdView = LocalNativeAdView.current ?: throw IllegalStateException("NativeAdView null")
-    AndroidView(
-        factory = { context -> ComposeView(context) },
-        modifier = modifier,
-        update = { view ->
-            nativeAdView.priceView = view
-            view.setContent(content)
-        },
-    )
-}
-
-/**
  * The ComposeWrapper container for a starRatingView inside a NativeAdView. This composable must be
  * invoked from within a `NativeAdView`.
  *
@@ -497,80 +423,40 @@ fun NativeAdStarRatingView(modifier: Modifier = Modifier, content: @Composable (
     )
 }
 
-/**
- * The ComposeWrapper container for a storeView inside a NativeAdView. This composable must be
- * invoked from within a `NativeAdView`.
- *
- * @param modifier modify the native ad view element.
- * @param content A composable function that defines the content of this native asset.
- */
-@Composable
-fun NativeAdStoreView(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-    val nativeAdView = LocalNativeAdView.current ?: throw IllegalStateException("NativeAdView null")
-    AndroidView(
-        factory = { context -> ComposeView(context) },
-        modifier = modifier,
-        update = { view ->
-            nativeAdView.storeView = view
-            view.setContent(content)
-        },
-    )
-}
 
-/**
- * The composable for a ad attribution inside a NativeAdView. This composable must be invoked from
- * within a `NativeAdView`.
- *
- * @param modifier modify the native ad view element.
- * @param text The string identifying this view as an advertisement.
- * @param containerColor The background color of the attribution.
- * @param contentColor The text color of the attribution.
- * @param padding The padding around the attribution text.
- */
 @Composable
 fun NativeAdAttribution(
     modifier: Modifier = Modifier,
-    text: String = "Ad",
-    containerColor: Color = ButtonDefaults.buttonColors().containerColor,
-    contentColor: Color = ButtonDefaults.buttonColors().contentColor,
-    padding: PaddingValues = PaddingValues(horizontal = 4.dp, vertical = 2.dp),
+    text: String = "AD"
 ) {
     Box(
         modifier = modifier
-            .background(containerColor, RoundedCornerShape(2.dp))
-            .padding(padding)
+            .border(1.dp, Gray3, RoundedCornerShape(10.dp))
+            .background(Gray2, RoundedCornerShape(10.dp)),
+        contentAlignment = Alignment.Center
     ) {
-        MyText(color = contentColor, text = text)
+        MyText(
+            color = Gray8,
+            text = text,
+            fontSize = dpToSp(12.dp),
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 1.dp)
+        )
     }
 }
 
-/**
- * The composable for a button inside a NativeAdView. This composable must be invoked from within a
- * NativeAdView.
- *
- * The Jetpack Compose button implements a click handler which overrides the native ad click
- * handler, causing issues. The NativeAdButton does not implement a click handler. To handle native
- * ad clicks, use the NativeAd AdListener onAdClicked callback.
- *
- * @param text The string identifying this view as an advertisement.
- * @param modifier modify the native ad view element.
- * @param containerColor The background color of the button.
- * @param contentColor The text color of the button.
- * @param padding The padding around the button text.
- */
 @Composable
 fun NativeAdButton(
     text: String,
-    modifier: Modifier = Modifier,
-    containerColor: Color = ButtonDefaults.buttonColors().containerColor,
-    contentColor: Color = ButtonDefaults.buttonColors().contentColor,
-    padding: PaddingValues = ButtonDefaults.ContentPadding,
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .background(containerColor, RoundedCornerShape(2.dp))
-            .padding(padding)
+            .border(1.dp, Gray4, RoundedCornerShape(4.dp))
+            .background(Gray1, RoundedCornerShape(4.dp))
+            .padding(horizontal = 20.dp, vertical = 10.dp),
+        contentAlignment = Alignment.Center
     ) {
-        MyText(color = contentColor, text = text, fontSize = dpToSp(15.dp))
+        MyText(color = Gray7, text = text, fontSize = dpToSp(14.dp), textAlign = TextAlign.Center)
     }
 }
