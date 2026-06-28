@@ -9,19 +9,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,57 +37,12 @@ import com.zinc.waver.ui.presentation.component.IconButton
 import com.zinc.waver.ui.presentation.component.ImageViewPagerOutSideIndicator
 import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.ProfileView
-import com.zinc.waver.ui.presentation.screen.ads.NativeScreen
 import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui_feed.models.FeedClickEvent
 import com.zinc.waver.ui_feed.models.UIFeedInfo
 import com.zinc.waver.ui_feed.models.profileInfo
 import com.zinc.waver.util.shadow
-import kotlinx.coroutines.flow.collectLatest
 import com.zinc.waver.ui_common.R as CommonR
-
-
-@Composable
-fun FeedListView(
-    modifier: Modifier = Modifier,
-    listState: LazyListState,
-    feedItems: List<UIFeedInfo>,
-    hasNextPage: Boolean,
-    showPageLoading: Boolean,
-    loadNextPage: () -> Unit,
-    feedClicked: (FeedClickEvent) -> Unit
-) {
-    Column(modifier = modifier) {
-        feedItems.forEach { feed ->
-            FeedCardView(
-                feedInfo = feed,
-                clickEvent = feedClicked
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
-        NativeScreen()
-        Spacer(modifier = Modifier.height(60.dp))
-
-        if (showPageLoading) {
-            PageLoadingView()
-        }
-    }
-
-    // Observe visible items and trigger loadNextPage when user scrolls near the end (second-to-last)
-    LaunchedEffect(listState, feedItems, hasNextPage, showPageLoading) {
-        snapshotFlow { listState.layoutInfo.visibleItemsInfo.map { it.index } }
-            .collectLatest { visibleIndexes ->
-                val maxVisible = visibleIndexes.maxOrNull() ?: -1
-                if (hasNextPage && !showPageLoading && feedItems.size >= 2) {
-                    // trigger when second-to-last (or beyond) is visible
-                    if (maxVisible >= (feedItems.size - 2)) {
-                        loadNextPage()
-                    }
-                }
-            }
-    }
-}
 
 
 @Composable
@@ -296,7 +247,7 @@ private fun BottomStateView(
 }
 
 @Composable
-private fun PageLoadingView() {
+internal fun PageLoadingView() {
     Column(
         modifier = Modifier
             .fillMaxWidth()

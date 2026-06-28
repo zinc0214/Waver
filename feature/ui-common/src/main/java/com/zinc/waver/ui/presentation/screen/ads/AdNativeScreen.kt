@@ -21,6 +21,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -120,6 +121,65 @@ fun loadNativeAd(context: Context, onAdLoaded: (NativeAd) -> Unit) {
 }
 
 // [END ad_listener]
+
+/**
+ * 키 기반 NativeAd 캐시. LazyColumn 등에서 아이템이 dispose 되더라도 광고 인스턴스가 보존되도록
+ * 광고 lifecycle 을 캐시 소유자(예: 화면 컴포저블) 레벨에서 관리한다.
+ */
+class KeyedNativeAdCache internal constructor(private val context: Context) {
+    private val ads = mutableStateMapOf<String, NativeAd?>()
+    private val loadingKeys = mutableSetOf<String>()
+
+    internal fun get(key: String): NativeAd? = ads[key]
+
+    fun ensureLoaded(key: String) {
+        if (ads.containsKey(key) || key in loadingKeys) return
+        loadingKeys.add(key)
+        ads[key] = null
+        loadNativeAd(context) { ad ->
+            loadingKeys.remove(key)
+            if (ads.containsKey(key)) {
+                ads[key] = ad
+            } else {
+                ad.destroy()
+            }
+        }
+    }
+
+    fun retainOnly(activeKeys: Set<String>) {
+        val toRemove = ads.keys.toList().filterNot { it in activeKeys }
+        toRemove.forEach { key ->
+            ads.remove(key)?.destroy()
+            loadingKeys.remove(key)
+        }
+    }
+
+    internal fun destroyAll() {
+        ads.values.forEach { it?.destroy() }
+        ads.clear()
+        loadingKeys.clear()
+    }
+}
+
+@Composable
+fun rememberKeyedNativeAdCache(): KeyedNativeAdCache {
+    val context = LocalContext.current
+    val cache = remember { KeyedNativeAdCache(context) }
+    DisposableEffect(cache) {
+        onDispose { cache.destroyAll() }
+    }
+    return cache
+}
+
+/**
+ * 캐시된 NativeAd 를 표시. 키에 해당하는 광고가 아직 로드되지 않았다면 아무것도 그리지 않는다.
+ * LazyColumn 의 item 안에서 호출해도, 화면 밖으로 스크롤되어 dispose 되었다가 다시 들어와도
+ * 캐시에서 같은 광고를 즉시 가져온다.
+ */
+@Composable
+fun NativeAdSlot(cache: KeyedNativeAdCache, key: String) {
+    cache.get(key)?.let { DisplayNativeAdView(it) }
+}
 
 // [START display_native_ad]
 @Composable

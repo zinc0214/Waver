@@ -1,5 +1,6 @@
 package com.zinc.waver.ui_search.screen
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,6 +65,7 @@ fun SearchRecommendScreen(
             SearchRecommendLoading()
         } else {
             recommendList?.let { list ->
+                Log.e("ayhan", "recommendList : $list")
                 RecommendListView(
                     recommendList = list,
                     bucketClicked = { bucketId, userId, isMine ->

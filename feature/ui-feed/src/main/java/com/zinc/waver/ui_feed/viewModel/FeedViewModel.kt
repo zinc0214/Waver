@@ -44,6 +44,9 @@ class FeedViewModel @Inject constructor(
     private val _hasFeedNextPage = MutableLiveData<Boolean>()
     val hasFeedNextPage: LiveData<Boolean> get() = _hasFeedNextPage
 
+    private val _pageEndIndices = MutableLiveData<List<Int>>(emptyList())
+    val pageEndIndices: LiveData<List<Int>> get() = _pageEndIndices
+
     private val loadCeh = CoroutineExceptionHandler { _, t ->
         Log.e("ayhan", "loadCeh : ${t.message}")
         val hasData = _feedItems.value != null
@@ -61,11 +64,12 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun loadFeedItems() {
-        if (_hasFeedNextPage.value == true) {
-            _loadStatusEvent.value = FeedLoadStatus.PagingLoading
-        } else {
+    fun loadFeedItems(isRefresh: Boolean = true) {
+        if (isRefresh) {
+            feedNextKey = null
             _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
+        } else {
+            _loadStatusEvent.value = FeedLoadStatus.PagingLoading
         }
         viewModelScope.launch(loadCeh) {
             loadFeedItems.invoke(feedNextKey).apply {
@@ -73,12 +77,26 @@ class FeedViewModel @Inject constructor(
                 if (this.code == "8000") {
                     loadFeedKeyWords()
                 } else if (this.success.not()) {
-                    _loadStatusEvent.value = FeedLoadStatus.LoadFail(false)
+                    _loadStatusEvent.value = FeedLoadStatus.LoadFail(_feedItems.value != null)
                 } else {
-                    _feedItems.value = this.toUIModel(userId)
+                    val newItems = this.toUIModel(userId)
+                    val combined = if (isRefresh) {
+                        newItems
+                    } else {
+                        _feedItems.value.orEmpty() + newItems
+                    }
+                    _feedItems.value = combined
+                    _pageEndIndices.value = if (newItems.isNotEmpty()) {
+                        val boundary = combined.size - 1
+                        if (isRefresh) listOf(boundary)
+                        else _pageEndIndices.value.orEmpty() + boundary
+                    } else if (isRefresh) {
+                        emptyList()
+                    } else {
+                        _pageEndIndices.value.orEmpty()
+                    }
                     _hasFeedNextPage.value = this.data.hasNext
                     feedNextKey = this.data.nextKey
-                    Log.e("ayhan", "feedData : userId : $userId")
                 }
                 _loadStatusEvent.value = FeedLoadStatus.Success
             }
@@ -89,7 +107,10 @@ class FeedViewModel @Inject constructor(
         if (_hasFeedNextPage.value != true) {
             return
         }
-        loadFeedItems()
+        if (_loadStatusEvent.value == FeedLoadStatus.PagingLoading) {
+            return
+        }
+        loadFeedItems(isRefresh = false)
     }
 
 
