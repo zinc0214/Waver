@@ -1,8 +1,10 @@
 package com.zinc.waver.ui_detail.component.mention
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,8 +33,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.flowlayout.SizeMode
 import com.zinc.waver.model.CommentMentionInfo
 import com.zinc.waver.ui.design.theme.Gray4
 import com.zinc.waver.ui.design.theme.Main1
@@ -90,6 +90,7 @@ internal fun MentionedListView(
             ) {
                 FlowRow(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .onGloballyPositioned { coordinates ->
                             val updatedHeight =
                                 with(localDensity) { coordinates.size.height.toDp() }
@@ -123,11 +124,8 @@ internal fun MentionedListView(
                                 columnHeightDp = updatedHeight
                                 currentSelectedSize = mentionedList.size
                             }
-                        }
-                        .fillMaxWidth(),
-                    mainAxisSpacing = 6.dp,
-                    crossAxisSpacing = 8.dp,
-                    mainAxisSize = SizeMode.Expand
+                        },
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
 
                     Spacer(
