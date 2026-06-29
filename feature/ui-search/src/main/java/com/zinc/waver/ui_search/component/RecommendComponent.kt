@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,8 +22,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
+import androidx.compose.material.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -164,7 +167,8 @@ fun RecommendListView(
     recommendList: RecommendList,
     bucketClicked: (String, String, Boolean) -> Unit,
     copyBucket: (String) -> Unit,
-    isFirstItemShown: (Boolean) -> Unit
+    isFirstItemShown: (Boolean) -> Unit,
+    onRefreshClicked: () -> Unit
 ) {
 
     val listScrollState = rememberLazyListState()
@@ -183,7 +187,10 @@ fun RecommendListView(
             items = recommendList.items,
             key = { it.type },
             itemContent = {
-                RecommendTitleView(it)
+                RecommendTitleView(
+                    it,
+                    onRefreshClicked = onRefreshClicked
+                )
                 RecommendBucketListView(
                     it.items,
                     bucketClicked = bucketClicked,
@@ -197,7 +204,10 @@ fun RecommendListView(
 }
 
 @Composable
-private fun RecommendTitleView(recommendItem: RecommendItem) {
+private fun RecommendTitleView(
+    recommendItem: RecommendItem,
+    onRefreshClicked: () -> Unit
+) {
     val type = recommendItem.type
 
     Row(
@@ -235,7 +245,8 @@ private fun RecommendTitleView(recommendItem: RecommendItem) {
             KeyWordChangeButton(
                 modifier = Modifier
                     .padding(start = 6.dp)
-                    .align(Alignment.Bottom)
+                    .align(Alignment.Bottom),
+                onRefreshClicked = onRefreshClicked
             )
         }
     }
@@ -343,11 +354,21 @@ fun RecommendBucketItemView(
 }
 
 @Composable
-fun KeyWordChangeButton(modifier: Modifier) {
+fun KeyWordChangeButton(
+    modifier: Modifier,
+    onRefreshClicked: () -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+
     Row(
         modifier = modifier
             .background(shape = RoundedCornerShape(4.dp), color = Gray1)
             .border(width = 1.dp, color = Gray4, shape = RoundedCornerShape(4.dp))
+            .clickable(
+                interactionSource = interactionSource,
+                indication = ripple(),
+                onClick = { onRefreshClicked() }
+            )
             .padding(start = 8.dp, top = 6.dp, bottom = 6.dp, end = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -376,7 +397,8 @@ private fun RecommendTitlePreview() {
             type = RecommendType.RECOMMEND,
             tagList = listOf("제주도", "1박2일", "좀 길어버린 텍스투"),
             items = listOf()
-        )
+        ),
+        onRefreshClicked = {}
     )
 }
 
