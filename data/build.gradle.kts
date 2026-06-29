@@ -2,8 +2,8 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -34,7 +34,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hilt.anroid)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     // retrofit2
     implementation(libs.retrofit.core)

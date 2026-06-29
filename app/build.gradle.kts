@@ -2,7 +2,8 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     id("kotlin-parcelize")
     id("kotlinx-serialization")
     id("com.google.gms.google-services")
@@ -58,9 +59,6 @@ android {
         compose = true
         dataBinding = true
         viewBinding = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompilerVersion.get()
     }
     kapt {
         correctErrorTypes = true
@@ -133,6 +131,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
     implementation(libs.googleid)
     implementation(libs.play.services.auth)
     implementation(libs.androidx.credentials)
@@ -140,7 +139,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.anroid)
     implementation(libs.hilt.navigation)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     // coil
     implementation(libs.coil)
@@ -159,7 +158,4 @@ dependencies {
 
     // PlayService Ads
     implementation(libs.play.services.ads)
-
-    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-    implementation("com.google.firebase:firebase-messaging")
 }

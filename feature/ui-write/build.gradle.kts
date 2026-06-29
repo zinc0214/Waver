@@ -1,8 +1,8 @@
 plugins {
     id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -15,17 +15,9 @@ android {
 
     compileSdk = Versions.compileSdk
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompilerVersion.get()
-    }
-
     buildFeatures {
         compose = true
         viewBinding = true
-    }
-
-    kapt {
-        correctErrorTypes = true
     }
 
     kotlin {
@@ -60,7 +52,7 @@ dependencies {
     // Hilt
     implementation(libs.hilt.anroid)
     implementation(libs.hilt.navigation)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     // Coil
     implementation(libs.coil)
