@@ -157,13 +157,25 @@ fun MyScreen(
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                return if (parentScrollState.value < parentScrollState.maxValue) {
-                    // 부모가 스크롤되는 동안은 자식 스크롤 금지
+                val canScrollDown = parentScrollState.value < parentScrollState.maxValue
+                val canScrollUp = parentScrollState.value > 0
+
+                return if ((available.y > 0 && canScrollDown) || (available.y < 0 && canScrollUp)) {
                     val consumed = available.y
                     parentScrollState.dispatchRawDelta(-consumed)
                     Offset(0f, consumed)
                 } else {
-                    // 부모 스크롤이 끝난 후 자식 스크롤 시작
+                    Offset.Zero
+                }
+            }
+
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                // 자식이 소비하고 남은 스크롤을 부모가 처리 (위로 스크롤할 때 헤더 확장)
+                return if (available.y < 0 && parentScrollState.value > 0) {
+                    val parentConsumed = available.y
+                    parentScrollState.dispatchRawDelta(-parentConsumed)
+                    Offset(0f, parentConsumed)
+                } else {
                     Offset.Zero
                 }
             }
