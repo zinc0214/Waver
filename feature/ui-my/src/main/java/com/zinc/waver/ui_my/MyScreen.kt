@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,8 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -94,20 +94,11 @@ fun MyScreen(
         mutableStateOf(profileInfoAsState)
     }
 
-    val configuration = LocalConfiguration.current
-    val context = LocalContext.current
+    val density = LocalDensity.current
 
-    var profileHeight by remember {
-        mutableStateOf(0.dp)
-    }
-
-    var pagerHeight by remember {
-        mutableStateOf(configuration.screenHeightDp.dp - profileHeight)
-    }
-
-    LaunchedEffect(profileHeight) {
-        pagerHeight = (configuration.screenHeightDp.dp - profileHeight)
-    }
+    // 탭 스트립 높이 - 페이저 높이를 (뷰포트 - 탭높이)로 잡으면
+    // 헤더가 완전히 접혔을 때 탭이 화면 최상단에 붙는다
+    var tabHeight by remember { mutableStateOf(0.dp) }
 
     val tabItems = MyTabType.values()
     val pagerState = rememberPagerState(pageCount = { tabItems.size })
@@ -215,41 +206,48 @@ fun MyScreen(
         },
         sheetShape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
-        Column(
-            modifier = Modifier
-                .statusBarsPadding()
-                .nestedScroll(nestedScrollConnection)
-                .verticalScroll(parentScrollState)
-        ) {
+        BoxWithConstraints(modifier = Modifier.statusBarsPadding()) {
+            val viewportHeight = maxHeight
 
-            MyTopLayer(profileInfo = profileInfo.value, layoutChanged = {
-                profileHeight = it
-            }) {
-                myTopEvent(it)
-            }
-
-            MyTabLayer(tabItems, pagerState, coroutineScope)
-
-            MyViewPager(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .height(pagerHeight),
-                pagerState = pagerState,
-                viewModel = viewModel,
-                isFilterUpdated = isFilterUpdated.value,
-                itemSelected = itemSelected,
-                bottomSheetClicked = {
-                    bottomSheetClicked(it)
+                    .nestedScroll(nestedScrollConnection)
+                    .verticalScroll(parentScrollState)
+            ) {
 
-                    if (it is BottomSheetScreenType.MyBucketFilterScreen) {
-                        myTabType.intValue = pagerState.currentPage
-                        isNeedToBottomSheetOpen.invoke(it.needToShown)
-                        isFilterUpdated.value = false
+                MyTopLayer(profileInfo = profileInfo.value, layoutChanged = {}) {
+                    myTopEvent(it)
+                }
+
+                Box(
+                    modifier = Modifier.onGloballyPositioned {
+                        tabHeight = with(density) { it.size.height.toDp() }
                     }
-                },
-                goToCategoryEdit = goToCategoryEdit,
-                coroutineScope = coroutineScope
-            )
+                ) {
+                    MyTabLayer(tabItems, pagerState, coroutineScope)
+                }
+
+                MyViewPager(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height((viewportHeight - tabHeight).coerceAtLeast(0.dp)),
+                    pagerState = pagerState,
+                    viewModel = viewModel,
+                    isFilterUpdated = isFilterUpdated.value,
+                    itemSelected = itemSelected,
+                    bottomSheetClicked = {
+                        bottomSheetClicked(it)
+
+                        if (it is BottomSheetScreenType.MyBucketFilterScreen) {
+                            myTabType.intValue = pagerState.currentPage
+                            isNeedToBottomSheetOpen.invoke(it.needToShown)
+                            isFilterUpdated.value = false
+                        }
+                    },
+                    goToCategoryEdit = goToCategoryEdit,
+                    coroutineScope = coroutineScope
+                )
+            }
         }
     }
 }
