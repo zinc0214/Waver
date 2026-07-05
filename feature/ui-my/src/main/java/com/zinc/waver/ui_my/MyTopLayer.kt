@@ -72,6 +72,8 @@ fun MyTopLayer(
             ) { myTopEvent.invoke(it) }
         }
 
+        // 프로필과 탭 사이 간격 - 헤더에 포함되어 접히면 함께 사라진다
+        Spacer(modifier = Modifier.height(30.dp))
     }
 }
 
