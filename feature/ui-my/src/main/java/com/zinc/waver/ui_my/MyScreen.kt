@@ -156,28 +156,29 @@ fun MyScreen(
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
+            // 접기: 위로 스크롤(dy<0)하면 헤더를 먼저 접고, 접을 만큼만 소비한 뒤 나머지는 리스트로 넘긴다
             override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val canScrollDown = parentScrollState.value < parentScrollState.maxValue
-                val canScrollUp = parentScrollState.value > 0
-
-                return if ((available.y > 0 && canScrollDown) || (available.y < 0 && canScrollUp)) {
-                    val consumed = available.y
-                    parentScrollState.dispatchRawDelta(-consumed)
-                    Offset(0f, consumed)
-                } else {
-                    Offset.Zero
+                val dy = available.y
+                if (dy < 0f && parentScrollState.value < parentScrollState.maxValue) {
+                    // dispatchRawDelta는 실제로 소비한 양만 반환하므로 경계에서 스크롤이 끊기지 않는다
+                    val consumed = parentScrollState.dispatchRawDelta(-dy)
+                    return Offset(0f, -consumed)
                 }
+                return Offset.Zero
             }
 
-            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                // 자식이 소비하고 남은 스크롤을 부모가 처리 (위로 스크롤할 때 헤더 확장)
-                return if (available.y < 0 && parentScrollState.value > 0) {
-                    val parentConsumed = available.y
-                    parentScrollState.dispatchRawDelta(-parentConsumed)
-                    Offset(0f, parentConsumed)
-                } else {
-                    Offset.Zero
+            // 펼치기: 리스트가 최상단에 닿은 뒤(dy>0) 남은 스크롤로 헤더를 펼친다
+            override fun onPostScroll(
+                consumed: Offset,
+                available: Offset,
+                source: NestedScrollSource
+            ): Offset {
+                val dy = available.y
+                if (dy > 0f && parentScrollState.value > 0) {
+                    val used = parentScrollState.dispatchRawDelta(-dy)
+                    return Offset(0f, -used)
                 }
+                return Offset.Zero
             }
         }
     }
