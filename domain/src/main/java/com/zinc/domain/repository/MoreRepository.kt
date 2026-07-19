@@ -5,6 +5,7 @@ import com.zinc.common.models.CommonResponse2
 import com.zinc.common.models.LoadMyWaveBadgeResponse
 import com.zinc.common.models.LoadMyWaveInfoResponse
 import com.zinc.common.models.ProfileResponse
+import com.zinc.domain.models.SubscriptionStartRequest
 import com.zinc.domain.models.UpdateProfileRequest
 
 interface MoreRepository {
@@ -15,4 +16,5 @@ interface MoreRepository {
     suspend fun loadMyWaveInfo(): LoadMyWaveInfoResponse
     suspend fun requestWithdrawal(): CommonResponse
     suspend fun updateMyBadge(badgeId: Int): CommonResponse
+    suspend fun startSubscription(request: SubscriptionStartRequest): CommonResponse
 }

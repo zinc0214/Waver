@@ -23,8 +23,8 @@ import kotlinx.coroutines.flow.update
 class ChooseSubscription(
     private val activity: Activity,
     private val isForPurchase: Boolean,
-    private val subsDone: () -> Unit,
-    private val alreadyPurchased: (Boolean) -> Unit
+    private val subsDone: (subscribeId: String) -> Unit,
+    private val alreadyPurchased: (purchased: Boolean, subscribeId: String?) -> Unit
 ) {
     private val _subscriptions = MutableStateFlow<List<String>>(emptyList())
 
@@ -85,7 +85,7 @@ class ChooseSubscription(
             queryPurchaseParams
         ) { result, purchases ->
             if (purchases.isEmpty()) {
-                alreadyPurchased(false)
+                alreadyPurchased(false, null)
             }
 
             when (result.responseCode) {
@@ -100,7 +100,7 @@ class ChooseSubscription(
                                 newList
                             }
 
-                            alreadyPurchased(true)
+                            alreadyPurchased(true, purchase.purchaseToken)
                             return@queryPurchasesAsync
                         }
                     }
@@ -225,7 +225,7 @@ class ChooseSubscription(
                             newList
                         }
 
-                        subsDone.invoke()
+                        subsDone.invoke(purchase.purchaseToken)
                     }
                 }
             } else {

@@ -7,3 +7,12 @@ data class UpdateProfileRequest(
     val bio: String,
     val image: File? = null
 )
+
+data class SubscriptionStartRequest(
+    val billingCycle: BillingCycle,
+    val subscribeId: String
+)
+
+enum class BillingCycle {
+    MONTHLY, YEARLY
+}

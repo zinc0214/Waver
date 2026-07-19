@@ -35,6 +35,7 @@ import com.zinc.domain.models.SavedKeywordItemsRequest
 import com.zinc.domain.models.SearchPopularAndRecommendResponse
 import com.zinc.domain.models.SearchRecommendResponse
 import com.zinc.domain.models.SearchResultResponse
+import com.zinc.domain.models.SubscriptionStartRequest
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -329,5 +330,11 @@ interface WaverApi {
     // 회원탈퇴
     @POST("/waver/user/withdraw")
     suspend fun requestWithdraw(): CommonResponse
+
+    // 웨이버 플러스 구독 시작 알림
+    @POST("/waver/subscription/start")
+    suspend fun startSubscription(
+        @Body request: SubscriptionStartRequest
+    ): CommonResponse
 
 }

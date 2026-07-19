@@ -8,6 +8,7 @@ import com.zinc.common.models.ProfileResponse
 import com.zinc.data.api.WaverApi
 import com.zinc.data.util.fileToMultipartFile
 import com.zinc.data.util.toMultipartFile
+import com.zinc.domain.models.SubscriptionStartRequest
 import com.zinc.domain.models.UpdateProfileRequest
 import com.zinc.domain.repository.MoreRepository
 import javax.inject.Inject
@@ -52,5 +53,9 @@ internal class MoreRepositoryImpl @Inject constructor(
 
     override suspend fun updateMyBadge(badgeId: Int): CommonResponse {
         return waverApi.updateMyBadge(badgeId)
+    }
+
+    override suspend fun startSubscription(request: SubscriptionStartRequest): CommonResponse {
+        return waverApi.startSubscription(request)
     }
 }

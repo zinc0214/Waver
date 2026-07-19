@@ -28,6 +28,7 @@ import com.canhub.cropper.CropImageView
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.zinc.domain.models.BillingCycle
 import com.zinc.waver.R
 import com.zinc.waver.model.AddImageType
 import com.zinc.waver.model.LoadedImageInfo
@@ -402,12 +403,31 @@ class HomeActivity : AppCompatActivity(),
         val subs = ChooseSubscription(
             this,
             isForPurchase = isForPurchase,
-            subsDone = {
-                viewModel.updateWaverPlus(true)
+            subsDone = { subscribeId ->
+                // 서버 전송이 성공하면 그 안에서 hasWaverPlus=true 로 저장한다
+                viewModel.notifySubscriptionStarted(
+                    billingCycle = when (type) {
+                        WaverPlusType.YEAR -> BillingCycle.YEARLY
+                        WaverPlusType.MONTH -> BillingCycle.MONTHLY
+                    },
+                    subscribeId = subscribeId
+                )
                 Toast.makeText(this, "구매완료", Toast.LENGTH_SHORT).show()
             },
-            alreadyPurchased = { purchased ->
-                viewModel.updateWaverPlus(purchased)
+            alreadyPurchased = { purchased, subscribeId ->
+                if (purchased && subscribeId != null) {
+                    // 활성 구독 감지 → 서버에 알리고, 성공 시 hasWaverPlus=true 저장 (세션당 1회, best-effort 주기)
+                    viewModel.notifySubscriptionStarted(
+                        billingCycle = when (type) {
+                            WaverPlusType.YEAR -> BillingCycle.YEARLY
+                            WaverPlusType.MONTH -> BillingCycle.MONTHLY
+                        },
+                        subscribeId = subscribeId
+                    )
+                } else if (!purchased) {
+                    // 활성 구독 없음 → 플래그 해제 (서버와 무관)
+                    viewModel.updateWaverPlus(false)
+                }
             })
 
         subs.billingSetup(waverPlusType = type)
