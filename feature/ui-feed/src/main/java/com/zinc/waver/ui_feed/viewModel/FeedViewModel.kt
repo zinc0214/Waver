@@ -64,10 +64,12 @@ class FeedViewModel @Inject constructor(
         }
     }
 
-    fun loadFeedItems(isRefresh: Boolean = true) {
+    fun loadFeedItems(isRefresh: Boolean = true, isUserPull: Boolean = false) {
         if (isRefresh) {
             feedNextKey = null
-            _loadStatusEvent.value = FeedLoadStatus.RefreshLoading
+            // 상단 로딩(PullRefreshIndicator)은 사용자가 직접 풀투리프레시 했을 때만 노출
+            _loadStatusEvent.value =
+                if (isUserPull) FeedLoadStatus.RefreshLoading else FeedLoadStatus.None
         } else {
             _loadStatusEvent.value = FeedLoadStatus.PagingLoading
         }

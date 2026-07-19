@@ -68,7 +68,7 @@ fun FeedScreen(goToBucket: (String, String, Boolean) -> Unit) {
             loadStatus = it
         },
         pullToRefreshEvent = {
-            viewModel.loadFeedItems()
+            viewModel.loadFeedItems(isUserPull = true)
         },
         loadNextPageEvent = {
             viewModel.loadNextFeedItems()
