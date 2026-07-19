@@ -87,7 +87,7 @@ class WriteBucketListViewModel @Inject constructor(
                     title = writeInfo.title,
                     memo = writeInfo.memo,
                     keywords = writeInfo.keywords,
-                    friendUserIds = writeInfo.friendUserIds?.joinToString { "," },
+                    friendUserIds = writeInfo.friendUserIds?.joinToString(","),
                     scrapYn = writeInfo.scrapYn,
                     images = writeInfo.images,
                     targetDate = writeInfo.targetDate,
