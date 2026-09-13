@@ -16,6 +16,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +52,24 @@ import java.io.IOException
 class HomeActivity : AppCompatActivity(),
     com.zinc.waver.ui_more.components.RequestPermissionCallbackProvider {
 
+    companion object {
+        private const val NOTIFICATION_CLICK_ACTION_KEY = "notification_click_action"
+        private const val OPEN_ALARM_SCREEN_ACTION = "OPEN_ALARM_SCREEN"
+        private const val NOTIFICATION_DEEP_LINK_SCHEME = "waver"
+        private const val NOTIFICATION_DEEP_LINK_HOST = "alarm"
+        private val firebaseNotificationKeys = setOf(
+            "google.message_id",
+            "message_id",
+            "from",
+            "collapse_key",
+            "google.c.a.e",
+            "gcm.n.e",
+            "gcm.notification.e"
+        )
+    }
+
     private val viewModel by viewModels<HomeViewModel>()
+    private val notificationClickAction = mutableStateOf<String?>(null)
 
     private var photoUri: Uri? = null
     private var imageCount = 0
@@ -94,6 +112,7 @@ class HomeActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        updateNotificationClickAction(intent)
         MobileAds.initialize(this)
         checkInAppBilling()
 
@@ -113,9 +132,12 @@ class HomeActivity : AppCompatActivity(),
             val showWelcomePopup = remember { mutableStateOf(false) }
 
             // 알림 클릭 시 알림 화면으로 이동
-            val notificationClickAction = intent.getStringExtra("notification_click_action")
-            if (notificationClickAction == "OPEN_ALARM_SCREEN") {
-                showScreenType.value = ShowParentScreenType.Alarm
+            LaunchedEffect(notificationClickAction.value) {
+                if (notificationClickAction.value == OPEN_ALARM_SCREEN_ACTION) {
+                    showScreenType.value = ShowParentScreenType.Alarm
+                    // 같은 인텐트 값으로 반복 이동하지 않도록 1회 소비한다.
+                    notificationClickAction.value = null
+                }
             }
 
             when (showScreenType.value) {
@@ -217,6 +239,7 @@ class HomeActivity : AppCompatActivity(),
                 ShowParentScreenType.Alarm -> {
                     HomeScreen(
                         startDestination = com.zinc.waver.util.nav.AlarmDestinations.GO_TO_ALARM,
+                        alarmBackToHomeOnBackPressed = true,
                         action = { actionWithActivity ->
                             when (actionWithActivity) {
                                 is ActionWithActivity.AddImage -> {
@@ -269,6 +292,56 @@ class HomeActivity : AppCompatActivity(),
                     )
                 }
             }
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        updateNotificationClickAction(intent)
+    }
+
+    private fun updateNotificationClickAction(intent: Intent?) {
+        val shouldOpenAlarm = intent?.shouldOpenAlarmFromNotification() == true
+        notificationClickAction.value = if (shouldOpenAlarm) {
+            consumeNotificationLaunch(intent)
+            OPEN_ALARM_SCREEN_ACTION
+        } else {
+            null
+        }
+    }
+
+    private fun Intent.shouldOpenAlarmFromNotification(): Boolean {
+        val explicitAction = getStringExtra(NOTIFICATION_CLICK_ACTION_KEY)
+        if (explicitAction == OPEN_ALARM_SCREEN_ACTION) {
+            return true
+        }
+
+        val deepLinkData = data
+        if (action == Intent.ACTION_VIEW &&
+            deepLinkData?.scheme == NOTIFICATION_DEEP_LINK_SCHEME &&
+            deepLinkData.host == NOTIFICATION_DEEP_LINK_HOST
+        ) {
+            return true
+        }
+
+        val extras = extras ?: return false
+        return firebaseNotificationKeys.any { extras.containsKey(it) }
+    }
+
+    private fun consumeNotificationLaunch(intent: Intent) {
+        intent.removeExtra(NOTIFICATION_CLICK_ACTION_KEY)
+
+        val cleanedExtras = Bundle(intent.extras ?: Bundle()).apply {
+            firebaseNotificationKeys.forEach(::remove)
+        }
+        intent.replaceExtras(cleanedExtras)
+
+        if (intent.data?.scheme == NOTIFICATION_DEEP_LINK_SCHEME &&
+            intent.data?.host == NOTIFICATION_DEEP_LINK_HOST
+        ) {
+            intent.action = Intent.ACTION_MAIN
+            intent.data = null
         }
     }
 

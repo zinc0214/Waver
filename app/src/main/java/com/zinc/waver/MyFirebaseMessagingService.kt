@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -25,6 +26,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     companion object {
         private const val CHANNEL_ID = "waver_notification_channel"
         private const val CHANNEL_NAME = "Waver Notifications"
+        private const val OPEN_ALARM_SCREEN_ACTION = "OPEN_ALARM_SCREEN"
+        private const val NOTIFICATION_CLICK_ACTION_KEY = "notification_click_action"
+        private const val NOTIFICATION_DEEP_LINK = "waver://alarm"
     }
 
     override fun onNewToken(token: String) {
@@ -63,13 +67,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val notificationId = System.currentTimeMillis().toInt()
 
             val intent = Intent(this, HomeActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                // 기존 HomeActivity가 있으면 재사용하고, 없으면 새 태스크로 연다.
+                flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                action = Intent.ACTION_VIEW
+                data = Uri.parse(NOTIFICATION_DEEP_LINK)
                 putExtra("notification_title", title)
                 putExtra("notification_body", body)
-                putExtra(
-                    "notification_click_action",
-                    "OPEN_ALARM_SCREEN"
-                ) // 알림 클릭 시 알림 화면으로 이동하도록 추가
+                putExtra(NOTIFICATION_CLICK_ACTION_KEY, OPEN_ALARM_SCREEN_ACTION)
             }
 
             val pendingIntent: PendingIntent = PendingIntent.getActivity(

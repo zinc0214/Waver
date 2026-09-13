@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import com.zinc.waver.ui_my.model.AlarmClickEvent
 import com.zinc.waver.ui_my.model.MyTopEvent
 import com.zinc.waver.ui_other.model.OtherHomeEvent
 import com.zinc.waver.ui_search.model.SearchGoToEvent
+import com.zinc.waver.util.nav.AlarmDestinations
 import com.zinc.waver.util.nav.alarmNavGraph
 import com.zinc.waver.util.nav.closeBucketDetailNavGraph
 import com.zinc.waver.util.nav.goToOtherHomeNavGraph
@@ -65,7 +67,9 @@ import com.zinc.waver.util.nav.writeNavGraph
 @Composable
 fun HomeScreen(
     action: (ActionWithActivity) -> Unit,
-    startDestination: String = HomeSections.MY.route
+    startDestination: String = HomeSections.MY.route,
+    openAlarmOnLaunch: Boolean = false,
+    alarmBackToHomeOnBackPressed: Boolean = false
 ) {
     BaseTheme {
         val appState = rememberWaverAppState()
@@ -82,7 +86,9 @@ fun HomeScreen(
                 appState = appState,
                 shownBottomSheet = shownBottomSheet,
                 action = action,
-                startDestination = startDestination
+                startDestination = startDestination,
+                openAlarmOnLaunch = openAlarmOnLaunch,
+                alarmBackToHomeOnBackPressed = alarmBackToHomeOnBackPressed
             )
         }
     }
@@ -93,7 +99,9 @@ private fun HomeScaffold(
     appState: WaverAppState,
     shownBottomSheet: MutableState<Boolean>,
     action: (ActionWithActivity) -> Unit,
-    startDestination: String = HomeSections.MY.route
+    startDestination: String = HomeSections.MY.route,
+    openAlarmOnLaunch: Boolean = false,
+    alarmBackToHomeOnBackPressed: Boolean = false
 ) {
     Scaffold(
         bottomBar = {
@@ -109,7 +117,9 @@ private fun HomeScaffold(
             shownBottomSheet = shownBottomSheet,
             action = action,
             padding = padding,
-            startDestination = startDestination
+            startDestination = startDestination,
+            openAlarmOnLaunch = openAlarmOnLaunch,
+            alarmBackToHomeOnBackPressed = alarmBackToHomeOnBackPressed
         )
     }
 }
@@ -142,7 +152,9 @@ private fun HomeNavHost(
     shownBottomSheet: MutableState<Boolean>,
     action: (ActionWithActivity) -> Unit,
     padding: PaddingValues,
-    startDestination: String = HomeSections.MY.route
+    startDestination: String = HomeSections.MY.route,
+    openAlarmOnLaunch: Boolean = false,
+    alarmBackToHomeOnBackPressed: Boolean = false
 ) {
     NavHost(
         navController = appState.navController,
@@ -157,7 +169,14 @@ private fun HomeNavHost(
     ) {
         setupMainScreens(appState, shownBottomSheet, action)
         setupDetailScreens(appState, action)
-        setupMoreScreens(appState, action)
+        setupMoreScreens(appState, action, alarmBackToHomeOnBackPressed)
+    }
+
+    // 푸시 진입 시에는 홈을 시작점으로 띄운 뒤 알람으로 이동해 백키로 홈 복귀가 가능하도록 한다.
+    LaunchedEffect(openAlarmOnLaunch) {
+        if (openAlarmOnLaunch) {
+            appState.navController.navigate(AlarmDestinations.GO_TO_ALARM)
+        }
     }
 }
 
@@ -320,10 +339,17 @@ private fun NavGraphBuilder.setupDetailScreens(
 
 private fun NavGraphBuilder.setupMoreScreens(
     appState: WaverAppState,
-    action: (ActionWithActivity) -> Unit
+    action: (ActionWithActivity) -> Unit,
+    alarmBackToHomeOnBackPressed: Boolean
 ) {
     alarmNavGraph(
-        backPress = appState::backPress,
+        backPress = {
+            if (alarmBackToHomeOnBackPressed) {
+                appState.navigateToBottomBarRoute(HomeSections.MY.route)
+            } else {
+                appState.backPress()
+            }
+        },
         alarmClicked = { event, nav ->
             when (event) {
                 is AlarmClickEvent.GoToBucketDetail -> {
