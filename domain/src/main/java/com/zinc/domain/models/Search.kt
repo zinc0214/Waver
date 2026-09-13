@@ -39,13 +39,13 @@ data class SearchRecommendResponse(
 
     data class RecommendData(
         val recentSearch: List<String>,
+        val popularSearch: List<String>,
         val recommendKeywords: List<RecommendItem>
     )
 
     data class RecommendItem(
-        val id: Int,
-        val name: String,
-        val count: Int
+        val code: String,
+        val name: String
     )
 }
 

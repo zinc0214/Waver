@@ -90,6 +90,30 @@ class SearchViewModel @Inject constructor(
         }
     }
 
+    // 추천 키워드만 새로고침. searchOptions 는 recommendKeywords 를 매 호출 랜덤으로 내려주지만
+    // 추천 버킷리스트는 포함하지 않으므로 태그만 교체하고 버킷 목록은 유지한다.
+    fun refreshRecommendKeyword() {
+        viewModelScope.launch(ceh(_loadFail, "")) {
+            val response = loadSearchRecommend.invoke()
+            if (response.success) {
+                val newKeywords = response.data?.recommendKeywords?.map { it.name }.orEmpty()
+                _recommendList.value = _recommendList.value?.let { current ->
+                    current.copy(
+                        items = current.items.map {
+                            if (it.type == RecommendType.RECOMMEND) {
+                                it.copy(tagList = newKeywords)
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                }
+            } else {
+                _loadFail.value = response.message
+            }
+        }
+    }
+
     fun loadSearchResult(searchWord: String) {
         if (searchWord.isEmpty()) {
             return

@@ -88,7 +88,7 @@ fun SearchRecommendScreen(
                         viewModel.copyOtherBucket(it)
                     },
                     onRefreshClicked = {
-                        viewModel.loadRecommendList()
+                        viewModel.refreshRecommendKeyword()
                     }
                 )
             }
