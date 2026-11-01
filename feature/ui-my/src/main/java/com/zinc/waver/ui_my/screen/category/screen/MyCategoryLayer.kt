@@ -14,7 +14,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -23,16 +22,11 @@ import com.zinc.waver.model.CategoryLoadFailStatus
 import com.zinc.waver.model.MyPagerClickEvent
 import com.zinc.waver.model.MyTabType.CATEGORY
 import com.zinc.waver.ui.design.theme.Gray2
-import com.zinc.waver.ui.design.theme.Gray8
-import com.zinc.waver.ui.design.theme.Main4
 import com.zinc.waver.ui.presentation.component.CategoryListView
-import com.zinc.waver.ui.presentation.component.MyText
 import com.zinc.waver.ui.presentation.component.dialog.ApiFailDialog
 import com.zinc.waver.ui.presentation.screen.category.component.AddNewCategoryDialog
 import com.zinc.waver.ui.presentation.screen.category.model.AddCategoryEvent
-import com.zinc.waver.ui.util.dpToSp
 import com.zinc.waver.ui.viewmodel.CategoryViewModel
-import com.zinc.waver.ui_my.R
 import com.zinc.waver.ui_my.screen.category.component.MyCategoryAddView
 import com.zinc.waver.ui_my.view.EditButtonAndSearchImageView
 import com.zinc.waver.ui_common.R as CommonR
@@ -42,8 +36,6 @@ fun CategoryLayer(
     modifier: Modifier,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
-    val recommendCategory = "여향"
-
     val viewModel: CategoryViewModel = hiltViewModel()
 
     val categoryListAsState by viewModel.categoryInfoList.observeAsState()
@@ -72,7 +64,7 @@ fun CategoryLayer(
     }
 
     Column(modifier = modifier.background(Gray2)) {
-        TopView(modifier = Modifier.fillMaxWidth(), recommendCategory, clickEvent)
+        TopView(modifier = Modifier.fillMaxWidth(), clickEvent)
         Spacer(modifier = Modifier.height(16.dp))
         CategoryListView(categoryList.value.orEmpty()) {
             clickEvent.invoke(MyPagerClickEvent.GoTo.CategoryItemClicked(it))
@@ -117,41 +109,16 @@ fun CategoryLayer(
 @Composable
 private fun TopView(
     modifier: Modifier = Modifier,
-    recommendCategory: String,
     clickEvent: (MyPagerClickEvent) -> Unit
 ) {
     Row(
         modifier = modifier
             .padding(start = 22.dp, end = 16.dp, top = 16.dp)
     ) {
-        TopLeftView(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            recommendCategory = recommendCategory
-        )
         TopRightView(modifier = Modifier.fillMaxWidth(), clickEvent = clickEvent)
     }
 }
 
-@Composable
-private fun TopLeftView(modifier: Modifier = Modifier, recommendCategory: String) {
-    Row(modifier = modifier) {
-        MyText(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = stringResource(id = R.string.recommendCategory),
-            color = Gray8,
-            fontSize = dpToSp(13.dp),
-        )
-        MyText(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 8.dp),
-            text = stringResource(id = R.string.recommendTag) + recommendCategory,
-            color = Main4,
-            fontSize = dpToSp(13.dp),
-        )
-    }
-
-}
 
 @Composable
 private fun TopRightView(modifier: Modifier = Modifier, clickEvent: (MyPagerClickEvent) -> Unit) {
