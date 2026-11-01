@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.zinc.common.models.BucketStatus
 import com.zinc.common.models.YesOrNo
 import com.zinc.waver.model.DetailDescType
@@ -119,6 +120,7 @@ private fun TitleView(modifier: Modifier = Modifier, title: String) {
         text = title,
         color = Gray10,
         fontSize = dpToSp(24.dp),
+        lineHeight = 34.sp,
         fontWeight = FontWeight.Bold,
         modifier = modifier
     )
