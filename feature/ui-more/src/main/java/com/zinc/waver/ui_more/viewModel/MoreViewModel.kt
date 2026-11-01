@@ -48,11 +48,23 @@ class MoreViewModel @Inject constructor(
     private val _nicknameCheckState = MutableLiveData<NicknameCheckState>(NicknameCheckState.Idle)
     val nicknameCheckState: LiveData<NicknameCheckState> get() = _nicknameCheckState
 
-    private val _hasWaverPlus = MutableLiveData<Boolean>()
+    private val _hasWaverPlus = MutableLiveData(false)
     val hasWaverPlus: LiveData<Boolean> get() = _hasWaverPlus
 
     private val _loginEmail = MutableLiveData<String>()
     val loginEmail: LiveData<String> get() = _loginEmail
+
+    private var premiumHint = false
+    private var premiumByServer = false
+
+    init {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadPremiumHint.collectLatest { hasPremiumHint ->
+                premiumHint = hasPremiumHint
+                publishPremiumState()
+            }
+        }
+    }
 
     fun loadMyProfile() {
         viewModelScope.launch(ceh(_profileLoadFail, true)) {
@@ -124,11 +136,23 @@ class MoreViewModel @Inject constructor(
     }
 
     fun checkHasWaverPlus() {
-        viewModelScope.launch(ceh(_hasWaverPlus, false)) {
-            val response = checkUserLimit.invoke()
-            _hasWaverPlus.value =
-                response.success && response.data.premiumStatus == ProfileInfo.PremiumStatus.ACTIVE
+        viewModelScope.launch {
+            runCatching {
+                checkUserLimit.invoke()
+            }.onSuccess { response ->
+                if (response.success) {
+                    premiumByServer = response.data.premiumStatus == ProfileInfo.PremiumStatus.ACTIVE
+                    preferenceDataStoreModule.setPremiumHint(premiumByServer)
+                }
+                publishPremiumState()
+            }.onFailure {
+                publishPremiumState()
+            }
         }
+    }
+
+    private fun publishPremiumState() {
+        _hasWaverPlus.value = premiumHint || premiumByServer
     }
 
     fun loadLoginEmail() {
