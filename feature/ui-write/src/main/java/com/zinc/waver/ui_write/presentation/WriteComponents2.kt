@@ -10,6 +10,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -103,7 +105,7 @@ fun KeywordsOptionView(
             .fillMaxWidth()
             .clickable { optionClicked() }
     ) {
-        Divider(color = Gray4)
+        Divider(color = Gray3, thickness = 1.dp)
 
         OptionTextView(
             modifier = Modifier.padding(top = 18.dp),
@@ -151,7 +153,7 @@ fun FriendsOptionView(
     val isValid = realFriendOption.enableType != WriteOptionsType2.FRIENDS.EnableType.Disable
 
     val padding = if (isNeedToWave) 0.dp else 18.dp
-    val dividerColor = if (isNeedToWave) Main3 else Gray4
+    val dividerColor = if (isNeedToWave) Main3 else Gray3
 
     Column(
         modifier = modifier
@@ -238,8 +240,13 @@ fun OpenTypeOptionView(
             .fillMaxWidth()
             .clickable { optionClicked() }
     ) {
-        Divider(color = Gray2, thickness = 7.dp)
-        Divider(color = Gray3)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+                .background(Gray2)
+        )
+        Divider(color = Gray3, thickness = 1.dp)
 
         OptionTextView(
             modifier = Modifier.padding(top = 18.dp),
@@ -503,7 +510,7 @@ fun WriteScrapOptionView(
             }
         }
 
-        Divider(color = Gray4)
+        Divider(color = Gray3, thickness = 1.dp)
     }
 }
 
