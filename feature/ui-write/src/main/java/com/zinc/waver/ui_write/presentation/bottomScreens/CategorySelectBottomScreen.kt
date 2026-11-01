@@ -78,7 +78,7 @@ private fun CategorySelectView(
                     start = 28.dp,
                     end = 28.dp,
                     top = 39.dp,
-                    bottom = 50.dp
+                    bottom = 36.dp
                 ),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
