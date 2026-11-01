@@ -36,7 +36,8 @@
 
     <string name="monthDesc">Anything</string>
 
-    <string name="bucketCopySucceedToast">Bucket list copied</string>
+
+    <string name="bucketCopySucceedToast">Scrap completed successfully.</string>
 
     <!-- Login -->
     <string name="goToLogin">Login</string>
