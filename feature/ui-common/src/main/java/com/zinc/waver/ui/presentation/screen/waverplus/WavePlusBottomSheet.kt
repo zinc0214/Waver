@@ -72,7 +72,7 @@ fun WavePlusBottomSheet(modifier: Modifier = Modifier, selectedItem: (WaverPlusT
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 30.dp, end = 30.dp, top = 32.dp, bottom = 30.dp)
+                .padding(start = 30.dp, end = 30.dp, top = 32.dp, bottom = 0.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             MyText(
