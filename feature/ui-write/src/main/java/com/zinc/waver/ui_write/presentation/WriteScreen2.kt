@@ -74,6 +74,7 @@ fun WriteScreen2(
     val loadFailAsState by viewModel.loadFail.observeAsState()
     val addNewBucketListResult by viewModel.addNewBucketListResult.observeAsState()
     val userLimitInfoAsState by viewModel.userLimitInfo.observeAsState()
+    val premiumHintAsState by viewModel.premiumHint.observeAsState(false)
 
     val selectedKeyWords = remember { mutableStateOf(writeTotalInfo.keyWord) }
     val selectedFriends = remember { mutableStateOf(writeTotalInfo.tagFriends) }
@@ -93,8 +94,12 @@ fun WriteScreen2(
         if (showWaverPlus.value) {
             plusScreenShown = true
         } else {
-            // 첫 진입이면 앞 단계에서 받아둔 값을 재사용한다.
-            viewModel.checkUserLimit(forceRefresh = plusScreenShown)
+            if (plusScreenShown) {
+                viewModel.checkUserLimit(forceRefresh = true)
+            } else {
+                // 첫 진입이면 앞 단계에서 받아둔 값을 재사용한다.
+                viewModel.checkUserLimit(forceRefresh = false)
+            }
         }
     }
 
@@ -125,8 +130,10 @@ fun WriteScreen2(
         }
     }
 
-    LaunchedEffect(userLimitInfoAsState) {
-        canUseTogether = userLimitInfoAsState?.canUseTogether ?: false
+    LaunchedEffect(userLimitInfoAsState, premiumHintAsState) {
+        val hasPremiumAccess = premiumHintAsState || (userLimitInfoAsState?.isPremium == true)
+        canUseTogether =
+            if (hasPremiumAccess) true else (userLimitInfoAsState?.canUseTogether ?: false)
         friendOption.value = FRIENDS(enableType = getFriendsEnableType(canUseTogether))
         Log.e("ayhan", "canUseTogether : $canUseTogether, friendOption : $friendOption")
     }

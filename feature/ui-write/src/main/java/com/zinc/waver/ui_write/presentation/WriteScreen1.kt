@@ -91,8 +91,7 @@ fun WriteScreen1(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val userLimitInfoAsState by viewModel.userLimitInfo.observeAsState()
-
-    var canUseImage by remember { mutableStateOf(false) }
+    val premiumHintAsState by viewModel.premiumHint.observeAsState(false)
 
     // 지금 선택된 option
     var selectedOption: WriteOptionsType1? by remember { mutableStateOf(null) }
@@ -135,8 +134,13 @@ fun WriteScreen1(
         if (showWaverPlus.value) {
             plusScreenShown = true
         } else {
-            // 첫 진입이면 앞 단계에서 받아둔 값을 재사용한다.
-            viewModel.checkUserLimit(forceRefresh = plusScreenShown)
+            if (plusScreenShown) {
+                // 구독 안내를 닫고 돌아오면 최신 한도를 즉시 다시 받는다.
+                viewModel.checkUserLimit(forceRefresh = true)
+            } else {
+                // 첫 진입이면 앞 단계에서 받아둔 값을 재사용한다.
+                viewModel.checkUserLimit(forceRefresh = false)
+            }
         }
     }
 
@@ -152,11 +156,6 @@ fun WriteScreen1(
             }
         }
     }
-
-    LaunchedEffect(userLimitInfoAsState) {
-        canUseImage = userLimitInfoAsState?.canUseImage ?: false
-    }
-
 
     // 텍스트 필드 초기 포커스를 위한 상태
     val shouldFocusTitle = remember { mutableStateOf(true) }
@@ -192,6 +191,15 @@ fun WriteScreen1(
     val originCount = remember { mutableStateOf(originWriteInfo1.getGoalCount()) }
     val originDdayDate = remember { mutableStateOf(originWriteInfo1.getDday()) }
     val imageList = remember { mutableStateOf(loadedImages) }
+    val hasPremiumAccess = premiumHintAsState || (userLimitInfoAsState?.isPremium == true)
+    val canUseImageByServer =
+        if (hasPremiumAccess) true else (userLimitInfoAsState?.canUseImage ?: false)
+    val maxImageCountForCurrentUser = if (hasPremiumAccess) {
+        Int.MAX_VALUE
+    } else {
+        userLimitInfoAsState?.imageLimit ?: 0
+    }
+    val canAddImage = canUseImageByServer && imageList.value.size < maxImageCountForCurrentUser
 
     nextButtonClickable.value = title.value.isNotEmpty()
 
@@ -456,8 +464,8 @@ fun WriteScreen1(
                                         })
 
                                     if (imageList.value.isNotEmpty() && imageList.value.size < 3 && it == imageList.value.last()) {
-                                        AddImageItem(canUseImage = canUseImage) {
-                                            if (canUseImage) {
+                                        AddImageItem(canUseImage = canAddImage) {
+                                            if (canAddImage) {
                                                 selectedOption = IMAGE
                                             } else {
                                                 showWaverPlus.value = true

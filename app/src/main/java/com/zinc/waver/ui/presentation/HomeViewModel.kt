@@ -32,9 +32,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setPremiumHint(isPremium: Boolean) {
+        viewModelScope.launch {
+            preferenceDataStoreModule.setPremiumHint(isPremium)
+        }
+    }
+
     // 구독 완료(구매/앱 시작 시 활성 구독 감지) 시 서버에 구독 시작을 알린다.
     // 앱 시작 시 YEAR/MONTH 두 설정이 같은 구매를 매칭하므로, 세션당 같은 subscribeId는 한 번만 전송한다.
     fun notifySubscriptionStarted(billingCycle: BillingCycle, subscribeId: String) {
+        setPremiumHint(true)
         if (!notifiedSubscribeIds.add(subscribeId)) return
         viewModelScope.launch(ceh(_doNothing, null)) {
             startSubscription(

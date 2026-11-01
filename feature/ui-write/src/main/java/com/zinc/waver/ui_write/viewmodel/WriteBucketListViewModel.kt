@@ -8,6 +8,7 @@ import com.zinc.common.models.AddBucketListRequest
 import com.zinc.common.models.DetailInfo
 import com.zinc.common.models.UserLimitInfo
 import com.zinc.common.models.YesOrNo
+import com.zinc.datastore.login.PreferenceDataStoreModule
 import com.zinc.domain.usecases.category.LoadCategoryList
 import com.zinc.domain.usecases.detail.LoadBucketDetail
 import com.zinc.domain.usecases.detail.LoadFriends
@@ -22,6 +23,7 @@ import com.zinc.waver.model.toUiModel
 import com.zinc.waver.ui.viewmodel.CommonViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,6 +35,7 @@ class WriteBucketListViewModel @Inject constructor(
     private val loadFriends: LoadFriends,
     private val loadCategoryList: LoadCategoryList,
     private val checkUserLimitUseCase: CheckUserLimit,
+    private val preferenceDataStoreModule: PreferenceDataStoreModule,
 ) : CommonViewModel() {
 
     private val _savedWriteData = MutableLiveData<WriteTotalInfo>()
@@ -56,10 +59,21 @@ class WriteBucketListViewModel @Inject constructor(
     private val _userLimitInfo = MutableLiveData<UserLimitInfo>()
     val userLimitInfo: LiveData<UserLimitInfo> get() = _userLimitInfo
 
+    private val _premiumHint = MutableLiveData(false)
+    val premiumHint: LiveData<Boolean> get() = _premiumHint
+
     // 기본 카테고리를 이미 받아왔는지. 실패하면 다시 false 로 되돌려 재시도를 허용한다.
     private var isCategoryLoaded = false
 
     private val _defaultCategoryId = MutableLiveData<Int>()
+
+    init {
+        viewModelScope.launch {
+            preferenceDataStoreModule.loadPremiumHint.collectLatest {
+                _premiumHint.value = it
+            }
+        }
+    }
 
     fun clearData() {
         _loadFail.value = null
@@ -198,6 +212,7 @@ class WriteBucketListViewModel @Inject constructor(
         viewModelScope.launch(ceh(_userLimitInfo, UserLimitInfo.NONE)) {
             val response = checkUserLimitUseCase.invoke()
             _userLimitInfo.value = if (response.success) {
+                preferenceDataStoreModule.setPremiumHint(response.data.isPremium)
                 response.data
             } else {
                 UserLimitInfo.NONE

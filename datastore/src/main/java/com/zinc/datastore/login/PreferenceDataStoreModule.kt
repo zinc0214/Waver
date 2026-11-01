@@ -3,6 +3,7 @@ package com.zinc.datastore.login
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -23,6 +24,7 @@ class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context:
     private val loginedEmailKey = stringPreferencesKey("loginedEmailKey")
     private val loginedEmailUidKey = stringPreferencesKey("loginedEmailUidKey")
     private val userIdKey = stringPreferencesKey("userIdKey")
+    private val premiumHintKey = booleanPreferencesKey("premiumHintKey")
 
     val loadAccessToken: Flow<String> = loginDataStore.data
         .map { preferences ->
@@ -81,6 +83,16 @@ class PreferenceDataStoreModule @Inject constructor(@ApplicationContext context:
     suspend fun setUserIdKey(id: String) {
         loginDataStore.edit { preferences ->
             preferences[userIdKey] = id
+        }
+    }
+
+    val loadPremiumHint: Flow<Boolean> = loginDataStore.data.map { preferences ->
+        preferences[premiumHintKey] ?: false
+    }
+
+    suspend fun setPremiumHint(isPremium: Boolean) {
+        loginDataStore.edit { preferences ->
+            preferences[premiumHintKey] = isPremium
         }
     }
 
