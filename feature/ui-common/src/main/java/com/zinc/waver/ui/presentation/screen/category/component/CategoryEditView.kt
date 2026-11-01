@@ -31,7 +31,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
@@ -181,6 +180,7 @@ fun VerticalReorderList(
                         },
                     index,
                     category,
+                    isDragging = index == listState.currentIndexOfDraggedItem,
                     optionEvent = optionEvent
                 )
             }
@@ -199,6 +199,7 @@ private fun EditCategoryItemView(
     modifier: Modifier,
     index: Int,
     item: UICategoryInfo,
+    isDragging: Boolean,
     optionEvent: (CategoryEditOptionEvent) -> Unit
 ) {
 
@@ -207,7 +208,6 @@ private fun EditCategoryItemView(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .shadow(elevation = 1.dp)
     ) {
         Row(
             modifier = Modifier
@@ -248,7 +248,7 @@ private fun EditCategoryItemView(
                 .fillMaxSize()
                 .wrapContentSize(Alignment.TopEnd),
             backgroundColor = Color.Transparent,
-            elevation = 1.dp
+            elevation = if (isDragging) 1.dp else 0.dp
         ) {
             MaterialTheme(shapes = MaterialTheme.shapes.copy(medium = RoundedCornerShape(8.dp))) {
 
